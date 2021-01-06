@@ -7,14 +7,21 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "14.0.0"
+    version: "12.0.0"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.41.1"
+    version: "0.40.6"
+  angular_ast:
+    dependency: "direct dev"
+    description:
+      name: angular_ast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   archive:
     dependency: transitive
     description:
@@ -226,7 +233,7 @@ packages:
     source: hosted
     version: "0.3.4"
   js:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: js
       url: "https://pub.dartlang.org"
