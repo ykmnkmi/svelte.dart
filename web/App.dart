@@ -1,14 +1,9 @@
-// will be generated
-library app;
-
 import 'dart:html';
 
 import 'package:piko/runtime.dart';
 
 class App extends Component<App> {
-  App() {
-    count = 0;
-  }
+  App() : count = 0;
 
   int count;
 
@@ -17,23 +12,28 @@ class App extends Component<App> {
   }
 
   @override
-  Fragment<App> createFragment() {
+  Fragment<App> render() {
     return AppFragment(this);
+    // return <button (click)="handleClick">Clicked {{ count }} {{ count === 1 ? 'time' : 'times' }}</button>;
   }
 }
 
+// will be generated
 class AppFragment extends Fragment<App> {
-  AppFragment(this.context) {
-    t3Value = context.count == 1 ? 'time' : 'times';
-    mounted = false;
-  }
-
-  @override
-  final App context;
+  AppFragment(App context)
+      : t3Value = context.count == 1 ? 'time' : 'times',
+        mounted = false,
+        super(context);
 
   Element button;
 
-  Node t0, t1, t2, t3;
+  Node t0;
+
+  Node t1;
+
+  Node t2;
+
+  Node t3;
 
   String t3Value;
 
@@ -62,14 +62,14 @@ class AppFragment extends Fragment<App> {
       mounted = true;
       dispose = listen(button, 'click', (event) {
         context.handleClick();
-        update('count');
+        scheduler.makeDirty(this, 'count');
       });
     }
   }
 
   @override
-  void update([String aspect]) {
-    if (aspect == null || aspect == 'count') {
+  void update([Set<String> aspects = const <String>{}]) {
+    if (aspects.isEmpty || aspects.contains('count')) {
       setData(t1, '${context.count}');
 
       if (t3Value != (t3Value = context.count == 1 ? 'time' : 'times')) {

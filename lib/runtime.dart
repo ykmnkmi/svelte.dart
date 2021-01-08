@@ -1,25 +1,15 @@
 import 'dart:html';
 
+import 'src/runtime/component.dart';
+import 'src/runtime/scheduler.dart';
+
+export 'src/runtime/component.dart';
 export 'src/runtime/dom.dart';
-
-abstract class Component<T> {
-  Fragment<T> createFragment();
-}
-
-abstract class Fragment<T> {
-  T get context;
-
-  void create() {}
-
-  void mount(Element target) {}
-
-  void update([String aspect]) {}
-
-  void detach(bool removing) {}
-}
+export 'src/runtime/scheduler.dart';
 
 void runApp<T>(Component<T> component, [Node root]) {
-  component.createFragment()
+  component.render()
+    ..scheduler = Scheduler()
     ..create()
     ..mount(root ?? document.body);
 }
