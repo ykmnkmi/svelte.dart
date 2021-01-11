@@ -4,11 +4,11 @@ void main() {
   final tree = parse('<button (click)="handleClick()">Clicked {{ count }} {{ count == 1 ? "time" : "times" }}</button>');
 
   final compiler = Compiler();
-  final context = Context();
+  final frame = Frame();
 
   tree.forEach((node) {
-    node.accept(compiler, context);
+    node.accept(compiler, frame);
   });
 
-  print(context);
+  print(frame);
 }

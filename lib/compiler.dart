@@ -2,78 +2,78 @@ import 'package:angular_ast/angular_ast.dart';
 
 export 'package:angular_ast/angular_ast.dart';
 
-class Context {}
+class Frame {}
 
-class Compiler<C> extends TemplateAstVisitor<void, Context> {
+class Compiler extends TemplateAstVisitor<void, Frame> {
   const Compiler();
 
   @override
-  void visitAnnotation(AnnotationAst astNode, [Context context]) {
+  void visitAnnotation(AnnotationAst astNode, [Frame context]) {
     throw UnimplementedError('visitAnnotation');
   }
 
   @override
-  void visitAttribute(AttributeAst astNode, [Context context]) {
+  void visitAttribute(AttributeAst astNode, [Frame context]) {
     throw UnimplementedError('visitAttribute');
   }
 
   @override
-  void visitBanana(BananaAst astNode, [Context context]) {
+  void visitBanana(BananaAst astNode, [Frame context]) {
     throw UnimplementedError('visitBanana');
   }
 
   @override
-  void visitCloseElement(CloseElementAst astNode, [Context context]) {
+  void visitCloseElement(CloseElementAst astNode, [Frame context]) {
     throw UnimplementedError('visitCloseElement');
   }
 
   @override
-  void visitComment(CommentAst astNode, [Context context]) {
+  void visitComment(CommentAst astNode, [Frame context]) {
     throw UnimplementedError('visitComment');
   }
 
   @override
-  void visitEmbeddedContent(EmbeddedContentAst astNode, [Context context]) {
+  void visitEmbeddedContent(EmbeddedContentAst astNode, [Frame context]) {
     throw UnimplementedError('visitEmbeddedContent');
   }
 
   @override
-  void visitEvent(EventAst astNode, [Context context]) {
+  void visitEvent(EventAst astNode, [Frame context]) {
     throw UnimplementedError('visitEvent');
   }
 
   @override
-  void visitExpression(ExpressionAst<Object> astNode, [Context context]) {
+  void visitExpression(ExpressionAst<Object> astNode, [Frame context]) {
     throw UnimplementedError('visitExpression');
   }
 
   @override
-  void visitInterpolation(InterpolationAst astNode, [Context context]) {
+  void visitInterpolation(InterpolationAst astNode, [Frame context]) {
     throw UnimplementedError('visitInterpolation');
   }
 
   @override
-  void visitLetBinding(LetBindingAst astNode, [Context context]) {
+  void visitLetBinding(LetBindingAst astNode, [Frame context]) {
     throw UnimplementedError('visitLetBinding');
   }
 
   @override
-  void visitProperty(PropertyAst astNode, [Context context]) {
+  void visitProperty(PropertyAst astNode, [Frame context]) {
     throw UnimplementedError('visitProperty');
   }
 
   @override
-  void visitReference(ReferenceAst astNode, [Context context]) {
+  void visitReference(ReferenceAst astNode, [Frame context]) {
     throw UnimplementedError('visitReference');
   }
 
   @override
-  void visitStar(StarAst astNode, [Context context]) {
+  void visitStar(StarAst astNode, [Frame context]) {
     throw UnimplementedError('visitStar');
   }
 
   @override
-  void visitText(TextAst astNode, [Context context]) {
+  void visitText(TextAst astNode, [Frame context]) {
     throw UnimplementedError('visitText');
   }
 }
