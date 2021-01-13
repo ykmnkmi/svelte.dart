@@ -13,12 +13,13 @@ class App extends Component<App> {
 
   @override
   Fragment<App> render() {
-    return AppFragment(this);
-    // return <button (click)="handleClick">Clicked {{ count }} {{ count === 1 ? 'time' : 'times' }}</button>;
+    // return <button (click)="handleClick()">Clicked {{ count }} {{ count === 1 ? 'time' : 'times' }}</button>;
+    return fragment = AppFragment(this);
   }
 }
 
 // will be generated
+
 class AppFragment extends Fragment<App> {
   AppFragment(App context)
       : t3Value = context.count == 1 ? 'time' : 'times',
@@ -68,7 +69,7 @@ class AppFragment extends Fragment<App> {
   }
 
   @override
-  void update([Set<String> aspects = const <String>{}]) {
+  void update([Set<String> aspects = const {}]) {
     if (aspects.isEmpty || aspects.contains('count')) {
       setData(t1, '${context.count}');
 

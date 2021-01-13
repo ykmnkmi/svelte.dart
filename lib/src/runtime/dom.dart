@@ -25,7 +25,7 @@ Text space() {
 }
 
 Text empty() {
-	return text('');
+  return text('');
 }
 
 void Function() listen(Node target, String type, EventListener handler) {

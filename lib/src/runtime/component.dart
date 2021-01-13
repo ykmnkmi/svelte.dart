@@ -4,11 +4,19 @@ import 'dart:html';
 import 'package:piko/runtime.dart';
 
 abstract class Component<T> {
+  Fragment<T> fragment;
+
   Fragment<T> render();
 }
 
 abstract class Fragment<T> {
-  Fragment(this.context) : dirty = HashSet<String>();
+  static int nextId = 0;
+
+  Fragment(this.context)
+      : id = nextId++,
+        dirty = HashSet<String>();
+
+  final int id;
 
   final T context;
 
@@ -20,7 +28,7 @@ abstract class Fragment<T> {
 
   void mount(Element target) {}
 
-  void update([Set<String> aspects = const <String>{}]) {}
+  void update([Set<String> aspects = const {}]) {}
 
   void detach(bool removing) {}
 }
