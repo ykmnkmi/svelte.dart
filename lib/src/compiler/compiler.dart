@@ -46,8 +46,8 @@ class Compiler extends TemplateAstVisitor<void, Frame> {
   }
 
   @override
-  void visitInterpolation(InterpolationAst astNode, [Frame context]) {
-    throw UnimplementedError('visitInterpolation');
+  void visitInterpolation(InterpolationAst interpolation, [Frame context]) {
+    context.interpolation(interpolation.value.trim());
   }
 
   @override
@@ -71,7 +71,7 @@ class Compiler extends TemplateAstVisitor<void, Frame> {
   }
 
   @override
-  void visitText(TextAst astNode, [Frame context]) {
-    throw UnimplementedError('visitText');
+  void visitText(TextAst text, [Frame context]) {
+    context.text(text.value);
   }
 }
