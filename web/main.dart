@@ -1,6 +1,6 @@
 import 'package:piko/runtime.dart';
 
-import 'App.dart';
+import 'app.dart';
 
 void main() {
   runApp(App());

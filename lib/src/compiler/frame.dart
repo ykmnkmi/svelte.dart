@@ -38,7 +38,11 @@ class Frame {
       created.writeln('$name = text(${text.toLiteral()});');
     }
 
-    mounted.writeln('append(${parent ?? 'target'}, $name);');
+    if (parent == null) {
+      mounted.writeln('insert(target, $name);');
+    } else {
+      mounted.writeln('append($parent, $name);');
+    }
   }
 
   void interpolation(String interpolation, [String parent]) {
@@ -52,13 +56,10 @@ class Frame {
       created.writeln('$name = text($value);');
     }
 
-    mounted.writeln('append(${parent ?? 'target'}, $name);');
+    if (parent == null) {
+      mounted.writeln('insert(target, $name);');
+    } else {
+      mounted.writeln('append($parent, $name);');
+    }
   }
-
-  // void expression(String name, String expression) {
-  //   final value = variable('${name}Value');
-  //   expressions[value] = expression;
-  //   created.write('$name = \${$expression}');
-  //   mounted.write('append(${parent ?? 'target'}, $name);');
-  // }
 }
