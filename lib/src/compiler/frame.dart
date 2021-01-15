@@ -1,16 +1,18 @@
 import '../utils.dart';
 
 class Frame {
-  Frame()
+  Frame(this.name)
       : ids = <String, int>{},
-        variables = <String>{},
+        variables = <String, String>{},
         expressions = <String, String>{},
         created = StringBuffer(),
         mounted = StringBuffer();
 
+  final String name;
+
   final Map<String, int> ids;
 
-  final Set<String> variables;
+  final Map<String, String> variables;
 
   final Map<String, String> expressions;
 
@@ -18,19 +20,30 @@ class Frame {
 
   final StringBuffer mounted;
 
+  String compile() {
+    final clazz = '${name}Fragemnt';
+    final buffer = StringBuffer()
+      ..writeln('class $clazz extends Fragment<$name> {')
+      ..writeln('$clazz($name context): super(context);')
+      ..writeln('}');
+    return buffer.toString();
+  }
+
   String variable(String type) {
-    if (!ids.containsKey(type)) {
-      ids[type] = 0;
+    final normalType = type.toLowerCase();
+
+    if (!ids.containsKey(normalType)) {
+      ids[normalType] = 0;
     }
 
-    final name = 'text${ids[type]}';
-    ids[type] += 1;
-    variables.add(name);
+    final name = '$normalType${ids[normalType]}';
+    ids[normalType] += 1;
+    variables[name] = type;
     return name;
   }
 
   void text(String text, [String parent]) {
-    final name = variable('text');
+    final name = variable('Text');
 
     if (text.trim() == '') {
       created.writeln('$name = space();');
@@ -46,7 +59,7 @@ class Frame {
   }
 
   void interpolation(String interpolation, [String parent]) {
-    final name = variable('text');
+    final name = variable('Text');
 
     if (interpolation.isIdentifier) {
       created.writeln('$name = text($interpolation);');

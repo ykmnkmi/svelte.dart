@@ -1,0 +1,16 @@
+import 'package:piko/runtime.dart';
+
+class App extends Component<App> {
+  App() : count = 0;
+
+  int count;
+
+  void handleClick() {
+    count += 1;
+  }
+
+  @override
+  Fragment<App> render() {
+    return <button (click)="handleClick()">Clicked {{ count }} {{ count === 1 ? 'time' : 'times' }}</button>;
+  }
+}

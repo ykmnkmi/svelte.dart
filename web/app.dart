@@ -1,3 +1,6 @@
+// will be generated
+library app;
+
 import 'dart:html';
 
 import 'package:piko/runtime.dart';
@@ -13,30 +16,27 @@ class App extends Component<App> {
 
   @override
   Fragment<App> render() {
-    // return <button (click)="handleClick()">Clicked {{ count }} {{ count === 1 ? 'time' : 'times' }}</button>;
-    return fragment = AppFragment(this);
+    return AppFragment(this);
   }
 }
 
-// will be generated
-
 class AppFragment extends Fragment<App> {
   AppFragment(App context)
-      : t3Value = context.count == 1 ? 'time' : 'times',
+      : text3Value = context.count == 1 ? 'time' : 'times',
         mounted = false,
         super(context);
 
   Element button;
 
-  Node t0;
+  Node text0;
 
-  Node t1;
+  Node text1;
 
-  Node t2;
+  Node text2;
 
-  Node t3;
+  Node text3;
 
-  String t3Value;
+  String text3Value;
 
   bool mounted;
 
@@ -45,19 +45,19 @@ class AppFragment extends Fragment<App> {
   @override
   void create() {
     button = element('button');
-    t0 = text('Clicked ');
-    t1 = text('${context.count}');
-    t2 = space();
-    t3 = text(t3Value);
+    text0 = text('Clicked ');
+    text1 = text('${context.count}');
+    text2 = space();
+    text3 = text(text3Value);
   }
 
   @override
   void mount(Element target) {
     insert(target, button);
-    append(button, t0);
-    append(button, t1);
-    append(button, t2);
-    append(button, t3);
+    append(button, text0);
+    append(button, text1);
+    append(button, text2);
+    append(button, text3);
 
     if (!mounted) {
       mounted = true;
@@ -71,10 +71,10 @@ class AppFragment extends Fragment<App> {
   @override
   void update([Set<String> aspects = const {}]) {
     if (aspects.isEmpty || aspects.contains('count')) {
-      setData(t1, '${context.count}');
+      setData(text1, '${context.count}');
 
-      if (t3Value != (t3Value = context.count == 1 ? 'time' : 'times')) {
-        setData(t3, t3Value);
+      if (text3Value != (text3Value = context.count == 1 ? 'time' : 'times')) {
+        setData(text3, text3Value);
       }
     }
   }

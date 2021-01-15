@@ -3,18 +3,22 @@ import 'dart:html';
 
 import 'package:piko/runtime.dart';
 
-abstract class Component<T> {
-  Fragment<T> fragment;
+abstract class Component<T extends Component<T>> {
+  Fragment<T> _fragment;
+
+  Fragment<T> get fragment => _fragment;
 
   Fragment<T> render();
 }
 
-abstract class Fragment<T> {
+abstract class Fragment<T extends Component<T>> {
   static int nextId = 0;
 
   Fragment(this.context)
       : id = nextId++,
-        dirty = HashSet<String>();
+        dirty = HashSet<String>() {
+    context._fragment = this;
+  }
 
   final int id;
 
@@ -30,5 +34,5 @@ abstract class Fragment<T> {
 
   void update([Set<String> aspects = const {}]) {}
 
-  void detach(bool removing) {}
+  void detach(bool detach) {}
 }

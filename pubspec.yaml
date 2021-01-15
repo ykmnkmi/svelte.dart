@@ -1,6 +1,6 @@
 name: piko
 description: svelte like dart framework.
-version: 1.0.0-dev.5
+version: 1.0.0-dev.6
 #homepage: https://www.example.com
 
 environment:
