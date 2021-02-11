@@ -1,3 +1,5 @@
+// @dart=2.10
+
 import 'component.dart';
 
 class Scheduler {

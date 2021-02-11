@@ -1,3 +1,5 @@
+// @dart=2.10
+
 // will be generated
 library app;
 

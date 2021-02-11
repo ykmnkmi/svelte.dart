@@ -1,3 +1,5 @@
+// @dart=2.10
+
 import 'dart:html';
 
 import 'src/runtime/component.dart';
