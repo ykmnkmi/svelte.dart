@@ -1,5 +1,3 @@
-// @dart=2.10
-
 // will be generated
 library app;
 
@@ -28,21 +26,21 @@ class AppFragment extends Fragment<App> {
         mounted = false,
         super(context);
 
-  Element button;
+  late Element button;
 
-  Node text0;
+  late Text text0;
 
-  Node text1;
+  late Text text1;
 
-  Node text2;
+  late Text text2;
 
-  Node text3;
+  late Text text3;
 
-  String text3Value;
+  late String text3Value;
 
-  bool mounted;
+  late bool mounted;
 
-  void Function() dispose;
+  late void Function() dispose;
 
   @override
   void create() {
@@ -54,7 +52,7 @@ class AppFragment extends Fragment<App> {
   }
 
   @override
-  void mount(Element target) {
+  void mount(Node target) {
     insert(target, button);
     append(button, text0);
     append(button, text1);
@@ -71,7 +69,7 @@ class AppFragment extends Fragment<App> {
   }
 
   @override
-  void update([Set<String> aspects = const {}]) {
+  void update([List<String> aspects = const <String>[]]) {
     if (aspects.isEmpty || aspects.contains('count')) {
       setData(text1, '${context.count}');
 

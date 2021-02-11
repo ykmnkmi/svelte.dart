@@ -1,14 +1,11 @@
-// @dart=2.10
-
-import 'dart:collection';
 import 'dart:html';
 
+import 'package:meta/meta.dart';
 import 'package:piko/runtime.dart';
 
 abstract class Component<T extends Component<T>> {
-  Fragment<T> _fragment;
-
-  Fragment<T> get fragment => _fragment;
+  @protected
+  late Fragment<T> fragment;
 
   Fragment<T> render();
 }
@@ -18,23 +15,23 @@ abstract class Fragment<T extends Component<T>> {
 
   Fragment(this.context)
       : id = nextId++,
-        dirty = HashSet<String>() {
-    context._fragment = this;
+        dirty = <String>[] {
+    context.fragment = this;
   }
 
   final int id;
 
   final T context;
 
-  final Set<String> dirty;
+  final List<String> dirty;
 
-  Scheduler scheduler;
+  late Scheduler scheduler;
 
   void create() {}
 
-  void mount(Element target) {}
+  void mount(Node target) {}
 
-  void update([Set<String> aspects = const {}]) {}
+  void update([List<String> aspects = const <String>[]]) {}
 
   void detach(bool detach) {}
 }

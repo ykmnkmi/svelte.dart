@@ -1,5 +1,3 @@
-// @dart=2.10
-
 import 'component.dart';
 
 class Scheduler {
@@ -17,7 +15,7 @@ class Scheduler {
 
   bool flushing;
 
-  void makeDirty(Fragment fragment, [String aspect]) {
+  void makeDirty(Fragment fragment, [String aspect = '']) {
     if (fragment.dirty.isEmpty) {
       dirtyFragments.add(fragment);
       scheduleUpdate();
