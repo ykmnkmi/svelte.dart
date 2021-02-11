@@ -6,24 +6,6 @@ abstract class Node {
   String toShortString();
 }
 
-class Fragment extends Node {
-  Fragment([List<Node>? children]) {
-    if (children != null) {
-      this.children.addAll(children);
-    }
-  }
-
-  @override
-  String toShortString() {
-    return children.join(', ');
-  }
-
-  @override
-  String toString() {
-    return 'Fragment { ${toShortString()} }';
-  }
-}
-
 class Text extends Node {
   Text(this.data);
 
@@ -80,5 +62,39 @@ class Mustache extends Node {
   @override
   String toString() {
     return 'Mustache { ${toShortString()} }';
+  }
+}
+
+class Fragment extends Node {
+  Fragment({List<Node>? children}) {
+    if (children != null) {
+      this.children.addAll(children);
+    }
+  }
+
+  @override
+  String toShortString() {
+    return children.join(', ');
+  }
+
+  @override
+  String toString() {
+    return 'Fragment { ${toShortString()} }';
+  }
+}
+
+class Element extends Fragment {
+  Element(this.tag, {List<Node>? children}) : super(children: children);
+
+  final String tag;
+
+  @override
+  String toShortString() {
+    return '$tag { ${super.toShortString()} }';
+  }
+
+  @override
+  String toString() {
+    return 'Element.${toShortString()}';
   }
 }

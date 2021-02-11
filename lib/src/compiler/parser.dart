@@ -52,8 +52,16 @@ class Parser {
     throw CompileError(message);
   }
 
-  void push(Node node) {
+  void add(Node node) {
     current.children.add(node);
+  }
+
+  void push(Node node) {
+    stack.add(node);
+  }
+
+  Node pop() {
+    return stack.removeLast();
   }
 
   @override
@@ -69,7 +77,7 @@ extension ParserMethods on Parser {
     }
 
     if (required) {
-      error(message: 'expected $pattern');
+      error(message: "expected '$pattern', got '${template[index]} at $index'");
     }
 
     return false;

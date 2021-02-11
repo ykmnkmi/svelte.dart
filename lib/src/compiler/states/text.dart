@@ -7,5 +7,5 @@ void text(Parser parser) {
     parser.index += 1;
   }
 
-  parser.push(Text(parser.template.substring(start, parser.index)));
+  parser.add(Text(parser.template.substring(start, parser.index)));
 }
