@@ -1,58 +1,129 @@
 import 'package:string_scanner/string_scanner.dart';
 
-import 'expression.dart';
+import 'errors.dart';
 import 'nodes.dart';
-import 'scanner.dart';
-
-enum ParserState {
-  mustache,
-  text,
-}
+import 'states.dart';
 
 class Parser {
-  Parser();
+  Parser(String template, {Object? sourceUrl, int? position})
+      : scanner = StringScanner(template.trimRight(), sourceUrl: sourceUrl, position: position),
+        stack = <Node>[],
+        html = Fragment() {
+    stack.add(html);
 
-  Node parse(String template, {Object? sourceUrl, int? position, ParserState state = ParserState.mustache}) {
-    final scanner = StringScanner(template.trimRight(), sourceUrl: sourceUrl, position: position);
-    return scan(scanner, state: state);
-  }
-
-  Node scan(StringScanner scanner, {ParserState state = ParserState.mustache}) {
-    final root = Fragment();
-
-    while (!scanner.isDone) {
-      switch (state) {
-        case ParserState.mustache:
-          root.children.add(mustache(scanner));
-          break;
-        case ParserState.text:
-          root.children.add(text(scanner));
-          break;
-        default:
-          throw UnimplementedError();
+    while (!isDone) {
+      if (match('<')) {
+        tag(this);
+      } else if (match('{')) {
+        mustache(this);
+      } else {
+        text(this);
       }
     }
-
-    return root;
   }
 
-  Mustache mustache(StringScanner scanner) {
-    scanner.expect('{');
-    scanner.whitespace();
-    final expression = ExpressionParser().scan(scanner);
-    scanner.whitespace();
-    scanner.expect('}');
-    return Mustache(expression);
+  final StringScanner scanner;
+
+  final List<Node> stack;
+
+  final Fragment html;
+
+  Node get current {
+    return stack.last;
   }
 
-  Text text(StringScanner scanner) {
-    final start = scanner.position;
-    final content = StringBuffer();
+  int get index {
+    return scanner.position;
+  }
 
-    while (!scanner.isDone && !scanner.matches('{')) {
-      content.writeCharCode(scanner.readChar());
+  set index(int index) {
+    scanner.position = index;
+  }
+
+  bool get isDone {
+    return scanner.isDone;
+  }
+
+  String get template {
+    return scanner.string;
+  }
+
+  Never error({String? message}) {
+    throw CompileError(message);
+  }
+
+  void push(Node node) {
+    current.children.add(node);
+  }
+
+  @override
+  String toString() {
+    return 'Parser { ${stack.join(', ')} }';
+  }
+}
+
+extension ParserMethods on Parser {
+  bool eat(String pattern, {bool required = false, String? message}) {
+    if (scanner.scan(pattern)) {
+      return true;
     }
 
-    return Text(content.toString());
+    if (required) {
+      error(message: 'expected $pattern');
+    }
+
+    return false;
+  }
+
+  bool match(Pattern pattern) {
+    return scanner.matches(pattern);
+  }
+
+  String? peekChar([int offset = 0]) {
+    offset += index;
+
+    if (offset < 0 || offset >= template.length) {
+      return null;
+    }
+
+    return template[0];
+  }
+
+  bool read(Pattern pattern) {
+    return scanner.scan(pattern);
+  }
+
+  String readChar() {
+    if (isDone) {
+      error(message: 'unexpected end of input');
+    }
+
+    return template[index++];
+  }
+
+  String readUntil(Pattern pattern) {
+    if (isDone) {
+      error(message: 'unexpected end of input');
+    }
+
+    final start = index;
+
+    while (!isDone && !match(pattern)) {
+      index += 1;
+    }
+
+    return template.substring(start, index);
+  }
+
+  void whitespace({bool required = false}) {
+    const whitespaces = <int>[32, 9, 10, 13];
+
+    if (required) {
+      error(message: 'expected whitespace');
+    }
+
+    while (!scanner.isDone && whitespaces.contains(scanner.peekChar())) {
+      index += 1;
+    }
   }
 }

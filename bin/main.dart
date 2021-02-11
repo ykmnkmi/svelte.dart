@@ -1,5 +1,5 @@
 import 'package:piko/compiler.dart';
 
 void main() {
-  print(Parser().parse('{ name }'));
+  print(Parser('<span>hello { name }!</span>'));
 }

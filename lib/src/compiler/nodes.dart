@@ -1,11 +1,17 @@
 abstract class Node {
+  Node() : children = <Node>[];
+
+  List<Node> children;
+
   String toShortString();
 }
 
-class Fragment implements Node {
-  Fragment([List<Node>? children]) : children = children ?? <Node>[];
-
-  List<Node> children;
+class Fragment extends Node {
+  Fragment([List<Node>? children]) {
+    if (children != null) {
+      this.children.addAll(children);
+    }
+  }
 
   @override
   String toShortString() {
@@ -14,29 +20,38 @@ class Fragment implements Node {
 
   @override
   String toString() {
-    return 'Fragment { ' + toShortString() + ' }';
+    return 'Fragment { ${toShortString()} }';
   }
 }
 
-class Text implements Node {
-  Text(this.text);
+class Text extends Node {
+  Text(this.data);
 
-  final String text;
+  final String data;
 
   @override
   String toShortString() {
-    return text.replaceAll("'", r"\'").replaceAll('\r', r'\r').replaceAll('\n', r'\n');
+    return "'${data.replaceAll("'", r"\'").replaceAll('\r', r'\r').replaceAll('\n', r'\n')}'";
   }
 
   @override
   String toString() {
-    return "Text '" + toShortString() + "'";
+    return 'Text ${toShortString()}';
   }
 }
 
-abstract class Expression implements Node {}
+class Comment extends Text {
+  Comment(String data) : super(data);
 
-class Identifier implements Expression {
+  @override
+  String toString() {
+    return 'Comment ${toShortString()}';
+  }
+}
+
+abstract class Expression extends Node {}
+
+class Identifier extends Expression {
   Identifier(this.identifier);
 
   final String identifier;
@@ -48,11 +63,11 @@ class Identifier implements Expression {
 
   @override
   String toString() {
-    return 'Identifier ' + toShortString();
+    return 'Identifier ${toShortString()}';
   }
 }
 
-class Mustache implements Node {
+class Mustache extends Node {
   Mustache(this.expression);
 
   final Expression expression;
@@ -64,6 +79,6 @@ class Mustache implements Node {
 
   @override
   String toString() {
-    return 'Mustache { ' + toShortString() + ' }';
+    return 'Mustache { ${toShortString()} }';
   }
 }
