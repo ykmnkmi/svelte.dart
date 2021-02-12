@@ -1,4 +1,5 @@
-part of '../states.dart';
+import '../nodes.dart';
+import '../parser.dart';
 
 void text(Parser parser) {
   final start = parser.index;

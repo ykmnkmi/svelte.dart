@@ -4,11 +4,24 @@ import 'errors.dart';
 import 'nodes.dart';
 import 'states.dart';
 
+class LastAutoClosedTag {
+  final String tag;
+
+  final String reason;
+
+  final int depth;
+
+  LastAutoClosedTag(this.tag, this.reason, this.depth);
+}
+
 class Parser {
   Parser(String template, {Object? sourceUrl, int? position})
       : scanner = StringScanner(template.trimRight(), sourceUrl: sourceUrl, position: position),
+        metaTags = <String>{},
         stack = <Node>[],
-        html = Fragment() {
+        html = Fragment(),
+        scripts = <Node>[],
+        styles = <Node>[] {
     stack.add(html);
 
     while (!isDone) {
@@ -24,10 +37,25 @@ class Parser {
 
   final StringScanner scanner;
 
+  final Set<String> metaTags;
+
   final List<Node> stack;
 
   final Fragment html;
 
+  final List<Node> scripts;
+
+  final List<Node> styles;
+
+  LastAutoClosedTag? lastAutoClosedTag;
+
+  @override
+  String toString() {
+    return 'Parser { ${stack.join(', ')} }';
+  }
+}
+
+extension ParserExtension on Parser {
   Node get current {
     return stack.last;
   }
@@ -44,43 +72,40 @@ class Parser {
     return scanner.isDone;
   }
 
-  String get template {
-    return scanner.string;
+  bool get isEmpty {
+    return stack.isEmpty;
   }
 
-  Never error({String? message}) {
-    throw CompileError(message);
+  bool get isNotEmpty {
+    return stack.isNotEmpty;
+  }
+
+  int get length {
+    return stack.length;
+  }
+
+  String get template {
+    return scanner.string;
   }
 
   void add(Node node) {
     current.children.add(node);
   }
 
-  void push(Node node) {
-    stack.add(node);
-  }
-
-  Node pop() {
-    return stack.removeLast();
-  }
-
-  @override
-  String toString() {
-    return 'Parser { ${stack.join(', ')} }';
-  }
-}
-
-extension ParserMethods on Parser {
-  bool eat(String pattern, {bool required = false, String? message}) {
+  bool eat(Pattern pattern, {bool required = false, String? message}) {
     if (scanner.scan(pattern)) {
       return true;
     }
 
     if (required) {
-      error(message: "expected '$pattern', got '${template[index]} at $index'");
+      error(code: 'unexpected-${isDone ? 'eof' : 'token'}', message: "expected '$pattern', got '${template[index]} at $index'");
     }
 
     return false;
+  }
+
+  Never error({String? code, String? message}) {
+    throw CompileError(code, message);
   }
 
   bool match(Pattern pattern) {
@@ -95,6 +120,14 @@ extension ParserMethods on Parser {
     }
 
     return template[0];
+  }
+
+  Node pop() {
+    return stack.removeLast();
+  }
+
+  void push(Node node) {
+    stack.add(node);
   }
 
   bool read(Pattern pattern) {

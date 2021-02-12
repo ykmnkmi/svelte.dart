@@ -1,8 +1,3 @@
-import 'expression.dart';
-import 'nodes.dart';
-import 'parser.dart';
-import 'utils.dart';
-
-part 'states/mustache.dart';
-part 'states/tag.dart';
-part 'states/text.dart';
+export 'states/mustache.dart' show mustache;
+export 'states/tag.dart' show tag;
+export 'states/text.dart' show text;

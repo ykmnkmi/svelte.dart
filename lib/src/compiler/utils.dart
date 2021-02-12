@@ -1,6 +1,16 @@
+import 'constants.dart';
+
+bool closingTagOmitted(String current, String? next) {
+  if (disallowedContents.containsKey(current)) {
+    if (next == null || disallowedContents[current]!.contains(next)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 bool isVoid(String tag) {
   tag = tag.toLowerCase();
-  return RegExp('^(?:area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)\$')
-          .hasMatch(tag) ||
-      tag == '!doctype';
+  return RegExp('^(?:$voids)\$').hasMatch(tag) || tag == '!doctype';
 }

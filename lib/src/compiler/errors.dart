@@ -1,14 +1,22 @@
 class CompileError extends Error {
-  CompileError([this.message]);
+  CompileError([this.code, this.message]);
+
+  final String? code;
 
   final String? message;
 
   @override
   String toString() {
-    if (message == null) {
-      return 'CompileError';
+    var error = 'CompileError';
+
+    if (code != null) {
+      error += '[$code]';
     }
 
-    return 'CompileError: $message';
+    if (message != null) {
+      error += ': $message';
+    }
+
+    return error;
   }
 }
