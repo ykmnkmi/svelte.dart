@@ -1,5 +1,6 @@
 import 'package:string_scanner/string_scanner.dart';
 
+import '../../compiler.dart';
 import 'errors.dart';
 import 'nodes.dart';
 import 'states.dart';
@@ -20,8 +21,8 @@ class Parser {
         metaTags = <String>{},
         stack = <Node>[],
         html = Fragment(),
-        scripts = <Node>[],
-        styles = <Node>[] {
+        scripts = <Script>[],
+        css = <Style>[] {
     stack.add(html);
 
     while (!isDone) {
@@ -43,9 +44,9 @@ class Parser {
 
   final Fragment html;
 
-  final List<Node> scripts;
+  final List<Script> scripts;
 
-  final List<Node> styles;
+  final List<Style> css;
 
   LastAutoClosedTag? lastAutoClosedTag;
 
@@ -166,5 +167,43 @@ extension ParserExtension on Parser {
     while (!scanner.isDone && whitespaces.contains(scanner.peekChar())) {
       index += 1;
     }
+  }
+}
+
+AST parse(String template, {Object? sourceUrl, int? position}) {
+  final parser = Parser(template, sourceUrl: sourceUrl, position: position);
+
+  if (parser.css.length > 1) {
+    parser.error(code: 'duplicate-style', message: 'you can only have one top-level <style> tag per component');
+  }
+
+  final instance = parser.scripts.where((script) => !script.module).toList();
+  final module = parser.scripts.where((script) => script.module).toList();
+
+  if (instance.length > 1) {
+    parser.error(code: 'invalid-script', message: 'a component can only have one instance-level <script> element');
+  }
+
+  if (module.length > 1) {
+    parser.error(code: 'invalid-script', message: 'a component can only have one <script context="module"> element');
+  }
+
+  return AST(parser.html, parser.css[0], instance[0], module[0]);
+}
+
+class AST {
+  AST(this.html, this.css, this.instance, this.module);
+
+  final Fragment html;
+
+  final Style css;
+
+  final Script instance;
+
+  final Script module;
+
+  @override
+  String toString() {
+    return 'Root { html: $html, css: $css, instance: $instance, module: $module }';
   }
 }

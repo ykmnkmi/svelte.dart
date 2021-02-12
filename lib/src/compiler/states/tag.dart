@@ -1,8 +1,28 @@
-import '../constants.dart';
 import '../nodes.dart';
 import '../parser.dart';
 import '../utils.dart';
 import 'expression.dart';
+
+const String validTagName = r'^\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\-]*';
+
+const Map<String, String> metaTags = <String, String>{
+  'svelte:head': 'Head',
+  'svelte:options': 'Options',
+  'svelte:window': 'Window',
+  'svelte:body': 'Body',
+};
+
+const List<String> validMetaTags = <String>[
+  'svelte:head',
+  'svelte:options',
+  'svelte:window',
+  'svelte:body',
+  'svelte:self',
+  'svelte:component',
+];
+
+const String self = r'^svelte:self(?=[\s/>])';
+const String component = r'^svelte:component(?=[\s/>])';
 
 void tag(Parser parser) {
   parser.eat('<', required: true);
@@ -41,9 +61,9 @@ void tag(Parser parser) {
   Node element;
 
   if (metaTags.containsKey(tag)) {
-    element = Meta.tag(tag);
+    element = Meta(tag: tag);
   } else if (RegExp('[A-Z]').hasMatch(tag[0]) || tag == 'svelte:self' || tag == 'svelte:component') {
-    element = InlineComponent(tag);
+    element = InlineComponent(tag: tag);
   } else if (tag == 'title' && parser.parentIsHead()) {
     element = Title();
   } else if (tag == 'slot') {
@@ -83,20 +103,16 @@ void tag(Parser parser) {
     // parser.error(code: 'invalid-component-definition', message: 'invalid component definition');
   }
 
-  if (specials.containsKey(tag)) {
+  if (tag == 'script' || tag == 'style') {
     parser.eat('>', required: true);
 
-    final node = specials[tag]!(parser, <String, Node>{});
-
-    if (node != null) {
-      switch (tag) {
-        case 'script':
-          parser.scripts.add(node);
-          break;
-        case 'style':
-          parser.styles.add(node);
-          break;
-      }
+    switch (tag) {
+      case 'script':
+        script(parser);
+        break;
+      case 'style':
+        style(parser);
+        break;
     }
 
     return;
@@ -149,7 +165,7 @@ extension on Parser {
 
   bool parentIsHead() {
     for (final node in stack.reversed) {
-      if (node is Head) {
+      if (node is Meta && node.tag == 'Head') {
         return true;
       }
 
@@ -179,7 +195,7 @@ extension on Parser {
       } else if (eat('{')) {
         flush();
         whitespace();
-        chunks.add(Mustache(expression(this)));
+        chunks.add(expression(this));
         whitespace();
         eat('}', required: true);
       } else {
@@ -191,6 +207,43 @@ extension on Parser {
   }
 
   String readTagName() {
-    return readUntil(RegExp('(\\s|\\/|>)'));
+    if (read(RegExp(self))) {
+      var legal = false;
+
+      for (final fragment in stack.reversed) {
+        if (legal = fragment is IfBlock || fragment is EachBlock || fragment is InlineComponent) {
+          break;
+        }
+      }
+
+      if (!legal) {
+        error(
+          code: 'invalid-self-placement',
+          message: '<svelte:self> components can only exist inside {#if} blocks, {#each} blocks, or slots passed to components',
+        );
+      }
+
+      return 'svelte:self';
+    }
+
+    if (read(RegExp(component))) {
+      return 'svelte:component';
+    }
+
+    final name = readUntil(RegExp('(\\s|\\/|>)'));
+
+    if (metaTags.containsKey(name)) {
+      return name;
+    }
+
+    if (name.startsWith('svelte:')) {
+      error(code: 'invalid-tag-name', message: 'valid <svelte:...> tag names are $validMetaTags');
+    }
+
+    if (!RegExp(validTagName).hasMatch(name)) {
+      error(code: 'invalid-tag-name', message: 'expected valid tag name');
+    }
+
+    return name;
   }
 }
