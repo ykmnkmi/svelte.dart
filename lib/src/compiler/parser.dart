@@ -1,29 +1,25 @@
 import 'package:string_scanner/string_scanner.dart';
 
-import '../../compiler.dart';
 import 'errors.dart';
 import 'nodes.dart';
 import 'states.dart';
 
 class LastAutoClosedTag {
+  LastAutoClosedTag(this.tag, this.reason, this.depth);
+
   final String tag;
 
   final String reason;
 
   final int depth;
-
-  LastAutoClosedTag(this.tag, this.reason, this.depth);
 }
 
 class Parser {
   Parser(String template, {Object? sourceUrl, int? position})
       : scanner = StringScanner(template.trimRight(), sourceUrl: sourceUrl, position: position),
-        metaTags = <String>{},
         stack = <Node>[],
-        html = Fragment(),
-        scripts = <Script>[],
-        css = <Style>[] {
-    stack.add(html);
+        root = Fragment() {
+    stack.add(root);
 
     while (!isDone) {
       if (match('<')) {
@@ -38,15 +34,9 @@ class Parser {
 
   final StringScanner scanner;
 
-  final Set<String> metaTags;
-
   final List<Node> stack;
 
-  final Fragment html;
-
-  final List<Script> scripts;
-
-  final List<Style> css;
+  final Fragment root;
 
   LastAutoClosedTag? lastAutoClosedTag;
 
@@ -170,40 +160,7 @@ extension ParserExtension on Parser {
   }
 }
 
-AST parse(String template, {Object? sourceUrl, int? position}) {
+Fragment parse(String template, {Object? sourceUrl, int? position}) {
   final parser = Parser(template, sourceUrl: sourceUrl, position: position);
-
-  if (parser.css.length > 1) {
-    parser.error(code: 'duplicate-style', message: 'you can only have one top-level <style> tag per component');
-  }
-
-  final instance = parser.scripts.where((script) => !script.module).toList();
-  final module = parser.scripts.where((script) => script.module).toList();
-
-  if (instance.length > 1) {
-    parser.error(code: 'invalid-script', message: 'a component can only have one instance-level <script> element');
-  }
-
-  if (module.length > 1) {
-    parser.error(code: 'invalid-script', message: 'a component can only have one <script context="module"> element');
-  }
-
-  return AST(parser.html, parser.css[0], instance[0], module[0]);
-}
-
-class AST {
-  AST(this.html, this.css, this.instance, this.module);
-
-  final Fragment html;
-
-  final Style css;
-
-  final Script instance;
-
-  final Script module;
-
-  @override
-  String toString() {
-    return 'Root { html: $html, css: $css, instance: $instance, module: $module }';
-  }
+  return parser.root;
 }

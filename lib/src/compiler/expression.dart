@@ -1,6 +1,11 @@
 import 'package:string_scanner/string_scanner.dart';
 
 import 'nodes.dart';
+import 'parser.dart';
+
+Expression expression(Parser parser) {
+  return ExpressionParser().scan(parser.scanner);
+}
 
 class ExpressionParser {
   ExpressionParser() : identifierReg = RegExp('([a-zA-Z][a-zA-Z0-9]*)');

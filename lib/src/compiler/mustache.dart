@@ -1,4 +1,4 @@
-import '../parser.dart';
+import 'parser.dart';
 import 'expression.dart';
 
 void mustache(Parser parser) {
