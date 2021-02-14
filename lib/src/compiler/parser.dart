@@ -1,5 +1,3 @@
-import 'package:string_scanner/string_scanner.dart';
-
 import 'errors.dart';
 import 'nodes.dart';
 import 'states.dart';
@@ -15,10 +13,10 @@ class LastAutoClosedTag {
 }
 
 class Parser {
-  Parser(String template, {Object? sourceUrl, int? position})
-      : scanner = StringScanner(template.trimRight(), sourceUrl: sourceUrl, position: position),
-        stack = <Node>[],
-        root = Fragment() {
+  Parser(this.template)
+      : stack = <Node>[],
+        root = Fragment(),
+        index = 0 {
     stack.add(root);
 
     while (!isDone) {
@@ -30,13 +28,19 @@ class Parser {
         text(this);
       }
     }
+
+    if (stack.length > 1) {
+      error(code: 'unexpected-eof', message: 'unexpected end of input');
+    }
   }
 
-  final StringScanner scanner;
+  final String template;
 
   final List<Node> stack;
 
   final Fragment root;
+
+  int index;
 
   LastAutoClosedTag? lastAutoClosedTag;
 
@@ -46,21 +50,13 @@ class Parser {
   }
 }
 
-extension ParserExtension on Parser {
+extension ParserMethods on Parser {
   Node get current {
     return stack.last;
   }
 
-  int get index {
-    return scanner.position;
-  }
-
-  set index(int index) {
-    scanner.position = index;
-  }
-
   bool get isDone {
-    return scanner.isDone;
+    return index >= template.length;
   }
 
   bool get isEmpty {
@@ -75,21 +71,22 @@ extension ParserExtension on Parser {
     return stack.length;
   }
 
-  String get template {
-    return scanner.string;
+  String get rest {
+    return template.substring(index);
   }
 
   void add(Node node) {
     current.children.add(node);
   }
 
-  bool eat(Pattern pattern, {bool required = false, String? message}) {
-    if (scanner.scan(pattern)) {
+  bool eat(String string, {bool required = false, String? message}) {
+    if (match(string)) {
+      index += string.length;
       return true;
     }
 
     if (required) {
-      error(code: 'unexpected-${isDone ? 'eof' : 'token'}', message: "expected '$pattern', got '${template[index]} at $index'");
+      error(code: 'unexpected-${isDone ? 'eof' : 'token'}', message: "expected '$string'");
     }
 
     return false;
@@ -99,18 +96,18 @@ extension ParserExtension on Parser {
     throw CompileError(code, message);
   }
 
-  bool match(Pattern pattern) {
-    return scanner.matches(pattern);
+  bool match(String string) {
+    return template.substring(index, index + string.length) == string;
   }
 
-  String? peekChar([int offset = 0]) {
-    offset += index;
+  String? look(Pattern pattern) {
+    final match = pattern.matchAsPrefix(template, index);
 
-    if (offset < 0 || offset >= template.length) {
+    if (match == null) {
       return null;
     }
 
-    return template[0];
+    return match[0];
   }
 
   Node pop() {
@@ -121,16 +118,14 @@ extension ParserExtension on Parser {
     stack.add(node);
   }
 
-  bool read(Pattern pattern) {
-    return scanner.scan(pattern);
-  }
+  String? read(Pattern regExp) {
+    final result = look(regExp);
 
-  String readChar() {
-    if (isDone) {
-      error(message: 'unexpected end of input');
+    if (result != null) {
+      index += result.length;
     }
 
-    return template[index++];
+    return result;
   }
 
   String readUntil(Pattern pattern) {
@@ -139,28 +134,31 @@ extension ParserExtension on Parser {
     }
 
     final start = index;
+    final end = template.indexOf(pattern, index);
 
-    while (!isDone && !match(pattern)) {
-      index += 1;
+    if (end > 0) {
+      index = end;
+      return template.substring(start, end);
     }
 
-    return template.substring(start, index);
+    index = template.length;
+    return template.substring(start);
   }
 
   void whitespace({bool required = false}) {
-    const whitespaces = <int>[32, 9, 10, 13];
+    const whitespaces = <String>[' ', '\t', '\r', '\n'];
 
-    if (required) {
-      error(message: 'expected whitespace');
+    if (required && whitespaces.contains(template[index])) {
+      error(code: 'missing-whitespace', message: 'expected whitespace');
     }
 
-    while (!scanner.isDone && whitespaces.contains(scanner.peekChar())) {
+    while (!isDone && whitespaces.contains(template[index])) {
       index += 1;
     }
   }
 }
 
-Fragment parse(String template, {Object? sourceUrl, int? position}) {
-  final parser = Parser(template, sourceUrl: sourceUrl, position: position);
+Fragment parse(String template) {
+  final parser = Parser(template);
   return parser.root;
 }

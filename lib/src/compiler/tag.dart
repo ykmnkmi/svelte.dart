@@ -54,7 +54,7 @@ void tag(Parser parser) {
     parser.read('</textarea>');
   } else if (name == 'script' || name == 'style') {
     element.children.add(Text(parser.readUntil(RegExp('</$name>'))));
-    parser.eat(RegExp('</$name>'), required: true);
+    parser.eat('</$name>', required: true);
   } else {
     parser.push(element);
   }
@@ -104,7 +104,7 @@ extension on Parser {
         whitespace();
         eat('}', required: true);
       } else {
-        buffer.write(readChar());
+        buffer.write(template[index++]);
       }
     }
 
@@ -114,8 +114,12 @@ extension on Parser {
   String readTagName() {
     final name = readUntil(RegExp('(\\s|\\/|>)'));
 
+    if (name.isEmpty) {
+      return 'fragment';
+    }
+
     if (!RegExp(validTagName).hasMatch(name)) {
-      error(code: 'invalid-tag-name', message: 'expected valid tag name');
+      error(code: 'invalid-tag-name', message: 'expected valid tag name, got $name');
     }
 
     return name;

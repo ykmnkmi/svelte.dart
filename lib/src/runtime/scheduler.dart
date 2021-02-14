@@ -3,35 +3,31 @@ import 'component.dart';
 class Scheduler {
   Scheduler()
       : dirtyFragments = <Fragment>[],
-        resolvedFuture = Future<dynamic>.value(),
+        resolvedFuture = Future<void>.value(),
         updateScheduled = false,
         flushing = false;
 
   final List<Fragment> dirtyFragments;
 
-  Future<dynamic> resolvedFuture;
+  Future<void> resolvedFuture;
 
   bool updateScheduled;
 
   bool flushing;
 
-  void makeDirty(Fragment fragment, [String aspect = '']) {
-    if (fragment.dirty.isEmpty) {
-      dirtyFragments.add(fragment);
-      scheduleUpdate();
-    }
-
-    fragment.dirty.add(aspect);
+  void makeDirty(Fragment fragment) {
+    dirtyFragments.add(fragment);
+    scheduleUpdate();
   }
 
   void scheduleUpdate() {
     if (!updateScheduled) {
       updateScheduled = true;
-      resolvedFuture = resolvedFuture.then(flush);
+      resolvedFuture = resolvedFuture.then<void>((void _) => flush());
     }
   }
 
-  void flush([_]) {
+  void flush() {
     if (flushing) {
       return;
     }
@@ -51,7 +47,6 @@ class Scheduler {
   }
 
   void update(Fragment fragment) {
-    fragment.update(fragment.dirty);
-    fragment.dirty.clear();
+    fragment.update();
   }
 }

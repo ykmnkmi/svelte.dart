@@ -4,8 +4,8 @@ void append(Node target, Node node) {
   target.append(node);
 }
 
-void insert(Node target, Node node) {
-  target.append(node);
+void insert(Node target, Node node, [Node? anchor]) {
+  target.insertBefore(node, anchor);
 }
 
 void remove(Node node) {

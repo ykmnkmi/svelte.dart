@@ -2,4 +2,5 @@
 .packages
 build/
 doc/api/
+*.js
 pubspec.lock

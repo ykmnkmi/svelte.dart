@@ -1,31 +1,23 @@
-import 'package:string_scanner/string_scanner.dart';
-
 import 'nodes.dart';
 import 'parser.dart';
 
 Expression expression(Parser parser) {
-  return ExpressionParser().scan(parser.scanner);
+  return parser.expression();
 }
 
-class ExpressionParser {
-  ExpressionParser() : identifierReg = RegExp('([a-zA-Z][a-zA-Z0-9]*)');
+extension on Parser {
+  static String? temp;
 
-  final RegExp identifierReg;
+  Expression expression() {
+    Expression node;
 
-  Expression parse(String template, {int? position}) {
-    final scanner = StringScanner(template.trimRight(), position: position);
-    return scan(scanner);
-  }
-
-  Expression scan(StringScanner scanner) {
-    return expression(scanner);
-  }
-
-  Expression expression(StringScanner scanner) {
-    if (scanner.scan(identifierReg)) {
-      return Identifier(scanner.lastMatch![0]!);
+    if ((temp = read(RegExp('([a-zA-Z][a-zA-Z0-9]*)'))) != null) {
+      node = Identifier(temp!);
     } else {
-      scanner.error('primary expression expected');
+      error(message: 'primary expression expected');
     }
+
+    temp = null;
+    return node;
   }
 }

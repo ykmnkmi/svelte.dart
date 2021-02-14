@@ -15,16 +15,16 @@ class App extends Component<App> {
   }
 
   @override
-  Fragment<App> render() {
-    return AppFragment(this);
+  Fragment<App> render([Scheduler? scheduler]) {
+    return AppFragment(this, scheduler ?? Scheduler());
   }
 }
 
 class AppFragment extends Fragment<App> {
-  AppFragment(App context)
+  AppFragment(App context, Scheduler scheduler)
       : text3Value = context.count == 1 ? 'time' : 'times',
         mounted = false,
-        super(context);
+        super(context, scheduler);
 
   late Element button;
 
@@ -63,13 +63,13 @@ class AppFragment extends Fragment<App> {
       mounted = true;
       dispose = listen(button, 'click', (event) {
         context.handleClick();
-        scheduler.makeDirty(this, 'count');
+        scheduler.makeDirty(this);
       });
     }
   }
 
   @override
-  void update([List<String> aspects = const <String>[]]) {
+  void update([Set<String> aspects = const <String>{}]) {
     if (aspects.isEmpty || aspects.contains('count')) {
       setData(text1, '${context.count}');
 

@@ -11,6 +11,6 @@ class App extends Component<App> {
 
   @override
   Fragment<App> render() {
-    return <button (click)="handleClick()">Clicked {{ count }} {{ count == 1 ? 'time' : 'times' }}</button>;
+    return <button on:click={handleClick}>Clicked {{ count }} {{ count == 1 ? 'time' : 'times' }}</button>;
   }
 }
