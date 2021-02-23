@@ -1,9 +1,13 @@
 class CompileError extends Error {
-  CompileError([this.code, this.message]);
+  CompileError({this.code, this.message, this.source, this.offset});
 
   final String? code;
 
   final String? message;
+
+  final String? source;
+
+  final int? offset;
 
   @override
   String toString() {
@@ -15,6 +19,10 @@ class CompileError extends Error {
 
     if (message != null) {
       error += ': $message';
+    }
+
+    if (source != null && offset != null) {
+      error = '$error, \'$source\'\n${' ' * (error.length + offset! + 2)}^';
     }
 
     return error;

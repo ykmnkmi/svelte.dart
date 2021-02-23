@@ -93,7 +93,9 @@ extension ParserMethods on Parser {
   }
 
   Never error({String? code, String? message}) {
-    throw CompileError(code, message);
+    final start = index - 10 < 0 ? 0 : index - 10;
+    final end = index + 10 < template.length ? index + 10 : template.length;
+    throw CompileError(code: code, message: message, source: template.substring(start, end), offset: index - start);
   }
 
   bool match(String string) {
