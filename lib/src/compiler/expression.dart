@@ -6,18 +6,17 @@ Expression expression(Parser parser) {
 }
 
 extension on Parser {
-  static String? temp;
-
   Expression expression() {
+    final temp = read(RegExp('([a-zA-Z][a-zA-Z0-9]*)'));
+
     Expression node;
 
-    if ((temp = read(RegExp('([a-zA-Z][a-zA-Z0-9]*)'))) != null) {
-      node = Identifier(temp!);
+    if (temp != null) {
+      node = Identifier(temp);
     } else {
       error(message: 'primary expression expected');
     }
 
-    temp = null;
     return node;
   }
 }

@@ -22,7 +22,7 @@ class CompileError extends Error {
     }
 
     if (source != null && offset != null) {
-      error = '$error, \'$source\'\n${' ' * (error.length + offset! + 2)}^';
+      error = '$error, \'$source\'\n${' ' * (error.length + offset! + 3)}^';
     }
 
     return error;

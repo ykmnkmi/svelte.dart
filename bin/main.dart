@@ -3,7 +3,7 @@ import 'package:stack_trace/stack_trace.dart';
 
 void main() {
   try {
-    print(parse('<button on:click={handleClick}>Clicked {{ count }} {{ count == 1 ? \'time\' : \'times\' }}</button>'));
+    print(parse('Hello { count !'));
   } catch (e, st) {
     print(e);
     print(Trace.from(st).terse);
