@@ -1,5 +1,5 @@
-import 'parser.dart';
-import 'expression.dart';
+import '../parser.dart';
+import '../expression.dart';
 
 void mustache(Parser parser) {
   parser.eat('{', required: true);

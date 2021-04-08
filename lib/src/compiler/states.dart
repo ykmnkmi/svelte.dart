@@ -1,3 +1,3 @@
-export 'mustache.dart' show mustache;
-export 'tag.dart' show tag;
-export 'text.dart' show text;
+export 'states/mustache.dart' show mustache;
+export 'states/tag.dart' show tag;
+export 'states/text.dart' show text;

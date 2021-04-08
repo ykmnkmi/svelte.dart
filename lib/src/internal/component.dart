@@ -1,6 +1,6 @@
 import 'dart:html';
 
-import 'package:piko/runtime.dart';
+import 'package:piko/internal.dart';
 
 abstract class Component<T extends Component<T>> {
   Fragment<T> render([Scheduler? scheduler]);
@@ -9,8 +9,7 @@ abstract class Component<T extends Component<T>> {
 abstract class Fragment<T extends Component<T>> {
   static int nextId = 0;
 
-  Fragment(this.context, this.scheduler)
-      : id = nextId++;
+  Fragment(this.context, this.scheduler) : id = nextId++;
 
   final int id;
 
@@ -20,7 +19,7 @@ abstract class Fragment<T extends Component<T>> {
 
   void create() {}
 
-  void mount(Node target) {}
+  void mount(Node target, [Node? anchor]) {}
 
   void update() {}
 

@@ -23,11 +23,11 @@ class Scheduler {
   void scheduleUpdate() {
     if (!updateScheduled) {
       updateScheduled = true;
-      resolvedFuture = resolvedFuture.then<void>((void _) => flush());
+      resolvedFuture = resolvedFuture.then<void>(flush);
     }
   }
 
-  void flush() {
+  void flush([void _]) {
     if (flushing) {
       return;
     }

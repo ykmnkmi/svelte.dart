@@ -5,15 +5,15 @@ abstract class Node {
 
   List<Node> children;
 
-  bool get isLeaf {
+  bool get isEmpty {
     return children.isEmpty;
   }
 
-  bool get isNotLeaf {
-    return children.isNotEmpty;
+  bool get isNotEmpty {
+    return !isEmpty;
   }
 
-  R accpet<C, R>(Visitor<C, R> visitor) {
+  R accept<C, R>(Visitor<C, R> visitor) {
     throw UnimplementedError();
   }
 }

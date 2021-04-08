@@ -1,10 +1,10 @@
 import 'dart:html';
 
-import 'src/runtime/component.dart';
+import 'src/internal/component.dart';
 
-export 'src/runtime/component.dart';
-export 'src/runtime/dom.dart';
-export 'src/runtime/scheduler.dart';
+export 'src/internal/component.dart';
+export 'src/internal/dom.dart';
+export 'src/internal/scheduler.dart';
 
 void runApp<T extends Component<T>>(Component<T> component, [Node? root]) {
   component.render()

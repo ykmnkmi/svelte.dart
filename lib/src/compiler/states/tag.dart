@@ -1,7 +1,7 @@
-import 'expression.dart';
-import 'nodes.dart';
-import 'parser.dart';
-import 'utils.dart';
+import '../expression.dart';
+import '../nodes.dart';
+import '../parser.dart';
+import '../utils.dart';
 
 const String validTagName = r'^\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\-]*';
 
