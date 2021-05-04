@@ -1,13 +1,14 @@
 import 'package:piko/compiler.dart';
-import 'package:stack_trace/stack_trace.dart';
 
-const String source = '<p>hello world!</p>';
+const String source = 'hello world!';
 
 void main() {
   try {
-    print(parse(source));
-  } catch (e, st) {
-    print(e);
-    print(Trace.from(st).terse);
+    final fragment = parse(source);
+    print(fragment);
+    print(compileFragment(fragment, generate: Generate.dom, name: 'App'));
+  } catch (error, stackTrace) {
+    print(error);
+    print(stackTrace);
   }
 }

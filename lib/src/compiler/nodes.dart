@@ -13,9 +13,7 @@ abstract class Node {
     return !isEmpty;
   }
 
-  R accept<C, R>(Visitor<C, R> visitor) {
-    throw UnimplementedError();
-  }
+  R accept<R>(Visitor<R> visitor);
 }
 
 class Text extends Node {
@@ -28,6 +26,11 @@ class Text extends Node {
   }
 
   @override
+  R accept<R>(Visitor<R> visitor) {
+    return visitor.visitText(this);
+  }
+
+  @override
   String toString() {
     return "'$escaped'";
   }
@@ -35,6 +38,11 @@ class Text extends Node {
 
 class Comment extends Text {
   Comment(String data) : super(data);
+
+  @override
+  R accept<R>(Visitor<R> visitor) {
+    return visitor.visitComment(this);
+  }
 
   @override
   String toString() {
@@ -50,6 +58,11 @@ class Identifier extends Expression {
   String identifier;
 
   @override
+  R accept<R>(Visitor<R> visitor) {
+    return visitor.visitIdentifier(this);
+  }
+
+  @override
   String toString() {
     return identifier;
   }
@@ -57,6 +70,11 @@ class Identifier extends Expression {
 
 class Fragment extends Node {
   Fragment({List<Node>? children}) : super(children: children ?? <Node>[]);
+
+  @override
+  R accept<R>(Visitor<R> visitor) {
+    return visitor.visitFragment(this);
+  }
 
   @override
   String toString() {
@@ -68,6 +86,11 @@ class Element extends Fragment {
   Element(this.tag, {List<Node>? children}) : super(children: children);
 
   String tag;
+
+  @override
+  R accept<R>(Visitor<R> visitor) {
+    return visitor.visitElement(this);
+  }
 
   @override
   String toString() {

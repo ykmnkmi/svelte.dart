@@ -15,23 +15,22 @@ class App extends Component<App> {
 class AppFragment extends Fragment<App> {
   AppFragment(App context, Scheduler scheduler) : super(context, scheduler);
 
-  late Element p;
+  late Text t;
 
   @override
   void create() {
-    p = element('p');
-    p.text = 'hello world!';
+    t = text('hello world!');
   }
 
   @override
   void mount(Node target, [Node? anchor]) {
-    insert(target, p, anchor);
+    insert(target, t, anchor);
   }
 
   @override
   void detach(bool detaching) {
     if (detaching) {
-      remove(p);
+      remove(t);
     }
   }
 }
