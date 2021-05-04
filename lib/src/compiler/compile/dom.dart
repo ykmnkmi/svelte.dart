@@ -30,33 +30,58 @@ extension on StringBuffer {
   }
 
   void writeFragment(String name, Fragment fragment) {
-    writeln('class ${name}Fragment extends Fragment<$name> {');
-    writeln('  ${name}Fragment($name context, Scheduler scheduler) : super(context, scheduler);');
-    writeln();
-    writeFragmentCreate(fragment);
-    writeln();
-    writeln('}');
-  }
-
-  void writeFragmentCreate(Fragment fragment) {
-    if (fragment.isEmpty) {
-      return;
-    }
-
-    FragmentCreate(this, fragment);
+    CreateFragment(this, name, fragment);
   }
 }
 
-class FragmentCreate extends Visitor<void> {
-  FragmentCreate(this.buffer, this.fragment) {
-    for (final child in fragment.children) {
-      child.accept(this);
-    }
+class CreateFragment extends Visitor<void> {
+  CreateFragment(this.source, String name, this.fragment)
+      : create = StringBuffer(),
+        detach = StringBuffer(),
+        mount = StringBuffer(),
+        count = <String, int>{} {
+    source
+      ..writeln('class ${name}Fragment extends Fragment<$name> {')
+      ..writeln('  ${name}Fragment($name context, Scheduler scheduler) : super(context, scheduler);')
+      ..writeln();
+
+    visitFragment(fragment);
+
+    source
+      ..writeln('  @override')
+      ..writeln('  void create() {')
+      ..write(create)
+      ..writeln('  }')
+      ..writeln()
+      ..writeln('  @override')
+      ..writeln('  void mount(Node target, [Node? anchor]) {')
+      ..write(mount)
+      ..writeln('  }')
+      ..writeln()
+      ..writeln('  @override')
+      ..writeln('  void detach(bool detaching) {')
+      ..write(detach)
+      ..writeln('  }')
+      ..writeln('}');
   }
 
-  final StringBuffer buffer;
+  final StringBuffer source;
 
   final Fragment fragment;
+
+  final StringBuffer create;
+
+  final StringBuffer mount;
+
+  final StringBuffer detach;
+
+  final Map<String, int> count;
+
+  String add(String tag) {
+    var id = count[tag] ?? 0;
+    count[tag] = id += 1;
+    return '$tag$id';
+  }
 
   @override
   void visitComment(Comment node) {
@@ -70,7 +95,9 @@ class FragmentCreate extends Visitor<void> {
 
   @override
   void visitFragment(Fragment node) {
-    throw UnimplementedError();
+    for (final child in node.children) {
+      child.accept(this);
+    }
   }
 
   @override
@@ -80,6 +107,8 @@ class FragmentCreate extends Visitor<void> {
 
   @override
   void visitText(Text node) {
-    throw UnimplementedError();
+    final id = add('t');
+    source..writeln('  late Text $id;')..writeln();
+    create.writeln('    $id = text(\'${node.escaped}\')');
   }
 }
