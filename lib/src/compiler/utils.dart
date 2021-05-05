@@ -1,3 +1,5 @@
+import 'nodes.dart';
+
 const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
   'li': {'li'},
   'dt': {'dt', 'dd'},

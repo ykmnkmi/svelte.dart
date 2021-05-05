@@ -1,1 +1,5 @@
-<p>hello world!</p>
+<script>
+  final name = 'world';
+</script>
+
+<p>hello {name}!</p>

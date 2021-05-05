@@ -1,6 +1,7 @@
 import 'compile/dom.dart';
 import 'compile/program.dart';
 import 'compile/ssr.dart';
+import 'compile/utils.dart';
 import 'nodes.dart';
 import 'parser.dart';
 
@@ -14,7 +15,13 @@ Program? compile(String source, {Generate? generate, String name = 'Component'})
   return compileFragment(fragment, generate: generate, name: name);
 }
 
-Program? compileFragment(Fragment fragment, {Generate? generate, String name = 'Component'}) {
+Program? compileFragment(Fragment fragment, {Generate? generate, String name = 'Component', bool preserveComments = false}) {
+  if (!preserveComments) {
+    removeComments(fragment);
+  }
+
+  trim(fragment);
+
   switch (generate) {
     case Generate.dom:
       return dom(name, fragment);

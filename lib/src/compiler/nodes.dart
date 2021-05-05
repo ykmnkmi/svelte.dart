@@ -26,6 +26,16 @@ class Text extends Node {
   }
 
   @override
+  bool get isEmpty {
+    return data.isEmpty;
+  }
+
+  @override
+  bool get isNotEmpty {
+    return data.isNotEmpty;
+  }
+
+  @override
   R accept<R>(Visitor<R> visitor) {
     return visitor.visitText(this);
   }

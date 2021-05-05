@@ -19,6 +19,7 @@ void tag(Parser parser) {
   final isClosingTag = parser.eat('/');
   final name = parser.readTagName();
   final element = Element(name);
+
   parser.whitespace();
 
   if (isClosingTag) {
@@ -43,6 +44,10 @@ void tag(Parser parser) {
   } else if (parent is Element && closingTagOmitted(parent.tag, name)) {
     parser.pop();
     parser.lastAutoClosedTag = LastAutoClosedTag(parent.tag, name, parser.length);
+  }
+
+  if (name == 'script') {
+    throw UnimplementedError();
   }
 
   parser.add(element);

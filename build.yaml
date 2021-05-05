@@ -7,8 +7,14 @@ targets:
         options:
           # compiler: dart2js
           dart2js_args:
+          # - --verbose
           # - --disable-inlining
+          # - --generate-code-with-compile-time-errors
+          - --enable-diagnostic-colors
+          - --lax-runtime-type-to-string
           - --omit-implicit-checks
           - --trust-primitives
+          # - --no-source-maps
+          # - --csp
           # - --fast-startup
           # - --minify
