@@ -1,82 +1,18 @@
 import 'errors.dart';
-import 'nodes.dart';
-import 'states.dart';
 
-class LastAutoClosedTag {
-  LastAutoClosedTag(this.tag, this.reason, this.depth);
-
-  final String tag;
-
-  final String reason;
-
-  final int depth;
-}
-
-class Parser {
-  Parser(this.template)
-      : stack = <Node>[],
-        root = Fragment(),
-        index = 0 {
-    stack.add(root);
-
-    while (!isDone) {
-      if (match('<')) {
-        tag(this);
-      } else if (match('{')) {
-        mustache(this);
-      } else {
-        text(this);
-      }
-    }
-
-    if (stack.length > 1) {
-      error(code: 'unexpected-eof', message: 'unexpected end of input');
-    }
-  }
+abstract class Parser {
+  Parser(this.template) : index = 0;
 
   final String template;
 
-  final List<Node> stack;
-
-  final Fragment root;
-
   int index;
-
-  LastAutoClosedTag? lastAutoClosedTag;
-
-  @override
-  String toString() {
-    return 'Parser { ${stack.join(', ')} }';
-  }
-}
-
-extension ParserMethods on Parser {
-  Node get current {
-    return stack.last;
-  }
 
   bool get isDone {
     return index >= template.length;
   }
 
-  bool get isEmpty {
-    return stack.isEmpty;
-  }
-
-  bool get isNotEmpty {
-    return stack.isNotEmpty;
-  }
-
-  int get length {
-    return stack.length;
-  }
-
   String get rest {
     return template.substring(index);
-  }
-
-  void add(Node node) {
-    current.children.add(node);
   }
 
   bool eat(String string, {bool required = false, String? message}) {
@@ -86,7 +22,7 @@ extension ParserMethods on Parser {
     }
 
     if (required) {
-      error(code: 'unexpected-${isDone ? 'eof' : 'token'}', message: "expected '$string'");
+      error(code: 'unexpected-${isDone ? 'eof' : 'token'}', message: message ?? "expected '$string'");
     }
 
     return false;
@@ -110,14 +46,6 @@ extension ParserMethods on Parser {
     }
 
     return match[0];
-  }
-
-  Node pop() {
-    return stack.removeLast();
-  }
-
-  void push(Node node) {
-    stack.add(node);
   }
 
   String? read(Pattern regExp) {
@@ -158,9 +86,4 @@ extension ParserMethods on Parser {
       index += 1;
     }
   }
-}
-
-Fragment parse(String template) {
-  final parser = Parser(template);
-  return parser.root;
 }

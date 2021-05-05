@@ -1,18 +1,6 @@
 import 'visitor.dart';
 
 abstract class Node {
-  Node({this.children = const <Node>[]});
-
-  List<Node> children;
-
-  bool get isEmpty {
-    return children.isEmpty;
-  }
-
-  bool get isNotEmpty {
-    return !isEmpty;
-  }
-
   R accept<R>(Visitor<R> visitor);
 }
 
@@ -25,12 +13,10 @@ class Text extends Node {
     return data.replaceAll("'", r"\'").replaceAll('\r', r'\r').replaceAll('\n', r'\n');
   }
 
-  @override
   bool get isEmpty {
     return data.isEmpty;
   }
 
-  @override
   bool get isNotEmpty {
     return data.isNotEmpty;
   }
@@ -79,7 +65,17 @@ class Identifier extends Expression {
 }
 
 class Fragment extends Node {
-  Fragment({List<Node>? children}) : super(children: children ?? <Node>[]);
+  Fragment({List<Node>? children}) : children = children ?? <Node>[];
+
+  List<Node> children;
+
+  bool get isEmpty {
+    return children.isEmpty;
+  }
+
+  bool get isNotEmpty {
+    return !isEmpty;
+  }
 
   @override
   R accept<R>(Visitor<R> visitor) {

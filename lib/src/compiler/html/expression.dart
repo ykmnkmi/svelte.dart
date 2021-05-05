@@ -1,11 +1,11 @@
 import 'nodes.dart';
 import 'parser.dart';
 
-Expression expression(Parser parser) {
+Expression expression(FragmentParser parser) {
   return parser.expression();
 }
 
-extension on Parser {
+extension on FragmentParser {
   Expression expression() {
     final temp = read(RegExp('([a-zA-Z][a-zA-Z0-9]*)'));
 

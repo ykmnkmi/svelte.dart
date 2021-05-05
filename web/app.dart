@@ -1,4 +1,5 @@
 // will be generated
+
 library app;
 
 import 'dart:html';
@@ -6,7 +7,9 @@ import 'dart:html';
 import 'package:piko/internal.dart';
 
 class App extends Component<App> {
-  final String name = 'world';
+  App({this.name = 'world'});
+
+  final String name;
 
   @override
   Fragment<App> render([Scheduler? scheduler]) {

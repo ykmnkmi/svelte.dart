@@ -1,7 +1,7 @@
 import '../nodes.dart';
 import '../parser.dart';
 
-void text(Parser parser) {
+void text(FragmentParser parser) {
   final start = parser.index;
 
   while (!parser.isDone && !parser.match('{') && !parser.match('<')) {

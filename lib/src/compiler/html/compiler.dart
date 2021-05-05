@@ -1,60 +1,26 @@
-import 'package:piko/src/compiler/visitor.dart';
-
-import '../nodes.dart';
-import 'program.dart';
+import 'nodes.dart';
+import 'parser.dart';
 import 'utils.dart';
+import 'visitor.dart';
 
-Program dom(String name, Fragment fragment) {
-  final buffer = StringBuffer();
-  final library = getLibraryName(name);
-  buffer.write('library $library;\n\nimport \'package:piko/internal.dart\';\n\n');
-  CreateComponent(buffer, name, fragment);
-  buffer.write('\n\n');
-  CreateFragment(buffer, name, fragment);
-  return Program(name, buffer.toString());
+String compile(String source, {String name = 'Component'}) {
+  final fragment = parse(source);
+  return compileFragment(fragment, name: name);
 }
 
-class CreateComponent extends Visitor<String?> {
-  CreateComponent(this.buffer, String name, this.fragment) {
-    buffer
-      ..write('class $name extends Component<$name> {\n')
-      ..write('  @override\n  Fragment<$name> render([Scheduler? scheduler]) {\n')
-      ..write('    return ${name}Fragment(this, scheduler ?? Scheduler());\n  }\n}');
+String compileFragment(Fragment fragment, {String name = 'Component', bool preserveComments = false}) {
+  if (!preserveComments) {
+    removeComments(fragment);
   }
 
-  final StringBuffer buffer;
-
-  final Fragment fragment;
-
-  @override
-  String? visitComment(Comment node) {
-    throw UnimplementedError();
-  }
-
-  @override
-  String? visitElement(Element node) {
-    throw UnimplementedError();
-  }
-
-  @override
-  String? visitFragment(Fragment node) {
-    throw UnimplementedError();
-  }
-
-  @override
-  String? visitIdentifier(Identifier node) {
-    throw UnimplementedError();
-  }
-
-  @override
-  String? visitText(Text node) {
-    throw UnimplementedError();
-  }
+  trim(fragment);
+  return CreateFragment(name, fragment).toSource();
 }
 
 class CreateFragment extends Visitor<String?> {
-  CreateFragment(this.buffer, String name, this.fragment)
-      : root = <String>[],
+  CreateFragment(String name, this.fragment)
+      : buffer = StringBuffer(),
+        root = <String>[],
         create = <String>[],
         mount = <String>[],
         count = <String, int>{} {
@@ -71,8 +37,11 @@ class CreateFragment extends Visitor<String?> {
     }
 
     writeCreate();
+
     writeMount();
+
     writeDetach();
+
     buffer.write('\n}');
   }
 
@@ -92,6 +61,10 @@ class CreateFragment extends Visitor<String?> {
     var id = count[tag] ?? 0;
     count[tag] = id += 1;
     return '$tag$id';
+  }
+
+  String toSource() {
+    return '$buffer';
   }
 
   @override

@@ -1,5 +1,0 @@
-<script>
-  final name = 'world';
-</script>
-
-<p>hello {name}!</p>

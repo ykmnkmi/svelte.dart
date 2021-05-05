@@ -5,7 +5,7 @@ import '../utils.dart';
 
 const String validTagName = r'^\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\-]*';
 
-void tag(Parser parser) {
+void tag(FragmentParser parser) {
   parser.eat('<', required: true);
   var parent = parser.current;
 
@@ -46,10 +46,6 @@ void tag(Parser parser) {
     parser.lastAutoClosedTag = LastAutoClosedTag(parent.tag, name, parser.length);
   }
 
-  if (name == 'script') {
-    throw UnimplementedError();
-  }
-
   parser.add(element);
   parser.eat('/');
   parser.eat('>', required: true);
@@ -65,7 +61,7 @@ void tag(Parser parser) {
   }
 }
 
-extension on Parser {
+extension on FragmentParser {
   void forgetLastAutoClosedTag() {
     if (lastAutoClosedTag != null && stack.length < lastAutoClosedTag!.depth) {
       lastAutoClosedTag = null;
@@ -87,13 +83,13 @@ extension on Parser {
     return false;
   }
 
-  List<Node> readSequence(bool Function(Parser parser) done) {
+  List<Node> readSequence(bool Function(FragmentParser parser) done) {
     final chunks = <Node>[];
     final buffer = StringBuffer();
 
     void flush() {
       if (buffer.isNotEmpty) {
-        chunks.add(Text(buffer.toString()));
+        chunks.add(Text('$buffer'));
         buffer.clear();
       }
     }

@@ -1,24 +1,9 @@
 piko.dart
 =========
 
-[Svelte](https://svelte.dev) based framework for [Dart](https://dart.dev).
-
-**work in**
-
-current plan:
-able to compile
-```
-<script>
-  final name = 'world';
-</script>
-
-hello {name}!
-```
+[Svelte](https://svelte.dev) based [React](https://reactjs.com) like framework for [Dart](https://dart.dev).
 
 todo:
-- compiler:
+- fragment compiler:
   - parser
   - generator
-  - script to component transformer
-- internal:
-  - change detector

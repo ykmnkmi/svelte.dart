@@ -1,0 +1,12 @@
+import 'package:piko/internal.dart';
+
+class App extends Component<App> {
+  App({this.name = 'world'});
+  
+  final String name;
+
+  @override
+  Fragment<App> render([Scheduler? scheduler]) {
+    return <>hello {name}!</>;
+  }
+}

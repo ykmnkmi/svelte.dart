@@ -14,11 +14,11 @@ class CompileError extends Error {
     var error = 'CompileError';
 
     if (code != null) {
-      error += '[$code]';
+      error = '$error[$code]';
     }
 
     if (message != null) {
-      error += ': $message';
+      error = '$error: $message';
     }
 
     if (source != null && offset != null) {
