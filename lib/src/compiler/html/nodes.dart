@@ -1,8 +1,7 @@
+import '../nodes.dart';
 import 'visitor.dart';
 
-abstract class Node {
-  R accept<R>(Visitor<R> visitor);
-}
+export '../nodes.dart';
 
 class Text extends Node {
   Text(this.data);
@@ -22,7 +21,7 @@ class Text extends Node {
   }
 
   @override
-  R accept<R>(Visitor<R> visitor) {
+  R accept<R>(HTMLVisitor<R> visitor) {
     return visitor.visitText(this);
   }
 
@@ -36,7 +35,7 @@ class Comment extends Text {
   Comment(String data) : super(data);
 
   @override
-  R accept<R>(Visitor<R> visitor) {
+  R accept<R>(HTMLVisitor<R> visitor) {
     return visitor.visitComment(this);
   }
 
@@ -54,7 +53,7 @@ class Identifier extends Expression {
   String identifier;
 
   @override
-  R accept<R>(Visitor<R> visitor) {
+  R accept<R>(HTMLVisitor<R> visitor) {
     return visitor.visitIdentifier(this);
   }
 
@@ -78,7 +77,7 @@ class Fragment extends Node {
   }
 
   @override
-  R accept<R>(Visitor<R> visitor) {
+  R accept<R>(HTMLVisitor<R> visitor) {
     return visitor.visitFragment(this);
   }
 
@@ -94,7 +93,7 @@ class Element extends Fragment {
   String tag;
 
   @override
-  R accept<R>(Visitor<R> visitor) {
+  R accept<R>(HTMLVisitor<R> visitor) {
     return visitor.visitElement(this);
   }
 

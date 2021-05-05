@@ -1,5 +1,7 @@
 import 'errors.dart';
 
+typedef State = String? Function(Parser parser);
+
 abstract class Parser {
   Parser(this.template) : index = 0;
 

@@ -2,6 +2,8 @@ import '../parser.dart';
 import 'nodes.dart';
 import 'states.dart';
 
+export '../parser.dart';
+
 class LastAutoClosedTag {
   LastAutoClosedTag(this.tag, this.reason, this.depth);
 

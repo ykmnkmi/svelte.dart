@@ -1,6 +1,7 @@
+import '../visitor.dart';
 import 'nodes.dart';
 
-abstract class Visitor<R> {
+abstract class HTMLVisitor<R> extends Visitor<R> {
   R visitComment(Comment node);
 
   R visitElement(Element node);

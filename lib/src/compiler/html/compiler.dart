@@ -17,7 +17,7 @@ String compileFragment(Fragment fragment, {String name = 'Component', bool prese
   return CreateFragment(name, fragment).toSource();
 }
 
-class CreateFragment extends Visitor<String?> {
+class CreateFragment extends HTMLVisitor<String?> {
   CreateFragment(String name, this.fragment)
       : buffer = StringBuffer(),
         root = <String>[],
