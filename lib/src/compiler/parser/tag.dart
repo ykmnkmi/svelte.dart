@@ -84,38 +84,36 @@ extension TagParser on Parser {
     return false;
   }
 
-  Attribute? readAttribute(Set<String> uniqueNames) {
+  bool readAttribute(Element element, Set<String> uniqueNames) {
     final name = readUntil(RegExp(r'[\s=\/>"' "']"));
 
     if (name.isEmpty) {
-      return null;
+      return false;
     }
 
     if (uniqueNames.contains(name)) {
       error(code: 'duplicate-attribute', message: 'attributes need to be unique');
     }
 
-    final attribute = Attribute(name);
+    final attribute = element.attribute(name);
     uniqueNames.add(name);
-    whitespace();
 
     if (eat('=')) {
-      whitespace();
-      attribute.value = readAttributeValue();
+      push(attribute);
+      readAttributeValue();
+      pop();
     } else if (match('["' "']")) {
       error(code: 'unexpected-token', message: 'expected =');
     }
 
-    return attribute;
+    return true;
   }
 
-  Node? readAttributeValue() {
+  void readAttributeValue() {
     final mark = read('"') ?? read("'");
     final pattern = RegExp(mark ?? '(\/>|[\s"' "'=<>`])");
-    final nodes = <Node>[];
     readSequence((Parser parser) => parser.match(pattern));
     skip(mark);
-    return Interpolation.orNode(nodes);
   }
 
   void readSequence(bool Function(Parser parser) done) {
@@ -131,6 +129,7 @@ extension TagParser on Parser {
     while (!isDone) {
       if (done(this)) {
         flush();
+        return;
       } else if (eat('{')) {
         flush();
         whitespace();
@@ -174,8 +173,6 @@ extension TagParser on Parser {
     final name = readTagName();
     final element = Element(name);
 
-    whitespace();
-
     if (isClosingTag) {
       if (isVoid(name)) {
         error(code: 'invalid-void-content', message: '<$name> is a void element and cannot have children, or a closing tag');
@@ -201,12 +198,10 @@ extension TagParser on Parser {
     }
 
     final uniqueNames = <String>{};
-    var attribute = readAttribute(uniqueNames);
 
-    while (attribute != null) {
+    do {
       whitespace();
-      attribute = readAttribute(uniqueNames);
-    }
+    } while (readAttribute(element, uniqueNames));
 
     add(element);
 

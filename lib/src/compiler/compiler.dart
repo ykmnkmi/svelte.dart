@@ -20,7 +20,7 @@ void trim(Node node) {
       final current = children[i];
 
       if (current is Text) {
-        final previous = node[i - 1];
+        final previous = node.children[i - 1];
 
         if (previous is Text) {
           previous.data += current.data;
@@ -74,6 +74,8 @@ class CreateFragment extends Visitor<String?, String?> {
 
   final Fragment fragment;
 
+  final Interpolator interpolator;
+
   final List<String> root;
 
   final List<String> create;
@@ -84,6 +86,7 @@ class CreateFragment extends Visitor<String?, String?> {
 
   CreateFragment(String name, this.fragment)
       : buffer = StringBuffer(),
+        interpolator = Interpolator(),
         root = <String>[],
         create = <String>[],
         mount = <String>[],
@@ -121,7 +124,7 @@ class CreateFragment extends Visitor<String?, String?> {
 
   @override
   String? visitAttribute(Attribute node, [String? parent]) {
-    create.add('attr($parent, \'${node.name}\', ${node.value})');
+    create.add('attr($parent, \'${node.name}\', ${Interpolator.visitAll(node.children)})');
   }
 
   @override
@@ -147,7 +150,7 @@ class CreateFragment extends Visitor<String?, String?> {
   String? visitIdentifier(Identifier node, [String? parent]) {
     final id = getId('t');
     buffer.write('\n\n  late Text $id;');
-    create.add('$id = text(context.${node.identifier})');
+    create.add('$id = text(${node.name})');
     mount.add('insert($parent, $id, anchor)');
     return id;
   }

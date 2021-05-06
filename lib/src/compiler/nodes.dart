@@ -1,13 +1,9 @@
-import 'dart:collection';
-
 import 'visitor.dart';
 
-class Attribute extends Node {
+class Attribute extends NodeList {
   String name;
 
-  Node? value;
-
-  Attribute(this.name, [this.value]);
+  Attribute(this.name);
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
@@ -16,11 +12,11 @@ class Attribute extends Node {
 
   @override
   String toString() {
-    if (value == null) {
+    if (children.isEmpty) {
       return '$name';
     }
 
-    return '$name = $value';
+    return '$name: ${Interpolator.visitAll(children)}';
   }
 }
 
@@ -52,6 +48,12 @@ class Element extends Fragment {
     return visitor.visitElement(this, context);
   }
 
+  Attribute attribute(String name) {
+    final attribute = Attribute(name);
+    attributes.add(attribute);
+    return attribute;
+  }
+
   @override
   String toString() {
     return 'Element.$tag(${attributes.join(', ')}) { ${children.join(', ')} }';
@@ -75,9 +77,9 @@ class Fragment extends NodeList {
 }
 
 class Identifier extends Expression {
-  String identifier;
+  String name;
 
-  Identifier(this.identifier);
+  Identifier(this.name);
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
@@ -86,19 +88,7 @@ class Identifier extends Expression {
 
   @override
   String toString() {
-    return identifier;
-  }
-}
-
-class Interpolation extends NodeList {
-  Interpolation({List<Node>? children}) : super(children: children);
-
-  static Node orNode(List<Node> nodes) {
-    if (nodes.length == 1) {
-      return nodes[0];
-    }
-
-    return Interpolation(children: nodes);
+    return name;
   }
 }
 
@@ -106,54 +96,17 @@ abstract class Node {
   R accept<C, R>(Visitor<C, R> visitor, [C? context]);
 }
 
-class NodeList extends Node with ListMixin<Node> {
+abstract class NodeList extends Node {
   List<Node> children;
 
   NodeList({List<Node>? children}) : children = children == null ? <Node>[] : children.toList();
 
-  @override
   bool get isEmpty {
     return children.isEmpty;
   }
 
-  @override
   bool get isNotEmpty {
     return children.isNotEmpty;
-  }
-
-  @override
-  int get length {
-    return children.length;
-  }
-
-  @override
-  set length(int length) {
-    children.length = length;
-  }
-
-  @override
-  Node operator [](int index) {
-    return children[index];
-  }
-
-  @override
-  void operator []=(int index, Node node) {
-    children[index] = node;
-  }
-
-  @override
-  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
-    return visitor.visitNodeList(this, context);
-  }
-
-  @override
-  void add(Node node) {
-    children.add(node);
-  }
-
-  @override
-  String toString() {
-    return '{ ${children.join(', ')} }';
   }
 }
 

@@ -1,7 +1,7 @@
 import 'errors.dart';
 import 'nodes.dart';
 
-part 'parser/expression.dart';
+part 'parser/mustache.dart';
 part 'parser/tag.dart';
 
 Fragment parse(String template) {
@@ -24,14 +24,14 @@ class LastAutoClosedTag {
 class Parser {
   final String template;
 
-  final List<List<Node>> stack;
+  final List<NodeList> stack;
 
   final Fragment root;
 
   int index;
 
   Parser(this.template)
-      : stack = <List<Node>>[],
+      : stack = <NodeList>[],
         root = Fragment(),
         index = 0 {
     stack.add(root);
@@ -51,7 +51,7 @@ class Parser {
     }
   }
 
-  List<Node> get current {
+  NodeList get current {
     return stack.last;
   }
 
@@ -76,7 +76,7 @@ class Parser {
   }
 
   void add(Node node) {
-    current.add(node);
+    current.children.add(node);
   }
 
   bool eat(String string, {bool required = false, String? message}) {
@@ -107,20 +107,12 @@ class Parser {
     return pattern.matchAsPrefix(template, index) != null;
   }
 
-  void mustache() {
-    eat('{', required: true);
-    whitespace();
-    expression();
-    whitespace();
-    eat('}', required: true);
-  }
-
   void pop() {
     stack.removeLast();
   }
 
-  void push([NodeList? nodeList]) {
-    stack.add(nodeList ?? NodeList());
+  void push(NodeList nodeList) {
+    stack.add(nodeList);
   }
 
   String? read(Pattern regExp) {

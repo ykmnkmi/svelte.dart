@@ -1,6 +1,6 @@
 part of '../parser.dart';
 
-extension ExpressionParser on Parser {
+extension MustacheParser on Parser {
   void expression() {
     if (identifier()) {
       return;
@@ -24,5 +24,13 @@ extension ExpressionParser on Parser {
 
     add(Identifier('$buffer'));
     return true;
+  }
+
+  void mustache() {
+    eat('{', required: true);
+    whitespace();
+    expression();
+    whitespace();
+    eat('}', required: true);
   }
 }
