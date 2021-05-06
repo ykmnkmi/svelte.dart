@@ -22,7 +22,7 @@ class LastAutoClosedTag {
 class Parser {
   final String template;
 
-  final List<NodeList> nodes;
+  final List<NodeList> stack;
 
   final Fragment root;
 
@@ -31,10 +31,10 @@ class Parser {
   LastAutoClosedTag? lastAutoClosedTag;
 
   Parser(this.template)
-      : nodes = <NodeList>[],
+      : stack = <NodeList>[],
         root = Fragment(),
         index = 0 {
-    nodes.add(root);
+    stack.add(root);
 
     while (!isDone) {
       if (match('<')) {
@@ -46,13 +46,13 @@ class Parser {
       }
     }
 
-    if (nodes.length > 1) {
+    if (stack.length > 1) {
       error(code: 'unexpected-eof', message: 'unexpected end of input');
     }
   }
 
   NodeList get current {
-    return nodes.last;
+    return stack.last;
   }
 
   bool get isDone {
@@ -60,15 +60,15 @@ class Parser {
   }
 
   bool get isEmpty {
-    return nodes.isEmpty;
+    return stack.isEmpty;
   }
 
   bool get isNotEmpty {
-    return nodes.isNotEmpty;
+    return stack.isNotEmpty;
   }
 
   int get length {
-    return nodes.length;
+    return stack.length;
   }
 
   String get rest {
@@ -98,23 +98,19 @@ class Parser {
     throw CompileError(code: code, message: message, source: template.substring(start, end), offset: index - start);
   }
 
-  Expression expression() {
-    final node = identifier();
-
-    if (node == null) {
+  void expression() {
+    if (!identifier()) {
       error(message: 'primary expression expected');
     }
-
-    return node;
   }
 
   void forgetLastAutoClosedTag() {
-    if (lastAutoClosedTag != null && nodes.length < lastAutoClosedTag!.depth) {
+    if (lastAutoClosedTag != null && stack.length < lastAutoClosedTag!.depth) {
       lastAutoClosedTag = null;
     }
   }
 
-  Identifier? identifier() {
+  bool identifier() {
     final re = RegExp(r'[a-zA-Z_$]');
     final buffer = StringBuffer();
     var part = read(re);
@@ -124,7 +120,12 @@ class Parser {
       part = read(re);
     }
 
-    return buffer.isEmpty ? null : Identifier('$buffer');
+    if (buffer.isEmpty) {
+      return false;
+    }
+
+    add(Identifier('$buffer'));
+    return true;
   }
 
   Never invalidClosingTag(String tag) {
@@ -163,17 +164,17 @@ class Parser {
   void mustache() {
     eat('{', required: true);
     whitespace();
-    add(expression());
+    expression();
     whitespace();
     eat('}', required: true);
   }
 
   void pop() {
-    nodes.removeLast();
+    stack.removeLast();
   }
 
-  void push(NodeList nodeList) {
-    nodes.add(nodeList);
+  void push([NodeList? nodeList]) {
+    stack.add(nodeList ?? NodeList());
   }
 
   String? read(Pattern regExp) {
@@ -186,25 +187,26 @@ class Parser {
     return result;
   }
 
-  List<Node> readSequence(bool Function(Parser parser) done) {
-    final chunks = <Node>[];
+  void readSequence(bool Function(Parser parser) done) {
     final buffer = StringBuffer();
 
     void flush() {
       if (buffer.isNotEmpty) {
-        chunks.add(Text('$buffer'));
+        add(Text('$buffer'));
         buffer.clear();
       }
     }
 
+    push();
+
     while (!isDone) {
       if (done(this)) {
         flush();
-        return chunks;
+        return;
       } else if (eat('{')) {
         flush();
         whitespace();
-        chunks.add(expression());
+        expression();
         whitespace();
         eat('}', required: true);
       } else {
@@ -292,7 +294,9 @@ class Parser {
     eat('>', required: true);
 
     if (name == 'textarea') {
-      element.children = readSequence((Parser parser) => match('</textarea>'));
+      push(element);
+      readSequence((Parser parser) => match('</textarea>'));
+      pop();
       read('</textarea>');
     } else if (name == 'script' || name == 'style') {
       element.children.add(Text(readUntil(RegExp('</$name>'))));
