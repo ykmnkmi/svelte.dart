@@ -1,6 +1,6 @@
 import 'dart:html';
 
-import 'package:piko/internal.dart';
+import 'package:piko/runtime.dart';
 
 abstract class Component<T extends Component<T>> {
   Fragment<T> render([Scheduler? scheduler]);

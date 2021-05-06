@@ -1,6 +1,8 @@
 import 'errors.dart';
 import 'nodes.dart';
-import 'parser/tag.dart';
+
+part 'parser/expression.dart';
+part 'parser/tag.dart';
 
 Fragment parse(String template) {
   final parser = Parser(template);
@@ -22,16 +24,14 @@ class LastAutoClosedTag {
 class Parser {
   final String template;
 
-  final List<NodeList> stack;
+  final List<List<Node>> stack;
 
   final Fragment root;
 
   int index;
 
-  LastAutoClosedTag? lastAutoClosedTag;
-
   Parser(this.template)
-      : stack = <NodeList>[],
+      : stack = <List<Node>>[],
         root = Fragment(),
         index = 0 {
     stack.add(root);
@@ -51,7 +51,7 @@ class Parser {
     }
   }
 
-  NodeList get current {
+  List<Node> get current {
     return stack.last;
   }
 
@@ -76,7 +76,7 @@ class Parser {
   }
 
   void add(Node node) {
-    current.children.add(node);
+    current.add(node);
   }
 
   bool eat(String string, {bool required = false, String? message}) {
@@ -98,66 +98,12 @@ class Parser {
     throw CompileError(code: code, message: message, source: template.substring(start, end), offset: index - start);
   }
 
-  void expression() {
-    if (!identifier()) {
-      error(message: 'primary expression expected');
-    }
-  }
-
-  void forgetLastAutoClosedTag() {
-    if (lastAutoClosedTag != null && stack.length < lastAutoClosedTag!.depth) {
-      lastAutoClosedTag = null;
-    }
-  }
-
-  bool identifier() {
-    final re = RegExp(r'[a-zA-Z_$]');
-    final buffer = StringBuffer();
-    var part = read(re);
-
-    while (part != null) {
-      buffer.write(part);
-      part = read(re);
-    }
-
-    if (buffer.isEmpty) {
-      return false;
-    }
-
-    add(Identifier('$buffer'));
-    return true;
-  }
-
-  Never invalidClosingTag(String tag) {
-    final message = isLastAutoClosedTag(tag)
-        ? '</$tag> attempted to close <$tag> that was already automatically closed by <${lastAutoClosedTag!.reason}>'
-        : '</$tag> attempted to close an element that was not open';
-    error(code: 'invalid-closing-tag', message: message);
-  }
-
-  bool isLastAutoClosedTag(String tag) {
-    if (lastAutoClosedTag != null && tag == lastAutoClosedTag!.tag) {
-      return true;
-    }
-
-    return false;
-  }
-
   String? look(Pattern pattern) {
     final match = pattern.matchAsPrefix(template, index);
-
-    if (match == null) {
-      return null;
-    }
-
-    return match[0];
+    return match?[0];
   }
 
   bool match(Pattern pattern) {
-    if (pattern is String) {
-      return template.substring(index, index + pattern.length) == pattern;
-    }
-
     return pattern.matchAsPrefix(template, index) != null;
   }
 
@@ -187,50 +133,6 @@ class Parser {
     return result;
   }
 
-  void readSequence(bool Function(Parser parser) done) {
-    final buffer = StringBuffer();
-
-    void flush() {
-      if (buffer.isNotEmpty) {
-        add(Text('$buffer'));
-        buffer.clear();
-      }
-    }
-
-    push();
-
-    while (!isDone) {
-      if (done(this)) {
-        flush();
-        return;
-      } else if (eat('{')) {
-        flush();
-        whitespace();
-        expression();
-        whitespace();
-        eat('}', required: true);
-      } else {
-        buffer.write(template[index++]);
-      }
-    }
-
-    error(code: 'unexpected-eof', message: 'unexpected end of input');
-  }
-
-  String readTagName() {
-    final name = readUntil(RegExp('(\\s|\\/|>)'));
-
-    if (name.isEmpty) {
-      return 'fragment';
-    }
-
-    if (!RegExp(r'^\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\-]*').hasMatch(name)) {
-      error(code: 'invalid-tag-name', message: 'expected valid tag name, got $name');
-    }
-
-    return name;
-  }
-
   String readUntil(Pattern pattern) {
     if (isDone) {
       error(message: 'unexpected end of input');
@@ -248,62 +150,31 @@ class Parser {
     return template.substring(start);
   }
 
-  void tag() {
-    eat('<', required: true);
-
-    var parent = current;
-
-    if (eat('!--')) {
-      readUntil('-->');
-      eat('-->', required: true, message: 'comment was left open, expected -->');
+  void skip(Pattern? pattern) {
+    if (pattern == null) {
       return;
     }
 
-    final isClosingTag = eat('/');
-    final name = readTagName();
-    final element = Element(name);
+    final result = look(pattern);
 
-    whitespace();
+    if (result != null) {
+      index += result.length;
+    }
+  }
 
-    if (isClosingTag) {
-      if (isVoid(name)) {
-        error(code: 'invalid-void-content', message: '<$name> is a void element and cannot have children, or a closing tag');
-      }
+  void skipUntil(Pattern pattern) {
+    if (isDone) {
+      error(message: 'unexpected end of input');
+    }
 
-      eat('>', required: true);
+    final end = template.indexOf(pattern, index);
 
-      while (parent is! Element || parent.tag != name) {
-        if (parent is! Element) {
-          invalidClosingTag(name);
-        }
-
-        pop();
-        parent = current;
-      }
-
-      pop();
-      forgetLastAutoClosedTag();
+    if (end > 0) {
+      index = end;
       return;
-    } else if (parent is Element && closingTagOmitted(parent.tag, name)) {
-      pop();
-      lastAutoClosedTag = LastAutoClosedTag(parent.tag, name, length);
     }
 
-    add(element);
-    eat('/');
-    eat('>', required: true);
-
-    if (name == 'textarea') {
-      push(element);
-      readSequence((Parser parser) => match('</textarea>'));
-      pop();
-      read('</textarea>');
-    } else if (name == 'script' || name == 'style') {
-      element.children.add(Text(readUntil(RegExp('</$name>'))));
-      eat('</$name>', required: true);
-    } else {
-      push(element);
-    }
+    index = template.length;
   }
 
   void text() {
@@ -313,7 +184,9 @@ class Parser {
       index += 1;
     }
 
-    add(Text(template.substring(start, index)));
+    if (start != index) {
+      add(Text(template.substring(start, index)));
+    }
   }
 
   void whitespace({bool required = false}) {

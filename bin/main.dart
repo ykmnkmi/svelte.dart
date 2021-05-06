@@ -1,6 +1,6 @@
 import 'package:piko/compiler.dart';
 
-const String source = 'hello { name }!';
+const String source = '<p id="title">hello { name }!</p>';
 
 void main() {
   try {

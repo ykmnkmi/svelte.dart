@@ -4,7 +4,7 @@ library app;
 
 import 'dart:html';
 
-import 'package:piko/internal.dart';
+import 'package:piko/runtime.dart';
 
 class App extends Component<App> {
   App({this.name = 'world'});
@@ -20,6 +20,8 @@ class App extends Component<App> {
 class AppFragment extends Fragment<App> {
   AppFragment(App context, Scheduler scheduler) : super(context, scheduler);
 
+  late Element p1;
+
   late Text t1;
 
   late Text t2;
@@ -28,6 +30,7 @@ class AppFragment extends Fragment<App> {
 
   @override
   void create() {
+    p1 = element('p');
     t1 = text('hello ');
     t2 = text(context.name);
     t3 = text('!');
@@ -35,17 +38,16 @@ class AppFragment extends Fragment<App> {
 
   @override
   void mount(Node target, [Node? anchor]) {
-    insert(target, t1, anchor);
-    insert(target, t2, anchor);
-    insert(target, t3, anchor);
+    insert(target, p1);
+    insert(p1, t1);
+    insert(p1, t2);
+    insert(p1, t3);
   }
 
   @override
   void detach(bool detaching) {
     if (detaching) {
-      remove(t1);
-      remove(t2);
-      remove(t3);
+      remove(p1);
     }
   }
 }

@@ -1,10 +1,10 @@
 import 'dart:html';
 
-import 'src/internal/component.dart';
+import 'src/runtime/component.dart';
 
-export 'src/internal/component.dart';
-export 'src/internal/dom.dart';
-export 'src/internal/scheduler.dart';
+export 'src/runtime/component.dart';
+export 'src/runtime/dom.dart';
+export 'src/runtime/scheduler.dart';
 
 void runApp(Component component, [Node? root]) {
   component.render()

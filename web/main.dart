@@ -1,4 +1,4 @@
-import 'package:piko/internal.dart';
+import 'package:piko/runtime.dart';
 
 import 'app.dart';
 
