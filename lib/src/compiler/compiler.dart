@@ -1,23 +1,18 @@
 import 'nodes.dart';
 import 'parser.dart';
-import 'utils.dart';
 import 'visitor.dart';
 
-String compile(String source, {String name = 'Component'}) {
+String compile(String source) {
   final fragment = parse(source);
-  return compileFragment(fragment, name: name);
+  return compileFragment(fragment, 'App');
 }
 
-String compileFragment(Fragment fragment, {String name = 'Component', bool preserveComments = false}) {
-  if (!preserveComments) {
-    removeComments(fragment);
-  }
-
+String compileFragment(Fragment fragment, String contextClass) {
   trim(fragment);
-  return CreateFragment(name, fragment).toSource();
+  return CreateFragment(contextClass, fragment).toSource();
 }
 
-class CreateFragment extends HTMLVisitor<String?> {
+class CreateFragment extends Visitor<String?> {
   CreateFragment(String name, this.fragment)
       : buffer = StringBuffer(),
         root = <String>[],
@@ -65,21 +60,6 @@ class CreateFragment extends HTMLVisitor<String?> {
 
   String toSource() {
     return '$buffer';
-  }
-
-  @override
-  String? visitComment(Comment node) {
-    throw UnimplementedError();
-  }
-
-  @override
-  String? visitElement(Element node) {
-    throw UnimplementedError();
-  }
-
-  @override
-  String? visitFragment(Fragment node) {
-    throw UnimplementedError();
   }
 
   @override
@@ -136,5 +116,62 @@ class CreateFragment extends HTMLVisitor<String?> {
     }
 
     buffer.write('    }\n  }');
+  }
+}
+
+void trim(Node node) {
+  if (node is Fragment && node.isNotEmpty) {
+    final children = node.children;
+
+    for (var i = 1; i < children.length - 1;) {
+      final current = children[i];
+
+      if (current is Text) {
+        final previous = children[i - 1];
+
+        if (previous is Text) {
+          previous.data += current.data;
+          children.removeAt(i);
+          continue;
+        }
+      }
+
+      i += 1;
+    }
+
+    final first = children.first;
+
+    if (first is Text) {
+      first.data = first.data.trimLeft();
+
+      if (first.isEmpty) {
+        children.removeAt(0);
+      }
+    }
+
+    if (children.isNotEmpty) {
+      final last = children.last;
+
+      if (last is Text) {
+        last.data = last.data.trimRight();
+
+        if (last.isEmpty) {
+          children.removeLast();
+        }
+      }
+    }
+
+    for (var i = 0; i < children.length;) {
+      if (children[i] is Fragment) {
+        if ((children[i] as Fragment).isEmpty) {
+          children.removeAt(i);
+          continue;
+        } else {
+          trim(children[i]);
+        }
+      }
+
+      i += 1;
+    }
   }
 }

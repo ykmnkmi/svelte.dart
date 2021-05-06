@@ -1,12 +1,12 @@
 import 'package:piko/compiler.dart';
 
-const String source = 'hello {name}!';
+const String source = 'hello { name }!';
 
 void main() {
   try {
     final fragment = parse(source);
     print(fragment);
-    print(compileFragment(fragment, name: 'App'));
+    print(compileFragment(fragment, 'App'));
   } catch (error, stackTrace) {
     print(error);
     print(stackTrace);
