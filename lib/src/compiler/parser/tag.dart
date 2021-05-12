@@ -95,8 +95,9 @@ extension TagParser on Parser {
       error(code: 'duplicate-attribute', message: 'attributes need to be unique');
     }
 
-    final attribute = element.attribute(name);
+    final attribute = Attribute(name);
     uniqueNames.add(name);
+    add(attribute);
 
     if (eat('=')) {
       push(attribute);
@@ -130,12 +131,9 @@ extension TagParser on Parser {
       if (done(this)) {
         flush();
         return;
-      } else if (eat('{')) {
+      } else if (match('{')) {
         flush();
-        whitespace();
-        expression();
-        whitespace();
-        eat('}', required: true);
+        mustache();
       } else {
         buffer.write(template[index++]);
       }
@@ -199,10 +197,13 @@ extension TagParser on Parser {
 
     final uniqueNames = <String>{};
 
+    push(element.attributes);
+
     do {
       whitespace();
     } while (readAttribute(element, uniqueNames));
 
+    pop();
     add(element);
 
     final selfClosing = eat('/') || isVoid(name);

@@ -1,10 +1,12 @@
 import 'dart:html';
 
-void append(Node target, Node node) {
+import 'package:meta/dart2js.dart';
+
+void append(Element target, Node node) {
   target.append(node);
 }
 
-void insert(Node target, Node node, [Node? anchor]) {
+void insert(Element target, Node node, [Node? anchor]) {
   target.insertBefore(node, anchor);
 }
 
@@ -33,6 +35,15 @@ void Function() listen(Node target, String type, EventListener handler) {
   return () {
     target.removeEventListener(type, handler);
   };
+}
+
+@noInline
+void attr(Element node, String attribute, String? value) {
+  if (value == null) {
+    node.removeAttribute(attribute);
+  } else if (node.getAttribute(attribute) != value) {
+    node.setAttribute(attribute, value);
+  }
 }
 
 void setData(Text node, String data) {

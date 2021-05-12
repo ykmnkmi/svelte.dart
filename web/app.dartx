@@ -7,6 +7,6 @@ class App extends Component<App> {
 
   @override
   Fragment<App> render([Scheduler? scheduler]) {
-    return <>hello {name}!</>;
+    return <p id="title">hello { name }!</p>;
   }
 }

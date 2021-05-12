@@ -6,8 +6,9 @@ export 'src/runtime/component.dart';
 export 'src/runtime/dom.dart';
 export 'src/runtime/scheduler.dart';
 
-void runApp(Component component, [Node? root]) {
-  component.render()
+void runApp(Component component, [Element? root, Node? anchor]) {
+  final tree = RenderTree(root ?? document.body!);
+  component.render(tree)
     ..create()
-    ..mount(root ?? document.body!);
+    ..mount(tree.root, anchor);
 }

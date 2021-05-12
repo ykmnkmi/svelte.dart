@@ -1,5 +1,6 @@
 import 'nodes.dart';
 import 'parser.dart';
+import 'utils.dart';
 import 'visitor.dart';
 
 String compile(String source) {
@@ -7,96 +8,25 @@ String compile(String source) {
   return compileFragment(fragment, 'App');
 }
 
-String compileFragment(Fragment fragment, String contextClass) {
-  trim(fragment);
-  return CreateFragment(contextClass, fragment).toSource();
+String compileFragment(NodeList<Node> nodes, String contextClass) {
+  return Fragment(contextClass, nodes).toSource();
 }
 
-void trim(Node node) {
-  if (node is Fragment && node.isNotEmpty) {
-    final children = node.children;
-
-    for (var i = 1; i < children.length - 1;) {
-      final current = children[i];
-
-      if (current is Text) {
-        final previous = node.children[i - 1];
-
-        if (previous is Text) {
-          previous.data += current.data;
-          children.removeAt(i);
-          continue;
-        }
-      }
-
-      i += 1;
-    }
-
-    final first = children.first;
-
-    if (first is Text) {
-      first.data = first.data.trimLeft();
-
-      if (first.isEmpty) {
-        children.removeAt(0);
-      }
-    }
-
-    if (children.isNotEmpty) {
-      final last = children.last;
-
-      if (last is Text) {
-        last.data = last.data.trimRight();
-
-        if (last.isEmpty) {
-          children.removeLast();
-        }
-      }
-    }
-
-    for (var i = 0; i < children.length;) {
-      if (children[i] is Fragment) {
-        if ((children[i] as Fragment).isEmpty) {
-          children.removeAt(i);
-          continue;
-        } else {
-          trim(children[i]);
-        }
-      }
-
-      i += 1;
-    }
-  }
-}
-
-class CreateFragment extends Visitor<String?, String?> {
-  final StringBuffer buffer;
-
-  final Fragment fragment;
-
-  final Interpolator interpolator;
-
-  final List<String> root;
-
-  final List<String> create;
-
-  final List<String> mount;
-
-  final Map<String, int> count;
-
-  CreateFragment(String name, this.fragment)
-      : buffer = StringBuffer(),
-        interpolator = Interpolator(),
+class Fragment extends Visitor<String?, String?> {
+  Fragment(String name, this.nodes)
+      : sourceBuffer = StringBuffer(),
         root = <String>[],
-        create = <String>[],
-        mount = <String>[],
+        createList = <String>[],
+        mountList = <String>[],
         count = <String, int>{} {
-    buffer
-      ..write('class ${name}Fragment extends Fragment<$name> {\n')
-      ..write('  ${name}Fragment($name context, Scheduler scheduler) : super(context, scheduler);');
+    trim(nodes);
 
-    for (final child in fragment.children) {
-      final id = child.accept(this, 'target');
+    sourceBuffer
+      ..write('class ${name}Fragment extends Fragment<$name> {\n')
+      ..write('  ${name}Fragment($name context, RenderTree tree) : super(context, tree);');
+
+    for (final child in nodes.children) {
+      final id = child.accept(this);
 
       if (id != null) {
         root.add(id);
@@ -104,13 +34,23 @@ class CreateFragment extends Visitor<String?, String?> {
     }
 
     writeCreate();
-
     writeMount();
-
     writeDetach();
 
-    buffer.write('\n}');
+    sourceBuffer.write('\n}');
   }
+
+  final StringBuffer sourceBuffer;
+
+  final NodeList<Node> nodes;
+
+  final List<String> root;
+
+  final List<String> createList;
+
+  final List<String> mountList;
+
+  final Map<String, int> count;
 
   String getId(String tag) {
     var id = count[tag] ?? 0;
@@ -118,29 +58,36 @@ class CreateFragment extends Visitor<String?, String?> {
     return '$tag$id';
   }
 
+  void mount(String id, [String? parent]) {
+    if (parent == null) {
+      mountList.add('insert(target, $id, anchor)');
+    } else {
+      mountList.add('append($parent, $id)');
+    }
+  }
+
   String toSource() {
-    return '$buffer';
+    return '$sourceBuffer';
   }
 
   @override
   String? visitAttribute(Attribute node, [String? parent]) {
-    create.add('attr($parent, \'${node.name}\', ${Interpolator.visitAll(node.children)})');
+    createList.add('attr($parent, \'${node.name}\', ${Interpolator.visitAll(node.children, 'context')})');
   }
 
   @override
   String? visitElement(Element node, [String? parent]) {
     final id = getId(node.tag);
-    buffer.write('\n\n  late Element $id;');
-    create.add('$id = element(\'${node.tag}\')');
-    mount.add('insert($parent, $id, anchor)');
+    sourceBuffer.write('\n\n  late Element $id;');
+    createList.add('$id = element(\'${node.tag}\')');
+    mount(id, parent);
+
+    for (final child in node) {
+      child.accept(this, id);
+    }
 
     for (final attribute in node.attributes) {
       attribute.accept(this, id);
-    }
-
-    // TODO: check: interpolation to text content
-    for (final child in node.children) {
-      child.accept(this, id);
     }
 
     return id;
@@ -149,62 +96,62 @@ class CreateFragment extends Visitor<String?, String?> {
   @override
   String? visitIdentifier(Identifier node, [String? parent]) {
     final id = getId('t');
-    buffer.write('\n\n  late Text $id;');
-    create.add('$id = text(${node.name})');
-    mount.add('insert($parent, $id, anchor)');
+    sourceBuffer.write('\n\n  late Text $id;');
+    createList.add('$id = text(\'\${context.${node.name}}\')');
+    mount(id, parent);
     return id;
   }
 
   @override
   String? visitText(Text node, [String? parent]) {
     final id = getId('t');
-    buffer.write('\n\n  late Text $id;');
-    create.add('$id = text(\'${node.escaped}\')');
-    mount.add('insert($parent, $id, anchor)');
+    sourceBuffer.write('\n\n  late Text $id;');
+    createList.add('$id = text(\'${node.escaped}\')');
+    mount(id, parent);
     return id;
   }
 
   void writeCreate() {
-    if (create.isNotEmpty) {
-      buffer.write('\n\n  @override\n  void create() {\n');
+    if (createList.isNotEmpty) {
+      sourceBuffer.write('\n\n  @override\n  void create() {\n');
 
-      for (var i = 0; i < create.length; i += 1) {
+      for (var i = 0; i < createList.length; i += 1) {
         if (i != 0) {
-          buffer.writeln();
+          sourceBuffer.writeln();
         }
 
-        buffer.write('    ${create[i]};');
+        sourceBuffer.write('    ${createList[i]};');
       }
 
-      buffer.write('\n  }');
+      sourceBuffer.write('\n  }');
     }
   }
 
   void writeDetach() {
     if (root.isNotEmpty) {
-      buffer.write('\n\n  @override\n  void detach(bool detaching) {\n    if (detaching) {\n');
+      sourceBuffer.write('\n\n  @override\n  void detach(bool detaching) {\n    if (detaching) {\n');
 
       for (final id in root) {
-        buffer.write('      remove($id);\n');
+        sourceBuffer.write('      remove($id);\n');
       }
 
-      buffer.write('    }\n  }');
+      sourceBuffer.write('    }\n  }');
     }
   }
 
   void writeMount() {
-    if (mount.isNotEmpty) {
-      buffer.write('\n\n  @override\n  void mount(Node target, [Node? anchor]) {\n');
+    if (mountList.isNotEmpty) {
+      sourceBuffer.write('\n\n  @override\n  void mount(Node target, [Node? anchor]) {\n');
 
-      for (var i = 0; i < mount.length; i += 1) {
+      for (var i = 0; i < mountList.length; i += 1) {
         if (i != 0) {
-          buffer.writeln();
+          sourceBuffer.writeln();
         }
 
-        buffer.write('    ${mount[i]};');
+        sourceBuffer.write('    ${mountList[i]};');
       }
 
-      buffer.write('\n  }');
+      sourceBuffer.write('\n  }');
     }
   }
 }

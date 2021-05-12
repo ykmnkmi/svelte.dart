@@ -12,13 +12,13 @@ class App extends Component<App> {
   final String name;
 
   @override
-  Fragment<App> render([Scheduler? scheduler]) {
-    return AppFragment(this, scheduler ?? Scheduler());
+  Fragment<App> render(RenderTree tree) {
+    return AppFragment(this, tree);
   }
 }
 
 class AppFragment extends Fragment<App> {
-  AppFragment(App context, Scheduler scheduler) : super(context, scheduler);
+  AppFragment(App context, RenderTree tree) : super(context, tree);
 
   late Element p1;
 
@@ -34,14 +34,15 @@ class AppFragment extends Fragment<App> {
     t1 = text('hello ');
     t2 = text(context.name);
     t3 = text('!');
+    attr(p1, 'id', 'title');
   }
 
   @override
-  void mount(Node target, [Node? anchor]) {
-    insert(target, p1);
-    insert(p1, t1);
-    insert(p1, t2);
-    insert(p1, t3);
+  void mount(Element target, [Node? anchor]) {
+    insert(target, p1, anchor);
+    append(p1, t1);
+    append(p1, t2);
+    append(p1, t3);
   }
 
   @override

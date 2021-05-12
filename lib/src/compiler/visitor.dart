@@ -4,8 +4,22 @@ class Interpolator extends Visitor<String?, String> {
   const Interpolator();
 
   @override
+  String visit(Node node, [String? context]) {
+    return node.accept(this, context);
+  }
+
+  @override
   String visitIdentifier(Identifier node, [String? context]) {
-    return '{${node.name}}';
+    if (context == null) {
+      return '\$${node.name}';
+    }
+
+    return '\${$context.${node.name}}';
+  }
+
+  @override
+  String visitNodeList(NodeList node, [String? context]) {
+    return '\'${node.children.map<String>((Node node) => node.accept(this, context)).join()}\'';
   }
 
   @override
@@ -13,20 +27,20 @@ class Interpolator extends Visitor<String?, String> {
     return node.data;
   }
 
-  static String visitAll(List<Node> nodes) {
-    const visitor = Interpolator();
-    return '\'${nodes.map<String>((Node node) => node.accept(visitor)).join()}\'';
+  static String visitAll(List<Node> nodes, [String? context]) {
+    final interpolator = const Interpolator();
+    return '\'${nodes.map<String>((Node node) => node.accept(interpolator, context)).join()}\'';
   }
 }
 
 abstract class Visitor<C, R> {
   const Visitor();
 
-  R visitAttribute(Attribute node, [C? context]) {
+  R visit(Node node, [C? context]) {
     throw UnimplementedError();
   }
 
-  R visitComment(Comment node, [C? context]) {
+  R visitAttribute(Attribute node, [C? context]) {
     throw UnimplementedError();
   }
 
@@ -34,7 +48,7 @@ abstract class Visitor<C, R> {
     throw UnimplementedError();
   }
 
-  R visitFragment(Fragment node, [C? context]) {
+  R visitNodeList(NodeList node, [C? context]) {
     throw UnimplementedError();
   }
 

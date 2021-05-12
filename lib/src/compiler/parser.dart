@@ -4,7 +4,7 @@ import 'nodes.dart';
 part 'parser/mustache.dart';
 part 'parser/tag.dart';
 
-Fragment parse(String template) {
+NodeList<Node> parse(String template) {
   final parser = Parser(template);
   return parser.root;
 }
@@ -12,27 +12,19 @@ Fragment parse(String template) {
 typedef State = String? Function();
 
 class LastAutoClosedTag {
+  LastAutoClosedTag(this.tag, this.reason, this.depth);
+
   final String tag;
 
   final String reason;
 
   final int depth;
-
-  LastAutoClosedTag(this.tag, this.reason, this.depth);
 }
 
 class Parser {
-  final String template;
-
-  final List<NodeList> stack;
-
-  final Fragment root;
-
-  int index;
-
   Parser(this.template)
-      : stack = <NodeList>[],
-        root = Fragment(),
+      : stack = <NodeList<Node>>[],
+        root = NodeList<Node>(),
         index = 0 {
     stack.add(root);
 
@@ -51,7 +43,15 @@ class Parser {
     }
   }
 
-  NodeList get current {
+  final String template;
+
+  final List<NodeList<Node>> stack;
+
+  final NodeList<Node> root;
+
+  int index;
+
+  NodeList<Node> get current {
     return stack.last;
   }
 
@@ -76,7 +76,7 @@ class Parser {
   }
 
   void add(Node node) {
-    current.children.add(node);
+    current.add(node);
   }
 
   bool eat(String string, {bool required = false, String? message}) {

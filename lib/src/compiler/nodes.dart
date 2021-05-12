@@ -1,119 +1,17 @@
+import 'dart:collection';
+
 import 'visitor.dart';
-
-class Attribute extends NodeList {
-  String name;
-
-  Attribute(this.name);
-
-  @override
-  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
-    return visitor.visitAttribute(this, context);
-  }
-
-  @override
-  String toString() {
-    if (children.isEmpty) {
-      return '$name';
-    }
-
-    return '$name: ${Interpolator.visitAll(children)}';
-  }
-}
-
-class Comment extends Text {
-  Comment(String data) : super(data);
-
-  @override
-  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
-    return visitor.visitComment(this, context);
-  }
-
-  @override
-  String toString() {
-    return "#'$escaped'";
-  }
-}
-
-class Element extends Fragment {
-  String tag;
-
-  List<Attribute> attributes;
-
-  Element(this.tag, {List<Node>? children})
-      : attributes = <Attribute>[],
-        super(children: children);
-
-  @override
-  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
-    return visitor.visitElement(this, context);
-  }
-
-  Attribute attribute(String name) {
-    final attribute = Attribute(name);
-    attributes.add(attribute);
-    return attribute;
-  }
-
-  @override
-  String toString() {
-    return 'Element.$tag(${attributes.join(', ')}) { ${children.join(', ')} }';
-  }
-}
-
-abstract class Expression extends Node {}
-
-class Fragment extends NodeList {
-  Fragment({List<Node>? children}) : super(children: children);
-
-  @override
-  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
-    return visitor.visitFragment(this, context);
-  }
-
-  @override
-  String toString() {
-    return 'Fragment { ${children.join(', ')} }';
-  }
-}
-
-class Identifier extends Expression {
-  String name;
-
-  Identifier(this.name);
-
-  @override
-  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
-    return visitor.visitIdentifier(this, context);
-  }
-
-  @override
-  String toString() {
-    return name;
-  }
-}
 
 abstract class Node {
   R accept<C, R>(Visitor<C, R> visitor, [C? context]);
 }
 
-abstract class NodeList extends Node {
-  List<Node> children;
+abstract class Expression extends Node {}
 
-  NodeList({List<Node>? children}) : children = children == null ? <Node>[] : children.toList();
-
-  bool get isEmpty {
-    return children.isEmpty;
-  }
-
-  bool get isNotEmpty {
-    return children.isNotEmpty;
-  }
-}
-
-class Text extends Node {
-  String data;
-
+class Text extends Expression {
   Text(this.data);
+
+  String data;
 
   String get escaped {
     return data.replaceAll("'", r"\'").replaceAll('\r', r'\r').replaceAll('\n', r'\n');
@@ -135,5 +33,128 @@ class Text extends Node {
   @override
   String toString() {
     return "'$escaped'";
+  }
+}
+
+class Identifier extends Expression {
+  Identifier(this.name, [this.global = false]);
+
+  String name;
+
+  bool global;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitIdentifier(this, context);
+  }
+
+  @override
+  String toString() {
+    return name;
+  }
+}
+
+class NodeList<T extends Node> extends Node with ListMixin<T> {
+  NodeList() : children = <T>[];
+
+  List<T> children;
+
+  @override
+  bool get isEmpty {
+    return children.isEmpty;
+  }
+
+  @override
+  bool get isNotEmpty {
+    return children.isNotEmpty;
+  }
+
+  @override
+  int get length {
+    return children.length;
+  }
+
+  @override
+  set length(int length) {
+    children.length = length;
+  }
+
+  @override
+  T operator [](int index) {
+    return children[index];
+  }
+
+  @override
+  void operator []=(int index, T value) {
+    children[index] = value;
+  }
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitNodeList(this, context);
+  }
+
+  @override
+  void add(T element) {
+    children.add(element);
+  }
+
+  @override
+  T removeAt(int index) {
+    return children.removeAt(index);
+  }
+
+  @override
+  T removeLast() {
+    return children.removeLast();
+  }
+
+  @override
+  String toString() {
+    return '{ ${children.join(', ')} }';
+  }
+}
+
+class Attribute extends NodeList<Node> {
+  Attribute(this.name);
+
+  String name;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitAttribute(this, context);
+  }
+
+  @override
+  String toString() {
+    if (children.isEmpty) {
+      return '$name';
+    }
+
+    return '$name: ${Interpolator.visitAll(children)}';
+  }
+}
+
+class Element extends NodeList<Node> {
+  Element(this.tag) : attributes = NodeList<Attribute>();
+
+  String tag;
+
+  NodeList<Attribute> attributes;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitElement(this, context);
+  }
+
+  @override
+  String toString() {
+    var prefix = 'Element.$tag';
+
+    if (attributes.isNotEmpty) {
+      prefix = '$prefix$attributes';
+    }
+
+    return '$prefix { ${children.join(', ')} }';
   }
 }

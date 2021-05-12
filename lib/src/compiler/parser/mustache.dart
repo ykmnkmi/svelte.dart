@@ -11,6 +11,7 @@ extension MustacheParser on Parser {
 
   bool identifier() {
     final buffer = StringBuffer();
+    final global = eat('@');
     var part = read(RegExp(r'[a-zA-Z_]'));
 
     while (part != null) {
@@ -22,7 +23,7 @@ extension MustacheParser on Parser {
       return false;
     }
 
-    add(Identifier('$buffer'));
+    add(Identifier('$buffer', global));
     return true;
   }
 

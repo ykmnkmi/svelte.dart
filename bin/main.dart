@@ -1,4 +1,5 @@
 import 'package:piko/compiler.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 const String source = '<p id="title">hello { name }!</p>';
 
@@ -9,6 +10,6 @@ void main() {
     print(compileFragment(fragment, 'App'));
   } catch (error, stackTrace) {
     print(error);
-    print(stackTrace);
+    print(Trace.format(stackTrace));
   }
 }

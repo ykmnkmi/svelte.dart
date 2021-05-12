@@ -1,21 +1,29 @@
 import 'dart:html';
 
-import 'package:piko/runtime.dart';
+import 'scheduler.dart';
 
-abstract class Component<T extends Component<T>> {
-  Fragment<T> render([Scheduler? scheduler]);
-}
-
-abstract class Fragment<T extends Component<T>> {
-  Fragment(this.context, this.scheduler);
-
-  final T context;
+class RenderTree {
+  RenderTree(this.root) : scheduler = Scheduler();
 
   final Scheduler scheduler;
 
+  final Element root;
+}
+
+abstract class Component<T extends Component<T>> {
+  Fragment<T> render(RenderTree tree);
+}
+
+abstract class Fragment<T extends Component<T>> {
+  Fragment(this.context, this.tree);
+
+  final T context;
+
+  final RenderTree tree;
+
   void create() {}
 
-  void mount(Node target, [Node? anchor]) {}
+  void mount(Element target, [Node? anchor]) {}
 
   void update() {}
 
