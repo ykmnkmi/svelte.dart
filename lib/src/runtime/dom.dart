@@ -2,22 +2,27 @@ import 'dart:html';
 
 import 'package:meta/dart2js.dart';
 
+@noInline
 void append(Element target, Node node) {
   target.append(node);
 }
 
+@noInline
 void insert(Element target, Node node, [Node? anchor]) {
   target.insertBefore(node, anchor);
 }
 
+@noInline
 void remove(Node node) {
   node.remove();
 }
 
+@noInline
 Element element(String tag) {
-  return Element.tag(tag);
+  return document.createElement(tag);
 }
 
+@noInline
 Text text(String text) {
   return Text(text);
 }
@@ -46,6 +51,7 @@ void attr(Element node, String attribute, String? value) {
   }
 }
 
+@noInline
 void setData(Text node, String data) {
   if (node.wholeText != data) {
     node.data = data;

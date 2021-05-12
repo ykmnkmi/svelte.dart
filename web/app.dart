@@ -20,13 +20,13 @@ class App extends Component<App> {
 class AppFragment extends Fragment<App> {
   AppFragment(App context, RenderTree tree) : super(context, tree);
 
-  late Element p1;
+  Element? p1;
 
-  late Text t1;
+  Text? t1;
 
-  late Text t2;
+  Text? t2;
 
-  late Text t3;
+  Text? t3;
 
   @override
   void create() {
@@ -34,21 +34,21 @@ class AppFragment extends Fragment<App> {
     t1 = text('hello ');
     t2 = text(context.name);
     t3 = text('!');
-    attr(p1, 'id', 'title');
+    attr(p1!, 'id', 'title');
   }
 
   @override
   void mount(Element target, [Node? anchor]) {
-    insert(target, p1, anchor);
-    append(p1, t1);
-    append(p1, t2);
-    append(p1, t3);
+    insert(target, p1!, anchor);
+    append(p1!, t1!);
+    append(p1!, t2!);
+    append(p1!, t3!);
   }
 
   @override
   void detach(bool detaching) {
     if (detaching) {
-      remove(p1);
+      remove(p1!);
     }
   }
 }
