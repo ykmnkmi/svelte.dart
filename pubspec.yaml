@@ -1,6 +1,6 @@
 name: piko
 description: Dart web framework.
-version: 1.0.0-dev.32
+version: 1.0.0-dev.33
 homepage: https://piko.ykmnkmi.dev
 
 environment:
@@ -10,7 +10,11 @@ dependencies:
   meta: ^1.3.0
 
 dev_dependencies:
+  analyzer: ^1.5.0
   build_runner: ^2.0.2
   build_web_compilers: ^3.0.0
+  frontend_server_client: ^2.1.0
+  path: ^1.8.0
   pedantic: ^1.11.0
   stack_trace: ^1.10.0
+  stream_transform: ^2.0.0
