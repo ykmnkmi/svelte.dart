@@ -6,7 +6,7 @@ class App extends Component<App> {
   final String name;
 
   @override
-  Fragment<App> render([Scheduler? scheduler]) {
+  Fragment<App> render(RenderTree tree) {
     return <p id="title">hello { name }!</p>;
   }
 }
