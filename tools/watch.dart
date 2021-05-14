@@ -1,3 +1,6 @@
+// for fast compilation
+library watch;
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -27,25 +30,25 @@ void main(List<String> arguments) {
     Future<void> run([String line = '']) {
       final arguments = <String>[outputDill, ...line.trim().split(' ')];
       final message = 'running ${Platform.resolvedExecutable} ${arguments.join(' ')}';
-      print(message);
-      print('-' * (message.length - 1));
+      stdout.writeln(message);
+      stdout.writeln('-' * (message.length - 1));
       return Process.run(Platform.resolvedExecutable, arguments).then<void>(runCompiled).catchError(catchError);
     }
 
     Future<void> compile([FileSystemEvent? event]) {
       Future<void> parse(CompileResult? result) {
         if (result == null) {
-          print('no compilation result, rejecting');
+          stdout.writeln('no compilation result, rejecting');
           return client.reject();
         }
 
         if (result.errorCount > 0) {
-          print('compiled with ${result.errorCount} error(s)');
+          stdout.writeln('compiled with ${result.errorCount} error(s)');
           return client.reject();
         }
 
-        print('compiled successful');
-        result.compilerOutputLines.forEach(print);
+        stdout.writeln('compiled successful');
+        result.compilerOutputLines.forEach(stdout.writeln);
         client.accept();
         client.reset();
 
@@ -59,13 +62,15 @@ void main(List<String> arguments) {
       return client.compile(event == null ? null : <Uri>[targetFile.uri]).then<void>(parse).catchError(catchError);
     }
 
+    Stream<FileSystemEvent> stream;
+
     if (Platform.isWindows) {
-      final stream = targetFile.parent.watch(events: FileSystemEvent.modify).where((event) => event.path == targetFile.path);
-      stream.debounce(Duration(milliseconds: 100)).asyncMap<void>(compile).drain<void>();
+      stream = targetFile.parent.watch(events: FileSystemEvent.modify).where((event) => event.path == targetFile.path);
     } else {
-      final stream = targetFile.watch(events: FileSystemEvent.modify);
-      stream.debounce(Duration(milliseconds: 100)).asyncMap<void>(compile).drain<void>();
+      stream = targetFile.watch(events: FileSystemEvent.modify);
     }
+
+    stream.debounce(Duration(milliseconds: 100)).asyncMap<void>(compile).drain<void>();
 
     Future<void> listen(String line) {
       if (line.startsWith('run')) {
@@ -73,14 +78,14 @@ void main(List<String> arguments) {
       }
 
       if (line.startsWith('exit')) {
-        print('shutdown ...');
+        stdout.writeln('shutdown ...');
         return client.shutdown().then<void>(exit);
       }
 
       return Future<void>.value();
     }
 
-    compile().then((_) => stdin.transform(utf8.decoder).asyncMap<void>(listen).drain<void>());
+    compile().then<void>((_) => stdin.transform(utf8.decoder).asyncMap<void>(listen).drain<void>());
   }
 
   FrontendServerClient.start(targetFilePath, outputDill, platformDill, printIncrementalDependencies: false, sdkRoot: sdkRoot)
@@ -89,7 +94,9 @@ void main(List<String> arguments) {
 }
 
 void runCompiled(ProcessResult result) {
-  stdout.write(result.stdout);
+  if (result.stdout != null) {
+    stdout.write(result.stdout);
+  }
 
   if (result.stderr != null) {
     stdout.write(result.stderr);
@@ -97,6 +104,6 @@ void runCompiled(ProcessResult result) {
 }
 
 void catchError(Object error, StackTrace stack) {
-  print(error);
-  print(Trace.format(stack));
+  stdout.writeln(error);
+  stdout.writeln(Trace.format(stack));
 }

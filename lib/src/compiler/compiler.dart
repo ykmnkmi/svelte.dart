@@ -15,7 +15,7 @@ String compileFragment(NodeList<Node> nodes, String contextClass) {
 class Fragment extends Visitor<String?, String?> {
   Fragment(String name, this.nodes)
       : sourceBuffer = StringBuffer(),
-        root = <String>[],
+        rootIds = <String>[],
         createList = <String>[],
         mountList = <String>[],
         count = <String, int>{} {
@@ -29,7 +29,7 @@ class Fragment extends Visitor<String?, String?> {
       final id = child.accept(this);
 
       if (id != null) {
-        root.add(id);
+        rootIds.add(id);
       }
     }
 
@@ -44,7 +44,7 @@ class Fragment extends Visitor<String?, String?> {
 
   final NodeList<Node> nodes;
 
-  final List<String> root;
+  final List<String> rootIds;
 
   final List<String> createList;
 
@@ -128,10 +128,10 @@ class Fragment extends Visitor<String?, String?> {
   }
 
   void writeDetach() {
-    if (root.isNotEmpty) {
+    if (rootIds.isNotEmpty) {
       sourceBuffer.write('\n\n  @override\n  void detach(bool detaching) {\n    if (detaching) {\n');
 
-      for (final id in root) {
+      for (final id in rootIds) {
         sourceBuffer.write('      remove($id);\n');
       }
 

@@ -26,7 +26,7 @@ Example
 =======
 from:
 ```
-import 'package:piko/internal.dart';
+import 'package:piko/runtime.dart';
 
 class App extends Component<App> {
   App({this.name = 'world'});

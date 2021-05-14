@@ -1,5 +1,3 @@
-// will be generated
-
 library app;
 
 import 'dart:html';
@@ -19,6 +17,8 @@ class App extends Component<App> {
 
 class AppFragment extends Fragment<App> {
   AppFragment(App context, RenderTree tree) : super(context, tree);
+
+  // `late` is too much here, node `!` checks drops after compiling
 
   Element? p1;
 
