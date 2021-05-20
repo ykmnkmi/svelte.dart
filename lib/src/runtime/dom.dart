@@ -35,6 +35,7 @@ Text empty() {
   return text('');
 }
 
+@noInline
 void Function() listen(Node target, String type, EventListener handler) {
   target.addEventListener(type, handler);
   return () {

@@ -28,7 +28,7 @@ void main(List<String> arguments) {
 
   void start(FrontendServerClient client) {
     Future<void> run([String line = '']) {
-      final arguments = <String>[outputDill, ...line.trim().split(' ')];
+      final arguments = <String>[outputDill, ...line.trim().split(' ').where((String argument) => argument.isNotEmpty)];
       final message = 'running ${Platform.resolvedExecutable} ${arguments.join(' ')}';
       stdout.writeln(message);
       stdout.writeln('-' * (message.length - 1));
@@ -65,7 +65,7 @@ void main(List<String> arguments) {
     Stream<FileSystemEvent> stream;
 
     if (Platform.isWindows) {
-      stream = targetFile.parent.watch(events: FileSystemEvent.modify).where((event) => event.path == targetFile.path);
+      stream = targetFile.parent.watch(events: FileSystemEvent.modify).where((FileSystemEvent event) => event.path == targetFile.path);
     } else {
       stream = targetFile.watch(events: FileSystemEvent.modify);
     }
@@ -85,7 +85,7 @@ void main(List<String> arguments) {
       return Future<void>.value();
     }
 
-    compile().then<void>((_) => stdin.transform(utf8.decoder).asyncMap<void>(listen).drain<void>());
+    compile().then<void>((void _) => stdin.transform(utf8.decoder).asyncMap<void>(listen).drain<void>());
   }
 
   FrontendServerClient.start(targetFilePath, outputDill, platformDill, printIncrementalDependencies: false, sdkRoot: sdkRoot)
