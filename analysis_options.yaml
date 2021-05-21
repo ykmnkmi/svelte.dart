@@ -1,10 +1,6 @@
-include: package:pedantic/analysis_options.yaml
+include: package:lints/recommended.yaml
 
 analyzer:
-  exclude:
-    - example/**
-  language:
-    strict-inference: true
-    strict-raw-types: true
   strong-mode:
     implicit-casts: false
+    implicit-dynamic: false
