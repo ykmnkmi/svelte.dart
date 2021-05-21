@@ -60,9 +60,9 @@ class Fragment extends Visitor<String?, String?> {
 
   void mount(String id, [String? parent]) {
     if (parent == null) {
-      mountList.add('insert(target, $id, anchor)');
+      mountList.add('insert(target, $id!, anchor)');
     } else {
-      mountList.add('append($parent, $id)');
+      mountList.add('append($parent!, $id!)');
     }
   }
 
@@ -72,13 +72,13 @@ class Fragment extends Visitor<String?, String?> {
 
   @override
   String? visitAttribute(Attribute node, [String? parent]) {
-    createList.add('attr($parent, \'${node.name}\', ${Interpolator.visitAll(node.children, 'context')})');
+    createList.add('attr($parent!, \'${node.name}\', ${Interpolator.visitAll(node.children, 'context')})');
   }
 
   @override
   String? visitElement(Element node, [String? parent]) {
     final id = getId(node.tag);
-    sourceBuffer.write('\n\n  late Element $id;');
+    sourceBuffer.write('\n\n  Element? $id;');
     createList.add('$id = element(\'${node.tag}\')');
     mount(id, parent);
 
@@ -96,7 +96,7 @@ class Fragment extends Visitor<String?, String?> {
   @override
   String? visitIdentifier(Identifier node, [String? parent]) {
     final id = getId('t');
-    sourceBuffer.write('\n\n  late Text $id;');
+    sourceBuffer.write('\n\n  Text? $id;');
     createList.add('$id = text(\'\${context.${node.name}}\')');
     mount(id, parent);
     return id;
@@ -105,7 +105,7 @@ class Fragment extends Visitor<String?, String?> {
   @override
   String? visitText(Text node, [String? parent]) {
     final id = getId('t');
-    sourceBuffer.write('\n\n  late Text $id;');
+    sourceBuffer.write('\n\n  Text? $id;');
     createList.add('$id = text(\'${node.escaped}\')');
     mount(id, parent);
     return id;
@@ -132,7 +132,7 @@ class Fragment extends Visitor<String?, String?> {
       sourceBuffer.write('\n\n  @override\n  void detach(bool detaching) {\n    if (detaching) {\n');
 
       for (final id in rootIds) {
-        sourceBuffer.write('      remove($id);\n');
+        sourceBuffer.write('      remove($id!);\n');
       }
 
       sourceBuffer.write('    }\n  }');
