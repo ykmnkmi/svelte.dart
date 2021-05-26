@@ -1,12 +1,12 @@
 part of '../parser.dart';
 
 extension MustacheParser on Parser {
-  void expression() {
-    if (identifier()) {
-      return;
-    }
+  bool expression() {
+    return primary();
+  }
 
-    error(message: 'primary expression expected');
+  bool primary() {
+    return identifier();
   }
 
   bool identifier() {
@@ -30,7 +30,11 @@ extension MustacheParser on Parser {
   void mustache() {
     eat('{', required: true);
     whitespace();
-    expression();
+
+    if (!expression()) {
+      error(message: 'primary expression expected');
+    }
+
     whitespace();
     eat('}', required: true);
   }

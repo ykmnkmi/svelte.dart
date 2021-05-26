@@ -36,6 +36,24 @@ class Text extends Expression {
   }
 }
 
+class Primitive extends Expression {
+  Primitive(this.value, this.type);
+
+  String value;
+
+  String type;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitPrimitive(this, context);
+  }
+
+  @override
+  String toString() {
+    return '$type#$value';
+  }
+}
+
 class Identifier extends Expression {
   Identifier(this.name, [this.global = false]);
 

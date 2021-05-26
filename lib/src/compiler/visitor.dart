@@ -56,6 +56,10 @@ abstract class Visitor<C, R> {
     throw UnimplementedError();
   }
 
+  R visitPrimitive(Primitive node, [C? context]) {
+    throw UnimplementedError();
+  }
+
   R visitText(Text node, [C? context]) {
     throw UnimplementedError();
   }
