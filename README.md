@@ -1,12 +1,10 @@
 piko.dart
 =========
 
-[React](https://reactjs.com) looking [Svelte](https://svelte.dev) based framework for [Dart](https://dart.dev).
+Web framework for [Dart](https://dart.dev).
 
-Plan
+TODO
 ====
-
-Stage 1: able to handle static html with `{ variable }`
 - fragment compiler
   - parser
   - generator
@@ -16,11 +14,9 @@ Stage 1: able to handle static html with `{ variable }`
 - VS Code extension
   - syntax highlighter
   - language server
-
-Stage 2:
-- event handlers
-- change detector
+- change detection & event handlers
 - ...
+
 
 Example
 =======

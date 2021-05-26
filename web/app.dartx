@@ -1,12 +1,17 @@
 import 'package:piko/internal.dart';
 
 class App extends Component<App> {
-  App({this.name = 'world'});
+  App({this.count = 0});
   
-  final String name;
+  int count;
+
+  void handleClick() {
+		count += 1;
+    markDirty('count');
+	}
 
   @override
   Fragment<App> render(RenderTree tree) {
-    return <p id="title">hello { name }!</p>;
+    return <button on:click={ handleClick }>Clicked { count } { count == 1 ? 'time' : 'times' }</button>;
   }
 }

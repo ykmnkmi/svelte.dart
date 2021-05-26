@@ -1,6 +1,4 @@
-import 'dart:html';
-
-import 'package:meta/dart2js.dart';
+part of '../../runtime.dart';
 
 @noInline
 void append(Element target, Node node) {

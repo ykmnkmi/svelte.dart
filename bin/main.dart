@@ -1,7 +1,7 @@
 import 'package:piko/compiler.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-const String source = '<p id="title-{ id }">hello { name }!</p>';
+const String source = '<button on:click={ handleClick }>Clicked { count } { count == 1 ? \'time\' : \'times\' }</button>';
 
 void main() {
   try {
