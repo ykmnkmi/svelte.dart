@@ -31,7 +31,7 @@ void main(List<String> arguments) {
       final arguments = <String>[outputDill, ...line.trim().split(' ').where((String argument) => argument.isNotEmpty)];
       final message = 'running ${Platform.resolvedExecutable} ${arguments.join(' ')}';
       stdout.writeln(message);
-      stdout.writeln('-' * (message.length - 1));
+      stdout.writeln('-' * (message.length));
       return Process.run(Platform.resolvedExecutable, arguments).then<void>(runCompiled).catchError(catchError);
     }
 

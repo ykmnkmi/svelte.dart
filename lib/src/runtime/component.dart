@@ -9,20 +9,11 @@ class RenderTree {
 }
 
 abstract class Component<T extends Component<T>> {
-  @protected
-  Fragment<T>? fragment;
-
-  void markDirty(String aspect) {
-    fragment!.markDirty(aspect);
-  }
-
   Fragment<T> render(RenderTree tree);
 }
 
 abstract class Fragment<T extends Component<T>> {
-  Fragment(this.context, this.tree) : dirty = <String>{} {
-    context.fragment = this;
-  }
+  Fragment(this.context, this.tree) : dirty = <String>{};
 
   final RenderTree tree;
 

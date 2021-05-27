@@ -4,7 +4,7 @@ import 'nodes.dart';
 part 'parser/mustache.dart';
 part 'parser/tag.dart';
 
-NodeList<Node> parse(String template) {
+Fragment parse(String template) {
   final parser = Parser(template);
   return parser.root;
 }
@@ -23,8 +23,8 @@ class LastAutoClosedTag {
 
 class Parser {
   Parser(this.template)
-      : stack = <NodeList<Node>>[],
-        root = NodeList<Node>(),
+      : stack = <Fragment>[],
+        root = Fragment(),
         index = 0 {
     stack.add(root);
 
@@ -45,13 +45,13 @@ class Parser {
 
   final String template;
 
-  final List<NodeList<Node>> stack;
+  final List<Fragment> stack;
 
-  final NodeList<Node> root;
+  final Fragment root;
 
   int index;
 
-  NodeList<Node> get current {
+  Fragment get current {
     return stack.last;
   }
 
@@ -73,10 +73,6 @@ class Parser {
 
   String get rest {
     return template.substring(index);
-  }
-
-  void add(Node node) {
-    current.add(node);
   }
 
   bool eat(String string, {bool required = false, String? message}) {
@@ -103,20 +99,33 @@ class Parser {
     return match?[0];
   }
 
-  bool match(Pattern pattern) {
+  bool match(String string) {
+    return template.substring(index, index + string.length) == string;
+  }
+
+  bool matchPattern(Pattern pattern) {
     return pattern.matchAsPrefix(template, index) != null;
   }
 
-  void pop() {
-    stack.removeLast();
+  void push(Node node) {
+    current.children.add(node);
   }
 
-  void push(NodeList nodeList) {
-    stack.add(nodeList);
+  Node? pop() {
+    return current.children.isEmpty ? null : current.children.removeLast();
   }
 
-  String? read(Pattern regExp) {
-    final result = look(regExp);
+  String? read(String string) {
+    if (match(string)) {
+      index += string.length;
+      return string;
+    }
+
+    return null;
+  }
+
+  String? readPattern(Pattern pattern) {
+    final result = look(pattern);
 
     if (result != null) {
       index += result.length;
@@ -177,7 +186,7 @@ class Parser {
     }
 
     if (start != index) {
-      add(Text(template.substring(start, index)));
+      push(Text(template.substring(start, index)));
     }
   }
 

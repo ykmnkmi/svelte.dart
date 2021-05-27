@@ -8,24 +8,22 @@ String compile(String source) {
   return compileFragment(fragment, 'App');
 }
 
-String compileFragment(NodeList<Node> nodes, String contextClass) {
-  return Fragment(contextClass, nodes).toSource();
+String compileFragment(Fragment fragment, String contextClass) {
+  return FragmentCompiler(contextClass, fragment).toSource();
 }
 
-class Fragment extends Visitor<String?, String?> {
-  Fragment(String name, this.nodes)
+class FragmentCompiler extends Visitor<String?, String?> {
+  FragmentCompiler(String name, this.fragment)
       : sourceBuffer = StringBuffer(),
-        rootIds = <String>[],
+        nodeList = <String>[],
         createList = <String>[],
+        rootIds = <String>[],
         mountList = <String>[],
+        listenList = <String>[],
         count = <String, int>{} {
-    trim(nodes);
+    trim(fragment);
 
-    sourceBuffer
-      ..write('class ${name}Fragment extends Fragment<$name> {\n')
-      ..write('  ${name}Fragment($name context, RenderTree tree) : super(context, tree);');
-
-    for (final child in nodes.children) {
+    for (final child in fragment.children) {
       final id = child.accept(this);
 
       if (id != null) {
@@ -33,22 +31,120 @@ class Fragment extends Visitor<String?, String?> {
       }
     }
 
-    writeCreate();
-    writeMount();
-    writeDetach();
+    sourceBuffer..write('class ${name}Fragment extends Fragment<$name> {\n')..write('  ${name}Fragment($name context, RenderTree tree)');
+
+    if (listenList.isNotEmpty) {
+      sourceBuffer.write('\n      : mounted = false,\n        super(context, tree);');
+    } else {
+      sourceBuffer.write(' : super(context, tree);');
+    }
+
+    if (nodeList.isNotEmpty) {
+      for (final node in nodeList) {
+        sourceBuffer.write('\n\n  $node;');
+      }
+    }
+
+    if (listenList.isNotEmpty) {
+      sourceBuffer.write('\n\n  bool mounted;');
+
+      if (listenList.length == 1) {
+        sourceBuffer.write('\n\n  VoidCallback? dispose;');
+      } else {
+        sourceBuffer.write('\n\n  List<VoidCallback>? dispose;');
+      }
+    }
+
+    // create
+
+    if (createList.isNotEmpty) {
+      sourceBuffer.write('\n\n  @override\n  void create() {\n');
+
+      for (var i = 0; i < createList.length; i += 1) {
+        if (i != 0) {
+          sourceBuffer.writeln();
+        }
+
+        sourceBuffer.write('    ${createList[i]};');
+      }
+
+      sourceBuffer.write('\n  }');
+    }
+
+    // mount
+
+    if (mountList.isNotEmpty) {
+      sourceBuffer.write('\n\n  @override\n  void mount(Element target, [Node? anchor]) {\n');
+
+      for (var i = 0; i < mountList.length; i += 1) {
+        if (i != 0) {
+          sourceBuffer.writeln();
+        }
+
+        sourceBuffer.write('    ${mountList[i]};');
+      }
+
+      if (listenList.isNotEmpty) {
+        sourceBuffer.write('\n\n    if (!mounted) {');
+
+        if (listenList.length == 1) {
+          sourceBuffer.write('\n      dispose = ${listenList[0]};');
+        } else {
+          sourceBuffer.write('\n      dispose = <VoidCallback>[');
+
+          for (final listen in listenList) {
+            sourceBuffer.write('\n        $listen;');
+          }
+
+          sourceBuffer.write('\n      ];');
+        }
+
+        sourceBuffer.write('\n    }');
+      }
+
+      sourceBuffer.write('\n  }');
+    }
+
+    // detach
+
+    if (rootIds.isNotEmpty) {
+      sourceBuffer.write('\n\n  @override\n  void detach(bool detaching) {\n    if (detaching) {');
+
+      for (final id in rootIds) {
+        sourceBuffer.write('\n      remove($id!);');
+      }
+
+      sourceBuffer.write('\n    }');
+
+      if (listenList.isNotEmpty) {
+        sourceBuffer.write('\n\n    mounted = false;');
+
+        if (listenList.length == 1) {
+          sourceBuffer.write('\n    dispose!();');
+        } else {
+          sourceBuffer.write('\n    dispose!.forEach((fn) => fn());');
+        }
+      }
+
+      sourceBuffer.write('\n  }');
+    }
 
     sourceBuffer.write('\n}');
   }
 
   final StringBuffer sourceBuffer;
 
-  final NodeList<Node> nodes;
+  final Fragment fragment;
 
-  final List<String> rootIds;
+  final List<String> nodeList;
 
   final List<String> createList;
 
+  final List<String> rootIds;
+
   final List<String> mountList;
+
+  final List<String> listenList;
 
   final Map<String, int> count;
 
@@ -72,31 +168,47 @@ class Fragment extends Visitor<String?, String?> {
 
   @override
   String? visitAttribute(Attribute node, [String? parent]) {
-    createList.add('attr($parent!, \'${node.name}\', ${Interpolator.visitAll(node.children, 'context')})');
+    createList.add('$parent!.${node.name} = true');
+  }
+
+  @override
+  String? visitCondition(Condition node, [String? parent]) {
+    final id = getId('t');
+    nodeList.add('Text? $id');
+    nodeList.add('String? ${id}value');
+    createList.add('$id = text(${id}value = \'\${${interpolate(node)}}\')');
+    mount(id, parent);
+    return id;
   }
 
   @override
   String? visitElement(Element node, [String? parent]) {
     final id = getId(node.tag);
-    sourceBuffer.write('\n\n  Element? $id;');
+    nodeList.add('Element? $id');
     createList.add('$id = element(\'${node.tag}\')');
     mount(id, parent);
 
-    for (final child in node) {
-      child.accept(this, id);
-    }
-
     for (final attribute in node.attributes) {
       attribute.accept(this, id);
+    }
+
+    for (final child in node.children) {
+      child.accept(this, id);
     }
 
     return id;
   }
 
   @override
+  String? visitEventListener(EventListener node, [String? parent]) {
+    listenList.add('listen($parent!, \'${node.name}\', (Event event) => ${interpolate(node.callback)}())');
+    return null;
+  }
+
+  @override
   String? visitIdentifier(Identifier node, [String? parent]) {
     final id = getId('t');
-    sourceBuffer.write('\n\n  Text? $id;');
+    nodeList.add('Text? $id');
     createList.add('$id = text(\'\${context.${node.name}}\')');
     mount(id, parent);
     return id;
@@ -105,53 +217,9 @@ class Fragment extends Visitor<String?, String?> {
   @override
   String? visitText(Text node, [String? parent]) {
     final id = getId('t');
-    sourceBuffer.write('\n\n  Text? $id;');
+    nodeList.add('Text? $id');
     createList.add('$id = text(\'${node.escaped}\')');
     mount(id, parent);
     return id;
-  }
-
-  void writeCreate() {
-    if (createList.isNotEmpty) {
-      sourceBuffer.write('\n\n  @override\n  void create() {\n');
-
-      for (var i = 0; i < createList.length; i += 1) {
-        if (i != 0) {
-          sourceBuffer.writeln();
-        }
-
-        sourceBuffer.write('    ${createList[i]};');
-      }
-
-      sourceBuffer.write('\n  }');
-    }
-  }
-
-  void writeDetach() {
-    if (rootIds.isNotEmpty) {
-      sourceBuffer.write('\n\n  @override\n  void detach(bool detaching) {\n    if (detaching) {\n');
-
-      for (final id in rootIds) {
-        sourceBuffer.write('      remove($id!);\n');
-      }
-
-      sourceBuffer.write('    }\n  }');
-    }
-  }
-
-  void writeMount() {
-    if (mountList.isNotEmpty) {
-      sourceBuffer.write('\n\n  @override\n  void mount(Node target, [Node? anchor]) {\n');
-
-      for (var i = 0; i < mountList.length; i += 1) {
-        if (i != 0) {
-          sourceBuffer.writeln();
-        }
-
-        sourceBuffer.write('    ${mountList[i]};');
-      }
-
-      sourceBuffer.write('\n  }');
-    }
   }
 }

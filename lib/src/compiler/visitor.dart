@@ -1,5 +1,9 @@
 import 'nodes.dart';
 
+String interpolate(Node node, [String context = 'context']) {
+  return const Interpolator().visit(node, context);
+}
+
 class Interpolator extends Visitor<String?, String> {
   const Interpolator();
 
@@ -9,27 +13,28 @@ class Interpolator extends Visitor<String?, String> {
   }
 
   @override
+  String visitBinary(Binary node, [String? context]) {
+    final left = node.left.accept(this, context);
+    final right = node.right.accept(this, context);
+    return '$left ${node.operator} $right';
+  }
+
+  @override
+  String visitCondition(Condition node, [String? context]) {
+    final test = node.test.accept(this, context);
+    final onTrue = node.onTrue.accept(this, context);
+    final onFalse = node.onFalse.accept(this, context);
+    return '$test ? $onTrue : $onFalse';
+  }
+
+  @override
   String visitIdentifier(Identifier node, [String? context]) {
-    if (context == null) {
-      return '\$${node.name}';
-    }
-
-    return '\${$context.${node.name}}';
+    return '$context.${node.name}';
   }
 
   @override
-  String visitNodeList(NodeList node, [String? context]) {
-    return '\'${node.children.map<String>((Node node) => node.accept(this, context)).join()}\'';
-  }
-
-  @override
-  String visitText(Text node, [String? context]) {
-    return node.data;
-  }
-
-  static String visitAll(List<Node> nodes, [String? context]) {
-    final interpolator = const Interpolator();
-    return '\'${nodes.map<String>((Node node) => node.accept(interpolator, context)).join()}\'';
+  String visitPrimitive(Primitive node, [String? context]) {
+    return node.value;
   }
 }
 
@@ -44,11 +49,19 @@ abstract class Visitor<C, R> {
     throw UnimplementedError();
   }
 
+  R visitBinary(Binary node, [C? context]) {
+    throw UnimplementedError();
+  }
+
+  R visitCondition(Condition node, [C? context]) {
+    throw UnimplementedError();
+  }
+
   R visitElement(Element node, [C? context]) {
     throw UnimplementedError();
   }
 
-  R visitNodeList(NodeList node, [C? context]) {
+  R visitEventListener(EventListener node, [C? context]) {
     throw UnimplementedError();
   }
 

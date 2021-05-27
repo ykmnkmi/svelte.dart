@@ -11,7 +11,6 @@ class App extends Component<App> {
 
   void handleClick() {
     count += 1;
-    markDirty('count');
   }
 
   @override
@@ -21,7 +20,9 @@ class App extends Component<App> {
 }
 
 class AppFragment extends Fragment<App> {
-  AppFragment(App context, RenderTree tree) : super(context, tree);
+  AppFragment(App context, RenderTree tree)
+      : mounted = false,
+        super(context, tree);
 
   Element? button1;
 
@@ -31,22 +32,21 @@ class AppFragment extends Fragment<App> {
 
   Text? t3;
 
-  String? t4value;
-
   Text? t4;
 
-  VoidCallback? dispose;
+  String? t4value;
 
-  bool mounted = false;
+  bool mounted;
+
+  VoidCallback? dispose;
 
   @override
   void create() {
     button1 = element('button');
     t1 = text('Clicked ');
     t2 = text('${context.count}');
-    t3 = space();
-    t4value = context.count == 1 ? 'time' : 'times';
-    t4 = text(t4value!);
+    t3 = text(' ');
+    t4 = text(context.count == 1 ? 'time' : 'times');
   }
 
   @override
@@ -60,9 +60,8 @@ class AppFragment extends Fragment<App> {
     if (!mounted) {
       dispose = listen(button1!, 'click', (Event event) {
         context.handleClick();
+        markDirty('count');
       });
-
-      mounted = true;
     }
   }
 

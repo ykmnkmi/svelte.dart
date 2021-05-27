@@ -2,15 +2,15 @@ import 'package:piko/runtime.dart';
 
 class App extends Component<App> {
   App({this.count = 0});
-  
+
   int count;
 
   void handleClick() {
-		count += 1;
-	}
+    count += 1;
+  }
 
   @override
   Fragment<App> render(RenderTree tree) {
-    return <button on:click={ handleClick }>Clicked { count } { count == 1 ? 'time' : 'times' }</button>;
+    throw UnimplementedError();
   }
 }

@@ -95,34 +95,42 @@ extension TagParser on Parser {
       error(code: 'duplicate-attribute', message: 'attributes need to be unique');
     }
 
-    final attribute = Attribute(name);
     uniqueNames.add(name);
-    add(attribute);
 
-    if (eat('=')) {
-      push(attribute);
-      readAttributeValue();
-      pop();
-    } else if (match('["' "']")) {
-      error(code: 'unexpected-token', message: 'expected =');
+    if (name.startsWith('on:')) {
+      eat('={', required: true);
+      whitespace();
+
+      if (!expression()) {
+        error(message: 'expected an identifier');
+      }
+
+      push(EventListener(name.substring(3), pop()!));
+      whitespace();
+      eat('}', required: true);
+    } else {
+      if (eat('=')) {
+        throw UnimplementedError();
+      } else {
+        push(Attribute(name));
+      }
     }
 
     return true;
   }
 
   void readAttributeValue() {
-    final mark = read('"') ?? read("'");
-    final pattern = RegExp(mark ?? '(\/>|[\s"' "'=<>`])");
-    readSequence((Parser parser) => parser.match(pattern));
-    skip(mark);
+    eat('"', required: true);
+    readSequence((Parser parser) => parser.match('"'));
+    eat('"', required: true);
   }
 
-  void readSequence(bool Function(Parser parser) done) {
+  Iterable<Node> readSequence(bool Function(Parser parser) done) sync* {
     final buffer = StringBuffer();
 
     void flush() {
       if (buffer.isNotEmpty) {
-        add(Text('$buffer'));
+        push(Text('$buffer'));
         buffer.clear();
       }
     }
@@ -134,6 +142,7 @@ extension TagParser on Parser {
       } else if (match('{')) {
         flush();
         mustache();
+        yield pop()!;
       } else {
         buffer.write(template[index++]);
       }
@@ -183,28 +192,27 @@ extension TagParser on Parser {
           invalidClosingTag(name);
         }
 
-        pop();
+        stack.removeLast();
         parent = current;
       }
 
-      pop();
+      stack.removeLast();
       forgetLastAutoClosedTag();
       return;
     } else if (parent is Element && closingTagOmitted(parent.tag, name)) {
-      pop();
+      stack.removeLast();
       lastAutoClosedTag = LastAutoClosedTag(parent.tag, name, length);
     }
 
     final uniqueNames = <String>{};
+    whitespace();
 
-    push(element.attributes);
-
-    do {
+    while (readAttribute(element, uniqueNames)) {
+      element.attributes.add(pop() as Attribute);
       whitespace();
-    } while (readAttribute(element, uniqueNames));
+    }
 
-    pop();
-    add(element);
+    push(element);
 
     final selfClosing = eat('/') || isVoid(name);
 
@@ -212,18 +220,8 @@ extension TagParser on Parser {
 
     if (selfClosing) {
       // don't push self-closing elements onto the stack
-    } else if (name == 'textarea') {
-      push(element);
-      readSequence((Parser parser) => parser.match('</textarea>'));
-      skip('</textarea>');
-      pop();
-    } else if (name == 'script' || name == 'style') {
-      push(element);
-      add(Text(readUntil(RegExp('</$name>'))));
-      eat('</$name>', required: true);
-      pop();
     } else {
-      push(element);
+      stack.add(element);
     }
   }
 }

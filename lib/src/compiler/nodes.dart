@@ -50,16 +50,14 @@ class Primitive extends Expression {
 
   @override
   String toString() {
-    return '$type#$value';
+    return value;
   }
 }
 
 class Identifier extends Expression {
-  Identifier(this.name, [this.global = false]);
+  Identifier(this.name);
 
   String name;
-
-  bool global;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
@@ -72,68 +70,47 @@ class Identifier extends Expression {
   }
 }
 
-class NodeList<T extends Node> extends Node with ListMixin<T> {
-  NodeList() : children = <T>[];
+class Binary extends Expression {
+  Binary(this.operator, this.left, this.right);
 
-  List<T> children;
+  String operator;
 
-  @override
-  bool get isEmpty {
-    return children.isEmpty;
-  }
+  Expression left;
 
-  @override
-  bool get isNotEmpty {
-    return children.isNotEmpty;
-  }
-
-  @override
-  int get length {
-    return children.length;
-  }
-
-  @override
-  set length(int length) {
-    children.length = length;
-  }
-
-  @override
-  T operator [](int index) {
-    return children[index];
-  }
-
-  @override
-  void operator []=(int index, T value) {
-    children[index] = value;
-  }
+  Expression right;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
-    return visitor.visitNodeList(this, context);
-  }
-
-  @override
-  void add(T element) {
-    children.add(element);
-  }
-
-  @override
-  T removeAt(int index) {
-    return children.removeAt(index);
-  }
-
-  @override
-  T removeLast() {
-    return children.removeLast();
+    return visitor.visitBinary(this, context);
   }
 
   @override
   String toString() {
-    return '{ ${children.join(', ')} }';
+    return '$left $operator $right';
   }
 }
 
-class Attribute extends NodeList<Node> {
+class Condition extends Expression {
+  Condition(this.test, this.onTrue, this.onFalse);
+
+  Expression test;
+
+  Expression onTrue;
+
+  Expression onFalse;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitCondition(this, context);
+  }
+
+  @override
+  String toString() {
+    return '$test ? $onTrue : $onFalse';
+  }
+}
+
+class Attribute extends Node {
   Attribute(this.name);
 
   String name;
@@ -145,20 +122,53 @@ class Attribute extends NodeList<Node> {
 
   @override
   String toString() {
-    if (children.isEmpty) {
-      return '$name';
-    }
-
-    return '$name: ${Interpolator.visitAll(children)}';
+    return name;
   }
 }
 
-class Element extends NodeList<Node> {
-  Element(this.tag) : attributes = NodeList<Attribute>();
+class EventListener extends Node implements Attribute {
+  EventListener(this.name, this.callback);
+
+  @override
+  String name;
+
+  Node callback;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitEventListener(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'on:$name="$callback"';
+  }
+}
+
+class Fragment extends Node {
+  Fragment() : children = <Node>[];
+
+  List<Node> children;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    throw UnimplementedError();
+  }
+
+  @override
+  String toString() {
+    return children.join(', ');
+  }
+}
+
+class Element extends Fragment {
+  Element(this.tag)
+      : attributes = <Attribute>[],
+        super();
 
   String tag;
 
-  NodeList<Attribute> attributes;
+  List<Attribute> attributes;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
@@ -170,7 +180,7 @@ class Element extends NodeList<Node> {
     var prefix = 'Element.$tag';
 
     if (attributes.isNotEmpty) {
-      prefix = '$prefix$attributes';
+      prefix = '$prefix( ${attributes.join(', ')} )';
     }
 
     return '$prefix { ${children.join(', ')} }';
