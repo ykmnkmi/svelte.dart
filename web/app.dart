@@ -2,7 +2,7 @@ library app;
 
 import 'dart:html';
 
-import 'package:piko/runtime.dart';
+import 'package:piko/piko.dart';
 
 class App extends Component<App> {
   App({this.count = 0});
@@ -46,7 +46,7 @@ class AppFragment extends Fragment<App> {
     t1 = text('Clicked ');
     t2 = text('${context.count}');
     t3 = text(' ');
-    t4 = text(context.count == 1 ? 'time' : 'times');
+    t4 = text('${context.count == 1 ? 'time' : 'times'}');
   }
 
   @override

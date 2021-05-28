@@ -1,4 +1,4 @@
-part of '../../runtime.dart';
+part of '../piko.dart';
 
 class RenderTree {
   RenderTree(this.root) : scheduler = Scheduler();
