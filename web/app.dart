@@ -24,21 +24,21 @@ class AppFragment extends Fragment<App> {
       : mounted = false,
         super(context, tree);
 
-  Element? button1;
+  late Element button1;
 
-  Text? t1;
+  late Text t1;
 
-  Text? t2;
+  late Text t2;
 
-  Text? t3;
+  late Text t3;
 
-  Text? t4;
+  late Text t4;
 
-  String? t4value;
+  late String t4value;
 
   bool mounted;
 
-  VoidCallback? dispose;
+  late VoidCallback dispose;
 
   @override
   void create() {
@@ -46,19 +46,19 @@ class AppFragment extends Fragment<App> {
     t1 = text('Clicked ');
     t2 = text('${context.count}');
     t3 = text(' ');
-    t4 = text('${context.count == 1 ? 'time' : 'times'}');
+    t4 = text(t4value = '${context.count == 1 ? 'time' : 'times'}');
   }
 
   @override
   void mount(Element target, [Node? anchor]) {
-    insert(target, button1!, anchor);
-    append(button1!, t1!);
-    append(button1!, t2!);
-    append(button1!, t3!);
-    append(button1!, t4!);
+    insert(target, button1, anchor);
+    append(button1, t1);
+    append(button1, t2);
+    append(button1, t3);
+    append(button1, t4);
 
     if (!mounted) {
-      dispose = listen(button1!, 'click', (Event event) {
+      dispose = listen(button1, 'click', (Event event) {
         context.handleClick();
         markDirty('count');
       });
@@ -68,10 +68,10 @@ class AppFragment extends Fragment<App> {
   @override
   void update(Set<String> aspects) {
     if (aspects.contains('count')) {
-      setData(t2!, '${context.count}');
+      setData(t2, '${context.count}');
 
       if (t4value != (t4value = context.count == 1 ? 'time' : 'times')) {
-        setData(t4!, t4value!);
+        setData(t4, t4value);
       }
     }
   }
@@ -79,10 +79,10 @@ class AppFragment extends Fragment<App> {
   @override
   void detach(bool detaching) {
     if (detaching) {
-      remove(button1!);
+      remove(button1);
     }
 
     mounted = false;
-    dispose!();
+    dispose();
   }
 }

@@ -1,13 +1,16 @@
 part of '../piko.dart';
 
+@noInline
 void append(Element target, Node node) {
   target.append(node);
 }
 
+@noInline
 void insert(Element target, Node node, [Node? anchor]) {
   target.insertBefore(node, anchor);
 }
 
+@noInline
 void remove(Node node) {
   node.remove();
 }
@@ -30,6 +33,7 @@ Text empty() {
   return text('');
 }
 
+@noInline
 void Function() listen(Node target, String type, EventListener handler) {
   target.addEventListener(type, handler);
   return () {
@@ -37,6 +41,7 @@ void Function() listen(Node target, String type, EventListener handler) {
   };
 }
 
+@noInline
 void attr(Element node, String attribute, String? value) {
   if (value == null) {
     node.removeAttribute(attribute);

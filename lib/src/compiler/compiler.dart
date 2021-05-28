@@ -49,9 +49,9 @@ class FragmentCompiler extends Visitor<String?, String?> {
       sourceBuffer.write('\n\n  bool mounted;');
 
       if (listenList.length == 1) {
-        sourceBuffer.write('\n\n  VoidCallback? dispose;');
+        sourceBuffer.write('\n\n  late VoidCallback dispose;');
       } else {
-        sourceBuffer.write('\n\n  List<VoidCallback>? dispose;');
+        sourceBuffer.write('\n\n  late List<VoidCallback> dispose;');
       }
     }
 
@@ -111,7 +111,7 @@ class FragmentCompiler extends Visitor<String?, String?> {
       sourceBuffer.write('\n\n  @override\n  void detach(bool detaching) {\n    if (detaching) {');
 
       for (final id in rootIds) {
-        sourceBuffer.write('\n      remove($id!);');
+        sourceBuffer.write('\n      remove($id);');
       }
 
       sourceBuffer.write('\n    }');
@@ -120,9 +120,9 @@ class FragmentCompiler extends Visitor<String?, String?> {
         sourceBuffer.write('\n\n    mounted = false;');
 
         if (listenList.length == 1) {
-          sourceBuffer.write('\n    dispose!();');
+          sourceBuffer.write('\n    dispose();');
         } else {
-          sourceBuffer.write('\n    dispose!.forEach((fn) => fn());');
+          sourceBuffer.write('\n    dispose.forEach((fn) => fn());');
         }
       }
 
@@ -156,9 +156,9 @@ class FragmentCompiler extends Visitor<String?, String?> {
 
   void mount(String id, [String? parent]) {
     if (parent == null) {
-      mountList.add('insert(target, $id!, anchor)');
+      mountList.add('insert(target, $id, anchor)');
     } else {
-      mountList.add('append($parent!, $id!)');
+      mountList.add('append($parent, $id)');
     }
   }
 
@@ -168,14 +168,14 @@ class FragmentCompiler extends Visitor<String?, String?> {
 
   @override
   String? visitAttribute(Attribute node, [String? parent]) {
-    createList.add('$parent!.${node.name} = true');
+    createList.add('$parent.${node.name} = true');
   }
 
   @override
   String? visitCondition(Condition node, [String? parent]) {
     final id = getId('t');
-    nodeList.add('Text? $id');
-    nodeList.add('String? ${id}value');
+    nodeList.add('late Text $id');
+    nodeList.add('late String ${id}value');
     createList.add('$id = text(${id}value = \'\${${interpolate(node)}}\')');
     mount(id, parent);
     return id;
@@ -184,7 +184,7 @@ class FragmentCompiler extends Visitor<String?, String?> {
   @override
   String? visitElement(Element node, [String? parent]) {
     final id = getId(node.tag);
-    nodeList.add('Element? $id');
+    nodeList.add('late Element $id');
     createList.add('$id = element(\'${node.tag}\')');
     mount(id, parent);
 
@@ -201,14 +201,14 @@ class FragmentCompiler extends Visitor<String?, String?> {
 
   @override
   String? visitEventListener(EventListener node, [String? parent]) {
-    listenList.add('listen($parent!, \'${node.name}\', (Event event) => ${interpolate(node.callback)}())');
+    listenList.add('listen($parent, \'${node.name}\', (Event event) { ${interpolate(node.callback)}(); })');
     return null;
   }
 
   @override
   String? visitIdentifier(Identifier node, [String? parent]) {
     final id = getId('t');
-    nodeList.add('Text? $id');
+    nodeList.add('late Text $id');
     createList.add('$id = text(\'\${context.${node.name}}\')');
     mount(id, parent);
     return id;
@@ -217,7 +217,7 @@ class FragmentCompiler extends Visitor<String?, String?> {
   @override
   String? visitText(Text node, [String? parent]) {
     final id = getId('t');
-    nodeList.add('Text? $id');
+    nodeList.add('late Text $id');
     createList.add('$id = text(\'${node.escaped}\')');
     mount(id, parent);
     return id;
