@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'visitor.dart';
 
 abstract class Node {
