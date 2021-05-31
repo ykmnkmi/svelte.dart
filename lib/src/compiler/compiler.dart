@@ -176,7 +176,7 @@ class FragmentCompiler extends Visitor<String?, String?> {
     final id = getId('t');
     nodeList.add('late Text $id');
     nodeList.add('late String ${id}value');
-    createList.add('$id = text(${id}value = \'\${${interpolate(node)}}\')');
+    createList.add('$id = text(${id}value = \'${interpolate(node)}\')');
     mount(id, parent);
     return id;
   }
@@ -201,7 +201,7 @@ class FragmentCompiler extends Visitor<String?, String?> {
 
   @override
   String? visitEventListener(EventListener node, [String? parent]) {
-    listenList.add('listen($parent, \'${node.name}\', (Event event) { ${interpolate(node.callback)}(); })');
+    listenList.add('listen($parent, \'${node.name}\', (Event event) { ${interpolate(node.callback, wrap: false)}(); })');
     return null;
   }
 
@@ -221,5 +221,10 @@ class FragmentCompiler extends Visitor<String?, String?> {
     createList.add('$id = text(\'${node.escaped}\')');
     mount(id, parent);
     return id;
+  }
+
+  @override
+  String? visitValueAttribute(ValueAttribute node, [String? parent]) {
+    createList.add('attr($parent, \'${node.name}\', \'${interpolate(node.value)}\')');
   }
 }

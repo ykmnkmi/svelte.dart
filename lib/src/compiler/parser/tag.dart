@@ -110,7 +110,7 @@ extension TagParser on Parser {
       eat('}', required: true);
     } else {
       if (eat('=')) {
-        throw UnimplementedError();
+        push(ValueAttribute(name, Interpolation(readAttributeValue().toList())));
       } else {
         push(Attribute(name));
       }
@@ -119,30 +119,30 @@ extension TagParser on Parser {
     return true;
   }
 
-  void readAttributeValue() {
+  Iterable<Expression> readAttributeValue() sync* {
     eat('"', required: true);
-    readSequence((Parser parser) => parser.match('"'));
+    yield* readSequence((Parser parser) => parser.match('"'));
     eat('"', required: true);
   }
 
-  Iterable<Node> readSequence(bool Function(Parser parser) done) sync* {
+  Iterable<Expression> readSequence(bool Function(Parser parser) done) sync* {
     final buffer = StringBuffer();
 
-    void flush() {
+    Iterable<Text> flush() sync* {
       if (buffer.isNotEmpty) {
-        push(Text('$buffer'));
+        yield Text('$buffer');
         buffer.clear();
       }
     }
 
     while (!isDone) {
       if (done(this)) {
-        flush();
+        yield* flush();
         return;
       } else if (match('{')) {
-        flush();
+        yield* flush();
         mustache();
-        yield pop()!;
+        yield pop() as Expression;
       } else {
         buffer.write(template[index++]);
       }

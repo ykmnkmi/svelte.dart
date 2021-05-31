@@ -1,11 +1,15 @@
+import 'package:piko/compiler.dart';
+
 import 'nodes.dart';
 
-String interpolate(Node node, [String context = 'context']) {
-  return const Interpolator().visit(node, context);
+String interpolate(Node node, {String context = 'context', bool wrap = true}) {
+  return Interpolator(wrap).visit(node, context);
 }
 
 class Interpolator extends Visitor<String?, String> {
-  const Interpolator();
+  Interpolator([this.wrap = true]);
+
+  bool wrap;
 
   @override
   String visit(Node node, [String? context]) {
@@ -16,7 +20,8 @@ class Interpolator extends Visitor<String?, String> {
   String visitBinary(Binary node, [String? context]) {
     final left = node.left.accept(this, context);
     final right = node.right.accept(this, context);
-    return '$left ${node.operator} $right';
+    final result = '$left ${node.operator} $right';
+    return wrap ? '\${$result}' : result;
   }
 
   @override
@@ -24,17 +29,29 @@ class Interpolator extends Visitor<String?, String> {
     final test = node.test.accept(this, context);
     final onTrue = node.onTrue.accept(this, context);
     final onFalse = node.onFalse.accept(this, context);
-    return '$test ? $onTrue : $onFalse';
+    final result = '$test ? $onTrue : $onFalse';
+    return wrap ? '\${$result}' : result;
   }
 
   @override
   String visitIdentifier(Identifier node, [String? context]) {
-    return '$context.${node.name}';
+    final result = '$context.${node.name}';
+    return wrap ? '\${$result}' : result;
+  }
+
+  @override
+  String visitInterpolation(Interpolation node, [String? context]) {
+    return node.expressions.map<String>((expression) => expression.accept(this, context)).join();
   }
 
   @override
   String visitPrimitive(Primitive node, [String? context]) {
-    return node.value;
+    return wrap ? '\${${node.value}}' : node.value;
+  }
+
+  @override
+  String visitText(Text node, [String? context]) {
+    return node.escaped;
   }
 }
 
@@ -69,11 +86,19 @@ abstract class Visitor<C, R> {
     throw UnimplementedError();
   }
 
+  R visitInterpolation(Interpolation node, [C? context]) {
+    throw UnimplementedError();
+  }
+
   R visitPrimitive(Primitive node, [C? context]) {
     throw UnimplementedError();
   }
 
   R visitText(Text node, [C? context]) {
+    throw UnimplementedError();
+  }
+
+  R visitValueAttribute(ValueAttribute node, [C? context]) {
     throw UnimplementedError();
   }
 }

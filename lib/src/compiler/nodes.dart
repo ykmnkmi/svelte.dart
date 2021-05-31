@@ -68,6 +68,22 @@ class Identifier extends Expression {
   }
 }
 
+class Interpolation extends Expression {
+  Interpolation(this.expressions);
+
+  final List<Expression> expressions;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitInterpolation(this, context);
+  }
+
+  @override
+  String toString() {
+    return interpolate(this);
+  }
+}
+
 class Binary extends Expression {
   Binary(this.operator, this.left, this.right);
 
@@ -124,11 +140,8 @@ class Attribute extends Node {
   }
 }
 
-class EventListener extends Node implements Attribute {
-  EventListener(this.name, this.callback);
-
-  @override
-  String name;
+class EventListener extends Attribute {
+  EventListener(String name, this.callback) : super(name);
 
   Node callback;
 
@@ -139,7 +152,23 @@ class EventListener extends Node implements Attribute {
 
   @override
   String toString() {
-    return 'on:$name="$callback"';
+    return 'on:$name={ $callback }';
+  }
+}
+
+class ValueAttribute extends Attribute {
+  ValueAttribute(String name, this.value) : super(name);
+
+  Expression value;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitValueAttribute(this, context);
+  }
+
+  @override
+  String toString() {
+    return '$name="$value"';
   }
 }
 
