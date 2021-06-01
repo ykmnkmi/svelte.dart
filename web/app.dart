@@ -1,7 +1,5 @@
 library app;
 
-import 'dart:html';
-
 import 'package:piko/piko.dart';
 
 class App extends Component<App> {
@@ -38,7 +36,7 @@ class AppFragment extends Fragment<App> {
 
   bool mounted;
 
-  late VoidCallback dispose;
+  late Function dispose;
 
   @override
   void create() {
@@ -58,7 +56,7 @@ class AppFragment extends Fragment<App> {
     append(button1, t4);
 
     if (!mounted) {
-      dispose = listen(button1, 'click', (Event event) {
+      dispose = listen(button1, 'click', (event) {
         context.handleClick();
         markDirty('count');
       });

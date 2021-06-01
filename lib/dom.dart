@@ -1,4 +1,8 @@
-part of '../piko.dart';
+import 'dart:html';
+
+import 'package:meta/dart2js.dart';
+
+export 'dart:html' show Element, Node, Text, document, window;
 
 @noInline
 void append(Element target, Node node) {

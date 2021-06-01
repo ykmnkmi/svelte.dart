@@ -49,9 +49,9 @@ class FragmentCompiler extends Visitor<String?, String?> {
       sourceBuffer.write('\n\n  bool mounted;');
 
       if (listenList.length == 1) {
-        sourceBuffer.write('\n\n  late VoidCallback dispose;');
+        sourceBuffer.write('\n\n  late Function dispose;');
       } else {
-        sourceBuffer.write('\n\n  late List<VoidCallback> dispose;');
+        sourceBuffer.write('\n\n  late List<Function> dispose;');
       }
     }
 
@@ -90,7 +90,7 @@ class FragmentCompiler extends Visitor<String?, String?> {
         if (listenList.length == 1) {
           sourceBuffer.write('\n      dispose = ${listenList[0]};');
         } else {
-          sourceBuffer.write('\n      dispose = <VoidCallback>[');
+          sourceBuffer.write('\n      dispose = <Function>[');
 
           for (final listen in listenList) {
             sourceBuffer.write('\n        $listen;');
@@ -201,7 +201,7 @@ class FragmentCompiler extends Visitor<String?, String?> {
 
   @override
   String? visitEventListener(EventListener node, [String? parent]) {
-    listenList.add('listen($parent, \'${node.name}\', (Event event) { ${interpolate(node.callback, wrap: false)}(); })');
+    listenList.add('listen($parent, \'${node.name}\', (event) { ${interpolate(node.callback, wrap: false)}(); })');
     return null;
   }
 

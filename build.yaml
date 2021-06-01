@@ -14,7 +14,7 @@ targets:
           - --omit-implicit-checks
           - --lax-runtime-type-to-string
           - --trust-primitives
-          # - --no-source-maps
-          # - --csp
-          # - --fast-startup
-          # - --minify
+          # - --server-mode
+          - --no-source-maps
+          - --fast-startup
+          - --minify
