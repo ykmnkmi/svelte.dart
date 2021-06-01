@@ -11,6 +11,14 @@ class Interpolator extends Visitor<String?, String> {
 
   bool wrap;
 
+  String apply(bool value, String Function() callback) {
+    final current = wrap;
+    wrap = value;
+    final result = callback();
+    wrap = current;
+    return result;
+  }
+
   @override
   String visit(Node node, [String? context]) {
     return node.accept(this, context);
@@ -18,18 +26,24 @@ class Interpolator extends Visitor<String?, String> {
 
   @override
   String visitBinary(Binary node, [String? context]) {
-    final left = node.left.accept(this, context);
-    final right = node.right.accept(this, context);
-    final result = '$left ${node.operator} $right';
+    final result = apply(false, () {
+      final left = node.left.accept(this, context);
+      final right = node.right.accept(this, context);
+      return '$left ${node.operator} $right';
+    });
+
     return wrap ? '\${$result}' : result;
   }
 
   @override
   String visitCondition(Condition node, [String? context]) {
-    final test = node.test.accept(this, context);
-    final onTrue = node.onTrue.accept(this, context);
-    final onFalse = node.onFalse.accept(this, context);
-    final result = '$test ? $onTrue : $onFalse';
+    final result = apply(false, () {
+      final test = node.test.accept(this, context);
+      final onTrue = node.onTrue.accept(this, context);
+      final onFalse = node.onFalse.accept(this, context);
+      return '$test ? $onTrue : $onFalse';
+    });
+
     return wrap ? '\${$result}' : result;
   }
 
@@ -41,7 +55,8 @@ class Interpolator extends Visitor<String?, String> {
 
   @override
   String visitInterpolation(Interpolation node, [String? context]) {
-    return node.expressions.map<String>((expression) => expression.accept(this, context)).join();
+    final result = apply(false, () => node.expressions.map<String>((expression) => expression.accept(this, context)).join());
+    return wrap ? '\${$result}' : result;
   }
 
   @override

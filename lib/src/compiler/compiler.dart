@@ -217,8 +217,15 @@ class FragmentCompiler extends Visitor<String?, String?> {
   @override
   String? visitText(Text node, [String? parent]) {
     final id = getId('t');
+    final text = node.escaped;
     nodeList.add('late Text $id');
-    createList.add('$id = text(\'${node.escaped}\')');
+
+    if (text == ' ') {
+      createList.add('$id = space()');
+    } else {
+      createList.add('$id = text(\'${node.escaped}\')');
+    }
+
     mount(id, parent);
     return id;
   }

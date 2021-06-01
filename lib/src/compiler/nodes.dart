@@ -1,3 +1,5 @@
+import 'package:piko/compiler.dart';
+
 import 'visitor.dart';
 
 abstract class Node {
@@ -80,7 +82,20 @@ class Interpolation extends Expression {
 
   @override
   String toString() {
-    return interpolate(this);
+    return expressions.join();
+  }
+
+  static Expression orSingle(Iterable<Expression> expressions) {
+    final list = expressions.toList();
+
+    switch (list.length) {
+      case 0:
+        return Text('');
+      case 1:
+        return list[0];
+      default:
+        return Interpolation(list);
+    }
   }
 }
 

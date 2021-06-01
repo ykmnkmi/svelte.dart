@@ -110,7 +110,7 @@ extension TagParser on Parser {
       eat('}', required: true);
     } else {
       if (eat('=')) {
-        push(ValueAttribute(name, Interpolation(readAttributeValue().toList())));
+        push(ValueAttribute(name, Interpolation.orSingle(readAttributeValue())));
       } else {
         push(Attribute(name));
       }
