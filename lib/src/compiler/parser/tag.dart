@@ -85,17 +85,36 @@ extension TagParser on Parser {
   }
 
   bool readAttribute(Element element, Set<String> uniqueNames) {
+    void check(String name) {
+      if (uniqueNames.contains(name)) {
+        error(code: 'duplicate-attribute', message: 'attributes need to be unique');
+      }
+
+      uniqueNames.add(name);
+    }
+
+    if (eat('{')) {
+      whitespace();
+
+      // TODO: spread
+
+      if (!identifier()) {
+        error(message: 'expect identifier');
+      }
+
+      final node = pop() as Identifier;
+      check(node.name);
+      push(ValueAttribute(node.name, node));
+      whitespace();
+      eat('}', required: true);
+      return true;
+    }
+
     final name = readUntil(RegExp(r'[\s=\/>"' "']"));
 
     if (name.isEmpty) {
       return false;
     }
-
-    if (uniqueNames.contains(name)) {
-      error(code: 'duplicate-attribute', message: 'attributes need to be unique');
-    }
-
-    uniqueNames.add(name);
 
     if (name.startsWith('on:')) {
       eat('={', required: true);

@@ -47,6 +47,10 @@ abstract class Text implements Node {
 @JS()
 @anonymous
 abstract class Element implements Node, EventTarget {
+  String get text;
+
+  set text(String text);
+
   String? getAttribute(String name);
 
   void removeAttribute(String name);

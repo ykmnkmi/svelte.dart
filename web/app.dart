@@ -3,7 +3,7 @@ library app;
 import 'package:piko/piko.dart';
 
 class App extends Component<App> {
-  App({this.count = 0});
+  App() : count = 0;
 
   int count;
 

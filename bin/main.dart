@@ -1,8 +1,11 @@
 import 'package:piko/compiler.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-const String source = '<button id="btn" on:click={ handleClick }>Clicked { count } { count == 1 ? \'time\' : \'times\' }</button>';
-// const String source = '<p id="title-{ id }">hello { name }!</p>';
+// hello world
+// const String source = '<h1>Hello {name}!</h1>';
+
+// dynamic attributes
+const String source = '<img {src} alt="{name} dancing">';
 
 void main() {
   try {

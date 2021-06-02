@@ -222,9 +222,9 @@ class Element extends Fragment {
     var prefix = 'Element.$tag';
 
     if (attributes.isNotEmpty) {
-      prefix = '$prefix( ${attributes.join(', ')} )';
+      prefix = '$prefix(${attributes.join(', ')})';
     }
 
-    return '$prefix { ${children.join(', ')} }';
+    return children.isEmpty ? prefix : '$prefix { ${children.join(', ')} }';
   }
 }

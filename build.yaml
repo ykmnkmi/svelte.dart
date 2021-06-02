@@ -15,6 +15,6 @@ targets:
           - --lax-runtime-type-to-string
           - --trust-primitives
           # - --server-mode
-          - --no-source-maps
-          - --fast-startup
-          - --minify
+          # - --no-source-maps
+          # - --fast-startup
+          # - --minify
