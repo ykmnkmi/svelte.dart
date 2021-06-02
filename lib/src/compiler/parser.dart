@@ -3,13 +3,12 @@ import 'nodes.dart';
 
 part 'parser/mustache.dart';
 part 'parser/tag.dart';
+part 'parser/text.dart';
 
 Fragment parse(String template) {
   final parser = Parser(template);
   return parser.root;
 }
-
-typedef State = String? Function();
 
 class LastAutoClosedTag {
   LastAutoClosedTag(this.tag, this.reason, this.depth);
@@ -29,12 +28,18 @@ class Parser {
     stack.add(root);
 
     while (!isDone) {
+      Node? node;
+
       if (match('<')) {
-        tag();
+        node = tag();
       } else if (match('{')) {
-        mustache();
+        node = mustache();
       } else {
-        text();
+        node = text();
+      }
+
+      if (node != null) {
+        push(node);
       }
     }
 
@@ -176,18 +181,6 @@ class Parser {
     }
 
     index = template.length;
-  }
-
-  void text() {
-    final start = index;
-
-    while (!isDone && !match('{') && !match('<')) {
-      index += 1;
-    }
-
-    if (start != index) {
-      push(Text(template.substring(start, index)));
-    }
   }
 
   void whitespace({bool required = false}) {

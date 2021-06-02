@@ -84,7 +84,7 @@ extension TagParser on Parser {
     return false;
   }
 
-  bool readAttribute(Element element, Set<String> uniqueNames) {
+  Attribute? readAttribute(Element element, Set<String> uniqueNames) {
     void check(String name) {
       if (uniqueNames.contains(name)) {
         error(code: 'duplicate-attribute', message: 'attributes need to be unique');
@@ -98,44 +98,38 @@ extension TagParser on Parser {
 
       // TODO: spread
 
-      if (!identifier()) {
+      final node = identifier();
+
+      if (node == null) {
         error(message: 'expect identifier');
       }
 
-      final node = pop() as Identifier;
       check(node.name);
-      push(ValueAttribute(node.name, node));
+
       whitespace();
       eat('}', required: true);
-      return true;
+
+      return ValueAttribute(node.name, node);
     }
 
     final name = readUntil(RegExp(r'[\s=\/>"' "']"));
 
     if (name.isEmpty) {
-      return false;
+      return null;
     }
 
     if (name.startsWith('on:')) {
-      eat('={', required: true);
-      whitespace();
+      eat('=', required: true);
 
-      if (!expression()) {
-        error(message: 'expected an identifier');
-      }
+      final node = mustache();
 
-      push(EventListener(name.substring(3), pop()!));
       whitespace();
       eat('}', required: true);
-    } else {
-      if (eat('=')) {
-        push(ValueAttribute(name, Interpolation.orSingle(readAttributeValue())));
-      } else {
-        push(Attribute(name));
-      }
+
+      return EventListener(name.substring(3), node);
     }
 
-    return true;
+    return eat('=') ? ValueAttribute(name, Interpolation.orSingle(readAttributeValue())) : Attribute(name);
   }
 
   Iterable<Expression> readAttributeValue() sync* {
@@ -160,8 +154,7 @@ extension TagParser on Parser {
         return;
       } else if (match('{')) {
         yield* flush();
-        mustache();
-        yield pop() as Expression;
+        yield mustache();
       } else {
         buffer.write(template[index++]);
       }
@@ -184,7 +177,7 @@ extension TagParser on Parser {
     return name;
   }
 
-  void tag() {
+  Element? tag() {
     eat('<', required: true);
 
     var parent = current;
@@ -192,7 +185,7 @@ extension TagParser on Parser {
     if (eat('!--')) {
       skipUntil('-->');
       eat('-->', required: true, message: 'comment was left open, expected -->');
-      return;
+      return null;
     }
 
     final isClosingTag = eat('/');
@@ -217,30 +210,34 @@ extension TagParser on Parser {
 
       stack.removeLast();
       forgetLastAutoClosedTag();
-      return;
-    } else if (parent is Element && closingTagOmitted(parent.tag, name)) {
+      return null;
+    }
+
+    if (parent is Element && closingTagOmitted(parent.tag, name)) {
       stack.removeLast();
       lastAutoClosedTag = LastAutoClosedTag(parent.tag, name, length);
     }
 
     final uniqueNames = <String>{};
+
     whitespace();
 
-    while (readAttribute(element, uniqueNames)) {
-      element.attributes.add(pop() as Attribute);
+    var attribute = readAttribute(element, uniqueNames);
+
+    while (attribute != null) {
+      element.attributes.add(attribute);
+
       whitespace();
     }
-
-    push(element);
 
     final selfClosing = eat('/') || isVoid(name);
 
     eat('>', required: true);
 
-    if (selfClosing) {
-      // don't push self-closing elements onto the stack
-    } else {
-      stack.add(element);
+    if (!selfClosing) {
+      // TODO: parse child
     }
+
+    return element;
   }
 }

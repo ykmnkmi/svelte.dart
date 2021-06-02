@@ -1,97 +1,111 @@
 part of '../parser.dart';
 
 extension MustacheParser on Parser {
-  bool expression() {
+  Expression mustache() {
+    eat('{', required: true);
+    whitespace();
+
+    final node = expression();
+
+    if (node == null) {
+      error(message: 'expected an expression');
+    }
+
+    whitespace();
+    eat('}', required: true);
+
+    return node;
+  }
+
+  Expression? expression() {
     return conditional();
   }
 
-  bool conditional() {
-    if (equality()) {
-      whitespace();
+  Expression? conditional() {
+    final test = equality();
 
-      if (eat('?')) {
-        whitespace();
-
-        if (!primary()) {
-          error(message: 'expected an expression');
-        }
-
-        whitespace();
-        eat(':', required: true);
-        whitespace();
-
-        if (!primary()) {
-          error(message: 'expected an expression');
-        }
-
-        final onFalse = pop() as Expression;
-        final onTrue = pop() as Expression;
-        push(Condition(pop() as Expression, onTrue, onFalse));
-        return true;
-      }
-
-      return true;
+    if (test == null) {
+      return null;
     }
 
-    return false;
-  }
+    whitespace();
 
-  bool equality() {
-    if (primary()) {
-      whitespace();
-
-      final operator = read('==') ?? read('!=');
-
-      if (operator != null) {
-        whitespace();
-
-        if (primary()) {
-          final right = pop() as Expression;
-          push(Binary(operator, pop() as Expression, right));
-          return true;
-        }
-
-        error(message: 'expected an expression');
-      }
-
-      return true;
+    if (!eat('?')) {
+      return test;
     }
 
-    return false;
+    whitespace();
+
+    final onFalse = equality();
+
+    if (onFalse == null) {
+      error(message: 'expected an expression');
+    }
+
+    whitespace();
+    eat(':', required: true);
+    whitespace();
+
+    final onTrue = equality();
+
+    if (onTrue == null) {
+      error(message: 'expected an expression');
+    }
+
+    return Condition(test, onTrue, onFalse);
   }
 
-  bool primary() {
+  Expression? equality() {
+    final left = primary();
+
+    if (left == null) {
+      return null;
+    }
+
+    whitespace();
+
+    final operator = read('==') ?? read('!=');
+
+    if (operator == null) {
+      error(message: 'expected an expression');
+    }
+
+    whitespace();
+
+    final right = primary();
+
+    if (right == null) {
+      return left;
+    }
+
+    return Binary(operator, left, right);
+  }
+
+  Expression? primary() {
     var value = read('null') ?? read('true') ?? read('false');
 
     if (value != null) {
-      push(Primitive(value, value == 'null' ? 'Null' : 'bool'));
-      return true;
+      return Primitive(value, value == 'null' ? 'Null' : 'bool');
     }
 
     // TODO: hex, exponenta
+
     value = readPattern(RegExp('\\d+'));
 
     if (value != null) {
       final base = value;
       value = readPattern(RegExp('\\.\\d+'));
-
-      if (value == null) {
-        push(Primitive(base, 'int'));
-      } else {
-        push(Primitive(base + value, 'double'));
-      }
-
-      return true;
+      return value == null ? Primitive(base, 'int') : Primitive(base + value, 'double');
     }
 
     // TODO: interpolation
+
     value = read('\'') ?? read('"');
 
     if (value != null) {
       final content = readUntil(value);
       eat(value, required: true);
-      push(Primitive('\'${content.replaceAll('\'', '\\\'')}\'', 'String'));
-      return true;
+      return Primitive('\'${content.replaceAll('\'', '\\\'')}\'', 'String');
     }
 
     // TODO: list, set, map literals
@@ -99,8 +113,9 @@ extension MustacheParser on Parser {
     return identifier();
   }
 
-  bool identifier() {
+  Identifier? identifier() {
     final buffer = StringBuffer();
+
     var part = readPattern(RegExp(r'[a-zA-Z_]'));
 
     while (part != null) {
@@ -108,23 +123,8 @@ extension MustacheParser on Parser {
       part = readPattern(RegExp(r'[a-zA-Z0-9_]'));
     }
 
-    if (buffer.isEmpty) {
-      return false;
+    if (buffer.isNotEmpty) {
+      return Identifier('$buffer');
     }
-
-    push(Identifier('$buffer'));
-    return true;
-  }
-
-  void mustache() {
-    eat('{', required: true);
-    whitespace();
-
-    if (!expression()) {
-      error(message: 'primary expression expected');
-    }
-
-    whitespace();
-    eat('}', required: true);
   }
 }
