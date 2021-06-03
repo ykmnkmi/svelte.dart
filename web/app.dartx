@@ -1,4 +1,4 @@
-import 'package:piko/runtime.dart';
+import 'package:piko/piko.dart';
 
 class App extends Component<App> {
   App({this.count = 0});

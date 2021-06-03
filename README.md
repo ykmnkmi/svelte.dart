@@ -3,8 +3,8 @@ piko.dart
 
 Web framework for [Dart](https://dart.dev).
 
-TODO
-====
+Plans:
+======
 - fragment compiler
   - parser
   - generator
@@ -14,40 +14,52 @@ TODO
 - VS Code extension
   - syntax highlighter
   - language server
-- change detection & event handlers
+- change detection
 - ...
 
+Done:
+- static html fragemnt parser & compiler
+- poor VS Code Dart & HTML syntax highlighter
 
-Example
+Current:
+- move to Angular AST after null-safety release
+- parse { ... expression ... }
+
 =======
 from:
 ```
-import 'package:piko/runtime.dart';
+import 'package:piko/piko.dart';
 
 class App extends Component<App> {
-  App({this.name = 'world'});
+  App() : count = 0;
   
-  final String name;
+  int count;
+
+  void handleClick() {
+		count += 1;
+	}
 
   @override
   Fragment<App> render(RenderTree tree) {
-    return <p id="title">hello { name }!</p>;
+    return <button on:click={ handleClick }>
+      Clicked { count } { count == 1 ? 'time' : 'times' }
+    </button>;
   }
 }
 ```
 
 to:
 ```
-library app;
-
-import 'dart:html';
-
-import 'package:piko/runtime.dart';
+import 'package:piko/piko.dart';
 
 class App extends Component<App> {
-  App({this.name = 'world'});
+  App() : count = 0;
 
-  final String name;
+  int count;
+
+  void handleClick() {
+    count += 1;
+  }
 
   @override
   Fragment<App> render(RenderTree tree) {
@@ -56,40 +68,70 @@ class App extends Component<App> {
 }
 
 class AppFragment extends Fragment<App> {
-  AppFragment(App context, RenderTree tree) : super(context, tree);
+  AppFragment(App context, RenderTree tree)
+      : mounted = false,
+        super(context, tree);
 
-  // `late` is too much here, node `!` checks drops after compiling
+  late Element button1;
 
-  Element? p1;
+  late Text t1;
 
-  Text? t1;
+  late Text t2;
 
-  Text? t2;
+  late Text t3;
 
-  Text? t3;
+  late Text t4;
+
+  late String t4value;
+
+  bool mounted;
+
+  late Function dispose;
 
   @override
   void create() {
-    p1 = element('p');
-    t1 = text('hello ');
-    t2 = text(context.name);
-    t3 = text('!');
-    attr(p1!, 'id', 'title');
+    button1 = element('button');
+    t1 = text('Clicked ');
+    t2 = text('${context.count}');
+    t3 = text(' ');
+    t4 = text(t4value = '${context.count == 1 ? 'time' : 'times'}');
   }
 
   @override
   void mount(Element target, [Node? anchor]) {
-    insert(target, p1!, anchor);
-    append(p1!, t1!);
-    append(p1!, t2!);
-    append(p1!, t3!);
+    insert(target, button1, anchor);
+    append(button1, t1);
+    append(button1, t2);
+    append(button1, t3);
+    append(button1, t4);
+
+    if (!mounted) {
+      dispose = listen(button1, 'click', (event) {
+        context.handleClick();
+        markDirty('count');
+      });
+    }
+  }
+
+  @override
+  void update(Set<String> aspects) {
+    if (aspects.contains('count')) {
+      setData(t2, '${context.count}');
+
+      if (t4value != (t4value = context.count == 1 ? 'time' : 'times')) {
+        setData(t4, t4value);
+      }
+    }
   }
 
   @override
   void detach(bool detaching) {
     if (detaching) {
-      remove(p1!);
+      remove(button1);
     }
+
+    mounted = false;
+    dispose();
   }
 }
 ```
