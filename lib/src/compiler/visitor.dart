@@ -55,8 +55,7 @@ class Interpolator extends Visitor<String?, String> {
 
   @override
   String visitInterpolation(Interpolation node, [String? context]) {
-    final result = apply(false, () => node.expressions.map<String>((expression) => expression.accept(this, context)).join());
-    return wrap ? '\${$result}' : result;
+    return node.expressions.map<String>((expression) => expression.accept(this, context)).join();
   }
 
   @override

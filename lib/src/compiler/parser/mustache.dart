@@ -67,7 +67,7 @@ extension MustacheParser on Parser {
     final operator = read('==') ?? read('!=');
 
     if (operator == null) {
-      error(message: 'expected an expression');
+      return left;
     }
 
     whitespace();

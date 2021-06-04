@@ -22,10 +22,8 @@ Done:
 - poor VS Code Dart & HTML syntax highlighter
 
 Current:
-- move to Angular AST after null-safety release
 - parse { ... expression ... }
 
-=======
 from:
 ```
 import 'package:piko/piko.dart';

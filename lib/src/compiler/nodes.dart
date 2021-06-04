@@ -82,7 +82,7 @@ class Interpolation extends Expression {
 
   @override
   String toString() {
-    return expressions.join();
+    return interpolate(this);
   }
 
   static Expression orSingle(Iterable<Expression> expressions) {
@@ -139,7 +139,7 @@ class Condition extends Expression {
   }
 }
 
-class Attribute extends Node {
+class Attribute extends Node implements Comparable<Attribute> {
   Attribute(this.name);
 
   String name;
@@ -147,6 +147,15 @@ class Attribute extends Node {
   @override
   R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
     return visitor.visitAttribute(this, context);
+  }
+
+  @override
+  int compareTo(Attribute other) {
+    if (other is EventListener) {
+      return 1;
+    }
+
+    return name.compareTo(other.name);
   }
 
   @override
@@ -163,6 +172,15 @@ class EventListener extends Attribute {
   @override
   R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
     return visitor.visitEventListener(this, context);
+  }
+
+  @override
+  int compareTo(Attribute other) {
+    if (other is EventListener) {
+      return name.compareTo(other.name);
+    }
+
+    return -1;
   }
 
   @override

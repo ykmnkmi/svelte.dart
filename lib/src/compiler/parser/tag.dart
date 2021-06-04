@@ -226,9 +226,11 @@ extension TagParser on Parser {
 
     while (attribute != null) {
       element.attributes.add(attribute);
-
       whitespace();
+      attribute = readAttribute(element, uniqueNames);
     }
+
+    element.attributes.sort();
 
     final selfClosing = eat('/') || isVoid(name);
 
