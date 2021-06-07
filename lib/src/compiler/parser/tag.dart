@@ -70,6 +70,7 @@ extension TagParser on Parser {
   }
 
   Never invalidClosingTag(String tag) {
+    print(current);
     final message = isLastAutoClosedTag(tag)
         ? '</$tag> attempted to close <$tag> that was already automatically closed by <${lastAutoClosedTag!.reason}>'
         : '</$tag> attempted to close an element that was not open';
@@ -120,13 +121,9 @@ extension TagParser on Parser {
 
     if (name.startsWith('on:')) {
       eat('=', required: true);
-
-      final node = mustache();
-
+      mustache();
       whitespace();
-      eat('}', required: true);
-
-      return EventListener(name.substring(3), node);
+      return EventListener(name.substring(3), pop() as Expression);
     }
 
     return eat('=') ? ValueAttribute(name, Interpolation.orSingle(readAttributeValue())) : Attribute(name);
@@ -154,9 +151,10 @@ extension TagParser on Parser {
         return;
       } else if (match('{')) {
         yield* flush();
-        yield mustache();
+        mustache();
+        yield pop() as Expression;
       } else {
-        buffer.write(template[index++]);
+        buffer.write(source[index++]);
       }
     }
 
@@ -177,15 +175,15 @@ extension TagParser on Parser {
     return name;
   }
 
-  Element? tag() {
-    eat('<', required: true);
-
+  void tag() {
     var parent = current;
+
+    eat('<', required: true);
 
     if (eat('!--')) {
       skipUntil('-->');
       eat('-->', required: true, message: 'comment was left open, expected -->');
-      return null;
+      return;
     }
 
     final isClosingTag = eat('/');
@@ -210,18 +208,14 @@ extension TagParser on Parser {
 
       stack.removeLast();
       forgetLastAutoClosedTag();
-      return null;
-    }
-
-    if (parent is Element && closingTagOmitted(parent.tag, name)) {
+      return;
+    } else if (parent is Element && closingTagOmitted(parent.tag, name)) {
       stack.removeLast();
       lastAutoClosedTag = LastAutoClosedTag(parent.tag, name, length);
     }
 
     final uniqueNames = <String>{};
-
     whitespace();
-
     var attribute = readAttribute(element, uniqueNames);
 
     while (attribute != null) {
@@ -231,15 +225,15 @@ extension TagParser on Parser {
     }
 
     element.attributes.sort();
+    push(element);
 
     final selfClosing = eat('/') || isVoid(name);
-
     eat('>', required: true);
 
-    if (!selfClosing) {
+    if (selfClosing) {
       // TODO: parse child
+    } else {
+      stack.add(element);
     }
-
-    return element;
   }
 }

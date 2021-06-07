@@ -1,19 +1,13 @@
 import 'nodes.dart';
-import 'parser.dart';
 import 'utils.dart';
 import 'visitor.dart';
 
-String compile(String source) {
-  final fragment = parse(source);
-  return compileFragment(fragment, 'App');
+String compileFragment(String name, Fragment fragment) {
+  return Compiler(name, fragment).toSource();
 }
 
-String compileFragment(Fragment fragment, String contextClass) {
-  return FragmentCompiler(contextClass, fragment).toSource();
-}
-
-class FragmentCompiler extends Visitor<String?, String?> {
-  FragmentCompiler(String name, this.fragment)
+class Compiler extends Visitor<String?, String?> {
+  Compiler(String name, this.fragment)
       : sourceBuffer = StringBuffer(),
         nodeList = <String>[],
         createList = <String>[],
@@ -192,8 +186,12 @@ class FragmentCompiler extends Visitor<String?, String?> {
       attribute.accept(this, id);
     }
 
-    for (final child in node.children) {
-      child.accept(this, id);
+    if (node.children.every((node) => node is Expression)) {
+      createList.add('$id.text = \'${interpolate(Interpolation(node.children.cast<Expression>()))}\'');
+    } else {
+      for (final child in node.children) {
+        child.accept(this, id);
+      }
     }
 
     return id;

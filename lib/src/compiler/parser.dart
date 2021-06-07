@@ -1,13 +1,14 @@
 import 'errors.dart';
 import 'nodes.dart';
 
+part 'parser/expression.dart';
 part 'parser/mustache.dart';
 part 'parser/tag.dart';
 part 'parser/text.dart';
 
-Fragment parse(String template) {
+List<Fragment> parse(String template) {
   final parser = Parser(template);
-  return parser.root;
+  return <Fragment>[parser.root];
 }
 
 class LastAutoClosedTag {
@@ -21,26 +22,26 @@ class LastAutoClosedTag {
 }
 
 class Parser {
-  Parser(this.template)
+  Parser(this.source)
       : stack = <Fragment>[],
         root = Fragment(),
         index = 0 {
     stack.add(root);
 
+    final hasPiko = eat('<piko>');
+
     while (!isDone) {
-      Node? node;
-
       if (match('<')) {
-        node = tag();
+        tag();
       } else if (match('{')) {
-        node = mustache();
+        mustache();
       } else {
-        node = text();
+        text();
       }
+    }
 
-      if (node != null) {
-        push(node);
-      }
+    if (hasPiko) {
+      eat('</piko>', required: hasPiko);
     }
 
     if (stack.length > 1) {
@@ -48,11 +49,11 @@ class Parser {
     }
   }
 
-  final String template;
+  final String source;
 
   final List<Fragment> stack;
 
-  final Fragment root;
+  Fragment root;
 
   int index;
 
@@ -61,7 +62,7 @@ class Parser {
   }
 
   bool get isDone {
-    return index >= template.length;
+    return index >= source.length;
   }
 
   bool get isEmpty {
@@ -77,7 +78,7 @@ class Parser {
   }
 
   String get rest {
-    return template.substring(index);
+    return source.substring(index);
   }
 
   bool eat(String string, {bool required = false, String? message}) {
@@ -95,21 +96,22 @@ class Parser {
 
   Never error({String? code, String? message}) {
     final start = index - 10 < 0 ? 0 : index - 10;
-    final end = index + 10 < template.length ? index + 10 : template.length;
-    throw CompileError(code: code, message: message, source: template.substring(start, end), offset: index - start);
+    final end = index + 10 < source.length ? index + 10 : source.length;
+    throw CompileError(code: code, message: message, source: source.substring(start, end), offset: index - start);
   }
 
   String? look(Pattern pattern) {
-    final match = pattern.matchAsPrefix(template, index);
+    final match = pattern.matchAsPrefix(source, index);
     return match?[0];
   }
 
   bool match(String string) {
-    return template.substring(index, index + string.length) == string;
+    final end = index + string.length;
+    return end > source.length ? false : source.substring(index, end) == string;
   }
 
   bool matchPattern(Pattern pattern) {
-    return pattern.matchAsPrefix(template, index) != null;
+    return pattern.matchAsPrefix(source, index) != null;
   }
 
   void push(Node node) {
@@ -145,15 +147,15 @@ class Parser {
     }
 
     final start = index;
-    final end = template.indexOf(pattern, index);
+    final end = source.indexOf(pattern, index);
 
     if (end > 0) {
       index = end;
-      return template.substring(start, end);
+      return source.substring(start, end);
     }
 
-    index = template.length;
-    return template.substring(start);
+    index = source.length;
+    return source.substring(start);
   }
 
   void skip(Pattern? pattern) {
@@ -173,24 +175,24 @@ class Parser {
       error(message: 'unexpected end of input');
     }
 
-    final end = template.indexOf(pattern, index);
+    final end = source.indexOf(pattern, index);
 
     if (end > 0) {
       index = end;
       return;
     }
 
-    index = template.length;
+    index = source.length;
   }
 
   void whitespace({bool required = false}) {
     const whitespaces = <String>[' ', '\t', '\r', '\n'];
 
-    if (required && whitespaces.contains(template[index])) {
+    if (required && whitespaces.contains(source[index])) {
       error(code: 'missing-whitespace', message: 'expected whitespace');
     }
 
-    while (!isDone && whitespaces.contains(template[index])) {
+    while (!isDone && whitespaces.contains(source[index])) {
       index += 1;
     }
   }

@@ -1,7 +1,7 @@
 part of '../parser.dart';
 
 extension TextParser on Parser {
-  Text? text() {
+  void text() {
     final start = index;
 
     while (!isDone && !match('{') && !match('<')) {
@@ -9,7 +9,7 @@ extension TextParser on Parser {
     }
 
     if (start != index) {
-      return Text(template.substring(start, index));
+      push(Text(source.substring(start, index)));
     }
   }
 }

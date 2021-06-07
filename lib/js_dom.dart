@@ -17,11 +17,15 @@ abstract class EventTarget {
 abstract class Node {
   external Node get parentNode;
 
-  void appendChild(Node node);
+  external String get textContent;
 
-  void insertBefore(Node node, [Node? reference]);
+  external set textContent(String text);
 
-  void removeChild(Node node);
+  external void appendChild(Node node);
+
+  external void insertBefore(Node node, [Node? reference]);
+
+  external void removeChild(Node node);
 }
 
 @JS()
@@ -37,29 +41,25 @@ abstract class Document implements Node, EventTarget {
 @JS()
 @anonymous
 abstract class Text implements Node {
-  String get wholeText;
+  external String get wholeText;
 
-  String get data;
+  external String get data;
 
-  set data(String data);
+  external set data(String data);
 }
 
 @JS()
 @anonymous
 abstract class Element implements Node, EventTarget {
-  String get innerHTML;
+  external String get innerHTML;
 
-  set innerHTML(String innerHTML);
+  external set innerHTML(String innerHTML);
 
-  String get text;
+  external String? getAttribute(String name);
 
-  set text(String text);
+  external void removeAttribute(String name);
 
-  String? getAttribute(String name);
-
-  void removeAttribute(String name);
-
-  void setAttribute(String name, String value);
+  external void setAttribute(String name, String value);
 }
 
 @JS('document')

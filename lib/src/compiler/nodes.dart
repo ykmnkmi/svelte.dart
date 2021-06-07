@@ -201,7 +201,7 @@ class ValueAttribute extends Attribute {
 
   @override
   String toString() {
-    return '$name="$value"';
+    return '$name="${interpolate(value)}"';
   }
 }
 
