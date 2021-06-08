@@ -47,7 +47,7 @@ extension ExpressionParser on Parser {
   }
 
   Expression? equality() {
-    final left = primary();
+    final left = unary();
 
     if (left == null) {
       return null;
@@ -63,13 +63,62 @@ extension ExpressionParser on Parser {
 
     whitespace();
 
-    final right = primary();
+    final right = unary();
 
     if (right == null) {
       return left;
     }
 
     return Binary(operator, left, right);
+  }
+
+  Expression? unary() {
+    var expression = primary();
+
+    if (expression == null) {
+      return null;
+    }
+
+    return postfix(expression);
+  }
+
+  Expression postfix(Expression expression) {
+    while (true) {
+      if (match('(')) {
+        expression = calling(expression);
+      } else if (match('..')) {
+        throw UnimplementedError();
+      } else if (match('.')) {
+        expression = field(expression);
+      } else if (match('[')) {
+        throw UnimplementedError();
+      } else {
+        break;
+      }
+    }
+
+    return expression;
+  }
+
+  Expression field(Expression expression) {
+    if (eat('.')) {
+      final name = identifier();
+
+      if (name.isEmpty) {
+        // TODO: add error message
+        error();
+      }
+
+      return Field(name, expression);
+    }
+
+    // TODO: add error message
+    error();
+  }
+
+  Expression calling(Expression expression) {
+    // return expression;
+    throw UnimplementedError();
   }
 
   Expression? primary() {
@@ -101,10 +150,16 @@ extension ExpressionParser on Parser {
 
     // TODO: list, set, map literals
 
-    return identifier();
+    final name = identifier();
+
+    if (name.isEmpty) {
+      return null;
+    }
+
+    return Identifier(name);
   }
 
-  Identifier? identifier() {
+  String identifier() {
     final buffer = StringBuffer();
 
     var part = readPattern(RegExp(r'[a-zA-Z_]'));
@@ -114,8 +169,6 @@ extension ExpressionParser on Parser {
       part = readPattern(RegExp(r'[a-zA-Z0-9_]'));
     }
 
-    if (buffer.isNotEmpty) {
-      return Identifier('$buffer');
-    }
+    return '$buffer';
   }
 }

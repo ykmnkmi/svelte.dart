@@ -99,18 +99,16 @@ extension TagParser on Parser {
 
       // TODO: spread
 
-      final node = identifier();
+      final name = identifier();
 
-      if (node == null) {
+      if (name.isEmpty) {
         error(message: 'expect identifier');
       }
 
-      check(node.name);
-
+      check(name);
       whitespace();
       eat('}', required: true);
-
-      return ValueAttribute(node.name, node);
+      return ValueAttribute(name, Identifier(name));
     }
 
     final name = readUntil(RegExp(r'[\s=\/>"' "']"));
@@ -177,7 +175,6 @@ extension TagParser on Parser {
 
   void tag() {
     var parent = current;
-
     eat('<', required: true);
 
     if (eat('!--')) {

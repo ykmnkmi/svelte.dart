@@ -70,6 +70,24 @@ class Identifier extends Expression {
   }
 }
 
+class Field extends Expression {
+  Field(this.field, this.expression);
+
+  String field;
+
+  Expression expression;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    throw UnimplementedError();
+  }
+
+  @override
+  String toString() {
+    return '$expression.$field';
+  }
+}
+
 class Interpolation extends Expression {
   Interpolation(this.expressions);
 
@@ -244,5 +262,18 @@ class Element extends Fragment {
     }
 
     return children.isEmpty ? prefix : '$prefix { ${children.join(', ')} }';
+  }
+}
+
+class Library extends Node {
+  Library(this.name, this.fragment);
+
+  String name;
+
+  Fragment fragment;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    throw UnimplementedError();
   }
 }

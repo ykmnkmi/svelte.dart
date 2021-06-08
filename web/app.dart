@@ -43,7 +43,7 @@ class AppFragment extends Fragment<App> {
     button1 = element('button');
     t1 = text('Clicked ');
     t2 = text('${context.count}');
-    t3 = text(' ');
+    t3 = space();
     t4 = text(t4value = '${context.count == 1 ? 'time' : 'times'}');
   }
 

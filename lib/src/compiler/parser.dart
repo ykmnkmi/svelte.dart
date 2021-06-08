@@ -6,9 +6,9 @@ part 'parser/mustache.dart';
 part 'parser/tag.dart';
 part 'parser/text.dart';
 
-List<Fragment> parse(String template) {
+Library parse(String name, String template) {
   final parser = Parser(template);
-  return <Fragment>[parser.root];
+  return Library(name, parser.root);
 }
 
 class LastAutoClosedTag {

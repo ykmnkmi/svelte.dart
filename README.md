@@ -5,24 +5,22 @@ Web framework for [Dart](https://dart.dev).
 
 Plans:
 ======
-- fragment compiler
-  - parser
-  - generator
-- dartx compiler
-  - parser
-  - builder
+- Fragment compiler
+  - Parser
+  - Generator
+- DartX compiler
+  - Parser
+  - Builder
+- Change detection
+  - ...
 - VS Code extension
-  - syntax highlighter
-  - language server
-- change detection
+  - Syntax highlight
+  - LSP
 - ...
 
 Done:
-- static html fragemnt parser & compiler
-- poor VS Code Dart & HTML syntax highlighter
-
-Current:
-- parse { ... expression ... }
+- Static HTML fragment parser & compiler
+- Poor VS Code Dart & HTML syntax highlight
 
 from:
 ```
@@ -91,7 +89,7 @@ class AppFragment extends Fragment<App> {
     button1 = element('button');
     t1 = text('Clicked ');
     t2 = text('${context.count}');
-    t3 = text(' ');
+    t3 = space();
     t4 = text(t4value = '${context.count == 1 ? 'time' : 'times'}');
   }
 

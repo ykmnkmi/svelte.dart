@@ -2,12 +2,12 @@ import 'nodes.dart';
 import 'utils.dart';
 import 'visitor.dart';
 
-String compileFragment(String name, Fragment fragment) {
-  return Compiler(name, fragment).toSource();
+String compile(Library library) {
+  return Compiler(library).toSource();
 }
 
 class Compiler extends Visitor<String?, String?> {
-  Compiler(String name, this.fragment)
+  Compiler(this.library)
       : sourceBuffer = StringBuffer(),
         nodeList = <String>[],
         createList = <String>[],
@@ -15,9 +15,9 @@ class Compiler extends Visitor<String?, String?> {
         mountList = <String>[],
         listenList = <String>[],
         count = <String, int>{} {
-    trim(fragment);
+    trim(library.fragment);
 
-    for (final child in fragment.children) {
+    for (final child in library.fragment.children) {
       final id = child.accept(this);
 
       if (id != null) {
@@ -25,7 +25,9 @@ class Compiler extends Visitor<String?, String?> {
       }
     }
 
-    sourceBuffer..write('class ${name}Fragment extends Fragment<$name> {\n')..write('  ${name}Fragment($name context, RenderTree tree)');
+    sourceBuffer
+      ..write('class ${library.name}Fragment extends Fragment<${library.name}> {\n')
+      ..write('  ${library.name}Fragment(${library.name} context, RenderTree tree)');
 
     if (listenList.isNotEmpty) {
       sourceBuffer.write('\n      : mounted = false,\n        super(context, tree);');
@@ -128,7 +130,7 @@ class Compiler extends Visitor<String?, String?> {
 
   final StringBuffer sourceBuffer;
 
-  final Fragment fragment;
+  final Library library;
 
   final List<String> nodeList;
 
