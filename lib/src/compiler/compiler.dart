@@ -9,11 +9,15 @@ String compile(Library library) {
 class Compiler extends Visitor<String?, String?> {
   Compiler(this.library)
       : sourceBuffer = StringBuffer(),
-        nodeList = <String>[],
+        initList = <String>[],
+        constructorList = <String>[],
+        finalFieldList = <String>[],
+        fieldList = <String>[],
         createList = <String>[],
-        rootIds = <String>[],
         mountList = <String>[],
         listenList = <String>[],
+        removeList = <String>[],
+        fragmentRemoveList = <String>[],
         count = <String, int>{} {
     trim(library.fragment);
 
@@ -21,7 +25,7 @@ class Compiler extends Visitor<String?, String?> {
       final id = child.accept(this);
 
       if (id != null) {
-        rootIds.add(id);
+        removeList.add(id);
       }
     }
 
@@ -30,15 +34,39 @@ class Compiler extends Visitor<String?, String?> {
       ..write('  ${library.name}Fragment(${library.name} context, RenderTree tree)');
 
     if (listenList.isNotEmpty) {
-      sourceBuffer.write('\n      : mounted = false,\n        super(context, tree);');
-    } else {
-      sourceBuffer.write(' : super(context, tree);');
+      initList.add('mounted = true');
     }
 
-    if (nodeList.isNotEmpty) {
-      for (final node in nodeList) {
-        sourceBuffer.write('\n\n  $node;');
+    if (initList.isNotEmpty) {
+      sourceBuffer.write('\n      : ${initList[0]},');
+
+      for (final init in initList.skip(1)) {
+        sourceBuffer.write('\n        $init,');
       }
+
+      sourceBuffer.write('\n        super(context, tree)');
+    } else {
+      sourceBuffer.write(' : super(context, tree)');
+    }
+
+    if (constructorList.isEmpty) {
+      sourceBuffer.write(';');
+    } else {
+      sourceBuffer.write(' {');
+
+      for (var i = 0; i < constructorList.length; i += 1) {
+        sourceBuffer.write('\n    ${constructorList[i]};');
+      }
+
+      sourceBuffer.write('\n  }');
+    }
+
+    for (final finalField in finalFieldList) {
+      sourceBuffer.write('\n\n  final $finalField;');
+    }
+
+    for (final field in fieldList) {
+      sourceBuffer.write('\n\n  $field;');
     }
 
     if (listenList.isNotEmpty) {
@@ -103,14 +131,22 @@ class Compiler extends Visitor<String?, String?> {
 
     // detach
 
-    if (rootIds.isNotEmpty) {
-      sourceBuffer.write('\n\n  @override\n  void detach(bool detaching) {\n    if (detaching) {');
+    if (removeList.isNotEmpty || fragmentRemoveList.isNotEmpty) {
+      sourceBuffer.write('\n\n  @override\n  void detach(bool detaching) {\n');
 
-      for (final id in rootIds) {
-        sourceBuffer.write('\n      remove($id);');
+      if (removeList.isNotEmpty) {
+        sourceBuffer.write('    if (detaching) {');
+
+        for (final id in removeList) {
+          sourceBuffer.write('\n      remove($id);');
+        }
+
+        sourceBuffer.write('\n    }');
       }
 
-      sourceBuffer.write('\n    }');
+      for (final fragmentRemove in fragmentRemoveList) {
+        sourceBuffer.write('\n\n    $fragmentRemove;');
+      }
 
       if (listenList.isNotEmpty) {
         sourceBuffer.write('\n\n    mounted = false;');
@@ -132,22 +168,30 @@ class Compiler extends Visitor<String?, String?> {
 
   final Library library;
 
-  final List<String> nodeList;
+  final List<String> initList;
+
+  final List<String> constructorList;
+
+  final List<String> finalFieldList;
+
+  final List<String> fieldList;
 
   final List<String> createList;
-
-  final List<String> rootIds;
 
   final List<String> mountList;
 
   final List<String> listenList;
+
+  final List<String> removeList;
+
+  final List<String> fragmentRemoveList;
 
   final Map<String, int> count;
 
   String getId(String tag) {
     var id = count[tag] ?? 0;
     count[tag] = id += 1;
-    return '$tag$id';
+    return id == 1 ? tag : '$tag$id';
   }
 
   void mount(String id, [String? parent]) {
@@ -170,8 +214,8 @@ class Compiler extends Visitor<String?, String?> {
   @override
   String? visitCondition(Condition node, [String? parent]) {
     final id = getId('t');
-    nodeList.add('late Text $id');
-    nodeList.add('late String ${id}value');
+    fieldList.add('late Text $id');
+    fieldList.add('late String ${id}value');
     createList.add('$id = text(${id}value = \'${interpolate(node)}\')');
     mount(id, parent);
     return id;
@@ -180,7 +224,7 @@ class Compiler extends Visitor<String?, String?> {
   @override
   String? visitElement(Element node, [String? parent]) {
     final id = getId(node.tag);
-    nodeList.add('late Element $id');
+    fieldList.add('late Element $id');
     createList.add('$id = element(\'${node.tag}\')');
     mount(id, parent);
 
@@ -188,11 +232,13 @@ class Compiler extends Visitor<String?, String?> {
       attribute.accept(this, id);
     }
 
-    if (node.children.every((node) => node is Expression)) {
-      createList.add('$id.text = \'${interpolate(Interpolation(node.children.cast<Expression>()))}\'');
-    } else {
-      for (final child in node.children) {
-        child.accept(this, id);
+    if (node.children.isNotEmpty) {
+      if (node.children.every((node) => node is Expression)) {
+        createList.add('$id.text = \'${interpolate(Interpolation(node.children.cast<Expression>()))}\'');
+      } else {
+        for (final child in node.children) {
+          child.accept(this, id);
+        }
       }
     }
 
@@ -208,23 +254,56 @@ class Compiler extends Visitor<String?, String?> {
   @override
   String? visitIdentifier(Identifier node, [String? parent]) {
     final id = getId('t');
-    nodeList.add('late Text $id');
+    fieldList.add('late Text $id');
     createList.add('$id = text(\'\${context.${node.name}}\')');
     mount(id, parent);
     return id;
   }
 
   @override
+  String? visitInline(Inline node, [String? parent]) {
+    final id = getId(node.name[0].toLowerCase() + node.name.substring(1));
+    final init = StringBuffer('$id = ${node.name}');
+
+    if (node.sub.isNotEmpty) {
+      init.write('.${node.sub}');
+    }
+
+    init.write('(');
+
+    // TODO: handle arguments
+
+    init.write(')');
+    initList.add('$init');
+    final fragment = '${id}Fragment';
+    constructorList.add('$fragment = $id.render(tree)');
+    finalFieldList.add('${node.name} $id');
+    fieldList.add('late Fragment<${node.name}> $fragment');
+    createList.add('createFragment($fragment)');
+
+    if (parent == null) {
+      mountList.add('mountFragment($fragment, target, anchor)');
+    } else {
+      mountList.add('mountFragment($fragment, $parent)');
+    }
+
+    fragmentRemoveList.add('removeFragment($fragment)');
+  }
+
+  @override
   String? visitStyle(Style node, [String? parent]) {
-    // compile if staic/const/immutable
-    createList.add('style($parent, \'${interpolate(node.value)}\')');
+    // if staic/const
+    // TODO: setStyle
+
+    // if dynamic
+    createList.add('attr($parent, \'style\', \'${interpolate(node.value)}\')');
   }
 
   @override
   String? visitText(Text node, [String? parent]) {
     final id = getId('t');
     final text = node.escaped;
-    nodeList.add('late Text $id');
+    fieldList.add('late Text $id');
 
     if (text == ' ') {
       createList.add('$id = space()');

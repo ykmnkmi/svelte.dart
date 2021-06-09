@@ -85,7 +85,7 @@ extension TagParser on Parser {
     return false;
   }
 
-  bool readAttribute(Element element, Set<String> uniqueNames) {
+  bool readAttribute(Set<String> uniqueNames) {
     void check(String name) {
       if (uniqueNames.contains(name)) {
         error(code: 'duplicate-attribute', message: 'attributes need to be unique');
@@ -135,39 +135,37 @@ extension TagParser on Parser {
     return true;
   }
 
-  Iterable<Expression> readAttributeValue() sync* {
+  List<Expression> readAttributeValue() {
     eat('"', required: true);
-    yield* readSequence((Parser parser) => parser.match('"'));
+    final expressions = readSequence((parser) => parser.match('"'));
     eat('"', required: true);
+    return expressions;
   }
 
-  Iterable<Expression> readSequence(bool Function(Parser parser) done) sync* {
+  List<Expression> readSequence(bool Function(Parser parser) done) {
     final buffer = StringBuffer();
+    final start = current.children.length;
+    var end = start;
 
-    bool flush() {
+    void flush() {
       if (buffer.isNotEmpty) {
         push(Text('$buffer'));
         buffer.clear();
-        return true;
+        end += 1;
       }
-
-      return false;
     }
 
     while (!isDone) {
+      print('rest: $rest');
       if (done(this)) {
-        if (flush()) {
-          yield pop() as Expression;
-        }
-
-        return;
+        flush();
+        final range = current.children.getRange(start, end).toList();
+        current.children.removeRange(start, end);
+        return range.cast<Expression>();
       } else if (match('{')) {
-        if (flush()) {
-          yield pop() as Expression;
-        }
-
+        flush();
         mustache();
-        yield pop() as Expression;
+        end += 1;
       } else {
         buffer.write(source[index++]);
       }
@@ -180,7 +178,7 @@ extension TagParser on Parser {
     final name = readUntil(RegExp('(\\s|\\/|>)'));
 
     if (name.isEmpty) {
-      return 'fragment';
+      return 'piko';
     }
 
     if (!RegExp(r'\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\-]*').hasMatch(name)) {
@@ -191,7 +189,7 @@ extension TagParser on Parser {
   }
 
   void tag() {
-    var parent = current;
+    final parent = current;
     eat('<', required: true);
 
     if (eat('!--')) {
@@ -202,7 +200,6 @@ extension TagParser on Parser {
 
     final isClosingTag = eat('/');
     final name = readTagName();
-    final element = Element(name);
 
     if (isClosingTag) {
       if (isVoid(name)) {
@@ -217,7 +214,6 @@ extension TagParser on Parser {
         }
 
         stack.removeLast();
-        parent = current;
       }
 
       stack.removeLast();
@@ -229,9 +225,16 @@ extension TagParser on Parser {
     }
 
     final uniqueNames = <String>{};
+    Element element;
     whitespace();
 
-    while (readAttribute(element, uniqueNames)) {
+    if (name.startsWith(RegExp('[A-Z]'))) {
+      element = Inline(name);
+    } else {
+      element = Element(name);
+    }
+
+    while (readAttribute(uniqueNames)) {
       element.attributes.add(pop() as Attribute);
       whitespace();
     }
@@ -239,13 +242,12 @@ extension TagParser on Parser {
     element.attributes.sort();
     push(element);
 
-    final selfClosing = eat('/') || isVoid(name);
-    eat('>', required: true);
-
-    if (selfClosing) {
-      // TODO: parse child
+    if (eat('/') || isVoid(name)) {
+      // self-closing tag
     } else {
       stack.add(element);
     }
+
+    eat('>', required: true);
   }
 }

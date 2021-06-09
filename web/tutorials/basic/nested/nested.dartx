@@ -1,0 +1,8 @@
+import 'package:piko/piko.dart';
+
+class App extends Component<App> {
+  @override
+  Fragment<App> render(RenderTree tree) {
+    return <b>paragraph</b>;
+  }
+}

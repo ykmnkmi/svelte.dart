@@ -55,17 +55,17 @@ void attr(Element node, String attribute, String? value) {
 }
 
 @noInline
-void style(Element node, [String? value]) {
-  if (value == null) {
-    node.style.cssText = '';
-  } else {
-    node.style.cssText = value;
+void setData(Text node, String data) {
+  if (node.wholeText != data) {
+    node.data = data;
   }
 }
 
 @noInline
-void setData(Text node, String data) {
-  if (node.wholeText != data) {
-    node.data = data;
+void setStyle(Element node, String name, String value, [bool important = false]) {
+  if (important) {
+    node.style.setProperty(name, value, 'important');
+  } else {
+    node.style.setProperty(name, value);
   }
 }

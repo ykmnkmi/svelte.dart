@@ -21,6 +21,7 @@ const String source = '<p>This is a <Nested/>.</p>';
 void main() {
   try {
     final library = parse('App', source);
+    print(library.fragment);
     print(compile(library));
   } catch (error, stack) {
     print(error);

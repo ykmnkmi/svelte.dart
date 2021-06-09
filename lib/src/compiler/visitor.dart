@@ -133,6 +133,10 @@ abstract class Visitor<C, R> {
     throw UnimplementedError();
   }
 
+  R visitInline(Inline node, [C? context]) {
+    throw UnimplementedError();
+  }
+
   R visitInterpolation(Interpolation node, [C? context]) {
     throw UnimplementedError();
   }

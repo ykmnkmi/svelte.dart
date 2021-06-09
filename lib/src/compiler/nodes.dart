@@ -85,6 +85,27 @@ class Calling extends Expression {
   R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
     return visitor.visitCalling(this, context);
   }
+
+  @override
+  String toString() {
+    if (positional.isEmpty && named.isEmpty) {
+      return '$expression()';
+    }
+
+    final buffer = StringBuffer('$expression(');
+    buffer.writeAll(positional, ', ');
+
+    if (named.isNotEmpty) {
+      if (positional.isNotEmpty) {
+        buffer.write(',');
+      }
+
+      buffer.writeAll(named.entries.map<String>((entry) => '${entry.key}: ${entry.key}'), ', ');
+    }
+
+    buffer.write(')');
+    return '$buffer';
+  }
 }
 
 class Field extends Expression {
@@ -120,16 +141,14 @@ class Interpolation extends Expression {
     return interpolate(this);
   }
 
-  static Expression orSingle(Iterable<Expression> expressions) {
-    final list = expressions.toList();
-
-    switch (list.length) {
+  static Expression orSingle(List<Expression> expressions) {
+    switch (expressions.length) {
       case 0:
         return Text('');
       case 1:
-        return list[0];
+        return expressions[0];
       default:
-        return Interpolation(list);
+        return Interpolation(expressions);
     }
   }
 }
@@ -289,6 +308,44 @@ class Element extends Fragment {
     }
 
     return children.isEmpty ? prefix : '$prefix { ${children.join(', ')} }';
+  }
+}
+
+class Inline extends Element {
+  Inline(this.name, [this.sub = '']) : super('component');
+
+  String name;
+
+  String sub;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitInline(this, context);
+  }
+
+  @override
+  String toString() {
+    final buffer = StringBuffer('$name');
+
+    if (sub.isNotEmpty) {
+      buffer.write('.$sub');
+    }
+
+    if (attributes.isNotEmpty) {
+      buffer
+        ..write('(')
+        ..writeAll(attributes, ', ')
+        ..write(')');
+    }
+
+    if (children.isNotEmpty) {
+      buffer
+        ..write(' { ')
+        ..writeAll(children, ', ')
+        ..write(' }');
+    }
+
+    return '$buffer';
   }
 }
 

@@ -4,7 +4,8 @@ piko.dart
 Web framework for [Dart](https://dart.dev).
 
 Fragment syntax:
-  - `<img {src} />`
+  - `<img {src}>`
+  - `<User {...json} />`
   - `<div>... big multiline fragment ...</div>`
   - `<piko>hello <b>world</b>!</piko>`
 

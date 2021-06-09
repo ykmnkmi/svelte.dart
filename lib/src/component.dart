@@ -36,5 +36,5 @@ abstract class Fragment<T extends Component<T>> {
 
   void update(Set<String> aspects) {}
 
-  void detach(bool detach) {}
+  void detach([bool detach = false]) {}
 }

@@ -75,7 +75,7 @@ class AppFragment extends Fragment<App> {
   }
 
   @override
-  void detach(bool detaching) {
+  void detach([bool detaching = false]) {
     if (detaching) {
       remove(button1);
     }
