@@ -3,6 +3,11 @@ piko.dart
 
 Web framework for [Dart](https://dart.dev).
 
+Fragment syntax:
+  - `<img {src} />`
+  - `<div>... big multiline fragment ...</div>`
+  - `<piko>hello <b>world</b>!</piko>`
+
 Plans:
 ======
 - Fragment compiler

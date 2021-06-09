@@ -114,8 +114,13 @@ class Parser {
     return pattern.matchAsPrefix(source, index) != null;
   }
 
-  void push(Node node) {
-    current.children.add(node);
+  void push(Node node, [int? offset]) {
+    if (offset == null) {
+      current.children.add(node);
+      return;
+    }
+
+    current.children.insert(current.children.length - 1 - offset, node);
   }
 
   Node? pop() {

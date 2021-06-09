@@ -2,34 +2,23 @@ part of '../parser.dart';
 
 extension ExpressionParser on Parser {
   bool expression() {
-    final expression = conditional();
-
-    if (expression == null) {
-      return false;
-    }
-
-    push(expression);
-    return true;
+    return conditional();
   }
 
-  Expression? conditional() {
-    final test = equality();
-
-    if (test == null) {
-      return null;
+  bool conditional() {
+    if (!equality()) {
+      return false;
     }
 
     whitespace();
 
     if (!eat('?')) {
-      return test;
+      return true;
     }
 
     whitespace();
 
-    final onFalse = equality();
-
-    if (onFalse == null) {
+    if (!equality()) {
       error(message: 'expected an expression');
     }
 
@@ -37,20 +26,19 @@ extension ExpressionParser on Parser {
     eat(':', required: true);
     whitespace();
 
-    final onTrue = equality();
-
-    if (onTrue == null) {
+    if (!equality()) {
       error(message: 'expected an expression');
     }
 
-    return Condition(test, onTrue, onFalse);
+    final onFalse = pop() as Expression;
+    final onTrue = pop() as Expression;
+    push(Condition(pop() as Expression, onTrue, onFalse));
+    return true;
   }
 
-  Expression? equality() {
-    final left = unary();
-
-    if (left == null) {
-      return null;
+  bool equality() {
+    if (!unary()) {
+      return false;
     }
 
     whitespace();
@@ -58,74 +46,93 @@ extension ExpressionParser on Parser {
     final operator = read('==') ?? read('!=');
 
     if (operator == null) {
-      return left;
+      return true;
     }
 
     whitespace();
 
-    final right = unary();
-
-    if (right == null) {
-      return left;
+    if (!unary()) {
+      error(message: 'expected an expression');
     }
 
-    return Binary(operator, left, right);
+    final right = pop() as Expression;
+    push(Binary(operator, pop() as Expression, right));
+    return true;
   }
 
-  Expression? unary() {
-    var expression = primary();
-
-    if (expression == null) {
-      return null;
+  bool unary() {
+    if (!primary()) {
+      return false;
     }
 
-    return postfix(expression);
-  }
-
-  Expression postfix(Expression expression) {
-    while (true) {
-      if (match('(')) {
-        expression = calling(expression);
-      } else if (match('..')) {
-        throw UnimplementedError();
-      } else if (match('.')) {
-        expression = field(expression);
-      } else if (match('[')) {
-        throw UnimplementedError();
-      } else {
-        break;
+    if (postfix()) {
+      while (postfix()) {
+        // ...
       }
+
+      return true;
     }
 
-    return expression;
+    return true;
   }
 
-  Expression field(Expression expression) {
-    if (eat('.')) {
-      final name = identifier();
+  bool postfix() {
+    if (match('(')) {
+      return calling();
+    }
 
-      if (name.isEmpty) {
+    if (match('..')) {
+      throw UnimplementedError();
+    }
+
+    if (match('.')) {
+      return field();
+    }
+
+    if (match('[')) {
+      throw UnimplementedError();
+    }
+
+    return false;
+  }
+
+  bool field() {
+    if (eat('.')) {
+      if (!identifier()) {
         // TODO: add error message
         error();
       }
 
-      return Field(name, expression);
+      final name = pop() as Identifier;
+      push(Field(pop() as Expression, name.name));
+      return true;
     }
 
     // TODO: add error message
     error();
   }
 
-  Expression calling(Expression expression) {
-    // return expression;
-    throw UnimplementedError();
+  bool calling() {
+    eat('(', required: true);
+
+    // TODO: positional, named
+    if (expression()) {
+      final argument = pop() as Expression;
+      push(Calling(pop() as Expression, positional: <Expression>[argument]));
+    } else {
+      push(Calling(pop() as Expression));
+    }
+
+    eat(')', required: true);
+    return true;
   }
 
-  Expression? primary() {
+  bool primary() {
     var value = read('null') ?? read('true') ?? read('false');
 
     if (value != null) {
-      return Primitive(value, value == 'null' ? 'Null' : 'bool');
+      push(Primitive(value, value == 'null' ? 'Null' : 'bool'));
+      return true;
     }
 
     // TODO: hex, exponenta
@@ -135,7 +142,8 @@ extension ExpressionParser on Parser {
     if (value != null) {
       final base = value;
       value = readPattern(RegExp('\\.\\d+'));
-      return value == null ? Primitive(base, 'int') : Primitive(base + value, 'double');
+      push(value == null ? Primitive(base, 'int') : Primitive(base + value, 'double'));
+      return true;
     }
 
     // TODO: interpolation
@@ -145,23 +153,17 @@ extension ExpressionParser on Parser {
     if (value != null) {
       final content = readUntil(value);
       eat(value, required: true);
-      return Primitive('\'${content.replaceAll('\'', '\\\'')}\'', 'String');
+      Primitive('\'${content.replaceAll('\'', '\\\'')}\'', 'String');
+      return true;
     }
 
     // TODO: list, set, map literals
 
-    final name = identifier();
-
-    if (name.isEmpty) {
-      return null;
-    }
-
-    return Identifier(name);
+    return identifier();
   }
 
-  String identifier() {
+  bool identifier() {
     final buffer = StringBuffer();
-
     var part = readPattern(RegExp(r'[a-zA-Z_]'));
 
     while (part != null) {
@@ -169,6 +171,11 @@ extension ExpressionParser on Parser {
       part = readPattern(RegExp(r'[a-zA-Z0-9_]'));
     }
 
-    return '$buffer';
+    if (buffer.isEmpty) {
+      return false;
+    }
+
+    push(Identifier('$buffer'));
+    return true;
   }
 }

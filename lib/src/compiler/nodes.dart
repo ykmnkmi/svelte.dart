@@ -70,16 +70,33 @@ class Identifier extends Expression {
   }
 }
 
-class Field extends Expression {
-  Field(this.field, this.expression);
-
-  String field;
+class Calling extends Expression {
+  Calling(this.expression, {List<Expression>? positional, Map<String, Expression>? named})
+      : positional = positional ?? <Expression>[],
+        named = named ?? <String, Expression>{};
 
   Expression expression;
 
+  List<Expression> positional;
+
+  Map<String, Expression> named;
+
   @override
   R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
-    throw UnimplementedError();
+    return visitor.visitCalling(this, context);
+  }
+}
+
+class Field extends Expression {
+  Field(this.expression, this.field);
+
+  Expression expression;
+
+  String field;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitField(this, context);
   }
 
   @override
@@ -182,6 +199,32 @@ class Attribute extends Node implements Comparable<Attribute> {
   }
 }
 
+class ValueAttribute extends Attribute {
+  ValueAttribute(String name, this.value) : super(name);
+
+  Expression value;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitValueAttribute(this, context);
+  }
+
+  @override
+  String toString() {
+    final node = value;
+    return node is Identifier && node.name == name ? '{$name}' : '$name="${interpolate(value)}"';
+  }
+}
+
+class Style extends ValueAttribute {
+  Style(Expression value) : super('style', value);
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
+    return visitor.visitStyle(this, context);
+  }
+}
+
 class EventListener extends Attribute {
   EventListener(String name, this.callback) : super(name);
 
@@ -204,22 +247,6 @@ class EventListener extends Attribute {
   @override
   String toString() {
     return 'on:$name={ $callback }';
-  }
-}
-
-class ValueAttribute extends Attribute {
-  ValueAttribute(String name, this.value) : super(name);
-
-  Expression value;
-
-  @override
-  R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
-    return visitor.visitValueAttribute(this, context);
-  }
-
-  @override
-  String toString() {
-    return '$name="${interpolate(value)}"';
   }
 }
 

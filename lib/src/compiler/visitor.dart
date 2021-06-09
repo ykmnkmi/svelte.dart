@@ -36,6 +36,16 @@ class Interpolator extends Visitor<String?, String> {
   }
 
   @override
+  String visitCalling(Calling node, [String? context]) {
+    final result = apply(false, () {
+      final expression = node.expression.accept(this, context);
+      return '$expression()';
+    });
+
+    return wrap ? '\${$result}' : result;
+  }
+
+  @override
   String visitCondition(Condition node, [String? context]) {
     final result = apply(false, () {
       final test = node.test.accept(this, context);
@@ -48,8 +58,18 @@ class Interpolator extends Visitor<String?, String> {
   }
 
   @override
+  String visitField(Field node, [String? context]) {
+    final result = apply(false, () {
+      final expression = node.expression.accept(this, context);
+      return '$expression.${node.field}';
+    });
+
+    return wrap ? '\${$result}' : result;
+  }
+
+  @override
   String visitIdentifier(Identifier node, [String? context]) {
-    final result = '$context.${node.name}';
+    final result = context == null ? node.name : '$context.${node.name}';
     return wrap ? '\${$result}' : result;
   }
 
@@ -61,6 +81,11 @@ class Interpolator extends Visitor<String?, String> {
   @override
   String visitPrimitive(Primitive node, [String? context]) {
     return wrap ? '\${${node.value}}' : node.value;
+  }
+
+  @override
+  String visitStyle(Style node, [String? context]) {
+    return visitValueAttribute(node, context);
   }
 
   @override
@@ -84,6 +109,10 @@ abstract class Visitor<C, R> {
     throw UnimplementedError();
   }
 
+  R visitCalling(Calling node, [C? context]) {
+    throw UnimplementedError();
+  }
+
   R visitCondition(Condition node, [C? context]) {
     throw UnimplementedError();
   }
@@ -96,6 +125,10 @@ abstract class Visitor<C, R> {
     throw UnimplementedError();
   }
 
+  R visitField(Field node, [C? context]) {
+    throw UnimplementedError();
+  }
+
   R visitIdentifier(Identifier node, [C? context]) {
     throw UnimplementedError();
   }
@@ -105,6 +138,10 @@ abstract class Visitor<C, R> {
   }
 
   R visitPrimitive(Primitive node, [C? context]) {
+    throw UnimplementedError();
+  }
+
+  R visitStyle(Style node, [C? context]) {
     throw UnimplementedError();
   }
 

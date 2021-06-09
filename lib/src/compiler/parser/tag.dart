@@ -85,7 +85,7 @@ extension TagParser on Parser {
     return false;
   }
 
-  Attribute? readAttribute(Element element, Set<String> uniqueNames) {
+  bool readAttribute(Element element, Set<String> uniqueNames) {
     void check(String name) {
       if (uniqueNames.contains(name)) {
         error(code: 'duplicate-attribute', message: 'attributes need to be unique');
@@ -99,32 +99,40 @@ extension TagParser on Parser {
 
       // TODO: spread
 
-      final name = identifier();
-
-      if (name.isEmpty) {
+      if (!identifier()) {
         error(message: 'expect identifier');
       }
 
-      check(name);
+      final name = pop() as Identifier;
+      check(name.name);
       whitespace();
       eat('}', required: true);
-      return ValueAttribute(name, Identifier(name));
+      push(name.name == 'style' ? Style(name) : ValueAttribute(name.name, name));
+      return true;
     }
 
     final name = readUntil(RegExp(r'[\s=\/>"' "']"));
 
     if (name.isEmpty) {
-      return null;
+      return false;
     }
 
     if (name.startsWith('on:')) {
       eat('=', required: true);
       mustache();
-      whitespace();
-      return EventListener(name.substring(3), pop() as Expression);
+      push(EventListener(name.substring(3), pop() as Expression));
+      return true;
     }
 
-    return eat('=') ? ValueAttribute(name, Interpolation.orSingle(readAttributeValue())) : Attribute(name);
+    if (name == 'style') {
+      eat('=', required: true);
+      mustache();
+      push(Style(pop() as Expression));
+      return true;
+    }
+
+    push(eat('=') ? ValueAttribute(name, Interpolation.orSingle(readAttributeValue())) : Attribute(name));
+    return true;
   }
 
   Iterable<Expression> readAttributeValue() sync* {
@@ -136,19 +144,28 @@ extension TagParser on Parser {
   Iterable<Expression> readSequence(bool Function(Parser parser) done) sync* {
     final buffer = StringBuffer();
 
-    Iterable<Text> flush() sync* {
+    bool flush() {
       if (buffer.isNotEmpty) {
-        yield Text('$buffer');
+        push(Text('$buffer'));
         buffer.clear();
+        return true;
       }
+
+      return false;
     }
 
     while (!isDone) {
       if (done(this)) {
-        yield* flush();
+        if (flush()) {
+          yield pop() as Expression;
+        }
+
         return;
       } else if (match('{')) {
-        yield* flush();
+        if (flush()) {
+          yield pop() as Expression;
+        }
+
         mustache();
         yield pop() as Expression;
       } else {
@@ -213,12 +230,10 @@ extension TagParser on Parser {
 
     final uniqueNames = <String>{};
     whitespace();
-    var attribute = readAttribute(element, uniqueNames);
 
-    while (attribute != null) {
-      element.attributes.add(attribute);
+    while (readAttribute(element, uniqueNames)) {
+      element.attributes.add(pop() as Attribute);
       whitespace();
-      attribute = readAttribute(element, uniqueNames);
     }
 
     element.attributes.sort();

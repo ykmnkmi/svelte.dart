@@ -215,6 +215,12 @@ class Compiler extends Visitor<String?, String?> {
   }
 
   @override
+  String? visitStyle(Style node, [String? parent]) {
+    // compile if staic/const/immutable
+    createList.add('style($parent, \'${interpolate(node.value)}\')');
+  }
+
+  @override
   String? visitText(Text node, [String? parent]) {
     final id = getId('t');
     final text = node.escaped;

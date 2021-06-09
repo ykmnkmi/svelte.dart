@@ -55,6 +55,15 @@ void attr(Element node, String attribute, String? value) {
 }
 
 @noInline
+void style(Element node, [String? value]) {
+  if (value == null) {
+    node.style.cssText = '';
+  } else {
+    node.style.cssText = value;
+  }
+}
+
+@noInline
 void setData(Text node, String data) {
   if (node.wholeText != data) {
     node.data = data;
