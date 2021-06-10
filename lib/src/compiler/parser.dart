@@ -28,7 +28,7 @@ class Parser {
         index = 0 {
     stack.add(root);
 
-    final hasPiko = eat('<piko>');
+    final hasPiko = drink('<piko>');
 
     while (!isDone) {
       if (match('<')) {
@@ -41,7 +41,7 @@ class Parser {
     }
 
     if (hasPiko) {
-      eat('</piko>', required: hasPiko);
+      eat('</piko>');
     }
 
     if (stack.length > 1) {
@@ -83,17 +83,22 @@ class Parser {
     return source.substring(index);
   }
 
-  bool eat(String string, {bool required = false, String? message}) {
+  bool drink(String string) {
     if (match(string)) {
       index += string.length;
       return true;
     }
 
-    if (required) {
-      error(code: 'unexpected-${isDone ? 'eof' : 'token'}', message: message ?? "expected '$string'");
+    return false;
+  }
+
+  void eat(String string, {String? message}) {
+    if (match(string)) {
+      index += string.length;
+      return;
     }
 
-    return false;
+    error(code: 'unexpected-${isDone ? 'eof' : 'token'}', message: message ?? "expected '$string'");
   }
 
   Never error({String? code, String? message}) {

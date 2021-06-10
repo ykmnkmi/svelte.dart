@@ -12,7 +12,7 @@ extension ExpressionParser on Parser {
 
     whitespace();
 
-    if (!eat('?')) {
+    if (!drink('?')) {
       return true;
     }
 
@@ -23,7 +23,7 @@ extension ExpressionParser on Parser {
     }
 
     whitespace();
-    eat(':', required: true);
+    eat(':');
     whitespace();
 
     if (!equality()) {
@@ -97,10 +97,9 @@ extension ExpressionParser on Parser {
   }
 
   bool field() {
-    if (eat('.')) {
+    if (drink('.')) {
       if (!identifier()) {
-        // TODO: add error message
-        error();
+        error(message: 'expected an identifier');
       }
 
       final name = pop() as Identifier;
@@ -108,12 +107,11 @@ extension ExpressionParser on Parser {
       return true;
     }
 
-    // TODO: add error message
-    error();
+    return false;
   }
 
   bool calling() {
-    eat('(', required: true);
+    eat('(');
 
     // TODO: positional, named
     if (expression()) {
@@ -123,11 +121,19 @@ extension ExpressionParser on Parser {
       push(Calling(pop() as Expression));
     }
 
-    eat(')', required: true);
+    eat(')');
     return true;
   }
 
   bool primary() {
+    if (literal()) {
+      return true;
+    }
+
+    return identifier();
+  }
+
+  bool literal() {
     var value = read('null') ?? read('true') ?? read('false');
 
     if (value != null) {
@@ -152,14 +158,16 @@ extension ExpressionParser on Parser {
 
     if (value != null) {
       final content = readUntil(value);
-      eat(value, required: true);
+      eat(value);
       Primitive('\'${content.replaceAll('\'', '\\\'')}\'', 'String');
       return true;
     }
 
+    value = read('#');
+
     // TODO: list, set, map literals
 
-    return identifier();
+    return false;
   }
 
   bool identifier() {

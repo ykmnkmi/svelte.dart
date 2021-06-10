@@ -3,15 +3,15 @@ part of '../parser.dart';
 extension TagParser on Parser {
   void tag() {
     final parent = current;
-    eat('<', required: true);
+    eat('<');
 
-    if (eat('!--')) {
+    if (drink('!--')) {
       skipUntil('-->');
-      eat('-->', required: true, message: 'comment was left open, expected -->');
+      eat('-->', message: 'comment was left open, expected -->');
       return;
     }
 
-    final isClosingTag = eat('/');
+    final isClosingTag = drink('/');
     final name = readTagName();
 
     if (isClosingTag) {
@@ -19,7 +19,7 @@ extension TagParser on Parser {
         error(code: 'invalid-void-content', message: '<$name> is a void element and cannot have children, or a closing tag');
       }
 
-      eat('>', required: true);
+      eat('>');
 
       while (parent is! Element || parent.tag != name) {
         if (parent is! Element) {
@@ -55,7 +55,7 @@ extension TagParser on Parser {
     element.attributes.sort();
     push(element);
 
-    if (eat('/') || isVoid(name)) {
+    if (drink('/') || isVoid(name)) {
       // self-closing tag
     } else if (name == 'textarea') {
       element.children.addAll(readSequence((Parser parser) => parser.match('</textarea>')));
@@ -64,7 +64,7 @@ extension TagParser on Parser {
       stack.add(element);
     }
 
-    eat('>', required: true);
+    eat('>');
   }
 
   bool readAttribute(Set<String> uniqueNames) {
@@ -76,7 +76,7 @@ extension TagParser on Parser {
       uniqueNames.add(name);
     }
 
-    if (eat('{')) {
+    if (drink('{')) {
       whitespace();
 
       // TODO: spread
@@ -88,7 +88,7 @@ extension TagParser on Parser {
       final name = pop() as Identifier;
       check(name.name);
       whitespace();
-      eat('}', required: true);
+      eat('}');
       push(name.name == 'style' ? Style(name) : ValueAttribute(name.name, name));
       return true;
     }
@@ -100,27 +100,27 @@ extension TagParser on Parser {
     }
 
     if (name.startsWith('on:')) {
-      eat('=', required: true);
+      eat('=');
       mustache();
       push(EventListener(name.substring(3), pop() as Expression));
       return true;
     }
 
     if (name == 'style') {
-      eat('=', required: true);
+      eat('=');
       mustache();
       push(Style(pop() as Expression));
       return true;
     }
 
-    push(eat('=') ? ValueAttribute(name, Interpolation.orSingle(readAttributeValue())) : Attribute(name));
+    push(drink('=') ? ValueAttribute(name, Interpolation.orSingle(readAttributeValue())) : Attribute(name));
     return true;
   }
 
   List<Expression> readAttributeValue() {
-    eat('"', required: true);
+    eat('"');
     final expressions = readSequence((parser) => parser.match('"'));
-    eat('"', required: true);
+    eat('"');
     return expressions;
   }
 

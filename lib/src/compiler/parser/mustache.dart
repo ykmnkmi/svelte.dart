@@ -2,7 +2,7 @@ part of '../parser.dart';
 
 extension MustacheParser on Parser {
   void mustache() {
-    eat('{', required: true);
+    eat('{');
     whitespace();
 
     if (!expression()) {
@@ -10,6 +10,6 @@ extension MustacheParser on Parser {
     }
 
     whitespace();
-    eat('}', required: true);
+    eat('}');
   }
 }

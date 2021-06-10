@@ -129,7 +129,7 @@ class Field extends Expression {
 class Interpolation extends Expression {
   Interpolation(this.expressions);
 
-  final List<Expression> expressions;
+  List<Expression> expressions;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, [C? context]) {
