@@ -2,7 +2,7 @@
     "name": "dartx",
     "displayName": "DartX",
     "description": "DartX language support for Visual Studio Code",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "engines": {
         "vscode": "^1.54.0"
     },
