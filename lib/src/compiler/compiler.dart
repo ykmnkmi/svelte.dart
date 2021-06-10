@@ -17,7 +17,7 @@ class Compiler extends Visitor<String?, String?> {
         mountList = <String>[],
         listenList = <String>[],
         removeList = <String>[],
-        fragmentRemoveList = <String>[],
+        fragmentDetachList = <String>[],
         count = <String, int>{} {
     trim(library.fragment);
 
@@ -131,7 +131,7 @@ class Compiler extends Visitor<String?, String?> {
 
     // detach
 
-    if (removeList.isNotEmpty || fragmentRemoveList.isNotEmpty) {
+    if (removeList.isNotEmpty || fragmentDetachList.isNotEmpty) {
       sourceBuffer.write('\n\n  @override\n  void detach(bool detaching) {\n');
 
       if (removeList.isNotEmpty) {
@@ -141,11 +141,11 @@ class Compiler extends Visitor<String?, String?> {
           sourceBuffer.write('\n      remove($id);');
         }
 
-        sourceBuffer.write('\n    }');
+        sourceBuffer.write('\n    }\n\n');
       }
 
-      for (final fragmentRemove in fragmentRemoveList) {
-        sourceBuffer.write('\n\n    $fragmentRemove;');
+      for (final fragmentRemove in fragmentDetachList) {
+        sourceBuffer.write('    $fragmentRemove;');
       }
 
       if (listenList.isNotEmpty) {
@@ -184,7 +184,7 @@ class Compiler extends Visitor<String?, String?> {
 
   final List<String> removeList;
 
-  final List<String> fragmentRemoveList;
+  final List<String> fragmentDetachList;
 
   final Map<String, int> count;
 
@@ -287,15 +287,15 @@ class Compiler extends Visitor<String?, String?> {
       mountList.add('mountFragment($fragment, $parent)');
     }
 
-    fragmentRemoveList.add('removeFragment($fragment)');
+    fragmentDetachList.add('detachFragment($fragment)');
   }
 
   @override
   String? visitStyle(Style node, [String? parent]) {
-    // if staic/const
+    // const/final
     // TODO: setStyle
 
-    // if dynamic
+    // dynamic
     createList.add('attr($parent, \'style\', \'${interpolate(node.value)}\')');
   }
 

@@ -57,6 +57,8 @@ class Parser {
 
   int index;
 
+  LastAutoClosedTag? lastAutoClosedTag;
+
   Fragment get current {
     return stack.last;
   }

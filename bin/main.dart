@@ -16,7 +16,7 @@ import 'package:stack_trace/stack_trace.dart';
 
 // nested components
 // const String nested = '<b>paragraph</b>';
-const String source = '<p>This is a <Nested/>.</p>';
+const String source = '<Nested/>';
 
 void main() {
   try {

@@ -1,88 +1,70 @@
 part of '../parser.dart';
 
-const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
-  'li': {'li'},
-  'dt': {'dt', 'dd'},
-  'dd': {'dt', 'dd'},
-  'p': {
-    'address',
-    'article',
-    'aside',
-    'blockquote',
-    'div',
-    'dl',
-    'fieldset',
-    'footer',
-    'form',
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'h6',
-    'header',
-    'hgroup',
-    'hr',
-    'main',
-    'menu',
-    'nav',
-    'ol',
-    'p',
-    'pre',
-    'section',
-    'table',
-    'ul'
-  },
-  'rt': {'rt', 'rp'},
-  'rp': {'rt', 'rp'},
-  'optgroup': {'optgroup'},
-  'option': {'option', 'optgroup'},
-  'thead': {'tbody', 'tfoot'},
-  'tbody': {'tbody', 'tfoot'},
-  'tfoot': {'tbody'},
-  'tr': {'tr', 'tbody'},
-  'td': {'td', 'th', 'tr'},
-  'th': {'td', 'th', 'tr'},
-};
-
-bool closingTagOmitted(String current, String next) {
-  if (disallowedContents.containsKey(current)) {
-    if (disallowedContents[current]!.contains(next)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-bool isVoid(String tag) {
-  tag = tag.toLowerCase();
-  return RegExp('^(?:area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)\$').hasMatch(tag) || tag == '!doctype';
-}
-
 extension TagParser on Parser {
-  static LastAutoClosedTag? lastAutoClosedTag;
+  void tag() {
+    final parent = current;
+    eat('<', required: true);
 
-  void forgetLastAutoClosedTag() {
-    if (lastAutoClosedTag != null && stack.length < lastAutoClosedTag!.depth) {
-      lastAutoClosedTag = null;
-    }
-  }
-
-  Never invalidClosingTag(String tag) {
-    print(current);
-    final message = isLastAutoClosedTag(tag)
-        ? '</$tag> attempted to close <$tag> that was already automatically closed by <${lastAutoClosedTag!.reason}>'
-        : '</$tag> attempted to close an element that was not open';
-    error(code: 'invalid-closing-tag', message: message);
-  }
-
-  bool isLastAutoClosedTag(String tag) {
-    if (lastAutoClosedTag != null && tag == lastAutoClosedTag!.tag) {
-      return true;
+    if (eat('!--')) {
+      skipUntil('-->');
+      eat('-->', required: true, message: 'comment was left open, expected -->');
+      return;
     }
 
-    return false;
+    final isClosingTag = eat('/');
+    final name = readTagName();
+
+    if (isClosingTag) {
+      if (isVoid(name)) {
+        error(code: 'invalid-void-content', message: '<$name> is a void element and cannot have children, or a closing tag');
+      }
+
+      eat('>', required: true);
+
+      while (parent is! Element || parent.tag != name) {
+        if (parent is! Element) {
+          invalidClosingTag(name);
+        }
+
+        stack.removeLast();
+      }
+
+      stack.removeLast();
+      forgetLastAutoClosedTag();
+      return;
+    } else if (parent is Element && closingTagOmitted(parent.tag, name)) {
+      stack.removeLast();
+      lastAutoClosedTag = LastAutoClosedTag(parent.tag, name, length);
+    }
+
+    final uniqueNames = <String>{};
+    Element element;
+    whitespace();
+
+    if (name.startsWith(RegExp('[A-Z]'))) {
+      element = Inline(name);
+    } else {
+      element = Element(name);
+    }
+
+    while (readAttribute(uniqueNames)) {
+      element.attributes.add(pop() as Attribute);
+      whitespace();
+    }
+
+    element.attributes.sort();
+    push(element);
+
+    if (eat('/') || isVoid(name)) {
+      // self-closing tag
+    } else if (name == 'textarea') {
+      element.children.addAll(readSequence((Parser parser) => parser.match('</textarea>')));
+      read('</textarea>');
+    } else {
+      stack.add(element);
+    }
+
+    eat('>', required: true);
   }
 
   bool readAttribute(Set<String> uniqueNames) {
@@ -174,6 +156,27 @@ extension TagParser on Parser {
     error(code: 'unexpected-eof', message: 'unexpected end of input');
   }
 
+  void forgetLastAutoClosedTag() {
+    if (lastAutoClosedTag != null && stack.length < lastAutoClosedTag!.depth) {
+      lastAutoClosedTag = null;
+    }
+  }
+
+  Never invalidClosingTag(String tag) {
+    final message = isLastAutoClosedTag(tag)
+        ? '</$tag> attempted to close <$tag> that was already automatically closed by <${lastAutoClosedTag!.reason}>'
+        : '</$tag> attempted to close an element that was not open';
+    error(code: 'invalid-closing-tag', message: message);
+  }
+
+  bool isLastAutoClosedTag(String tag) {
+    if (lastAutoClosedTag != null && tag == lastAutoClosedTag!.tag) {
+      return true;
+    }
+
+    return false;
+  }
+
   String readTagName() {
     final name = readUntil(RegExp('(\\s|\\/|>)'));
 
@@ -187,67 +190,64 @@ extension TagParser on Parser {
 
     return name;
   }
-
-  void tag() {
-    final parent = current;
-    eat('<', required: true);
-
-    if (eat('!--')) {
-      skipUntil('-->');
-      eat('-->', required: true, message: 'comment was left open, expected -->');
-      return;
-    }
-
-    final isClosingTag = eat('/');
-    final name = readTagName();
-
-    if (isClosingTag) {
-      if (isVoid(name)) {
-        error(code: 'invalid-void-content', message: '<$name> is a void element and cannot have children, or a closing tag');
-      }
-
-      eat('>', required: true);
-
-      while (parent is! Element || parent.tag != name) {
-        if (parent is! Element) {
-          invalidClosingTag(name);
-        }
-
-        stack.removeLast();
-      }
-
-      stack.removeLast();
-      forgetLastAutoClosedTag();
-      return;
-    } else if (parent is Element && closingTagOmitted(parent.tag, name)) {
-      stack.removeLast();
-      lastAutoClosedTag = LastAutoClosedTag(parent.tag, name, length);
-    }
-
-    final uniqueNames = <String>{};
-    Element element;
-    whitespace();
-
-    if (name.startsWith(RegExp('[A-Z]'))) {
-      element = Inline(name);
-    } else {
-      element = Element(name);
-    }
-
-    while (readAttribute(uniqueNames)) {
-      element.attributes.add(pop() as Attribute);
-      whitespace();
-    }
-
-    element.attributes.sort();
-    push(element);
-
-    if (eat('/') || isVoid(name)) {
-      // self-closing tag
-    } else {
-      stack.add(element);
-    }
-
-    eat('>', required: true);
-  }
 }
+
+bool isVoid(String tag) {
+  tag = tag.toLowerCase();
+  return RegExp('^(?:area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)\$').hasMatch(tag) || tag == '!doctype';
+}
+
+bool closingTagOmitted(String current, String next) {
+  if (disallowedContents.containsKey(current)) {
+    if (disallowedContents[current]!.contains(next)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
+  'li': {'li'},
+  'dt': {'dt', 'dd'},
+  'dd': {'dt', 'dd'},
+  'p': {
+    'address',
+    'article',
+    'aside',
+    'blockquote',
+    'div',
+    'dl',
+    'fieldset',
+    'footer',
+    'form',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'header',
+    'hgroup',
+    'hr',
+    'main',
+    'menu',
+    'nav',
+    'ol',
+    'p',
+    'pre',
+    'section',
+    'table',
+    'ul'
+  },
+  'rt': {'rt', 'rp'},
+  'rp': {'rt', 'rp'},
+  'optgroup': {'optgroup'},
+  'option': {'option', 'optgroup'},
+  'thead': {'tbody', 'tfoot'},
+  'tbody': {'tbody', 'tfoot'},
+  'tfoot': {'tbody'},
+  'tr': {'tr', 'tbody'},
+  'td': {'td', 'th', 'tr'},
+  'th': {'td', 'th', 'tr'},
+};

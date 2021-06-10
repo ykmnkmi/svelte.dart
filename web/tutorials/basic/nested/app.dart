@@ -11,43 +11,43 @@ class App extends Component<App> {
 
 class AppFragment extends Fragment<App> {
   AppFragment(App context, RenderTree tree)
-      : nested1 = Nested(),
+      : nested = Nested(),
         super(context, tree) {
-    nested1Fragment = nested1.render(tree);
+    nestedFragment = nested.render(tree);
   }
 
-  final Nested nested1;
+  final Nested nested;
 
-  late Element p1;
+  late Element p;
 
-  late Text t1;
+  late Text t;
 
-  late Fragment<Nested> nested1Fragment;
+  late Fragment<Nested> nestedFragment;
 
   late Text t2;
 
   @override
   void create() {
-    p1 = element('p');
-    t1 = text('This is a ');
-    nested1Fragment.create();
+    p = element('p');
+    t = text('This is a ');
+    createFragment(nestedFragment);
     t2 = text('.');
   }
 
   @override
   void mount(Element target, [Node? anchor]) {
-    insert(target, p1, anchor);
-    append(p1, t1);
-    nested1Fragment.mount(p1);
-    append(p1, t2);
+    insert(target, p, anchor);
+    append(p, t);
+    mountFragment(nestedFragment, p);
+    append(p, t2);
   }
 
   @override
   void detach([bool detaching = false]) {
     if (detaching) {
-      remove(p1);
+      remove(p);
     }
 
-    nested1Fragment.detach();
+    detachFragment(nestedFragment);
   }
 }
