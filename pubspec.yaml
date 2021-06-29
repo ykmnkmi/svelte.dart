@@ -1,6 +1,6 @@
 name: piko
 description: Dart web framework.
-version: 1.0.0-dev.58
+version: 1.0.0-dev.59
 homepage: https://piko.ykmnkmi.dev
 
 environment:
@@ -11,6 +11,7 @@ dependencies:
   meta: ^1.4.0
 
 dev_dependencies:
+  angular_ast: ^1.0.0
   build_runner: ^2.0.4
   build_web_compilers: ^3.0.0
   frontend_server_client: ^2.1.0
@@ -18,3 +19,10 @@ dev_dependencies:
   path: ^1.8.0
   stack_trace: ^1.10.0
   stream_transform: ^2.0.0
+
+dependency_overrides:
+  angular_ast:
+    git:
+      path: angular_ast
+      ref: google
+      url: https://github.com/angulardart/angular
