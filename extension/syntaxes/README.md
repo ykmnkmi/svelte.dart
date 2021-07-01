@@ -1,1 +1,0 @@
-File dartx.json was adapted from DartCode [dart.json](https://github.com/Dart-Code/Dart-Code/tree/master/syntaxes/dart.json) and [html1.tmLanguage.json](https://github.com/microsoft/vscode-extension-samples/blob/main/lsp-embedded-language-service/syntaxes/html1.tmLanguage.json) files.
