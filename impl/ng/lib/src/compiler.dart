@@ -1,15 +1,16 @@
 import 'package:angular_ast/angular_ast.dart';
+import 'package:piko/src/expression/compiler.dart';
 
-import 'parser.dart';
+import 'expression/parser.dart';
 import 'variable.dart';
 
-class NgCompiler implements TemplateAstVisitor<String, String> {
+class Compiler implements TemplateAstVisitor<String, String> {
   static String compile(String source, {String name = 'App', List<Variable> exports = const <Variable>[]}) {
     final nodes = parse(source, sourceUrl: name).cast<StandaloneTemplateAst>();
-    return NgCompiler(name, exports).visitAll(nodes);
+    return Compiler(name, exports).visitAll(nodes);
   }
 
-  NgCompiler(this.name, this.exports)
+  Compiler(this.name, this.exports)
       : sourceBuffer = StringBuffer(),
         initList = <String>[],
         constructorList = <String>[],
@@ -105,7 +106,6 @@ class NgCompiler implements TemplateAstVisitor<String, String> {
 
     if (node.childNodes.isNotEmpty) {
       for (final child in node.childNodes) {
-        print(child);
         child.accept(this, id);
       }
     }
@@ -132,10 +132,9 @@ class NgCompiler implements TemplateAstVisitor<String, String> {
   String visitInterpolation(InterpolationAst node, [String? context]) {
     final id = getId('t');
     fieldList.add('late Text $id');
-
     final expression = const ExpressionParser().parseAction(node.value, exports);
-    createList.add('$id = text(\'${escape(node.value)}\')');
-
+    final code = const ExpressionCompiler().visit(expression, context);
+    createList.add('$id = text(\'\${$code}\')');
     mount(id, context);
     return id;
   }

@@ -1,33 +1,11 @@
-import 'variable.dart';
+import '../variable.dart';
 
 /// An abstraction representing a component of a parsed Dart expression.
 abstract class Expression {
   const Expression();
 
   /// Given a [visitor] and optionally a [context], produce a return value [R].
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C> visitor, [CO? context]);
-}
-
-/// Represents a "named" expression, i.e. in the format of `name: expression`.
-///
-/// This format is utilized in Dart for both map-literals and function calls
-/// with named arguments.
-///
-/// ```
-/// NamedExpr('foo', LiteralPrimitive('bar')) // foo: 'bar'
-/// ```
-class Named extends Expression {
-  const Named(this.name, this.expression);
-
-  /// Name (identifier) being assigned [expression].
-  final String name;
-
-  final Expression? expression;
-
-  @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
-    return visitor.visitNamedExpr(this, context);
-  }
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C> visitor, [CO? context]);
 }
 
 /// A placeholder expression used when otherwise no expression is parsed/found.
@@ -37,7 +15,7 @@ class Empty extends Expression {
   const Empty();
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitEmptyExpr(this, context);
   }
 }
@@ -46,24 +24,20 @@ class Empty extends Expression {
 ///
 /// In practice, this means a reference to a static member, top-level member, or
 /// any other identifier or symbol that can be referenced by a package URL and
-/// symbol name, and is mostly a wrapper around [CompileIdentifierMetadata].
-///
-/// The two ways this is currently produced is by a `@HostBinding()` annotation
-/// (where the expression is implicitly reading some static identifier) or by
-/// using `@Component(exports: [...])` and referring to a static identifier or
-/// function declared within.
-///
-/// ```
-/// StaticRead(AppViewIdentifiers.someField); // appViewUtils.someField
-/// ```
+/// symbol name, and is mostly a wrapper around [Variable].
 class StaticRead extends Expression {
   const StaticRead(this.id);
 
   final Variable id;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitStaticRead(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'StaticRead($id)';
   }
 }
 
@@ -87,7 +61,7 @@ class VariableRead extends Expression {
   final String name;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitVariableRead(this, context);
   }
 }
@@ -97,7 +71,7 @@ class ImplicitReceiver extends Expression {
   const ImplicitReceiver();
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitImplicitReceiver(this, context);
   }
 
@@ -118,16 +92,16 @@ class ImplicitReceiver extends Expression {
 /// )
 /// ```
 class Conditional extends Expression {
-  const Conditional(this.condition, this.trueExp, this.falseExp);
+  const Conditional(this.condition, this.trueExpression, this.falseExpression);
 
   final Expression condition;
 
-  final Expression trueExp;
+  final Expression trueExpression;
 
-  final Expression falseExp;
+  final Expression falseExpression;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitConditional(this, context);
   }
 }
@@ -138,16 +112,16 @@ class Conditional extends Expression {
 /// IfNull(VariableRead('a'), VariableRead('b')) // a ?? b
 /// ```
 class IfNull extends Expression {
-  const IfNull(this.condition, this.nullExp);
+  const IfNull(this.condition, this.nullExpression);
 
   /// Condition for the null check and result if it is not null.
   final Expression condition;
 
   /// Result if the [condition] operand is null.
-  final Expression nullExp;
+  final Expression nullExpression;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitIfNull(this, context);
   }
 }
@@ -167,7 +141,7 @@ class PropertyRead extends Expression {
   final String name;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitPropertyRead(this, context);
   }
 
@@ -192,7 +166,7 @@ class SafePropertyRead extends Expression {
   final String name;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitSafePropertyRead(this, context);
   }
 }
@@ -212,7 +186,7 @@ class KeyedRead extends Expression {
   final Expression key;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitKeyedRead(this, context);
   }
 }
@@ -235,7 +209,7 @@ class PropertyWrite extends Expression {
   final Expression value;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitPropertyWrite(this, context);
   }
 }
@@ -263,7 +237,7 @@ class KeyedWrite extends Expression {
   final Expression value;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitKeyedWrite(this, context);
   }
 }
@@ -295,7 +269,7 @@ class BindingPipe extends Expression {
   final List<Expression> args;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitPipe(this, context);
   }
 }
@@ -321,8 +295,13 @@ class LiteralPrimitive extends Expression {
   final Object? value;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitLiteralPrimitive(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'LiteralPrimitive($value)';
   }
 }
 
@@ -351,26 +330,25 @@ class Interpolation extends Expression {
   final List<Expression> expressions;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitInterpolation(this, context);
   }
 
   @override
   String toString() {
-    Iterable<Object> iter() sync* {
-      final iterator = expressions.iterator;
+    final buffer = StringBuffer();
+    final iterator = expressions.iterator;
 
-      for (var string in strings) {
-        string = string.replaceAll('\'', '\\\'').replaceAll('\r', '\\r').replaceAll('\n', '\\n');
-        yield '\'$string\'';
+    for (var string in strings) {
+      string = string.replaceAll('\'', '\\\'').replaceAll('\r', '\\r').replaceAll('\n', '\\n');
+      buffer.write('\'$string\'');
 
-        if (iterator.moveNext()) {
-          yield iterator.current;
-        }
+      if (iterator.moveNext()) {
+        buffer.write(', ${iterator.current}');
       }
     }
 
-    return 'Interpolation { ${iter().join(', ')} }';
+    return 'Interpolation { $buffer }';
   }
 }
 
@@ -393,8 +371,13 @@ class Binary extends Expression {
   final Expression right;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitBinary(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'Binary($operator) { $left, $right }';
   }
 }
 
@@ -411,7 +394,7 @@ class PrefixNot extends Expression {
   final Expression expression;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitPrefixNot(this, context);
   }
 }
@@ -428,8 +411,30 @@ class PostfixNotNull extends Expression {
   final Expression expression;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitPostfixNotNull(this, context);
+  }
+}
+
+/// Represents a "named" expression, i.e. in the format of `name: expression`.
+///
+/// This format is utilized in Dart for both map-literals and function calls
+/// with named arguments.
+///
+/// ```
+/// NamedExpr('foo', LiteralPrimitive('bar')) // foo: 'bar'
+/// ```
+class NamedArgument extends Expression {
+  const NamedArgument(this.name, this.expression);
+
+  /// Name (identifier) being assigned [expression].
+  final String name;
+
+  final Expression? expression;
+
+  @override
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+    return visitor.visitNamedArgument(this, context);
   }
 }
 
@@ -445,7 +450,7 @@ class PostfixNotNull extends Expression {
 /// )
 /// ```
 class MethodCall extends Expression {
-  const MethodCall(this.receiver, this.name, this.args, [this.namedArgs = const <Named>[]]);
+  const MethodCall(this.receiver, this.name, this.args, [this.namedArgs = const <NamedArgument>[]]);
 
   final Expression receiver;
 
@@ -453,19 +458,17 @@ class MethodCall extends Expression {
 
   final List<Expression> args;
 
-  final List<Named> namedArgs;
+  final List<NamedArgument> namedArgs;
 
   @override
-  R visit<R, C, CO extends C>(
-    ExpressionVisitor<R, C?> visitor, [
-    CO? context,
-  ]) =>
-      visitor.visitMethodCall(this, context);
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+    return visitor.visitMethodCall(this, context);
+  }
 }
 
 /// Similar to [MethodCall], but only if the [receiver] is non-null.
 class SafeMethodCall extends Expression {
-  SafeMethodCall(this.receiver, this.name, this.args, [this.namedArgs = const <Named>[]]);
+  SafeMethodCall(this.receiver, this.name, this.args, [this.namedArgs = const <NamedArgument>[]]);
 
   final Expression receiver;
 
@@ -473,10 +476,10 @@ class SafeMethodCall extends Expression {
 
   final List<Expression> args;
 
-  final List<Named> namedArgs;
+  final List<NamedArgument> namedArgs;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitSafeMethodCall(this, context);
   }
 }
@@ -492,21 +495,23 @@ class SafeMethodCall extends Expression {
 /// )
 /// ```
 class FunctionCall extends Expression {
-  const FunctionCall(this.target, this.args, [this.namedArgs = const <Named>[]]);
+  const FunctionCall(this.target, this.args, [this.namedArgs = const <NamedArgument>[]]);
 
   final Expression target;
 
   final List<Expression> args;
 
-  final List<Named> namedArgs;
+  final List<NamedArgument> namedArgs;
 
   @override
-  R visit<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
+  R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitFunctionCall(this, context);
   }
 }
 
 abstract class ExpressionVisitor<R, C> {
+  const ExpressionVisitor();
+
   R visitBinary(Binary node, C context);
 
   R visitConditional(Conditional node, C context);
@@ -529,7 +534,7 @@ abstract class ExpressionVisitor<R, C> {
 
   R visitMethodCall(MethodCall node, C context);
 
-  R visitNamedExpr(Named node, C context);
+  R visitNamedArgument(NamedArgument node, C context);
 
   R visitPipe(BindingPipe node, C context);
 
@@ -550,24 +555,26 @@ abstract class ExpressionVisitor<R, C> {
   R visitVariableRead(VariableRead node, C context);
 }
 
-class RecursiveAstVisitor<C> implements ExpressionVisitor<void, C> {
+class RecursiveExpressionVisitor<C> implements ExpressionVisitor<void, C> {
+  const RecursiveExpressionVisitor();
+
   void visitAll(List<Expression?> nodes, C context) {
     for (final node in nodes) {
-      node!.visit(this, context);
+      node!.accept(this, context);
     }
   }
 
   @override
   void visitBinary(Binary node, C context) {
-    node.left.visit(this, context);
-    node.right.visit(this, context);
+    node.left.accept(this, context);
+    node.right.accept(this, context);
   }
 
   @override
   void visitConditional(Conditional node, C context) {
-    node.condition.visit(this, context);
-    node.trueExp.visit(this, context);
-    node.falseExp.visit(this, context);
+    node.condition.accept(this, context);
+    node.trueExpression.accept(this, context);
+    node.falseExpression.accept(this, context);
   }
 
   @override
@@ -575,26 +582,26 @@ class RecursiveAstVisitor<C> implements ExpressionVisitor<void, C> {
 
   @override
   void visitPipe(BindingPipe node, C context) {
-    node.exp.visit(this, context);
+    node.exp.accept(this, context);
     visitAll(node.args, context);
   }
 
   @override
   void visitFunctionCall(FunctionCall node, C context) {
-    node.target.visit(this, context);
+    node.target.accept(this, context);
     visitAll(node.args, context);
     visitAll(node.namedArgs, context);
   }
 
   @override
-  void visitNamedExpr(Named node, C context) {
-    node.expression!.visit(this, context);
+  void visitNamedArgument(NamedArgument node, C context) {
+    node.expression!.accept(this, context);
   }
 
   @override
   void visitIfNull(IfNull node, C context) {
-    node.condition.visit(this, context);
-    node.nullExp.visit(this, context);
+    node.condition.accept(this, context);
+    node.nullExpression.accept(this, context);
   }
 
   @override
@@ -607,15 +614,15 @@ class RecursiveAstVisitor<C> implements ExpressionVisitor<void, C> {
 
   @override
   void visitKeyedRead(KeyedRead node, C context) {
-    node.receiver.visit(this, context);
-    node.key.visit(this, context);
+    node.receiver.accept(this, context);
+    node.key.accept(this, context);
   }
 
   @override
   void visitKeyedWrite(KeyedWrite node, C context) {
-    node.receiver.visit(this, context);
-    node.key.visit(this, context);
-    node.value.visit(this, context);
+    node.receiver.accept(this, context);
+    node.key.accept(this, context);
+    node.value.accept(this, context);
   }
 
   @override
@@ -623,40 +630,40 @@ class RecursiveAstVisitor<C> implements ExpressionVisitor<void, C> {
 
   @override
   void visitMethodCall(MethodCall node, C context) {
-    node.receiver.visit(this, context);
+    node.receiver.accept(this, context);
     visitAll(node.args, context);
     visitAll(node.namedArgs, context);
   }
 
   @override
   void visitPostfixNotNull(PostfixNotNull node, C context) {
-    node.expression.visit(this, context);
+    node.expression.accept(this, context);
   }
 
   @override
   void visitPrefixNot(PrefixNot node, C context) {
-    node.expression.visit(this, context);
+    node.expression.accept(this, context);
   }
 
   @override
   void visitPropertyRead(PropertyRead node, C context) {
-    node.receiver.visit(this, context);
+    node.receiver.accept(this, context);
   }
 
   @override
   void visitPropertyWrite(PropertyWrite node, C context) {
-    node.receiver.visit(this, context);
-    node.value.visit(this, context);
+    node.receiver.accept(this, context);
+    node.value.accept(this, context);
   }
 
   @override
   void visitSafePropertyRead(SafePropertyRead node, C context) {
-    node.receiver.visit(this, context);
+    node.receiver.accept(this, context);
   }
 
   @override
   void visitSafeMethodCall(SafeMethodCall node, C context) {
-    node.receiver.visit(this, context);
+    node.receiver.accept(this, context);
     visitAll(node.args, context);
     visitAll(node.namedArgs, context);
   }

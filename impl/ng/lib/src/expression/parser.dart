@@ -1,7 +1,7 @@
-import 'expression.dart' show Expression;
-import 'variable.dart';
+import '../variable.dart';
+import '../utilty.dart';
 import 'analyzer_parser.dart';
-import 'utilty.dart';
+import 'nodes.dart' show Expression;
 
 late final RegExp findInterpolation = RegExp(r'{{([\s\S]*?)}}');
 

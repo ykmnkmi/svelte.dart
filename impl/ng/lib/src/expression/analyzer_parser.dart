@@ -1,47 +1,45 @@
-import 'package:analyzer/dart/analysis/features.dart';
-import 'package:analyzer/dart/analysis/utilities.dart';
-import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/ast/token.dart';
-import 'package:analyzer/dart/ast/visitor.dart';
+import 'package:analyzer/dart/analysis/utilities.dart' show parseString;
+import 'package:analyzer/dart/ast/ast.dart' as Dart;
+import 'package:analyzer/dart/ast/token.dart' show TokenType;
+import 'package:analyzer/dart/ast/visitor.dart' show GeneralizingAstVisitor;
 
-import 'expression.dart' as ast;
+import '../variable.dart';
+import 'nodes.dart';
 import 'parser.dart';
-import 'variable.dart';
 
 /// Implements [ExpressionParser] using `package:analyzer`'s AST parser.
 class AnalyzerExpressionParser extends ExpressionParser {
   const AnalyzerExpressionParser() : super.forInheritence();
 
-  ast.Expression convertAndValididateExpression(Expression ast, String input,
+  Expression convertAndValididateExpression(Dart.Expression node, String input,
       {bool? allowAssignments, bool? allowPipes, List<Variable>? exports}) {
     try {
-      return ast.accept(SubsetVisitor(allowAssignments: allowAssignments, allowPipes: allowPipes, exports: exports))!;
+      return node.accept(SubsetVisitor(allowAssignments: allowAssignments, allowPipes: allowPipes, exports: exports))!;
     } on SubsetException catch (error) {
-      throw ParseException(error.reason, input, error.astNode.toSource());
+      throw ParseException(error.reason, input, error.node.toSource());
     }
   }
 
   @override
-  ast.Expression parseAction(String input, List<Variable> exports) {
+  Expression parseAction(String input, List<Variable> exports) {
     return parseExpression(input, allowAssignments: true, allowPipes: false, exports: exports);
   }
 
   @override
-  ast.Expression parseBinding(String input, List<Variable> exports) {
+  Expression parseBinding(String input, List<Variable> exports) {
     return parseExpression(input, allowAssignments: false, exports: exports);
   }
 
-  ast.Expression parseExpression(String input, {bool? allowAssignments, bool? allowPipes, List<Variable>? exports}) {
+  Expression parseExpression(String input, {bool? allowAssignments, bool? allowPipes, List<Variable>? exports}) {
     if (input.isEmpty) {
-      return const ast.Empty();
+      return const Empty();
     }
 
     // This is a hack; currently analyzer can only accept valid compilation
     // units into `parseString`, which means we need something valid at the
     // top-level of a Dart file.
     final wrapper = 'void __EXPRESSION__() => $input;';
-    final featureSet = FeatureSet.latestLanguageVersion();
-    final result = parseString(content: wrapper, throwIfDiagnostics: false, featureSet: featureSet);
+    final result = parseString(content: wrapper, throwIfDiagnostics: false);
 
     if (result.errors.isNotEmpty) {
       throw ParseException(result.errors.map<String>((error) => error.message).join('\n'), input);
@@ -53,16 +51,15 @@ class AnalyzerExpressionParser extends ExpressionParser {
       throw ParseException('Not a valid expression', input);
     }
 
-    final function = declared.first as FunctionDeclaration;
+    final function = declared.first as Dart.FunctionDeclaration;
     final innerBody = function.functionExpression.body;
-
-    final innerAst = (innerBody as ExpressionFunctionBody).expression;
+    final innerAst = (innerBody as Dart.ExpressionFunctionBody).expression;
     return convertAndValididateExpression(innerAst, input,
         allowAssignments: allowAssignments, allowPipes: allowPipes, exports: exports);
   }
 
   @override
-  ast.Expression? parseInterpolation(String input, List<Variable> exports) {
+  Expression? parseInterpolation(String input, List<Variable> exports) {
     final split = splitInterpolation(input);
 
     if (split == null) {
@@ -70,18 +67,18 @@ class AnalyzerExpressionParser extends ExpressionParser {
     }
 
     final expressions = split.expressions
-        .map<ast.Expression>((expression) => parseExpression(expression, allowAssignments: false, exports: exports))
+        .map<Expression>((expression) => parseExpression(expression, allowAssignments: false, exports: exports))
         .toList();
-    return ast.Interpolation(split.strings, expressions);
+    return Interpolation(split.strings, expressions);
   }
 }
 
 class SubsetException implements Exception {
-  SubsetException(this.reason, this.astNode);
+  SubsetException(this.reason, this.node);
 
   final String reason;
 
-  final AstNode astNode;
+  final Dart.AstNode node;
 }
 
 /// A visitor that throws [SubsetException] on an "unknown" [AstNode].
@@ -98,7 +95,7 @@ class SubsetException implements Exception {
 ///   // Allow.
 /// }
 /// ```
-class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
+class SubsetVisitor extends GeneralizingAstVisitor<Expression> {
   SubsetVisitor({bool? allowAssignments, bool? allowPipes, List<Variable>? exports})
       : allowAssignments = allowAssignments ?? false,
         allowPipes = allowPipes ?? true,
@@ -135,8 +132,8 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
   /// Exports that have a `prefix`.
   final Map<String, Map<String, Variable>> prefixedExports;
 
-  ast.Expression createFunctionCall(InvocationExpression call,
-      {bool? allowPipes, required ast.Expression receiver, required String? methodName}) {
+  Expression createFunctionCall(Dart.InvocationExpression call,
+      {bool? allowPipes, required Expression receiver, required String? methodName}) {
     allowPipes ??= this.allowPipes;
 
     if (call.typeArguments != null) {
@@ -144,74 +141,69 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
     }
 
     final allArgs = call.argumentList.arguments;
-    final posArgs = <Expression>[];
-    final namedArgs = <NamedExpression>[];
+    final posArgs = <Dart.Expression>[];
+    final namedArgs = <Dart.NamedExpression>[];
 
     for (final arg in allArgs) {
-      if (arg is NamedExpression) {
+      if (arg is Dart.NamedExpression) {
         namedArgs.add(arg);
       } else {
         posArgs.add(arg);
       }
     }
 
-    if (receiver is ast.PropertyRead && receiver.name == r'$pipe') {
-      return createPipeOrThrow(call as MethodInvocation, receiver, posArgs, namedArgs);
+    if (receiver is PropertyRead && receiver.name == r'$pipe') {
+      return createPipeOrThrow(call as Dart.MethodInvocation, receiver, posArgs, namedArgs);
     }
 
-    final callPos = posArgs.map<ast.Expression?>((arg) => arg.accept(this)).whereType<ast.Expression>().toList();
-    final callNamed =
-        namedArgs.map<ast.Named>((arg) => ast.Named(arg.name.label.name, arg.expression.accept(this))).toList();
+    final callPos = posArgs.map<Expression?>((arg) => arg.accept(this)).whereType<Expression>().toList();
+    final callNamed = namedArgs.map<NamedArgument>((arg) => NamedArgument(arg.name.label.name, arg.expression.accept(this))).toList();
 
     if (methodName != null) {
       if (isNullAwareCall(call)) {
-        return ast.SafeMethodCall(receiver, methodName, callPos, callNamed);
+        return SafeMethodCall(receiver, methodName, callPos, callNamed);
       }
 
-      return ast.MethodCall(receiver, methodName, callPos, callNamed);
+      return MethodCall(receiver, methodName, callPos, callNamed);
     } else {
-      return ast.FunctionCall(receiver, callPos, callNamed);
+      return FunctionCall(receiver, callPos, callNamed);
     }
   }
 
-  ast.BindingPipe createPipeOrThrow(
-      MethodInvocation astNode, ast.PropertyRead receiver, List<Expression> posArgs, List<NamedExpression> namedArgs) {
+  BindingPipe createPipeOrThrow(Dart.MethodInvocation node, PropertyRead receiver, List<Dart.Expression> posArgs,
+      List<Dart.NamedExpression> namedArgs) {
     if (!allowPipes) {
-      return notSupported('Pipes are not allowed in this context', astNode);
+      return notSupported('Pipes are not allowed in this context', node);
     }
 
     if (namedArgs.isNotEmpty) {
-      return notSupported('Pipes may only contain positional, not named, arguments', astNode);
+      return notSupported('Pipes may only contain positional, not named, arguments', node);
     }
     if (posArgs.isEmpty) {
-      return notSupported('Pipes must contain at least one positional argument', astNode);
+      return notSupported('Pipes must contain at least one positional argument', node);
     }
 
-    return createPipeUsage(astNode.methodName.name, posArgs);
+    return createPipeUsage(node.methodName.name, posArgs);
   }
 
-  ast.BindingPipe createPipeUsage(String name, List<Expression> posArgs) {
-    return ast.BindingPipe(
+  BindingPipe createPipeUsage(String name, List<Dart.Expression> posArgs) {
+    return BindingPipe(
         posArgs.first.accept(this)!,
         name,
         posArgs.length > 1
-            ? posArgs
-                .skip(1)
-                .map<ast.Expression?>((expression) => expression.accept(this))
-                .whereType<ast.Expression>()
-                .toList()
-            : const <ast.Expression>[]);
+            ? posArgs.skip(1).map<Expression?>((expression) => expression.accept(this)).whereType<Expression>().toList()
+            : const <Expression>[]);
   }
 
-  /// Returns [ast.Expression] if a name or prefix is registered and matches a symbol.
-  ast.Expression? matchExport(String prefixOrUnprefixedName, [String? nameOrNullIfNotPrefixed]) {
+  /// Returns [Expression] if a name or prefix is registered and matches a symbol.
+  Expression? matchExport(String prefixOrUnprefixedName, [String? nameOrNullIfNotPrefixed]) {
     final unprefixed = unprefixedExports[prefixOrUnprefixedName];
 
     if (unprefixed != null) {
-      ast.Expression result = ast.StaticRead(unprefixed);
+      Expression result = StaticRead(unprefixed);
 
       if (nameOrNullIfNotPrefixed != null) {
-        result = ast.PropertyRead(result, nameOrNullIfNotPrefixed);
+        result = PropertyRead(result, nameOrNullIfNotPrefixed);
       }
 
       return result;
@@ -227,7 +219,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
       final prefixed = exports[nameOrNullIfNotPrefixed];
 
       if (prefixed != null) {
-        return ast.StaticRead(prefixed);
+        return StaticRead(prefixed);
       }
     }
 
@@ -236,7 +228,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
 
   // TODO(b/161262984): Reduce the amount of branching if able.
   @override
-  ast.Expression visitAssignmentExpression(AssignmentExpression node) {
+  Expression visitAssignmentExpression(Dart.AssignmentExpression node) {
     if (!allowAssignments) {
       return notSupported('assignment (x = y) expressions are only valid in an event binding.', node);
     }
@@ -245,35 +237,35 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
     final rightHandSide = node.rightHandSide;
 
     // TODO(b/159912942): Allow this once we are off the legacy parser.
-    if (leftHandSide is PropertyAccess && leftHandSide.isNullAware) {
+    if (leftHandSide is Dart.PropertyAccess && leftHandSide.isNullAware) {
       return notSupported('null-aware property assignment is not supported', node);
     }
 
-    ast.Expression receiver;
+    Expression receiver;
     String property;
 
-    if (leftHandSide is PropertyAccess) {
+    if (leftHandSide is Dart.PropertyAccess) {
       receiver = leftHandSide.target!.accept(this)!;
       property = leftHandSide.propertyName.name;
-    } else if (leftHandSide is PrefixedIdentifier) {
+    } else if (leftHandSide is Dart.PrefixedIdentifier) {
       receiver = leftHandSide.prefix.accept(this)!;
       property = leftHandSide.identifier.name;
-    } else if (leftHandSide is SimpleIdentifier) {
-      receiver = ast.ImplicitReceiver();
+    } else if (leftHandSide is Dart.SimpleIdentifier) {
+      receiver = ImplicitReceiver();
       property = leftHandSide.name;
-    } else if (leftHandSide is IndexExpression) {
-      return ast.KeyedWrite(
+    } else if (leftHandSide is Dart.IndexExpression) {
+      return KeyedWrite(
           leftHandSide.target!.accept(this)!, leftHandSide.index.accept(this)!, rightHandSide.accept(this)!);
     } else {
       return notSupported('unsupported assignment (${leftHandSide.runtimeType})', node);
     }
 
     final expression = rightHandSide.accept(this)!;
-    return ast.PropertyWrite(receiver, property, expression);
+    return PropertyWrite(receiver, property, expression);
   }
 
   @override
-  ast.Expression visitBinaryExpression(BinaryExpression node) {
+  Expression visitBinaryExpression(Dart.BinaryExpression node) {
     switch (node.operator.type) {
       case TokenType.PLUS:
       case TokenType.MINUS:
@@ -288,38 +280,38 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
       case TokenType.LT_EQ:
       case TokenType.GT:
       case TokenType.GT_EQ:
-        return ast.Binary(node.operator.lexeme, node.leftOperand.accept(this)!, node.rightOperand.accept(this)!);
+        return Binary(node.operator.lexeme, node.leftOperand.accept(this)!, node.rightOperand.accept(this)!);
       case TokenType.QUESTION_QUESTION:
-        return ast.IfNull(node.leftOperand.accept(this)!, node.rightOperand.accept(this)!);
+        return IfNull(node.leftOperand.accept(this)!, node.rightOperand.accept(this)!);
       default:
         return super.visitBinaryExpression(node)!;
     }
   }
 
   @override
-  ast.Expression visitBooleanLiteral(BooleanLiteral node) {
-    return ast.LiteralPrimitive(node.value);
+  Expression visitBooleanLiteral(Dart.BooleanLiteral node) {
+    return LiteralPrimitive(node.value);
   }
 
   @override
-  ast.Expression visitConditionalExpression(ConditionalExpression node) {
-    return ast.Conditional(
+  Expression visitConditionalExpression(Dart.ConditionalExpression node) {
+    return Conditional(
         node.condition.accept(this)!, node.thenExpression.accept(this)!, node.elseExpression.accept(this)!);
   }
 
   @override
-  ast.Expression visitDoubleLiteral(DoubleLiteral node) {
-    return ast.LiteralPrimitive(node.value);
+  Expression visitDoubleLiteral(Dart.DoubleLiteral node) {
+    return LiteralPrimitive(node.value);
   }
 
   /// Like [visitNode], but with a error message for unsupported expressions.
   @override
-  ast.Expression visitExpression(Expression astNode) {
-    return notSupported('${astNode.runtimeType}: Not a subset of supported Dart expressions.', astNode);
+  Expression visitExpression(Dart.Expression node) {
+    return notSupported('${node.runtimeType}: Not a subset of supported Dart expressions.', node);
   }
 
   @override
-  ast.Expression visitFunctionExpressionInvocation(FunctionExpressionInvocation node) {
+  Expression visitFunctionExpressionInvocation(Dart.FunctionExpressionInvocation node) {
     // Something like "b()()"
     // Prohibit pipes from appearing in nested function calls.
     // I.e. foo.bar.$pipe.
@@ -327,24 +319,24 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
   }
 
   @override
-  ast.Expression visitIndexExpression(IndexExpression node) {
-    return ast.KeyedRead(node.target!.accept(this)!, node.index.accept(this)!);
+  Expression visitIndexExpression(Dart.IndexExpression node) {
+    return KeyedRead(node.target!.accept(this)!, node.index.accept(this)!);
   }
 
   @override
-  ast.Expression visitIntegerLiteral(IntegerLiteral node) {
-    return ast.LiteralPrimitive(node.value);
+  Expression visitIntegerLiteral(Dart.IntegerLiteral node) {
+    return LiteralPrimitive(node.value);
   }
 
   @override
-  ast.Expression visitMethodInvocation(MethodInvocation node) {
+  Expression visitMethodInvocation(Dart.MethodInvocation node) {
     final target = node.target;
 
     if (target != null) {
-      if (target is SimpleIdentifier) {
+      if (target is Dart.SimpleIdentifier) {
         // <identifier>.<identifier>(callExpression)
         final prefix = target.name;
-        final method = (node.function as SimpleIdentifier).name;
+        final method = (node.function as Dart.SimpleIdentifier).name;
         final receiver = matchExport(prefix, method);
 
         if (receiver != null) {
@@ -354,14 +346,14 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
 
       // <identifier>.<identifier>.<method>(callExpression)
       final receiver = target.accept(this)!;
-      return createFunctionCall(node, receiver: receiver, methodName: (node.function as Identifier).name);
+      return createFunctionCall(node, receiver: receiver, methodName: (node.function as Dart.Identifier).name);
     } else {
       final method = node.function.accept(this);
 
-      if (method is ast.StaticRead) {
+      if (method is StaticRead) {
         return createFunctionCall(node, receiver: method, methodName: null);
       } else {
-        return createFunctionCall(node, receiver: ast.ImplicitReceiver(), methodName: node.methodName.name);
+        return createFunctionCall(node, receiver: ImplicitReceiver(), methodName: node.methodName.name);
       }
     }
   }
@@ -370,57 +362,57 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
   ///
   /// See [GeneralizingAstVisitor] for details.
   @override
-  ast.Expression visitNode(AstNode astNode) {
-    return notSupported('${astNode.runtimeType}: Only expressions are supported.', astNode);
+  Expression visitNode(Dart.AstNode node) {
+    return notSupported('${node.runtimeType}: Only expressions are supported.', node);
   }
 
   @override
-  ast.Expression visitNullLiteral(NullLiteral node) {
-    return ast.LiteralPrimitive(null);
+  Expression visitNullLiteral(Dart.NullLiteral node) {
+    return LiteralPrimitive(null);
   }
 
   @override
-  ast.Expression visitParenthesizedExpression(ParenthesizedExpression node) {
+  Expression visitParenthesizedExpression(Dart.ParenthesizedExpression node) {
     // TODO(b/159912942): Parse correctly.
     return node.expression.accept(this)!;
   }
 
   @override
-  ast.Expression visitPostfixExpression(PostfixExpression node) {
+  Expression visitPostfixExpression(Dart.PostfixExpression node) {
     final expression = node.operand.accept(this)!;
 
     switch (node.operator.type) {
       case TokenType.BANG:
-        return ast.PostfixNotNull(expression);
+        return PostfixNotNull(expression);
       default:
         return notSupported('only ! is a supported postfix operator', node);
     }
   }
 
   @override
-  ast.Expression visitPrefixedIdentifier(PrefixedIdentifier node) {
+  Expression visitPrefixedIdentifier(Dart.PrefixedIdentifier node) {
     // TODO(b/159167156): Resolve exports in a consistent place.
     final export = matchExport(node.prefix.name, node.identifier.name);
-    return export ?? ast.PropertyRead(readFromContext(node.prefix), node.identifier.name);
+    return export ?? PropertyRead(readFromContext(node.prefix), node.identifier.name);
   }
 
   @override
-  ast.Expression visitPrefixExpression(PrefixExpression node) {
+  Expression visitPrefixExpression(Dart.PrefixExpression node) {
     final expression = node.operand.accept(this)!;
 
     switch (node.operator.type) {
       case TokenType.BANG:
-        return ast.PrefixNot(expression);
+        return PrefixNot(expression);
       case TokenType.MINUS:
         // TODO(b/159912942): Just parse as -1.
-        return ast.Binary('-', ast.LiteralPrimitive(0), expression);
+        return Binary('-', LiteralPrimitive(0), expression);
       default:
         return notSupported('only !, +, or - are supported prefix operators', node);
     }
   }
 
   @override
-  ast.Expression visitPropertyAccess(PropertyAccess node) {
+  Expression visitPropertyAccess(Dart.PropertyAccess node) {
     if (node.isCascaded) {
       return notSupported('cascade operator is not supported.', node);
     }
@@ -429,22 +421,22 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
     final property = node.propertyName.name;
 
     if (node.isNullAware) {
-      return ast.SafePropertyRead(receiver, property);
+      return SafePropertyRead(receiver, property);
     }
 
-    return ast.PropertyRead(receiver, property);
+    return PropertyRead(receiver, property);
   }
 
   @override
-  ast.Expression visitSimpleIdentifier(SimpleIdentifier node) {
+  Expression visitSimpleIdentifier(Dart.SimpleIdentifier node) {
     // TODO(b/159167156): Resolve exports in a consistent place.
     final export = matchExport(node.name);
     return export ?? readFromContext(node);
   }
 
   @override
-  ast.Expression visitSimpleStringLiteral(SimpleStringLiteral node) {
-    return ast.LiteralPrimitive(node.stringValue);
+  Expression visitSimpleStringLiteral(Dart.SimpleStringLiteral node) {
+    return LiteralPrimitive(node.stringValue);
   }
 
   /// Indexes `List<Identifier>` by `prefix` and `name`.
@@ -470,15 +462,15 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
     };
   }
 
-  static bool isNullAwareCall(InvocationExpression call) {
-    return call is MethodInvocation && call.isNullAware;
+  static bool isNullAwareCall(Dart.InvocationExpression call) {
+    return call is Dart.MethodInvocation && call.isNullAware;
   }
 
-  static Never notSupported(String reason, AstNode astNode) {
-    throw SubsetException(reason, astNode);
+  static Never notSupported(String reason, Dart.AstNode node) {
+    throw SubsetException(reason, node);
   }
 
-  static ast.Expression readFromContext(SimpleIdentifier astNode) {
-    return ast.PropertyRead(ast.ImplicitReceiver(), astNode.name);
+  static Expression readFromContext(Dart.SimpleIdentifier node) {
+    return PropertyRead(ImplicitReceiver(), node.name);
   }
 }

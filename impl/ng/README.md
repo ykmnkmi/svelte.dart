@@ -6,8 +6,8 @@ from:
   var count = 0;
 
   void handleClick() {
-		count += 1;
-	}
+    count += 1;
+  }
 </script>
 
 

@@ -1,4 +1,7 @@
-import 'package:piko/piko.dart';
+import 'package:piko/src/compiler.dart';
+// import 'package:piko/src/expression/compiler.dart';
+// import 'package:piko/src/expression/parser.dart';
+import 'package:piko/src/variable.dart';
 import 'package:stack_trace/stack_trace.dart' show Trace;
 
 const String template = '''
@@ -6,14 +9,18 @@ const String template = '''
   final name = 'world';
 </script>
 
-<h1>Hello { name }!</h1>
+<h1>Hello {{ name }}!</h1>
 ''';
 
 void main() {
   try {
-    final node = const ExpressionParser().parseAction('name', <Variable>[Variable(name: 'name', prefix: 'context')]);
-    print(node);
-    // print(NgCompiler.compile(template.trim()));
+    // final parser = const ExpressionParser();
+    // final node = parser.parseAction('name + 1', <Variable>[Variable(name: 'name')]);
+    // print(node);
+    // final compiler = const ExpressionCompiler();
+    // final code = compiler.visit(node, 'context');
+    // print(code);
+    print(Compiler.compile(template, exports: <Variable>[Variable(name: 'name', string: true)]));
   } catch (error, stackTrace) {
     print(error);
     print(Trace.format(stackTrace));
