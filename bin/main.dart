@@ -28,3 +28,5 @@ void main() {
     print(Trace.format(stack));
   }
 }
+
+// ignore_for_file: avoid_print

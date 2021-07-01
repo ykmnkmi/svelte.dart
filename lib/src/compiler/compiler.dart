@@ -207,26 +207,26 @@ class Compiler extends Visitor<String?, String?> {
   }
 
   @override
-  String? visitAttribute(Attribute node, [String? parent]) {
-    createList.add('$parent.${node.name} = true');
+  String? visitAttribute(Attribute node, [String? context]) {
+    createList.add('$context.${node.name} = true');
   }
 
   @override
-  String? visitCondition(Condition node, [String? parent]) {
+  String? visitCondition(Condition node, [String? context]) {
     final id = getId('t');
     fieldList.add('late Text $id');
     fieldList.add('late String ${id}value');
     createList.add('$id = text(${id}value = \'${interpolate(node)}\')');
-    mount(id, parent);
+    mount(id, context);
     return id;
   }
 
   @override
-  String? visitElement(Element node, [String? parent]) {
+  String? visitElement(Element node, [String? context]) {
     final id = getId(node.tag);
     fieldList.add('late Element $id');
     createList.add('$id = element(\'${node.tag}\')');
-    mount(id, parent);
+    mount(id, context);
 
     for (final attribute in node.attributes) {
       attribute.accept(this, id);
@@ -246,22 +246,22 @@ class Compiler extends Visitor<String?, String?> {
   }
 
   @override
-  String? visitEventListener(EventListener node, [String? parent]) {
-    listenList.add('listen($parent, \'${node.name}\', (event) { ${interpolate(node.callback, wrap: false)}(); })');
+  String? visitEventListener(EventListener node, [String? context]) {
+    listenList.add('listen($context, \'${node.name}\', (event) { ${interpolate(node.callback, wrap: false)}(); })');
     return null;
   }
 
   @override
-  String? visitIdentifier(Identifier node, [String? parent]) {
+  String? visitIdentifier(Identifier node, [String? context]) {
     final id = getId('t');
     fieldList.add('late Text $id');
     createList.add('$id = text(\'\${context.${node.name}}\')');
-    mount(id, parent);
+    mount(id, context);
     return id;
   }
 
   @override
-  String? visitInline(Inline node, [String? parent]) {
+  String? visitInline(Inline node, [String? context]) {
     final id = getId(node.name[0].toLowerCase() + node.name.substring(1));
     final init = StringBuffer('$id = ${node.name}');
 
@@ -281,26 +281,26 @@ class Compiler extends Visitor<String?, String?> {
     fieldList.add('late Fragment<${node.name}> $fragment');
     createList.add('createFragment($fragment)');
 
-    if (parent == null) {
+    if (context == null) {
       mountList.add('mountFragment($fragment, target, anchor)');
     } else {
-      mountList.add('mountFragment($fragment, $parent)');
+      mountList.add('mountFragment($fragment, $context)');
     }
 
     fragmentDetachList.add('detachFragment($fragment)');
   }
 
   @override
-  String? visitStyle(Style node, [String? parent]) {
+  String? visitStyle(Style node, [String? context]) {
     // const/final
     // TODO: setStyle
 
     // dynamic
-    createList.add('attr($parent, \'style\', \'${interpolate(node.value)}\')');
+    createList.add('attr($context, \'style\', \'${interpolate(node.value)}\')');
   }
 
   @override
-  String? visitText(Text node, [String? parent]) {
+  String? visitText(Text node, [String? context]) {
     final id = getId('t');
     final text = node.escaped;
     fieldList.add('late Text $id');
@@ -311,12 +311,12 @@ class Compiler extends Visitor<String?, String?> {
       createList.add('$id = text(\'${node.escaped}\')');
     }
 
-    mount(id, parent);
+    mount(id, context);
     return id;
   }
 
   @override
-  String? visitValueAttribute(ValueAttribute node, [String? parent]) {
-    createList.add('attr($parent, \'${node.name}\', \'${interpolate(node.value)}\')');
+  String? visitValueAttribute(ValueAttribute node, [String? context]) {
+    createList.add('attr($context, \'${node.name}\', \'${interpolate(node.value)}\')');
   }
 }

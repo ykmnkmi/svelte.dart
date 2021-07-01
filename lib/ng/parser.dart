@@ -1,10 +1,11 @@
-import 'package:meta/meta.dart';
+import 'package:meta/meta.dart' show internal, literal, protected, visibleForOverriding;
 
 import 'ast.dart' show AST, ASTWithSource;
 import 'variable.dart';
-import 'src/analyzer_parser.dart';
-import 'src/utilty.dart';
+import 'analyzer_parser.dart';
+import 'utilty.dart';
 
+@internal
 late final RegExp findInterpolation = RegExp(r'{{([\s\S]*?)}}');
 
 class ParseException extends Error {
@@ -20,7 +21,8 @@ class ParseException extends Error {
 }
 
 abstract class ExpressionParser {
-  factory ExpressionParser() = AnalyzerExpressionParser;
+  @literal
+  const factory ExpressionParser() = AnalyzerExpressionParser;
 
   @protected
   const ExpressionParser.forInheritence();
@@ -92,7 +94,6 @@ abstract class ExpressionParser {
   /// Splits a longer multi-expression interpolation into [SplitInterpolation].
   SplitInterpolation? splitInterpolation(String input, String location) {
     final parts = jsSplit(input, findInterpolation);
-    print(parts);
 
     if (parts.length <= 1) {
       return null;

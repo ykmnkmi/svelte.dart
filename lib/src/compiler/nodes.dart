@@ -325,7 +325,7 @@ class Inline extends Element {
 
   @override
   String toString() {
-    final buffer = StringBuffer('$name');
+    final buffer = StringBuffer(name);
 
     if (sub.isNotEmpty) {
       buffer.write('.$sub');

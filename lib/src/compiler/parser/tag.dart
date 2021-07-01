@@ -16,7 +16,9 @@ extension TagParser on Parser {
 
     if (isClosingTag) {
       if (isVoid(name)) {
-        error(code: 'invalid-void-content', message: '<$name> is a void element and cannot have children, or a closing tag');
+        error(
+            code: 'invalid-void-content',
+            message: '<$name> is a void element and cannot have children, or a closing tag');
       }
 
       eat('>');
@@ -138,7 +140,6 @@ extension TagParser on Parser {
     }
 
     while (!isDone) {
-      print('rest: $rest');
       if (done(this)) {
         flush();
         final range = current.children.getRange(start, end).toList();
@@ -194,7 +195,9 @@ extension TagParser on Parser {
 
 bool isVoid(String tag) {
   tag = tag.toLowerCase();
-  return RegExp('^(?:area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)\$').hasMatch(tag) || tag == '!doctype';
+  return RegExp('^(?:area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)\$')
+          .hasMatch(tag) ||
+      tag == '!doctype';
 }
 
 bool closingTagOmitted(String current, String next) {
