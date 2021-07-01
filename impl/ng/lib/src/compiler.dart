@@ -1,14 +1,15 @@
 import 'package:angular_ast/angular_ast.dart';
-import 'package:meta/meta.dart' show doNotStore;
 
-@doNotStore
+import 'parser.dart';
+import 'variable.dart';
+
 class NgCompiler implements TemplateAstVisitor<String, String> {
-  static String compile(String source, {String name = 'App', String? path}) {
-    final nodes = parse(source, sourceUrl: path ?? name).cast<StandaloneTemplateAst>();
-    return NgCompiler._(name).visitAll(nodes);
+  static String compile(String source, {String name = 'App', List<Variable> exports = const <Variable>[]}) {
+    final nodes = parse(source, sourceUrl: name).cast<StandaloneTemplateAst>();
+    return NgCompiler(name, exports).visitAll(nodes);
   }
 
-  NgCompiler._(this.name)
+  NgCompiler(this.name, this.exports)
       : sourceBuffer = StringBuffer(),
         initList = <String>[],
         constructorList = <String>[],
@@ -22,6 +23,8 @@ class NgCompiler implements TemplateAstVisitor<String, String> {
         count = <String, int>{};
 
   final String name;
+
+  final List<Variable> exports;
 
   final StringBuffer sourceBuffer;
 
@@ -102,6 +105,7 @@ class NgCompiler implements TemplateAstVisitor<String, String> {
 
     if (node.childNodes.isNotEmpty) {
       for (final child in node.childNodes) {
+        print(child);
         child.accept(this, id);
       }
     }
@@ -125,8 +129,15 @@ class NgCompiler implements TemplateAstVisitor<String, String> {
   }
 
   @override
-  String visitInterpolation(InterpolationAst astNode, [String? context]) {
-    throw UnimplementedError('visitInterpolation');
+  String visitInterpolation(InterpolationAst node, [String? context]) {
+    final id = getId('t');
+    fieldList.add('late Text $id');
+
+    final expression = const ExpressionParser().parseAction(node.value, exports);
+    createList.add('$id = text(\'${escape(node.value)}\')');
+
+    mount(id, context);
+    return id;
   }
 
   @override

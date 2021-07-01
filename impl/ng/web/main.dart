@@ -1,4 +1,4 @@
-import 'package:piko/ng.dart';
+import 'package:ng/ng.dart';
 import 'package:stack_trace/stack_trace.dart' show Trace;
 
 const String template = '''
@@ -11,8 +11,8 @@ const String template = '''
 
 void main() {
   try {
-    print(const ExpressionParser()
-        .parseInterpolation('hello {{ name }}!', '<template>', <Variable>[Variable(name: 'name')]));
+    final node = const ExpressionParser().parseAction('name', <Variable>[Variable(name: 'name', prefix: 'context')]);
+    print(node);
     // print(NgCompiler.compile(template.trim()));
   } catch (error, stackTrace) {
     print(error);

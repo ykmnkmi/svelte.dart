@@ -29,9 +29,6 @@ void main(List<String> arguments) {
   void start(FrontendServerClient client) {
     Future<void> run([String line = '']) {
       final arguments = <String>[outputDill, ...line.trim().split(' ').where((String argument) => argument.isNotEmpty)];
-      final message = 'running ${Platform.resolvedExecutable} ${arguments.join(' ')}';
-      stdout.writeln(message);
-      stdout.writeln('-' * (message.length));
       return Process.run(Platform.resolvedExecutable, arguments).then<void>(runCompiled).catchError(catchError);
     }
 
@@ -59,13 +56,19 @@ void main(List<String> arguments) {
         return Future<void>.value();
       }
 
-      return client.compile(event == null ? null : <Uri>[targetFile.uri]).then<void>(parse).catchError(catchError);
+      return client
+          .compile(event == null ? null : <Uri>[targetFile.uri])
+          .then<void>(parse)
+          .catchError(catchError)
+          .whenComplete(ready);
     }
 
     Stream<FileSystemEvent> stream;
 
     if (Platform.isWindows) {
-      stream = targetFile.parent.watch(events: FileSystemEvent.modify).where((FileSystemEvent event) => event.path == targetFile.path);
+      stream = targetFile.parent
+          .watch(events: FileSystemEvent.modify)
+          .where((FileSystemEvent event) => event.path == targetFile.path);
     } else {
       stream = targetFile.watch(events: FileSystemEvent.modify);
     }
@@ -74,7 +77,7 @@ void main(List<String> arguments) {
 
     Future<void> listen(String line) {
       if (line.startsWith('run')) {
-        return run(line.substring(3));
+        return run(line.substring(3)).then(ready);
       }
 
       if (line.startsWith('exit')) {
@@ -82,13 +85,14 @@ void main(List<String> arguments) {
         return client.shutdown().then<void>(exit);
       }
 
-      return Future<void>.value();
+      return Future<void>.value().then(ready);
     }
 
     compile().then<void>((void _) => stdin.transform(utf8.decoder).asyncMap<void>(listen).drain<void>());
   }
 
-  FrontendServerClient.start(targetFilePath, outputDill, platformDill, printIncrementalDependencies: false, sdkRoot: sdkRoot)
+  FrontendServerClient.start(targetFilePath, outputDill, platformDill,
+          printIncrementalDependencies: false, sdkRoot: sdkRoot)
       .then<void>(start)
       .catchError(catchError);
 }
@@ -106,4 +110,8 @@ void runCompiled(ProcessResult result) {
 void catchError(Object error, StackTrace stack) {
   stdout.writeln(error);
   stdout.writeln(Trace.format(stack));
+}
+
+void ready([void _]) {
+  stdout.write('>>> ');
 }

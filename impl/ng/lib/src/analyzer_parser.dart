@@ -3,9 +3,8 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
-import 'package:meta/meta.dart';
 
-import 'ast.dart' as ast;
+import 'expression.dart' as ast;
 import 'parser.dart';
 import 'variable.dart';
 
@@ -13,30 +12,28 @@ import 'variable.dart';
 class AnalyzerExpressionParser extends ExpressionParser {
   const AnalyzerExpressionParser() : super.forInheritence();
 
-  ast.AST convertAndValididateExpression(Expression ast, String input, String location,
+  ast.Expression convertAndValididateExpression(Expression ast, String input,
       {bool? allowAssignments, bool? allowPipes, List<Variable>? exports}) {
     try {
       return ast.accept(SubsetVisitor(allowAssignments: allowAssignments, allowPipes: allowPipes, exports: exports))!;
     } on SubsetException catch (error) {
-      throw ParseException(error.reason, input, location, error.astNode.toSource());
+      throw ParseException(error.reason, input, error.astNode.toSource());
     }
   }
 
   @override
-  ast.AST parseActionImpl(String input, String location, List<Variable> exports) {
-    return parseExpression(input, location, allowAssignments: true, allowPipes: false, exports: exports);
+  ast.Expression parseAction(String input, List<Variable> exports) {
+    return parseExpression(input, allowAssignments: true, allowPipes: false, exports: exports);
   }
 
   @override
-  ast.AST parseBindingImpl(String input, String location, List<Variable> exports) {
-    return parseExpression(input, location, allowAssignments: false, exports: exports);
+  ast.Expression parseBinding(String input, List<Variable> exports) {
+    return parseExpression(input, allowAssignments: false, exports: exports);
   }
 
-  @visibleForTesting
-  ast.AST parseExpression(String input, String location,
-      {bool? allowAssignments, bool? allowPipes, List<Variable>? exports}) {
+  ast.Expression parseExpression(String input, {bool? allowAssignments, bool? allowPipes, List<Variable>? exports}) {
     if (input.isEmpty) {
-      return ast.EmptyExpr();
+      return const ast.Empty();
     }
 
     // This is a hack; currently analyzer can only accept valid compilation
@@ -44,36 +41,36 @@ class AnalyzerExpressionParser extends ExpressionParser {
     // top-level of a Dart file.
     final wrapper = 'void __EXPRESSION__() => $input;';
     final featureSet = FeatureSet.latestLanguageVersion();
-    final result = parseString(content: wrapper, path: location, throwIfDiagnostics: false, featureSet: featureSet);
+    final result = parseString(content: wrapper, throwIfDiagnostics: false, featureSet: featureSet);
 
     if (result.errors.isNotEmpty) {
-      throw ParseException(result.errors.map<String>((error) => error.message).join('\n'), input, location);
+      throw ParseException(result.errors.map<String>((error) => error.message).join('\n'), input);
     }
 
     final declared = result.unit.declarations;
 
     if (declared.length != 1) {
-      throw ParseException('Not a valid expression', input, location);
+      throw ParseException('Not a valid expression', input);
     }
 
     final function = declared.first as FunctionDeclaration;
     final innerBody = function.functionExpression.body;
 
     final innerAst = (innerBody as ExpressionFunctionBody).expression;
-    return convertAndValididateExpression(innerAst, input, location,
+    return convertAndValididateExpression(innerAst, input,
         allowAssignments: allowAssignments, allowPipes: allowPipes, exports: exports);
   }
 
   @override
-  ast.AST? parseInterpolationImpl(String input, String location, List<Variable> exports) {
-    final split = splitInterpolation(input, location);
+  ast.Expression? parseInterpolation(String input, List<Variable> exports) {
+    final split = splitInterpolation(input);
 
     if (split == null) {
       return null;
     }
 
     final expressions = split.expressions
-        .map<ast.AST>((expression) => parseExpression(expression, location, allowAssignments: false, exports: exports))
+        .map<ast.Expression>((expression) => parseExpression(expression, allowAssignments: false, exports: exports))
         .toList();
     return ast.Interpolation(split.strings, expressions);
   }
@@ -101,7 +98,7 @@ class SubsetException implements Exception {
 ///   // Allow.
 /// }
 /// ```
-class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
+class SubsetVisitor extends GeneralizingAstVisitor<ast.Expression> {
   SubsetVisitor({bool? allowAssignments, bool? allowPipes, List<Variable>? exports})
       : allowAssignments = allowAssignments ?? false,
         allowPipes = allowPipes ?? true,
@@ -138,8 +135,8 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
   /// Exports that have a `prefix`.
   final Map<String, Map<String, Variable>> prefixedExports;
 
-  ast.AST createFunctionCall(InvocationExpression call,
-      {bool? allowPipes, required ast.AST receiver, required String? methodName}) {
+  ast.Expression createFunctionCall(InvocationExpression call,
+      {bool? allowPipes, required ast.Expression receiver, required String? methodName}) {
     allowPipes ??= this.allowPipes;
 
     if (call.typeArguments != null) {
@@ -162,9 +159,9 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
       return createPipeOrThrow(call as MethodInvocation, receiver, posArgs, namedArgs);
     }
 
-    final callPos = posArgs.map<ast.AST?>((arg) => arg.accept(this)).whereType<ast.AST>().toList();
+    final callPos = posArgs.map<ast.Expression?>((arg) => arg.accept(this)).whereType<ast.Expression>().toList();
     final callNamed =
-        namedArgs.map<ast.NamedExpr>((arg) => ast.NamedExpr(arg.name.label.name, arg.expression.accept(this))).toList();
+        namedArgs.map<ast.Named>((arg) => ast.Named(arg.name.label.name, arg.expression.accept(this))).toList();
 
     if (methodName != null) {
       if (isNullAwareCall(call)) {
@@ -198,16 +195,20 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
         posArgs.first.accept(this)!,
         name,
         posArgs.length > 1
-            ? posArgs.skip(1).map<ast.AST?>((expression) => expression.accept(this)).whereType<ast.AST>().toList()
-            : const <ast.AST>[]);
+            ? posArgs
+                .skip(1)
+                .map<ast.Expression?>((expression) => expression.accept(this))
+                .whereType<ast.Expression>()
+                .toList()
+            : const <ast.Expression>[]);
   }
 
-  /// Returns [ast.AST] if a name or prefix is registered and matches a symbol.
-  ast.AST? matchExport(String prefixOrUnprefixedName, [String? nameOrNullIfNotPrefixed]) {
+  /// Returns [ast.Expression] if a name or prefix is registered and matches a symbol.
+  ast.Expression? matchExport(String prefixOrUnprefixedName, [String? nameOrNullIfNotPrefixed]) {
     final unprefixed = unprefixedExports[prefixOrUnprefixedName];
 
     if (unprefixed != null) {
-      ast.AST result = ast.StaticRead(unprefixed);
+      ast.Expression result = ast.StaticRead(unprefixed);
 
       if (nameOrNullIfNotPrefixed != null) {
         result = ast.PropertyRead(result, nameOrNullIfNotPrefixed);
@@ -235,7 +236,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
 
   // TODO(b/161262984): Reduce the amount of branching if able.
   @override
-  ast.AST visitAssignmentExpression(AssignmentExpression node) {
+  ast.Expression visitAssignmentExpression(AssignmentExpression node) {
     if (!allowAssignments) {
       return notSupported('assignment (x = y) expressions are only valid in an event binding.', node);
     }
@@ -248,7 +249,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
       return notSupported('null-aware property assignment is not supported', node);
     }
 
-    ast.AST receiver;
+    ast.Expression receiver;
     String property;
 
     if (leftHandSide is PropertyAccess) {
@@ -272,7 +273,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
   }
 
   @override
-  ast.AST visitBinaryExpression(BinaryExpression node) {
+  ast.Expression visitBinaryExpression(BinaryExpression node) {
     switch (node.operator.type) {
       case TokenType.PLUS:
       case TokenType.MINUS:
@@ -296,29 +297,29 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
   }
 
   @override
-  ast.AST visitBooleanLiteral(BooleanLiteral node) {
+  ast.Expression visitBooleanLiteral(BooleanLiteral node) {
     return ast.LiteralPrimitive(node.value);
   }
 
   @override
-  ast.AST visitConditionalExpression(ConditionalExpression node) {
+  ast.Expression visitConditionalExpression(ConditionalExpression node) {
     return ast.Conditional(
         node.condition.accept(this)!, node.thenExpression.accept(this)!, node.elseExpression.accept(this)!);
   }
 
   @override
-  ast.AST visitDoubleLiteral(DoubleLiteral node) {
+  ast.Expression visitDoubleLiteral(DoubleLiteral node) {
     return ast.LiteralPrimitive(node.value);
   }
 
   /// Like [visitNode], but with a error message for unsupported expressions.
   @override
-  ast.AST visitExpression(Expression astNode) {
+  ast.Expression visitExpression(Expression astNode) {
     return notSupported('${astNode.runtimeType}: Not a subset of supported Dart expressions.', astNode);
   }
 
   @override
-  ast.AST visitFunctionExpressionInvocation(FunctionExpressionInvocation node) {
+  ast.Expression visitFunctionExpressionInvocation(FunctionExpressionInvocation node) {
     // Something like "b()()"
     // Prohibit pipes from appearing in nested function calls.
     // I.e. foo.bar.$pipe.
@@ -326,17 +327,17 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
   }
 
   @override
-  ast.AST visitIndexExpression(IndexExpression node) {
+  ast.Expression visitIndexExpression(IndexExpression node) {
     return ast.KeyedRead(node.target!.accept(this)!, node.index.accept(this)!);
   }
 
   @override
-  ast.AST visitIntegerLiteral(IntegerLiteral node) {
+  ast.Expression visitIntegerLiteral(IntegerLiteral node) {
     return ast.LiteralPrimitive(node.value);
   }
 
   @override
-  ast.AST visitMethodInvocation(MethodInvocation node) {
+  ast.Expression visitMethodInvocation(MethodInvocation node) {
     final target = node.target;
 
     if (target != null) {
@@ -369,23 +370,23 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
   ///
   /// See [GeneralizingAstVisitor] for details.
   @override
-  ast.AST visitNode(AstNode astNode) {
+  ast.Expression visitNode(AstNode astNode) {
     return notSupported('${astNode.runtimeType}: Only expressions are supported.', astNode);
   }
 
   @override
-  ast.AST visitNullLiteral(NullLiteral node) {
+  ast.Expression visitNullLiteral(NullLiteral node) {
     return ast.LiteralPrimitive(null);
   }
 
   @override
-  ast.AST visitParenthesizedExpression(ParenthesizedExpression node) {
+  ast.Expression visitParenthesizedExpression(ParenthesizedExpression node) {
     // TODO(b/159912942): Parse correctly.
     return node.expression.accept(this)!;
   }
 
   @override
-  ast.AST visitPostfixExpression(PostfixExpression node) {
+  ast.Expression visitPostfixExpression(PostfixExpression node) {
     final expression = node.operand.accept(this)!;
 
     switch (node.operator.type) {
@@ -397,14 +398,14 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
   }
 
   @override
-  ast.AST visitPrefixedIdentifier(PrefixedIdentifier node) {
+  ast.Expression visitPrefixedIdentifier(PrefixedIdentifier node) {
     // TODO(b/159167156): Resolve exports in a consistent place.
     final export = matchExport(node.prefix.name, node.identifier.name);
     return export ?? ast.PropertyRead(readFromContext(node.prefix), node.identifier.name);
   }
 
   @override
-  ast.AST visitPrefixExpression(PrefixExpression node) {
+  ast.Expression visitPrefixExpression(PrefixExpression node) {
     final expression = node.operand.accept(this)!;
 
     switch (node.operator.type) {
@@ -419,7 +420,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
   }
 
   @override
-  ast.AST visitPropertyAccess(PropertyAccess node) {
+  ast.Expression visitPropertyAccess(PropertyAccess node) {
     if (node.isCascaded) {
       return notSupported('cascade operator is not supported.', node);
     }
@@ -435,14 +436,14 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
   }
 
   @override
-  ast.AST visitSimpleIdentifier(SimpleIdentifier node) {
+  ast.Expression visitSimpleIdentifier(SimpleIdentifier node) {
     // TODO(b/159167156): Resolve exports in a consistent place.
     final export = matchExport(node.name);
     return export ?? readFromContext(node);
   }
 
   @override
-  ast.AST visitSimpleStringLiteral(SimpleStringLiteral node) {
+  ast.Expression visitSimpleStringLiteral(SimpleStringLiteral node) {
     return ast.LiteralPrimitive(node.stringValue);
   }
 
@@ -457,6 +458,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
         (result[prefix] ??= <String, Variable>{})[export.name] = export;
       }
     }
+
     return result;
   }
 
@@ -476,7 +478,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<ast.AST> {
     throw SubsetException(reason, astNode);
   }
 
-  static ast.AST readFromContext(SimpleIdentifier astNode) {
+  static ast.Expression readFromContext(SimpleIdentifier astNode) {
     return ast.PropertyRead(ast.ImplicitReceiver(), astNode.name);
   }
 }

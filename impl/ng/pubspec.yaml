@@ -1,20 +1,17 @@
-name: piko
-description: Dart web framework.
-version: 1.0.0-dev.60
-homepage: https://piko.ykmnkmi.dev
+name: ng
+description: An absolute bare-bones web app.
+version: 1.0.0-dev.0
+# homepage: https://www.example.com
 
 environment:
   sdk: '>=2.13.0 <3.0.0'
 
 dependencies:
-  js: ^0.6.3
-  meta: ^1.4.0
+  angular_ast: ^1.0.0
 
 dev_dependencies:
-  angular_ast: ^1.0.0
   build_runner: ^2.0.4
   build_web_compilers: ^3.0.0
-  frontend_server_client: ^2.1.0
   lints: ^1.0.1
   path: ^1.8.0
   stack_trace: ^1.10.0
