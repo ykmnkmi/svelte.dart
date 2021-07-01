@@ -1,4 +1,4 @@
-React like impl
+React like componets
 
 Fragment syntax:
   - `<img {src}>`
@@ -16,9 +16,6 @@ ToDo:
   - Builder
 - Change detection
   - ...
-- VS Code extension
-  - Syntax highlight
-  - LSP
 - ...
 
 from:
