@@ -1,4 +1,4 @@
-import 'package:ng/ng.dart';
+import 'package:piko/piko.dart';
 import 'package:stack_trace/stack_trace.dart' show Trace;
 
 const String template = '''

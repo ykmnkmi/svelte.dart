@@ -1,7 +1,4 @@
-piko.dart
-=========
-
-Web framework for [Dart](https://dart.dev).
+React like impl
 
 Fragment syntax:
   - `<img {src}>`
@@ -9,7 +6,7 @@ Fragment syntax:
   - `<div>... big multiline fragment ...</div>`
   - `<piko>hello <b>world</b>!</piko>`
 
-Plans:
+ToDo:
 ======
 - Fragment compiler
   - Parser
@@ -23,10 +20,6 @@ Plans:
   - Syntax highlight
   - LSP
 - ...
-
-Done:
-- Static HTML fragment parser & compiler
-- Poor VS Code Dart & HTML syntax highlight
 
 from:
 ```
