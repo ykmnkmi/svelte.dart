@@ -1,5 +1,3 @@
-import 'package:piko/compiler.dart';
-
 import 'nodes.dart';
 
 String interpolate(Node node, {String context = 'context', bool wrap = true}) {

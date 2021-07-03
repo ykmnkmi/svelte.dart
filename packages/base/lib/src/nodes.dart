@@ -1,5 +1,3 @@
-import 'package:piko/compiler.dart';
-
 import 'visitor.dart';
 
 abstract class Node {

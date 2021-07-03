@@ -1,7 +1,7 @@
-import 'package:piko/src/compiler.dart';
-// import 'package:piko/src/expression/compiler.dart';
-// import 'package:piko/src/expression/parser.dart';
-import 'package:piko/src/variable.dart';
+import 'package:ng/src/compiler.dart';
+// import 'package:ng/src/expression/compiler.dart';
+// import 'package:ng/src/expression/parser.dart';
+import 'package:ng/src/variable.dart';
 import 'package:stack_trace/stack_trace.dart' show Trace;
 
 const String template = '''

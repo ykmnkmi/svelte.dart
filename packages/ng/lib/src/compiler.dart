@@ -1,6 +1,6 @@
 import 'package:angular_ast/angular_ast.dart';
-import 'package:piko/src/expression/compiler.dart';
 
+import 'expression/compiler.dart';
 import 'expression/parser.dart';
 import 'variable.dart';
 

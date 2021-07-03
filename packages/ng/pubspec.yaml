@@ -1,4 +1,4 @@
-name: piko
+name: ng
 description: An absolute bare-bones web app.
 version: 1.0.0-dev.1
 # homepage: https://www.example.com
@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   angular_ast: ^1.0.0
+  piko: ^1.0.0-dev
 
 dev_dependencies:
   build_runner: ^2.0.4
@@ -23,3 +24,5 @@ dependency_overrides:
       path: angular_ast
       ref: google
       url: https://github.com/angulardart/angular
+  piko:
+    path: ../..
