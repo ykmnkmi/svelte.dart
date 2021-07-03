@@ -30,7 +30,9 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
 
   @override
   String visitFunctionCall(FunctionCall node, String? context) {
-    throw UnimplementedError('visitFunctionCall');
+    final target = node.target.accept(this, context);
+    final args = node.positional.followedBy(node.named).map<String>((arg) => arg.accept(this, context)).join(', ');
+    return '$target($args)';
   }
 
   @override
@@ -64,12 +66,17 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
 
   @override
   String visitKeyedRead(KeyedRead node, String? context) {
-    throw UnimplementedError('visitKeyedRead');
+    final receiver = node.receiver.accept(this, context);
+    final key = node.key.accept(this, context);
+    return '$receiver[$key]';
   }
 
   @override
   String visitKeyedWrite(KeyedWrite node, String? context) {
-    throw UnimplementedError('visitKeyedWrite');
+    final receiver = node.receiver.accept(this, context);
+    final key = node.key.accept(this, context);
+    final value = node.value.accept(this, context);
+    return '$receiver[$key] = $value';
   }
 
   @override
@@ -83,12 +90,19 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
 
   @override
   String visitMethodCall(MethodCall node, String? context) {
-    throw UnimplementedError('visitMethodCall');
+    final receiver = node.receiver.accept(this, context);
+    final method = node.name;
+    final args = node.positional.followedBy(node.named).map<String>((arg) => arg.accept(this, context)).join(', ');
+    return '$receiver$method($args)';
   }
 
   @override
   String visitNamedArgument(NamedArgument node, String? context) {
-    throw UnimplementedError('visitNamedExpr');
+    final name = node.name;
+    final expression = node.expression;
+    if (expression == null) return '$name: null';
+    final value = expression.accept(this, context);
+    return '$name: $value';
   }
 
   @override
@@ -98,32 +112,44 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
 
   @override
   String visitPostfixNotNull(PostfixNotNull node, String? context) {
-    throw UnimplementedError('visitPostfixNotNull');
+    final value = node.expression.accept(this, context);
+    return '$value!';
   }
 
   @override
   String visitPrefixNot(PrefixNot node, String? context) {
-    throw UnimplementedError('visitPrefixNot');
+    final value = node.expression.accept(this, context);
+    return '!$value';
   }
 
   @override
   String visitPropertyRead(PropertyRead node, String? context) {
-    throw UnimplementedError('visitPropertyRead');
+    final receiver = node.receiver.accept(this, context);
+    final property = node.name;
+    return '$receiver.$property';
   }
 
   @override
   String visitPropertyWrite(PropertyWrite node, String? context) {
-    throw UnimplementedError('visitPropertyWrite');
+    final receiver = node.receiver.accept(this, context);
+    final property = node.name;
+    final value = node.value.accept(this, context);
+    return '$receiver.$property = $value';
   }
 
   @override
   String visitSafeMethodCall(SafeMethodCall node, String? context) {
-    throw UnimplementedError('visitSafeMethodCall');
+    final receiver = node.receiver.accept(this, context);
+    final method = node.name;
+    final args = node.positional.followedBy(node.named).map<String>((arg) => arg.accept(this, context)).join(', ');
+    return '$receiver$method($args)';
   }
 
   @override
   String visitSafePropertyRead(SafePropertyRead node, String? context) {
-    throw UnimplementedError('visitSafePropertyRead');
+    final receiver = node.receiver.accept(this, context);
+    final property = node.name;
+    return '$receiver?.$property';
   }
 
   @override

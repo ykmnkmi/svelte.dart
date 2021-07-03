@@ -6,6 +6,11 @@ abstract class Expression {
 
   /// Given a [visitor] and optionally a [context], produce a return value [R].
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C> visitor, [CO? context]);
+
+  @override
+  String toString() {
+    return '$runtimeType';
+  }
 }
 
 /// A placeholder expression used when otherwise no expression is parsed/found.
@@ -17,6 +22,11 @@ class Empty extends Expression {
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitEmptyExpr(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'Empty ';
   }
 }
 
@@ -64,6 +74,11 @@ class VariableRead extends Expression {
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitVariableRead(this, context);
   }
+
+  @override
+  String toString() {
+    throw UnimplementedError();
+  }
 }
 
 /// The "root" expression (the context in which the expression is evaluated).
@@ -104,6 +119,11 @@ class Conditional extends Expression {
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitConditional(this, context);
   }
+
+  @override
+  String toString() {
+    return 'Conditional($condition) { $trueExpression, $falseExpression }';
+  }
 }
 
 /// Represents the "if null" (`??`) operator.
@@ -123,6 +143,11 @@ class IfNull extends Expression {
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitIfNull(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'IfNull { $condition, $nullExpression }';
   }
 }
 
@@ -147,7 +172,7 @@ class PropertyRead extends Expression {
 
   @override
   String toString() {
-    return 'PropertyRead { $receiver, $name }';
+    return 'PropertyRead($name) { $receiver }';
   }
 }
 
@@ -169,6 +194,11 @@ class SafePropertyRead extends Expression {
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitSafePropertyRead(this, context);
   }
+
+  @override
+  String toString() {
+    return 'SafePropertyRead($name) { $receiver }';
+  }
 }
 
 /// Similar to [PropertyRead], but uses bracket operator `[]` to refer to [key].
@@ -188,6 +218,11 @@ class KeyedRead extends Expression {
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitKeyedRead(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'KeyedRead($key) { $receiver }';
   }
 }
 
@@ -211,6 +246,11 @@ class PropertyWrite extends Expression {
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitPropertyWrite(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'PropertyWrite($name) { $receiver, $value }';
   }
 }
 
@@ -239,6 +279,11 @@ class KeyedWrite extends Expression {
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitKeyedWrite(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'KeyedWrite($key) { $receiver, $value }';
   }
 }
 
@@ -271,6 +316,11 @@ class BindingPipe extends Expression {
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitPipe(this, context);
+  }
+
+  @override
+  String toString() {
+    throw UnimplementedError();
   }
 }
 
@@ -397,6 +447,11 @@ class PrefixNot extends Expression {
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitPrefixNot(this, context);
   }
+
+  @override
+  String toString() {
+    return 'PrefixNot($expression)';
+  }
 }
 
 /// Coerces `T?` to `T`, throwing if null, i.e. `var!`.
@@ -413,6 +468,11 @@ class PostfixNotNull extends Expression {
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitPostfixNotNull(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'PostfixNotNull($expression)';
   }
 }
 
@@ -436,6 +496,12 @@ class NamedArgument extends Expression {
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitNamedArgument(this, context);
   }
+
+  @override
+  String toString() {
+    if (expression == null) return 'NamedArgument($name)';
+    return 'NamedArgument($name) { $expression }';
+  }
 }
 
 /// A call to a method.
@@ -450,37 +516,49 @@ class NamedArgument extends Expression {
 /// )
 /// ```
 class MethodCall extends Expression {
-  const MethodCall(this.receiver, this.name, this.args, [this.namedArgs = const <NamedArgument>[]]);
+  const MethodCall(this.receiver, this.name, this.positional, [this.named = const <NamedArgument>[]]);
 
   final Expression receiver;
 
   final String name;
 
-  final List<Expression> args;
+  final List<Expression> positional;
 
-  final List<NamedArgument> namedArgs;
+  final List<NamedArgument> named;
 
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitMethodCall(this, context);
   }
+
+  @override
+  String toString() {
+    if (positional.isEmpty && named.isEmpty) return 'MethodCall($receiver, $name)';
+    return 'MethodCall($receiver, $name) { ${[...positional, ...named].join(', ')} }';
+  }
 }
 
 /// Similar to [MethodCall], but only if the [receiver] is non-null.
 class SafeMethodCall extends Expression {
-  SafeMethodCall(this.receiver, this.name, this.args, [this.namedArgs = const <NamedArgument>[]]);
+  SafeMethodCall(this.receiver, this.name, this.positional, [this.named = const <NamedArgument>[]]);
 
   final Expression receiver;
 
   final String name;
 
-  final List<Expression> args;
+  final List<Expression> positional;
 
-  final List<NamedArgument> namedArgs;
+  final List<NamedArgument> named;
 
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitSafeMethodCall(this, context);
+  }
+
+  @override
+  String toString() {
+    if (positional.isEmpty && named.isEmpty) return 'SafeMethodCall($receiver, $name)';
+    return 'SafeMethodCall($receiver, $name) { ${[...positional, ...named].join(', ')} }';
   }
 }
 
@@ -495,17 +573,23 @@ class SafeMethodCall extends Expression {
 /// )
 /// ```
 class FunctionCall extends Expression {
-  const FunctionCall(this.target, this.args, [this.namedArgs = const <NamedArgument>[]]);
+  const FunctionCall(this.target, this.positional, [this.named = const <NamedArgument>[]]);
 
   final Expression target;
 
-  final List<Expression> args;
+  final List<Expression> positional;
 
-  final List<NamedArgument> namedArgs;
+  final List<NamedArgument> named;
 
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
     return visitor.visitFunctionCall(this, context);
+  }
+
+  @override
+  String toString() {
+    if (positional.isEmpty && named.isEmpty) return 'FunctionCall($target)';
+    return 'FunctionCall($target) { ${[...positional, ...named].join(', ')} }';
   }
 }
 
@@ -589,8 +673,8 @@ class RecursiveExpressionVisitor<C> implements ExpressionVisitor<void, C> {
   @override
   void visitFunctionCall(FunctionCall node, C context) {
     node.target.accept(this, context);
-    visitAll(node.args, context);
-    visitAll(node.namedArgs, context);
+    visitAll(node.positional, context);
+    visitAll(node.named, context);
   }
 
   @override
@@ -631,8 +715,8 @@ class RecursiveExpressionVisitor<C> implements ExpressionVisitor<void, C> {
   @override
   void visitMethodCall(MethodCall node, C context) {
     node.receiver.accept(this, context);
-    visitAll(node.args, context);
-    visitAll(node.namedArgs, context);
+    visitAll(node.positional, context);
+    visitAll(node.named, context);
   }
 
   @override
@@ -664,8 +748,8 @@ class RecursiveExpressionVisitor<C> implements ExpressionVisitor<void, C> {
   @override
   void visitSafeMethodCall(SafeMethodCall node, C context) {
     node.receiver.accept(this, context);
-    visitAll(node.args, context);
-    visitAll(node.namedArgs, context);
+    visitAll(node.positional, context);
+    visitAll(node.named, context);
   }
 
   @override
