@@ -1,4 +1,4 @@
-import 'package:base/compiler.dart';
+import 'package:react/compiler.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 // basic

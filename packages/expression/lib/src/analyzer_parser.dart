@@ -2,8 +2,8 @@ import 'package:analyzer/dart/analysis/utilities.dart' show parseString;
 import 'package:analyzer/dart/ast/ast.dart' as Dart;
 import 'package:analyzer/dart/ast/token.dart' show TokenType;
 import 'package:analyzer/dart/ast/visitor.dart' show GeneralizingAstVisitor;
+import 'package:expression/variable.dart';
 
-import '../variable.dart';
 import 'nodes.dart';
 import 'parser.dart';
 
@@ -157,7 +157,8 @@ class SubsetVisitor extends GeneralizingAstVisitor<Expression> {
     }
 
     final callPos = posArgs.map<Expression?>((arg) => arg.accept(this)).whereType<Expression>().toList();
-    final callNamed = namedArgs.map<NamedArgument>((arg) => NamedArgument(arg.name.label.name, arg.expression.accept(this))).toList();
+    final callNamed =
+        namedArgs.map<NamedArgument>((arg) => NamedArgument(arg.name.label.name, arg.expression.accept(this))).toList();
 
     if (methodName != null) {
       if (isNullAwareCall(call)) {

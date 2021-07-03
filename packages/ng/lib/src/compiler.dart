@@ -1,13 +1,12 @@
 import 'package:angular_ast/angular_ast.dart';
-
-import 'expression/compiler.dart';
-import 'expression/parser.dart';
-import 'variable.dart';
+import 'package:expression/expression.dart';
+import 'package:expression/variable.dart';
 
 class Compiler implements TemplateAstVisitor<String, String> {
-  static String compile(String source, {String name = 'App', List<Variable> exports = const <Variable>[]}) {
+  static String compile(String source,
+      {String name = 'App', List<Variable> exports = const <Variable>[], bool minimizeWhitespace = true}) {
     final nodes = parse(source, sourceUrl: name).cast<StandaloneTemplateAst>();
-    return Compiler(name, exports).visitAll(nodes);
+    return Compiler(name, exports).visitAll(nodes, minimizeWhitespace: minimizeWhitespace);
   }
 
   Compiler(this.name, this.exports)
@@ -175,7 +174,7 @@ class Compiler implements TemplateAstVisitor<String, String> {
     return id;
   }
 
-  String visitAll(List<StandaloneTemplateAst> nodes) {
+  String visitAll(List<StandaloneTemplateAst> nodes, {bool minimizeWhitespace = true}) {
     ElementAst? instanceScript, moduleScript;
 
     for (var i = 0; i < nodes.length;) {
@@ -202,7 +201,9 @@ class Compiler implements TemplateAstVisitor<String, String> {
       }
     }
 
-    nodes = const MinimizeWhitespaceVisitor().visitAllRoot(nodes);
+    if (minimizeWhitespace) {
+      nodes = const MinimizeWhitespaceVisitor().visitAllRoot(nodes);
+    }
 
     for (final node in nodes) {
       final id = node.accept(this);
