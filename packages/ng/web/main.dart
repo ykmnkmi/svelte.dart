@@ -1,7 +1,5 @@
 import 'package:expression/variable.dart';
-import 'package:ng/src/compiler.dart';
-// import 'package:ng/src/expression/compiler.dart';
-// import 'package:ng/src/expression/parser.dart';
+import 'package:ng/compiler.dart';
 import 'package:stack_trace/stack_trace.dart' show Trace;
 
 const String template = '''
@@ -9,18 +7,13 @@ const String template = '''
   final name = 'world';
 </script>
 
-<h1>Hello {{ name }}!</h1>
+<h1 title="message">hello world!</h1>
 ''';
 
 void main() {
   try {
-    // final parser = const ExpressionParser();
-    // final node = parser.parseAction('name + 1', <Variable>[Variable(name: 'name')]);
-    // print(node);
-    // final compiler = const ExpressionCompiler();
-    // final code = compiler.visit(node, 'context');
-    // print(code);
-    print(Compiler.compile(template, exports: <Variable>[Variable(name: 'name', string: true)]));
+    final nodes = Compiler.parse(template);
+    print(Compiler.compileNodes(nodes, exports: <Variable>[Variable(name: 'name')]));
   } catch (error, stackTrace) {
     print(error);
     print(Trace.format(stackTrace));

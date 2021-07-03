@@ -1,12 +1,23 @@
-import 'package:angular_ast/angular_ast.dart';
+import 'package:angular_ast/angular_ast.dart' as angular show parse;
+import 'package:angular_ast/angular_ast.dart' hide parse;
 import 'package:expression/expression.dart';
 import 'package:expression/variable.dart';
 
-class Compiler implements TemplateAstVisitor<String, String> {
-  static String compile(String source,
-      {String name = 'App', List<Variable> exports = const <Variable>[], bool minimizeWhitespace = true}) {
-    final nodes = parse(source, sourceUrl: name).cast<StandaloneTemplateAst>();
-    return Compiler(name, exports).visitAll(nodes, minimizeWhitespace: minimizeWhitespace);
+class Compiler implements TemplateAstVisitor<String?, String> {
+  static String compile(String template,
+      {String name = 'App', List<Variable> exports = const <Variable>[], bool minimize = true}) {
+    final nodes = parse(template, minimize: minimize);
+    return compileNodes(nodes, name: name, exports: exports);
+  }
+
+  static String compileNodes(List<StandaloneTemplateAst> nodes,
+      {String name = 'App', List<Variable> exports = const <Variable>[]}) {
+    return Compiler(name, exports).visitAll(nodes);
+  }
+
+  static List<StandaloneTemplateAst> parse(String template, {bool minimize = true}) {
+    final nodes = angular.parse(template, sourceUrl: '<template>').cast<StandaloneTemplateAst>();
+    return minimize ? const MinimizeWhitespaceVisitor().visitAllRoot(nodes) : nodes;
   }
 
   Compiler(this.name, this.exports)
@@ -63,37 +74,52 @@ class Compiler implements TemplateAstVisitor<String, String> {
   }
 
   @override
-  String visitAnnotation(AnnotationAst astNode, [String? context]) {
+  String? visitAnnotation(AnnotationAst astNode, [String? context]) {
     throw UnimplementedError('visitAnnotation');
   }
 
   @override
-  String visitAttribute(AttributeAst astNode, [String? context]) {
-    throw UnimplementedError('visitAttribute');
+  String? visitAttribute(AttributeAst node, [String? context]) {
+    final value = node.value;
+
+    if (value == null) {
+      createList.add('$context.${node.name} = ""');
+      return null;
+    }
+
+    final expression = const ExpressionParser().parseInterpolation(value, exports);
+
+    if (expression == null) {
+      createList.add('$context.${node.name} = \'$value\'');
+      return null;
+    }
+
+    final code = const ExpressionCompiler().visit(expression, context);
+    createList.add('$context.${node.name} = $code');
   }
 
   @override
-  String visitBanana(BananaAst astNode, [String? context]) {
+  String? visitBanana(BananaAst astNode, [String? context]) {
     throw UnimplementedError('visitBanana');
   }
 
   @override
-  String visitCloseElement(CloseElementAst astNode, [String? context]) {
+  String? visitCloseElement(CloseElementAst astNode, [String? context]) {
     throw UnimplementedError('visitCloseElement');
   }
 
   @override
-  String visitComment(CommentAst astNode, [String? context]) {
+  String? visitComment(CommentAst astNode, [String? context]) {
     throw UnimplementedError('visitComment');
   }
 
   @override
-  String visitContainer(ContainerAst astNode, [String? context]) {
+  String? visitContainer(ContainerAst astNode, [String? context]) {
     throw UnimplementedError('visitContainer');
   }
 
   @override
-  String visitElement(ElementAst node, [String? context]) {
+  String? visitElement(ElementAst node, [String? context]) {
     final id = getId(node.name);
     fieldList.add('late Element $id');
     createList.add('$id = element(\'${node.name}\')');
@@ -103,8 +129,13 @@ class Compiler implements TemplateAstVisitor<String, String> {
       attribute.accept(this, id);
     }
 
+    for (final property in node.properties) {
+      property.accept(this, id);
+    }
+
     if (node.childNodes.isNotEmpty) {
       for (final child in node.childNodes) {
+        print(child.runtimeType);
         child.accept(this, id);
       }
     }
@@ -113,53 +144,59 @@ class Compiler implements TemplateAstVisitor<String, String> {
   }
 
   @override
-  String visitEmbeddedContent(EmbeddedContentAst astNode, [String? context]) {
+  String? visitEmbeddedContent(EmbeddedContentAst astNode, [String? context]) {
     throw UnimplementedError('visitEmbeddedContent');
   }
 
   @override
-  String visitEmbeddedTemplate(EmbeddedTemplateAst astNode, [String? context]) {
+  String? visitEmbeddedTemplate(EmbeddedTemplateAst astNode, [String? context]) {
     throw UnimplementedError('visitEmbeddedTemplate');
   }
 
   @override
-  String visitEvent(EventAst astNode, [String? context]) {
+  String? visitEvent(EventAst astNode, [String? context]) {
     throw UnimplementedError('visitEvent');
   }
 
   @override
-  String visitInterpolation(InterpolationAst node, [String? context]) {
+  String? visitInterpolation(InterpolationAst node, [String? context]) {
     final id = getId('t');
     fieldList.add('late Text $id');
-    final expression = const ExpressionParser().parseAction(node.value, exports);
-    final code = const ExpressionCompiler().visit(expression, context);
-    createList.add('$id = text(\'\${$code}\')');
+    final expression = const ExpressionParser().parseInterpolation('{{ ${node.value} }}', exports);
+
+    if (expression == null) {
+      createList.add('$id = empty()');
+    } else {
+      final code = const ExpressionCompiler().visit(expression, context);
+      createList.add('$id = text($code)');
+    }
+
     mount(id, context);
     return id;
   }
 
   @override
-  String visitLetBinding(LetBindingAst astNode, [String? context]) {
+  String? visitLetBinding(LetBindingAst astNode, [String? context]) {
     throw UnimplementedError('visitLetBinding');
   }
 
   @override
-  String visitProperty(PropertyAst astNode, [String? context]) {
+  String? visitProperty(PropertyAst astNode, [String? context]) {
     throw UnimplementedError('visitProperty');
   }
 
   @override
-  String visitReference(ReferenceAst astNode, [String? context]) {
+  String? visitReference(ReferenceAst astNode, [String? context]) {
     throw UnimplementedError('visitReference');
   }
 
   @override
-  String visitStar(StarAst astNode, [String? context]) {
+  String? visitStar(StarAst astNode, [String? context]) {
     throw UnimplementedError('visitStar');
   }
 
   @override
-  String visitText(TextAst node, [String? context]) {
+  String? visitText(TextAst node, [String? context]) {
     final id = getId('t');
     final text = escape(node.value);
     fieldList.add('late Text $id');
@@ -174,7 +211,7 @@ class Compiler implements TemplateAstVisitor<String, String> {
     return id;
   }
 
-  String visitAll(List<StandaloneTemplateAst> nodes, {bool minimizeWhitespace = true}) {
+  String visitAll(List<StandaloneTemplateAst> nodes) {
     ElementAst? instanceScript, moduleScript;
 
     for (var i = 0; i < nodes.length;) {
@@ -199,10 +236,6 @@ class Compiler implements TemplateAstVisitor<String, String> {
       } else {
         i += 1;
       }
-    }
-
-    if (minimizeWhitespace) {
-      nodes = const MinimizeWhitespaceVisitor().visitAllRoot(nodes);
     }
 
     for (final node in nodes) {
