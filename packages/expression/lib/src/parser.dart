@@ -42,8 +42,8 @@ abstract class ExpressionParser {
   /// Parses a text interpolation.
   ///
   /// ```
-  /// // Hello {{place}}!
-  /// parseInterpolation('place', ...)
+  /// // Hello {{ place }}!
+  /// parseInterpolation('Hello {{ place }}', ...)
   /// ```
   ///
   /// Returns `null` if there were no interpolations in [input].

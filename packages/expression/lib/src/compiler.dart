@@ -57,11 +57,12 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
       buffer.write(string);
 
       if (iterator.moveNext()) {
-        buffer.write(iterator.current);
+        final current = iterator.current.accept(this, context);
+        buffer.write('\${$current}');
       }
     }
 
-    return '$buffer';
+    return '\'$buffer\'';
   }
 
   @override
