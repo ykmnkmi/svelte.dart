@@ -1,6 +1,6 @@
 name: ng
 description: Angular template syntax & Vue/Svelte like components.
-version: 1.0.0-dev.2
+version: 1.0.0-dev.3
 # homepage: https://www.example.com
 
 environment:
@@ -9,6 +9,7 @@ environment:
 dependencies:
   angular_ast: ^1.0.0
   expression: ^1.0.0-dev
+  meta: ^1.6.0
   piko: ^1.0.0-dev
 
 dev_dependencies:

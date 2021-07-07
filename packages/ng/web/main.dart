@@ -4,16 +4,19 @@ import 'package:stack_trace/stack_trace.dart' show Trace;
 
 const String template = '''
 <script>
-  final name = 'world';
+  var count = 0;
+
+  void handleClick() {
+    count += 1;
+  }
 </script>
 
-<h1 title="message">hello world!</h1>
+<button (click)="handleClick">Clicked {{ count }} {{ count == 1 ? 'time' : 'times' }}</button>
 ''';
 
 void main() {
   try {
-    final nodes = Compiler.parse(template);
-    print(Compiler.compileNodes(nodes, exports: <Variable>[Variable(name: 'name')]));
+    print(Compiler.compile(template, exports: <Variable>[Variable(name: 'name')]));
   } catch (error, stackTrace) {
     print(error);
     print(Trace.format(stackTrace));

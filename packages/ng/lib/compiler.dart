@@ -2,22 +2,51 @@ import 'package:angular_ast/angular_ast.dart' as angular show parse;
 import 'package:angular_ast/angular_ast.dart' hide parse;
 import 'package:expression/expression.dart';
 import 'package:expression/variable.dart';
+import 'package:meta/meta.dart' show visibleForTesting;
 
 class Compiler implements TemplateAstVisitor<String?, String> {
   static String compile(String template,
-      {String name = 'App', List<Variable> exports = const <Variable>[], bool minimize = true}) {
-    final nodes = parse(template, minimize: minimize);
+      {String name = 'App', List<Variable> exports = const <Variable>[], bool minimize = true, String? sourceUrl}) {
+    var nodes = parse(template, sourceUrl: sourceUrl);
+    ElementAst? instanceScript, moduleScript;
+
+    for (var i = 0; i < nodes.length;) {
+      final node = nodes[i];
+
+      if (node is ElementAst && node.name == 'script') {
+        if (node.attributes.any(hasModuleContext)) {
+          if (moduleScript != null) {
+            throw StateError('a component can only have one instance-level <script> element');
+          } else {
+            moduleScript = node;
+          }
+        } else {
+          if (instanceScript != null) {
+            throw StateError('a component can only have one <script context="module"> element');
+          } else {
+            instanceScript = node;
+          }
+        }
+
+        nodes.removeAt(i);
+      } else {
+        i += 1;
+      }
+    }
+
+    nodes = minimize ? const MinimizeWhitespaceVisitor().visitAllRoot(nodes) : nodes;
     return compileNodes(nodes, name: name, exports: exports);
   }
 
+  @visibleForTesting
   static String compileNodes(List<StandaloneTemplateAst> nodes,
       {String name = 'App', List<Variable> exports = const <Variable>[]}) {
     return Compiler(name, exports).visitAll(nodes);
   }
 
-  static List<StandaloneTemplateAst> parse(String template, {bool minimize = true}) {
-    final nodes = angular.parse(template, sourceUrl: '<template>').cast<StandaloneTemplateAst>();
-    return minimize ? const MinimizeWhitespaceVisitor().visitAllRoot(nodes) : nodes;
+  @visibleForTesting
+  static List<StandaloneTemplateAst> parse(String template, {String? sourceUrl}) {
+    return angular.parse(template, sourceUrl: sourceUrl ?? '<template>').cast<StandaloneTemplateAst>();
   }
 
   Compiler(this.name, this.exports)
@@ -29,9 +58,10 @@ class Compiler implements TemplateAstVisitor<String?, String> {
         createList = <String>[],
         mountList = <String>[],
         listenList = <String>[],
+        updateMap = <String, List<String>>{},
         removeList = <String>[],
         fragmentDetachList = <String>[],
-        count = <String, int>{};
+        countMap = <String, int>{};
 
   final String name;
 
@@ -53,15 +83,17 @@ class Compiler implements TemplateAstVisitor<String?, String> {
 
   final List<String> listenList;
 
+  final Map<String, List<String>> updateMap;
+
   final List<String> removeList;
 
   final List<String> fragmentDetachList;
 
-  final Map<String, int> count;
+  final Map<String, int> countMap;
 
   String getId(String tag) {
-    var id = count[tag] ?? 0;
-    count[tag] = id += 1;
+    var id = countMap[tag] ?? 0;
+    countMap[tag] = id += 1;
     return id == 1 ? tag : '$tag$id';
   }
 
@@ -135,7 +167,6 @@ class Compiler implements TemplateAstVisitor<String?, String> {
 
     if (node.childNodes.isNotEmpty) {
       for (final child in node.childNodes) {
-        print(child.runtimeType);
         child.accept(this, id);
       }
     }
@@ -212,32 +243,6 @@ class Compiler implements TemplateAstVisitor<String?, String> {
   }
 
   String visitAll(List<StandaloneTemplateAst> nodes) {
-    ElementAst? instanceScript, moduleScript;
-
-    for (var i = 0; i < nodes.length;) {
-      final node = nodes[i];
-
-      if (node is ElementAst && node.name == 'script') {
-        if (node.attributes.any(hasModuleContext)) {
-          if (moduleScript != null) {
-            throw StateError('a component can only have one instance-level <script> element');
-          } else {
-            moduleScript = node;
-          }
-        } else {
-          if (instanceScript != null) {
-            throw StateError('a component can only have one <script context="module"> element');
-          } else {
-            instanceScript = node;
-          }
-        }
-
-        nodes.removeAt(i);
-      } else {
-        i += 1;
-      }
-    }
-
     for (final node in nodes) {
       final id = node.accept(this);
 
