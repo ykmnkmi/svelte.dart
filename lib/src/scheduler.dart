@@ -46,7 +46,8 @@ class Scheduler {
   }
 
   void update(Fragment fragment) {
-    fragment.update(fragment.dirty);
-    fragment.dirty.clear();
+    fragment
+      ..update(fragment.dirty)
+      ..dirty.clear();
   }
 }
