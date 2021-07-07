@@ -81,15 +81,6 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
   }
 
   @override
-  String visitLiteralPrimitive(LiteralPrimitive node, String? context) {
-    final value = node.value;
-    if (value == null) return 'null';
-    if (value is num) return '$value';
-    if (value is String) return '\'${value.replaceAll('\'', '\\\'')}\'';
-    throw UnsupportedError('${value.runtimeType}');
-  }
-
-  @override
   String visitMethodCall(MethodCall node, String? context) {
     final receiver = node.receiver.accept(this, context);
     final method = node.name;
@@ -121,6 +112,15 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
   String visitPrefixNot(PrefixNot node, String? context) {
     final value = node.expression.accept(this, context);
     return '!$value';
+  }
+
+  @override
+  String visitPrimitive(Primitive node, String? context) {
+    final value = node.value;
+    if (value == null) return 'null';
+    if (value is num) return '$value';
+    if (value is String) return '\'${value.replaceAll('\'', '\\\'')}\'';
+    throw UnsupportedError('${value.runtimeType}');
   }
 
   @override

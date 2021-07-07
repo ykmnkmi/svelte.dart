@@ -291,7 +291,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<Expression> {
 
   @override
   Expression visitBooleanLiteral(Dart.BooleanLiteral node) {
-    return LiteralPrimitive(node.value);
+    return Primitive(node.value);
   }
 
   @override
@@ -302,7 +302,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<Expression> {
 
   @override
   Expression visitDoubleLiteral(Dart.DoubleLiteral node) {
-    return LiteralPrimitive(node.value);
+    return Primitive(node.value);
   }
 
   /// Like [visitNode], but with a error message for unsupported expressions.
@@ -326,7 +326,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<Expression> {
 
   @override
   Expression visitIntegerLiteral(Dart.IntegerLiteral node) {
-    return LiteralPrimitive(node.value);
+    return Primitive(node.value);
   }
 
   @override
@@ -369,7 +369,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<Expression> {
 
   @override
   Expression visitNullLiteral(Dart.NullLiteral node) {
-    return LiteralPrimitive(null);
+    return Primitive(null);
   }
 
   @override
@@ -406,7 +406,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<Expression> {
         return PrefixNot(expression);
       case TokenType.MINUS:
         // TODO(b/159912942): Just parse as -1.
-        return Binary('-', LiteralPrimitive(0), expression);
+        return Binary('-', Primitive(0), expression);
       default:
         return notSupported('only !, +, or - are supported prefix operators', node);
     }
@@ -437,7 +437,7 @@ class SubsetVisitor extends GeneralizingAstVisitor<Expression> {
 
   @override
   Expression visitSimpleStringLiteral(Dart.SimpleStringLiteral node) {
-    return LiteralPrimitive(node.stringValue);
+    return Primitive(node.stringValue);
   }
 
   /// Indexes `List<Identifier>` by `prefix` and `name`.

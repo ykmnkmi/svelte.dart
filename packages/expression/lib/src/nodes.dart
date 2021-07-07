@@ -328,16 +328,16 @@ class BindingPipe extends Expression {
 ///
 /// ```
 /// // 'a'
-/// LiteralPrimitive('a')
+/// Primitive('a')
 ///
 /// // true
-/// LiteralPrimitive(true)
+/// Primitive(true)
 ///
 /// // 5
-/// LiteralPrimitive(5)
+/// Primitive(5)
 /// ```
-class LiteralPrimitive extends Expression {
-  const LiteralPrimitive(this.value);
+class Primitive extends Expression {
+  const Primitive(this.value);
 
   /// Value being parsed.
   ///
@@ -346,7 +346,7 @@ class LiteralPrimitive extends Expression {
 
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
-    return visitor.visitLiteralPrimitive(this, context);
+    return visitor.visitPrimitive(this, context);
   }
 
   @override
@@ -614,7 +614,7 @@ abstract class ExpressionVisitor<R, C> {
 
   R visitKeyedWrite(KeyedWrite node, C context);
 
-  R visitLiteralPrimitive(LiteralPrimitive node, C context);
+  R visitPrimitive(Primitive node, C context);
 
   R visitMethodCall(MethodCall node, C context);
 
@@ -710,7 +710,7 @@ class RecursiveExpressionVisitor<C> implements ExpressionVisitor<void, C> {
   }
 
   @override
-  void visitLiteralPrimitive(LiteralPrimitive node, C context) {}
+  void visitPrimitive(Primitive node, C context) {}
 
   @override
   void visitMethodCall(MethodCall node, C context) {
