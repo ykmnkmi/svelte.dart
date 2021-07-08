@@ -1,6 +1,6 @@
-name: react
-description: React/JSX like DartX components.
-version: 1.0.0-dev.61
+name: jsx
+description: JSX like DartX components.
+version: 1.0.0-dev.1
 homepage: https://piko.ykmnkmi.dev
 
 environment:

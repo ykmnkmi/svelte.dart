@@ -1,4 +1,4 @@
-React/JSX like DartX components.
+JSX like DartX components.
 
 Fragment syntax:
   - `<img {src}>`
