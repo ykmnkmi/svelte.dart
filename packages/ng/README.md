@@ -1,5 +1,13 @@
 Angular template syntax & Vue/Svelte like components
 
+ToDo:
+======
+- Fragment generator
+- Component builder
+- Change detection
+  - ...
+- ...
+
 from:
 ```
 <script>
