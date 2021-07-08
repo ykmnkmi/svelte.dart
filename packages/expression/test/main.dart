@@ -7,7 +7,7 @@ const String expression = '''user.send('hello', by: 'jhon')''';
 void main() {
   try {
     final parser = const ExpressionParser();
-    final node = parser.parseAction(expression, <Variable>[Variable(name: 'user')]);
+    final node = parser.parseAction(expression, <Variable>[Variable('user')]);
     print(node);
     final compiler = const ExpressionCompiler();
     final code = compiler.visit(node, 'context');

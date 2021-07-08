@@ -99,8 +99,8 @@ class SubsetVisitor extends GeneralizingAstVisitor<Expression> {
   SubsetVisitor({bool? allowAssignments, bool? allowPipes, List<Variable>? exports})
       : allowAssignments = allowAssignments ?? false,
         allowPipes = allowPipes ?? true,
-        unprefixedExports = indexUnprefixed(exports ?? const []),
-        prefixedExports = indexPrefixed(exports ?? const []);
+        unprefixedExports = indexUnprefixed(exports ?? const <Variable>[]),
+        prefixedExports = indexPrefixed(exports ?? const <Variable>[]);
 
   /// Whether to allow limited use of the assignment (`=`) operator.
   ///

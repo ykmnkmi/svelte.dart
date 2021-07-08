@@ -44,7 +44,7 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
 
   @override
   String visitImplicitReceiver(ImplicitReceiver node, String? context) {
-    return context ?? 'context';
+    return context ?? '';
   }
 
   @override
@@ -155,7 +155,7 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
 
   @override
   String visitStaticRead(StaticRead node, String? context) {
-    return node.id.value;
+    return node.id.full;
   }
 
   @override

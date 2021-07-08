@@ -391,11 +391,9 @@ class Interpolation extends Expression {
 
     for (var string in strings) {
       string = string.replaceAll('\'', '\\\'').replaceAll('\r', '\\r').replaceAll('\n', '\\n');
+      if (buffer.isNotEmpty) buffer.write(', ');
       buffer.write('\'$string\'');
-
-      if (iterator.moveNext()) {
-        buffer.write(', ${iterator.current}');
-      }
+      if (iterator.moveNext()) buffer.write(', ${iterator.current}');
     }
 
     return 'Interpolation { $buffer }';
