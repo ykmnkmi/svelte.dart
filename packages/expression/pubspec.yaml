@@ -1,11 +1,11 @@
 name: expression
 description: Parser and utilities for Dart expressions.
-version: 1.0.0-dev.5
+version: 1.0.0-dev.6
 
 environment:
   sdk: '>=2.13.0 <3.0.0'
 
-dependencies: 
+dependencies:
   analyzer: ^1.5.0
 
 dev_dependencies:
