@@ -1,6 +1,6 @@
 library app;
 
-import 'package:piko/piko.dart';
+import 'package:piko/runtime.dart';
 
 class App extends Component<App> {
   App() : count = 0;
