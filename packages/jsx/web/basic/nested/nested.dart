@@ -1,4 +1,4 @@
-import 'package:piko/piko.dart';
+import 'package:piko/runtime.dart';
 
 class Nested extends Component<Nested> {
   @override
