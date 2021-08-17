@@ -1,4 +1,4 @@
-part of '../piko.dart';
+import 'component.dart';
 
 class Scheduler {
   Scheduler()

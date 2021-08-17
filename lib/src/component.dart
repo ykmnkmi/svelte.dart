@@ -1,4 +1,6 @@
-part of '../piko.dart';
+import 'package:piko/dom.dart';
+
+import 'scheduler.dart';
 
 class RenderTree {
   RenderTree(this.root) : scheduler = Scheduler();
