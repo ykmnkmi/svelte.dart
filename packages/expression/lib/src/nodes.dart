@@ -38,6 +38,7 @@ class Empty extends Expression {
 class StaticRead extends Expression {
   const StaticRead(this.id);
 
+  /// The identifier or symbol being referenced.
   final Variable id;
 
   @override
@@ -58,11 +59,9 @@ class StaticRead extends Expression {
 /// been assigned (e.g. `var currValN = context.foo`) has changed, instead of
 /// checking if `interpolate(currValN)` has changed.
 ///
-/// NOTE: One diference between this and [PropertyRead], is [name] is _not_
-/// evaluated in context of the [ImplicitReciver].
-///
 /// ```
-/// VariableRead('foo') // foo
+/// // foo
+/// VariableRead('foo')
 /// ```
 class VariableRead extends Expression {
   const VariableRead(this.name);
@@ -77,7 +76,7 @@ class VariableRead extends Expression {
 
   @override
   String toString() {
-    throw UnimplementedError();
+    return 'VariableRead($name)';
   }
 }
 
@@ -100,19 +99,18 @@ class ImplicitReceiver extends Expression {
 ///
 /// ```
 /// // a ? b : c
-/// Conditional(
-///   VariableRead('a'),
-///   VariableRead('b'),
-///   VariableRead('c'),
-/// )
+/// Conditional(VariableRead('a'), VariableRead('b'), VariableRead('c'))
 /// ```
 class Conditional extends Expression {
   const Conditional(this.condition, this.trueExpression, this.falseExpression);
 
+  /// The condition to evaluate.
   final Expression condition;
 
+  /// The expression to evaluate if the condition is true.
   final Expression trueExpression;
 
+  /// The expression to evaluate if the condition is false.
   final Expression falseExpression;
 
   @override
@@ -179,7 +177,8 @@ class PropertyRead extends Expression {
 /// Similar to [PropertyRead], but avoids NPEs by using `?.` instead of `.`.
 ///
 /// ```
-/// SafePropertyRead(VariableRead('a'), VariableRead('b')) // a?.b
+/// // a?.b
+/// SafePropertyRead(VariableRead('a'), VariableRead('b'))
 /// ```
 class SafePropertyRead extends Expression {
   const SafePropertyRead(this.receiver, this.name);
@@ -204,7 +203,8 @@ class SafePropertyRead extends Expression {
 /// Similar to [PropertyRead], but uses bracket operator `[]` to refer to [key].
 ///
 /// ```
-/// KeyedRead(VariableRead('a'), LiteralPrimitive('b')) // a['b']
+/// // a['b']
+/// KeyedRead(VariableRead('a'), LiteralPrimitive('b'))
 /// ```
 class KeyedRead extends Expression {
   const KeyedRead(this.receiver, this.key);
@@ -229,7 +229,8 @@ class KeyedRead extends Expression {
 /// Writes a property (setter or field) [name] to [receiver].
 ///
 /// ```
-/// PropertyWrite(VariableRead('a'), 'b', LiteralPrimitive('c')) // a.b = 'c'
+/// // a.b = 'c'
+/// PropertyWrite(VariableRead('a'), 'b', LiteralPrimitive('c'))
 /// ```
 class PropertyWrite extends Expression {
   const PropertyWrite(this.receiver, this.name, this.value);
@@ -258,11 +259,7 @@ class PropertyWrite extends Expression {
 ///
 /// ```
 /// // a['b'] = 'c'
-/// KeyedWrite(
-///   VariableRead('a'),
-///   LiteralPrimitive('b'),
-///   LiteralPrimitive('c'),
-/// )
+/// KeyedWrite(VariableRead('a'), LiteralPrimitive('b'), LiteralPrimitive('c'))
 /// ```
 class KeyedWrite extends Expression {
   const KeyedWrite(this.receiver, this.key, this.value);
@@ -341,7 +338,7 @@ class Primitive extends Expression {
 
   /// Value being parsed.
   ///
-  /// This is either [number], [String], [bool], or `null`.
+  /// This is either [num], [String], [bool], or `null`.
   final Object? value;
 
   @override
@@ -362,10 +359,7 @@ class Primitive extends Expression {
 /// // i=0     i=0    i=1
 /// // v       v      v
 /// // Hello {{place}}!
-/// Interpolation(
-///   ['Hello ', '!'],
-///   [VariableRead('place'), EmptyExpr()],
-/// )
+/// Interpolation(['Hello ', '!'], [VariableRead('place'), EmptyExpr()])
 /// ```
 class Interpolation extends Expression {
   const Interpolation(this.strings, this.expressions);
@@ -461,6 +455,7 @@ class PrefixNot extends Expression {
 class PostfixNotNull extends Expression {
   const PostfixNotNull(this.expression);
 
+  /// Expression to coerce.
   final Expression expression;
 
   @override
@@ -480,14 +475,16 @@ class PostfixNotNull extends Expression {
 /// with named arguments.
 ///
 /// ```
-/// NamedExpr('foo', LiteralPrimitive('bar')) // foo: 'bar'
+/// // foo: 'bar'
+/// NamedExpr('foo', LiteralPrimitive('bar'))
 /// ```
-class NamedArgument extends Expression {
-  const NamedArgument(this.name, this.expression);
+class NamedExpression extends Expression {
+  const NamedExpression(this.name, this.expression);
 
   /// Name (identifier) being assigned [expression].
   final String name;
 
+  /// Expression being assigned.
   final Expression? expression;
 
   @override
@@ -506,23 +503,22 @@ class NamedArgument extends Expression {
 ///
 /// ```
 /// // a.foo('bar', baz: 123)
-/// MethodCall(
-///   VariableRead('a'),
-///   'foo',
-///   [LiteralPrimitive('bar')],
-///   [NamedExpr('baz', LiteralPrimitive(123))],
-/// )
+/// MethodCall(VariableRead('a'), 'foo', [LiteralPrimitive('bar')], [NamedExpr('baz', LiteralPrimitive(123))])
 /// ```
 class MethodCall extends Expression {
-  const MethodCall(this.receiver, this.name, this.positional, [this.named = const <NamedArgument>[]]);
+  const MethodCall(this.receiver, this.name, this.positional, [this.named = const <NamedExpression>[]]);
 
+  /// Receiver of the method call.
   final Expression receiver;
 
+  /// Name of the method being called.
   final String name;
 
+  /// Positional arguments to the method.
   final List<Expression> positional;
 
-  final List<NamedArgument> named;
+  /// Named arguments to the method.
+  final List<NamedExpression> named;
 
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
@@ -538,15 +534,19 @@ class MethodCall extends Expression {
 
 /// Similar to [MethodCall], but only if the [receiver] is non-null.
 class SafeMethodCall extends Expression {
-  SafeMethodCall(this.receiver, this.name, this.positional, [this.named = const <NamedArgument>[]]);
+  SafeMethodCall(this.receiver, this.name, this.positional, [this.named = const <NamedExpression>[]]);
 
+  /// Receiver of the method call.
   final Expression receiver;
 
+  /// Name of the method being called.
   final String name;
 
+  /// Positional arguments to the method.
   final List<Expression> positional;
 
-  final List<NamedArgument> named;
+  /// Named arguments to the method.
+  final List<NamedExpression> named;
 
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
@@ -564,20 +564,17 @@ class SafeMethodCall extends Expression {
 ///
 /// ```
 /// // a('bar', baz: 123)
-/// FunctionCall(
-///   VariableRead('a'),
-///   [LiteralPrimitive('bar')],
-///   [NamedExpr('baz', LiteralPrimitive(123))],
+/// FunctionCall(VariableRead('a'), [LiteralPrimitive('bar')], [NamedExpr('baz', LiteralPrimitive(123))],
 /// )
 /// ```
 class FunctionCall extends Expression {
-  const FunctionCall(this.target, this.positional, [this.named = const <NamedArgument>[]]);
+  const FunctionCall(this.target, this.positional, [this.named = const <NamedExpression>[]]);
 
   final Expression target;
 
   final List<Expression> positional;
 
-  final List<NamedArgument> named;
+  final List<NamedExpression> named;
 
   @override
   R accept<R, C, CO extends C>(ExpressionVisitor<R, C?> visitor, [CO? context]) {
@@ -616,7 +613,7 @@ abstract class ExpressionVisitor<R, C> {
 
   R visitMethodCall(MethodCall node, C context);
 
-  R visitNamedArgument(NamedArgument node, C context);
+  R visitNamedArgument(NamedExpression node, C context);
 
   R visitPipe(BindingPipe node, C context);
 
@@ -676,7 +673,7 @@ class RecursiveExpressionVisitor<C> implements ExpressionVisitor<void, C> {
   }
 
   @override
-  void visitNamedArgument(NamedArgument node, C context) {
+  void visitNamedArgument(NamedExpression node, C context) {
     node.expression!.accept(this, context);
   }
 

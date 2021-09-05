@@ -1,2 +1,2 @@
 export 'src/compiler.dart';
-export 'src/parser.dart' hide findInterpolation;
+export 'src/parser.dart';

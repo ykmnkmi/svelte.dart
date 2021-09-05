@@ -89,7 +89,7 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
   }
 
   @override
-  String visitNamedArgument(NamedArgument node, String? context) {
+  String visitNamedArgument(NamedExpression node, String? context) {
     final name = node.name;
     final expression = node.expression;
     if (expression == null) return '$name: null';
@@ -155,7 +155,7 @@ class ExpressionCompiler extends ExpressionVisitor<String, String?> {
 
   @override
   String visitStaticRead(StaticRead node, String? context) {
-    return node.id.full;
+    return node.id.name;
   }
 
   @override
