@@ -10,3 +10,4 @@ analyzer:
 linter:
   rules:
     avoid_print: true
+    library_prefixes: false

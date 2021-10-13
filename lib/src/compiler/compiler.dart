@@ -1,51 +1,21 @@
-import 'dart:convert' show LineSplitter;
-
-import 'package:angular_ast/angular_ast.dart' as angular show parse;
 import 'package:angular_ast/angular_ast.dart' hide parse;
-import 'package:expression/expression.dart';
-import 'package:expression/variable.dart';
+import 'package:path/path.dart' as path;
 
-List<StandaloneTemplateAst> parse(String template, {String? sourceUrl}) {
-  return angular.parse(template, sourceUrl: sourceUrl ?? '<template>').cast<StandaloneTemplateAst>();
+import 'parser.dart';
+
+String compile(String template, {required String sourceUrl, List<String> exports = const <String>[]}) {
+  var nodes = parse(template, sourceUrl: sourceUrl);
+  var name = sourceUrl.isEmpty ? 'App' : path.basenameWithoutExtension(sourceUrl);
+  return compileNodes(name, nodes);
 }
 
-bool hasModuleContext(AttributeAst node) {
-  return node.name == 'context' && node.value == 'module';
+String compileNodes(String name, List<StandaloneTemplateAst> nodes, {List<String> exports = const <String>[]}) {
+  var compiler = Compiler(name, exports);
+  return compiler.visitAll(nodes);
 }
 
-String format(ElementAst instanceScript) {
-  final code = instanceScript.childNodes.cast<TextAst>().map<String>((node) => node.value).join();
-  final lines = const LineSplitter().convert(code).skipWhile((line) => line.isEmpty);
-  var indent = 9999;
-
-  for (final line in lines) {
-    if (line.isEmpty) continue;
-    final match = RegExp('(\\s*)').matchAsPrefix(line);
-    if (match == null) continue;
-    final length = match[0]!.length;
-    if (length < indent) indent = length;
-  }
-
-  final buffer = StringBuffer();
-
-  for (final line in lines) {
-    if (line.isEmpty) {
-      buffer.writeln();
-    } else {
-      buffer.writeln(line.substring(indent));
-    }
-  }
-
-  return '$buffer';
-}
-
-String compileNodes(List<StandaloneTemplateAst> nodes,
-    {String name = 'App', List<Variable> exports = const <Variable>[]}) {
-  return FragmentCompiler(name, exports).visitAll(nodes);
-}
-
-class FragmentCompiler implements TemplateAstVisitor<String?, String> {
-  FragmentCompiler(this.name, this.exports)
+class Compiler implements TemplateAstVisitor<String?, String> {
+  Compiler(this.name, this.exports)
       : sourceBuffer = StringBuffer(),
         initList = <String>[],
         constructorList = <String>[],
@@ -61,7 +31,7 @@ class FragmentCompiler implements TemplateAstVisitor<String?, String> {
 
   final String name;
 
-  final List<Variable> exports;
+  final List<String> exports;
 
   final StringBuffer sourceBuffer;
 
@@ -108,22 +78,7 @@ class FragmentCompiler implements TemplateAstVisitor<String?, String> {
 
   @override
   String? visitAttribute(AttributeAst node, [String? context]) {
-    final value = node.value;
-
-    if (value == null) {
-      createList.add('$context.${node.name} = ""');
-      return null;
-    }
-
-    final expression = const ExpressionParser().parseInterpolation(value, exports);
-
-    if (expression == null) {
-      createList.add('$context.${node.name} = \'$value\'');
-      return null;
-    }
-
-    final code = const ExpressionCompiler().visit(expression, context);
-    createList.add('$context.${node.name} = $code');
+    throw UnimplementedError('visitAttribute');
   }
 
   @override
@@ -148,21 +103,21 @@ class FragmentCompiler implements TemplateAstVisitor<String?, String> {
 
   @override
   String? visitElement(ElementAst node, [String? context]) {
-    final id = getId(node.name);
+    var id = getId(node.name);
     fieldList.add('late Element $id');
     createList.add('$id = element(\'${node.name}\')');
     mount(id, context);
 
-    for (final attribute in node.attributes) {
+    for (var attribute in node.attributes) {
       attribute.accept(this, id);
     }
 
-    for (final property in node.properties) {
+    for (var property in node.properties) {
       property.accept(this, id);
     }
 
     if (node.childNodes.isNotEmpty) {
-      for (final child in node.childNodes) {
+      for (var child in node.childNodes) {
         child.accept(this, id);
       }
     }
@@ -187,20 +142,7 @@ class FragmentCompiler implements TemplateAstVisitor<String?, String> {
 
   @override
   String? visitInterpolation(InterpolationAst node, [String? context]) {
-    final id = getId('t');
-    fieldList.add('late Text $id');
-    final expression = const ExpressionParser().parseInterpolation('{{ ${node.value} }}', exports);
-    print(expression);
-
-    if (expression == null) {
-      createList.add('$id = empty()');
-    } else {
-      final code = const ExpressionCompiler().visit(expression);
-      createList.add('$id = text($code)');
-    }
-
-    mount(id, context);
-    return id;
+    throw UnimplementedError('visitInterpolation');
   }
 
   @override
@@ -225,8 +167,8 @@ class FragmentCompiler implements TemplateAstVisitor<String?, String> {
 
   @override
   String? visitText(TextAst node, [String? context]) {
-    final id = getId('t');
-    final text = escape(node.value);
+    var id = getId('t');
+    var text = escape(node.value);
     fieldList.add('late Text $id');
 
     if (text == ' ') {
@@ -240,8 +182,8 @@ class FragmentCompiler implements TemplateAstVisitor<String?, String> {
   }
 
   String visitAll(List<StandaloneTemplateAst> nodes) {
-    for (final node in nodes) {
-      final id = node.accept(this);
+    for (var node in nodes) {
+      var id = node.accept(this);
 
       if (id != null) {
         removeList.add(id);
@@ -259,7 +201,7 @@ class FragmentCompiler implements TemplateAstVisitor<String?, String> {
     if (initList.isNotEmpty) {
       sourceBuffer.write('\n      : ${initList[0]},');
 
-      for (final init in initList.skip(1)) {
+      for (var init in initList.skip(1)) {
         sourceBuffer.write('\n        $init,');
       }
 
@@ -280,11 +222,11 @@ class FragmentCompiler implements TemplateAstVisitor<String?, String> {
       sourceBuffer.write('\n  }');
     }
 
-    for (final finalField in finalFieldList) {
+    for (var finalField in finalFieldList) {
       sourceBuffer.write('\n\n  final $finalField;');
     }
 
-    for (final field in fieldList) {
+    for (var field in fieldList) {
       sourceBuffer.write('\n\n  $field;');
     }
 
@@ -335,7 +277,7 @@ class FragmentCompiler implements TemplateAstVisitor<String?, String> {
         } else {
           sourceBuffer.write('\n      dispose = <Function>[');
 
-          for (final listen in listenList) {
+          for (var listen in listenList) {
             sourceBuffer.write('\n        $listen;');
           }
 

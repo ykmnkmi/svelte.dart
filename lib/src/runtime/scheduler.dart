@@ -20,7 +20,7 @@ class Scheduler {
 
     if (!updateScheduled) {
       updateScheduled = true;
-      resolvedFuture = resolvedFuture.then<void>((void _) {
+      resolvedFuture = resolvedFuture.then<void>((_) {
         flush();
       });
     }
@@ -33,13 +33,12 @@ class Scheduler {
 
     flushing = true;
 
-    do {
-      for (final fragment in dirtyFragments) {
-        update(fragment);
-      }
+    var fragments = dirtyFragments.toList();
+    dirtyFragments.clear();
 
-      dirtyFragments.clear();
-    } while (dirtyFragments.isNotEmpty);
+    for (var fragment in fragments) {
+      update(fragment);
+    }
 
     updateScheduled = false;
     flushing = false;

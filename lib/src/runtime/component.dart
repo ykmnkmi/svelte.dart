@@ -45,7 +45,8 @@ void createFragment<T extends Component<T>>(Fragment<T> fragment) {
   fragment.create();
 }
 
-void mountFragment<T extends Component<T>>(Fragment<T> fragment, Element target, [Node? anchor]) {
+void mountFragment<T extends Component<T>>(Fragment<T> fragment, Element target,
+    [Node? anchor]) {
   fragment.mount(target, anchor);
 }
 

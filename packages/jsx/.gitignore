@@ -1,6 +1,0 @@
-.dart_tool/
-.packages
-build/
-doc/api/
-web/*.js*
-pubspec.lock
