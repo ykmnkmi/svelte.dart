@@ -40,7 +40,7 @@ void Function() listen(Node target, String type, EventListener handler) {
 void attr(Element node, String attribute, String? value) {
   if (value == null) {
     node.removeAttribute(attribute);
-  } else if (node.getAttribute(attribute) != value) {
+  } else if (value != node.getAttribute(attribute)) {
     node.setAttribute(attribute, value);
   }
 }

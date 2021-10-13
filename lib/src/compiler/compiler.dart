@@ -1,4 +1,5 @@
 import 'package:angular_ast/angular_ast.dart' hide parse;
+import 'package:code_builder/code_builder.dart';
 import 'package:path/path.dart' as path;
 
 import 'parser.dart';
@@ -10,64 +11,52 @@ String compile(String template, {required String sourceUrl, List<String> exports
 }
 
 String compileNodes(String name, List<StandaloneTemplateAst> nodes, {List<String> exports = const <String>[]}) {
-  var compiler = Compiler(name, exports);
-  return compiler.visitAll(nodes);
+  var compiler = Compiler(name, exports: exports);
+  return compiler.compile(nodes);
 }
 
 class Compiler implements TemplateAstVisitor<String?, String> {
-  Compiler(this.name, this.exports)
-      : sourceBuffer = StringBuffer(),
-        initList = <String>[],
-        constructorList = <String>[],
-        finalFieldList = <String>[],
-        fieldList = <String>[],
-        createList = <String>[],
-        mountList = <String>[],
-        listenList = <String>[],
-        updateMap = <String, List<String>>{},
-        removeList = <String>[],
-        fragmentDetachList = <String>[],
-        countMap = <String, int>{};
+  Compiler(this.name, {this.exports = const <String>[]})
+      : inited = <Expression>[],
+        constructed = <Expression>[],
+        fields = <Field>[],
+        created = <Expression>[],
+        mounted = <Expression>[],
+        listened = <Expression>[],
+        removed = <Expression>[],
+        counts = <String, int>{};
 
   final String name;
 
   final List<String> exports;
 
-  final StringBuffer sourceBuffer;
+  final List<Expression> inited;
 
-  final List<String> initList;
+  final List<Expression> constructed;
 
-  final List<String> constructorList;
+  final List<Field> fields;
 
-  final List<String> finalFieldList;
+  final List<Expression> created;
 
-  final List<String> fieldList;
+  final List<Expression> mounted;
 
-  final List<String> createList;
+  final List<Expression> listened;
 
-  final List<String> mountList;
+  final List<Expression> removed;
 
-  final List<String> listenList;
-
-  final Map<String, List<String>> updateMap;
-
-  final List<String> removeList;
-
-  final List<String> fragmentDetachList;
-
-  final Map<String, int> countMap;
+  final Map<String, int> counts;
 
   String getId(String tag) {
-    var id = countMap[tag] ?? 0;
-    countMap[tag] = id += 1;
-    return id == 1 ? tag : '$tag$id';
+    var id = counts[tag] ??= 0;
+    counts[tag] = ++id;
+    return '$tag$id';
   }
 
   void mount(String id, [String? context]) {
     if (context == null) {
-      mountList.add('insert(target, $id, anchor)');
+      mounted.add(refer('insert').call([refer('target'), refer(id), refer('anchor')]));
     } else {
-      mountList.add('append($context, $id)');
+      mounted.add(refer('append').call([refer(context), refer(id)]));
     }
   }
 
@@ -104,8 +93,15 @@ class Compiler implements TemplateAstVisitor<String?, String> {
   @override
   String? visitElement(ElementAst node, [String? context]) {
     var id = getId(node.name);
-    fieldList.add('late Element $id');
-    createList.add('$id = element(\'${node.name}\')');
+
+    fields.add(Field((builder) {
+      builder
+        ..name = id
+        ..type = refer('Element', 'dart:html')
+        ..late = true;
+    }));
+
+    created.add(refer(id).assign(dom('element').call([literal(node.name)])));
     mount(id, context);
 
     for (var attribute in node.attributes) {
@@ -114,6 +110,10 @@ class Compiler implements TemplateAstVisitor<String?, String> {
 
     for (var property in node.properties) {
       property.accept(this, id);
+    }
+
+    for (var event in node.events) {
+      event.accept(this, id);
     }
 
     if (node.childNodes.isNotEmpty) {
@@ -137,12 +137,31 @@ class Compiler implements TemplateAstVisitor<String?, String> {
 
   @override
   String? visitEvent(EventAst astNode, [String? context]) {
-    throw UnimplementedError('visitEvent');
+    assert(context != null && astNode.value != null);
+    var method = Method((method) => method
+      ..requiredParameters.add(Parameter((parameter) => parameter
+        ..name = 'event'
+        ..type = refer('Event', 'dart:html')))
+      ..lambda = true
+      ..body = Code('context.${astNode.value}'));
+    listened.add(dom('listen').call([refer(context!), literal(astNode.name), method.closure]));
   }
 
   @override
-  String? visitInterpolation(InterpolationAst node, [String? context]) {
-    throw UnimplementedError('visitInterpolation');
+  String? visitInterpolation(InterpolationAst astNode, [String? context]) {
+    var id = getId('text');
+    var identifier = astNode.value.trim();
+
+    fields.add(Field((builder) {
+      builder
+        ..name = id
+        ..type = refer('Text', 'dart:html')
+        ..late = true;
+    }));
+
+    created.add(refer(id).assign(dom('text').call([refer('context').property(identifier)])));
+    mount(id, context);
+    return id;
   }
 
   @override
@@ -166,167 +185,180 @@ class Compiler implements TemplateAstVisitor<String?, String> {
   }
 
   @override
-  String? visitText(TextAst node, [String? context]) {
-    var id = getId('t');
-    var text = escape(node.value);
-    fieldList.add('late Text $id');
+  String? visitText(TextAst astNode, [String? context]) {
+    var id = getId('text');
+    var text = escape(astNode.value);
+
+    fields.add(Field((builder) {
+      builder
+        ..name = id
+        ..type = refer('Text', 'dart:html')
+        ..late = true;
+    }));
+
+    Expression expression;
 
     if (text == ' ') {
-      createList.add('$id = space()');
+      expression = refer(id).assign(dom('space').call([]));
     } else {
-      createList.add('$id = text(\'${escape(node.value)}\')');
+      expression = refer(id).assign(dom('text').call([literal(text)]));
     }
 
+    created.add(expression);
     mount(id, context);
     return id;
   }
 
-  String visitAll(List<StandaloneTemplateAst> nodes) {
+  String compile(List<StandaloneTemplateAst> nodes) {
     for (var node in nodes) {
       var id = node.accept(this);
 
       if (id != null) {
-        removeList.add(id);
+        removed.add(refer(id));
       }
     }
 
-    sourceBuffer
-      ..write('class ${name}Fragment extends Fragment<$name> {\n')
-      ..write('  ${name}Fragment($name context, RenderTree tree)');
-
-    if (listenList.isNotEmpty) {
-      initList.add('mounted = true');
+    if (listened.isNotEmpty) {
+      inited.add(refer('mounted').assign(literalTrue));
+      fields
+        ..add(Field((field) => field
+          ..name = 'mounted'
+          ..type = refer('bool')))
+        ..add(Field((field) => field
+          ..name = 'dispose'
+          ..type = listened.length == 1
+              ? refer('Function')
+              : TypeReference((type) => type
+                ..symbol = 'List'
+                ..types.add(refer('Function')))
+          ..late = true));
     }
 
-    if (initList.isNotEmpty) {
-      sourceBuffer.write('\n      : ${initList[0]},');
+    inited.add(refer('super').call([refer('context'), refer('tree')]));
 
-      for (var init in initList.skip(1)) {
-        sourceBuffer.write('\n        $init,');
+    var fragment = Class((klass) {
+      klass
+        ..name = '${name}Fragment'
+        ..extend = runtime('Fragment', [refer(name)])
+        ..constructors.add(Constructor((constructor) => constructor
+          ..requiredParameters.add(Parameter((parameter) => parameter
+            ..name = 'context'
+            ..type = refer(name)))
+          ..requiredParameters.add(Parameter((builder) => builder
+            ..name = 'tree'
+            ..type = runtime('RenderTree')))
+          ..initializers.addAll(inited.map((init) => init.code))
+          ..body = Block.of(constructed.map((expression) => expression.statement))))
+        ..fields.addAll(fields);
+
+      if (created.isNotEmpty) {
+        klass.methods.add(Method((method) => method
+          ..name = 'create'
+          ..annotations.add(refer('override'))
+          ..returns = refer('void')
+          ..body = Block.of(created.map((expression) => expression.statement))));
       }
 
-      sourceBuffer.write('\n        super(context, tree)');
-    } else {
-      sourceBuffer.write(' : super(context, tree)');
-    }
+      if (mounted.isNotEmpty) {
+        var body = <Code>[];
 
-    if (constructorList.isEmpty) {
-      sourceBuffer.write(';');
-    } else {
-      sourceBuffer.write(' {');
-
-      for (var i = 0; i < constructorList.length; i += 1) {
-        sourceBuffer.write('\n    ${constructorList[i]};');
-      }
-
-      sourceBuffer.write('\n  }');
-    }
-
-    for (var finalField in finalFieldList) {
-      sourceBuffer.write('\n\n  final $finalField;');
-    }
-
-    for (var field in fieldList) {
-      sourceBuffer.write('\n\n  $field;');
-    }
-
-    if (listenList.isNotEmpty) {
-      sourceBuffer.write('\n\n  bool mounted;');
-
-      if (listenList.length == 1) {
-        sourceBuffer.write('\n\n  late Function dispose;');
-      } else {
-        sourceBuffer.write('\n\n  late List<Function> dispose;');
-      }
-    }
-
-    // create
-
-    if (createList.isNotEmpty) {
-      sourceBuffer.write('\n\n  @override\n  void create() {\n');
-
-      for (var i = 0; i < createList.length; i += 1) {
-        if (i != 0) {
-          sourceBuffer.writeln();
+        for (var mount in mounted) {
+          body.add(mount.statement);
         }
 
-        sourceBuffer.write('    ${createList[i]};');
-      }
+        if (listened.isNotEmpty) {
+          body.add(Code('\nif (!mounted) {'));
+          Expression expression;
 
-      sourceBuffer.write('\n  }');
-    }
-
-    // mount
-
-    if (mountList.isNotEmpty) {
-      sourceBuffer.write('\n\n  @override\n  void mount(Element target, [Node? anchor]) {\n');
-
-      for (var i = 0; i < mountList.length; i += 1) {
-        if (i != 0) {
-          sourceBuffer.writeln();
-        }
-
-        sourceBuffer.write('    ${mountList[i]};');
-      }
-
-      if (listenList.isNotEmpty) {
-        sourceBuffer.write('\n\n    if (!mounted) {');
-
-        if (listenList.length == 1) {
-          sourceBuffer.write('\n      dispose = ${listenList[0]};');
-        } else {
-          sourceBuffer.write('\n      dispose = <Function>[');
-
-          for (var listen in listenList) {
-            sourceBuffer.write('\n        $listen;');
+          if (listened.length == 1) {
+            expression = listened.first;
+          } else {
+            expression = literalList(listened, refer('Function'));
           }
 
-          sourceBuffer.write('\n      ];');
+          var assign = refer('dispose').assign(expression);
+          body
+            ..add(assign.statement)
+            ..add(Code('}\n'));
         }
 
-        sourceBuffer.write('\n    }');
+        klass.methods.add(Method((method) => method
+          ..name = 'mount'
+          ..annotations.add(refer('override'))
+          ..returns = refer('void')
+          ..requiredParameters.add(Parameter((parameter) => parameter
+            ..name = 'target'
+            ..type = refer('Element', 'dart:html')))
+          ..optionalParameters.add(Parameter((parameter) => parameter
+            ..name = 'anchor'
+            ..type = TypeReference((type) => type
+              ..symbol = 'Node'
+              ..url = 'dart:html'
+              ..isNullable = true)))
+          ..body = Block.of(body)));
       }
 
-      sourceBuffer.write('\n  }');
-    }
+      if (removed.isNotEmpty) {
+        var body = <Code>[];
 
-    // detach
+        if (removed.isNotEmpty) {
+          body.add(Code('\nif (detaching) {'));
 
-    if (removeList.isNotEmpty || fragmentDetachList.isNotEmpty) {
-      sourceBuffer.write('\n\n  @override\n  void detach(bool detaching) {\n');
+          for (var id in removed) {
+            var call = dom('remove').call([id]);
+            body.add(call.statement);
+          }
 
-      if (removeList.isNotEmpty) {
-        sourceBuffer.write('    if (detaching) {');
-
-        for (final id in removeList) {
-          sourceBuffer.write('\n      remove($id);');
+          body.add(Code('}\n'));
         }
 
-        sourceBuffer.write('\n    }');
-      }
+        if (listened.isNotEmpty) {
+          var assign = refer('mounted').assign(literalFalse);
+          body.add(assign.statement);
 
-      for (final fragmentRemove in fragmentDetachList) {
-        sourceBuffer.write('\n    $fragmentRemove;');
-      }
-
-      if (listenList.isNotEmpty) {
-        sourceBuffer.write('\n\n    mounted = false;');
-
-        if (listenList.length == 1) {
-          sourceBuffer.write('\n    dispose();');
-        } else {
-          sourceBuffer.write('\n    dispose.forEach((fn) => fn());');
+          if (listened.length == 1) {
+            var call = refer('dispose').call([]);
+            body.add(call.statement);
+          } else {
+            var method = Method((method) => method
+              ..requiredParameters.add(Parameter((parameter) => parameter..name = 'fn'))
+              ..body = Code('fn'));
+            var call = refer('dispose').property('forEach').call([method.closure]);
+            body.add(call.statement);
+          }
         }
+
+        klass.methods.add(Method((method) => method
+          ..name = 'detach'
+          ..annotations.add(refer('override'))
+          ..returns = refer('void')
+          ..optionalParameters.add(Parameter((parameter) => parameter
+            ..name = 'detaching'
+            ..type = refer('bool')
+            ..defaultTo = literalTrue.code))
+          ..body = Block.of(body)));
       }
+    });
 
-      sourceBuffer.write('\n  }');
-    }
-
-    sourceBuffer.write('\n}');
-    return sourceBuffer.toString();
+    return fragment.accept<StringSink>(DartEmitter(orderDirectives: true, useNullSafetySyntax: true)).toString();
   }
 
   static String escape(String text) {
     return text.replaceAll("'", r"\'").replaceAll('\r', r'\r').replaceAll('\n', r'\n');
+  }
+
+  static Reference dom(String symbol) {
+    return refer(symbol, 'package:piko/dom.dart');
+  }
+
+  static Reference runtime(String symbol, [List<Reference>? types]) {
+    if (types == null) {
+      return refer(symbol, 'package:piko/runtim.dart');
+    }
+
+    return TypeReference((type) => type
+      ..symbol = symbol
+      ..url = 'package:piko/runtim.dart'
+      ..types.addAll(types));
   }
 }
