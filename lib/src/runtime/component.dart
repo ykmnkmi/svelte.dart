@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
 
 import 'scheduler.dart';
@@ -11,11 +12,16 @@ class RenderTree {
 }
 
 abstract class Component<T extends Component<T>> {
+  @internal
+  late Fragment<T> fragment;
+
   Fragment<T> render(RenderTree tree);
 }
 
 abstract class Fragment<T extends Component<T>> {
-  Fragment(this.context, this.tree) : dirty = <String>{};
+  Fragment(this.context, this.tree) : dirty = <String>{} {
+    context.fragment = this;
+  }
 
   final RenderTree tree;
 
@@ -45,8 +51,7 @@ void createFragment<T extends Component<T>>(Fragment<T> fragment) {
   fragment.create();
 }
 
-void mountFragment<T extends Component<T>>(Fragment<T> fragment, Element target,
-    [Node? anchor]) {
+void mountFragment<T extends Component<T>>(Fragment<T> fragment, Element target, [Node? anchor]) {
   fragment.mount(target, anchor);
 }
 

@@ -1,17 +1,16 @@
-targets:
-  $default:
-    builders:
-      build_web_compilers|entrypoint:
-        generate_for:
-          - web/**.dart
-        options:
-          # compiler: dart2js
-          dart2js_args:
-          # - --verbose
-          - --disable-inlining
-          # - --omit-implicit-checks
-          # - --lax-runtime-type-to-string
-          # - --trust-primitives
-          # - --no-source-maps
-          # - --fast-startup
-          # - --minify
+global_options:
+  build_web_compilers:ddc:
+    options:
+      emit-debug-symbols: false
+  build_web_compilers|entrypoint:
+    options:
+      # compiler: dart2js
+      dart2js_args:
+      # - --verbose
+      - --disable-inlining
+      # - --omit-implicit-checks
+      # - --lax-runtime-type-to-string
+      # - --trust-primitives
+      # - --no-source-maps
+      # - --fast-startup
+      # - --minify

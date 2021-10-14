@@ -8,7 +8,6 @@ bin/
 build/
 doc/api/
 packages/
-web/
 pubspec.lock
 **/**.aot
 **/**.exe
