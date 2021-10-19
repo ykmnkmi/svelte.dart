@@ -13,32 +13,20 @@ abstract class LetBindingAst implements TemplateAst {
   /// Create a new synthetic [LetBindingAst] listening to [name].
   /// [value] is an optional parameter, which indicates that the variable is
   /// bound to a the value '$implicit'.
-  factory LetBindingAst(
-    String name, [
-    String value,
-  ]) = _SyntheticLetBindingAst;
+  factory LetBindingAst(String name, [String value]) = _SyntheticLetBindingAst;
 
   /// Create a new synthetic [LetBindingAst] that originated from [origin].
-  factory LetBindingAst.from(
-    TemplateAst? origin,
-    String name, [
-    String value,
-  ]) = _SyntheticLetBindingAst.from;
+  factory LetBindingAst.from(TemplateAst? origin, String name, [String value]) = _SyntheticLetBindingAst.from;
 
   /// Create a new [LetBindingAst] parsed from tokens in [sourceFile].
   /// The [prefixToken] is the 'let-' component, the [elementDecoratorToken]
   /// is the variable name, and [valueToken] is the value bound to the
   /// variable.
-  factory LetBindingAst.parsed(
-    SourceFile sourceFile,
-    NgToken prefixToken,
-    NgToken elementDecoratorToken, [
-    NgAttributeValueToken? valueToken,
-    NgToken? equalSignToken,
-  ]) = ParsedLetBindingAst;
+  factory LetBindingAst.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedLetBindingAst;
 
   @override
-  bool operator ==(Object o) => o is LetBindingAst && name == o.name && value == o.value;
+  bool operator ==(Object? other) => other is LetBindingAst && name == other.name && value == other.value;
 
   @override
   int get hashCode => Object.hash(name, value);
@@ -55,12 +43,7 @@ abstract class LetBindingAst implements TemplateAst {
   String? get value;
 
   @override
-  String toString() {
-    if (value != null) {
-      return '$LetBindingAst {let-$name="$value"}';
-    }
-    return '$LetBindingAst {let-$name}';
-  }
+  String toString() => value != null ? '$LetBindingAst {let-$name="$value"}' : '$LetBindingAst {let-$name}';
 }
 
 /// Represents a real, non-synthetic `let-` binding: `let-var="value"`.
@@ -86,17 +69,8 @@ class ParsedLetBindingAst extends TemplateAst with LetBindingAst implements Pars
   /// value.
   final NgToken? equalSignToken;
 
-  ParsedLetBindingAst(
-    SourceFile sourceFile,
-    this.prefixToken,
-    this.nameToken, [
-    this.valueToken,
-    this.equalSignToken,
-  ]) : super.parsed(
-          prefixToken,
-          valueToken == null ? nameToken : valueToken.rightQuote,
-          sourceFile,
-        );
+  ParsedLetBindingAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken == null ? nameToken : valueToken.rightQuote, sourceFile);
 
   /// Name of the variable following `let-`.
   @override
@@ -138,9 +112,5 @@ class _SyntheticLetBindingAst extends SyntheticTemplateAst with LetBindingAst {
 
   _SyntheticLetBindingAst(this.name, [this.value]);
 
-  _SyntheticLetBindingAst.from(
-    TemplateAst? origin,
-    this.name, [
-    this.value,
-  ]) : super.from(origin);
+  _SyntheticLetBindingAst.from(TemplateAst? origin, this.name, [this.value]) : super.from(origin);
 }

@@ -9,34 +9,18 @@ import '../visitor.dart';
 /// Clients should not extend, implement, or mix-in this class.
 abstract class ReferenceAst implements TemplateAst {
   /// Create a new synthetic reference of [variable].
-  factory ReferenceAst(
-    String variable, [
-    String identifier,
-  ]) = _SyntheticReferenceAst;
+  factory ReferenceAst(String variable, [String identifier]) = _SyntheticReferenceAst;
 
   /// Create a new synthetic reference of [variable] from AST node [origin].
-  factory ReferenceAst.from(
-    TemplateAst origin,
-    String variable, [
-    String identifier,
-  ]) = _SyntheticReferenceAst.from;
+  factory ReferenceAst.from(TemplateAst origin, String variable, [String identifier]) = _SyntheticReferenceAst.from;
 
   /// Create new reference from tokens in [sourceFile].
-  factory ReferenceAst.parsed(
-    SourceFile sourceFile,
-    NgToken prefixToken,
-    NgToken elementDecoratorToken, [
-    NgAttributeValueToken? valueToken,
-    NgToken? equalSignToken,
-  ]) = ParsedReferenceAst;
+  factory ReferenceAst.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedReferenceAst;
 
   @override
-  bool operator ==(Object o) {
-    if (o is ReferenceAst) {
-      return identifier == o.identifier && variable == o.variable;
-    }
-    return false;
-  }
+  bool operator ==(Object? other) =>
+      other is ReferenceAst && identifier == other.identifier && variable == other.variable;
 
   @override
   int get hashCode => Object.hash(identifier, variable);
@@ -57,9 +41,10 @@ abstract class ReferenceAst implements TemplateAst {
   @override
   String toString() {
     if (identifier != null) {
-      return '$ReferenceAst {#$variable="$identifier"}';
+      return 'ReferenceAst {#$variable="$identifier"}';
     }
-    return '$ReferenceAst {#$variable}';
+
+    return 'ReferenceAst {#$variable}';
   }
 }
 
@@ -87,17 +72,8 @@ class ParsedReferenceAst extends TemplateAst with ReferenceAst implements Parsed
   /// value.
   final NgToken? equalSignToken;
 
-  ParsedReferenceAst(
-    SourceFile sourceFile,
-    this.prefixToken,
-    this.nameToken, [
-    this.valueToken,
-    this.equalSignToken,
-  ]) : super.parsed(
-          prefixToken,
-          valueToken != null ? valueToken.rightQuote : nameToken,
-          sourceFile,
-        );
+  ParsedReferenceAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
 
   /// Offset of `variable` in `#variable="identifier"`.
   @override
@@ -136,11 +112,7 @@ class ParsedReferenceAst extends TemplateAst with ReferenceAst implements Parsed
 class _SyntheticReferenceAst extends SyntheticTemplateAst with ReferenceAst {
   _SyntheticReferenceAst(this.variable, [this.identifier]);
 
-  _SyntheticReferenceAst.from(
-    TemplateAst origin,
-    this.variable, [
-    this.identifier,
-  ]) : super.from(origin);
+  _SyntheticReferenceAst.from(TemplateAst origin, this.variable, [this.identifier]) : super.from(origin);
 
   @override
   final String? identifier;

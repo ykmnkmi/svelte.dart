@@ -88,103 +88,105 @@ abstract class EmbeddedTemplateAst implements StandaloneTemplateAst {
   set closeComplement(CloseElementAst? closeComplement);
 
   @override
-  bool operator ==(Object o) {
-    if (o is EmbeddedTemplateAst) {
-      return closeComplement == o.closeComplement &&
-          _listEquals.equals(annotations, o.annotations) &&
-          _listEquals.equals(attributes, o.attributes) &&
-          _listEquals.equals(events, o.events) &&
-          _listEquals.equals(properties, o.properties) &&
-          _listEquals.equals(childNodes, o.childNodes) &&
-          _listEquals.equals(references, o.references) &&
-          _listEquals.equals(letBindings, o.letBindings);
-    }
-    return false;
+  bool operator ==(Object? other) {
+    return other is EmbeddedTemplateAst &&
+        closeComplement == other.closeComplement &&
+        _listEquals.equals(annotations, other.annotations) &&
+        _listEquals.equals(attributes, other.attributes) &&
+        _listEquals.equals(events, other.events) &&
+        _listEquals.equals(properties, other.properties) &&
+        _listEquals.equals(childNodes, other.childNodes) &&
+        _listEquals.equals(references, other.references) &&
+        _listEquals.equals(letBindings, other.letBindings);
   }
 
   @override
-  int get hashCode {
-    return Object.hashAll([
-      closeComplement,
-      _listEquals.hash(annotations),
-      _listEquals.hash(attributes),
-      _listEquals.hash(events),
-      _listEquals.hash(childNodes),
-      _listEquals.hash(properties),
-      _listEquals.hash(references),
-      _listEquals.hash(letBindings),
-    ]);
-  }
+  int get hashCode => Object.hashAll([
+        closeComplement,
+        _listEquals.hash(annotations),
+        _listEquals.hash(attributes),
+        _listEquals.hash(events),
+        _listEquals.hash(childNodes),
+        _listEquals.hash(properties),
+        _listEquals.hash(references),
+        _listEquals.hash(letBindings),
+      ]);
 
   @override
   String toString() {
-    final buffer = StringBuffer('$EmbeddedTemplateAst{ ');
+    final buffer = StringBuffer('EmbeddedTemplateAst{ ');
+
     if (annotations.isNotEmpty) {
       buffer
         ..write('annotations=')
         ..writeAll(attributes, ', ')
         ..write(' ');
     }
+
     if (attributes.isNotEmpty) {
       buffer
         ..write('attributes=')
         ..writeAll(attributes, ', ')
         ..write(' ');
     }
+
     if (events.isNotEmpty) {
       buffer
         ..write('events=')
         ..writeAll(events, ', ')
         ..write(' ');
     }
+
     if (properties.isNotEmpty) {
       buffer
         ..write('properties=')
         ..writeAll(properties, ', ')
         ..write(' ');
     }
+
     if (references.isNotEmpty) {
       buffer
         ..write('references=')
         ..writeAll(references, ', ')
         ..write(' ');
     }
+
     if (letBindings.isNotEmpty) {
       buffer
         ..write('letBindings=')
         ..writeAll(letBindings, ', ')
         ..write(' ');
     }
+
     if (childNodes.isNotEmpty) {
       buffer
         ..write('childNodes=')
         ..writeAll(childNodes, ', ')
         ..write(' ');
     }
+
     if (closeComplement != null) {
       buffer
         ..write('closeComplement=')
         ..write(closeComplement)
         ..write(' ');
     }
+
     return (buffer..write('}')).toString();
   }
 }
 
 class _ParsedEmbeddedTemplateAst extends TemplateAst with EmbeddedTemplateAst {
-  _ParsedEmbeddedTemplateAst(
-    SourceFile sourceFile,
-    NgToken beginToken,
-    NgToken endToken, {
-    this.closeComplement,
-    this.annotations = const [],
-    this.attributes = const [],
-    this.childNodes = const [],
-    this.events = const [],
-    this.properties = const [],
-    this.references = const [],
-    this.letBindings = const [],
-  }) : super.parsed(beginToken, endToken, sourceFile);
+  _ParsedEmbeddedTemplateAst(SourceFile sourceFile, NgToken beginToken, NgToken endToken,
+      {this.closeComplement,
+      this.annotations = const [],
+      this.attributes = const [],
+      this.childNodes = const [],
+      this.events = const [],
+      this.properties = const [],
+      this.references = const [],
+      this.letBindings = const []})
+      : super.parsed(beginToken, endToken, sourceFile);
 
   @override
   final List<AnnotationAst> annotations;
@@ -212,26 +214,25 @@ class _ParsedEmbeddedTemplateAst extends TemplateAst with EmbeddedTemplateAst {
 }
 
 class _SyntheticEmbeddedTemplateAst extends SyntheticTemplateAst with EmbeddedTemplateAst {
-  _SyntheticEmbeddedTemplateAst({
-    this.annotations = const [],
-    this.attributes = const [],
-    this.childNodes = const [],
-    this.events = const [],
-    this.properties = const [],
-    this.references = const [],
-    this.letBindings = const [],
-  }) : closeComplement = CloseElementAst('template');
+  _SyntheticEmbeddedTemplateAst(
+      {this.annotations = const [],
+      this.attributes = const [],
+      this.childNodes = const [],
+      this.events = const [],
+      this.properties = const [],
+      this.references = const [],
+      this.letBindings = const []})
+      : closeComplement = CloseElementAst('template');
 
-  _SyntheticEmbeddedTemplateAst.from(
-    TemplateAst origin, {
-    this.annotations = const [],
-    this.attributes = const [],
-    this.childNodes = const [],
-    this.events = const [],
-    this.properties = const [],
-    this.references = const [],
-    this.letBindings = const [],
-  })  : closeComplement = CloseElementAst('template'),
+  _SyntheticEmbeddedTemplateAst.from(TemplateAst origin,
+      {this.annotations = const [],
+      this.attributes = const [],
+      this.childNodes = const [],
+      this.events = const [],
+      this.properties = const [],
+      this.references = const [],
+      this.letBindings = const []})
+      : closeComplement = CloseElementAst('template'),
         super.from(origin);
 
   @override

@@ -12,27 +12,14 @@ import '../../visitor.dart';
 /// Clients should not extend, implement, or mix-in this class.
 abstract class BananaAst implements TemplateAst {
   /// Create a new synthetic [BananaAst] with a string [field].
-  factory BananaAst(
-    String name, [
-    String? field,
-  ]) = _SyntheticBananaAst;
+  factory BananaAst(String name, [String? field]) = _SyntheticBananaAst;
 
   /// Create a new synthetic [BananaAst] that originated from node [origin].
-  factory BananaAst.from(
-    TemplateAst origin,
-    String name, [
-    String? field,
-  ]) = _SyntheticBananaAst.from;
+  factory BananaAst.from(TemplateAst origin, String name, [String? field]) = _SyntheticBananaAst.from;
 
   /// Create a new [BananaAst] parsed from tokens from [sourceFile].
-  factory BananaAst.parsed(
-    SourceFile sourceFile,
-    NgToken prefixToken,
-    NgToken elementDecoratorToken,
-    NgToken suffixToken,
-    NgAttributeValueToken? valueToken,
-    NgToken? equalSignToken,
-  ) = ParsedBananaAst;
+  factory BananaAst.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
+      NgToken suffixToken, NgAttributeValueToken? valueToken, NgToken? equalSignToken) = ParsedBananaAst;
 
   @override
   R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
@@ -40,12 +27,7 @@ abstract class BananaAst implements TemplateAst {
   }
 
   @override
-  bool operator ==(Object o) {
-    if (o is BananaAst) {
-      return name == o.name && value == o.value;
-    }
-    return false;
-  }
+  bool operator ==(Object? other) => other is BananaAst && name == other.name && value == other.value;
 
   @override
   int get hashCode => Object.hash(name, value);
@@ -57,9 +39,7 @@ abstract class BananaAst implements TemplateAst {
   String? get value;
 
   @override
-  String toString() {
-    return '$BananaAst {$name="$value"}';
-  }
+  String toString() => 'BananaAst {$name="$value"}';
 }
 
 /// Represents a real, non-synthetic `[(property)]="value"` syntax.
@@ -89,13 +69,8 @@ class ParsedBananaAst extends TemplateAst with BananaAst implements ParsedDecora
   final NgToken? equalSignToken;
 
   ParsedBananaAst(
-    SourceFile sourceFile,
-    this.prefixToken,
-    this.nameToken,
-    this.suffixToken,
-    this.valueToken,
-    this.equalSignToken,
-  ) : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : suffixToken, sourceFile);
+      SourceFile sourceFile, this.prefixToken, this.nameToken, this.suffixToken, this.valueToken, this.equalSignToken)
+      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : suffixToken, sourceFile);
 
   /// Inner name `property` in `[(property)]`.
   @override
@@ -139,9 +114,5 @@ class _SyntheticBananaAst extends SyntheticTemplateAst with BananaAst {
 
   _SyntheticBananaAst(this.name, [this.value]);
 
-  _SyntheticBananaAst.from(
-    TemplateAst origin,
-    this.name, [
-    this.value,
-  ]) : super.from(origin);
+  _SyntheticBananaAst.from(TemplateAst origin, this.name, [this.value]) : super.from(origin);
 }

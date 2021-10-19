@@ -12,19 +12,13 @@ abstract class TextAst implements StandaloneTemplateAst {
   factory TextAst(String value) = _SyntheticTextAst;
 
   /// Create a new synthetic [TextAst] that originated from node [origin].
-  factory TextAst.from(
-    TemplateAst origin,
-    String value,
-  ) = _SyntheticTextAst.from;
+  factory TextAst.from(TemplateAst origin, String value) = _SyntheticTextAst.from;
 
   /// Create a new [TextAst] parsed from tokens from [sourceFile].
-  factory TextAst.parsed(
-    SourceFile sourceFile,
-    NgToken textToken,
-  ) = _ParsedTextAst;
+  factory TextAst.parsed(SourceFile sourceFile, NgToken textToken) = _ParsedTextAst;
 
   @override
-  bool operator ==(Object o) => o is TextAst && value == o.value;
+  bool operator ==(Object? other) => other is TextAst && value == other.value;
 
   @override
   int get hashCode => value.hashCode;
@@ -38,14 +32,11 @@ abstract class TextAst implements StandaloneTemplateAst {
   String get value;
 
   @override
-  String toString() => '$TextAst {$value}';
+  String toString() => 'TextAst {$value}';
 }
 
 class _ParsedTextAst extends TemplateAst with TextAst {
-  _ParsedTextAst(
-    SourceFile sourceFile,
-    NgToken textToken,
-  ) : super.parsed(textToken, textToken, sourceFile);
+  _ParsedTextAst(SourceFile sourceFile, NgToken textToken) : super.parsed(textToken, textToken, sourceFile);
 
   @override
   String get value => beginToken!.lexeme;

@@ -7,11 +7,8 @@ class _LexemeNgSimpleToken extends NgSimpleToken {
   const _LexemeNgSimpleToken(int offset, this.lexeme, this.length, NgSimpleTokenType type) : super._(type, offset);
 
   @override
-  bool operator ==(Object o) {
-    if (o is _LexemeNgSimpleToken) {
-      return super == o && lexeme == o.lexeme;
-    }
-    return false;
+  bool operator ==(Object? other) {
+    return other is _LexemeNgSimpleToken && super == other && lexeme == other.lexeme;
   }
 
   @override
@@ -28,24 +25,11 @@ class _LexemeNgSimpleToken extends NgSimpleToken {
 ///
 /// For example, an `elementIdentifier` is (almost) any arbitrary string.
 class _LexemeNgToken extends NgToken {
-  const _LexemeNgToken(
-    int offset,
-    this.lexeme,
-    NgTokenType type, {
-    bool errorSynthetic = false,
-  }) : super._(
-          type,
-          offset,
-          errorSynthetic: errorSynthetic,
-        );
+  const _LexemeNgToken(int offset, this.lexeme, NgTokenType type, {bool errorSynthetic = false})
+      : super._(type, offset, errorSynthetic: errorSynthetic);
 
   @override
-  bool operator ==(Object o) {
-    if (o is _LexemeNgToken) {
-      return super == o && lexeme == o.lexeme;
-    }
-    return false;
-  }
+  bool operator ==(Object? other) => other is _LexemeNgToken && super == other && lexeme == other.lexeme;
 
   @override
   int get hashCode => Object.hash(super.hashCode, lexeme);

@@ -3,11 +3,7 @@
 /// Clients should not extend, implement, or mix-in this class.
 class NgMicroToken {
   factory NgMicroToken.bindExpressionBefore(int offset, String lexeme) {
-    return NgMicroToken._(
-      NgMicroTokenType.bindExpressionBefore,
-      lexeme,
-      offset,
-    );
+    return NgMicroToken._(NgMicroTokenType.bindExpressionBefore, lexeme, offset);
   }
 
   factory NgMicroToken.bindExpression(int offset, String lexeme) {
@@ -27,19 +23,11 @@ class NgMicroToken {
   }
 
   factory NgMicroToken.letAssignmentBefore(int offset, String lexeme) {
-    return NgMicroToken._(
-      NgMicroTokenType.letAssignmentBefore,
-      lexeme,
-      offset,
-    );
+    return NgMicroToken._(NgMicroTokenType.letAssignmentBefore, lexeme, offset);
   }
 
   factory NgMicroToken.letIdentifier(int offset, String lexeme) {
-    return NgMicroToken._(
-      NgMicroTokenType.letIdentifier,
-      lexeme,
-      offset,
-    );
+    return NgMicroToken._(NgMicroTokenType.letIdentifier, lexeme, offset);
   }
 
   factory NgMicroToken.letKeyword(int offset, String lexeme) {
@@ -53,12 +41,7 @@ class NgMicroToken {
   const NgMicroToken._(this.type, this.lexeme, this.offset);
 
   @override
-  bool operator ==(Object o) {
-    if (o is NgMicroToken) {
-      return o.offset == offset && o.type == type;
-    }
-    return false;
-  }
+  bool operator ==(Object? other) => other is NgMicroToken && other.offset == offset && other.type == type;
 
   @override
   int get hashCode => Object.hash(offset, lexeme, type);
@@ -79,20 +62,16 @@ class NgMicroToken {
   final NgMicroTokenType type;
 
   @override
-  String toString() => '#$NgMicroToken(${type._name}) {$offset:$lexeme}';
+  String toString() => '#NgMicroToken(${type._name}) {$offset:$lexeme}';
 }
 
 class NgMicroTokenType {
   static const endExpression = NgMicroTokenType._('endExpression');
   static const bindExpression = NgMicroTokenType._('bindExpression');
-  static const bindExpressionBefore = NgMicroTokenType._(
-    'bindExpressionBefore',
-  );
+  static const bindExpressionBefore = NgMicroTokenType._('bindExpressionBefore');
   static const bindIdentifier = NgMicroTokenType._('bindIdentifier');
   static const letAssignment = NgMicroTokenType._('letAssignment');
-  static const letAssignmentBefore = NgMicroTokenType._(
-    'letAssignmentBefore',
-  );
+  static const letAssignmentBefore = NgMicroTokenType._('letAssignmentBefore');
   static const letIdentifier = NgMicroTokenType._('letIdentifier');
   static const letKeyword = NgMicroTokenType._('letKeyword');
   static const letKeywordAfter = NgMicroTokenType._('letKeywordAfter');

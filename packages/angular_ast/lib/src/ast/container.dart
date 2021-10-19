@@ -13,28 +13,19 @@ const _listEquals = ListEquality();
 ///
 /// Clients should not extend, implement, or mix-in this class.
 abstract class ContainerAst implements StandaloneTemplateAst {
-  factory ContainerAst({
-    List<AnnotationAst> annotations,
-    List<StandaloneTemplateAst> childNodes,
-    List<StarAst> stars,
-  }) = _SyntheticContainerAst;
+  factory ContainerAst({List<AnnotationAst> annotations, List<StandaloneTemplateAst> childNodes, List<StarAst> stars}) =
+      _SyntheticContainerAst;
 
-  factory ContainerAst.from(
-    TemplateAst origin, {
-    List<AnnotationAst> annotations,
-    List<StandaloneTemplateAst> childNodes,
-    List<StarAst> stars,
-  }) = _SyntheticContainerAst.from;
+  factory ContainerAst.from(TemplateAst origin,
+      {List<AnnotationAst> annotations,
+      List<StandaloneTemplateAst> childNodes,
+      List<StarAst> stars}) = _SyntheticContainerAst.from;
 
   factory ContainerAst.parsed(
-    SourceFile sourceFile,
-    NgToken beginToken,
-    NgToken endToken,
-    CloseElementAst closeComplement, {
-    List<AnnotationAst> annotations,
-    List<StandaloneTemplateAst> childNodes,
-    List<StarAst> stars,
-  }) = _ParsedContainerAst;
+      SourceFile sourceFile, NgToken beginToken, NgToken endToken, CloseElementAst closeComplement,
+      {List<AnnotationAst> annotations,
+      List<StandaloneTemplateAst> childNodes,
+      List<StarAst> stars}) = _ParsedContainerAst;
 
   /// CloseElement complement
   CloseElementAst get closeComplement;
@@ -52,21 +43,14 @@ abstract class ContainerAst implements StandaloneTemplateAst {
   }
 
   @override
-  bool operator ==(Object o) {
-    return o is ContainerAst &&
-        _listEquals.equals(childNodes, o.childNodes) &&
-        _listEquals.equals(stars, o.stars) &&
-        o.closeComplement == closeComplement;
-  }
+  bool operator ==(Object? other) =>
+      other is ContainerAst &&
+      _listEquals.equals(childNodes, other.childNodes) &&
+      _listEquals.equals(stars, other.stars) &&
+      other.closeComplement == closeComplement;
 
   @override
-  int get hashCode {
-    return Object.hashAll([
-      _listEquals.hash(childNodes),
-      _listEquals.hash(stars),
-      closeComplement,
-    ]);
-  }
+  int get hashCode => Object.hashAll([_listEquals.hash(childNodes), _listEquals.hash(stars), closeComplement]);
 
   @override
   String toString() {
@@ -77,33 +61,30 @@ abstract class ContainerAst implements StandaloneTemplateAst {
         ..writeAll(stars, ', ')
         ..write(' ');
     }
+
     if (annotations.isNotEmpty) {
       buffer
         ..write('annotations=')
         ..writeAll(annotations, ', ')
         ..write(' ');
     }
+
     if (childNodes.isNotEmpty) {
       buffer
         ..write('childNodes=')
         ..writeAll(childNodes, ', ')
         ..write(' ');
     }
+
     buffer.write('}');
     return buffer.toString();
   }
 }
 
 class _ParsedContainerAst extends TemplateAst with ContainerAst {
-  _ParsedContainerAst(
-    SourceFile sourceFile,
-    NgToken beginToken,
-    NgToken endToken,
-    this.closeComplement, {
-    this.annotations = const [],
-    this.childNodes = const [],
-    this.stars = const [],
-  }) : super.parsed(beginToken, endToken, sourceFile);
+  _ParsedContainerAst(SourceFile sourceFile, NgToken beginToken, NgToken endToken, this.closeComplement,
+      {this.annotations = const [], this.childNodes = const [], this.stars = const []})
+      : super.parsed(beginToken, endToken, sourceFile);
 
   @override
   CloseElementAst closeComplement;
@@ -119,18 +100,12 @@ class _ParsedContainerAst extends TemplateAst with ContainerAst {
 }
 
 class _SyntheticContainerAst extends SyntheticTemplateAst with ContainerAst {
-  _SyntheticContainerAst({
-    this.annotations = const [],
-    this.childNodes = const [],
-    this.stars = const [],
-  }) : closeComplement = CloseElementAst('ng-container');
+  _SyntheticContainerAst({this.annotations = const [], this.childNodes = const [], this.stars = const []})
+      : closeComplement = CloseElementAst('ng-container');
 
-  _SyntheticContainerAst.from(
-    TemplateAst origin, {
-    this.annotations = const [],
-    this.childNodes = const [],
-    this.stars = const [],
-  })  : closeComplement = CloseElementAst('ng-container'),
+  _SyntheticContainerAst.from(TemplateAst origin,
+      {this.annotations = const [], this.childNodes = const [], this.stars = const []})
+      : closeComplement = CloseElementAst('ng-container'),
         super.from(origin);
 
   @override

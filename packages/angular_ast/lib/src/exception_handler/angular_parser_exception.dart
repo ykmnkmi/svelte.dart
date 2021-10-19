@@ -12,19 +12,14 @@ class AngularParserException extends Error {
   /// Offset of where the exception was detected.
   final int? offset;
 
-  AngularParserException(
-    this.errorCode,
-    this.offset,
-    this.length,
-  );
+  AngularParserException(this.errorCode, this.offset, this.length);
 
   @override
-  bool operator ==(Object o) {
-    if (o is AngularParserException) {
-      return errorCode == o.errorCode && length == o.length && offset == o.offset;
-    }
-    return false;
-  }
+  bool operator ==(Object? other) =>
+      other is AngularParserException &&
+      errorCode == other.errorCode &&
+      length == other.length &&
+      offset == other.offset;
 
   @override
   int get hashCode => Object.hash(errorCode, length, offset);

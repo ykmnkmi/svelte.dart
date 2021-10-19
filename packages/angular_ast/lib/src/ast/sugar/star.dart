@@ -12,26 +12,14 @@ import '../../visitor.dart';
 /// Clients should not extend, implement, or mix-in this class.
 abstract class StarAst implements TemplateAst {
   /// Create a new synthetic [StarAst] assigned to [name].
-  factory StarAst(
-    String name, [
-    String? value,
-  ]) = _SyntheticStarAst;
+  factory StarAst(String name, [String? value]) = _SyntheticStarAst;
 
   /// Create a new synthetic property AST that originated from another AST.
-  factory StarAst.from(
-    TemplateAst origin,
-    String name, [
-    String? value,
-  ]) = _SyntheticStarAst.from;
+  factory StarAst.from(TemplateAst origin, String name, [String? value]) = _SyntheticStarAst.from;
 
   /// Create a new property assignment parsed from tokens in [sourceFile].
-  factory StarAst.parsed(
-    SourceFile sourceFile,
-    NgToken prefixToken,
-    NgToken elementDecoratorToken, [
-    NgAttributeValueToken? valueToken,
-    NgToken? equalSignToken,
-  ]) = ParsedStarAst;
+  factory StarAst.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedStarAst;
 
   @override
   R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
@@ -39,12 +27,7 @@ abstract class StarAst implements TemplateAst {
   }
 
   @override
-  bool operator ==(Object o) {
-    if (o is PropertyAst) {
-      return value == o.value && name == o.name;
-    }
-    return false;
-  }
+  bool operator ==(Object? other) => other is PropertyAst && value == other.value && name == other.name;
 
   @override
   int get hashCode => Object.hash(value, name);
@@ -56,12 +39,7 @@ abstract class StarAst implements TemplateAst {
   String? get value;
 
   @override
-  String toString() {
-    if (value != null) {
-      return '$StarAst {$name="$value"}';
-    }
-    return '$StarAst {$name}';
-  }
+  String toString() => value != null ? 'StarAst {$name="$value"}' : 'StarAst {$name}';
 }
 
 /// Represents a real, non-synthetic sugared form of `*directive="value"`.
@@ -89,13 +67,8 @@ class ParsedStarAst extends TemplateAst with StarAst implements ParsedDecoratorA
   /// value.
   final NgToken? equalSignToken;
 
-  ParsedStarAst(
-    SourceFile sourceFile,
-    this.prefixToken,
-    this.nameToken, [
-    this.valueToken,
-    this.equalSignToken,
-  ]) : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
+  ParsedStarAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
 
   /// Name `directive` in `*directive`.
   @override
@@ -131,16 +104,9 @@ class ParsedStarAst extends TemplateAst with StarAst implements ParsedDecoratorA
 }
 
 class _SyntheticStarAst extends SyntheticTemplateAst with StarAst {
-  _SyntheticStarAst(
-    this.name, [
-    this.value,
-  ]);
+  _SyntheticStarAst(this.name, [this.value]);
 
-  _SyntheticStarAst.from(
-    TemplateAst origin,
-    this.name, [
-    this.value,
-  ]) : super.from(origin);
+  _SyntheticStarAst.from(TemplateAst origin, this.name, [this.value]) : super.from(origin);
 
   @override
   final String name;

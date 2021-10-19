@@ -10,39 +10,20 @@ import '../visitor.dart';
 /// Clients should not extend, implement, or mix-in this class.
 abstract class PropertyAst implements TemplateAst {
   /// Create a new synthetic [PropertyAst] assigned to [name].
-  factory PropertyAst(
-    String name, [
-    String? value,
-    String? postfix,
-    String? unit,
-  ]) = _SyntheticPropertyAst;
+  factory PropertyAst(String name, [String? value, String? postfix, String? unit]) = _SyntheticPropertyAst;
 
   /// Create a new synthetic property AST that originated from another AST.
-  factory PropertyAst.from(
-    TemplateAst? origin,
-    String name, [
-    String? value,
-    String? postfix,
-    String? unit,
-  ]) = _SyntheticPropertyAst.from;
+  factory PropertyAst.from(TemplateAst? origin, String name, [String? value, String? postfix, String? unit]) =
+      _SyntheticPropertyAst.from;
 
   /// Create a new property assignment parsed from tokens in [sourceFile].
   factory PropertyAst.parsed(
-    SourceFile sourceFile,
-    NgToken prefixToken,
-    NgToken elementDecoratorToken,
-    NgToken? suffixToken, [
-    NgAttributeValueToken? valueToken,
-    NgToken? equalSignToken,
-  ]) = ParsedPropertyAst;
+      SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken, NgToken? suffixToken,
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedPropertyAst;
 
   @override
-  bool operator ==(Object o) {
-    if (o is PropertyAst) {
-      return name == o.name && postfix == o.postfix && unit == o.unit;
-    }
-    return false;
-  }
+  bool operator ==(Object? other) =>
+      other is PropertyAst && name == other.name && postfix == other.postfix && unit == other.unit;
 
   @override
   int get hashCode => Object.hash(name, postfix, unit);
@@ -81,12 +62,14 @@ abstract class PropertyAst implements TemplateAst {
   @override
   String toString() {
     if (unit != null) {
-      return '$PropertyAst {$name.$postfix.$unit}';
+      return 'PropertyAst {$name.$postfix.$unit}';
     }
+
     if (postfix != null) {
-      return '$PropertyAst {$name.$postfix}';
+      return 'PropertyAst {$name.$postfix}';
     }
-    return '$PropertyAst {$name}';
+
+    return 'PropertyAst {$name}';
   }
 }
 
@@ -114,14 +97,9 @@ class ParsedPropertyAst extends TemplateAst with PropertyAst implements ParsedDe
   /// value.
   final NgToken? equalSignToken;
 
-  ParsedPropertyAst(
-    SourceFile sourceFile,
-    this.prefixToken,
-    this.nameToken,
-    this.suffixToken, [
-    this.valueToken,
-    this.equalSignToken,
-  ]) : super.parsed(prefixToken, valueToken == null ? suffixToken : valueToken.rightQuote, sourceFile) {
+  ParsedPropertyAst(SourceFile sourceFile, this.prefixToken, this.nameToken, this.suffixToken,
+      [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken == null ? suffixToken : valueToken.rightQuote, sourceFile) {
     if (_nameWithoutBrackets.split('.').length > 3) {}
   }
 
@@ -175,20 +153,10 @@ class ParsedPropertyAst extends TemplateAst with PropertyAst implements ParsedDe
 }
 
 class _SyntheticPropertyAst extends SyntheticTemplateAst with PropertyAst {
-  _SyntheticPropertyAst(
-    this.name, [
-    this.value,
-    this.postfix,
-    this.unit,
-  ]);
+  _SyntheticPropertyAst(this.name, [this.value, this.postfix, this.unit]);
 
-  _SyntheticPropertyAst.from(
-    TemplateAst? origin,
-    this.name, [
-    this.value,
-    this.postfix,
-    this.unit,
-  ]) : super.from(origin);
+  _SyntheticPropertyAst.from(TemplateAst? origin, this.name, [this.value, this.postfix, this.unit])
+      : super.from(origin);
 
   @override
   final String name;

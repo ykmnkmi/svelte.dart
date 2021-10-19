@@ -13,32 +13,20 @@ const _listEquals = ListEquality<dynamic>();
 /// Clients should not extend, implement, or mix-in this class.
 abstract class EventAst implements TemplateAst {
   /// Create a new synthetic [EventAst] listening to [name].
-  factory EventAst(
-    String name,
-    String? value, [
-    List<String> reductions,
-  ]) = _SyntheticEventAst;
+  factory EventAst(String name, String? value, [List<String> reductions]) = _SyntheticEventAst;
 
   /// Create a new synthetic [EventAst] that originated from [origin].
-  factory EventAst.from(
-    TemplateAst origin,
-    String name,
-    String? value, [
-    List<String> reductions,
-  ]) = _SyntheticEventAst.from;
+  factory EventAst.from(TemplateAst origin, String name, String? value, [List<String> reductions]) =
+      _SyntheticEventAst.from;
 
   /// Create a new [EventAst] parsed from tokens in [sourceFile].
   factory EventAst.parsed(
-    SourceFile sourceFile,
-    NgToken prefixToken,
-    NgToken elementDecoratorToken,
-    NgToken? suffixToken, [
-    NgAttributeValueToken? valueToken,
-    NgToken? equalSignToken,
-  ]) = ParsedEventAst;
+      SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken, NgToken? suffixToken,
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedEventAst;
 
   @override
-  bool operator ==(Object o) => o is EventAst && name == o.name && _listEquals.equals(reductions, o.reductions);
+  bool operator ==(Object? other) =>
+      other is EventAst && name == other.name && _listEquals.equals(reductions, other.reductions);
 
   @override
   int get hashCode => Object.hash(name, reductions);
@@ -60,12 +48,8 @@ abstract class EventAst implements TemplateAst {
   List<String> get reductions;
 
   @override
-  String toString() {
-    if (reductions.isNotEmpty) {
-      return '$EventAst {$name.${reductions.join(',')}="$value"}';
-    }
-    return '$EventAst {$name=$value}';
-  }
+  String toString() =>
+      reductions.isNotEmpty ? 'EventAst {$name.${reductions.join(',')}="$value"}' : 'EventAst {$name=$value}';
 }
 
 /// Represents a real, non-synthetic event listener `(event)="expression"`
@@ -92,18 +76,9 @@ class ParsedEventAst extends TemplateAst with EventAst implements ParsedDecorato
   /// value.
   final NgToken? equalSignToken;
 
-  ParsedEventAst(
-    SourceFile sourceFile,
-    this.prefixToken,
-    this.nameToken,
-    this.suffixToken, [
-    this.valueToken,
-    this.equalSignToken,
-  ]) : super.parsed(
-          prefixToken,
-          valueToken == null ? suffixToken : valueToken.rightQuote,
-          sourceFile,
-        );
+  ParsedEventAst(SourceFile sourceFile, this.prefixToken, this.nameToken, this.suffixToken,
+      [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken == null ? suffixToken : valueToken.rightQuote, sourceFile);
 
   String get _nameWithoutParentheses {
     return nameToken.lexeme;
@@ -143,10 +118,7 @@ class ParsedEventAst extends TemplateAst with EventAst implements ParsedDecorato
 
   /// Name `reductions` in `(eventName.ctrl.shift.a)`; may be empty.
   @override
-  List<String> get reductions {
-    final split = _nameWithoutParentheses.split('.');
-    return split.sublist(1);
-  }
+  List<String> get reductions => _nameWithoutParentheses.split('.').sublist(1);
 }
 
 class _SyntheticEventAst extends SyntheticTemplateAst with EventAst {
@@ -159,16 +131,7 @@ class _SyntheticEventAst extends SyntheticTemplateAst with EventAst {
   @override
   final List<String> reductions;
 
-  _SyntheticEventAst(
-    this.name,
-    this.value, [
-    this.reductions = const [],
-  ]);
+  _SyntheticEventAst(this.name, this.value, [this.reductions = const []]);
 
-  _SyntheticEventAst.from(
-    TemplateAst origin,
-    this.name,
-    this.value, [
-    this.reductions = const [],
-  ]) : super.from(origin);
+  _SyntheticEventAst.from(TemplateAst origin, this.name, this.value, [this.reductions = const []]) : super.from(origin);
 }

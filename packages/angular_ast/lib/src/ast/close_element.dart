@@ -9,32 +9,17 @@ import '../visitor.dart';
 /// Clients should not extend, implement, or mix-in this class.
 abstract class CloseElementAst implements TemplateAst {
   /// Creates a synthetic close element AST.
-  factory CloseElementAst(
-    String name,
-  ) = _SyntheticCloseElementAst;
+  factory CloseElementAst(String name) = _SyntheticCloseElementAst;
 
   /// Creates a synthetic close element AST from an existing AST node.
-  factory CloseElementAst.from(
-    TemplateAst origin,
-    String name,
-  ) = _SyntheticCloseElementAst.from;
+  factory CloseElementAst.from(TemplateAst origin, String name) = _SyntheticCloseElementAst.from;
 
   /// Creates a new close element AST from a parsed source.
-  factory CloseElementAst.parsed(
-    SourceFile sourceFile,
-    NgToken closeTagStart,
-    NgToken nameToken,
-    NgToken closeTagEnd, {
-    ElementAst? openComplement,
-  }) = ParsedCloseElementAst;
+  factory CloseElementAst.parsed(SourceFile sourceFile, NgToken closeTagStart, NgToken nameToken, NgToken closeTagEnd,
+      {ElementAst? openComplement}) = ParsedCloseElementAst;
 
   @override
-  bool operator ==(Object o) {
-    if (o is CloseElementAst) {
-      return name == o.name;
-    }
-    return false;
-  }
+  bool operator ==(Object? other) => other is CloseElementAst && name == other.name;
 
   @override
   int get hashCode => name.hashCode;
@@ -49,9 +34,7 @@ abstract class CloseElementAst implements TemplateAst {
   String get name;
 
   @override
-  String toString() {
-    return '$CloseElementAst </$name>';
-  }
+  String toString() => 'CloseElementAst </$name>';
 }
 
 /// Represents a real, non-synthetic DOM close element that was parsed.
@@ -61,27 +44,18 @@ class ParsedCloseElementAst extends TemplateAst with CloseElementAst {
   /// [NgToken] that represents the identifier tag in `</tag>`.
   final NgToken identifierToken;
 
-  ParsedCloseElementAst(
-    SourceFile sourceFile,
-    NgToken closeElementStart,
-    this.identifierToken,
-    NgToken closeElementEnd, {
-    ElementAst? openComplement,
-  }) : super.parsed(closeElementStart, closeElementEnd, sourceFile);
+  ParsedCloseElementAst(SourceFile sourceFile, NgToken closeElementStart, this.identifierToken, NgToken closeElementEnd,
+      {ElementAst? openComplement})
+      : super.parsed(closeElementStart, closeElementEnd, sourceFile);
 
   @override
   String get name => identifierToken.lexeme;
 }
 
 class _SyntheticCloseElementAst extends SyntheticTemplateAst with CloseElementAst {
-  _SyntheticCloseElementAst(
-    this.name,
-  );
+  _SyntheticCloseElementAst(this.name);
 
-  _SyntheticCloseElementAst.from(
-    TemplateAst origin,
-    this.name,
-  ) : super.from(origin);
+  _SyntheticCloseElementAst.from(TemplateAst origin, this.name) : super.from(origin);
 
   @override
   final String name;

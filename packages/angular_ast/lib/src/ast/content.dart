@@ -11,31 +11,19 @@ import '../visitor.dart';
 /// Clients should not extend, implement, or mix-in this class.
 abstract class EmbeddedContentAst implements StandaloneTemplateAst {
   /// Create a synthetic embedded content AST.
-  factory EmbeddedContentAst([
-    String selector,
-    String ngProjectAs,
-    ReferenceAst reference,
-  ]) = _SyntheticEmbeddedContentAst;
+  factory EmbeddedContentAst([String selector, String ngProjectAs, ReferenceAst reference]) =
+      _SyntheticEmbeddedContentAst;
 
   /// Create a synthetic [EmbeddedContentAst] that originated from [origin].
-  factory EmbeddedContentAst.from(
-    TemplateAst origin, [
-    String selector,
-    String ngProjectAs,
-    ReferenceAst reference,
-  ]) = _SyntheticEmbeddedContentAst.from;
+  factory EmbeddedContentAst.from(TemplateAst origin, [String selector, String ngProjectAs, ReferenceAst reference]) =
+      _SyntheticEmbeddedContentAst.from;
 
   /// Create a new [EmbeddedContentAst] parsed from tokens in [sourceFile].
-  factory EmbeddedContentAst.parsed(
-    SourceFile sourceFile,
-    NgToken startElementToken,
-    NgToken elementIdentifierToken,
-    NgToken endElementToken,
-    CloseElementAst closeComplement, [
-    AttributeAst? selectAttribute,
-    AttributeAst? ngProjectAsAttribute,
-    ReferenceAst? reference,
-  ]) = ParsedEmbeddedContentAst;
+  factory EmbeddedContentAst.parsed(SourceFile sourceFile, NgToken startElementToken, NgToken elementIdentifierToken,
+      NgToken endElementToken, CloseElementAst closeComplement,
+      [AttributeAst? selectAttribute,
+      AttributeAst? ngProjectAsAttribute,
+      ReferenceAst? reference]) = ParsedEmbeddedContentAst;
 
   @override
   R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
@@ -63,19 +51,18 @@ abstract class EmbeddedContentAst implements StandaloneTemplateAst {
   set closeComplement(CloseElementAst closeComplement);
 
   @override
-  bool operator ==(Object o) {
-    return o is EmbeddedContentAst &&
-        o.selector == selector &&
-        o.ngProjectAs == ngProjectAs &&
-        o.reference == reference &&
-        o.closeComplement == closeComplement;
-  }
+  bool operator ==(Object? other) =>
+      other is EmbeddedContentAst &&
+      other.selector == selector &&
+      other.ngProjectAs == ngProjectAs &&
+      other.reference == reference &&
+      other.closeComplement == closeComplement;
 
   @override
   int get hashCode => Object.hash(selector.hashCode, ngProjectAs.hashCode, reference, closeComplement);
 
   @override
-  String toString() => '$EmbeddedContentAst {$selector, $ngProjectAs, $reference}';
+  String toString() => 'EmbeddedContentAst {$selector, $ngProjectAs, $reference}';
 }
 
 class ParsedEmbeddedContentAst extends TemplateAst with EmbeddedContentAst {
@@ -95,35 +82,19 @@ class ParsedEmbeddedContentAst extends TemplateAst with EmbeddedContentAst {
   @override
   CloseElementAst closeComplement;
 
-  ParsedEmbeddedContentAst(
-    SourceFile sourceFile,
-    NgToken startElementToken,
-    this.identifierToken,
-    NgToken endElementToken,
-    this.closeComplement, [
-    this.selectAttribute,
-    this.ngProjectAsAttribute,
-    this.reference,
-  ]) : super.parsed(
-          startElementToken,
-          endElementToken,
-          sourceFile,
-        );
+  ParsedEmbeddedContentAst(SourceFile sourceFile, NgToken startElementToken, this.identifierToken,
+      NgToken endElementToken, this.closeComplement,
+      [this.selectAttribute, this.ngProjectAsAttribute, this.reference])
+      : super.parsed(startElementToken, endElementToken, sourceFile);
 
   @override
-  String? get selector {
-    // '<ng-content select>' ; no value was defined.
-    // Return null to handle later.
-    if (selectAttribute?.name != null && selectAttribute!.value == null) {
-      return null;
-    }
-    return selectAttribute?.value ?? '*';
-  }
+  // '<ng-content select>' ; no value was defined.
+  // Return null to handle later.
+  String? get selector =>
+      selectAttribute?.name != null && selectAttribute!.value == null ? null : selectAttribute?.value ?? '*';
 
   @override
-  String? get ngProjectAs {
-    return ngProjectAsAttribute?.value;
-  }
+  String? get ngProjectAs => ngProjectAsAttribute?.value;
 }
 
 class _SyntheticEmbeddedContentAst extends SyntheticTemplateAst with EmbeddedContentAst {
@@ -143,12 +114,8 @@ class _SyntheticEmbeddedContentAst extends SyntheticTemplateAst with EmbeddedCon
     closeComplement = CloseElementAst('ng-content');
   }
 
-  _SyntheticEmbeddedContentAst.from(
-    TemplateAst origin, [
-    this.selector = '*',
-    this.ngProjectAs,
-    this.reference,
-  ]) : super.from(origin) {
+  _SyntheticEmbeddedContentAst.from(TemplateAst origin, [this.selector = '*', this.ngProjectAs, this.reference])
+      : super.from(origin) {
     closeComplement = CloseElementAst('ng-content');
   }
 }

@@ -12,28 +12,17 @@ const _listEquals = ListEquality<dynamic>();
 /// Clients should not extend, implement, or mix-in this class.
 abstract class AttributeAst implements TemplateAst {
   /// Create a new synthetic [AttributeAst] with a string [value].
-  factory AttributeAst(
-    String name, [
-    String? value,
-    List<InterpolationAst>? mustaches,
-  ]) = _SyntheticAttributeAst;
+  factory AttributeAst(String name, [String? value, List<InterpolationAst>? mustaches]) = _SyntheticAttributeAst;
 
   /// Create a new synthetic [AttributeAst] that originated from node [origin].
-  factory AttributeAst.from(
-    TemplateAst origin,
-    String name, [
-    String? value,
-    List<InterpolationAst>? mustaches,
-  ]) = _SyntheticAttributeAst.from;
+  factory AttributeAst.from(TemplateAst origin, String name, [String? value, List<InterpolationAst>? mustaches]) =
+      _SyntheticAttributeAst.from;
 
   /// Create a new [AttributeAst] parsed from tokens from [sourceFile].
-  factory AttributeAst.parsed(
-    SourceFile sourceFile,
-    NgToken nameToken, [
-    NgAttributeValueToken? valueToken,
-    NgToken? equalSignToken,
-    List<InterpolationAst>? mustaches,
-  ]) = ParsedAttributeAst;
+  factory AttributeAst.parsed(SourceFile sourceFile, NgToken nameToken,
+      [NgAttributeValueToken? valueToken,
+      NgToken? equalSignToken,
+      List<InterpolationAst>? mustaches]) = ParsedAttributeAst;
 
   @override
   R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
@@ -41,12 +30,11 @@ abstract class AttributeAst implements TemplateAst {
   }
 
   @override
-  bool operator ==(Object o) {
-    if (o is AttributeAst) {
-      return name == o.name && value == o.value && _listEquals.equals(mustaches, o.mustaches);
-    }
-    return false;
-  }
+  bool operator ==(Object? other) =>
+      other is AttributeAst &&
+      name == other.name &&
+      value == other.value &&
+      _listEquals.equals(mustaches, other.mustaches);
 
   @override
   int get hashCode => Object.hash(name, value);
@@ -66,12 +54,7 @@ abstract class AttributeAst implements TemplateAst {
   String? get quotedValue;
 
   @override
-  String toString() {
-    if (quotedValue != null) {
-      return '$AttributeAst {$name=$quotedValue}';
-    }
-    return '$AttributeAst {$name}';
-  }
+  String toString() => quotedValue != null ? 'AttributeAst {$name=$quotedValue}' : 'AttributeAst {$name}';
 }
 
 /// Represents a real(non-synthetic) parsed AttributeAst. Preserves offsets.
@@ -91,17 +74,8 @@ class ParsedAttributeAst extends TemplateAst with AttributeAst implements Parsed
   /// value.
   final NgToken? equalSignToken;
 
-  ParsedAttributeAst(
-    SourceFile sourceFile,
-    this.nameToken, [
-    this.valueToken,
-    this.equalSignToken,
-    this.mustaches,
-  ]) : super.parsed(
-          nameToken,
-          valueToken == null ? nameToken : valueToken.rightQuote,
-          sourceFile,
-        );
+  ParsedAttributeAst(SourceFile sourceFile, this.nameToken, [this.valueToken, this.equalSignToken, this.mustaches])
+      : super.parsed(nameToken, valueToken == null ? nameToken : valueToken.rightQuote, sourceFile);
 
   /// Static attribute name.
   @override
@@ -164,10 +138,5 @@ class _SyntheticAttributeAst extends SyntheticTemplateAst with AttributeAst {
 
   _SyntheticAttributeAst(this.name, [this.value, this.mustaches]);
 
-  _SyntheticAttributeAst.from(
-    TemplateAst origin,
-    this.name, [
-    this.value,
-    this.mustaches,
-  ]) : super.from(origin);
+  _SyntheticAttributeAst.from(TemplateAst origin, this.name, [this.value, this.mustaches]) : super.from(origin);
 }

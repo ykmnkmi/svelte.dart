@@ -14,20 +14,11 @@ abstract class AnnotationAst implements TemplateAst {
   factory AnnotationAst(String name, [String? value]) = _SyntheticAnnotationAst;
 
   /// Create a new synthetic [AnnotationAst] that originated from node [origin].
-  factory AnnotationAst.from(
-    TemplateAst origin,
-    String name, [
-    String? value,
-  ]) = _SyntheticAnnotationAst.from;
+  factory AnnotationAst.from(TemplateAst origin, String name, [String? value]) = _SyntheticAnnotationAst.from;
 
   /// Create a new [AnnotationAst] parsed from tokens from [sourceFile].
-  factory AnnotationAst.parsed(
-    SourceFile sourceFile,
-    NgToken prefixToken,
-    NgToken nameToken, [
-    NgAttributeValueToken? valueToken,
-    NgToken? equalSignToken,
-  ]) = ParsedAnnotationAst;
+  factory AnnotationAst.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken nameToken,
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedAnnotationAst;
 
   @override
   R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
@@ -35,12 +26,7 @@ abstract class AnnotationAst implements TemplateAst {
   }
 
   @override
-  bool operator ==(Object o) {
-    if (o is AnnotationAst) {
-      return name == o.name && value == o.value;
-    }
-    return false;
-  }
+  bool operator ==(Object? other) => other is AnnotationAst && name == other.name && value == other.value;
 
   @override
   int get hashCode => Object.hash(name, value);
@@ -52,12 +38,7 @@ abstract class AnnotationAst implements TemplateAst {
   String? get value;
 
   @override
-  String toString() {
-    if (value != null) {
-      return '$AnnotationAst {$name="$value"}';
-    }
-    return '$AnnotationAst {$name}';
-  }
+  String toString() => value != null ? 'AnnotationAst {$name="$value"}' : 'AnnotationAst {$name}';
 }
 
 /// Represents a real(non-synthetic) parsed AnnotationAst. Preserves offsets.
@@ -79,17 +60,8 @@ class ParsedAnnotationAst extends TemplateAst with AnnotationAst implements Pars
   /// May be `null` if the annotation has no value.
   final NgToken? equalSignToken;
 
-  ParsedAnnotationAst(
-    SourceFile sourceFile,
-    this.prefixToken,
-    this.nameToken, [
-    this.valueToken,
-    this.equalSignToken,
-  ]) : super.parsed(
-          prefixToken,
-          valueToken != null ? valueToken.rightQuote : nameToken,
-          sourceFile,
-        );
+  ParsedAnnotationAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
 
   @override
   String get name => nameToken.lexeme;

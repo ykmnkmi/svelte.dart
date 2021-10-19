@@ -9,23 +9,14 @@ import '../visitor.dart';
 /// Clients should not extend, implement, or mix-in this class.
 abstract class InterpolationAst implements StandaloneTemplateAst {
   /// Create a new synthetic [InterpolationAst] with a bound [expression].
-  factory InterpolationAst(
-    String value,
-  ) = _SyntheticInterpolationAst;
+  factory InterpolationAst(String value) = _SyntheticInterpolationAst;
 
   /// Create a new synthetic [InterpolationAst] that originated from [origin].
-  factory InterpolationAst.from(
-    TemplateAst origin,
-    String value,
-  ) = _SyntheticInterpolationAst.from;
+  factory InterpolationAst.from(TemplateAst origin, String value) = _SyntheticInterpolationAst.from;
 
   /// Create a new [InterpolationAst] parsed from tokens in [sourceFile].
-  factory InterpolationAst.parsed(
-    SourceFile sourceFile,
-    NgToken beginToken,
-    NgToken valueToken,
-    NgToken endToken,
-  ) = ParsedInterpolationAst;
+  factory InterpolationAst.parsed(SourceFile sourceFile, NgToken beginToken, NgToken valueToken, NgToken endToken) =
+      ParsedInterpolationAst;
 
   @override
   R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
@@ -36,26 +27,20 @@ abstract class InterpolationAst implements StandaloneTemplateAst {
   String get value;
 
   @override
-  bool operator ==(Object o) {
-    return o is InterpolationAst && o.value == value;
-  }
+  bool operator ==(Object? other) => other is InterpolationAst && other.value == value;
 
   @override
   int get hashCode => value.hashCode;
 
   @override
-  String toString() => '$InterpolationAst {$value}';
+  String toString() => 'InterpolationAst {$value}';
 }
 
 class ParsedInterpolationAst extends TemplateAst with InterpolationAst {
   final NgToken valueToken;
 
-  ParsedInterpolationAst(
-    SourceFile sourceFile,
-    NgToken beginToken,
-    this.valueToken,
-    NgToken endToken,
-  ) : super.parsed(beginToken, endToken, sourceFile);
+  ParsedInterpolationAst(SourceFile sourceFile, NgToken beginToken, this.valueToken, NgToken endToken)
+      : super.parsed(beginToken, endToken, sourceFile);
 
   @override
   String get value => valueToken.lexeme;
@@ -64,10 +49,7 @@ class ParsedInterpolationAst extends TemplateAst with InterpolationAst {
 class _SyntheticInterpolationAst extends SyntheticTemplateAst with InterpolationAst {
   _SyntheticInterpolationAst(this.value);
 
-  _SyntheticInterpolationAst.from(
-    TemplateAst origin,
-    this.value,
-  ) : super.from(origin);
+  _SyntheticInterpolationAst.from(TemplateAst origin, this.value) : super.from(origin);
 
   @override
   final String value;
