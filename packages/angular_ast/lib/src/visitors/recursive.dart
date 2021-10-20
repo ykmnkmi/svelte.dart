@@ -34,12 +34,8 @@ class RecursiveTemplateAstVisitor<C> implements TemplateAstVisitor<TemplateAst, 
 
   @override
   @mustCallSuper
-  TemplateAst visitAttribute(AttributeAst astNode, [C? context]) => AttributeAst.from(
-        astNode,
-        astNode.name,
-        astNode.value,
-        visitAll(astNode.mustaches, context),
-      );
+  TemplateAst visitAttribute(AttributeAst astNode, [C? context]) =>
+      AttributeAst.from(astNode, astNode.name, astNode.value, visitAll(astNode.childNodes, context)!);
 
   @override
   TemplateAst visitBanana(BananaAst astNode, [_]) => astNode;

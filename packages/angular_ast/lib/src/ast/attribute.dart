@@ -12,17 +12,17 @@ const _listEquals = ListEquality<dynamic>();
 /// Clients should not extend, implement, or mix-in this class.
 abstract class AttributeAst implements TemplateAst {
   /// Create a new synthetic [AttributeAst] with a string [value].
-  factory AttributeAst(String name, [String? value, List<InterpolationAst>? mustaches]) = _SyntheticAttributeAst;
+  factory AttributeAst(String name, [String? value, List<StandaloneTemplateAst> childNodes]) = _SyntheticAttributeAst;
 
   /// Create a new synthetic [AttributeAst] that originated from node [origin].
-  factory AttributeAst.from(TemplateAst origin, String name, [String? value, List<InterpolationAst>? mustaches]) =
+  factory AttributeAst.from(TemplateAst origin, String name, [String? value, List<StandaloneTemplateAst> childNodes]) =
       _SyntheticAttributeAst.from;
 
   /// Create a new [AttributeAst] parsed from tokens from [sourceFile].
   factory AttributeAst.parsed(SourceFile sourceFile, NgToken nameToken,
       [NgAttributeValueToken? valueToken,
       NgToken? equalSignToken,
-      List<InterpolationAst>? mustaches]) = ParsedAttributeAst;
+      List<StandaloneTemplateAst> childNod]) = ParsedAttributeAst;
 
   @override
   R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
@@ -31,10 +31,7 @@ abstract class AttributeAst implements TemplateAst {
 
   @override
   bool operator ==(Object? other) =>
-      other is AttributeAst &&
-      name == other.name &&
-      value == other.value &&
-      _listEquals.equals(mustaches, other.mustaches);
+      other is AttributeAst && name == other.name && _listEquals.equals(childNodes, other.childNodes);
 
   @override
   int get hashCode => Object.hash(name, value);
@@ -45,16 +42,17 @@ abstract class AttributeAst implements TemplateAst {
   /// Static attribute value; may be `null` to have no value.
   String? get value;
 
-  /// Mustaches found within value; may be `null` if value is null.
-  /// If value exists but has no mustaches, will be empty list.
-  List<InterpolationAst>? get mustaches;
-
   /// Static attribute value with quotes attached;
   /// may be `null` to have no value.
   String? get quotedValue;
 
+  /// Mustaches found within value; may be `null` if value is null.
+  /// If value exists but has no mustaches, will be empty list.
   @override
-  String toString() => quotedValue != null ? 'AttributeAst {$name=$quotedValue}' : 'AttributeAst {$name}';
+  List<StandaloneTemplateAst> get childNodes;
+
+  @override
+  String toString() => 'AttributeAst {$name}';
 }
 
 /// Represents a real(non-synthetic) parsed AttributeAst. Preserves offsets.
@@ -74,7 +72,12 @@ class ParsedAttributeAst extends TemplateAst with AttributeAst implements Parsed
   /// value.
   final NgToken? equalSignToken;
 
-  ParsedAttributeAst(SourceFile sourceFile, this.nameToken, [this.valueToken, this.equalSignToken, this.mustaches])
+  /// Static attribute value offset; may be `null` to have no value.
+  @override
+  final List<StandaloneTemplateAst> childNodes;
+
+  ParsedAttributeAst(SourceFile sourceFile, this.nameToken,
+      [this.valueToken, this.equalSignToken, this.childNodes = const <StandaloneTemplateAst>[]])
       : super.parsed(nameToken, valueToken == null ? nameToken : valueToken.rightQuote, sourceFile);
 
   /// Static attribute name.
@@ -93,17 +96,13 @@ class ParsedAttributeAst extends TemplateAst with AttributeAst implements Parsed
   @override
   String? get value => valueToken?.innerValue?.lexeme;
 
-  /// Parsed static attribute parts that are mustache-expressions.
+  /// Static attribute value offset; may be `null` to have no value.
   @override
-  final List<InterpolationAst>? mustaches;
+  int? get valueOffset => valueToken?.innerValue?.offset;
 
   /// Static attribute value including quotes; may be `null` to have no value.
   @override
   String? get quotedValue => valueToken?.lexeme;
-
-  /// Static attribute value offset; may be `null` to have no value.
-  @override
-  int? get valueOffset => valueToken?.innerValue?.offset;
 
   /// Static attribute value including quotes offset; may be `null` to have no
   /// value.
@@ -131,12 +130,14 @@ class _SyntheticAttributeAst extends SyntheticTemplateAst with AttributeAst {
   final String? value;
 
   @override
-  final List<InterpolationAst>? mustaches;
+  final List<StandaloneTemplateAst> childNodes;
+
+  _SyntheticAttributeAst(this.name, [this.value, this.childNodes = const <StandaloneTemplateAst>[]]);
+
+  _SyntheticAttributeAst.from(TemplateAst origin, this.name,
+      [this.value, this.childNodes = const <StandaloneTemplateAst>[]])
+      : super.from(origin);
 
   @override
   String? get quotedValue => value == null ? null : '"$value"';
-
-  _SyntheticAttributeAst(this.name, [this.value, this.mustaches]);
-
-  _SyntheticAttributeAst.from(TemplateAst origin, this.name, [this.value, this.mustaches]) : super.from(origin);
 }
