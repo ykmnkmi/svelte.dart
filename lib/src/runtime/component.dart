@@ -4,11 +4,9 @@ import 'package:piko/dom.dart';
 import 'scheduler.dart';
 
 class RenderTree {
-  RenderTree(this.root) : scheduler = Scheduler();
+  RenderTree() : scheduler = Scheduler();
 
   final Scheduler scheduler;
-
-  final Element root;
 }
 
 abstract class Component<T extends Component<T>> {
@@ -44,7 +42,7 @@ abstract class Fragment<T extends Component<T>> {
 
   void update(Set<String> aspects) {}
 
-  void detach([bool detach = true]) {}
+  void destroy([bool detaching = true]) {}
 }
 
 void createFragment<T extends Component<T>>(Fragment<T> fragment) {
@@ -55,6 +53,6 @@ void mountFragment<T extends Component<T>>(Fragment<T> fragment, Element target,
   fragment.mount(target, anchor);
 }
 
-void detachFragment<T extends Component<T>>(Fragment<T> fragment) {
-  fragment.detach();
+void destryFragment<T extends Component<T>>(Fragment<T> fragment) {
+  fragment.destroy();
 }

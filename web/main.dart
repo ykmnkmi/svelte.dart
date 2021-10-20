@@ -1,9 +1,11 @@
-import 'package:angular_ast/angular_ast.dart' hide parse;
+import 'package:angular_ast/angular_ast.dart' show AngularParserException, HumanizingTemplateAstVisitor hide parse;
+import 'package:stack_trace/stack_trace.dart' show Trace;
+
 import 'package:piko/compiler.dart';
-import 'package:stack_trace/stack_trace.dart';
 
 const String sourceUrl = 'app.html';
-const String template = '<button (click)="log()" id="greeter">hello {{ name }}!</button>';
+const String template = '<h1>Hello {{name}}!</h1>';
+
 void main() {
   try {
     var nodes = parse(template, sourceUrl: sourceUrl);
@@ -14,11 +16,15 @@ void main() {
       print('>> ${node.accept(visitor)}');
     }
 
-    var code = TemplateCompiler('App', nodes).compile();
-    print(code);
+    print(compileNodes('App', nodes));
   } on AngularParserException catch (error, stackTrace) {
+    var trace = Trace.from(stackTrace);
     print(error.errorCode.message);
-    print(Trace.format(stackTrace));
+
+    for (var frame in trace.frames) {
+      if (frame.isCore) continue;
+      print(frame);
+    }
   }
 }
 

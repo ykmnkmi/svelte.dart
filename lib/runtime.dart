@@ -7,10 +7,9 @@ export 'package:piko/dom.dart';
 export 'src/runtime/component.dart';
 export 'src/runtime/scheduler.dart';
 
-void runApp<T extends Component<T>>(Component<T> component,
-    {Element? root, Node? anchor}) {
-  final tree = RenderTree(root ?? document.body!);
+void runApp<T extends Component<T>>(Component<T> component, {Element? root, Node? anchor}) {
+  var tree = RenderTree();
   component.render(tree)
     ..create()
-    ..mount(tree.root, anchor);
+    ..mount(root ?? document.body!, anchor);
 }

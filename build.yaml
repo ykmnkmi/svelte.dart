@@ -8,9 +8,11 @@ global_options:
       dart2js_args:
       # - --verbose
       - --disable-inlining
+      # - --no-source-maps
+
+      # - --minify
       # - --omit-implicit-checks
       # - --lax-runtime-type-to-string
       # - --trust-primitives
-      # - --no-source-maps
+      # - --omit-as-casts
       # - --fast-startup
-      # - --minify

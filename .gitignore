@@ -7,7 +7,6 @@
 bin/
 build/
 doc/api/
-packages/
 pubspec.lock
 **/**.aot
 **/**.exe
