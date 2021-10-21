@@ -19,22 +19,32 @@ abstract class CloseElementAst implements TemplateAst {
       {ElementAst? openComplement}) = ParsedCloseElementAst;
 
   @override
-  bool operator ==(Object? other) => other is CloseElementAst && name == other.name;
+  bool operator ==(Object? other) {
+    return other is CloseElementAst && name == other.name;
+  }
 
   @override
-  int get hashCode => name.hashCode;
-
-  @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) => visitor.visitCloseElement(this, context);
+  int get hashCode {
+    return name.hashCode;
+  }
 
   /// Whether this is a `</template>` tag and should be directly rendered.
-  bool get isEmbeddedTemplate => name == 'template';
+  bool get isEmbeddedTemplate {
+    return name == 'template';
+  }
 
   /// Name (tag) of the close element.
   String get name;
 
   @override
-  String toString() => 'CloseElementAst </$name>';
+  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitCloseElement(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'CloseElementAst </$name>';
+  }
 }
 
 /// Represents a real, non-synthetic DOM close element that was parsed.
@@ -49,7 +59,9 @@ class ParsedCloseElementAst extends TemplateAst with CloseElementAst {
       : super.parsed(closeElementStart, closeElementEnd, sourceFile);
 
   @override
-  String get name => identifierToken.lexeme;
+  String get name {
+    return identifierToken.lexeme;
+  }
 }
 
 class _SyntheticCloseElementAst extends SyntheticTemplateAst with CloseElementAst {

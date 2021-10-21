@@ -21,15 +21,14 @@ abstract class AnnotationAst implements TemplateAst {
       [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedAnnotationAst;
 
   @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
-    return visitor.visitAnnotation(this, context);
+  bool operator ==(Object? other) {
+    return other is AnnotationAst && name == other.name && value == other.value;
   }
 
   @override
-  bool operator ==(Object? other) => other is AnnotationAst && name == other.name && value == other.value;
-
-  @override
-  int get hashCode => Object.hash(name, value);
+  int get hashCode {
+    return Object.hash(name, value);
+  }
 
   /// Static annotation name.
   String get name;
@@ -38,13 +37,23 @@ abstract class AnnotationAst implements TemplateAst {
   String? get value;
 
   @override
-  String toString() => value != null ? 'AnnotationAst {$name="$value"}' : 'AnnotationAst {$name}';
+  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitAnnotation(this, context);
+  }
+
+  @override
+  String toString() {
+    return value != null ? 'AnnotationAst {$name="$value"}' : 'AnnotationAst {$name}';
+  }
 }
 
 /// Represents a real(non-synthetic) parsed AnnotationAst. Preserves offsets.
 ///
 /// Clients should not extend, implement, or mix-in this class.
 class ParsedAnnotationAst extends TemplateAst with AnnotationAst implements ParsedDecoratorAst {
+  ParsedAnnotationAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
+
   @override
   final NgToken prefixToken;
 
@@ -60,34 +69,41 @@ class ParsedAnnotationAst extends TemplateAst with AnnotationAst implements Pars
   /// May be `null` if the annotation has no value.
   final NgToken? equalSignToken;
 
-  ParsedAnnotationAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
-      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
+  @override
+  String get name {
+    return nameToken.lexeme;
+  }
 
   @override
-  String get name => nameToken.lexeme;
-
-  @override
-  String? get value => valueToken?.innerValue?.lexeme;
+  String? get value {
+    return valueToken?.innerValue?.lexeme;
+  }
 
   /// Offset of annotation prefix `@`.
   @override
-  int get prefixOffset => prefixToken.offset;
+  int get prefixOffset {
+    return prefixToken.offset;
+  }
 
   @override
-  NgToken? get suffixToken => null;
+  NgToken? get suffixToken {
+    return null;
+  }
 
   @override
-  int? get suffixOffset => null;
+  int? get suffixOffset {
+    return null;
+  }
 }
 
 class _SyntheticAnnotationAst extends SyntheticTemplateAst with AnnotationAst {
+  _SyntheticAnnotationAst(this.name, [this.value]);
+
+  _SyntheticAnnotationAst.from(TemplateAst origin, this.name, [this.value]) : super.from(origin);
+
   @override
   final String name;
 
   @override
   final String? value;
-
-  _SyntheticAnnotationAst(this.name, [this.value]);
-
-  _SyntheticAnnotationAst.from(TemplateAst origin, this.name, [this.value]) : super.from(origin);
 }

@@ -5,7 +5,7 @@ import '../ast.dart';
 import '../token/tokens.dart';
 import '../visitor.dart';
 
-const _listEquals = ListEquality<dynamic>();
+const _listEquals = ListEquality<Object?>();
 
 /// Represents a static attribute assignment (i.e. not bound to an expression).
 ///
@@ -25,16 +25,14 @@ abstract class AttributeAst implements TemplateAst {
       List<StandaloneTemplateAst> childNod]) = ParsedAttributeAst;
 
   @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
-    return visitor.visitAttribute(this, context);
+  bool operator ==(Object? other) {
+    return other is AttributeAst && name == other.name && _listEquals.equals(childNodes, other.childNodes);
   }
 
   @override
-  bool operator ==(Object? other) =>
-      other is AttributeAst && name == other.name && _listEquals.equals(childNodes, other.childNodes);
-
-  @override
-  int get hashCode => Object.hash(name, value);
+  int get hashCode {
+    return Object.hash(name, value);
+  }
 
   /// Static attribute name.
   String get name;
@@ -52,13 +50,24 @@ abstract class AttributeAst implements TemplateAst {
   List<StandaloneTemplateAst> get childNodes;
 
   @override
-  String toString() => 'AttributeAst {$name}';
+  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitAttribute(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'AttributeAst {$name}';
+  }
 }
 
 /// Represents a real(non-synthetic) parsed AttributeAst. Preserves offsets.
 ///
 /// Clients should not extend, implement, or mix-in this class.
 class ParsedAttributeAst extends TemplateAst with AttributeAst implements ParsedDecoratorAst, TagOffsetInfo {
+  ParsedAttributeAst(SourceFile sourceFile, this.nameToken,
+      [this.valueToken, this.equalSignToken, this.childNodes = const <StandaloneTemplateAst>[]])
+      : super.parsed(nameToken, valueToken == null ? nameToken : valueToken.rightQuote, sourceFile);
+
   /// [NgToken] that represents the attribute name.
   @override
   final NgToken nameToken;
@@ -76,53 +85,77 @@ class ParsedAttributeAst extends TemplateAst with AttributeAst implements Parsed
   @override
   final List<StandaloneTemplateAst> childNodes;
 
-  ParsedAttributeAst(SourceFile sourceFile, this.nameToken,
-      [this.valueToken, this.equalSignToken, this.childNodes = const <StandaloneTemplateAst>[]])
-      : super.parsed(nameToken, valueToken == null ? nameToken : valueToken.rightQuote, sourceFile);
-
   /// Static attribute name.
   @override
-  String get name => nameToken.lexeme;
+  String get name {
+    return nameToken.lexeme;
+  }
 
   /// Static attribute name offset.
   @override
-  int get nameOffset => nameToken.offset;
+  int get nameOffset {
+    return nameToken.offset;
+  }
 
   /// Static offset of equal sign; may be `null` to have no value.
   @override
-  int? get equalSignOffset => equalSignToken?.offset;
+  int? get equalSignOffset {
+    return equalSignToken?.offset;
+  }
 
   /// Static attribute value; may be `null` to have no value.
   @override
-  String? get value => valueToken?.innerValue?.lexeme;
+  String? get value {
+    return valueToken?.innerValue?.lexeme;
+  }
 
   /// Static attribute value offset; may be `null` to have no value.
   @override
-  int? get valueOffset => valueToken?.innerValue?.offset;
+  int? get valueOffset {
+    return valueToken?.innerValue?.offset;
+  }
 
   /// Static attribute value including quotes; may be `null` to have no value.
   @override
-  String? get quotedValue => valueToken?.lexeme;
+  String? get quotedValue {
+    return valueToken?.lexeme;
+  }
 
   /// Static attribute value including quotes offset; may be `null` to have no
   /// value.
   @override
-  int? get quotedValueOffset => valueToken?.leftQuote?.offset;
+  int? get quotedValueOffset {
+    return valueToken?.leftQuote?.offset;
+  }
 
   @override
-  NgToken? get prefixToken => null;
+  NgToken? get prefixToken {
+    return null;
+  }
 
   @override
-  int? get prefixOffset => null;
+  int? get prefixOffset {
+    return null;
+  }
 
   @override
-  NgToken? get suffixToken => null;
+  NgToken? get suffixToken {
+    return null;
+  }
 
   @override
-  int? get suffixOffset => null;
+  int? get suffixOffset {
+    return null;
+  }
 }
 
 class _SyntheticAttributeAst extends SyntheticTemplateAst with AttributeAst {
+  _SyntheticAttributeAst(this.name, [this.value, this.childNodes = const <StandaloneTemplateAst>[]]);
+
+  _SyntheticAttributeAst.from(TemplateAst origin, this.name,
+      [this.value, this.childNodes = const <StandaloneTemplateAst>[]])
+      : super.from(origin);
+
   @override
   final String name;
 
@@ -131,12 +164,6 @@ class _SyntheticAttributeAst extends SyntheticTemplateAst with AttributeAst {
 
   @override
   final List<StandaloneTemplateAst> childNodes;
-
-  _SyntheticAttributeAst(this.name, [this.value, this.childNodes = const <StandaloneTemplateAst>[]]);
-
-  _SyntheticAttributeAst.from(TemplateAst origin, this.name,
-      [this.value, this.childNodes = const <StandaloneTemplateAst>[]])
-      : super.from(origin);
 
   @override
   String? get quotedValue => value == null ? null : '"$value"';

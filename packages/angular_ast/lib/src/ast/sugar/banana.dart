@@ -22,15 +22,14 @@ abstract class BananaAst implements TemplateAst {
       NgToken suffixToken, NgAttributeValueToken? valueToken, NgToken? equalSignToken) = ParsedBananaAst;
 
   @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
-    return visitor.visitBanana(this, context);
+  bool operator ==(Object? other) {
+    return other is BananaAst && name == other.name && value == other.value;
   }
 
   @override
-  bool operator ==(Object? other) => other is BananaAst && name == other.name && value == other.value;
-
-  @override
-  int get hashCode => Object.hash(name, value);
+  int get hashCode {
+    return Object.hash(name, value);
+  }
 
   /// Name of the property.
   String get name;
@@ -39,7 +38,14 @@ abstract class BananaAst implements TemplateAst {
   String? get value;
 
   @override
-  String toString() => 'BananaAst {$name="$value"}';
+  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitBanana(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'BananaAst {$name="$value"}';
+  }
 }
 
 /// Represents a real, non-synthetic `[(property)]="value"` syntax.
@@ -49,6 +55,10 @@ abstract class BananaAst implements TemplateAst {
 ///
 /// Clients should not extend, implement, or mix-in this class.
 class ParsedBananaAst extends TemplateAst with BananaAst implements ParsedDecoratorAst, TagOffsetInfo {
+  ParsedBananaAst(
+      SourceFile sourceFile, this.prefixToken, this.nameToken, this.suffixToken, this.valueToken, this.equalSignToken)
+      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : suffixToken, sourceFile);
+
   /// Components of element decorator representing [(banana)].
   @override
   final NgToken prefixToken;
@@ -68,51 +78,63 @@ class ParsedBananaAst extends TemplateAst with BananaAst implements ParsedDecora
   /// no value.
   final NgToken? equalSignToken;
 
-  ParsedBananaAst(
-      SourceFile sourceFile, this.prefixToken, this.nameToken, this.suffixToken, this.valueToken, this.equalSignToken)
-      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : suffixToken, sourceFile);
-
   /// Inner name `property` in `[(property)]`.
   @override
-  String get name => nameToken.lexeme;
+  String get name {
+    return nameToken.lexeme;
+  }
 
   /// Offset of `property` in `[(property)]`.
   @override
-  int get nameOffset => nameToken.offset;
+  int get nameOffset {
+    return nameToken.offset;
+  }
 
   /// Offset of equal sign; may be `null` to have no value.
   @override
-  int? get equalSignOffset => equalSignToken?.offset;
+  int? get equalSignOffset {
+    return equalSignToken?.offset;
+  }
 
   /// Value bound to banana property; may be `null` to have no value.
   @override
-  String? get value => valueToken?.innerValue?.lexeme;
+  String? get value {
+    return valueToken?.innerValue?.lexeme;
+  }
 
   /// Offset of value; may be `null` to have no value.
   @override
-  int? get valueOffset => valueToken?.innerValue?.offset;
+  int? get valueOffset {
+    return valueToken?.innerValue?.offset;
+  }
 
   /// Offset of value starting at left quote; may be `null` to have no value.
   @override
-  int? get quotedValueOffset => valueToken?.leftQuote?.offset;
+  int? get quotedValueOffset {
+    return valueToken?.leftQuote?.offset;
+  }
 
   /// Offset of banana prefix `[(`.
   @override
-  int get prefixOffset => prefixToken.offset;
+  int get prefixOffset {
+    return prefixToken.offset;
+  }
 
   /// Offset of banana suffix `)]`.
   @override
-  int get suffixOffset => suffixToken.offset;
+  int get suffixOffset {
+    return suffixToken.offset;
+  }
 }
 
 class _SyntheticBananaAst extends SyntheticTemplateAst with BananaAst {
+  _SyntheticBananaAst(this.name, [this.value]);
+
+  _SyntheticBananaAst.from(TemplateAst origin, this.name, [this.value]) : super.from(origin);
+
   @override
   final String name;
 
   @override
   final String? value;
-
-  _SyntheticBananaAst(this.name, [this.value]);
-
-  _SyntheticBananaAst.from(TemplateAst origin, this.name, [this.value]) : super.from(origin);
 }

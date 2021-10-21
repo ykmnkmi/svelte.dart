@@ -22,15 +22,14 @@ abstract class StarAst implements TemplateAst {
       [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedStarAst;
 
   @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
-    return visitor.visitStar(this, context);
+  bool operator ==(Object? other) {
+    return other is PropertyAst && value == other.value && name == other.name;
   }
 
   @override
-  bool operator ==(Object? other) => other is PropertyAst && value == other.value && name == other.name;
-
-  @override
-  int get hashCode => Object.hash(value, name);
+  int get hashCode {
+    return Object.hash(value, name);
+  }
 
   /// Name of the directive being created.
   String get name;
@@ -39,7 +38,14 @@ abstract class StarAst implements TemplateAst {
   String? get value;
 
   @override
-  String toString() => value != null ? 'StarAst {$name="$value"}' : 'StarAst {$name}';
+  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitStar(this, context);
+  }
+
+  @override
+  String toString() {
+    return value != null ? 'StarAst {$name="$value"}' : 'StarAst {$name}';
+  }
 }
 
 /// Represents a real, non-synthetic sugared form of `*directive="value"`.
@@ -49,6 +55,9 @@ abstract class StarAst implements TemplateAst {
 ///
 /// Clients should not extend, implement, or mix-in this class.
 class ParsedStarAst extends TemplateAst with StarAst implements ParsedDecoratorAst, TagOffsetInfo {
+  ParsedStarAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
+
   @override
   final NgToken prefixToken;
 
@@ -67,40 +76,53 @@ class ParsedStarAst extends TemplateAst with StarAst implements ParsedDecoratorA
   /// value.
   final NgToken? equalSignToken;
 
-  ParsedStarAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
-      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
-
   /// Name `directive` in `*directive`.
   @override
-  String get name => nameToken.lexeme;
+  String get name {
+    return nameToken.lexeme;
+  }
 
   /// Offset of `directive` in `*directive`.
   @override
-  int get nameOffset => nameToken.offset;
+  int get nameOffset {
+    return nameToken.offset;
+  }
 
   /// Offset of equal sign; may be `null` to have no value.
   @override
-  int? get equalSignOffset => equalSignToken?.offset;
+  int? get equalSignOffset {
+    return equalSignToken?.offset;
+  }
 
   /// Value bound to `*directive`; may be `null` to have no value.
   @override
-  String? get value => valueToken?.innerValue?.lexeme;
+  String? get value {
+    return valueToken?.innerValue?.lexeme;
+  }
 
   /// Offset of value; may be `null` to have no value.
   @override
-  int? get valueOffset => valueToken?.innerValue?.offset;
+  int? get valueOffset {
+    return valueToken?.innerValue?.offset;
+  }
 
   /// Offset of value starting at left quote; may be `null` to have no value.
   @override
-  int? get quotedValueOffset => valueToken?.leftQuote?.offset;
+  int? get quotedValueOffset {
+    return valueToken?.leftQuote?.offset;
+  }
 
   /// Offset of template prefix `*`.
   @override
-  int get prefixOffset => prefixToken.offset;
+  int get prefixOffset {
+    return prefixToken.offset;
+  }
 
   /// Always returns `null` since `*directive` has no suffix.
   @override
-  int? get suffixOffset => null;
+  int? get suffixOffset {
+    return null;
+  }
 }
 
 class _SyntheticStarAst extends SyntheticTemplateAst with StarAst {
