@@ -3,56 +3,88 @@ import 'package:meta/meta.dart';
 import '../ast.dart';
 import '../visitor.dart';
 
-/// An [TemplateAstVisitor] that does nothing but return the AST node back.
-class IdentityTemplateAstVisitor<C> implements TemplateAstVisitor<TemplateAst, C?> {
+/// An [TemplateVisitor] that does nothing but return the AST node back.
+class IdentityTemplateAstVisitor<C> implements TemplateVisitor<Template, C?> {
   @literal
   const IdentityTemplateAstVisitor();
 
   @override
-  TemplateAst visitAnnotation(AnnotationAst astNode, [_]) => astNode;
+  Template visitAnnotation(Annotation astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitAttribute(AttributeAst astNode, [_]) => astNode;
+  Template visitAttribute(Attribute astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitBanana(BananaAst astNode, [_]) => astNode;
+  Template visitBanana(Banana astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitCloseElement(CloseElementAst astNode, [_]) => astNode;
+  Template visitCloseElement(CloseElement astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitComment(CommentAst astNode, [_]) => astNode;
+  Template visitComment(Comment astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitContainer(ContainerAst astNode, [_]) => astNode;
+  Template visitContainer(Container astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitEmbeddedContent(EmbeddedContentAst astNode, [_]) => astNode;
+  Template visitEmbeddedContent(EmbeddedContent astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitEmbeddedTemplate(EmbeddedTemplateAst astNode, [_]) => astNode;
+  Template visitEmbeddedTemplate(EmbeddedTemplateAst astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitElement(ElementAst astNode, [_]) => astNode;
+  Template visitElement(Element astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitEvent(EventAst astNode, [_]) => astNode;
+  Template visitEvent(Event astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitInterpolation(InterpolationAst astNode, [_]) => astNode;
+  Template visitInterpolation(Interpolation astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitLetBinding(LetBindingAst astNode, [_]) => astNode;
+  Template visitLetBinding(LetBinding astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitProperty(PropertyAst astNode, [_]) => astNode;
+  Template visitProperty(Property astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitReference(ReferenceAst astNode, [_]) => astNode;
+  Template visitReference(Reference astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitStar(StarAst astNode, [_]) => astNode;
+  Template visitStar(Star astNode, [_]) {
+    return astNode;
+  }
 
   @override
-  TemplateAst visitText(TextAst astNode, [_]) => astNode;
+  Template visitText(Text astNode, [_]) {
+    return astNode;
+  }
 }

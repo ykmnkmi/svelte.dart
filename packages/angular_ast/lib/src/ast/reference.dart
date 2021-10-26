@@ -7,28 +7,16 @@ import '../visitor.dart';
 /// Represents a reference to an element or exported directive instance.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-abstract class ReferenceAst implements TemplateAst {
+abstract class Reference implements Template {
   /// Create a new synthetic reference of [variable].
-  factory ReferenceAst(String variable, [String identifier]) = _SyntheticReferenceAst;
+  factory Reference(String variable, [String identifier]) = _SyntheticReference;
 
   /// Create a new synthetic reference of [variable] from AST node [origin].
-  factory ReferenceAst.from(TemplateAst origin, String variable, [String identifier]) = _SyntheticReferenceAst.from;
+  factory Reference.from(Template origin, String variable, [String identifier]) = _SyntheticReference.from;
 
   /// Create new reference from tokens in [sourceFile].
-  factory ReferenceAst.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
-      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedReferenceAst;
-
-  @override
-  bool operator ==(Object? other) =>
-      other is ReferenceAst && identifier == other.identifier && variable == other.variable;
-
-  @override
-  int get hashCode => Object.hash(identifier, variable);
-
-  @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
-    return visitor.visitReference(this, context);
-  }
+  factory Reference.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedReference;
 
   /// What `exportAs` identifier to assign to [variable].
   ///
@@ -37,6 +25,19 @@ abstract class ReferenceAst implements TemplateAst {
 
   /// Local variable name being assigned.
   String get variable;
+
+  @override
+  int get hashCode => Object.hash(identifier, variable);
+
+  @override
+  bool operator ==(Object? other) {
+    return other is Reference && identifier == other.identifier && variable == other.variable;
+  }
+
+  @override
+  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitReference(this, context);
+  }
 
   @override
   String toString() {
@@ -52,16 +53,16 @@ abstract class ReferenceAst implements TemplateAst {
 /// directive instance.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-class ParsedReferenceAst extends TemplateAst with ReferenceAst implements ParsedDecoratorAst, TagOffsetInfo {
+class ParsedReference extends Template with Reference implements ParsedDecorator, TagOffsetInfo {
+  ParsedReference(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
+
   /// Tokens representing the `#reference` element decorator
   @override
   final NgToken prefixToken;
 
   @override
   final NgToken nameToken;
-
-  @override
-  NgToken? get suffixToken => null;
 
   /// [NgAttributeValueToken] that represents `identifier` in
   /// `#variable="reference"`.
@@ -71,9 +72,6 @@ class ParsedReferenceAst extends TemplateAst with ReferenceAst implements Parsed
   /// [NgToken] that represents the equal sign token; may be `null` to have no
   /// value.
   final NgToken? equalSignToken;
-
-  ParsedReferenceAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
-      : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
 
   /// Offset of `variable` in `#variable="identifier"`.
   @override
@@ -96,6 +94,9 @@ class ParsedReferenceAst extends TemplateAst with ReferenceAst implements Parsed
   @override
   int get prefixOffset => nameToken.offset;
 
+  @override
+  NgToken? get suffixToken => null;
+
   /// Always returns `null` since `#ref` has no suffix.
   @override
   int? get suffixOffset => null;
@@ -109,10 +110,10 @@ class ParsedReferenceAst extends TemplateAst with ReferenceAst implements Parsed
   String get variable => nameToken.lexeme;
 }
 
-class _SyntheticReferenceAst extends SyntheticTemplateAst with ReferenceAst {
-  _SyntheticReferenceAst(this.variable, [this.identifier]);
+class _SyntheticReference extends SyntheticTemplate with Reference {
+  _SyntheticReference(this.variable, [this.identifier]);
 
-  _SyntheticReferenceAst.from(TemplateAst origin, this.variable, [this.identifier]) : super.from(origin);
+  _SyntheticReference.from(Template origin, this.variable, [this.identifier]) : super.from(origin);
 
   @override
   final String? identifier;

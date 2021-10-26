@@ -17,7 +17,7 @@ class NgMicroParser {
     String? expression,
     int? expressionOffset, {
     required String sourceUrl,
-    TemplateAst? origin,
+    Template? origin,
   }) {
     var paddedExpression = ' ' * expressionOffset! + expression!;
     var tokens = const NgMicroLexer().tokenize(paddedExpression).iterator;
@@ -38,10 +38,10 @@ class _RecursiveMicroAstParser {
 //  final String _sourceUrl;
   final Iterator<NgMicroToken> _tokens;
 
-  final letBindings = <LetBindingAst>[];
-  final properties = <PropertyAst>[];
+  final letBindings = <LetBinding>[];
+  final properties = <Property>[];
 
-  final TemplateAst? _origin;
+  final Template? _origin;
 
   _RecursiveMicroAstParser(
     this._directive,
@@ -79,7 +79,7 @@ class _RecursiveMicroAstParser {
       throw _unexpected();
     }
     var value = _tokens.current.lexeme;
-    properties.add(PropertyAst.from(
+    properties.add(Property.from(
       _origin,
       '$_directive${name[0].toUpperCase()}${name.substring(1)}',
       value,
@@ -90,7 +90,7 @@ class _RecursiveMicroAstParser {
   // to the property on the left-hand side to which the micro-syntax expression
   // was assigned.
   void _parseImplicitBind() {
-    properties.add(PropertyAst.from(
+    properties.add(Property.from(
       _origin,
       _directive,
       _tokens.current.lexeme,
@@ -110,17 +110,17 @@ class _RecursiveMicroAstParser {
         _tokens.current.type == NgMicroTokenType.endExpression ||
         !_tokens.moveNext() ||
         _tokens.current.type == NgMicroTokenType.endExpression) {
-      letBindings.add(LetBindingAst.from(_origin, identifier));
+      letBindings.add(LetBinding.from(_origin, identifier));
       return;
     }
     if (_tokens.current.type == NgMicroTokenType.letAssignment) {
-      letBindings.add(LetBindingAst.from(
+      letBindings.add(LetBinding.from(
         _origin,
         identifier,
         _tokens.current.lexeme.trimRight(),
       ));
     } else {
-      letBindings.add(LetBindingAst.from(_origin, identifier));
+      letBindings.add(LetBinding.from(_origin, identifier));
       if (_tokens.current.type != NgMicroTokenType.bindIdentifier) {
         throw _unexpected();
       }
@@ -132,7 +132,7 @@ class _RecursiveMicroAstParser {
         throw _unexpected();
       }
       var expression = _tokens.current.lexeme;
-      properties.add(PropertyAst.from(
+      properties.add(Property.from(
         _origin,
         '$_directive${property[0].toUpperCase()}${property.substring(1)}',
         expression,

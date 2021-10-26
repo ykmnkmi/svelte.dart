@@ -10,21 +10,16 @@ import '../../visitor.dart';
 /// useful for tooling, but not useful for compilers).
 ///
 /// Clients should not extend, implement, or mix-in this class.
-abstract class BananaAst implements TemplateAst {
-  /// Create a new synthetic [BananaAst] with a string [field].
-  factory BananaAst(String name, [String? field]) = _SyntheticBananaAst;
+abstract class Banana implements Template {
+  /// Create a new synthetic [Banana] with a string [field].
+  factory Banana(String name, [String? field]) = _SyntheticBanana;
 
-  /// Create a new synthetic [BananaAst] that originated from node [origin].
-  factory BananaAst.from(TemplateAst origin, String name, [String? field]) = _SyntheticBananaAst.from;
+  /// Create a new synthetic [Banana] that originated from node [origin].
+  factory Banana.from(Template origin, String name, [String? field]) = _SyntheticBanana.from;
 
-  /// Create a new [BananaAst] parsed from tokens from [sourceFile].
-  factory BananaAst.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
-      NgToken suffixToken, NgAttributeValueToken? valueToken, NgToken? equalSignToken) = ParsedBananaAst;
-
-  @override
-  bool operator ==(Object? other) {
-    return other is BananaAst && name == other.name && value == other.value;
-  }
+  /// Create a new [Banana] parsed from tokens from [sourceFile].
+  factory Banana.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
+      NgToken suffixToken, NgAttributeValueToken? valueToken, NgToken? equalSignToken) = ParsedBanana;
 
   @override
   int get hashCode {
@@ -38,7 +33,12 @@ abstract class BananaAst implements TemplateAst {
   String? get value;
 
   @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
+  bool operator ==(Object? other) {
+    return other is Banana && name == other.name && value == other.value;
+  }
+
+  @override
+  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
     return visitor.visitBanana(this, context);
   }
 
@@ -54,8 +54,8 @@ abstract class BananaAst implements TemplateAst {
 /// useful for tooling, but not useful for compilers). Preserves offsets.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-class ParsedBananaAst extends TemplateAst with BananaAst implements ParsedDecoratorAst, TagOffsetInfo {
-  ParsedBananaAst(
+class ParsedBanana extends Template with Banana implements ParsedDecorator, TagOffsetInfo {
+  ParsedBanana(
       SourceFile sourceFile, this.prefixToken, this.nameToken, this.suffixToken, this.valueToken, this.equalSignToken)
       : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : suffixToken, sourceFile);
 
@@ -127,10 +127,10 @@ class ParsedBananaAst extends TemplateAst with BananaAst implements ParsedDecora
   }
 }
 
-class _SyntheticBananaAst extends SyntheticTemplateAst with BananaAst {
-  _SyntheticBananaAst(this.name, [this.value]);
+class _SyntheticBanana extends SyntheticTemplate with Banana {
+  _SyntheticBanana(this.name, [this.value]);
 
-  _SyntheticBananaAst.from(TemplateAst origin, this.name, [this.value]) : super.from(origin);
+  _SyntheticBanana.from(Template origin, this.name, [this.value]) : super.from(origin);
 
   @override
   final String name;

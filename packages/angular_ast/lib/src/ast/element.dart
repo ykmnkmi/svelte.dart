@@ -5,115 +5,126 @@ import '../ast.dart';
 import '../token/tokens.dart';
 import '../visitor.dart';
 
-const _listEquals = ListEquality<dynamic>();
+const ListEquality<Object?> _listEquals = ListEquality<Object?>();
 
 /// Represents a DOM element that was parsed, that could be upgraded.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-abstract class ElementAst implements StandaloneTemplateAst {
+abstract class Element implements StandaloneTemplate {
   /// Create a synthetic element AST.
-  factory ElementAst(String name, CloseElementAst? closeComplement,
-      {List<AttributeAst> attributes,
-      List<StandaloneTemplateAst> childNodes,
-      List<EventAst> events,
-      List<PropertyAst> properties,
-      List<ReferenceAst> references,
-      List<BananaAst> bananas,
-      List<StarAst> stars,
-      List<AnnotationAst> annotations}) = _SyntheticElementAst;
+  factory Element(String name, CloseElement? closeComplement,
+      {List<Attribute> attributes,
+      List<StandaloneTemplate> childNodes,
+      List<Event> events,
+      List<Property> properties,
+      List<Reference> references,
+      List<Banana> bananas,
+      List<Star> stars,
+      List<Annotation> annotations}) = _SyntheticElement;
 
   /// Create a synthetic element AST from an existing AST node.
-  factory ElementAst.from(TemplateAst origin, String name, CloseElementAst? closeComplement,
-      {List<AttributeAst> attributes,
-      List<StandaloneTemplateAst> childNodes,
-      List<EventAst> events,
-      List<PropertyAst> properties,
-      List<ReferenceAst> references,
-      List<BananaAst> bananas,
-      List<StarAst> stars,
-      List<AnnotationAst> annotations}) = _SyntheticElementAst.from;
+  factory Element.from(Template origin, String name, CloseElement? closeComplement,
+      {List<Attribute> attributes,
+      List<StandaloneTemplate> childNodes,
+      List<Event> events,
+      List<Property> properties,
+      List<Reference> references,
+      List<Banana> bananas,
+      List<Star> stars,
+      List<Annotation> annotations}) = _SyntheticElement.from;
 
   /// Create a new element AST from parsed source.
-  factory ElementAst.parsed(SourceFile sourceFile, NgToken openElementStart, NgToken nameToken, NgToken openElementEnd,
-      {CloseElementAst? closeComplement,
-      List<AttributeAst> attributes,
-      List<StandaloneTemplateAst> childNodes,
-      List<EventAst> events,
-      List<PropertyAst> properties,
-      List<ReferenceAst> references,
-      List<BananaAst> bananas,
-      List<StarAst> stars,
-      List<AnnotationAst> annotations}) = ParsedElementAst;
-
-  @override
-  bool operator ==(Object? other) =>
-      other is ElementAst &&
-      name == other.name &&
-      closeComplement == other.closeComplement &&
-      _listEquals.equals(attributes, other.attributes) &&
-      _listEquals.equals(childNodes, other.childNodes) &&
-      _listEquals.equals(events, other.events) &&
-      _listEquals.equals(properties, other.properties) &&
-      _listEquals.equals(references, other.references) &&
-      _listEquals.equals(bananas, other.bananas) &&
-      _listEquals.equals(stars, other.stars) &&
-      _listEquals.equals(annotations, other.annotations);
-
-  @override
-  int get hashCode => Object.hashAll([
-        name,
-        closeComplement,
-        _listEquals.hash(attributes),
-        _listEquals.hash(childNodes),
-        _listEquals.hash(events),
-        _listEquals.hash(properties),
-        _listEquals.hash(references),
-        _listEquals.hash(bananas),
-        _listEquals.hash(stars),
-        _listEquals.hash(annotations)
-      ]);
-
-  @override
-  R? accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
-    return visitor.visitElement(this, context);
-  }
-
-  /// Determines whether the element tag name is void element.
-  bool get isVoidElement;
-
-  /// CloseElement complement
-  ///
-  /// If [closeComplement] == null, then [isVoidElement] is true.
-  CloseElementAst? get closeComplement;
-  set closeComplement(CloseElementAst? closeElementAst);
+  factory Element.parsed(SourceFile sourceFile, NgToken openElementStart, NgToken nameToken, NgToken openElementEnd,
+      {CloseElement? closeComplement,
+      List<Attribute> attributes,
+      List<StandaloneTemplate> childNodes,
+      List<Event> events,
+      List<Property> properties,
+      List<Reference> references,
+      List<Banana> bananas,
+      List<Star> stars,
+      List<Annotation> annotations}) = ParsedElement;
 
   /// Name (tag) of the element.
   String get name;
 
+  /// CloseElement complement
+  ///
+  /// If [closeComplement] == null, then [isVoidElement] is true.
+  CloseElement? get closeComplement;
+
+  set closeComplement(CloseElement? closeElementAst);
+
   /// Attributes.
-  List<AttributeAst> get attributes;
+  List<Attribute> get attributes;
 
   /// Event listeners.
-  List<EventAst> get events;
+  List<Event> get events;
 
   /// Property assignments.
-  List<PropertyAst> get properties;
+  List<Property> get properties;
 
   /// Reference assignments.
-  List<ReferenceAst> get references;
+  List<Reference> get references;
 
   /// Bananas assignments.
-  List<BananaAst> get bananas;
+  List<Banana> get bananas;
 
   /// Star assignments.
-  List<StarAst> get stars;
+  List<Star> get stars;
 
   /// Annotation assignments.
-  List<AnnotationAst> get annotations;
+  List<Annotation> get annotations;
+
+  /// Determines whether the element tag name is void element.
+  bool get isVoidElement;
+
+  @override
+  int get hashCode {
+    return Object.hashAll(<Object?>[
+      name,
+      closeComplement,
+      _listEquals.hash(attributes),
+      _listEquals.hash(childNodes),
+      _listEquals.hash(events),
+      _listEquals.hash(properties),
+      _listEquals.hash(references),
+      _listEquals.hash(bananas),
+      _listEquals.hash(stars),
+      _listEquals.hash(annotations),
+    ]);
+  }
+
+  @override
+  bool operator ==(Object? other) {
+    return other is Element &&
+        name == other.name &&
+        closeComplement == other.closeComplement &&
+        _listEquals.equals(attributes, other.attributes) &&
+        _listEquals.equals(childNodes, other.childNodes) &&
+        _listEquals.equals(events, other.events) &&
+        _listEquals.equals(properties, other.properties) &&
+        _listEquals.equals(references, other.references) &&
+        _listEquals.equals(bananas, other.bananas) &&
+        _listEquals.equals(stars, other.stars) &&
+        _listEquals.equals(annotations, other.annotations);
+  }
+
+  @override
+  R? accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitElement(this, context);
+  }
 
   @override
   String toString() {
-    final buffer = StringBuffer('ElementAst <$name> { ');
+    var buffer = StringBuffer('ElementAst <$name> { ');
+
+    if (closeComplement != null) {
+      buffer
+        ..write('closeComplement=')
+        ..write(closeComplement)
+        ..write(' ');
+    }
 
     if (attributes.isNotEmpty) {
       buffer
@@ -170,15 +181,8 @@ abstract class ElementAst implements StandaloneTemplateAst {
         ..writeAll(childNodes, ', ')
         ..write(' ');
     }
-
-    if (closeComplement != null) {
-      buffer
-        ..write('closeComplement=')
-        ..write(closeComplement)
-        ..write(' ');
-    }
-
-    return (buffer..write('}')).toString();
+    buffer.write('}');
+    return buffer.toString();
   }
 }
 
@@ -186,118 +190,124 @@ abstract class ElementAst implements StandaloneTemplateAst {
 /// that could be upgraded.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-class ParsedElementAst extends TemplateAst with ElementAst {
+class ParsedElement extends Template with Element {
+  ParsedElement(SourceFile sourceFile, NgToken openElementStart, this.identifierToken, NgToken openElementEnd,
+      {this.closeComplement,
+      this.attributes = const <Attribute>[],
+      this.childNodes = const <StandaloneTemplate>[],
+      this.events = const <Event>[],
+      this.properties = const <Property>[],
+      this.references = const <Reference>[],
+      this.bananas = const <Banana>[],
+      this.stars = const <Star>[],
+      this.annotations = const <Annotation>[]})
+      : super.parsed(openElementStart, openElementEnd, sourceFile);
+
   /// [NgToken] that represents the identifier tag in `<tag ...>`.
   final NgToken identifierToken;
 
-  ParsedElementAst(SourceFile sourceFile, NgToken openElementStart, this.identifierToken, NgToken openElementEnd,
-      {this.closeComplement,
-      this.attributes = const [],
-      this.childNodes = const [],
-      this.events = const [],
-      this.properties = const [],
-      this.references = const [],
-      this.bananas = const [],
-      this.stars = const [],
-      this.annotations = const []})
-      : super.parsed(openElementStart, openElementEnd, sourceFile);
-
-  /// Name (tag) of the element.
-  @override
-  String get name => identifierToken.lexeme;
-
   /// CloseElementAst that complements this elementAst.
   @override
-  CloseElementAst? closeComplement;
-
-  @override
-  bool get isVoidElement => closeComplement == null;
+  CloseElement? closeComplement;
 
   /// Attributes
   @override
-  final List<AttributeAst> attributes;
+  final List<Attribute> attributes;
 
   /// Children nodes.
   @override
-  final List<StandaloneTemplateAst> childNodes;
+  final List<StandaloneTemplate> childNodes;
 
   /// Event listeners.
   @override
-  final List<EventAst> events;
+  final List<Event> events;
 
   /// Property assignments.
   @override
-  final List<PropertyAst> properties;
+  final List<Property> properties;
 
   /// Reference assignments.
   @override
-  final List<ReferenceAst> references;
+  final List<Reference> references;
 
   /// Banana assignments.
   @override
-  final List<BananaAst> bananas;
+  final List<Banana> bananas;
 
   /// Star assignments.
   @override
-  final List<StarAst> stars;
+  final List<Star> stars;
 
   /// Annotation assignments.
   @override
-  final List<AnnotationAst> annotations;
+  final List<Annotation> annotations;
+
+  /// Name (tag) of the element.
+  @override
+  String get name {
+    return identifierToken.lexeme;
+  }
+
+  @override
+  bool get isVoidElement {
+    return closeComplement == null;
+  }
 }
 
-class _SyntheticElementAst extends SyntheticTemplateAst with ElementAst {
-  _SyntheticElementAst(this.name, this.closeComplement,
-      {this.attributes = const [],
-      this.childNodes = const [],
-      this.events = const [],
-      this.properties = const [],
-      this.references = const [],
-      this.bananas = const [],
-      this.stars = const [],
-      this.annotations = const []});
+class _SyntheticElement extends SyntheticTemplate with Element {
+  _SyntheticElement(this.name, this.closeComplement,
+      {this.attributes = const <Attribute>[],
+      this.childNodes = const <StandaloneTemplate>[],
+      this.events = const <Event>[],
+      this.properties = const <Property>[],
+      this.references = const <Reference>[],
+      this.bananas = const <Banana>[],
+      this.stars = const <Star>[],
+      this.annotations = const <Annotation>[]});
 
-  _SyntheticElementAst.from(TemplateAst origin, this.name, this.closeComplement,
-      {this.attributes = const [],
-      this.childNodes = const [],
-      this.events = const [],
-      this.properties = const [],
-      this.references = const [],
-      this.bananas = const [],
-      this.stars = const [],
-      this.annotations = const []})
+  _SyntheticElement.from(Template origin, this.name, this.closeComplement,
+      {this.attributes = const <Attribute>[],
+      this.childNodes = const <StandaloneTemplate>[],
+      this.events = const <Event>[],
+      this.properties = const <Property>[],
+      this.references = const <Reference>[],
+      this.bananas = const <Banana>[],
+      this.stars = const <Star>[],
+      this.annotations = const <Annotation>[]})
       : super.from(origin);
 
   @override
   final String name;
 
   @override
-  CloseElementAst? closeComplement;
+  CloseElement? closeComplement;
 
   @override
-  bool get isVoidElement => closeComplement == null;
+  final List<Attribute> attributes;
 
   @override
-  final List<AttributeAst> attributes;
+  final List<StandaloneTemplate> childNodes;
 
   @override
-  final List<StandaloneTemplateAst> childNodes;
+  final List<Event> events;
 
   @override
-  final List<EventAst> events;
+  final List<Property> properties;
 
   @override
-  final List<PropertyAst> properties;
+  final List<Reference> references;
 
   @override
-  final List<ReferenceAst> references;
+  final List<Banana> bananas;
 
   @override
-  final List<BananaAst> bananas;
+  final List<Star> stars;
 
   @override
-  final List<StarAst> stars;
+  final List<Annotation> annotations;
 
   @override
-  final List<AnnotationAst> annotations;
+  bool get isVoidElement {
+    return closeComplement == null;
+  }
 }

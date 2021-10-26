@@ -8,10 +8,36 @@ import 'parser/recursive.dart';
 import 'visitor.dart';
 
 class NgParser {
+  @literal
+  const factory NgParser() = NgParser._;
+
+  // Prevent inheritance.
+  const NgParser._();
+
+  /// Return a series of tokens by incrementally scanning [template].
+  ///
+  /// Automatically desugars.
+  List<StandaloneTemplate> parse(String template,
+      {required String sourceUrl,
+      bool desugar = true,
+      ExceptionHandler exceptionHandler = const ThrowingExceptionHandler()}) {
+    var tokens = const NgLexer().tokenize(template, exceptionHandler);
+    var parser = RecursiveAstParser(
+        SourceFile.fromString(template, url: sourceUrl), tokens, _voidElements, _svgElements, exceptionHandler);
+    var asts = parser.parse();
+
+    if (desugar) {
+      final desugarVisitor = DesugarVisitor(exceptionHandler: exceptionHandler);
+      asts = asts.map((t) => t.accept(desugarVisitor)).cast<StandaloneTemplate>().toList();
+    }
+
+    return asts;
+  }
+
   // Elements that explicitly don't have a closing tag.
   //
   // https://www.w3.org/TR/html/syntax.html#void-elements
-  static const _voidElements = <String>[
+  static const List<String> _voidElements = <String>[
     'area',
     'base',
     'br',
@@ -39,7 +65,7 @@ class NgParser {
   //
   // Some tags (a, script) overlap with HTML. Exclude those, to prefer correct
   // HTML semantics to correct SVG semantics.
-  static const _svgElements = <String>[
+  static const List<String> _svgElements = <String>[
     // 'a', Exclude this because it's also HTML
     'altGlyph',
     'altGlyphDef',
@@ -135,38 +161,4 @@ class NgParser {
     'view',
     'vkern',
   ];
-
-  @literal
-  const factory NgParser() = NgParser._;
-
-  // Prevent inheritance.
-  const NgParser._();
-
-  /// Return a series of tokens by incrementally scanning [template].
-  ///
-  /// Automatically desugars.
-  List<StandaloneTemplateAst> parse(
-    String template, {
-    required String sourceUrl,
-    bool desugar = true,
-    ExceptionHandler exceptionHandler = const ThrowingExceptionHandler(),
-  }) {
-    final tokens = const NgLexer().tokenize(template, exceptionHandler);
-    final parser = RecursiveAstParser(
-      SourceFile.fromString(
-        template,
-        url: sourceUrl,
-      ),
-      tokens,
-      _voidElements,
-      _svgElements,
-      exceptionHandler,
-    );
-    var asts = parser.parse();
-    if (desugar) {
-      final desugarVisitor = DesugarVisitor(exceptionHandler: exceptionHandler);
-      asts = asts.map((t) => t.accept(desugarVisitor)).cast<StandaloneTemplateAst>().toList();
-    }
-    return asts;
-  }
 }

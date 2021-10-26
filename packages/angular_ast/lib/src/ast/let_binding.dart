@@ -9,32 +9,21 @@ import '../visitor.dart';
 /// for a [EmbeddedTemplateAst].
 ///
 /// Clients should not extend, implement, or mix-in this class.
-abstract class LetBindingAst implements TemplateAst {
-  /// Create a new synthetic [LetBindingAst] listening to [name].
+abstract class LetBinding implements Template {
+  /// Create a new synthetic [LetBinding] listening to [name].
   /// [value] is an optional parameter, which indicates that the variable is
   /// bound to a the value '$implicit'.
-  factory LetBindingAst(String name, [String value]) = _SyntheticLetBindingAst;
+  factory LetBinding(String name, [String value]) = _SyntheticLetBinding;
 
-  /// Create a new synthetic [LetBindingAst] that originated from [origin].
-  factory LetBindingAst.from(TemplateAst? origin, String name, [String value]) = _SyntheticLetBindingAst.from;
+  /// Create a new synthetic [LetBinding] that originated from [origin].
+  factory LetBinding.from(Template? origin, String name, [String value]) = _SyntheticLetBinding.from;
 
-  /// Create a new [LetBindingAst] parsed from tokens in [sourceFile].
+  /// Create a new [LetBinding] parsed from tokens in [sourceFile].
   /// The [prefixToken] is the 'let-' component, the [elementDecoratorToken]
   /// is the variable name, and [valueToken] is the value bound to the
   /// variable.
-  factory LetBindingAst.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
-      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedLetBindingAst;
-
-  @override
-  bool operator ==(Object? other) => other is LetBindingAst && name == other.name && value == other.value;
-
-  @override
-  int get hashCode => Object.hash(name, value);
-
-  @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
-    return visitor.visitLetBinding(this, context);
-  }
+  factory LetBinding.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedLetBinding;
 
   /// Name of the variable.
   String get name;
@@ -43,22 +32,42 @@ abstract class LetBindingAst implements TemplateAst {
   String? get value;
 
   @override
-  String toString() => value != null ? '$LetBindingAst {let-$name="$value"}' : '$LetBindingAst {let-$name}';
+  int get hashCode {
+    return Object.hash(name, value);
+  }
+
+  @override
+  bool operator ==(Object? other) {
+    return other is LetBinding && name == other.name && value == other.value;
+  }
+
+  @override
+  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitLetBinding(this, context);
+  }
+
+  @override
+  String toString() {
+    if (value == null) {
+      return 'LetBindingAst {let-$name}';
+    }
+
+    return 'LetBindingAst {let-$name="$value"}';
+  }
 }
 
 /// Represents a real, non-synthetic `let-` binding: `let-var="value"`.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-class ParsedLetBindingAst extends TemplateAst with LetBindingAst implements ParsedDecoratorAst, TagOffsetInfo {
+class ParsedLetBinding extends Template with LetBinding implements ParsedDecorator, TagOffsetInfo {
+  ParsedLetBinding(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken == null ? nameToken : valueToken.rightQuote, sourceFile);
+
   @override
   final NgToken prefixToken;
 
   @override
   final NgToken nameToken;
-
-  /// [suffixToken] will always be null for this AST.
-  @override
-  final suffixToken = null;
 
   /// [NgAttributeValueToken] that represents the value bound to the
   /// let- variable; may be `null` to have no value implying $implicit.
@@ -69,48 +78,67 @@ class ParsedLetBindingAst extends TemplateAst with LetBindingAst implements Pars
   /// value.
   final NgToken? equalSignToken;
 
-  ParsedLetBindingAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
-      : super.parsed(prefixToken, valueToken == null ? nameToken : valueToken.rightQuote, sourceFile);
+  /// Offset of `let` prefix in `let-someVariable`.
+  @override
+  int get prefixOffset {
+    return prefixToken.offset;
+  }
 
   /// Name of the variable following `let-`.
   @override
-  String get name => nameToken.lexeme;
+  String get name {
+    return nameToken.lexeme;
+  }
 
   /// Offset of the variable following `let-`.
   @override
-  int get nameOffset => nameToken.offset;
+  int get nameOffset {
+    return nameToken.offset;
+  }
 
   /// Offset of equal sign; may be `null` if no value.
   @override
-  int? get equalSignOffset => equalSignToken?.offset;
+  int? get equalSignOffset {
+    return equalSignToken?.offset;
+  }
 
   @override
-  String? get value => valueToken?.innerValue?.lexeme;
+  String? get value {
+    return valueToken?.innerValue?.lexeme;
+  }
 
   @override
-  int? get valueOffset => valueToken?.innerValue?.offset;
+  int? get valueOffset {
+    return valueToken?.innerValue?.offset;
+  }
 
   /// Offset of value starting at left quote; may be `null` to have no value.
   @override
-  int? get quotedValueOffset => valueToken?.leftQuote?.offset;
+  int? get quotedValueOffset {
+    return valueToken?.leftQuote?.offset;
+  }
 
-  /// Offset of `let` prefix in `let-someVariable`.
+  /// [suffixToken] will always be null for this AST.
   @override
-  int get prefixOffset => prefixToken.offset;
+  NgToken? get suffixToken {
+    return null;
+  }
 
   /// There is no suffix token, always returns null.
   @override
-  int? get suffixOffset => null;
+  int? get suffixOffset {
+    return null;
+  }
 }
 
-class _SyntheticLetBindingAst extends SyntheticTemplateAst with LetBindingAst {
+class _SyntheticLetBinding extends SyntheticTemplate with LetBinding {
+  _SyntheticLetBinding(this.name, [this.value]);
+
+  _SyntheticLetBinding.from(Template? origin, this.name, [this.value]) : super.from(origin);
+
   @override
   final String name;
 
   @override
   final String? value;
-
-  _SyntheticLetBindingAst(this.name, [this.value]);
-
-  _SyntheticLetBindingAst.from(TemplateAst? origin, this.name, [this.value]) : super.from(origin);
 }

@@ -4,39 +4,39 @@ import 'src/parser.dart';
 
 export 'src/ast.dart'
     show
-        AnnotationAst,
-        AttributeAst,
-        BananaAst,
-        CloseElementAst,
-        CommentAst,
-        ContainerAst,
-        ElementAst,
-        EmbeddedContentAst,
+        Annotation,
+        Attribute,
+        Banana,
+        CloseElement,
+        Comment,
+        Container,
+        Element,
+        EmbeddedContent,
         EmbeddedTemplateAst,
-        EventAst,
-        InterpolationAst,
-        LetBindingAst,
-        ParsedAnnotationAst,
-        ParsedAttributeAst,
-        ParsedBananaAst,
+        Event,
+        Interpolation,
+        LetBinding,
+        ParsedAnnotation,
+        ParsedAttribute,
+        ParsedBanana,
         ParsedCloseElementAst,
-        ParsedDecoratorAst,
-        ParsedEmbeddedContentAst,
-        ParsedEventAst,
-        ParsedInterpolationAst,
-        ParsedElementAst,
-        ParsedLetBindingAst,
-        ParsedPropertyAst,
-        ParsedReferenceAst,
-        ParsedStarAst,
-        PropertyAst,
-        ReferenceAst,
-        StandaloneTemplateAst,
-        StarAst,
-        SyntheticTemplateAst,
+        ParsedDecorator,
+        ParsedEmbeddedContent,
+        ParsedEvent,
+        ParsedInterpolation,
+        ParsedElement,
+        ParsedLetBinding,
+        ParsedProperty,
+        ParsedReference,
+        ParsedStar,
+        Property,
+        Reference,
+        StandaloneTemplate,
+        Star,
+        SyntheticTemplate,
         TagOffsetInfo,
-        TemplateAst,
-        TextAst;
+        Template,
+        Text;
 export 'src/exception_handler/exception_handler.dart'
     show ExceptionHandler, RecoveringExceptionHandler, ThrowingExceptionHandler;
 export 'src/exception_handler/exception_handler.dart';
@@ -49,7 +49,7 @@ export 'src/visitor.dart'
         HumanizingTemplateAstVisitor,
         IdentityTemplateAstVisitor,
         MinimizeWhitespaceVisitor,
-        TemplateAstVisitor,
+        TemplateVisitor,
         DesugarVisitor,
         RecursiveTemplateAstVisitor;
 
@@ -58,16 +58,9 @@ export 'src/visitor.dart'
 /// If [desugar] is set, parsing will transform `*directive` and `[(banana)]`
 /// notations into their explicit forms using `<template>` and `[value]="..."
 /// (valueChanged)="..."` respectively.
-List<TemplateAst> parse(
-  String template, {
-  required String sourceUrl,
-  bool desugar = true,
-  ExceptionHandler exceptionHandler = const ThrowingExceptionHandler(),
-}) {
-  return const NgParser().parse(
-    template,
-    sourceUrl: sourceUrl,
-    exceptionHandler: exceptionHandler,
-    desugar: desugar,
-  );
+List<Template> parse(String template,
+    {required String sourceUrl,
+    bool desugar = true,
+    ExceptionHandler exceptionHandler = const ThrowingExceptionHandler()}) {
+  return const NgParser().parse(template, sourceUrl: sourceUrl, exceptionHandler: exceptionHandler, desugar: desugar);
 }

@@ -9,26 +9,21 @@ import '../visitor.dart';
 /// Embedded content is _like_ an `ElementAst`, but only contains children.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-abstract class EmbeddedContentAst implements StandaloneTemplateAst {
+abstract class EmbeddedContent implements StandaloneTemplate {
   /// Create a synthetic embedded content AST.
-  factory EmbeddedContentAst([String selector, String ngProjectAs, ReferenceAst reference]) =
-      _SyntheticEmbeddedContentAst;
+  factory EmbeddedContent([String selector, String ngProjectAs, Reference reference]) =
+      _SyntheticEmbeddedContent;
 
-  /// Create a synthetic [EmbeddedContentAst] that originated from [origin].
-  factory EmbeddedContentAst.from(TemplateAst origin, [String selector, String ngProjectAs, ReferenceAst reference]) =
-      _SyntheticEmbeddedContentAst.from;
+  /// Create a synthetic [EmbeddedContent] that originated from [origin].
+  factory EmbeddedContent.from(Template origin, [String selector, String ngProjectAs, Reference reference]) =
+      _SyntheticEmbeddedContent.from;
 
-  /// Create a new [EmbeddedContentAst] parsed from tokens in [sourceFile].
-  factory EmbeddedContentAst.parsed(SourceFile sourceFile, NgToken startElementToken, NgToken elementIdentifierToken,
-      NgToken endElementToken, CloseElementAst closeComplement,
-      [AttributeAst? selectAttribute,
-      AttributeAst? ngProjectAsAttribute,
-      ReferenceAst? reference]) = ParsedEmbeddedContentAst;
-
-  @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
-    return visitor.visitEmbeddedContent(this, context);
-  }
+  /// Create a new [EmbeddedContent] parsed from tokens in [sourceFile].
+  factory EmbeddedContent.parsed(SourceFile sourceFile, NgToken startElementToken, NgToken elementIdentifierToken,
+      NgToken endElementToken, CloseElement closeComplement,
+      [Attribute? selectAttribute,
+      Attribute? ngProjectAsAttribute,
+      Reference? reference]) = ParsedEmbeddedContent;
 
   /// A CSS selector denoting what elements should be embedded.
   ///
@@ -44,60 +39,87 @@ abstract class EmbeddedContentAst implements StandaloneTemplateAst {
   String? get ngProjectAs;
 
   /// Reference assignment.
-  ReferenceAst? get reference;
+  Reference? get reference;
 
   /// </ng-content> that is paired to this <ng-content>.
-  CloseElementAst get closeComplement;
-  set closeComplement(CloseElementAst closeComplement);
+  CloseElement get closeComplement;
+
+  set closeComplement(CloseElement closeComplement);
 
   @override
-  bool operator ==(Object? other) =>
-      other is EmbeddedContentAst &&
-      other.selector == selector &&
-      other.ngProjectAs == ngProjectAs &&
-      other.reference == reference &&
-      other.closeComplement == closeComplement;
+  int get hashCode {
+    return Object.hash(selector.hashCode, ngProjectAs.hashCode, reference, closeComplement);
+  }
 
   @override
-  int get hashCode => Object.hash(selector.hashCode, ngProjectAs.hashCode, reference, closeComplement);
+  bool operator ==(Object? other) {
+    return other is EmbeddedContent &&
+        other.selector == selector &&
+        other.ngProjectAs == ngProjectAs &&
+        other.reference == reference &&
+        other.closeComplement == closeComplement;
+  }
 
   @override
-  String toString() => 'EmbeddedContentAst {$selector, $ngProjectAs, $reference}';
+  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitEmbeddedContent(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'EmbeddedContentAst {$selector, $ngProjectAs, $reference}';
+  }
 }
 
-class ParsedEmbeddedContentAst extends TemplateAst with EmbeddedContentAst {
-  // Token for 'ng-content'.
-  final NgToken identifierToken;
-
-  // Select assignment.
-  final AttributeAst? selectAttribute;
-
-  // NgProjectAs assignment.
-  final AttributeAst? ngProjectAsAttribute;
-
-  // Reference assignment.
-  @override
-  final ReferenceAst? reference;
-
-  @override
-  CloseElementAst closeComplement;
-
-  ParsedEmbeddedContentAst(SourceFile sourceFile, NgToken startElementToken, this.identifierToken,
+class ParsedEmbeddedContent extends Template with EmbeddedContent {
+  ParsedEmbeddedContent(SourceFile sourceFile, NgToken startElementToken, this.identifierToken,
       NgToken endElementToken, this.closeComplement,
       [this.selectAttribute, this.ngProjectAsAttribute, this.reference])
       : super.parsed(startElementToken, endElementToken, sourceFile);
 
+  // Token for 'ng-content'.
+  final NgToken identifierToken;
+
+  // Select assignment.
+  final Attribute? selectAttribute;
+
+  // NgProjectAs assignment.
+  final Attribute? ngProjectAsAttribute;
+
+  // Reference assignment.
+  @override
+  final Reference? reference;
+
+  @override
+  CloseElement closeComplement;
+
   @override
   // '<ng-content select>' ; no value was defined.
   // Return null to handle later.
-  String? get selector =>
-      selectAttribute?.name != null && selectAttribute!.value == null ? null : selectAttribute?.value ?? '*';
+  String? get selector {
+    if (selectAttribute?.name != null && selectAttribute!.value == null) {
+      return null;
+    }
+
+    return selectAttribute?.value ?? '*';
+  }
 
   @override
-  String? get ngProjectAs => ngProjectAsAttribute?.value;
+  String? get ngProjectAs {
+    return ngProjectAsAttribute?.value;
+  }
 }
 
-class _SyntheticEmbeddedContentAst extends SyntheticTemplateAst with EmbeddedContentAst {
+class _SyntheticEmbeddedContent extends SyntheticTemplate with EmbeddedContent {
+  _SyntheticEmbeddedContent([this.selector = '*', this.ngProjectAs, this.reference]) {
+    closeComplement = CloseElement('ng-content');
+  }
+
+  _SyntheticEmbeddedContent.from(Template origin, [this.selector = '*', this.ngProjectAs, this.reference])
+      : super.from(origin) {
+    closeComplement = CloseElement('ng-content');
+  }
+
   @override
   final String selector;
 
@@ -105,17 +127,8 @@ class _SyntheticEmbeddedContentAst extends SyntheticTemplateAst with EmbeddedCon
   final String? ngProjectAs;
 
   @override
-  final ReferenceAst? reference;
+  final Reference? reference;
 
   @override
-  late CloseElementAst closeComplement;
-
-  _SyntheticEmbeddedContentAst([this.selector = '*', this.ngProjectAs, this.reference]) {
-    closeComplement = CloseElementAst('ng-content');
-  }
-
-  _SyntheticEmbeddedContentAst.from(TemplateAst origin, [this.selector = '*', this.ngProjectAs, this.reference])
-      : super.from(origin) {
-    closeComplement = CloseElementAst('ng-content');
-  }
+  late CloseElement closeComplement;
 }

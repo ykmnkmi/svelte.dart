@@ -20,7 +20,7 @@ NgMicroAst parseMicroExpression(
   String? expression,
   int? expressionOffset, {
   required String sourceUrl,
-  TemplateAst? origin,
+  Template? origin,
 }) =>
     const NgMicroParser().parse(
       directive,

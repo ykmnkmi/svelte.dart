@@ -317,7 +317,7 @@ String _parseAndMinifiy(String template) {
   final nodes = parse(
     template,
     sourceUrl: 'whitespace_test.dart',
-  ) as List<StandaloneTemplateAst>;
+  ) as List<StandaloneTemplate>;
   final buffer = StringBuffer();
   for (final node in _minimizing.visitAllRoot(nodes)) {
     buffer.write(_humanize(node));
@@ -327,4 +327,4 @@ String _parseAndMinifiy(String template) {
 
 final _minimizing = const MinimizeWhitespaceVisitor();
 final _humanizing = const HumanizingTemplateAstVisitor();
-String _humanize(TemplateAst astNode) => astNode.accept(_humanizing)!;
+String _humanize(Template astNode) => astNode.accept(_humanizing)!;

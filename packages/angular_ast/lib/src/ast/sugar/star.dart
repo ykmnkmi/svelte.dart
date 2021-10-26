@@ -10,21 +10,16 @@ import '../../visitor.dart';
 /// useful for tooling, but not useful for compilers).
 ///
 /// Clients should not extend, implement, or mix-in this class.
-abstract class StarAst implements TemplateAst {
-  /// Create a new synthetic [StarAst] assigned to [name].
-  factory StarAst(String name, [String? value]) = _SyntheticStarAst;
+abstract class Star implements Template {
+  /// Create a new synthetic [Star] assigned to [name].
+  factory Star(String name, [String? value]) = _SyntheticStar;
 
   /// Create a new synthetic property AST that originated from another AST.
-  factory StarAst.from(TemplateAst origin, String name, [String? value]) = _SyntheticStarAst.from;
+  factory Star.from(Template origin, String name, [String? value]) = _SyntheticStar.from;
 
   /// Create a new property assignment parsed from tokens in [sourceFile].
-  factory StarAst.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
-      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedStarAst;
-
-  @override
-  bool operator ==(Object? other) {
-    return other is PropertyAst && value == other.value && name == other.name;
-  }
+  factory Star.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken,
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedStar;
 
   @override
   int get hashCode {
@@ -38,13 +33,22 @@ abstract class StarAst implements TemplateAst {
   String? get value;
 
   @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
+  bool operator ==(Object? other) {
+    return other is Property && value == other.value && name == other.name;
+  }
+
+  @override
+  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
     return visitor.visitStar(this, context);
   }
 
   @override
   String toString() {
-    return value != null ? 'StarAst {$name="$value"}' : 'StarAst {$name}';
+    if (value == null) {
+      return 'StarAst {$name}';
+    }
+
+    return 'StarAst {$name="$value"}';
   }
 }
 
@@ -54,8 +58,8 @@ abstract class StarAst implements TemplateAst {
 /// useful for tooling, but not useful for compilers). Preserves offsets.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-class ParsedStarAst extends TemplateAst with StarAst implements ParsedDecoratorAst, TagOffsetInfo {
-  ParsedStarAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
+class ParsedStar extends Template with Star implements ParsedDecorator, TagOffsetInfo {
+  ParsedStar(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
       : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
 
   @override
@@ -125,10 +129,10 @@ class ParsedStarAst extends TemplateAst with StarAst implements ParsedDecoratorA
   }
 }
 
-class _SyntheticStarAst extends SyntheticTemplateAst with StarAst {
-  _SyntheticStarAst(this.name, [this.value]);
+class _SyntheticStar extends SyntheticTemplate with Star {
+  _SyntheticStar(this.name, [this.value]);
 
-  _SyntheticStarAst.from(TemplateAst origin, this.name, [this.value]) : super.from(origin);
+  _SyntheticStar.from(Template origin, this.name, [this.value]) : super.from(origin);
 
   @override
   final String name;

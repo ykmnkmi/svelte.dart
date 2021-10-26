@@ -8,10 +8,10 @@ final _listEquals = const ListEquality<dynamic>();
 /// A de-sugared form of longer pseudo expression.
 class NgMicroAst {
   /// What variable assignments were made.
-  final List<LetBindingAst> letBindings;
+  final List<LetBinding> letBindings;
 
   /// What properties are bound.
-  final List<PropertyAst> properties;
+  final List<Property> properties;
 
   @literal
   const NgMicroAst({required this.letBindings, required this.properties});

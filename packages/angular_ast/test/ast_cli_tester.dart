@@ -5,7 +5,7 @@ import 'package:angular_ast/angular_ast.dart';
 
 RecoveringExceptionHandler exceptionHandler = RecoveringExceptionHandler();
 
-List<StandaloneTemplateAst> parse(String template) => const NgParser().parse(
+List<StandaloneTemplate> parse(String template) => const NgParser().parse(
       template,
       sourceUrl: '/test/parser_test.dart#inline',
       exceptionHandler: exceptionHandler,

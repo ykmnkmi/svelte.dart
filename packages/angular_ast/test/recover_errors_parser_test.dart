@@ -3,7 +3,7 @@ import 'package:angular_ast/angular_ast.dart';
 
 final recoveringExceptionHandler = RecoveringExceptionHandler();
 
-List<StandaloneTemplateAst> parse(
+List<StandaloneTemplate> parse(
   String template, {
   bool desugar = false,
 }) {
@@ -16,7 +16,7 @@ List<StandaloneTemplateAst> parse(
   );
 }
 
-String astsToString(List<StandaloneTemplateAst> asts) {
+String astsToString(List<StandaloneTemplate> asts) {
   var visitor = const HumanizingTemplateAstVisitor();
   return asts.map((t) => t.accept(visitor)).join('');
 }
@@ -34,9 +34,9 @@ void main() {
     var asts = parse('<div>');
     expect(asts.length, 1);
 
-    var element = asts[0] as ElementAst;
-    expect(element, ElementAst('div', CloseElementAst('div')));
-    expect(element.closeComplement, CloseElementAst('div'));
+    var element = asts[0] as Element;
+    expect(element, Element('div', CloseElement('div')));
+    expect(element.closeComplement, CloseElement('div'));
     expect(element.isSynthetic, false);
     expect(element.closeComplement!.isSynthetic, true);
     expect(astsToString(asts), '<div></div>');
@@ -48,9 +48,9 @@ void main() {
     var asts = parse('</div>');
     expect(asts.length, 1);
 
-    var element = asts[0] as ElementAst;
-    expect(element, ElementAst('div', CloseElementAst('div')));
-    expect(element.closeComplement, CloseElementAst('div'));
+    var element = asts[0] as Element;
+    expect(element, Element('div', CloseElement('div')));
+    expect(element.closeComplement, CloseElement('div'));
     expect(element.isSynthetic, true);
     expect(element.closeComplement!.isSynthetic, false);
     expect(astsToString(asts), '<div></div>');
@@ -62,8 +62,8 @@ void main() {
     var asts = parse('<hr/>');
     expect(asts.length, 1);
 
-    var element = asts[0] as ElementAst;
-    expect(element, ElementAst('hr', null));
+    var element = asts[0] as Element;
+    expect(element, Element('hr', null));
     expect(element.closeComplement, null);
   });
 
@@ -71,7 +71,7 @@ void main() {
     var asts = parse('<div><div><div>text1</div>text2</div>');
     expect(asts.length, 1);
 
-    var element = asts[0] as ElementAst;
+    var element = asts[0] as Element;
     expect(element.childNodes.length, 1);
     expect(element.childNodes[0].childNodes.length, 2);
     expect(element.closeComplement!.isSynthetic, true);
@@ -84,7 +84,7 @@ void main() {
     var asts = parse('<div><div></div>text1</div>text2</div>');
     expect(asts.length, 3);
 
-    var element = asts[2] as ElementAst;
+    var element = asts[2] as Element;
     expect(element.isSynthetic, true);
     expect(element.closeComplement!.isSynthetic, false);
 
@@ -103,22 +103,22 @@ void main() {
     var elementA = asts[0];
     expect(elementA.childNodes.length, 1);
     expect(elementA.isSynthetic, false);
-    expect((elementA as ElementAst).closeComplement!.isSynthetic, false);
+    expect((elementA as Element).closeComplement!.isSynthetic, false);
 
     var elementInnerB = elementA.childNodes[0];
     expect(elementInnerB.childNodes.length, 1);
     expect(elementInnerB.isSynthetic, false);
-    expect((elementInnerB as ElementAst).closeComplement!.isSynthetic, true);
+    expect((elementInnerB as Element).closeComplement!.isSynthetic, true);
 
     var elementC = elementInnerB.childNodes[0];
     expect(elementC.childNodes.length, 0);
     expect(elementC.isSynthetic, true);
-    expect((elementC as ElementAst).closeComplement!.isSynthetic, false);
+    expect((elementC as Element).closeComplement!.isSynthetic, false);
 
     var elementOuterB = asts[1];
     expect(elementOuterB.childNodes.length, 0);
     expect(elementOuterB.isSynthetic, true);
-    expect((elementOuterB as ElementAst).closeComplement!.isSynthetic, false);
+    expect((elementOuterB as Element).closeComplement!.isSynthetic, false);
 
     expect(astsToString(asts), '<a><b><c></c></b></a><b></b>');
 
@@ -152,9 +152,9 @@ void main() {
     expect(div.childNodes, hasLength(1));
 
     final ngContainer = div.childNodes[0];
-    expect(ngContainer, const TypeMatcher<ContainerAst>());
+    expect(ngContainer, const TypeMatcher<Container>());
     expect(ngContainer.isSynthetic, false);
-    expect((ngContainer as ContainerAst).closeComplement.isSynthetic, true);
+    expect((ngContainer as Container).closeComplement.isSynthetic, true);
     expect(astsToString(asts), '<div><ng-container></ng-container></div>');
 
     checkException(ParserErrorCode.CANNOT_FIND_MATCHING_CLOSE, 5, 14);
@@ -168,9 +168,9 @@ void main() {
     expect(div.childNodes, hasLength(1));
 
     final ngContainer = div.childNodes[0];
-    expect(ngContainer, const TypeMatcher<ContainerAst>());
+    expect(ngContainer, const TypeMatcher<Container>());
     expect(ngContainer.isSynthetic, true);
-    expect((ngContainer as ContainerAst).closeComplement.isSynthetic, false);
+    expect((ngContainer as Container).closeComplement.isSynthetic, false);
     expect(astsToString(asts), '<div><ng-container></ng-container></div>');
 
     checkException(ParserErrorCode.DANGLING_CLOSE_ELEMENT, 5, 15);
@@ -181,7 +181,7 @@ void main() {
     expect(asts, hasLength(1));
 
     final ngContainer = asts[0];
-    expect(ngContainer, const TypeMatcher<ContainerAst>());
+    expect(ngContainer, const TypeMatcher<Container>());
     expect(astsToString(asts), '<ng-container></ng-container>');
 
     checkException(ParserErrorCode.NONVOID_ELEMENT_USING_VOID_END, 13, 2);
@@ -200,7 +200,7 @@ void main() {
     expect(asts, hasLength(1));
 
     final ngContainer = asts[0];
-    expect(ngContainer, const TypeMatcher<ContainerAst>());
+    expect(ngContainer, const TypeMatcher<Container>());
     expect(astsToString(asts), '<ng-container @annotation *star="expr"></ng-container>');
 
     final exceptions = recoveringExceptionHandler.exceptions;
@@ -240,9 +240,9 @@ void main() {
     expect(div.childNodes.length, 1);
 
     var ngContent = div.childNodes[0];
-    expect(ngContent, TypeMatcher<EmbeddedContentAst>());
+    expect(ngContent, TypeMatcher<EmbeddedContent>());
     expect(ngContent.isSynthetic, false);
-    expect((ngContent as EmbeddedContentAst).closeComplement.isSynthetic, true);
+    expect((ngContent as EmbeddedContent).closeComplement.isSynthetic, true);
 
     expect(astsToString(asts), '<div><ng-content select="*"></ng-content></div>');
 
@@ -257,9 +257,9 @@ void main() {
     expect(div.childNodes.length, 1);
 
     var ngContent = div.childNodes[0];
-    expect(ngContent, TypeMatcher<EmbeddedContentAst>());
+    expect(ngContent, TypeMatcher<EmbeddedContent>());
     expect(ngContent.isSynthetic, true);
-    expect((ngContent as EmbeddedContentAst).closeComplement.isSynthetic, false);
+    expect((ngContent as EmbeddedContent).closeComplement.isSynthetic, false);
     expect(astsToString(asts), '<div><ng-content select="*"></ng-content></div>');
 
     checkException(ParserErrorCode.DANGLING_CLOSE_ELEMENT, 5, 13);
@@ -277,15 +277,15 @@ void main() {
     expect(div.childNodes.length, 0);
     expect(ngcontent2.childNodes.length, 0);
 
-    expect(ngcontent1, TypeMatcher<EmbeddedContentAst>());
-    expect(div, TypeMatcher<ElementAst>());
-    expect(ngcontent2, TypeMatcher<EmbeddedContentAst>());
+    expect(ngcontent1, TypeMatcher<EmbeddedContent>());
+    expect(div, TypeMatcher<Element>());
+    expect(ngcontent2, TypeMatcher<EmbeddedContent>());
 
     expect(ngcontent1.isSynthetic, false);
-    expect((ngcontent1 as EmbeddedContentAst).closeComplement.isSynthetic, true);
+    expect((ngcontent1 as EmbeddedContent).closeComplement.isSynthetic, true);
 
     expect(ngcontent2.isSynthetic, true);
-    expect((ngcontent2 as EmbeddedContentAst).closeComplement.isSynthetic, false);
+    expect((ngcontent2 as EmbeddedContent).closeComplement.isSynthetic, false);
 
     expect(astsToString(asts), '<ng-content select="*"></ng-content><div></div><ng-content select="*"></ng-content>');
 
@@ -308,7 +308,7 @@ void main() {
     expect(asts.length, 1);
 
     var ngContent = asts[0];
-    expect(ngContent, TypeMatcher<EmbeddedContentAst>());
+    expect(ngContent, TypeMatcher<EmbeddedContent>());
     expect(astsToString(asts), '<ng-content select="*"></ng-content>');
 
     checkException(ParserErrorCode.NONVOID_ELEMENT_USING_VOID_END, 11, 2);
@@ -319,7 +319,7 @@ void main() {
     expect(asts, hasLength(1));
 
     var ngContent = asts[0];
-    expect(ngContent, const TypeMatcher<EmbeddedContentAst>());
+    expect(ngContent, const TypeMatcher<EmbeddedContent>());
     expect(astsToString(asts), '<ng-content select="*"></ng-content>');
   });
 
@@ -380,9 +380,9 @@ void main() {
     var asts = parse(html);
     expect(asts.length, 1);
 
-    var ngcontent = asts[0] as EmbeddedContentAst;
+    var ngcontent = asts[0] as EmbeddedContent;
     expect(ngcontent.selector, '*');
-    expect(ngcontent.reference, ReferenceAst('validRef'));
+    expect(ngcontent.reference, Reference('validRef'));
 
     var exceptions = recoveringExceptionHandler.exceptions;
     expect(exceptions.length, 2);
@@ -403,7 +403,7 @@ void main() {
     var asts = parse(html);
     expect(asts.length, 1);
 
-    var ngcontent = asts[0] as EmbeddedContentAst;
+    var ngcontent = asts[0] as EmbeddedContent;
     expect(ngcontent.selector, '*');
 
     checkException(ParserErrorCode.DUPLICATE_SELECT_DECORATOR, 25, 20);
@@ -414,8 +414,8 @@ void main() {
     var asts = parse(html);
     expect(asts.length, 1);
 
-    var ngcontent = asts[0] as EmbeddedContentAst;
-    expect(ngcontent.reference, ReferenceAst('foo'));
+    var ngcontent = asts[0] as EmbeddedContent;
+    expect(ngcontent.reference, Reference('foo'));
 
     checkException(ParserErrorCode.DUPLICATE_REFERENCE_DECORATOR, 17, 4);
   });
@@ -424,7 +424,7 @@ void main() {
     var asts = parse('<div [prop.postfix.unit.illegal]="blah"></div>');
     expect(asts.length, 1);
 
-    var element = asts[0] as ElementAst;
+    var element = asts[0] as Element;
     expect(element.properties.length, 1);
     var property = element.properties[0];
     expect(property.name, 'prop');
@@ -438,9 +438,9 @@ void main() {
     var asts = parse('<div on-="someValue"></div>');
     expect(asts.length, 1);
 
-    var element = asts[0] as ElementAst;
+    var element = asts[0] as Element;
     expect(element.events.length, 1);
-    var event = element.events[0] as ParsedEventAst;
+    var event = element.events[0] as ParsedEvent;
     expect(event.name, '');
     expect(event.prefixToken.lexeme, 'on-');
     expect(event.value, 'someValue');
@@ -452,9 +452,9 @@ void main() {
     var asts = parse('<div bind-="someValue"></div>');
     expect(asts.length, 1);
 
-    var element = asts[0] as ElementAst;
+    var element = asts[0] as Element;
     expect(element.properties.length, 1);
-    var property = element.properties[0] as ParsedPropertyAst;
+    var property = element.properties[0] as ParsedProperty;
     expect(property.name, '');
     expect(property.prefixToken.lexeme, 'bind-');
     expect(property.value, 'someValue');
@@ -466,14 +466,14 @@ void main() {
     var asts = parse('<div someAttr="{{mustache1 {{ mustache2"></div>');
     expect(asts.length, 1);
 
-    var element = asts[0] as ElementAst;
+    var element = asts[0] as Element;
     expect(element.attributes.length, 1);
-    var attr = element.attributes[0] as ParsedAttributeAst;
+    var attr = element.attributes[0] as ParsedAttribute;
     expect(attr.value, '{{mustache1 {{ mustache2');
 
     expect(attr.mustaches!.length, 2);
-    var mustache1 = attr.mustaches![0] as ParsedInterpolationAst;
-    var mustache2 = attr.mustaches![1] as ParsedInterpolationAst;
+    var mustache1 = attr.mustaches![0] as ParsedInterpolation;
+    var mustache2 = attr.mustaches![1] as ParsedInterpolation;
 
     expect(mustache1.beginToken!.offset, 15);
     expect(mustache1.beginToken!.lexeme, '{{');
@@ -511,7 +511,7 @@ void main() {
     var asts = parse('<div let-someVar></div>');
     expect(asts.length, 1);
 
-    var element = asts[0] as ElementAst;
+    var element = asts[0] as Element;
     expect(element.attributes.length, 0);
 
     var exceptions = recoveringExceptionHandler.exceptions;
@@ -543,14 +543,14 @@ void main() {
     var asts = parse('<div someAttr="mustache1 }} mustache2 }}"></div>');
     expect(asts.length, 1);
 
-    var element = asts[0] as ElementAst;
+    var element = asts[0] as Element;
     expect(element.attributes.length, 1);
-    var attr = element.attributes[0] as ParsedAttributeAst;
+    var attr = element.attributes[0] as ParsedAttribute;
     expect(attr.value, 'mustache1 }} mustache2 }}');
 
     expect(attr.mustaches!.length, 2);
-    var mustache1 = attr.mustaches![0] as ParsedInterpolationAst;
-    var mustache2 = attr.mustaches![1] as ParsedInterpolationAst;
+    var mustache1 = attr.mustaches![0] as ParsedInterpolation;
+    var mustache2 = attr.mustaches![1] as ParsedInterpolation;
 
     expect(mustache1.beginToken!.offset, 15);
     expect(mustache1.beginToken!.lexeme, '{{');
@@ -588,7 +588,7 @@ void main() {
     final asts = parse('<p foo="bar></p>');
     expect(asts, hasLength(1));
 
-    final p = asts.first as ElementAst;
+    final p = asts.first as Element;
     expect(p.attributes, hasLength(1));
     expect(p.isSynthetic, false);
     expect(p.closeComplement!.isSynthetic, true);

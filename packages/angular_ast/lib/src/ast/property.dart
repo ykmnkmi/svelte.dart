@@ -8,36 +8,29 @@ import '../visitor.dart';
 /// element.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-abstract class PropertyAst implements TemplateAst {
-  /// Create a new synthetic [PropertyAst] assigned to [name].
-  factory PropertyAst(String name, [String? value, String? postfix, String? unit]) = _SyntheticPropertyAst;
+abstract class Property implements Template {
+  /// Create a new synthetic [Property] assigned to [name].
+  factory Property(String name, [String? value, String? postfix, String? unit]) = _SyntheticProperty;
 
   /// Create a new synthetic property AST that originated from another AST.
-  factory PropertyAst.from(TemplateAst? origin, String name, [String? value, String? postfix, String? unit]) =
-      _SyntheticPropertyAst.from;
+  factory Property.from(Template? origin, String name, [String? value, String? postfix, String? unit]) =
+      _SyntheticProperty.from;
 
   /// Create a new property assignment parsed from tokens in [sourceFile].
-  factory PropertyAst.parsed(
+  factory Property.parsed(
       SourceFile sourceFile, NgToken prefixToken, NgToken elementDecoratorToken, NgToken? suffixToken,
-      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedPropertyAst;
-
-  @override
-  bool operator ==(Object? other) =>
-      other is PropertyAst && name == other.name && postfix == other.postfix && unit == other.unit;
-
-  @override
-  int get hashCode => Object.hash(name, postfix, unit);
-
-  @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
-    return visitor.visitProperty(this, context);
-  }
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedProperty;
 
   /// Name of the property being set.
   String get name;
 
   /// Unquoted value being bound to property.
   String? get value;
+
+  @override
+  int get hashCode {
+    return Object.hash(name, postfix, unit);
+  }
 
   /// An optional indicator for some properties as a shorthand syntax.
   ///
@@ -60,6 +53,16 @@ abstract class PropertyAst implements TemplateAst {
   String? get unit;
 
   @override
+  bool operator ==(Object? other) {
+    return other is Property && name == other.name && postfix == other.postfix && unit == other.unit;
+  }
+
+  @override
+  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitProperty(this, context);
+  }
+
+  @override
   String toString() {
     if (unit != null) {
       return 'PropertyAst {$name.$postfix.$unit}';
@@ -77,7 +80,11 @@ abstract class PropertyAst implements TemplateAst {
 /// `[name.postfix.unit]="value"`for an element.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-class ParsedPropertyAst extends TemplateAst with PropertyAst implements ParsedDecoratorAst, TagOffsetInfo {
+class ParsedProperty extends Template with Property implements ParsedDecorator, TagOffsetInfo {
+  ParsedProperty(SourceFile sourceFile, this.prefixToken, this.nameToken, this.suffixToken,
+      [this.valueToken, this.equalSignToken])
+      : super.parsed(prefixToken, valueToken == null ? suffixToken : valueToken.rightQuote, sourceFile);
+
   @override
   final NgToken prefixToken;
 
@@ -97,45 +104,51 @@ class ParsedPropertyAst extends TemplateAst with PropertyAst implements ParsedDe
   /// value.
   final NgToken? equalSignToken;
 
-  ParsedPropertyAst(SourceFile sourceFile, this.prefixToken, this.nameToken, this.suffixToken,
-      [this.valueToken, this.equalSignToken])
-      : super.parsed(prefixToken, valueToken == null ? suffixToken : valueToken.rightQuote, sourceFile) {
-    if (_nameWithoutBrackets.split('.').length > 3) {}
+  String get _nameWithoutBrackets {
+    return nameToken.lexeme;
   }
-
-  String get _nameWithoutBrackets => nameToken.lexeme;
-
-  /// Name `name` of `[name.postfix.unit]`.
-  @override
-  String get name => _nameWithoutBrackets.split('.').first;
-
-  /// Offset of name.
-  @override
-  int get nameOffset => nameToken.offset;
-
-  /// Offset of equal sign; may be `null` if no value.
-  @override
-  int? get equalSignOffset => equalSignToken?.offset;
-
-  /// Expression value as [String] bound to property; may be `null` if no value.
-  @override
-  String? get value => valueToken?.innerValue?.lexeme;
-
-  /// Offset of value; may be `null` to have no value.
-  @override
-  int? get valueOffset => valueToken?.innerValue?.offset;
-
-  /// Offset of value starting at left quote; may be `null` to have no value.
-  @override
-  int? get quotedValueOffset => valueToken?.leftQuote?.offset;
 
   /// Offset of `[` prefix in `[name.postfix.unit]`.
   @override
-  int get prefixOffset => prefixToken.offset;
+  int get prefixOffset {
+    return prefixToken.offset;
+  }
 
-  /// Offset of `]` suffix in `[name.postfix.unit]`.
+  /// Name `name` of `[name.postfix.unit]`.
   @override
-  int? get suffixOffset => suffixToken?.offset;
+  String get name {
+    return _nameWithoutBrackets.split('.').first;
+  }
+
+  /// Offset of name.
+  @override
+  int get nameOffset {
+    return nameToken.offset;
+  }
+
+  /// Offset of equal sign; may be `null` if no value.
+  @override
+  int? get equalSignOffset {
+    return equalSignToken?.offset;
+  }
+
+  /// Expression value as [String] bound to property; may be `null` if no value.
+  @override
+  String? get value {
+    return valueToken?.innerValue?.lexeme;
+  }
+
+  /// Offset of value; may be `null` to have no value.
+  @override
+  int? get valueOffset {
+    return valueToken?.innerValue?.offset;
+  }
+
+  /// Offset of value starting at left quote; may be `null` to have no value.
+  @override
+  int? get quotedValueOffset {
+    return valueToken?.leftQuote?.offset;
+  }
 
   /// Name `postfix` in `[name.postfix.unit]`; may be `null` to have no value.
   @override
@@ -149,13 +162,20 @@ class ParsedPropertyAst extends TemplateAst with PropertyAst implements ParsedDe
   String? get unit {
     final split = _nameWithoutBrackets.split('.');
     return split.length > 2 ? split[2] : null;
+
+  }
+
+  /// Offset of `]` suffix in `[name.postfix.unit]`.
+  @override
+  int? get suffixOffset {
+    return suffixToken?.offset;
   }
 }
 
-class _SyntheticPropertyAst extends SyntheticTemplateAst with PropertyAst {
-  _SyntheticPropertyAst(this.name, [this.value, this.postfix, this.unit]);
+class _SyntheticProperty extends SyntheticTemplate with Property {
+  _SyntheticProperty(this.name, [this.value, this.postfix, this.unit]);
 
-  _SyntheticPropertyAst.from(TemplateAst? origin, this.name, [this.value, this.postfix, this.unit])
+  _SyntheticProperty.from(Template? origin, this.name, [this.value, this.postfix, this.unit])
       : super.from(origin);
 
   @override

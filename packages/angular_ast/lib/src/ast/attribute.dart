@@ -5,29 +5,24 @@ import '../ast.dart';
 import '../token/tokens.dart';
 import '../visitor.dart';
 
-const _listEquals = ListEquality<Object?>();
+const ListEquality<Object?> _listEquals = ListEquality<Object?>();
 
 /// Represents a static attribute assignment (i.e. not bound to an expression).
 ///
 /// Clients should not extend, implement, or mix-in this class.
-abstract class AttributeAst implements TemplateAst {
-  /// Create a new synthetic [AttributeAst] with a string [value].
-  factory AttributeAst(String name, [String? value, List<StandaloneTemplateAst> childNodes]) = _SyntheticAttributeAst;
+abstract class Attribute implements Template {
+  /// Create a new synthetic [Attribute] with a string [value].
+  factory Attribute(String name, [String? value, List<StandaloneTemplate> childNodes]) = _SyntheticAttributeAst;
 
-  /// Create a new synthetic [AttributeAst] that originated from node [origin].
-  factory AttributeAst.from(TemplateAst origin, String name, [String? value, List<StandaloneTemplateAst> childNodes]) =
+  /// Create a new synthetic [Attribute] that originated from node [origin].
+  factory Attribute.from(Template origin, String name, [String? value, List<StandaloneTemplate> childNodes]) =
       _SyntheticAttributeAst.from;
 
-  /// Create a new [AttributeAst] parsed from tokens from [sourceFile].
-  factory AttributeAst.parsed(SourceFile sourceFile, NgToken nameToken,
+  /// Create a new [Attribute] parsed from tokens from [sourceFile].
+  factory Attribute.parsed(SourceFile sourceFile, NgToken nameToken,
       [NgAttributeValueToken? valueToken,
       NgToken? equalSignToken,
-      List<StandaloneTemplateAst> childNod]) = ParsedAttributeAst;
-
-  @override
-  bool operator ==(Object? other) {
-    return other is AttributeAst && name == other.name && _listEquals.equals(childNodes, other.childNodes);
-  }
+      List<StandaloneTemplate> childNod]) = ParsedAttribute;
 
   @override
   int get hashCode {
@@ -47,10 +42,15 @@ abstract class AttributeAst implements TemplateAst {
   /// Mustaches found within value; may be `null` if value is null.
   /// If value exists but has no mustaches, will be empty list.
   @override
-  List<StandaloneTemplateAst> get childNodes;
+  List<StandaloneTemplate> get childNodes;
 
   @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
+  bool operator ==(Object? other) {
+    return other is Attribute && name == other.name && _listEquals.equals(childNodes, other.childNodes);
+  }
+
+  @override
+  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
     return visitor.visitAttribute(this, context);
   }
 
@@ -63,9 +63,9 @@ abstract class AttributeAst implements TemplateAst {
 /// Represents a real(non-synthetic) parsed AttributeAst. Preserves offsets.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-class ParsedAttributeAst extends TemplateAst with AttributeAst implements ParsedDecoratorAst, TagOffsetInfo {
-  ParsedAttributeAst(SourceFile sourceFile, this.nameToken,
-      [this.valueToken, this.equalSignToken, this.childNodes = const <StandaloneTemplateAst>[]])
+class ParsedAttribute extends Template with Attribute implements ParsedDecorator, TagOffsetInfo {
+  ParsedAttribute(SourceFile sourceFile, this.nameToken,
+      [this.valueToken, this.equalSignToken, this.childNodes = const <StandaloneTemplate>[]])
       : super.parsed(nameToken, valueToken == null ? nameToken : valueToken.rightQuote, sourceFile);
 
   /// [NgToken] that represents the attribute name.
@@ -83,7 +83,7 @@ class ParsedAttributeAst extends TemplateAst with AttributeAst implements Parsed
 
   /// Static attribute value offset; may be `null` to have no value.
   @override
-  final List<StandaloneTemplateAst> childNodes;
+  final List<StandaloneTemplate> childNodes;
 
   /// Static attribute name.
   @override
@@ -149,11 +149,11 @@ class ParsedAttributeAst extends TemplateAst with AttributeAst implements Parsed
   }
 }
 
-class _SyntheticAttributeAst extends SyntheticTemplateAst with AttributeAst {
-  _SyntheticAttributeAst(this.name, [this.value, this.childNodes = const <StandaloneTemplateAst>[]]);
+class _SyntheticAttributeAst extends SyntheticTemplate with Attribute {
+  _SyntheticAttributeAst(this.name, [this.value, this.childNodes = const <StandaloneTemplate>[]]);
 
-  _SyntheticAttributeAst.from(TemplateAst origin, this.name,
-      [this.value, this.childNodes = const <StandaloneTemplateAst>[]])
+  _SyntheticAttributeAst.from(Template origin, this.name,
+      [this.value, this.childNodes = const <StandaloneTemplate>[]])
       : super.from(origin);
 
   @override
@@ -163,7 +163,7 @@ class _SyntheticAttributeAst extends SyntheticTemplateAst with AttributeAst {
   final String? value;
 
   @override
-  final List<StandaloneTemplateAst> childNodes;
+  final List<StandaloneTemplate> childNodes;
 
   @override
   String? get quotedValue => value == null ? null : '"$value"';

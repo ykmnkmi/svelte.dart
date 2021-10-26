@@ -7,49 +7,55 @@ import '../visitor.dart';
 /// Represents a bound text element to an expression.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-abstract class InterpolationAst implements StandaloneTemplateAst {
-  /// Create a new synthetic [InterpolationAst] with a bound [expression].
-  factory InterpolationAst(String value) = _SyntheticInterpolationAst;
+abstract class Interpolation implements StandaloneTemplate {
+  /// Create a new synthetic [Interpolation] with a bound [expression].
+  factory Interpolation(String value) = _SyntheticInterpolation;
 
-  /// Create a new synthetic [InterpolationAst] that originated from [origin].
-  factory InterpolationAst.from(TemplateAst origin, String value) = _SyntheticInterpolationAst.from;
+  /// Create a new synthetic [Interpolation] that originated from [origin].
+  factory Interpolation.from(Template origin, String value) = _SyntheticInterpolation.from;
 
-  /// Create a new [InterpolationAst] parsed from tokens in [sourceFile].
-  factory InterpolationAst.parsed(SourceFile sourceFile, NgToken beginToken, NgToken valueToken, NgToken endToken) =
-      ParsedInterpolationAst;
-
-  @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
-    return visitor.visitInterpolation(this, context);
-  }
+  /// Create a new [Interpolation] parsed from tokens in [sourceFile].
+  factory Interpolation.parsed(SourceFile sourceFile, NgToken beginToken, NgToken valueToken, NgToken endToken) =
+      ParsedInterpolation;
 
   /// Bound String value used in expression; used to preserve offsets
   String get value;
 
   @override
-  bool operator ==(Object? other) => other is InterpolationAst && other.value == value;
+  int get hashCode {
+    return value.hashCode;
+  }
 
   @override
-  int get hashCode => value.hashCode;
+  bool operator ==(Object? other) {
+    return other is Interpolation && other.value == value;
+  }
 
   @override
-  String toString() => 'InterpolationAst {$value}';
+  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+    return visitor.visitInterpolation(this, context);
+  }
+
+  @override
+  String toString() {
+    return 'InterpolationAst {$value}';
+  }
 }
 
-class ParsedInterpolationAst extends TemplateAst with InterpolationAst {
-  final NgToken valueToken;
-
-  ParsedInterpolationAst(SourceFile sourceFile, NgToken beginToken, this.valueToken, NgToken endToken)
+class ParsedInterpolation extends Template with Interpolation {
+  ParsedInterpolation(SourceFile sourceFile, NgToken beginToken, this.valueToken, NgToken endToken)
       : super.parsed(beginToken, endToken, sourceFile);
+
+  final NgToken valueToken;
 
   @override
   String get value => valueToken.lexeme;
 }
 
-class _SyntheticInterpolationAst extends SyntheticTemplateAst with InterpolationAst {
-  _SyntheticInterpolationAst(this.value);
+class _SyntheticInterpolation extends SyntheticTemplate with Interpolation {
+  _SyntheticInterpolation(this.value);
 
-  _SyntheticInterpolationAst.from(TemplateAst origin, this.value) : super.from(origin);
+  _SyntheticInterpolation.from(Template origin, this.value) : super.from(origin);
 
   @override
   final String value;

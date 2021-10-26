@@ -15,57 +15,26 @@ class NgSimpleTokenizer {
     var scanner = NgSimpleScanner(template);
     scanner.resetState();
     var token = scanner.scan();
+
     while (token.type != NgSimpleTokenType.EOF) {
       yield token;
       token = scanner.scan();
     }
+
     yield token; // Explicitly yield the EOF token.
   }
 }
 
 class NgSimpleScanner {
-  static bool matchesGroup(Match match, int group) => match.group(group) != null;
-
-  static final _allTextMatches = RegExp(r'([^\<]+)|(<!--)|(<)');
-  static final _allElementMatches = RegExp(r'(\])|' //1  ]
-      r'(\!)|' //2  !
-      r'(\-)|' //3  -
-      r'(\))|' //4  )
-      r'(>)|' //5  >
-      r'(\/)|' //6  /
-      r'(\[)|' //7  [
-      r'(\()|' //8  (
-      r'([\s]+)|' //9 whitespace
-      //10 any alphanumeric + '-' + '_' + ':'
-      r'([a-zA-Z]([\w\_\-:])*[a-zA-Z0-9]?)|'
-      r'("([^"\\]+|\\.)*"?)|' //12 closed double quote (includes group 13)
-      r"('([^'\\]+|\\.)*'?)|" //14 closed single quote (includes group 15)
-      r'(<)|' //16 <
-      r'(=)|' //17 =
-      r'(\*)|' //18 *
-      r'(\#)|' //19 #
-      r'(\.)|' //20 .
-      r'(\%)|' //21 %
-      r'(\\)|' //22 \
-      r'(\@)'); //23 @
-  static final _commentEnd = RegExp('-->');
-  static final _mustaches = RegExp(r'({{)|(}})');
-  static final _newline = RegExp('\n');
-  static final _escape = RegExp(r'&#([0-9]{2,4});|' // 1 decimal
-      '&#x([0-9A-Fa-f]{2,4});|' // 2 hex
-      '&([a-zA-Z]+);'); // 3 named
-
-  static final _doctypeBegin = RegExp(r'(<!DOCTYPE)|(>)');
-  static final _gt = RegExp(r'>');
-
-  final StringScanner _scanner;
-  _NgSimpleScannerState _state = _NgSimpleScannerState.doctype;
-
   factory NgSimpleScanner(String html, {Object? sourceUrl}) {
     return NgSimpleScanner._(StringScanner(html, sourceUrl: sourceUrl));
   }
 
   NgSimpleScanner._(this._scanner);
+
+  final StringScanner _scanner;
+
+  _NgSimpleScannerState _state = _NgSimpleScannerState.doctype;
 
   NgSimpleToken scan() {
     switch (_state) {
@@ -86,19 +55,23 @@ class NgSimpleScanner {
 
   NgSimpleToken scanComment() {
     var offset = _scanner.position;
+
     while (true) {
       if (_scanner.peekChar() == $dash && _scanner.peekChar(1) == $dash && _scanner.peekChar(2) == $gt) {
         break;
       }
+
       if (_scanner.position < _scanner.string.length) {
         _scanner.position++;
       }
+
       if (_scanner.isDone) {
         _state = _NgSimpleScannerState.text;
         var substring = _scanner.string.substring(offset);
         return _newTextToken(offset, substring);
       }
     }
+
     _state = _NgSimpleScannerState.commentEnd;
     return _newTextToken(offset, _scanner.substring(offset));
   }
@@ -112,9 +85,11 @@ class NgSimpleScanner {
 
   NgSimpleToken scanDoctype() {
     var offset = _scanner.position;
+
     if (_scanner.isDone) {
       return NgSimpleToken.EOF(offset);
     }
+
     _state = _NgSimpleScannerState.text;
 
     if (_scanner.scan(_doctypeBegin)) {
@@ -123,121 +98,155 @@ class NgSimpleScanner {
       var endOffset = _scanner.string.length;
 
       var match = _gt.firstMatch(text);
+
       if (match != null) {
         endOffset = _scanner.position + match.end;
       }
+
       _scanner.position = endOffset;
       return _newTextToken(offset, _scanner.string.substring(offset, endOffset));
     }
+
     return scanText();
   }
 
   NgSimpleToken scanElement() {
     var offset = _scanner.position;
+
     if (_scanner.isDone) {
       return NgSimpleToken.EOF(offset);
     }
+
     if (_scanner.scan(_allElementMatches)) {
       var match = _scanner.lastMatch!;
+
       if (matchesGroup(match, 1)) {
         return NgSimpleToken.closeBracket(offset);
       }
+
       if (matchesGroup(match, 2)) {
         return NgSimpleToken.bang(offset);
       }
+
       if (matchesGroup(match, 3)) {
         return NgSimpleToken.dash(offset);
       }
+
       if (matchesGroup(match, 4)) {
         if (_scanner.peekChar() == $close_bracket) {
           _scanner.position++;
           return NgSimpleToken.closeBanana(offset);
         }
+
         return NgSimpleToken.closeParen(offset);
       }
+
       if (matchesGroup(match, 5)) {
         _state = _NgSimpleScannerState.text;
         return NgSimpleToken.tagEnd(offset);
       }
+
       if (matchesGroup(match, 6)) {
         if (_scanner.peekChar() == $gt) {
           _scanner.position++;
           _state = _NgSimpleScannerState.text;
           return NgSimpleToken.voidCloseTag(offset);
         }
+
         return NgSimpleToken.forwardSlash(offset);
       }
+
       if (matchesGroup(match, 7)) {
         if (_scanner.peekChar() == $open_paren) {
           _scanner.position++;
           return NgSimpleToken.openBanana(offset);
         }
+
         return NgSimpleToken.openBracket(offset);
       }
+
       if (matchesGroup(match, 8)) {
         return NgSimpleToken.openParen(offset);
       }
+
       if (matchesGroup(match, 9)) {
         return NgSimpleToken.whitespace(offset, _scanner.substring(offset));
       }
+
       if (matchesGroup(match, 10)) {
         var s = _scanner.substring(offset);
         return NgSimpleToken.identifier(offset, s);
       }
+
       if (matchesGroup(match, 12)) {
         var lexeme = _scanner.substring(offset).replaceAll(r'\"', '"');
         var isClosed = (lexeme.length > 1) && lexeme[lexeme.length - 1] == '"';
         return NgSimpleQuoteToken.doubleQuotedText(offset, lexeme, isClosed);
       }
+
       if (matchesGroup(match, 14)) {
         var lexeme = _scanner.substring(offset).replaceAll(r"\'", "'");
         var isClosed = (lexeme.length > 1) && lexeme[lexeme.length - 1] == "'";
         return NgSimpleQuoteToken.singleQuotedText(offset, lexeme, isClosed);
       }
+
       if (matchesGroup(match, 16)) {
         if (_scanner.peekChar() == $exclamation && _scanner.peekChar(1) == $dash && _scanner.peekChar(2) == $dash) {
           _state = _NgSimpleScannerState.comment;
           _scanner.position = offset + 4;
           return NgSimpleToken.commentBegin(offset);
         }
+
         if (_scanner.peekChar() == $slash) {
           _scanner.position++;
           return NgSimpleToken.closeTagStart(offset);
         }
+
         return NgSimpleToken.openTagStart(offset);
       }
+
       if (matchesGroup(match, 17)) {
         return NgSimpleToken.equalSign(offset);
       }
+
       if (matchesGroup(match, 18)) {
         return NgSimpleToken.star(offset);
       }
+
       if (matchesGroup(match, 19)) {
         return NgSimpleToken.hash(offset);
       }
+
       if (matchesGroup(match, 20)) {
         return NgSimpleToken.period(offset);
       }
+
       if (matchesGroup(match, 21)) {
         return NgSimpleToken.percent(offset);
       }
+
       if (matchesGroup(match, 22)) {
         return NgSimpleToken.backSlash(offset);
       }
+
       if (matchesGroup(match, 23)) {
         return NgSimpleToken.atSign(offset);
       }
     }
+
     return NgSimpleToken.unexpectedChar(offset, String.fromCharCode(_scanner.readChar()));
   }
 
   NgSimpleToken scanText() {
     var offset = _scanner.position;
+
     if (_scanner.isDone) {
       return NgSimpleToken.EOF(offset);
     }
+
     if (_scanner.scan(_allTextMatches)) {
       var match = _scanner.lastMatch!;
+
       if (matchesGroup(match, 1)) {
         var text = _scanner.substring(offset);
         var mustacheMatch = _mustaches.firstMatch(text);
@@ -254,31 +263,38 @@ class NgSimpleScanner {
 
           // Mustache exists and text doesn't precede it - return mustache.
           _scanner.position = offset + mustacheMatch.end;
+
           if (matchesGroup(mustacheMatch, 1)) {
             _state = _NgSimpleScannerState.interpolation;
             return NgSimpleToken.mustacheBegin(mustacheStart);
           }
+
           if (matchesGroup(mustacheMatch, 2)) {
             return NgSimpleToken.mustacheEnd(mustacheStart);
           }
         }
+
         // Mustache doesn't exist; simple text.
         return _newTextToken(offset, text);
       }
+
       if (matchesGroup(match, 2)) {
         _state = _NgSimpleScannerState.comment;
         return NgSimpleToken.commentBegin(offset);
       }
+
       if (matchesGroup(match, 3)) {
         if (_scanner.peekChar() == $slash) {
           _scanner.position++;
           _state = _NgSimpleScannerState.element;
           return NgSimpleToken.closeTagStart(offset);
         }
+
         _state = _NgSimpleScannerState.element;
         return NgSimpleToken.openTagStart(offset);
       }
     }
+
     return NgSimpleToken.unexpectedChar(offset, String.fromCharCode(_scanner.readChar()));
   }
 
@@ -287,9 +303,11 @@ class NgSimpleScanner {
     // automatically mistaken as a element start. It can be a less than sign
     // used in interpolation expression.
     var offset = _scanner.position;
+
     if (_scanner.peekChar() == null) {
       return NgSimpleToken.EOF(offset);
     }
+
     var text = _scanner.string.substring(offset);
     var match = _mustaches.firstMatch(text);
 
@@ -308,6 +326,7 @@ class NgSimpleScanner {
           _scanner.position = newlineStart;
           return _newTextToken(offset, _scanner.substring(offset));
         }
+
         // Otherwise, return the newline and switch state back to text.
         _state = _NgSimpleScannerState.text;
         _scanner.position = newlineEnd;
@@ -329,13 +348,16 @@ class NgSimpleScanner {
     }
 
     _scanner.position = offset + match.end;
+
     if (matchesGroup(match, 1)) {
       return NgSimpleToken.mustacheBegin(matchStartOffset);
     }
+
     if (matchesGroup(match, 2)) {
       _state = _NgSimpleScannerState.text;
       return NgSimpleToken.mustacheEnd(matchStartOffset);
     }
+
     return NgSimpleToken.unexpectedChar(offset, String.fromCharCode(_scanner.readChar()));
   }
 
@@ -343,8 +365,9 @@ class NgSimpleScanner {
     _state = _NgSimpleScannerState.doctype;
   }
 
-  NgSimpleToken _newTextToken(int offset, String lexme) =>
-      NgSimpleToken.decodedText(offset, _unEscapeText(lexme), lexme.length);
+  NgSimpleToken _newTextToken(int offset, String lexme) {
+    return NgSimpleToken.decodedText(offset, _unEscapeText(lexme), lexme.length);
+  }
 
   String _unEscapeText(String string) {
     return string.replaceAllMapped(_escape, (match) {
@@ -352,10 +375,12 @@ class NgSimpleScanner {
       if (matchesGroup(match, 1)) {
         return String.fromCharCode(int.parse(match.group(1)!));
       }
+
       // hex
       if (matchesGroup(match, 2)) {
         return String.fromCharCode(int.parse(match.group(2)!, radix: 16));
       }
+
       // named
       if (matchesGroup(match, 3)) {
         return NAMED_ENTITIES[match.group(3)] ?? match.group(3)!;
@@ -363,6 +388,48 @@ class NgSimpleScanner {
 
       return '';
     });
+  }
+
+  static final RegExp _allTextMatches = RegExp(r'([^\<]+)|(<!--)|(<)');
+
+  static final RegExp _allElementMatches = RegExp(r'(\])|' //1  ]
+      r'(\!)|' //2  !
+      r'(\-)|' //3  -
+      r'(\))|' //4  )
+      r'(>)|' //5  >
+      r'(\/)|' //6  /
+      r'(\[)|' //7  [
+      r'(\()|' //8  (
+      r'([\s]+)|' //9 whitespace
+      //10 any alphanumeric + '-' + '_' + ':'
+      r'([a-zA-Z]([\w\_\-:])*[a-zA-Z0-9]?)|'
+      r'("([^"\\]+|\\.)*"?)|' //12 closed double quote (includes group 13)
+      r"('([^'\\]+|\\.)*'?)|" //14 closed single quote (includes group 15)
+      r'(<)|' //16 <
+      r'(=)|' //17 =
+      r'(\*)|' //18 *
+      r'(\#)|' //19 #
+      r'(\.)|' //20 .
+      r'(\%)|' //21 %
+      r'(\\)|' //22 \
+      r'(\@)'); //23 @
+
+  static final RegExp _commentEnd = RegExp('-->');
+
+  static final RegExp _mustaches = RegExp(r'({{)|(}})');
+
+  static final RegExp _newline = RegExp('\n');
+
+  static final RegExp _escape = RegExp(r'&#([0-9]{2,4});|' // 1 decimal
+      '&#x([0-9A-Fa-f]{2,4});|' // 2 hex
+      '&([a-zA-Z]+);'); // 3 named
+
+  static final RegExp _doctypeBegin = RegExp(r'(<!DOCTYPE)|(>)');
+
+  static final RegExp _gt = RegExp(r'>');
+
+  static bool matchesGroup(Match match, int group) {
+    return match.group(group) != null;
   }
 }
 

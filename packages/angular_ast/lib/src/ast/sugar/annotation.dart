@@ -9,21 +9,16 @@ import '../../visitor.dart';
 /// This annotation may optionally be assigned a value `@annotation="value"`.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-abstract class AnnotationAst implements TemplateAst {
-  /// Create a new synthetic [AnnotationAst] with a string [name].
-  factory AnnotationAst(String name, [String? value]) = _SyntheticAnnotationAst;
+abstract class Annotation implements Template {
+  /// Create a new synthetic [Annotation] with a string [name].
+  factory Annotation(String name, [String? value]) = _SyntheticAnnotation;
 
-  /// Create a new synthetic [AnnotationAst] that originated from node [origin].
-  factory AnnotationAst.from(TemplateAst origin, String name, [String? value]) = _SyntheticAnnotationAst.from;
+  /// Create a new synthetic [Annotation] that originated from node [origin].
+  factory Annotation.from(Template origin, String name, [String? value]) = _SyntheticAnnotation.from;
 
-  /// Create a new [AnnotationAst] parsed from tokens from [sourceFile].
-  factory AnnotationAst.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken nameToken,
-      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedAnnotationAst;
-
-  @override
-  bool operator ==(Object? other) {
-    return other is AnnotationAst && name == other.name && value == other.value;
-  }
+  /// Create a new [Annotation] parsed from tokens from [sourceFile].
+  factory Annotation.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken nameToken,
+      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedAnnotation;
 
   @override
   int get hashCode {
@@ -37,21 +32,30 @@ abstract class AnnotationAst implements TemplateAst {
   String? get value;
 
   @override
-  R accept<R, C>(TemplateAstVisitor<R, C?> visitor, [C? context]) {
+  bool operator ==(Object? other) {
+    return other is Annotation && name == other.name && value == other.value;
+  }
+
+  @override
+  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
     return visitor.visitAnnotation(this, context);
   }
 
   @override
   String toString() {
-    return value != null ? 'AnnotationAst {$name="$value"}' : 'AnnotationAst {$name}';
+    if (value == null) {
+      return 'AnnotationAst {$name}';
+    }
+
+    return 'AnnotationAst {$name="$value"}';
   }
 }
 
 /// Represents a real(non-synthetic) parsed AnnotationAst. Preserves offsets.
 ///
 /// Clients should not extend, implement, or mix-in this class.
-class ParsedAnnotationAst extends TemplateAst with AnnotationAst implements ParsedDecoratorAst {
-  ParsedAnnotationAst(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
+class ParsedAnnotation extends Template with Annotation implements ParsedDecorator {
+  ParsedAnnotation(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
       : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
 
   @override
@@ -96,10 +100,10 @@ class ParsedAnnotationAst extends TemplateAst with AnnotationAst implements Pars
   }
 }
 
-class _SyntheticAnnotationAst extends SyntheticTemplateAst with AnnotationAst {
-  _SyntheticAnnotationAst(this.name, [this.value]);
+class _SyntheticAnnotation extends SyntheticTemplate with Annotation {
+  _SyntheticAnnotation(this.name, [this.value]);
 
-  _SyntheticAnnotationAst.from(TemplateAst origin, this.name, [this.value]) : super.from(origin);
+  _SyntheticAnnotation.from(Template origin, this.name, [this.value]) : super.from(origin);
 
   @override
   final String name;

@@ -18,7 +18,7 @@ void main() {
       parse('ngThing', 'let foo', 0),
       NgMicroAst(
         letBindings: [
-          LetBindingAst('foo'),
+          LetBinding('foo'),
         ],
         properties: [],
       ),
@@ -30,8 +30,8 @@ void main() {
       parse('ngThing', 'let foo = bar; let baz', 0),
       NgMicroAst(
         letBindings: [
-          LetBindingAst('foo', 'bar'),
-          LetBindingAst('baz'),
+          LetBinding('foo', 'bar'),
+          LetBinding('baz'),
         ],
         properties: [],
       ),
@@ -43,8 +43,8 @@ void main() {
       parse('ngThing', 'let baz; let foo = bar', 0),
       NgMicroAst(
         letBindings: [
-          LetBindingAst('baz'),
-          LetBindingAst('foo', 'bar'),
+          LetBinding('baz'),
+          LetBinding('foo', 'bar'),
         ],
         properties: [],
       ),
@@ -56,8 +56,8 @@ void main() {
       parse('ngThing', 'let baz; let foo = bar ', 0),
       NgMicroAst(
         letBindings: [
-          LetBindingAst('baz'),
-          LetBindingAst('foo', 'bar'),
+          LetBinding('baz'),
+          LetBinding('foo', 'bar'),
         ],
         properties: [],
       ),
@@ -69,10 +69,10 @@ void main() {
       parse('ngFor', 'let x of items.where(filter)', 0),
       NgMicroAst(
         letBindings: [
-          LetBindingAst('x'),
+          LetBinding('x'),
         ],
         properties: [
-          PropertyAst(
+          Property(
             'ngForOf',
             'items.where(filter)',
           ),
@@ -86,14 +86,14 @@ void main() {
       parse('ngFor', 'let item of items; trackBy: byId', 0),
       NgMicroAst(
         letBindings: [
-          LetBindingAst('item'),
+          LetBinding('item'),
         ],
         properties: [
-          PropertyAst(
+          Property(
             'ngForOf',
             'items',
           ),
-          PropertyAst(
+          Property(
             'ngForTrackBy',
             'byId',
           ),
@@ -108,11 +108,11 @@ void main() {
       NgMicroAst(
         letBindings: [],
         properties: [
-          PropertyAst(
+          Property(
             'ngTemplateOutlet',
             'templateRef',
           ),
-          PropertyAst(
+          Property(
             'ngTemplateOutletContext',
             'templateContext',
           ),
