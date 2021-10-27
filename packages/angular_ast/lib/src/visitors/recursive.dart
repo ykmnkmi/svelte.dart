@@ -1,27 +1,21 @@
-import 'package:meta/meta.dart';
+import 'package:meta/meta.dart' show literal, mustCallSuper;
 
 import '../ast.dart';
 import '../visitor.dart';
 
-/// An [TemplateVisitor] that recursively visits all children of an AST node,
-/// in addition to itself.
-///
-/// Note that methods may modify values.
-class RecursiveTemplateAstVisitor<C> implements TemplateVisitor<Template, C?> {
+class RecursiveTemplateAstVisitor<C> implements Visitor<Node, C?> {
   @literal
   const RecursiveTemplateAstVisitor();
 
-  /// Visits a collection of [Template] nodes, returning all of those that
-  /// are not null.
-  List<T>? visitAll<T extends Template>(Iterable<T>? astNodes, [C? context]) {
-    if (astNodes == null) {
+  List<T>? visitAll<T extends Node>(Iterable<T>? nodes, [C? context]) {
+    if (nodes == null) {
       return null;
     }
 
     var results = <T>[];
 
-    for (var astNode in astNodes) {
-      var value = visit(astNode, context);
+    for (var node in nodes) {
+      var value = visit(node, context);
 
       if (value != null) {
         results.add(value);
@@ -31,112 +25,112 @@ class RecursiveTemplateAstVisitor<C> implements TemplateVisitor<Template, C?> {
     return results;
   }
 
-  /// Visits a single [Template] node, capturing the type.
-  T? visit<T extends Template>(T? astNode, [C? context]) {
-    return astNode?.accept(this, context) as T?;
+  T? visit<T extends Node>(T? node, [C? context]) {
+    return node?.accept(this, context) as T?;
   }
 
   @override
-  Template visitAnnotation(Annotation astNode, [C? context]) {
-    return astNode;
-  }
-
-  @override
-  @mustCallSuper
-  Template visitAttribute(Attribute astNode, [C? context]) {
-    return Attribute.from(astNode, astNode.name, astNode.value, visitAll(astNode.childNodes, context)!);
-  }
-
-  @override
-  Template visitBanana(Banana astNode, [C? context]) {
-    return astNode;
-  }
-
-  @override
-  Template visitCloseElement(CloseElement astNode, [C? context]) {
-    return astNode;
-  }
-
-  @override
-  Template visitComment(Comment astNode, [C? context]) {
-    return astNode;
+  Node visitAnnotation(Annotation node, [C? context]) {
+    return node;
   }
 
   @override
   @mustCallSuper
-  Template visitContainer(Container astNode, [C? context]) {
-    return Container.from(astNode,
-        annotations: visitAll(astNode.annotations, context) ?? <Annotation>[],
-        childNodes: visitAll(astNode.childNodes, context) ?? <StandaloneTemplate>[],
-        stars: visitAll(astNode.stars, context) ?? <Star>[]);
+  Node visitAttribute(Attribute node, [C? context]) {
+    return Attribute.from(node, node.name, node.value, visitAll(node.childNodes, context)!);
   }
 
   @override
-  Template visitEmbeddedContent(EmbeddedContent astNode, [C? context]) {
-    return astNode;
+  Node visitBanana(Banana node, [C? context]) {
+    return node;
   }
 
   @override
-  @mustCallSuper
-  Template visitEmbeddedTemplate(EmbeddedTemplateAst astNode, [C? context]) {
-    return EmbeddedTemplateAst.from(astNode,
-        annotations: visitAll(astNode.annotations, context) ?? <Annotation>[],
-        attributes: visitAll(astNode.attributes, context) ?? <Attribute>[],
-        childNodes: visitAll(astNode.childNodes, context) ?? <StandaloneTemplate>[],
-        events: visitAll(astNode.events, context) ?? <Event>[],
-        properties: visitAll(astNode.properties, context) ?? <Property>[],
-        references: visitAll(astNode.references, context) ?? <Reference>[],
-        letBindings: visitAll(astNode.letBindings, context) ?? <LetBinding>[]);
+  Node visitCloseElement(CloseElement node, [C? context]) {
+    return node;
+  }
+
+  @override
+  Node visitComment(Comment node, [C? context]) {
+    return node;
   }
 
   @override
   @mustCallSuper
-  Template? visitElement(Element astNode, [C? context]) =>
-      Element.from(astNode, astNode.name, visit(astNode.closeComplement),
-          attributes: visitAll(astNode.attributes, context) ?? <Attribute>[],
-          childNodes: visitAll(astNode.childNodes, context) ?? <StandaloneTemplate>[],
-          events: visitAll(astNode.events, context) ?? <Event>[],
-          properties: visitAll(astNode.properties, context) ?? <Property>[],
-          references: visitAll(astNode.references, context) ?? <Reference>[],
-          bananas: visitAll(astNode.bananas, context) ?? <Banana>[],
-          stars: visitAll(astNode.stars, context) ?? <Star>[],
-          annotations: visitAll(astNode.annotations, context) ?? <Annotation>[]);
+  Node visitContainer(Container node, [C? context]) {
+    return Container.from(node,
+        annotations: visitAll(node.annotations, context) ?? <Annotation>[],
+        childNodes: visitAll(node.childNodes, context) ?? <Standalone>[],
+        stars: visitAll(node.stars, context) ?? <Star>[]);
+  }
 
   @override
-  @mustCallSuper
-  Template visitEvent(Event astNode, [C? context]) {
-    return Event.from(astNode, astNode.name, astNode.value, astNode.reductions);
+  Node visitEmbeddedContent(EmbeddedContent node, [C? context]) {
+    return node;
   }
 
   @override
   @mustCallSuper
-  Template visitInterpolation(Interpolation astNode, [C? context]) {
-    return Interpolation.from(astNode, astNode.value);
-  }
-
-  @override
-  Template visitLetBinding(LetBinding astNode, [C? context]) {
-    return astNode;
+  Node visitEmbeddedTemplate(EmbeddedNode node, [C? context]) {
+    return EmbeddedNode.from(node,
+        annotations: visitAll(node.annotations, context) ?? <Annotation>[],
+        attributes: visitAll(node.attributes, context) ?? <Attribute>[],
+        childNodes: visitAll(node.childNodes, context) ?? <Standalone>[],
+        events: visitAll(node.events, context) ?? <Event>[],
+        properties: visitAll(node.properties, context) ?? <Property>[],
+        references: visitAll(node.references, context) ?? <Reference>[],
+        letBindings: visitAll(node.letBindings, context) ?? <LetBinding>[]);
   }
 
   @override
   @mustCallSuper
-  Template visitProperty(Property astNode, [C? context]) {
-    return Property.from(astNode, astNode.name, astNode.value, astNode.postfix, astNode.unit);
+  Node? visitElement(Element node, [C? context]) {
+    return Element.from(node, node.name, visit(node.closeComplement),
+        attributes: visitAll(node.attributes, context) ?? <Attribute>[],
+        childNodes: visitAll(node.childNodes, context) ?? <Standalone>[],
+        events: visitAll(node.events, context) ?? <Event>[],
+        properties: visitAll(node.properties, context) ?? <Property>[],
+        references: visitAll(node.references, context) ?? <Reference>[],
+        bananas: visitAll(node.bananas, context) ?? <Banana>[],
+        stars: visitAll(node.stars, context) ?? <Star>[],
+        annotations: visitAll(node.annotations, context) ?? <Annotation>[]);
   }
 
   @override
-  Template visitReference(Reference astNode, [C? context]) {
-    return astNode;
+  @mustCallSuper
+  Node visitEvent(Event node, [C? context]) {
+    return Event.from(node, node.name, node.value, node.reductions);
   }
 
   @override
-  Template visitStar(Star astNode, [C? context]) {
-    return astNode;
+  @mustCallSuper
+  Node visitInterpolation(Interpolation node, [C? context]) {
+    return Interpolation.from(node, node.value);
   }
 
   @override
-  Template visitText(Text astNode, [C? context]) {
-    return astNode;
+  Node visitLetBinding(LetBinding node, [C? context]) {
+    return node;
+  }
+
+  @override
+  @mustCallSuper
+  Node visitProperty(Property node, [C? context]) {
+    return Property.from(node, node.name, node.value, node.postfix, node.unit);
+  }
+
+  @override
+  Node visitReference(Reference node, [C? context]) {
+    return node;
+  }
+
+  @override
+  Node visitStar(Star node, [C? context]) {
+    return node;
+  }
+
+  @override
+  Node visitText(Text node, [C? context]) {
+    return node;
   }
 }

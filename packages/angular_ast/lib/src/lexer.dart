@@ -1,25 +1,14 @@
-import 'package:meta/meta.dart';
+import 'package:meta/meta.dart' show literal;
 
-import 'exception_handler/exception_handler.dart';
 import 'scanner.dart';
 import 'token/tokens.dart';
 
-/// Separates an Angular template into a series of lexical tokens.
-///
-/// ## Example use
-/// ```dart
-/// const NgLexer().tokenize('<div>Hello World!</div>');
-/// ```
-class NgLexer {
+class Lexer {
   @literal
-  const factory NgLexer() = NgLexer._;
+  const Lexer();
 
-  // Prevent inheritance.
-  const NgLexer._();
-
-  /// Return a series of tokens by incrementally scanning [template].
-  Iterable<NgToken> tokenize(String template, ExceptionHandler exceptionHandler) sync* {
-    var scanner = NgScanner(template, exceptionHandler);
+  Iterable<Token> tokenize(String template) sync* {
+    var scanner = Scanner(template);
     var token = scanner.scan();
 
     while (token != null) {

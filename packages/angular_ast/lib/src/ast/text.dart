@@ -1,23 +1,16 @@
-import 'package:source_span/source_span.dart';
+import 'package:source_span/source_span.dart' show SourceFile;
 
 import '../ast.dart';
 import '../token/tokens.dart';
 import '../visitor.dart';
 
-/// Represents a block of static text (i.e. not bound to a directive).
-///
-/// Clients should not extend, implement, or mix-in this class.
-abstract class Text implements StandaloneTemplate {
-  /// Create a new synthetic [Text] with a string [value].
+abstract class Text implements Standalone {
   factory Text(String value) = _SyntheticText;
 
-  /// Create a new synthetic [Text] that originated from node [origin].
-  factory Text.from(Template origin, String value) = _SyntheticText.from;
+  factory Text.from(Node origin, String value) = _SyntheticText.from;
 
-  /// Create a new [Text] parsed from tokens from [sourceFile].
-  factory Text.parsed(SourceFile sourceFile, NgToken textToken) = _ParsedText;
+  factory Text.parsed(SourceFile sourceFile, Token textToken) = _ParsedText;
 
-  /// Static text value.
   String get value;
 
   @override
@@ -31,7 +24,7 @@ abstract class Text implements StandaloneTemplate {
   }
 
   @override
-  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+  R accept<R, C>(Visitor<R, C?> visitor, [C? context]) {
     return visitor.visitText(this, context);
   }
 
@@ -41,8 +34,8 @@ abstract class Text implements StandaloneTemplate {
   }
 }
 
-class _ParsedText extends Template with Text {
-  _ParsedText(SourceFile sourceFile, NgToken textToken) : super.parsed(textToken, textToken, sourceFile);
+class _ParsedText extends Node with Text {
+  _ParsedText(SourceFile sourceFile, Token textToken) : super.parsed(textToken, textToken, sourceFile);
 
   @override
   String get value {
@@ -50,10 +43,10 @@ class _ParsedText extends Template with Text {
   }
 }
 
-class _SyntheticText extends SyntheticTemplate with Text {
+class _SyntheticText extends Synthetic with Text {
   _SyntheticText(this.value);
 
-  _SyntheticText.from(Template origin, this.value) : super.from(origin);
+  _SyntheticText.from(Node origin, this.value) : super.from(origin);
 
   @override
   final String value;

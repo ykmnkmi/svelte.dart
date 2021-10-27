@@ -1,151 +1,134 @@
-import 'package:meta/meta.dart';
+import 'package:meta/meta.dart' show literal;
 
+import '../../parser_exception.dart';
 import '../../ast.dart';
-import '../../exception_handler/exception_handler.dart';
 import 'ast.dart';
 import 'lexer.dart';
 import 'token.dart';
 
-class NgMicroParser {
+class MicroParser {
   @literal
-  const factory NgMicroParser() = NgMicroParser._;
+  const MicroParser();
 
-  const NgMicroParser._();
-
-  NgMicroAst parse(
-    String directive,
-    String? expression,
-    int? expressionOffset, {
-    required String sourceUrl,
-    Template? origin,
-  }) {
+  MicroAST parse(String directive, String? expression, int? expressionOffset,
+      {required String sourceUrl, Node? origin}) {
     var paddedExpression = ' ' * expressionOffset! + expression!;
-    var tokens = const NgMicroLexer().tokenize(paddedExpression).iterator;
-    return _RecursiveMicroAstParser(
-      directive,
-      expressionOffset,
-      expression.length,
-      tokens,
-      origin,
-    ).parse();
+    var tokens = const MicroLexer().tokenize(paddedExpression).iterator;
+    return RecursiveMicroASTParser(directive, expressionOffset, expression.length, tokens, origin).parse();
   }
 }
 
-class _RecursiveMicroAstParser {
-  final String _directive;
-  final int? _expressionOffset;
-  final int? _expressionLength;
-//  final String _sourceUrl;
-  final Iterator<NgMicroToken> _tokens;
+class RecursiveMicroASTParser {
+  RecursiveMicroASTParser(this.directive, this.expressionOffset, this.expressionLength, this.tokens, this.origin)
+      : letBindings = <LetBinding>[],
+        properties = <Property>[];
 
-  final letBindings = <LetBinding>[];
-  final properties = <Property>[];
+  final String directive;
 
-  final Template? _origin;
+  final int? expressionOffset;
 
-  _RecursiveMicroAstParser(
-    this._directive,
-    this._expressionOffset,
-    this._expressionLength,
-    this._tokens,
-    this._origin,
-  );
+  final int? expressionLength;
 
-  NgMicroAst parse() {
+  // final String sourceUrl;
+
+  final Iterator<MicroToken> tokens;
+
+  final List<LetBinding> letBindings;
+
+  final List<Property> properties;
+
+  final Node? origin;
+
+  MicroAST parse() {
     // Only the first token can be bound to the left-hand side property.
     var first = true;
-    while (_tokens.moveNext()) {
-      var token = _tokens.current;
-      if (token.type == NgMicroTokenType.letKeyword) {
-        _parseLet();
-      } else if (token.type == NgMicroTokenType.bindIdentifier) {
-        _parseBind();
-      } else if (token.type == NgMicroTokenType.bindExpression && first) {
-        _parseImplicitBind();
-      } else if (token.type != NgMicroTokenType.endExpression) {
-        throw _unexpected(token);
+
+    while (tokens.moveNext()) {
+      var token = tokens.current;
+
+      if (token.type == MicroTokenType.letKeyword) {
+        parseLet();
+      } else if (token.type == MicroTokenType.bindIdentifier) {
+        parseBind();
+      } else if (token.type == MicroTokenType.bindExpression && first) {
+        parseImplicitBind();
+      } else if (token.type != MicroTokenType.endExpression) {
+        throw unexpected(token);
       }
+
       first = false;
     }
-    return NgMicroAst(letBindings: letBindings, properties: properties);
+
+    return MicroAST(letBindings, properties);
   }
 
-  void _parseBind() {
-    var name = _tokens.current.lexeme;
-    if (!_tokens.moveNext() ||
-        _tokens.current.type != NgMicroTokenType.bindExpressionBefore ||
-        !_tokens.moveNext() ||
-        _tokens.current.type != NgMicroTokenType.bindExpression) {
-      throw _unexpected();
+  void parseBind() {
+    var name = tokens.current.lexeme;
+
+    if (!tokens.moveNext() ||
+        tokens.current.type != MicroTokenType.bindExpressionBefore ||
+        !tokens.moveNext() ||
+        tokens.current.type != MicroTokenType.bindExpression) {
+      throw unexpected();
     }
-    var value = _tokens.current.lexeme;
-    properties.add(Property.from(
-      _origin,
-      '$_directive${name[0].toUpperCase()}${name.substring(1)}',
-      value,
-    ));
+
+    var value = tokens.current.lexeme;
+    properties.add(Property.from(origin, '$directive${name[0].toUpperCase()}${name.substring(1)}', value));
   }
 
   // An implicit binding has no accompanying identifier. Instead, it is bound
   // to the property on the left-hand side to which the micro-syntax expression
   // was assigned.
-  void _parseImplicitBind() {
-    properties.add(Property.from(
-      _origin,
-      _directive,
-      _tokens.current.lexeme,
-    ));
+  void parseImplicitBind() {
+    properties.add(Property.from(origin, directive, tokens.current.lexeme));
   }
 
-  void _parseLet() {
+  void parseLet() {
     String identifier;
-    if (!_tokens.moveNext() ||
-        _tokens.current.type != NgMicroTokenType.letKeywordAfter ||
-        !_tokens.moveNext() ||
-        _tokens.current.type != NgMicroTokenType.letIdentifier) {
-      throw _unexpected();
+
+    if (!tokens.moveNext() ||
+        tokens.current.type != MicroTokenType.letKeywordAfter ||
+        !tokens.moveNext() ||
+        tokens.current.type != MicroTokenType.letIdentifier) {
+      throw unexpected();
     }
-    identifier = _tokens.current.lexeme;
-    if (!_tokens.moveNext() ||
-        _tokens.current.type == NgMicroTokenType.endExpression ||
-        !_tokens.moveNext() ||
-        _tokens.current.type == NgMicroTokenType.endExpression) {
-      letBindings.add(LetBinding.from(_origin, identifier));
+
+    identifier = tokens.current.lexeme;
+
+    if (!tokens.moveNext() ||
+        tokens.current.type == MicroTokenType.endExpression ||
+        !tokens.moveNext() ||
+        tokens.current.type == MicroTokenType.endExpression) {
+      letBindings.add(LetBinding.from(origin, identifier));
       return;
     }
-    if (_tokens.current.type == NgMicroTokenType.letAssignment) {
-      letBindings.add(LetBinding.from(
-        _origin,
-        identifier,
-        _tokens.current.lexeme.trimRight(),
-      ));
+
+    if (tokens.current.type == MicroTokenType.letAssignment) {
+      letBindings.add(LetBinding.from(origin, identifier, tokens.current.lexeme.trimRight()));
     } else {
-      letBindings.add(LetBinding.from(_origin, identifier));
-      if (_tokens.current.type != NgMicroTokenType.bindIdentifier) {
-        throw _unexpected();
+      letBindings.add(LetBinding.from(origin, identifier));
+
+      if (tokens.current.type != MicroTokenType.bindIdentifier) {
+        throw unexpected();
       }
-      var property = _tokens.current.lexeme;
-      if (!_tokens.moveNext() ||
-          _tokens.current.type != NgMicroTokenType.bindExpressionBefore ||
-          !_tokens.moveNext() ||
-          _tokens.current.type != NgMicroTokenType.bindExpression) {
-        throw _unexpected();
+
+      var property = tokens.current.lexeme;
+
+      if (!tokens.moveNext() ||
+          tokens.current.type != MicroTokenType.bindExpressionBefore ||
+          !tokens.moveNext() ||
+          tokens.current.type != MicroTokenType.bindExpression) {
+        throw unexpected();
       }
-      var expression = _tokens.current.lexeme;
-      properties.add(Property.from(
-        _origin,
-        '$_directive${property[0].toUpperCase()}${property.substring(1)}',
-        expression,
-      ));
+
+      var expression = tokens.current.lexeme;
+      properties
+          .add(Property.from(origin, '$directive${property[0].toUpperCase()}${property.substring(1)}', expression));
     }
   }
 
-  AngularParserException _unexpected([NgMicroToken? token]) {
-    token ??= _tokens.current;
-    return AngularParserException(
-      ParserErrorCode.INVALID_MICRO_EXPRESSION,
-      _expressionOffset,
-      _expressionLength,
-    );
+  ParserException unexpected([MicroToken? token]) {
+    token ??= tokens.current;
+    return ParserException(ParserErrorCode.invalidMicroExpression, expressionOffset, expressionLength);
   }
 }

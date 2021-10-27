@@ -1,110 +1,86 @@
-import 'package:collection/collection.dart';
-import 'package:source_span/source_span.dart';
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:source_span/source_span.dart' show SourceFile;
 
 import '../ast.dart';
 import '../token/tokens.dart';
 import '../visitor.dart';
 
-const _listEquals = ListEquality<dynamic>();
+const ListEquality<Object?> listEquals = ListEquality<Object?>();
 
-/// Represents an embedded template (i.e. is not directly rendered in DOM).
-///
-/// It shares many properties with an [Element], but is not one. It may be
-/// considered invalid to a `<template>` without any [properties] or
-/// [references].
-///
-/// Clients should not extend, implement, or mix-in this class.
-abstract class EmbeddedTemplateAst implements StandaloneTemplate {
-  factory EmbeddedTemplateAst(
+abstract class EmbeddedNode implements Standalone {
+  factory EmbeddedNode(
       {List<Annotation> annotations,
       List<Attribute> attributes,
-      List<StandaloneTemplate> childNodes,
+      List<Standalone> childNodes,
       List<Event> events,
       List<Property> properties,
       List<Reference> references,
       List<LetBinding> letBindings}) = _SyntheticEmbeddedTemplate;
 
-  factory EmbeddedTemplateAst.from(Template origin,
+  factory EmbeddedNode.from(Node origin,
       {List<Annotation> annotations,
       List<Attribute> attributes,
-      List<StandaloneTemplate> childNodes,
+      List<Standalone> childNodes,
       List<Event> events,
       List<Property> properties,
       List<Reference> references,
       List<LetBinding> letBindings}) = _SyntheticEmbeddedTemplate.from;
 
-  factory EmbeddedTemplateAst.parsed(SourceFile sourceFile, NgToken beginToken, NgToken endToken,
+  factory EmbeddedNode.parsed(SourceFile sourceFile, Token beginToken, Token endToken,
       {CloseElement? closeComplement,
       List<Annotation> annotations,
       List<Attribute> attributes,
-      List<StandaloneTemplate> childNodes,
+      List<Standalone> childNodes,
       List<Event> events,
       List<Property> properties,
       List<Reference> references,
       List<LetBinding> letBindings}) = _ParsedEmbeddedTemplate;
 
-  /// </template> that is paired to this <template>.
   CloseElement? get closeComplement;
 
   set closeComplement(CloseElement? closeComplement);
 
-  /// Annotations.
   List<Annotation> get annotations;
 
-  /// Attributes.
-  ///
-  /// Within a `<template>` tag, it may be assumed that this is a directive.
   List<Attribute> get attributes;
 
-  /// Events.
-  ///
-  /// Within a `<template>` tag, it may be assumed that this is a directive.
   List<Event> get events;
 
-  /// Property assignments.
-  ///
-  /// For an embedded template, it may be assumed that all of this will be one
-  /// or more structural directives (i.e. like `ngForOf`), as the template
-  /// itself does not have properties.
   List<Property> get properties;
 
-  /// References to the template.
-  ///
-  /// Unlike a reference to a DOM element, this will be a `TemplateRef`.
   List<Reference> get references;
 
-  /// `let-` binding defined within a template.
   List<LetBinding> get letBindings;
 
   @override
   int get hashCode {
     return Object.hashAll(<Object?>[
       closeComplement,
-      _listEquals.hash(annotations),
-      _listEquals.hash(attributes),
-      _listEquals.hash(events),
-      _listEquals.hash(childNodes),
-      _listEquals.hash(properties),
-      _listEquals.hash(references),
-      _listEquals.hash(letBindings),
+      listEquals.hash(annotations),
+      listEquals.hash(attributes),
+      listEquals.hash(events),
+      listEquals.hash(childNodes),
+      listEquals.hash(properties),
+      listEquals.hash(references),
+      listEquals.hash(letBindings),
     ]);
   }
 
   @override
   bool operator ==(Object? other) {
-    return other is EmbeddedTemplateAst &&
+    return other is EmbeddedNode &&
         closeComplement == other.closeComplement &&
-        _listEquals.equals(annotations, other.annotations) &&
-        _listEquals.equals(attributes, other.attributes) &&
-        _listEquals.equals(events, other.events) &&
-        _listEquals.equals(properties, other.properties) &&
-        _listEquals.equals(childNodes, other.childNodes) &&
-        _listEquals.equals(references, other.references) &&
-        _listEquals.equals(letBindings, other.letBindings);
+        listEquals.equals(annotations, other.annotations) &&
+        listEquals.equals(attributes, other.attributes) &&
+        listEquals.equals(events, other.events) &&
+        listEquals.equals(properties, other.properties) &&
+        listEquals.equals(childNodes, other.childNodes) &&
+        listEquals.equals(references, other.references) &&
+        listEquals.equals(letBindings, other.letBindings);
   }
 
   @override
-  R? accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+  R? accept<R, C>(Visitor<R, C?> visitor, [C? context]) {
     return visitor.visitEmbeddedTemplate(this, context);
   }
 
@@ -172,12 +148,12 @@ abstract class EmbeddedTemplateAst implements StandaloneTemplate {
   }
 }
 
-class _ParsedEmbeddedTemplate extends Template with EmbeddedTemplateAst {
-  _ParsedEmbeddedTemplate(SourceFile sourceFile, NgToken beginToken, NgToken endToken,
+class _ParsedEmbeddedTemplate extends Node with EmbeddedNode {
+  _ParsedEmbeddedTemplate(SourceFile sourceFile, Token beginToken, Token endToken,
       {this.closeComplement,
       this.annotations = const <Annotation>[],
       this.attributes = const <Attribute>[],
-      this.childNodes = const <StandaloneTemplate>[],
+      this.childNodes = const <Standalone>[],
       this.events = const <Event>[],
       this.properties = const <Property>[],
       this.references = const <Reference>[],
@@ -187,7 +163,6 @@ class _ParsedEmbeddedTemplate extends Template with EmbeddedTemplateAst {
   @override
   CloseElement? closeComplement;
 
-
   @override
   final List<Annotation> annotations;
 
@@ -195,7 +170,7 @@ class _ParsedEmbeddedTemplate extends Template with EmbeddedTemplateAst {
   final List<Attribute> attributes;
 
   @override
-  final List<StandaloneTemplate> childNodes;
+  final List<Standalone> childNodes;
 
   @override
   final List<Event> events;
@@ -210,21 +185,21 @@ class _ParsedEmbeddedTemplate extends Template with EmbeddedTemplateAst {
   final List<LetBinding> letBindings;
 }
 
-class _SyntheticEmbeddedTemplate extends SyntheticTemplate with EmbeddedTemplateAst {
+class _SyntheticEmbeddedTemplate extends Synthetic with EmbeddedNode {
   _SyntheticEmbeddedTemplate(
       {this.annotations = const <Annotation>[],
       this.attributes = const <Attribute>[],
-      this.childNodes = const <StandaloneTemplate>[],
+      this.childNodes = const <Standalone>[],
       this.events = const <Event>[],
       this.properties = const <Property>[],
       this.references = const <Reference>[],
       this.letBindings = const <LetBinding>[]})
       : closeComplement = CloseElement('template');
 
-  _SyntheticEmbeddedTemplate.from(Template origin,
+  _SyntheticEmbeddedTemplate.from(Node origin,
       {this.annotations = const <Annotation>[],
       this.attributes = const <Attribute>[],
-      this.childNodes = const <StandaloneTemplate>[],
+      this.childNodes = const <Standalone>[],
       this.events = const <Event>[],
       this.properties = const <Property>[],
       this.references = const <Reference>[],
@@ -242,7 +217,7 @@ class _SyntheticEmbeddedTemplate extends SyntheticTemplate with EmbeddedTemplate
   final List<Attribute> attributes;
 
   @override
-  final List<StandaloneTemplate> childNodes;
+  final List<Standalone> childNodes;
 
   @override
   final List<Event> events;

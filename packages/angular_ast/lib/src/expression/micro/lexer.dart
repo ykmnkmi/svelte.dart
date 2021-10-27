@@ -1,20 +1,17 @@
-import 'package:meta/meta.dart';
+import 'package:meta/meta.dart' show literal;
 
 import 'scanner.dart';
 import 'token.dart';
 
-/// Separates an Angular micro-expression into a series of lexical tokens.
-class NgMicroLexer {
-  @literal
-  const factory NgMicroLexer() = NgMicroLexer._;
-
+class MicroLexer {
   // Prevent inheritance.
-  const NgMicroLexer._();
+  @literal
+  const MicroLexer();
 
-  /// Return a series of tokens by incrementally scanning [template].
-  Iterable<NgMicroToken> tokenize(String template) sync* {
-    var scanner = NgMicroScanner(template);
+  Iterable<MicroToken> tokenize(String template) sync* {
+    var scanner = MicroScanner(template);
     var token = scanner.scan();
+
     while (token != null) {
       yield token;
       token = scanner.scan();

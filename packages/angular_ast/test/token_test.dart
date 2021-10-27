@@ -1,80 +1,78 @@
 import 'package:test/test.dart';
 import 'package:angular_ast/src/token/tokens.dart';
 
-void main() => group('$NgToken', _testNgToken);
+void main() {
+  group('Token', () {
+    test('beforeElementDecorator', () {
+      var token = Token.beforeElementDecorator(0, '\n  \n');
+      expect(token.lexeme, '\n  \n');
+      expect(token.end, 4);
+      expect(token.length, 4);
+      expect(token.offset, 0);
+      expect(token.type, TokenType.beforeElementDecorator);
+    });
 
-void _testNgToken() {
-  NgToken token;
+    test('closeElementEnd', () {
+      var token = Token.closeElementEnd(0);
+      expect(token.lexeme, '>');
+      expect(token.end, 1);
+      expect(token.length, 1);
+      expect(token.offset, 0);
+      expect(token.type, TokenType.closeElementEnd);
+    });
 
-  test('beforeElementDecorator', () {
-    token = NgToken.beforeElementDecorator(0, '\n  \n');
-    expect(token.lexeme, '\n  \n');
-    expect(token.end, 4);
-    expect(token.length, 4);
-    expect(token.offset, 0);
-    expect(token.type, NgTokenType.beforeElementDecorator);
-  });
+    test('closeElementStart', () {
+      var token = Token.closeElementStart(0);
+      expect(token.lexeme, '</');
+      expect(token.end, 2);
+      expect(token.length, 2);
+      expect(token.offset, 0);
+      expect(token.type, TokenType.closeElementStart);
+    });
 
-  test('closeElementEnd', () {
-    token = NgToken.closeElementEnd(0);
-    expect(token.lexeme, '>');
-    expect(token.end, 1);
-    expect(token.length, 1);
-    expect(token.offset, 0);
-    expect(token.type, NgTokenType.closeElementEnd);
-  });
+    test('elementDecorator', () {
+      var token = Token.elementDecorator(0, 'title');
+      expect(token.lexeme, 'title');
+      expect(token.end, 5);
+      expect(token.length, 5);
+      expect(token.offset, 0);
+      expect(token.type, TokenType.elementDecorator);
+    });
 
-  test('closeElementStart', () {
-    token = NgToken.closeElementStart(0);
-    expect(token.lexeme, '</');
-    expect(token.end, 2);
-    expect(token.length, 2);
-    expect(token.offset, 0);
-    expect(token.type, NgTokenType.closeElementStart);
-  });
+    test('elementIdentifier', () {
+      var token = Token.elementIdentifier(0, 'div');
+      expect(token.lexeme, 'div');
+      expect(token.end, 3);
+      expect(token.length, 3);
+      expect(token.offset, 0);
+      expect(token.type, TokenType.elementIdentifier);
+    });
 
-  test('elementDecorator', () {
-    token = NgToken.elementDecorator(0, 'title');
-    expect(token.lexeme, 'title');
-    expect(token.end, 5);
-    expect(token.length, 5);
-    expect(token.offset, 0);
-    expect(token.type, NgTokenType.elementDecorator);
-  });
+    test('openElementEnd', () {
+      var token = Token.openElementEnd(0);
+      expect(token.lexeme, '>');
+      expect(token.end, 1);
+      expect(token.length, 1);
+      expect(token.offset, 0);
+      expect(token.type, TokenType.openElementEnd);
+    });
 
-  test('elementIdentifier', () {
-    token = NgToken.elementIdentifier(0, 'div');
-    expect(token.lexeme, 'div');
-    expect(token.end, 3);
-    expect(token.length, 3);
-    expect(token.offset, 0);
-    expect(token.type, NgTokenType.elementIdentifier);
-  });
+    test('openElementStart', () {
+      var token = Token.openElementStart(0);
+      expect(token.lexeme, '<');
+      expect(token.end, 1);
+      expect(token.length, 1);
+      expect(token.offset, 0);
+      expect(token.type, TokenType.openElementStart);
+    });
 
-  test('openElementEnd', () {
-    token = NgToken.openElementEnd(0);
-    expect(token.lexeme, '>');
-    expect(token.end, 1);
-    expect(token.length, 1);
-    expect(token.offset, 0);
-    expect(token.type, NgTokenType.openElementEnd);
-  });
-
-  test('openElementStart', () {
-    token = NgToken.openElementStart(0);
-    expect(token.lexeme, '<');
-    expect(token.end, 1);
-    expect(token.length, 1);
-    expect(token.offset, 0);
-    expect(token.type, NgTokenType.openElementStart);
-  });
-
-  test('text', () {
-    token = NgToken.text(0, 'Hello');
-    expect(token.lexeme, 'Hello');
-    expect(token.end, 5);
-    expect(token.length, 5);
-    expect(token.offset, 0);
-    expect(token.type, NgTokenType.text);
+    test('text', () {
+      var token = Token.text(0, 'Hello');
+      expect(token.lexeme, 'Hello');
+      expect(token.end, 5);
+      expect(token.length, 5);
+      expect(token.offset, 0);
+      expect(token.type, TokenType.text);
+    });
   });
 }

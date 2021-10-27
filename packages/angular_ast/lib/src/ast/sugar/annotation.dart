@@ -1,34 +1,24 @@
-import 'package:source_span/source_span.dart';
+import 'package:source_span/source_span.dart' show SourceFile;
 
 import '../../ast.dart';
 import '../../token/tokens.dart';
 import '../../visitor.dart';
 
-/// Represents an annotation `@annotation` on an element.
-///
-/// This annotation may optionally be assigned a value `@annotation="value"`.
-///
-/// Clients should not extend, implement, or mix-in this class.
-abstract class Annotation implements Template {
-  /// Create a new synthetic [Annotation] with a string [name].
+abstract class Annotation implements Node {
   factory Annotation(String name, [String? value]) = _SyntheticAnnotation;
 
-  /// Create a new synthetic [Annotation] that originated from node [origin].
-  factory Annotation.from(Template origin, String name, [String? value]) = _SyntheticAnnotation.from;
+  factory Annotation.from(Node origin, String name, [String? value]) = _SyntheticAnnotation.from;
 
-  /// Create a new [Annotation] parsed from tokens from [sourceFile].
-  factory Annotation.parsed(SourceFile sourceFile, NgToken prefixToken, NgToken nameToken,
-      [NgAttributeValueToken? valueToken, NgToken? equalSignToken]) = ParsedAnnotation;
+  factory Annotation.parsed(SourceFile sourceFile, Token prefixToken, Token nameToken,
+      [AttributeValueToken? valueToken, Token? equalSignToken]) = ParsedAnnotation;
 
   @override
   int get hashCode {
     return Object.hash(name, value);
   }
 
-  /// Static annotation name.
   String get name;
 
-  /// Static annotation value.
   String? get value;
 
   @override
@@ -37,7 +27,7 @@ abstract class Annotation implements Template {
   }
 
   @override
-  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+  R accept<R, C>(Visitor<R, C?> visitor, [C? context]) {
     return visitor.visitAnnotation(this, context);
   }
 
@@ -51,27 +41,20 @@ abstract class Annotation implements Template {
   }
 }
 
-/// Represents a real(non-synthetic) parsed AnnotationAst. Preserves offsets.
-///
-/// Clients should not extend, implement, or mix-in this class.
-class ParsedAnnotation extends Template with Annotation implements ParsedDecorator {
+class ParsedAnnotation extends Node with Annotation implements ParsedDecorator {
   ParsedAnnotation(SourceFile sourceFile, this.prefixToken, this.nameToken, [this.valueToken, this.equalSignToken])
       : super.parsed(prefixToken, valueToken != null ? valueToken.rightQuote : nameToken, sourceFile);
 
   @override
-  final NgToken prefixToken;
-
-  /// [NgToken] that represents the annotation name.
-  @override
-  final NgToken nameToken;
+  final Token prefixToken;
 
   @override
-  final NgAttributeValueToken? valueToken;
+  final Token nameToken;
 
-  /// Represents the equal sign token between the annotation name and value.
-  ///
-  /// May be `null` if the annotation has no value.
-  final NgToken? equalSignToken;
+  @override
+  final AttributeValueToken? valueToken;
+
+  final Token? equalSignToken;
 
   @override
   String get name {
@@ -83,14 +66,13 @@ class ParsedAnnotation extends Template with Annotation implements ParsedDecorat
     return valueToken?.innerValue?.lexeme;
   }
 
-  /// Offset of annotation prefix `@`.
   @override
   int get prefixOffset {
     return prefixToken.offset;
   }
 
   @override
-  NgToken? get suffixToken {
+  Token? get suffixToken {
     return null;
   }
 
@@ -100,10 +82,10 @@ class ParsedAnnotation extends Template with Annotation implements ParsedDecorat
   }
 }
 
-class _SyntheticAnnotation extends SyntheticTemplate with Annotation {
+class _SyntheticAnnotation extends Synthetic with Annotation {
   _SyntheticAnnotation(this.name, [this.value]);
 
-  _SyntheticAnnotation.from(Template origin, this.name, [this.value]) : super.from(origin);
+  _SyntheticAnnotation.from(Node origin, this.name, [this.value]) : super.from(origin);
 
   @override
   final String name;

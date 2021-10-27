@@ -1,39 +1,34 @@
-import 'package:source_span/source_span.dart';
-import 'package:string_scanner/string_scanner.dart';
+import 'package:source_span/source_span.dart' show SourceFile;
+import 'package:string_scanner/string_scanner.dart' show StringScanner;
 
+import '../parser_exception.dart';
 import '../ast.dart';
-import '../exception_handler/exception_handler.dart';
 import '../token/tokens.dart';
 import 'reader.dart';
 
-/// A recursive descent AST parser from a series of tokens.
-class RecursiveAstParser {
-  final NgTokenReversibleReader<Object> _reader;
-  final SourceFile _source;
-  final List<String> _voidElements;
-  final List<String> _svgElements;
-  final ExceptionHandler exceptionHandler;
+class RecursiveASTParser {
+  RecursiveASTParser(this.source, Iterable<Token> tokens, this.voidElements, this.svgElements)
+      : reader = TokenReversibleReader<TokenType>(tokens.iterator);
 
-  RecursiveAstParser(
-    SourceFile sourceFile,
-    Iterable<NgToken> tokens,
-    this._voidElements,
-    this._svgElements,
-    this.exceptionHandler,
-  )   : _reader = NgTokenReversibleReader<NgTokenType>(sourceFile, tokens),
-        _source = sourceFile;
+  final TokenReversibleReader<Object> reader;
 
-  /// Iterates through and returns the top-level AST nodes from the tokens.
-  List<StandaloneTemplate> parse() {
+  final SourceFile source;
+
+  final List<String> voidElements;
+
+  final List<String> svgElements;
+
+  List<Standalone> parse() {
     // Start with an empty list.
-    var nodes = <StandaloneTemplate>[];
-    NgToken? token;
+    var nodes = <Standalone>[];
+    Token? token;
+
     // Iterate through until and wait until EOF.
     //
     // Collects comments, elements, and text.
     //
     // Any other AST structure should be handled by the parseElement case.
-    while ((token = _reader.next() as NgToken?) != null) {
+    while ((token = reader.next() as Token?) != null) {
       nodes.add(parseStandalone(token!)!);
     }
 
@@ -41,289 +36,190 @@ class RecursiveAstParser {
     return nodes;
   }
 
-  /// Parses and returns a [CloseElement].
-  CloseElement parseCloseElement(NgToken beginToken) {
-    var nameToken = _reader.next()!;
-    if (_voidElements.contains(nameToken.lexeme)) {
-      exceptionHandler.handle(AngularParserException(
-        ParserErrorCode.VOID_ELEMENT_IN_CLOSE_TAG,
-        nameToken.offset,
-        nameToken.length,
-      ));
+  CloseElement parseCloseElement(Token beginToken) {
+    var nameToken = reader.next()!;
+
+    if (voidElements.contains(nameToken.lexeme)) {
+      throw ParserException(ParserErrorCode.voidElementInCloseTag, nameToken.offset, nameToken.length);
     }
 
-    while (_reader.peekType() == NgTokenType.whitespace) {
-      _reader.next();
+    while (reader.peekType() == TokenType.whitespace) {
+      reader.next();
     }
-    var closeElementEnd = _reader.next();
-    return CloseElement.parsed(
-      _source,
-      beginToken,
-      nameToken as NgToken,
-      closeElementEnd as NgToken,
-    );
+
+    var closeElementEnd = reader.next();
+    return CloseElement.parsed(source, beginToken, nameToken as Token, closeElementEnd as Token);
   }
 
-  /// Parses and returns a comment beginning at the token provided.
-  Comment parseComment(NgToken beginToken) {
-    NgToken valueToken;
-    if (_reader.peekType() == NgTokenType.commentEnd) {
-      valueToken = NgToken.commentValue(_reader.peek()!.offset, '');
+  Comment parseComment(Token beginToken) {
+    Token valueToken;
+
+    if (reader.peekType() == TokenType.commentEnd) {
+      valueToken = Token.commentValue(reader.peek()!.offset, '');
     } else {
-      valueToken = _reader.next() as NgToken;
+      valueToken = reader.next() as Token;
     }
-    var endToken = _reader.next();
-    return Comment.parsed(
-      _source,
-      beginToken,
-      valueToken,
-      endToken as NgToken,
-    );
+
+    var endToken = reader.next();
+    return Comment.parsed(source, beginToken, valueToken, endToken as Token);
   }
 
-  /// Parses and returns an `<ng-container>` AST.
-  Container parseContainer(
-    NgToken beginToken,
-    NgToken nameToken,
-    List<String> tagStack,
-  ) {
-    final annotations = <Annotation>[];
-    final childNodes = <StandaloneTemplate>[];
-    final stars = <Star>[];
+  Container parseContainer(Token beginToken, Token nameToken, List<String> tagStack) {
+    var annotations = <Annotation>[];
+    var childNodes = <Standalone>[];
+    var stars = <Star>[];
 
-    while (_reader.peekType() == NgTokenType.beforeElementDecorator) {
-      final nextToken = _reader.next();
-      final decorator = parseDecorator(nextToken as NgToken);
+    while (reader.peekType() == TokenType.beforeElementDecorator) {
+      var nextToken = reader.next();
+      var decorator = parseDecorator(nextToken as Token);
+
       if (decorator is Annotation) {
         annotations.add(decorator);
       } else if (decorator is Star) {
-        _addStarAst(decorator, stars);
+        addStarAst(decorator, stars);
       } else {
-        exceptionHandler.handle(AngularParserException(
-          ParserErrorCode.INVALID_DECORATOR_IN_NGCONTAINER,
-          decorator.beginToken!.offset,
-          decorator.endToken!.end - decorator.beginToken!.offset,
-        ));
+        var offset = decorator.beginToken!.offset;
+        var length = decorator.endToken!.end - decorator.beginToken!.offset;
+        throw ParserException(ParserErrorCode.invalidDecoratorInContainer, offset, length);
       }
     }
 
-    final endToken = _parseOpenElementEnd();
-    final closeComplement = _parseCloseElement(beginToken, nameToken, endToken, childNodes, tagStack);
-
-    return Container.parsed(
-      _source,
-      beginToken,
-      endToken,
-      closeComplement,
-      annotations: annotations,
-      childNodes: childNodes,
-      stars: stars,
-    );
+    var endToken = parseOpenElementEnd();
+    var closeComplement = _parseCloseElement(beginToken, nameToken, endToken, childNodes, tagStack);
+    return Container.parsed(source, beginToken, endToken, closeComplement,
+        annotations: annotations, childNodes: childNodes, stars: stars);
   }
 
-  /// Parses and returns a template AST beginning at the token provided.
-  /// No desugaring of any kind occurs here.
-  Template parseDecorator(NgToken beginToken) {
+  Node parseDecorator(Token beginToken) {
     // The first token is the decorator/name.
-    NgToken? prefixToken;
-    NgToken? decoratorToken;
-    NgToken? suffixToken;
+    Token? prefixToken;
+    Token? decoratorToken;
+    Token? suffixToken;
 
-    var peekType = _reader.peekType();
-    if (peekType == NgTokenType.bananaPrefix ||
-        peekType == NgTokenType.eventPrefix ||
-        peekType == NgTokenType.propertyPrefix) {
-      prefixToken = _reader.next() as NgToken;
-      decoratorToken = _reader.next() as NgToken;
-      suffixToken = _reader.next() as NgToken;
-    } else if (peekType == NgTokenType.referencePrefix ||
-        peekType == NgTokenType.templatePrefix ||
-        peekType == NgTokenType.annotationPrefix) {
-      prefixToken = _reader.next() as NgToken;
-      decoratorToken = _reader.next() as NgToken;
+    var peekType = reader.peekType();
+
+    if (peekType == TokenType.bananaPrefix ||
+        peekType == TokenType.eventPrefix ||
+        peekType == TokenType.propertyPrefix) {
+      prefixToken = reader.next() as Token;
+      decoratorToken = reader.next() as Token;
+      suffixToken = reader.next() as Token;
+    } else if (peekType == TokenType.referencePrefix ||
+        peekType == TokenType.templatePrefix ||
+        peekType == TokenType.annotationPrefix) {
+      prefixToken = reader.next() as Token;
+      decoratorToken = reader.next() as Token;
     } else {
-      decoratorToken = _reader.next() as NgToken;
+      decoratorToken = reader.next() as Token;
     }
 
-    NgAttributeValueToken? valueToken;
-    NgToken? equalSignToken;
+    AttributeValueToken? valueToken;
+    Token? equalSignToken;
 
-    if (_reader.peekTypeIgnoringType(NgTokenType.whitespace) == NgTokenType.beforeElementDecoratorValue) {
-      _consumeWhitespaces();
-      equalSignToken = _reader.next() as NgToken;
-      _consumeWhitespaces();
-      valueToken = _reader.next() as NgAttributeValueToken;
+    if (reader.peekTypeIgnoringType(TokenType.whitespace) == TokenType.beforeElementDecoratorValue) {
+      consumeWhitespaces();
+      equalSignToken = reader.next() as Token;
+      consumeWhitespaces();
+      valueToken = reader.next() as AttributeValueToken;
     }
 
     if (prefixToken != null) {
       var prefixType = prefixToken.type;
 
-      if (prefixType == NgTokenType.bananaPrefix) {
-        return Banana.parsed(
-          _source,
-          prefixToken,
-          decoratorToken,
-          suffixToken as NgToken,
-          valueToken,
-          equalSignToken,
-        );
-      } else if (prefixType == NgTokenType.eventPrefix) {
+      if (prefixType == TokenType.bananaPrefix) {
+        return Banana.parsed(source, prefixToken, decoratorToken, suffixToken as Token, valueToken, equalSignToken);
+      } else if (prefixType == TokenType.eventPrefix) {
         // Disabling: event names can be as long as keyup.ctrl.shift.alt.mod.+
         // Should this be limited to 6 then? Or should it be left open?
-        //if (decoratorToken.lexeme.split('.').length > 2) {
-        //  exceptionHandler.handle(new AngularParserException(
-        //    NgParserWarningCode.EVENT_NAME_TOO_MANY_FIXES,
-        //    decoratorToken.offset,
-        //    decoratorToken.length,
-        //  ));
-        //}
-
-        return Event.parsed(
-          _source,
-          prefixToken,
-          decoratorToken,
-          suffixToken as NgToken,
-          valueToken,
-          equalSignToken,
-        );
-      } else if (prefixType == NgTokenType.propertyPrefix) {
+        // if (decoratorToken.lexeme.split('.').length > 2) {
+        //   exceptionHandler.handle(new AngularParserException(
+        //     NgParserWarningCode.EVENT_NAME_TOO_MANY_FIXES,
+        //     decoratorToken.offset,
+        //     decoratorToken.length,
+        //   ));
+        // }
+        return Event.parsed(source, prefixToken, decoratorToken, suffixToken as Token, valueToken, equalSignToken);
+      } else if (prefixType == TokenType.propertyPrefix) {
         if (decoratorToken.lexeme.split('.').length > 3) {
-          exceptionHandler.handle(AngularParserException(
-            ParserErrorCode.PROPERTY_NAME_TOO_MANY_FIXES,
-            decoratorToken.offset,
-            decoratorToken.length,
-          ));
+          var offset = decoratorToken.offset;
+          var length = decoratorToken.length;
+          throw ParserException(ParserErrorCode.propertyNameTooManyFixes, offset, length);
         }
 
-        return Property.parsed(
-          _source,
-          prefixToken,
-          decoratorToken,
-          suffixToken as NgToken,
-          valueToken,
-          equalSignToken,
-        );
-      } else if (prefixType == NgTokenType.referencePrefix) {
-        return Reference.parsed(
-          _source,
-          prefixToken,
-          decoratorToken,
-          valueToken,
-          equalSignToken,
-        );
-      } else if (prefixType == NgTokenType.templatePrefix) {
-        return Star.parsed(
-          _source,
-          prefixToken,
-          decoratorToken,
-          valueToken,
-          equalSignToken,
-        );
-      } else if (prefixType == NgTokenType.annotationPrefix) {
-        return Annotation.parsed(
-          _source,
-          prefixToken,
-          decoratorToken,
-          valueToken,
-          equalSignToken,
-        );
+        return Property.parsed(source, prefixToken, decoratorToken, suffixToken as Token, valueToken, equalSignToken);
+      } else if (prefixType == TokenType.referencePrefix) {
+        return Reference.parsed(source, prefixToken, decoratorToken, valueToken, equalSignToken);
+      } else if (prefixType == TokenType.templatePrefix) {
+        return Star.parsed(source, prefixToken, decoratorToken, valueToken, equalSignToken);
+      } else if (prefixType == TokenType.annotationPrefix) {
+        return Annotation.parsed(source, prefixToken, decoratorToken, valueToken, equalSignToken);
       }
     }
 
     // At this point, it is a TextAttribute, but handle cases
     // with 'on-' and 'bind-' prefix.
     if (decoratorToken.lexeme.startsWith('on-')) {
-      var onToken = NgToken.onPrefix(decoratorToken.offset);
-      decoratorToken = NgToken.elementDecorator(
-        decoratorToken.offset + 'on-'.length,
-        decoratorToken.lexeme.substring('on-'.length),
-      );
+      var onToken = Token.onPrefix(decoratorToken.offset);
+      decoratorToken = Token.elementDecorator(decoratorToken.offset + 3, decoratorToken.lexeme.substring(3));
+
       if (decoratorToken.lexeme == '') {
-        exceptionHandler.handle(AngularParserException(
-          ParserErrorCode.ELEMENT_DECORATOR_AFTER_PREFIX,
-          onToken.offset,
-          onToken.length,
-        ));
+        var offset = onToken.offset;
+        var length = onToken.length;
+        throw ParserException(ParserErrorCode.elementDecoratorAfterPrefix, offset, length);
       }
-      return Event.parsed(
-        _source,
-        onToken,
-        decoratorToken,
-        null,
-        valueToken,
-        equalSignToken,
-      );
+
+      return Event.parsed(source, onToken, decoratorToken, null, valueToken, equalSignToken);
     }
     if (decoratorToken.lexeme.startsWith('bind-')) {
-      var bindToken = NgToken.bindPrefix(decoratorToken.offset);
-      decoratorToken = NgToken.elementDecorator(
-        decoratorToken.offset + 'bind-'.length,
-        decoratorToken.lexeme.substring('bind-'.length),
-      );
+      var bindToken = Token.bindPrefix(decoratorToken.offset);
+      decoratorToken = Token.elementDecorator(decoratorToken.offset + 5, decoratorToken.lexeme.substring(5));
+
       if (decoratorToken.lexeme == '') {
-        exceptionHandler.handle(AngularParserException(
-          ParserErrorCode.ELEMENT_DECORATOR_AFTER_PREFIX,
-          bindToken.offset,
-          bindToken.length,
-        ));
+        var offset = bindToken.offset;
+        var length = bindToken.length;
+        throw ParserException(ParserErrorCode.elementDecoratorAfterPrefix, offset, length);
       }
-      return Property.parsed(
-        _source,
-        bindToken,
-        decoratorToken,
-        null,
-        valueToken,
-        equalSignToken,
-      );
-    }
-    if (decoratorToken.lexeme.startsWith('let-')) {
-      var letToken = NgToken.letPrefix(decoratorToken.offset);
-      decoratorToken = NgToken.elementDecorator(
-        decoratorToken.offset + 'let-'.length,
-        decoratorToken.lexeme.substring('let-'.length),
-      );
-      return LetBinding.parsed(
-        _source,
-        letToken,
-        decoratorToken,
-        valueToken,
-        equalSignToken,
-      );
+
+      return Property.parsed(source, bindToken, decoratorToken, null, valueToken, equalSignToken);
     }
 
-    List<StandaloneTemplate> parsedMustaches;
+    if (decoratorToken.lexeme.startsWith('let-')) {
+      var letToken = Token.letPrefix(decoratorToken.offset);
+      decoratorToken = Token.elementDecorator(decoratorToken.offset + 4, decoratorToken.lexeme.substring(4));
+      return LetBinding.parsed(source, letToken, decoratorToken, valueToken, equalSignToken);
+    }
+
+    List<Standalone> parsedMustaches;
 
     if (valueToken != null) {
-      parsedMustaches = _parseMustacheInPlainAttributeValue(valueToken.innerValue!);
+      parsedMustaches = parseMustacheInPlainAttributeValue(valueToken.innerValue!);
     } else {
-      parsedMustaches = const <StandaloneTemplate>[];
+      parsedMustaches = const <Standalone>[];
     }
 
-    return Attribute.parsed(_source, decoratorToken, valueToken, equalSignToken, parsedMustaches);
+    return Attribute.parsed(source, decoratorToken, valueToken, equalSignToken, parsedMustaches);
   }
 
-  /// Returns a DOM element AST starting at the provided token.
-  ///
-  /// It's possible the element will end up not being an [Element].
-  StandaloneTemplate parseElement(NgToken beginToken, List<String> tagStack) {
+  Standalone parseElement(Token beginToken, List<String> tagStack) {
     var isTemplateElement = false;
 
     // Parse the element identifier.
-    var nameToken = _reader.next()!;
+    var nameToken = reader.next()!;
     if (nameToken.lexeme == 'ng-container') {
-      return parseContainer(beginToken, nameToken as NgToken, tagStack);
+      return parseContainer(beginToken, nameToken as Token, tagStack);
     } else if (nameToken.lexeme == 'ng-content') {
-      return parseEmbeddedContent(beginToken, nameToken as NgToken);
+      return parseEmbeddedContent(beginToken, nameToken as Token);
     } else if (nameToken.lexeme.toLowerCase() == 'template') {
       isTemplateElement = true;
     }
-    var isVoidElement = _voidElements.contains(nameToken.lexeme);
+
+    var isVoidElement = voidElements.contains(nameToken.lexeme);
     // TODO(alorenzen): Add better namespace handling.
-    var isSvgElement = _svgElements.contains(nameToken.lexeme.replaceAll('svg:', ''));
+    var isSvgElement = svgElements.contains(nameToken.lexeme.replaceAll('svg:', ''));
 
     // Start collecting decorators.
     var attributes = <Attribute>[];
-    var childNodes = <StandaloneTemplate>[];
+    var childNodes = <Standalone>[];
     var events = <Event>[];
     var properties = <Property>[];
     var references = <Reference>[];
@@ -331,47 +227,41 @@ class RecursiveAstParser {
     var stars = <Star>[];
     var annotations = <Annotation>[];
     var letBindings = <LetBinding>[];
-    NgToken nextToken;
+    Token nextToken;
 
     // Start looping and get all of the decorators within the element.
     do {
-      nextToken = _reader.next() as NgToken;
-      if (nextToken.type == NgTokenType.beforeElementDecorator) {
+      nextToken = reader.next() as Token;
+
+      if (nextToken.type == TokenType.beforeElementDecorator) {
         var decoratorAst = parseDecorator(nextToken);
+
         if (decoratorAst is Attribute) {
           attributes.add(decoratorAst);
         } else if (decoratorAst is LetBinding) {
           if (!isTemplateElement) {
             // 'let-' binding can only exist in <template>.
-            exceptionHandler.handle(AngularParserException(
-              ParserErrorCode.INVALID_LET_BINDING_IN_NONTEMPLATE,
-              decoratorAst.beginToken!.offset,
-              decoratorAst.endToken!.end - decoratorAst.beginToken!.offset,
-            ));
+            var offset = decoratorAst.beginToken!.offset;
+            var length = decoratorAst.endToken!.end - decoratorAst.beginToken!.offset;
+            throw ParserException(ParserErrorCode.invalidLetBindingInNonTemplate, offset, length);
           } else if (decoratorAst.name.isEmpty) {
             var letToken = (decoratorAst as ParsedLetBinding).prefixToken;
-            exceptionHandler.handle(AngularParserException(
-              ParserErrorCode.ELEMENT_DECORATOR_AFTER_PREFIX,
-              letToken.offset,
-              letToken.length,
-            ));
+            var offset = letToken.offset;
+            var length = letToken.length;
+            throw ParserException(ParserErrorCode.elementDecoratorAfterPrefix, offset, length);
           } else {
             letBindings.add(decoratorAst);
           }
         } else if (decoratorAst is Star) {
           if (isTemplateElement) {
-            exceptionHandler.handle(AngularParserException(
-              ParserErrorCode.INVALID_DECORATOR_IN_TEMPLATE,
-              decoratorAst.beginToken!.offset,
-              decoratorAst.endToken!.end - decoratorAst.beginToken!.offset,
-            ));
+            var offset = decoratorAst.beginToken!.offset;
+            var length = decoratorAst.endToken!.end - decoratorAst.beginToken!.offset;
+            throw ParserException(ParserErrorCode.invalidDecoratorInTemplate, offset, length);
           } else {
             if (stars.isNotEmpty) {
-              exceptionHandler.handle(AngularParserException(
-                ParserErrorCode.DUPLICATE_STAR_DIRECTIVE,
-                decoratorAst.beginToken!.offset,
-                decoratorAst.endToken!.end - decoratorAst.beginToken!.offset,
-              ));
+              var offset = decoratorAst.beginToken!.offset;
+              var length = decoratorAst.endToken!.end - decoratorAst.beginToken!.offset;
+              throw ParserException(ParserErrorCode.duplicateStarDirective, offset, length);
             } else {
               stars.add(decoratorAst);
             }
@@ -384,11 +274,9 @@ class RecursiveAstParser {
           properties.add(decoratorAst);
         } else if (decoratorAst is Banana) {
           if (isTemplateElement) {
-            exceptionHandler.handle(AngularParserException(
-              ParserErrorCode.INVALID_DECORATOR_IN_TEMPLATE,
-              decoratorAst.beginToken!.offset,
-              decoratorAst.endToken!.end - decoratorAst.beginToken!.offset,
-            ));
+            var offset = decoratorAst.beginToken!.offset;
+            var length = decoratorAst.endToken!.end - decoratorAst.beginToken!.offset;
+            throw ParserException(ParserErrorCode.invalidDecoratorInTemplate, offset, length);
           } else {
             bananas.add(decoratorAst);
           }
@@ -398,69 +286,48 @@ class RecursiveAstParser {
           throw StateError('Invalid decorator AST: $decoratorAst');
         }
       }
-    } while (nextToken.type != NgTokenType.openElementEnd && nextToken.type != NgTokenType.openElementEndVoid);
+    } while (nextToken.type != TokenType.openElementEnd && nextToken.type != TokenType.openElementEndVoid);
 
-    if (!isVoidElement && !isSvgElement && nextToken.type == NgTokenType.openElementEndVoid) {
-      exceptionHandler.handle(AngularParserException(
-        ParserErrorCode.NONVOID_ELEMENT_USING_VOID_END,
-        nextToken.offset,
-        nextToken.length,
-      ));
-      nextToken = NgToken.generateErrorSynthetic(
-        nextToken.offset,
-        NgTokenType.openElementEnd,
-      );
+    if (!isVoidElement && !isSvgElement && nextToken.type == TokenType.openElementEndVoid) {
+      var offset = nextToken.offset;
+      var length = nextToken.length;
+      throw ParserException(ParserErrorCode.nonVoidElementUsingVoidEnd, offset, length);
     }
+
     var endToken = nextToken;
     CloseElement? closeElementAst;
 
     // If not a void element, look for closing tag OR child nodes.
-    if (!isVoidElement && nextToken.type != NgTokenType.openElementEndVoid) {
-      closeElementAst = _parseCloseElement(
-        beginToken,
-        nameToken as NgToken,
-        endToken,
-        childNodes,
-        tagStack,
-      );
+    if (!isVoidElement && nextToken.type != TokenType.openElementEndVoid) {
+      closeElementAst = _parseCloseElement(beginToken, nameToken as Token, endToken, childNodes, tagStack);
     }
 
     if (isTemplateElement) {
-      return EmbeddedTemplateAst.parsed(
-        _source,
-        beginToken,
-        endToken,
-        closeComplement: closeElementAst,
-        annotations: annotations,
-        attributes: attributes,
-        childNodes: childNodes,
-        events: events,
-        properties: properties,
-        references: references,
-        letBindings: letBindings,
-      );
+      return EmbeddedNode.parsed(source, beginToken, endToken,
+          closeComplement: closeElementAst,
+          annotations: annotations,
+          attributes: attributes,
+          childNodes: childNodes,
+          events: events,
+          properties: properties,
+          references: references,
+          letBindings: letBindings);
     } else {
-      return Element.parsed(
-        _source,
-        beginToken,
-        nameToken as NgToken,
-        endToken,
-        annotations: annotations,
-        attributes: attributes,
-        childNodes: childNodes,
-        events: events,
-        properties: properties,
-        references: references,
-        bananas: bananas,
-        stars: stars,
-        closeComplement: closeElementAst,
-      );
+      return Element.parsed(source, beginToken, nameToken as Token, endToken,
+          annotations: annotations,
+          attributes: attributes,
+          childNodes: childNodes,
+          events: events,
+          properties: properties,
+          references: references,
+          bananas: bananas,
+          stars: stars,
+          closeComplement: closeElementAst);
     }
   }
 
-  /// Returns and parses an embedded content directive/transclusions.
-  EmbeddedContent parseEmbeddedContent(NgToken beginToken, NgToken elementIdentifierToken) {
-    NgToken endToken;
+  EmbeddedContent parseEmbeddedContent(Token beginToken, Token elementIdentifierToken) {
+    Token endToken;
     Attribute? selectAttribute, ngProjectAsAttribute;
     Reference? reference;
     var selectAttributeFound = false;
@@ -471,123 +338,87 @@ class RecursiveAstParser {
     // Ensure that ng-content has only 'select', 'ngProjectAs' and a reference,
     // if any. Also catch for multiple ones; if multiple, accept the first one
     // seen.
-    while (_reader.peekType() == NgTokenType.beforeElementDecorator) {
-      final nextToken = _reader.next();
-      final decorator = parseDecorator(nextToken as NgToken);
-      final startOffset = decorator.beginToken!.offset;
-      final endOffset = decorator.endToken!.end;
+    while (reader.peekType() == TokenType.beforeElementDecorator) {
+      var nextToken = reader.next();
+      var decorator = parseDecorator(nextToken as Token);
+      var startOffset = decorator.beginToken!.offset;
+      var endOffset = decorator.endToken!.end;
+
       if (decorator is Attribute && decorator.name == 'select') {
         if (selectAttributeFound) {
-          var e = AngularParserException(
-            ParserErrorCode.DUPLICATE_SELECT_DECORATOR,
-            startOffset,
-            endOffset - startOffset,
-          );
-          exceptionHandler.handle(e);
+          var length = endOffset - startOffset;
+          throw ParserException(ParserErrorCode.duplicateSelectorDecorator, startOffset, length);
         } else {
           selectAttributeFound = true;
           selectAttribute = decorator;
         }
       } else if (decorator is Attribute && decorator.name == 'ngProjectAs') {
         if (ngProjectAsAttributeFound) {
-          var e = AngularParserException(
-            ParserErrorCode.DUPLICATE_PROJECT_AS_DECORATOR,
-            startOffset,
-            endOffset - startOffset,
-          );
-          exceptionHandler.handle(e);
+          var length = endOffset - startOffset;
+          throw ParserException(ParserErrorCode.duplicateProjectAsDecorator, startOffset, length);
         } else {
           ngProjectAsAttributeFound = true;
           ngProjectAsAttribute = decorator;
         }
       } else if (decorator is Reference) {
         if (referenceAttributeFound) {
-          var e = AngularParserException(
-            ParserErrorCode.DUPLICATE_REFERENCE_DECORATOR,
-            startOffset,
-            endOffset - startOffset,
-          );
-          exceptionHandler.handle(e);
+          var length = endOffset - startOffset;
+          throw ParserException(ParserErrorCode.duplicateReferenceDecorator, startOffset, length);
         } else {
           referenceAttributeFound = true;
           reference = decorator;
+
           if (reference.identifier != null) {
-            var e = AngularParserException(
-              ParserErrorCode.REFERENCE_IDENTIFIER_FOUND,
-              startOffset,
-              endOffset - startOffset,
-            );
-            exceptionHandler.handle(e);
+            var length = endOffset - startOffset;
+            throw ParserException(ParserErrorCode.referenceIdetifierFound, startOffset, length);
           }
         }
       } else {
-        var e = AngularParserException(
-          ParserErrorCode.INVALID_DECORATOR_IN_NGCONTENT,
-          decorator.beginToken!.offset,
-          decorator.endToken!.end - decorator.beginToken!.offset,
-        );
-        exceptionHandler.handle(e);
+        var offset = decorator.beginToken!.offset;
+        var length = decorator.endToken!.end - decorator.beginToken!.offset;
+        throw ParserException(ParserErrorCode.invalidDecoratorInContent, offset, length);
       }
     }
 
-    endToken = _parseOpenElementEnd();
+    endToken = parseOpenElementEnd();
 
     // Skip whitespace after <ng-content>.
-    if (_reader.peekType() == NgTokenType.text) {
-      final textToken = _reader.next();
-      final text = parseText(textToken as NgToken);
+    if (reader.peekType() == TokenType.text) {
+      var textToken = reader.next();
+      var text = parseText(textToken as Token);
+
       if (text.value.trim().isNotEmpty) {
-        _reader.putBack(textToken);
+        reader.putBack(textToken);
       }
     }
 
     // Ensure closing </ng-content> exists.
-    if (_reader.peekType() != NgTokenType.closeElementStart) {
-      var e = AngularParserException(
-        ParserErrorCode.NGCONTENT_MUST_CLOSE_IMMEDIATELY,
-        beginToken.offset,
-        endToken.end - beginToken.offset,
-      );
-      exceptionHandler.handle(e);
-      closeElementAst = CloseElement('ng-content');
+    if (reader.peekType() != TokenType.closeElementStart) {
+      var offset = beginToken.offset;
+      var length = endToken.end - beginToken.offset;
+      throw ParserException(ParserErrorCode.contentMustCloseImmediately, offset, length);
     } else {
-      var closeElementStart = _reader.next();
-      var closeElementName = _reader.peek()!.lexeme;
+      var closeElementStart = reader.next();
+      var closeElementName = reader.peek()!.lexeme;
 
       if (closeElementName != 'ng-content') {
-        var e = AngularParserException(
-          ParserErrorCode.NGCONTENT_MUST_CLOSE_IMMEDIATELY,
-          beginToken.offset,
-          endToken.end - beginToken.offset,
-        );
-        exceptionHandler.handle(e);
-        _reader.putBack(closeElementStart!);
-        closeElementAst = CloseElement('ng-content');
+        var offset = beginToken.offset;
+        var length = endToken.end - beginToken.offset;
+        throw ParserException(ParserErrorCode.contentMustCloseImmediately, offset, length);
       } else {
-        closeElementAst = parseCloseElement(closeElementStart as NgToken);
+        closeElementAst = parseCloseElement(closeElementStart as Token);
       }
     }
-    return EmbeddedContent.parsed(
-      _source,
-      beginToken,
-      elementIdentifierToken,
-      endToken,
-      closeElementAst,
-      selectAttribute,
-      ngProjectAsAttribute,
-      reference,
-    );
+
+    return EmbeddedContent.parsed(source, beginToken, elementIdentifierToken, endToken, closeElementAst,
+        selectAttribute, ngProjectAsAttribute, reference);
   }
 
-  /// Helper function that, given a plain attribute value,
-  /// parses it and generates a list of [StandaloneTemplate].
-  /// Upon mustache errors, either throws or recovers based on
-  /// [ExceptionHandler] used.
-  List<StandaloneTemplate> _parseMustacheInPlainAttributeValue(NgToken innerValue) {
+  List<Standalone> parseMustacheInPlainAttributeValue(Token innerValue) {
     var text = innerValue.lexeme;
     var absoluteTextOffset = innerValue.offset;
     var tokens = RegExp(r'({{)|(}})');
-    var childNodes = <StandaloneTemplate>[];
+    var childNodes = <Standalone>[];
     int? seenOpenMustache;
 
     var scanner = StringScanner(text);
@@ -602,7 +433,7 @@ class RecursiveAstParser {
         if (match.group(1) != null) {
           if (position != matchPosition) {
             childNodes.add(Text.parsed(
-                _source, NgToken.text(absoluteTextOffset + position, text.substring(position, matchPosition))));
+                source, Token.text(absoluteTextOffset + position, text.substring(position, matchPosition))));
           }
 
           // '{{' found.
@@ -611,16 +442,7 @@ class RecursiveAstParser {
           } else {
             // Second '{{' found before '}}' closes it.
             var firstMustacheBegin = absoluteTextOffset + seenOpenMustache;
-            exceptionHandler
-                .handle(AngularParserException(ParserErrorCode.UNTERMINATED_MUSTACHE, firstMustacheBegin, 2));
-
-            childNodes.add(Interpolation.parsed(
-              _source,
-              NgToken.interpolationStart(firstMustacheBegin),
-              NgToken.interpolationValue(firstMustacheBegin + 2, text.substring(seenOpenMustache + 2, matchPosition)),
-              NgToken.generateErrorSynthetic(absoluteTextOffset + matchPosition, NgTokenType.interpolationEnd),
-            ));
-            seenOpenMustache = matchPosition;
+            throw ParserException(ParserErrorCode.unterminatedMustache, firstMustacheBegin, 2);
           }
         }
 
@@ -629,35 +451,23 @@ class RecursiveAstParser {
             var mustacheBegin = absoluteTextOffset + seenOpenMustache;
             var mustacheEnd = absoluteTextOffset + matchPosition;
             childNodes.add(Interpolation.parsed(
-              _source,
-              NgToken.interpolationStart(mustacheBegin),
-              NgToken.interpolationValue(mustacheBegin + 2, text.substring(seenOpenMustache + 2, matchPosition)),
-              NgToken.interpolationEnd(mustacheEnd),
-            ));
+                source,
+                Token.interpolationStart(mustacheBegin),
+                Token.interpolationValue(mustacheBegin + 2, text.substring(seenOpenMustache + 2, matchPosition)),
+                Token.interpolationEnd(mustacheEnd)));
             seenOpenMustache = null;
           } else {
             // Found '}}' before any '{{'
-            var mustacheBegin = absoluteTextOffset + position;
             var mustacheEnd = absoluteTextOffset + matchPosition;
-            exceptionHandler.handle(AngularParserException(
-              ParserErrorCode.UNOPENED_MUSTACHE,
-              mustacheEnd,
-              '}}'.length,
-            ));
-            childNodes.add(Interpolation.parsed(
-              _source,
-              NgToken.generateErrorSynthetic(mustacheBegin, NgTokenType.interpolationStart),
-              NgToken.interpolationValue(mustacheBegin, text.substring(position, matchPosition)),
-              NgToken.interpolationEnd(mustacheEnd),
-            ));
+            throw ParserException(ParserErrorCode.unopenedMustache, mustacheEnd, 2);
           }
         }
 
         scanner.position += match.end;
       } else {
         if (seenOpenMustache == null) {
-          var token = NgToken.text(absoluteTextOffset + scanner.position, text.substring(scanner.position));
-          childNodes.add(Text.parsed(_source, token));
+          var token = Token.text(absoluteTextOffset + scanner.position, text.substring(scanner.position));
+          childNodes.add(Text.parsed(source, token));
         }
 
         scanner.position += scanner.rest.length;
@@ -667,197 +477,124 @@ class RecursiveAstParser {
     // Dangling '{{' and hit end of value-text
     if (seenOpenMustache != null) {
       var mustacheBegin = absoluteTextOffset + seenOpenMustache;
-
-      exceptionHandler.handle(AngularParserException(
-        ParserErrorCode.UNTERMINATED_MUSTACHE,
-        mustacheBegin,
-        2,
-      ));
-
-      childNodes.add(Interpolation.parsed(
-        _source,
-        NgToken.interpolationStart(mustacheBegin),
-        NgToken.interpolationValue(mustacheBegin + 2, text.substring(seenOpenMustache + 2)),
-        NgToken.generateErrorSynthetic(absoluteTextOffset + text.length, NgTokenType.interpolationEnd),
-      ));
+      throw ParserException(ParserErrorCode.unterminatedMustache, mustacheBegin, 2);
     }
 
     return childNodes;
   }
 
-  /// Returns and parses an interpolation AST.
-  Interpolation parseInterpolation(NgToken beginToken) {
-    var valueToken = _reader.next();
-    var endToken = _reader.next();
-    return Interpolation.parsed(_source, beginToken, valueToken as NgToken, endToken as NgToken);
+  Interpolation parseInterpolation(Token beginToken) {
+    var valueToken = reader.next();
+    var endToken = reader.next();
+    return Interpolation.parsed(source, beginToken, valueToken as Token, endToken as Token);
   }
 
-  /// Returns and parses a top-level AST structure.
-  StandaloneTemplate? parseStandalone(
-    NgToken token, [
-    List<String>? tagStack,
-  ]) {
-    tagStack ??= [];
+  Standalone? parseStandalone(Token token, [List<String>? tagStack]) {
+    tagStack ??= <String>[];
+
     switch (token.type) {
-      case NgTokenType.commentStart:
+      case TokenType.commentStart:
         return parseComment(token);
-      case NgTokenType.openElementStart:
+      case TokenType.openElementStart:
         return parseElement(token, tagStack);
-      case NgTokenType.interpolationStart:
+      case TokenType.interpolationStart:
         return parseInterpolation(token);
-      case NgTokenType.text:
+      case TokenType.text:
         return parseText(token);
       // Dangling close tag. If error recovery is enabled, returns
       // a synthetic open with the dangling close. If not enabled,
       // simply throws error.
-      case NgTokenType.closeElementStart:
-        var danglingCloseIdentifier = _reader.peek()!.lexeme;
+      case TokenType.closeElementStart:
         var closeComplement = parseCloseElement(token);
-        exceptionHandler.handle(AngularParserException(
-          ParserErrorCode.DANGLING_CLOSE_ELEMENT,
-          closeComplement.beginToken!.offset,
-          closeComplement.endToken!.end - closeComplement.beginToken!.offset,
-        ));
-        if (danglingCloseIdentifier == 'ng-content') {
-          var synthOpenElement = EmbeddedContent();
-          synthOpenElement.closeComplement = closeComplement;
-          return synthOpenElement;
-        } else {
-          var synthOpenElement = Element(danglingCloseIdentifier, closeComplement);
-          return synthOpenElement;
-        }
+        var offset = closeComplement.beginToken!.offset;
+        var length = closeComplement.endToken!.end - closeComplement.beginToken!.offset;
+        throw ParserException(ParserErrorCode.danglingCloseElement, offset, length);
       default:
         // Simply throw error here; should never hit.
-        if (exceptionHandler is RecoveringExceptionHandler) {
-          // Throw an error here - this should never hit in recovery mode
-          // unless something went really wrong. If so, FIX IT ASAP!
-          throw Exception('Non-standalone starting token found!');
-        }
-        exceptionHandler.handle(AngularParserException(
-          ParserErrorCode.EXPECTED_STANDALONE,
-          token.offset,
-          token.length,
-        ));
-        return null;
+        var offset = token.offset;
+        var length = token.length;
+        throw ParserException(ParserErrorCode.expectedStandalone, offset, length);
     }
   }
 
-  /// Adds [starAst] to [starAsts] if empty, otherwise produces an error.
-  void _addStarAst(Star starAst, List<Star> starAsts) {
+  void addStarAst(Star starAst, List<Star> starAsts) {
     if (starAsts.isEmpty) {
       starAsts.add(starAst);
     } else {
-      exceptionHandler.handle(AngularParserException(
-        ParserErrorCode.DUPLICATE_STAR_DIRECTIVE,
-        starAst.beginToken!.offset,
-        starAst.beginToken!.end - starAst.beginToken!.offset,
-      ));
+      var offset = starAst.beginToken!.offset;
+      var length = starAst.beginToken!.end - starAst.beginToken!.offset;
+      throw ParserException(ParserErrorCode.duplicateStarDirective, offset, length);
     }
   }
 
-  /// Parses child nodes until the closing tag, which is then returned.
-  ///
-  /// Child nodes are appended to [childNodes].
   CloseElement _parseCloseElement(
-    NgToken beginToken,
-    NgToken nameToken,
-    NgToken endToken,
-    List<StandaloneTemplate> childNodes,
-    List<String> tagStack,
-  ) {
+      Token beginToken, Token nameToken, Token endToken, List<Standalone> childNodes, List<String> tagStack) {
     tagStack.add(nameToken.lexeme);
     var closingTagFound = false;
     late CloseElement closeElementAst;
+
     while (!closingTagFound) {
-      final nextToken = _reader.next();
+      var nextToken = reader.next();
+
       if (nextToken == null) {
-        exceptionHandler.handle(AngularParserException(
-          ParserErrorCode.CANNOT_FIND_MATCHING_CLOSE,
-          beginToken.offset,
-          endToken.end - beginToken.offset,
-        ));
-        closeElementAst = CloseElement(nameToken.lexeme);
-        closingTagFound = true;
-      } else if (nextToken.type == NgTokenType.closeElementStart) {
-        var closeNameToken = _reader.peek()!;
+        var offset = beginToken.offset;
+        var length = endToken.end - beginToken.offset;
+        throw ParserException(ParserErrorCode.cannotFindMatchingClose, offset, length);
+      } else if (nextToken.type == TokenType.closeElementStart) {
+        var closeNameToken = reader.peek()!;
         var closeIdentifier = closeNameToken.lexeme;
+
         if (closeIdentifier != nameToken.lexeme) {
           // Found a closing tag, but not matching current [ElementAst].
           // Generate initial error code; could be dangling or unmatching.
           if (tagStack.contains(closeIdentifier)) {
             // If the closing tag is in the seen [ElementAst] stack,
             // leave it alone. Instead create a synthetic close.
-            _reader.putBack(nextToken);
-            closeElementAst = CloseElement(nameToken.lexeme);
-            closingTagFound = true;
-            exceptionHandler.handle(AngularParserException(
-              ParserErrorCode.CANNOT_FIND_MATCHING_CLOSE,
-              beginToken.offset,
-              endToken.end - beginToken.offset,
-            ));
+            var offset = beginToken.offset;
+            var length = endToken.end - beginToken.offset;
+            throw ParserException(ParserErrorCode.cannotFindMatchingClose, offset, length);
           } else {
             // If the closing tag is not in the stack, create a synthetic
             // [ElementAst] to pair the dangling close and add as child.
-            var closeComplement = parseCloseElement(nextToken as NgToken);
-            exceptionHandler.handle(AngularParserException(
-              ParserErrorCode.DANGLING_CLOSE_ELEMENT,
-              closeComplement.beginToken!.offset,
-              closeComplement.endToken!.end - closeComplement.beginToken!.offset,
-            ));
-            if (closeIdentifier == 'ng-container') {
-              var synthContainer = Container();
-              synthContainer.closeComplement = closeComplement;
-              childNodes.add(synthContainer);
-            } else if (closeIdentifier == 'ng-content') {
-              var synthContent = EmbeddedContent();
-              synthContent.closeComplement = closeComplement;
-              childNodes.add(synthContent);
-            } else if (closeIdentifier == 'template') {
-              var synthTemplate = EmbeddedTemplateAst();
-              synthTemplate.closeComplement = closeComplement;
-              childNodes.add(synthTemplate);
-            } else {
-              var synthOpenElement = Element(closeNameToken.lexeme, closeComplement);
-              childNodes.add(synthOpenElement);
-            }
+            var closeComplement = parseCloseElement(nextToken as Token);
+            var offset = closeComplement.beginToken!.offset;
+            var length = closeComplement.endToken!.end - closeComplement.beginToken!.offset;
+            throw ParserException(ParserErrorCode.danglingCloseElement, offset, length);
           }
         } else {
-          closeElementAst = parseCloseElement(nextToken as NgToken);
+          closeElementAst = parseCloseElement(nextToken as Token);
           closingTagFound = true;
         }
       } else {
-        var childAst = parseStandalone(nextToken as NgToken, tagStack)!;
+        var childAst = parseStandalone(nextToken as Token, tagStack)!;
         childNodes.add(childAst);
       }
     }
+
     tagStack.removeLast();
     return closeElementAst;
   }
 
-  /// Ensures open element ends with `>` and not `/>`.
-  NgToken _parseOpenElementEnd() {
-    _consumeWhitespaces();
-    final endToken = _reader.next()!;
-    if (endToken.type == NgTokenType.openElementEndVoid) {
-      exceptionHandler.handle(AngularParserException(
-        ParserErrorCode.NONVOID_ELEMENT_USING_VOID_END,
-        endToken.offset,
-        endToken.length,
-      ));
-      return NgToken.generateErrorSynthetic(
-        endToken.offset,
-        NgTokenType.openElementEnd,
-      );
+  Token parseOpenElementEnd() {
+    consumeWhitespaces();
+    var endToken = reader.next()!;
+
+    if (endToken.type == TokenType.openElementEndVoid) {
+      var offset = endToken.offset;
+      var length = endToken.length;
+      throw ParserException(ParserErrorCode.nonVoidElementUsingVoidEnd, offset, length);
     }
-    return endToken as NgToken;
+
+    return endToken as Token;
   }
 
-  void _consumeWhitespaces() {
-    while (_reader.peekType() != null && _reader.peekType() == NgTokenType.whitespace) {
-      _reader.next();
+  void consumeWhitespaces() {
+    while (reader.peekType() != null && reader.peekType() == TokenType.whitespace) {
+      reader.next();
     }
   }
 
-  /// Returns and parses a text AST.
-  Text parseText(NgToken token) => Text.parsed(_source, token);
+  Text parseText(Token token) {
+    return Text.parsed(source, token);
+  }
 }

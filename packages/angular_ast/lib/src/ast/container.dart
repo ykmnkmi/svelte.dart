@@ -1,53 +1,45 @@
-import 'package:collection/collection.dart';
-import 'package:source_span/source_span.dart';
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:source_span/source_span.dart' show SourceFile;
 
 import '../ast.dart';
 import '../token/tokens.dart';
 import '../visitor.dart';
 
-const ListEquality<Object?> _listEquals = ListEquality<Object?>();
+const ListEquality<Object?> listEquals = ListEquality<Object?>();
 
-/// Represents an `<ng-container>` element.
-///
-/// This is a logical container that has no effect on layout in the DOM.
-///
-/// Clients should not extend, implement, or mix-in this class.
-abstract class Container implements StandaloneTemplate {
-  factory Container({List<Annotation> annotations, List<StandaloneTemplate> childNodes, List<Star> stars}) =
+abstract class Container implements Standalone {
+  factory Container({List<Annotation> annotations, List<Standalone> childNodes, List<Star> stars}) =
       _SyntheticContainer;
 
-  factory Container.from(Template origin,
-      {List<Annotation> annotations, List<StandaloneTemplate> childNodes, List<Star> stars}) = _SyntheticContainer.from;
+  factory Container.from(Node origin,
+      {List<Annotation> annotations, List<Standalone> childNodes, List<Star> stars}) = _SyntheticContainer.from;
 
-  factory Container.parsed(SourceFile sourceFile, NgToken beginToken, NgToken endToken, CloseElement closeComplement,
-      {List<Annotation> annotations, List<StandaloneTemplate> childNodes, List<Star> stars}) = _ParsedContainer;
+  factory Container.parsed(SourceFile sourceFile, Token beginToken, Token endToken, CloseElement closeComplement,
+      {List<Annotation> annotations, List<Standalone> childNodes, List<Star> stars}) = _ParsedContainer;
 
-  /// Annotation assignments.
   List<Annotation> get annotations;
 
-  /// CloseElement complement
   CloseElement get closeComplement;
 
   set closeComplement(CloseElement closeComplement);
 
   @override
   int get hashCode {
-    return Object.hashAll([_listEquals.hash(childNodes), _listEquals.hash(stars), closeComplement]);
+    return Object.hashAll([listEquals.hash(childNodes), listEquals.hash(stars), closeComplement]);
   }
 
-  /// Star assignments.
   List<Star> get stars;
 
   @override
   bool operator ==(Object? other) {
     return other is Container &&
-        _listEquals.equals(childNodes, other.childNodes) &&
-        _listEquals.equals(stars, other.stars) &&
+        listEquals.equals(childNodes, other.childNodes) &&
+        listEquals.equals(stars, other.stars) &&
         other.closeComplement == closeComplement;
   }
 
   @override
-  R? accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+  R? accept<R, C>(Visitor<R, C?> visitor, [C? context]) {
     return visitor.visitContainer(this, context);
   }
 
@@ -81,8 +73,8 @@ abstract class Container implements StandaloneTemplate {
   }
 }
 
-class _ParsedContainer extends Template with Container {
-  _ParsedContainer(SourceFile sourceFile, NgToken beginToken, NgToken endToken, this.closeComplement,
+class _ParsedContainer extends Node with Container {
+  _ParsedContainer(SourceFile sourceFile, Token beginToken, Token endToken, this.closeComplement,
       {this.annotations = const [], this.childNodes = const [], this.stars = const []})
       : super.parsed(beginToken, endToken, sourceFile);
 
@@ -93,17 +85,17 @@ class _ParsedContainer extends Template with Container {
   final List<Annotation> annotations;
 
   @override
-  final List<StandaloneTemplate> childNodes;
+  final List<Standalone> childNodes;
 
   @override
   final List<Star> stars;
 }
 
-class _SyntheticContainer extends SyntheticTemplate with Container {
+class _SyntheticContainer extends Synthetic with Container {
   _SyntheticContainer({this.annotations = const [], this.childNodes = const [], this.stars = const []})
       : closeComplement = CloseElement('ng-container');
 
-  _SyntheticContainer.from(Template origin,
+  _SyntheticContainer.from(Node origin,
       {this.annotations = const [], this.childNodes = const [], this.stars = const []})
       : closeComplement = CloseElement('ng-container'),
         super.from(origin);
@@ -115,7 +107,7 @@ class _SyntheticContainer extends SyntheticTemplate with Container {
   final List<Annotation> annotations;
 
   @override
-  final List<StandaloneTemplate> childNodes;
+  final List<Standalone> childNodes;
 
   @override
   final List<Star> stars;

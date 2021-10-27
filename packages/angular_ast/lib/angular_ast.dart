@@ -1,5 +1,4 @@
 import 'src/ast.dart';
-import 'src/exception_handler/exception_handler.dart';
 import 'src/parser.dart';
 
 export 'src/ast.dart'
@@ -12,14 +11,14 @@ export 'src/ast.dart'
         Container,
         Element,
         EmbeddedContent,
-        EmbeddedTemplateAst,
+        EmbeddedNode,
         Event,
         Interpolation,
         LetBinding,
         ParsedAnnotation,
         ParsedAttribute,
         ParsedBanana,
-        ParsedCloseElementAst,
+        ParsedCloseElement,
         ParsedDecorator,
         ParsedEmbeddedContent,
         ParsedEvent,
@@ -31,36 +30,24 @@ export 'src/ast.dart'
         ParsedStar,
         Property,
         Reference,
-        StandaloneTemplate,
+        Standalone,
         Star,
-        SyntheticTemplate,
+        Synthetic,
         TagOffsetInfo,
-        Template,
+        Node,
         Text;
-export 'src/exception_handler/exception_handler.dart'
-    show ExceptionHandler, RecoveringExceptionHandler, ThrowingExceptionHandler;
-export 'src/exception_handler/exception_handler.dart';
-export 'src/lexer.dart' show NgLexer;
-export 'src/parser.dart' show NgParser;
-export 'src/recovery_protocol/recovery_protocol.dart';
-export 'src/token/tokens.dart' show NgToken, NgTokenType, NgAttributeValueToken;
+export 'src/lexer.dart' show Lexer;
+export 'src/parser.dart' show Parser;
+export 'src/token/tokens.dart' show Token, TokenType, AttributeValueToken;
 export 'src/visitor.dart'
     show
         HumanizingTemplateAstVisitor,
-        IdentityTemplateAstVisitor,
+        IdentityVisitor,
         MinimizeWhitespaceVisitor,
-        TemplateVisitor,
+        Visitor,
         DesugarVisitor,
         RecursiveTemplateAstVisitor;
 
-/// Returns [template] parsed as an abstract syntax tree.
-///
-/// If [desugar] is set, parsing will transform `*directive` and `[(banana)]`
-/// notations into their explicit forms using `<template>` and `[value]="..."
-/// (valueChanged)="..."` respectively.
-List<Template> parse(String template,
-    {required String sourceUrl,
-    bool desugar = true,
-    ExceptionHandler exceptionHandler = const ThrowingExceptionHandler()}) {
-  return const NgParser().parse(template, sourceUrl: sourceUrl, exceptionHandler: exceptionHandler, desugar: desugar);
+List<Node> parse(String template, {required String sourceUrl, bool desugar = true}) {
+  return const Parser().parse(template, sourceUrl: sourceUrl, desugar: desugar);
 }

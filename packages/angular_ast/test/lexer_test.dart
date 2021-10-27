@@ -1,109 +1,89 @@
 import 'package:test/test.dart';
 import 'package:angular_ast/angular_ast.dart';
 
+Iterable<Token> tokenize(String html) {
+  return const Lexer().tokenize(html);
+}
+
+String untokenize(Iterable<Token> tokens) {
+  var buffer = StringBuffer();
+
+  for (var token in tokens) {
+    buffer.write(token.lexeme);
+  }
+
+  return buffer.toString();
+}
+
 void main() {
-  // Returns the html parsed as a series of tokens.
-  var exceptionHandler = const ThrowingExceptionHandler();
-  Iterable<NgToken> tokenize(String html) => const NgLexer().tokenize(html, exceptionHandler);
+  group('Lexer', () {
+    test('should tokenize plain text', () {
+      expect(tokenize('Hello World'), <Token>[Token.text(0, 'Hello World')]);
+    });
 
-  // Returns the html parsed as a series of tokens, then back to html.
-  String untokenize(Iterable<NgToken> tokens) =>
-      tokens.fold(StringBuffer(), (buffer, token) => (buffer as StringBuffer)..write(token.lexeme)).toString();
+    test('should tokenize mulitline text', () {
+      expect(tokenize('Hello\nWorld'), <Token>[Token.text(0, 'Hello\nWorld')]);
+    });
 
-  test('should tokenize plain text', () {
-    expect(
-      tokenize('Hello World'),
-      [
-        NgToken.text(0, 'Hello World'),
-      ],
-    );
-  });
+    test('should tokenize escaped text', () {
+      expect(tokenize('&lt;div&gt;'), <Token>[Token.text(0, '<div>')]);
+    });
 
-  test('should tokenize mulitline text', () {
-    expect(
-      tokenize('Hello\nWorld'),
-      [
-        NgToken.text(0, 'Hello\nWorld'),
-      ],
-    );
-  });
+    test('should tokenize an HTML element', () {
+      expect(tokenize('<div></div>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'div'),
+        Token.openElementEnd(4),
+        Token.closeElementStart(5),
+        Token.elementIdentifier(7, 'div'),
+        Token.closeElementEnd(10)
+      ]);
+    });
 
-  test('should tokenize escaped text', () {
-    expect(
-      tokenize('&lt;div&gt;'),
-      [
-        NgToken.text(0, '<div>'),
-      ],
-    );
-  });
+    test('should tokenize an HTML element that is explicitly void', () {
+      expect(tokenize('<hr  />'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'hr'),
+        Token.whitespace(3, '  '),
+        Token.openElementEndVoid(5)
+      ]);
+    });
 
-  test('should tokenize an HTML element', () {
-    expect(
-      tokenize('<div></div>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'div'),
-        NgToken.openElementEnd(4),
-        NgToken.closeElementStart(5),
-        NgToken.elementIdentifier(7, 'div'),
-        NgToken.closeElementEnd(10),
-      ],
-    );
-  });
+    test('should tokenize nested HTML elements', () {
+      expect(tokenize('<div><span></span></div>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'div'),
+        Token.openElementEnd(4),
+        Token.openElementStart(5),
+        Token.elementIdentifier(6, 'span'),
+        Token.openElementEnd(10),
+        Token.closeElementStart(11),
+        Token.elementIdentifier(13, 'span'),
+        Token.closeElementEnd(17),
+        Token.closeElementStart(18),
+        Token.elementIdentifier(20, 'div'),
+        Token.closeElementEnd(23)
+      ]);
+    });
 
-  test('should tokenize an HTML element that is explicitly void', () {
-    expect(
-      tokenize('<hr  />'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'hr'),
-        NgToken.whitespace(3, '  '),
-        NgToken.openElementEndVoid(5),
-      ],
-    );
-  });
+    test('should tokenize HTML elements mixed with plain text', () {
+      expect(tokenize('<div >Hello</div>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'div'),
+        Token.whitespace(4, ' '),
+        Token.openElementEnd(5),
+        Token.text(6, 'Hello'),
+        Token.closeElementStart(11),
+        Token.elementIdentifier(13, 'div'),
+        Token.closeElementEnd(16)
+      ]);
+    });
 
-  test('should tokenize nested HTML elements', () {
-    expect(
-      tokenize('<div><span></span></div>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'div'),
-        NgToken.openElementEnd(4),
-        NgToken.openElementStart(5),
-        NgToken.elementIdentifier(6, 'span'),
-        NgToken.openElementEnd(10),
-        NgToken.closeElementStart(11),
-        NgToken.elementIdentifier(13, 'span'),
-        NgToken.closeElementEnd(17),
-        NgToken.closeElementStart(18),
-        NgToken.elementIdentifier(20, 'div'),
-        NgToken.closeElementEnd(23),
-      ],
-    );
-  });
-
-  test('should tokenize HTML elements mixed with plain text', () {
-    expect(
-      tokenize('<div >Hello</div>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'div'),
-        NgToken.whitespace(4, ' '),
-        NgToken.openElementEnd(5),
-        NgToken.text(6, 'Hello'),
-        NgToken.closeElementStart(11),
-        NgToken.elementIdentifier(13, 'div'),
-        NgToken.closeElementEnd(16),
-      ],
-    );
-  });
-
-  // This is both easier to write than a large Iterable<NgToken> assertion and
-  // also verifies that the tokenizing is stable - that is, you can reproduce
-  // the original parsed string from the tokens.
-  test('should tokenize a HTML template and untokenize back', () {
-    const html = r'''
+    // This is both easier to write than a large Iterable<NgToken> assertion and
+    // also verifies that the tokenizing is stable - that is, you can reproduce
+    // the original parsed string from the tokens.
+    test('should tokenize a HTML template and untokenize back', () {
+      const html = r'''
       <div>
         <span>Hello World</span>
         <ul>
@@ -115,48 +95,42 @@ void main() {
         </ul>
       </div>
     ''';
-    expect(untokenize(tokenize(html)), html);
-  });
+      expect(untokenize(tokenize(html)), html);
+    });
 
-  test('should tokenize an element with a value-less decorator', () {
-    expect(
-      tokenize('<button disabled></button>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'button'),
-        NgToken.beforeElementDecorator(7, ' '),
-        NgToken.elementDecorator(8, 'disabled'),
-        NgToken.openElementEnd(16),
-        NgToken.closeElementStart(17),
-        NgToken.elementIdentifier(19, 'button'),
-        NgToken.closeElementEnd(25),
-      ],
-    );
-  });
+    test('should tokenize an element with a value-less decorator', () {
+      expect(tokenize('<button disabled></button>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'button'),
+        Token.beforeElementDecorator(7, ' '),
+        Token.elementDecorator(8, 'disabled'),
+        Token.openElementEnd(16),
+        Token.closeElementStart(17),
+        Token.elementIdentifier(19, 'button'),
+        Token.closeElementEnd(25)
+      ]);
+    });
 
-  test('should tokenize an element with multiple value-less decorators', () {
-    expect(
-      tokenize('<button disabled hidden></button>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'button'),
-        NgToken.beforeElementDecorator(7, ' '),
-        NgToken.elementDecorator(8, 'disabled'),
-        NgToken.beforeElementDecorator(16, ' '),
-        NgToken.elementDecorator(17, 'hidden'),
-        NgToken.openElementEnd(23),
-        NgToken.closeElementStart(24),
-        NgToken.elementIdentifier(26, 'button'),
-        NgToken.closeElementEnd(32),
-      ],
-    );
-  });
+    test('should tokenize an element with multiple value-less decorators', () {
+      expect(tokenize('<button disabled hidden></button>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'button'),
+        Token.beforeElementDecorator(7, ' '),
+        Token.elementDecorator(8, 'disabled'),
+        Token.beforeElementDecorator(16, ' '),
+        Token.elementDecorator(17, 'hidden'),
+        Token.openElementEnd(23),
+        Token.closeElementStart(24),
+        Token.elementIdentifier(26, 'button'),
+        Token.closeElementEnd(32)
+      ]);
+    });
 
-  // This is both easier to write than a large Iterable<NgToken> assertion and
-  // also verifies that the tokenizing is stable - that is, you can reproduce
-  // the original parsed string from the tokens.
-  test('should tokenize a HTML template with decorators and back', () {
-    const html = r'''
+    // This is both easier to write than a large Iterable<NgToken> assertion and
+    // also verifies that the tokenizing is stable - that is, you can reproduce
+    // the original parsed string from the tokens.
+    test('should tokenize a HTML template with decorators and back', () {
+      const html = r'''
       <div>
         <span hidden>Hello World</span>
         <ul>
@@ -168,55 +142,49 @@ void main() {
         </ul>
       </div>
     ''';
-    expect(untokenize(tokenize(html)), html);
-  });
+      expect(untokenize(tokenize(html)), html);
+    });
 
-  test('should tokenize an element with a decorator with a value', () {
-    expect(
-      tokenize('<button title =  "Submit"  ></button>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'button'),
-        NgToken.beforeElementDecorator(7, ' '),
-        NgToken.elementDecorator(8, 'title'),
-        NgToken.whitespace(13, ' '),
-        NgToken.beforeElementDecoratorValue(14),
-        NgToken.whitespace(15, '  '),
-        NgAttributeValueToken.generate(
-            NgToken.doubleQuote(17), NgToken.elementDecoratorValue(18, 'Submit'), NgToken.doubleQuote(24)),
-        NgToken.whitespace(25, '  '),
-        NgToken.openElementEnd(27),
-        NgToken.closeElementStart(28),
-        NgToken.elementIdentifier(30, 'button'),
-        NgToken.closeElementEnd(36),
-      ],
-    );
-  });
+    test('should tokenize an element with a decorator with a value', () {
+      expect(tokenize('<button title =  "Submit"  ></button>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'button'),
+        Token.beforeElementDecorator(7, ' '),
+        Token.elementDecorator(8, 'title'),
+        Token.whitespace(13, ' '),
+        Token.beforeElementDecoratorValue(14),
+        Token.whitespace(15, '  '),
+        AttributeValueToken.generate(
+            Token.doubleQuote(17), Token.elementDecoratorValue(18, 'Submit'), Token.doubleQuote(24)),
+        Token.whitespace(25, '  '),
+        Token.openElementEnd(27),
+        Token.closeElementStart(28),
+        Token.elementIdentifier(30, 'button'),
+        Token.closeElementEnd(36)
+      ]);
+    });
 
-  test('should tokenize an element with a namespaced attribute', () {
-    expect(
-      tokenize('<use xlink:href="foo"></use>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'use'),
-        NgToken.beforeElementDecorator(4, ' '),
-        NgToken.elementDecorator(5, 'xlink:href'),
-        NgToken.beforeElementDecoratorValue(15),
-        NgAttributeValueToken.generate(
-            NgToken.doubleQuote(16), NgToken.elementDecoratorValue(17, 'foo'), NgToken.doubleQuote(20)),
-        NgToken.openElementEnd(21),
-        NgToken.closeElementStart(22),
-        NgToken.elementIdentifier(24, 'use'),
-        NgToken.closeElementEnd(27),
-      ],
-    );
-  });
+    test('should tokenize an element with a namespaced attribute', () {
+      expect(tokenize('<use xlink:href="foo"></use>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'use'),
+        Token.beforeElementDecorator(4, ' '),
+        Token.elementDecorator(5, 'xlink:href'),
+        Token.beforeElementDecoratorValue(15),
+        AttributeValueToken.generate(
+            Token.doubleQuote(16), Token.elementDecoratorValue(17, 'foo'), Token.doubleQuote(20)),
+        Token.openElementEnd(21),
+        Token.closeElementStart(22),
+        Token.elementIdentifier(24, 'use'),
+        Token.closeElementEnd(27)
+      ]);
+    });
 
-  // This is both easier to write than a large Iterable<NgToken> assertion and
-  // also verifies that the tokenizing is stable - that is, you can reproduce
-  // the original parsed string from the tokens.
-  test('should tokenize a HTML template with decorator values and back', () {
-    const html = r'''
+    // This is both easier to write than a large Iterable<NgToken> assertion and
+    // also verifies that the tokenizing is stable - that is, you can reproduce
+    // the original parsed string from the tokens.
+    test('should tokenize a HTML template with decorator values and back', () {
+      const html = r'''
       <div>
         <span hidden>Hello World</span>
         <ul>
@@ -230,157 +198,124 @@ void main() {
         </ul>
       </div>
     ''';
-    expect(untokenize(tokenize(html)), html);
-  });
+      expect(untokenize(tokenize(html)), html);
+    });
 
-  test('should tokenize a comment', () {
-    expect(
-      tokenize('<!--Hello World-->'),
-      [
-        NgToken.commentStart(0),
-        NgToken.commentValue(4, 'Hello World'),
-        NgToken.commentEnd(15),
-      ],
-    );
-  });
+    test('should tokenize a comment', () {
+      expect(tokenize('<!--Hello World-->'),
+          <Token>[Token.commentStart(0), Token.commentValue(4, 'Hello World'), Token.commentEnd(15)]);
+    });
 
-  test('should tokenize copyright comments', () {
-    expect(
-      tokenize(''
-          '<!--\n'
-          '  Copyright (c) 2016, the Dart project authors.\n'
-          '-->'),
-      [
-        NgToken.commentStart(0),
-        NgToken.commentValue(
-          4,
-          '\n  Copyright (c) 2016, the Dart project authors.\n',
-        ),
-        NgToken.commentEnd(53),
-      ],
-    );
-  });
+    test('should tokenize copyright comments', () {
+      expect(
+          tokenize(''
+              '<!--\n'
+              '  Copyright (c) 2016, the Dart project authors.\n'
+              '-->'),
+          <Token>[
+            Token.commentStart(0),
+            Token.commentValue(4, '\n  Copyright (c) 2016, the Dart project authors.\n'),
+            Token.commentEnd(53)
+          ]);
+    });
 
-  test('should tokenize interpolation', () {
-    expect(
-      tokenize('{{name}}'),
-      [
-        NgToken.interpolationStart(0),
-        NgToken.interpolationValue(2, 'name'),
-        NgToken.interpolationEnd(6),
-      ],
-    );
-  });
+    test('should tokenize interpolation', () {
+      expect(tokenize('{{name}}'),
+          <Token>[Token.interpolationStart(0), Token.interpolationValue(2, 'name'), Token.interpolationEnd(6)]);
+    });
 
-  test('should tokenize function call interpolations', () {
-    expect(
-      tokenize('{{msgCharacterCounter(inputTextLength, maxCount)}}'),
-      [
-        NgToken.interpolationStart(0),
-        NgToken.interpolationValue(
-          2,
-          'msgCharacterCounter(inputTextLength, maxCount)',
-        ),
-        NgToken.interpolationEnd(48),
-      ],
-    );
-  });
+    test('should tokenize function call interpolations', () {
+      expect(tokenize('{{msgCharacterCounter(inputTextLength, maxCount)}}'), <Token>[
+        Token.interpolationStart(0),
+        Token.interpolationValue(2, 'msgCharacterCounter(inputTextLength, maxCount)'),
+        Token.interpolationEnd(48)
+      ]);
+    });
 
-  test('should tokenize an HTML element with property binding', () {
-    expect(
-      tokenize('<div [style.max-height.px]  =  "contentHeight"></div>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'div'),
-        NgToken.beforeElementDecorator(4, ' '),
-        NgToken.propertyPrefix(5),
-        NgToken.elementDecorator(6, 'style.max-height.px'),
-        NgToken.propertySuffix(25),
-        NgToken.whitespace(26, '  '),
-        NgToken.beforeElementDecoratorValue(28),
-        NgToken.whitespace(29, '  '),
-        NgAttributeValueToken.generate(
-            NgToken.doubleQuote(31), NgToken.elementDecoratorValue(32, 'contentHeight'), NgToken.doubleQuote(45)),
-        NgToken.openElementEnd(46),
-        NgToken.closeElementStart(47),
-        NgToken.elementIdentifier(49, 'div'),
-        NgToken.closeElementEnd(52)
-      ],
-    );
-  });
+    test('should tokenize an HTML element with property binding', () {
+      expect(tokenize('<div [style.max-height.px]  =  "contentHeight"></div>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'div'),
+        Token.beforeElementDecorator(4, ' '),
+        Token.propertyPrefix(5),
+        Token.elementDecorator(6, 'style.max-height.px'),
+        Token.propertySuffix(25),
+        Token.whitespace(26, '  '),
+        Token.beforeElementDecoratorValue(28),
+        Token.whitespace(29, '  '),
+        AttributeValueToken.generate(
+            Token.doubleQuote(31), Token.elementDecoratorValue(32, 'contentHeight'), Token.doubleQuote(45)),
+        Token.openElementEnd(46),
+        Token.closeElementStart(47),
+        Token.elementIdentifier(49, 'div'),
+        Token.closeElementEnd(52)
+      ]);
+    });
 
-  test('should tokenize an HTML element with a namespaced attr binding', () {
-    expect(
-      tokenize('<use [attr.xlink:href]="foo"></use>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'use'),
-        NgToken.beforeElementDecorator(4, ' '),
-        NgToken.propertyPrefix(5),
-        NgToken.elementDecorator(6, 'attr.xlink:href'),
-        NgToken.propertySuffix(21),
-        NgToken.beforeElementDecoratorValue(22),
-        NgAttributeValueToken.generate(
-            NgToken.doubleQuote(23), NgToken.elementDecoratorValue(24, 'foo'), NgToken.doubleQuote(27)),
-        NgToken.openElementEnd(28),
-        NgToken.closeElementStart(29),
-        NgToken.elementIdentifier(31, 'use'),
-        NgToken.closeElementEnd(34)
-      ],
-    );
-  });
+    test('should tokenize an HTML element with a namespaced attr binding', () {
+      expect(tokenize('<use [attr.xlink:href]="foo"></use>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'use'),
+        Token.beforeElementDecorator(4, ' '),
+        Token.propertyPrefix(5),
+        Token.elementDecorator(6, 'attr.xlink:href'),
+        Token.propertySuffix(21),
+        Token.beforeElementDecoratorValue(22),
+        AttributeValueToken.generate(
+            Token.doubleQuote(23), Token.elementDecoratorValue(24, 'foo'), Token.doubleQuote(27)),
+        Token.openElementEnd(28),
+        Token.closeElementStart(29),
+        Token.elementIdentifier(31, 'use'),
+        Token.closeElementEnd(34)
+      ]);
+    });
 
-  test('should tokenize an HTML element with event binding', () {
-    expect(
-      tokenize('<div (someEvent.someInnerValue)  =  "x + 5"></div>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'div'),
-        NgToken.beforeElementDecorator(4, ' '),
-        NgToken.eventPrefix(5),
-        NgToken.elementDecorator(6, 'someEvent.someInnerValue'),
-        NgToken.eventSuffix(30),
-        NgToken.whitespace(31, '  '),
-        NgToken.beforeElementDecoratorValue(33),
-        NgToken.whitespace(34, '  '),
-        NgAttributeValueToken.generate(
-            NgToken.doubleQuote(36), NgToken.elementDecoratorValue(37, 'x + 5'), NgToken.doubleQuote(42)),
-        NgToken.openElementEnd(43),
-        NgToken.closeElementStart(44),
-        NgToken.elementIdentifier(46, 'div'),
-        NgToken.closeElementEnd(49)
-      ],
-    );
-  });
+    test('should tokenize an HTML element with event binding', () {
+      expect(tokenize('<div (someEvent.someInnerValue)  =  "x + 5"></div>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'div'),
+        Token.beforeElementDecorator(4, ' '),
+        Token.eventPrefix(5),
+        Token.elementDecorator(6, 'someEvent.someInnerValue'),
+        Token.eventSuffix(30),
+        Token.whitespace(31, '  '),
+        Token.beforeElementDecoratorValue(33),
+        Token.whitespace(34, '  '),
+        AttributeValueToken.generate(
+            Token.doubleQuote(36), Token.elementDecoratorValue(37, 'x + 5'), Token.doubleQuote(42)),
+        Token.openElementEnd(43),
+        Token.closeElementStart(44),
+        Token.elementIdentifier(46, 'div'),
+        Token.closeElementEnd(49)
+      ]);
+    });
 
-  test('should tokenize an HTML element with banana binding', () {
-    expect(tokenize('<div [(banana)]="doSomething"></div>'), [
-      NgToken.openElementStart(0),
-      NgToken.elementIdentifier(1, 'div'),
-      NgToken.beforeElementDecorator(4, ' '),
-      NgToken.bananaPrefix(5),
-      NgToken.elementDecorator(7, 'banana'),
-      NgToken.bananaSuffix(13),
-      NgToken.beforeElementDecoratorValue(15),
-      NgAttributeValueToken.generate(
-          NgToken.doubleQuote(16), NgToken.elementDecoratorValue(17, 'doSomething'), NgToken.doubleQuote(28)),
-      NgToken.openElementEnd(29),
-      NgToken.closeElementStart(30),
-      NgToken.elementIdentifier(32, 'div'),
-      NgToken.closeElementEnd(35),
-    ]);
-  });
+    test('should tokenize an HTML element with banana binding', () {
+      expect(tokenize('<div [(banana)]="doSomething"></div>'), [
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'div'),
+        Token.beforeElementDecorator(4, ' '),
+        Token.bananaPrefix(5),
+        Token.elementDecorator(7, 'banana'),
+        Token.bananaSuffix(13),
+        Token.beforeElementDecoratorValue(15),
+        AttributeValueToken.generate(
+            Token.doubleQuote(16), Token.elementDecoratorValue(17, 'doSomething'), Token.doubleQuote(28)),
+        Token.openElementEnd(29),
+        Token.closeElementStart(30),
+        Token.elementIdentifier(32, 'div'),
+        Token.closeElementEnd(35),
+      ]);
+    });
 
-  test('should tokenize elementDecorator ending in period', () {
-    expect(
-      tokenize('<div blah.>'),
-      [
-        NgToken.openElementStart(0),
-        NgToken.elementIdentifier(1, 'div'),
-        NgToken.beforeElementDecorator(4, ' '),
-        NgToken.elementDecorator(5, 'blah.'),
-        NgToken.openElementEnd(10)
-      ],
-    );
+    test('should tokenize elementDecorator ending in period', () {
+      expect(tokenize('<div blah.>'), <Token>[
+        Token.openElementStart(0),
+        Token.elementIdentifier(1, 'div'),
+        Token.beforeElementDecorator(4, ' '),
+        Token.elementDecorator(5, 'blah.'),
+        Token.openElementEnd(10)
+      ]);
+    });
   });
 }

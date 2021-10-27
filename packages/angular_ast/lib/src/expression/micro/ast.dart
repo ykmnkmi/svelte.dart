@@ -1,30 +1,32 @@
-import 'package:collection/collection.dart';
-import 'package:meta/meta.dart';
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:meta/meta.dart' show literal;
 
 import '../../ast.dart';
 
-final _listEquals = const ListEquality<dynamic>();
+const ListEquality<Object?> listEquals = ListEquality<Object?>();
 
-/// A de-sugared form of longer pseudo expression.
-class NgMicroAst {
-  /// What variable assignments were made.
+class MicroAST {
+  @literal
+  const MicroAST(this.letBindings, this.properties);
+
   final List<LetBinding> letBindings;
 
-  /// What properties are bound.
   final List<Property> properties;
 
-  @literal
-  const NgMicroAst({required this.letBindings, required this.properties});
+  @override
+  int get hashCode {
+    return Object.hash(listEquals.hash(letBindings), listEquals.hash(properties));
+  }
 
   @override
-  bool operator ==(Object? other) =>
-      other is NgMicroAst &&
-      _listEquals.equals(letBindings, other.letBindings) &&
-      _listEquals.equals(properties, other.properties);
+  bool operator ==(Object? other) {
+    return other is MicroAST &&
+        listEquals.equals(letBindings, other.letBindings) &&
+        listEquals.equals(properties, other.properties);
+  }
 
   @override
-  int get hashCode => Object.hash(_listEquals.hash(letBindings), _listEquals.hash(properties));
-
-  @override
-  String toString() => '#NgMicroAst <$letBindings $properties>';
+  String toString() {
+    return '#NgMicroAst <$letBindings $properties>';
+  }
 }

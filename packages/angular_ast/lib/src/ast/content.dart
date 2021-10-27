@@ -1,47 +1,25 @@
-import 'package:source_span/source_span.dart';
+import 'package:source_span/source_span.dart' show SourceFile;
 
 import '../ast.dart';
 import '../token/tokens.dart';
 import '../visitor.dart';
 
-/// Represents an `<ng-content>` element AST.
-///
-/// Embedded content is _like_ an `ElementAst`, but only contains children.
-///
-/// Clients should not extend, implement, or mix-in this class.
-abstract class EmbeddedContent implements StandaloneTemplate {
-  /// Create a synthetic embedded content AST.
-  factory EmbeddedContent([String selector, String ngProjectAs, Reference reference]) =
-      _SyntheticEmbeddedContent;
+abstract class EmbeddedContent implements Standalone {
+  factory EmbeddedContent([String selector, String ngProjectAs, Reference reference]) = _SyntheticEmbeddedContent;
 
-  /// Create a synthetic [EmbeddedContent] that originated from [origin].
-  factory EmbeddedContent.from(Template origin, [String selector, String ngProjectAs, Reference reference]) =
+  factory EmbeddedContent.from(Node origin, [String selector, String ngProjectAs, Reference reference]) =
       _SyntheticEmbeddedContent.from;
 
-  /// Create a new [EmbeddedContent] parsed from tokens in [sourceFile].
-  factory EmbeddedContent.parsed(SourceFile sourceFile, NgToken startElementToken, NgToken elementIdentifierToken,
-      NgToken endElementToken, CloseElement closeComplement,
-      [Attribute? selectAttribute,
-      Attribute? ngProjectAsAttribute,
-      Reference? reference]) = ParsedEmbeddedContent;
+  factory EmbeddedContent.parsed(SourceFile sourceFile, Token startElementToken, Token elementIdentifierToken,
+      Token endElementToken, CloseElement closeComplement,
+      [Attribute? selectAttribute, Attribute? ngProjectAsAttribute, Reference? reference]) = ParsedEmbeddedContent;
 
-  /// A CSS selector denoting what elements should be embedded.
-  ///
-  /// May be null if and only if decorator 'select' is defined,
-  /// but no value is assigned.
-  /// If 'select' is not defined at all (simple <ng-content>), then the value
-  /// will default to '*'.
   String? get selector;
 
-  /// A CSS selector denoting what this embedded content should be projected as.
-  ///
-  /// May be null if decorator `ngProjectAs` is not defined.
   String? get ngProjectAs;
 
-  /// Reference assignment.
   Reference? get reference;
 
-  /// </ng-content> that is paired to this <ng-content>.
   CloseElement get closeComplement;
 
   set closeComplement(CloseElement closeComplement);
@@ -61,7 +39,7 @@ abstract class EmbeddedContent implements StandaloneTemplate {
   }
 
   @override
-  R accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+  R accept<R, C>(Visitor<R, C?> visitor, [C? context]) {
     return visitor.visitEmbeddedContent(this, context);
   }
 
@@ -71,14 +49,14 @@ abstract class EmbeddedContent implements StandaloneTemplate {
   }
 }
 
-class ParsedEmbeddedContent extends Template with EmbeddedContent {
-  ParsedEmbeddedContent(SourceFile sourceFile, NgToken startElementToken, this.identifierToken,
-      NgToken endElementToken, this.closeComplement,
+class ParsedEmbeddedContent extends Node with EmbeddedContent {
+  ParsedEmbeddedContent(
+      SourceFile sourceFile, Token startElementToken, this.identifierToken, Token endElementToken, this.closeComplement,
       [this.selectAttribute, this.ngProjectAsAttribute, this.reference])
       : super.parsed(startElementToken, endElementToken, sourceFile);
 
   // Token for 'ng-content'.
-  final NgToken identifierToken;
+  final Token identifierToken;
 
   // Select assignment.
   final Attribute? selectAttribute;
@@ -110,12 +88,12 @@ class ParsedEmbeddedContent extends Template with EmbeddedContent {
   }
 }
 
-class _SyntheticEmbeddedContent extends SyntheticTemplate with EmbeddedContent {
+class _SyntheticEmbeddedContent extends Synthetic with EmbeddedContent {
   _SyntheticEmbeddedContent([this.selector = '*', this.ngProjectAs, this.reference]) {
     closeComplement = CloseElement('ng-content');
   }
 
-  _SyntheticEmbeddedContent.from(Template origin, [this.selector = '*', this.ngProjectAs, this.reference])
+  _SyntheticEmbeddedContent.from(Node origin, [this.selector = '*', this.ngProjectAs, this.reference])
       : super.from(origin) {
     closeComplement = CloseElement('ng-content');
   }

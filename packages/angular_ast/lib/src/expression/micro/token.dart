@@ -1,82 +1,92 @@
-/// Represents a section of parsed text from an Angular micro expression.
-///
-/// Clients should not extend, implement, or mix-in this class.
-class NgMicroToken {
-  factory NgMicroToken.bindExpressionBefore(int offset, String lexeme) {
-    return NgMicroToken._(NgMicroTokenType.bindExpressionBefore, lexeme, offset);
+class MicroToken {
+  factory MicroToken.bindExpressionBefore(int offset, String lexeme) {
+    return MicroToken(MicroTokenType.bindExpressionBefore, lexeme, offset);
   }
 
-  factory NgMicroToken.bindExpression(int offset, String lexeme) {
-    return NgMicroToken._(NgMicroTokenType.bindExpression, lexeme, offset);
+  factory MicroToken.bindExpression(int offset, String lexeme) {
+    return MicroToken(MicroTokenType.bindExpression, lexeme, offset);
   }
 
-  factory NgMicroToken.bindIdentifier(int offset, String lexeme) {
-    return NgMicroToken._(NgMicroTokenType.bindIdentifier, lexeme, offset);
+  factory MicroToken.bindIdentifier(int offset, String lexeme) {
+    return MicroToken(MicroTokenType.bindIdentifier, lexeme, offset);
   }
 
-  factory NgMicroToken.endExpression(int offset, String lexeme) {
-    return NgMicroToken._(NgMicroTokenType.endExpression, lexeme, offset);
+  factory MicroToken.endExpression(int offset, String lexeme) {
+    return MicroToken(MicroTokenType.endExpression, lexeme, offset);
   }
 
-  factory NgMicroToken.letAssignment(int offset, String lexeme) {
-    return NgMicroToken._(NgMicroTokenType.letAssignment, lexeme, offset);
+  factory MicroToken.letAssignment(int offset, String lexeme) {
+    return MicroToken(MicroTokenType.letAssignment, lexeme, offset);
   }
 
-  factory NgMicroToken.letAssignmentBefore(int offset, String lexeme) {
-    return NgMicroToken._(NgMicroTokenType.letAssignmentBefore, lexeme, offset);
+  factory MicroToken.letAssignmentBefore(int offset, String lexeme) {
+    return MicroToken(MicroTokenType.letAssignmentBefore, lexeme, offset);
   }
 
-  factory NgMicroToken.letIdentifier(int offset, String lexeme) {
-    return NgMicroToken._(NgMicroTokenType.letIdentifier, lexeme, offset);
+  factory MicroToken.letIdentifier(int offset, String lexeme) {
+    return MicroToken(MicroTokenType.letIdentifier, lexeme, offset);
   }
 
-  factory NgMicroToken.letKeyword(int offset, String lexeme) {
-    return NgMicroToken._(NgMicroTokenType.letKeyword, lexeme, offset);
+  factory MicroToken.letKeyword(int offset, String lexeme) {
+    return MicroToken(MicroTokenType.letKeyword, lexeme, offset);
   }
 
-  factory NgMicroToken.letKeywordAfter(int offset, String lexeme) {
-    return NgMicroToken._(NgMicroTokenType.letKeywordAfter, lexeme, offset);
+  factory MicroToken.letKeywordAfter(int offset, String lexeme) {
+    return MicroToken(MicroTokenType.letKeywordAfter, lexeme, offset);
   }
 
-  const NgMicroToken._(this.type, this.lexeme, this.offset);
+  const MicroToken(this.type, this.lexeme, this.offset);
 
-  @override
-  bool operator ==(Object? other) => other is NgMicroToken && other.offset == offset && other.type == type;
-
-  @override
-  int get hashCode => Object.hash(offset, lexeme, type);
-
-  /// Indexed location where the token ends in the original source text.
-  int get end => offset + length;
-
-  /// Number of characters in this token.
-  int get length => lexeme.length;
-
-  /// What characters were scanned and represent this token.
   final String lexeme;
 
-  /// Indexed location where the token begins in the original source text.
   final int offset;
 
-  /// Type of token scanned.
-  final NgMicroTokenType type;
+  final MicroTokenType type;
+
+  int get end {
+    return offset + length;
+  }
+
+  int get length {
+    return lexeme.length;
+  }
 
   @override
-  String toString() => '#NgMicroToken(${type._name}) {$offset:$lexeme}';
+  int get hashCode {
+    return Object.hash(offset, lexeme, type);
+  }
+
+  @override
+  bool operator ==(Object? other) {
+    return other is MicroToken && other.offset == offset && other.type == type;
+  }
+
+  @override
+  String toString() {
+    return '#NgMicroToken(${type.name}) {$offset:$lexeme}';
+  }
 }
 
-class NgMicroTokenType {
-  static const endExpression = NgMicroTokenType._('endExpression');
-  static const bindExpression = NgMicroTokenType._('bindExpression');
-  static const bindExpressionBefore = NgMicroTokenType._('bindExpressionBefore');
-  static const bindIdentifier = NgMicroTokenType._('bindIdentifier');
-  static const letAssignment = NgMicroTokenType._('letAssignment');
-  static const letAssignmentBefore = NgMicroTokenType._('letAssignmentBefore');
-  static const letIdentifier = NgMicroTokenType._('letIdentifier');
-  static const letKeyword = NgMicroTokenType._('letKeyword');
-  static const letKeywordAfter = NgMicroTokenType._('letKeywordAfter');
+class MicroTokenType {
+  static const MicroTokenType endExpression = MicroTokenType('endExpression');
 
-  final String _name;
+  static const MicroTokenType bindExpression = MicroTokenType('bindExpression');
 
-  const NgMicroTokenType._(this._name);
+  static const MicroTokenType bindExpressionBefore = MicroTokenType('bindExpressionBefore');
+
+  static const MicroTokenType bindIdentifier = MicroTokenType('bindIdentifier');
+
+  static const MicroTokenType letAssignment = MicroTokenType('letAssignment');
+
+  static const MicroTokenType letAssignmentBefore = MicroTokenType('letAssignmentBefore');
+
+  static const MicroTokenType letIdentifier = MicroTokenType('letIdentifier');
+
+  static const MicroTokenType letKeyword = MicroTokenType('letKeyword');
+
+  static const MicroTokenType letKeywordAfter = MicroTokenType('letKeywordAfter');
+
+  const MicroTokenType(this.name);
+
+  final String name;
 }

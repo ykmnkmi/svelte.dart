@@ -1,127 +1,106 @@
-import 'dart:collection';
-
-import 'package:source_span/source_span.dart';
+import 'dart:collection' show Queue;
 
 import '../token/tokens.dart';
 
-/// A narrow interface for reading tokens from a series of tokens.
-/// Can only move forward within token iterable.
-///
-/// Not compatible with error recovery.
-class NgTokenReader<T> {
-  final Iterator<NgBaseToken<Object>> _iterator;
+class TokenReader<T> {
+  TokenReader(this.iterator);
 
-  NgBaseToken<Object>? _peek;
+  final Iterator<BaseToken<Object>> iterator;
 
-  factory NgTokenReader(SourceFile? source, Iterable<NgBaseToken<Object>> tokens) {
-    return NgTokenReader._(source, tokens.iterator);
-  }
+  BaseToken<Object>? peeked;
 
-  NgTokenReader._(SourceFile? source, this._iterator);
-
-  /// Returns the next token, if any, otherwise `null`.
-  NgBaseToken<Object>? next() {
-    if (_peek != null) {
-      var token = _peek;
-      _peek = null;
+  BaseToken<Object>? next() {
+    if (peeked != null) {
+      var token = peeked;
+      peeked = null;
       return token;
     }
-    return _iterator.moveNext() ? _iterator.current : null;
+
+    return iterator.moveNext() ? iterator.current : null;
   }
 
-  /// Returns the next token without incrementing.
-  /// Returns null otherwise.
-  NgBaseToken<Object>? peek() => _peek = next();
+  BaseToken<Object>? peek() {
+    return peeked = next();
+  }
 
-  /// Returns the next token type without incrementing.
-  /// Returns null otherwise.
   T? peekType() {
-    _peek = next();
-    if (_peek != null) {
-      return _peek!.type as T;
+    peeked = next();
+
+    if (peeked != null) {
+      return peeked!.type as T;
     }
+
     return null;
   }
 
-  /// Returns whether the current token is of [type].
-  bool when(T type) => _iterator.current.type == type;
+  bool when(T type) {
+    return iterator.current.type == type;
+  }
 
-  /// Returns whether there is any more tokens to return.
   bool get isDone {
-    if (_peek != null) {
+    if (peeked != null) {
       return false;
     }
+
     if (peek() == null) {
       return true;
     }
+
     return false;
   }
 }
 
-/// A more advanced interface for reading tokens from a series of tokens.
-/// Can move forward within iterable of Tokens, and put tokens back.
-///
-/// Compatible with Error Recovery.
-class NgTokenReversibleReader<T> extends NgTokenReader<T> {
-  final Queue<NgBaseToken<Object>> _seen = Queue<NgBaseToken<Object>>();
+class TokenReversibleReader<T> extends TokenReader<T> {
+  TokenReversibleReader(Iterator<BaseToken<Object>> iterator)
+      : seen = Queue<BaseToken<Object>>(),
+        super(iterator);
 
-  factory NgTokenReversibleReader(
-    SourceFile? source,
-    Iterable<NgBaseToken<Object>> tokens,
-  ) {
-    return NgTokenReversibleReader._(source, tokens.iterator);
-  }
+  final Queue<BaseToken<Object>> seen;
 
-  NgTokenReversibleReader._(
-    SourceFile? source,
-    Iterator<NgBaseToken<Object>> iterator,
-  ) : super._(source, iterator);
-
-  /// Scans forward for the next peek type that isn't ignoreType
-  /// For example, `peekTypeIgnoringType(whitespace)` will peek
-  /// for the next type that isn't whitespace.
-  /// Returns `null` if there are no further types aside from ignoreType
-  /// or iterator is empty.
   T peekTypeIgnoringType(T ignoreType) {
-    var buffer = Queue<NgBaseToken<Object>>();
-
+    var buffer = Queue<BaseToken<Object>>();
     peek();
-    while (_peek != null && _peek!.type == ignoreType) {
-      buffer.add(_peek!);
-      _peek = null;
+
+    while (peeked != null && peeked!.type == ignoreType) {
+      buffer.add(peeked!);
+      peeked = null;
       peek();
     }
 
-    var returnType = (_peek == null) ? null : _peek!.type;
-    if (_peek != null) {
-      buffer.add(_peek!);
-      _peek = null;
-    }
-    _seen.addAll(buffer);
+    var returnType = (peeked == null) ? null : peeked!.type;
 
+    if (peeked != null) {
+      buffer.add(peeked!);
+      peeked = null;
+    }
+
+    seen.addAll(buffer);
     return returnType as T;
   }
 
   @override
-  NgBaseToken<Object>? next() {
-    if (_peek != null) {
-      var token = _peek;
-      _peek = null;
+  BaseToken<Object>? next() {
+    if (peeked != null) {
+      var token = peeked;
+      peeked = null;
       return token;
-    } else if (_seen.isNotEmpty) {
-      return _seen.removeFirst();
     }
-    return _iterator.moveNext() ? _iterator.current : null;
+
+    if (seen.isNotEmpty) {
+      return seen.removeFirst();
+    }
+
+    return iterator.moveNext() ? iterator.current : null;
   }
 
-  NgBaseToken<Object> putBack(NgBaseToken<Object> token) {
-    if (_peek != null) {
-      _seen.addFirst(_peek!);
-      _peek = token;
-      return _peek!;
-    } else {
-      _peek = token;
-      return _peek!;
+  BaseToken<Object> putBack(BaseToken<Object> token) {
+    if (peeked != null) {
+      seen.addFirst(peeked!);
+      peeked = token;
+      return peeked!;
     }
+
+    peeked = token;
+    return peeked!;
   }
 }

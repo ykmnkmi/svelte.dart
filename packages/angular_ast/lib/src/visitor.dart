@@ -6,79 +6,84 @@ export 'visitors/identity.dart';
 export 'visitors/recursive.dart';
 export 'visitors/whitespace.dart';
 
-/// A visitor for [Template] trees that may process each node.
-///
-/// An implementation may return element [R], and optionally use [C] as context.
-abstract class TemplateVisitor<R, C> {
-  const TemplateVisitor();
+abstract class Visitor<R, C> {
+  const Visitor();
 
-  /// Visits all annotation ASTs.
-  R visitAnnotation(Annotation astNode, [C? context]);
+  R visitAnnotation(Annotation node, [C? context]);
 
-  /// Visits all attribute ASTs.
-  R visitAttribute(Attribute astNode, [C? context]);
+  R visitAttribute(Attribute node, [C? context]);
 
-  /// Visits all banana ASTs.
-  ///
-  /// **NOTE**: When de-sugared, this will never occur in a template tree.
-  R visitBanana(Banana astNode, [C? context]);
+  R visitBanana(Banana node, [C? context]);
 
-  /// Visits all closeElement ASTS.
-  R visitCloseElement(CloseElement astNode, [C? context]);
+  R visitCloseElement(CloseElement node, [C? context]);
 
-  /// Visits all comment ASTs.
-  R visitComment(Comment astNode, [C? context]);
+  R visitComment(Comment node, [C? context]);
 
-  /// Visits all container ASTs.
-  R? visitContainer(Container astNode, [C? context]) {
-    astNode.childNodes.forEach((c) => c.accept<R, C?>(this, context));
+  R? visitContainer(Container node, [C? context]) {
+    for (var child in node.childNodes) {
+      child.accept(this, context);
+    }
+
     return null;
   }
 
-  /// Visits all embedded content ASTs.
-  R visitEmbeddedContent(EmbeddedContent astNode, [C? context]);
+  R visitEmbeddedContent(EmbeddedContent node, [C? context]);
 
-  /// Visits all embedded template ASTs.
-  R? visitEmbeddedTemplate(EmbeddedTemplateAst astNode, [C? context]) {
-    astNode
-      ..attributes.forEach((a) => visitAttribute(a, context))
-      ..childNodes.forEach((c) => c.accept<R, C?>(this, context))
-      ..properties.forEach((p) => visitProperty(p, context))
-      ..references.forEach((r) => visitReference(r, context));
+  R? visitEmbeddedTemplate(EmbeddedNode node, [C? context]) {
+    for (var attribute in node.attributes) {
+      visitAttribute(attribute, context);
+    }
+
+    for (var child in node.childNodes) {
+      child.accept(this, context);
+    }
+
+    for (var property in node.properties) {
+      visitProperty(property, context);
+    }
+
+    for (var reference in node.references) {
+      visitReference(reference, context);
+    }
+
     return null;
   }
 
-  /// Visits all element ASTs.
-  R? visitElement(Element astNode, [C? context]) {
-    astNode
-      ..attributes.forEach((a) => visitAttribute(a, context))
-      ..childNodes.forEach((c) => c.accept<R, C?>(this, context))
-      ..events.forEach((e) => visitEvent(e, context))
-      ..properties.forEach((p) => visitProperty(p, context))
-      ..references.forEach((r) => visitReference(r, context));
+  R? visitElement(Element node, [C? context]) {
+    for (var attribute in node.attributes) {
+      visitAttribute(attribute, context);
+    }
+
+    for (var child in node.childNodes) {
+      child.accept(this, context);
+    }
+
+    for (var event in node.events) {
+      visitEvent(event, context);
+    }
+
+    for (var property in node.properties) {
+      visitProperty(property, context);
+    }
+
+    for (var reference in node.references) {
+      visitReference(reference, context);
+    }
+
     return null;
   }
 
-  /// Visits all event ASTs.
-  R visitEvent(Event astNode, [C? context]);
+  R visitEvent(Event node, [C? context]);
 
-  /// Visits all interpolation ASTs.
-  R visitInterpolation(Interpolation astNode, [C? context]);
+  R visitInterpolation(Interpolation node, [C? context]);
 
-  /// Visits all let-binding ASTs.
-  R visitLetBinding(LetBinding astNode, [C? context]);
+  R visitLetBinding(LetBinding node, [C? context]);
 
-  /// Visits all property ASTs.
-  R visitProperty(Property astNode, [C? context]);
+  R visitProperty(Property node, [C? context]);
 
-  /// Visits all reference ASTs.
-  R visitReference(Reference astNode, [C? context]);
+  R visitReference(Reference node, [C? context]);
 
-  /// Visits all star ASTs.
-  ///
-  /// **NOTE**: When de-sugared, this will never occur in a template tree.
-  R visitStar(Star astNode, [C? context]);
+  R visitStar(Star node, [C? context]);
 
-  /// Visits all text ASTs.
-  R visitText(Text astNode, [C? context]);
+  R visitText(Text node, [C? context]);
 }

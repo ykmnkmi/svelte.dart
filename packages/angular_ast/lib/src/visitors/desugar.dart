@@ -1,122 +1,90 @@
 import '../ast.dart';
-import '../exception_handler/exception_handler.dart';
 import '../expression/micro.dart';
 import '../visitor.dart';
 
-/// Desugars complex nodes such as `[(banana)]` into simpler forms.
-///
-/// Ignores non-desugrable nodes. This visitor mutates and returns the AST where
-/// the original node can be accessed by [SyntheticTemplate.origin].
-class DesugarVisitor extends IdentityTemplateAstVisitor<void> implements TemplateVisitor<Template, void> {
-  /// Create a new visitor.
-  DesugarVisitor({ExceptionHandler? exceptionHandler})
-      : exceptionHandler = exceptionHandler ?? const ThrowingExceptionHandler();
-
-  final ExceptionHandler exceptionHandler;
+class DesugarVisitor extends IdentityVisitor<void> implements Visitor<Node, void> {
+  const DesugarVisitor();
 
   @override
-  Template visitContainer(Container astNode, [void _]) {
-    _visitChildren(astNode);
+  Node visitContainer(Container node, [void _]) {
+    visitChildren(node);
 
-    if (astNode.stars.isNotEmpty) {
-      return _desugarStar(astNode, astNode.stars);
+    if (node.stars.isNotEmpty) {
+      return desugarStar(node, node.stars);
     }
 
-    return astNode;
+    return node;
   }
 
   @override
-  Template visitElement(Element astNode, [void _]) {
-    _visitChildren(astNode);
+  Node visitElement(Element node, [void _]) {
+    visitChildren(node);
 
-    if (astNode.bananas.isNotEmpty) {
-      _desugarBananas(astNode);
+    if (node.bananas.isNotEmpty) {
+      desugarBananas(node);
     }
 
-    if (astNode.stars.isNotEmpty) {
-      return _desugarStar(astNode, astNode.stars);
+    if (node.stars.isNotEmpty) {
+      return desugarStar(node, node.stars);
     }
 
-    return astNode;
+    return node;
   }
 
-  void _visitChildren(Template astNode) {
-    if (astNode.childNodes.isEmpty) {
+  void visitChildren(Node node) {
+    if (node.childNodes.isEmpty) {
       return;
     }
 
-    var newChildren = <StandaloneTemplate>[];
+    var newChildren = <Standalone>[];
 
-    for (var child in astNode.childNodes) {
-      newChildren.add(child.accept(this) as StandaloneTemplate);
+    for (var child in node.childNodes) {
+      newChildren.add(child.accept(this) as Standalone);
     }
 
-    astNode.childNodes.clear();
-    astNode.childNodes.addAll(newChildren);
+    node.childNodes.clear();
+    node.childNodes.addAll(newChildren);
   }
 
   @override
-  Template visitEmbeddedContent(EmbeddedContent astNode, [void _]) {
-    return astNode;
+  Node visitEmbeddedContent(EmbeddedContent node, [void _]) {
+    return node;
   }
 
   @override
-  Template visitEmbeddedTemplate(EmbeddedTemplateAst astNode, [void _]) {
-    _visitChildren(astNode);
-    return astNode;
+  Node visitEmbeddedTemplate(EmbeddedNode node, [void _]) {
+    visitChildren(node);
+    return node;
   }
 
-  /// Rewrites each banana on [astNode] as an event, property binding pair.
-  ///
-  /// For example, the banana binding
-  ///
-  ///     [(foo)]="bar"
-  ///
-  /// is rewritten as the property binding
-  ///
-  ///     [foo]="bar"
-  ///
-  /// and the event binding
-  ///
-  ///     (fooChange)="bar = $event"
-  ///
-  /// This clears any banana bindings from [astNode].
-  void _desugarBananas(Element astNode) {
-    for (var banana in astNode.bananas) {
+  void desugarBananas(Element node) {
+    for (var banana in node.bananas) {
       if (banana.value == null) {
         continue;
       }
 
-      astNode
+      node
         ..events.add(Event.from(banana, '${banana.name}Change', '${banana.value} = \$event'))
         ..properties.add(Property.from(banana, banana.name, banana.value!));
     }
 
-    astNode.bananas.clear();
+    node.bananas.clear();
   }
 
-  Template _desugarStar(StandaloneTemplate astNode, List<Star> stars) {
+  Node desugarStar(Standalone node, List<Star> stars) {
     var starAst = stars[0];
     var origin = starAst;
     var starExpression = starAst.value?.trim();
     var expressionOffset = (starAst as ParsedStar).valueToken?.innerValue?.offset;
     var directiveName = starAst.name;
-    EmbeddedTemplateAst newAst;
+    EmbeddedNode newAst;
     var attributesToAdd = <Attribute>[];
     var propertiesToAdd = <Property>[];
     var letBindingsToAdd = <LetBinding>[];
 
     if (isMicroExpression(starExpression)) {
-      NgMicroAst micro;
-
-      try {
-        micro = parseMicroExpression(directiveName, starExpression, expressionOffset,
-            sourceUrl: astNode.sourceUrl!, origin: origin);
-      } on AngularParserException catch (e) {
-        exceptionHandler.handle(e);
-        return astNode;
-      }
-
+      var micro = parseMicroExpression(directiveName, starExpression, expressionOffset,
+          sourceUrl: node.sourceUrl!, origin: origin);
       propertiesToAdd.addAll(micro.properties);
       letBindingsToAdd.addAll(micro.letBindings);
 
@@ -127,8 +95,8 @@ class DesugarVisitor extends IdentityTemplateAstVisitor<void> implements Templat
         attributesToAdd.add(Attribute.from(origin, directiveName));
       }
 
-      newAst = EmbeddedTemplateAst.from(origin,
-          childNodes: <StandaloneTemplate>[astNode],
+      newAst = EmbeddedNode.from(origin,
+          childNodes: <Standalone>[node],
           attributes: attributesToAdd,
           properties: propertiesToAdd,
           letBindings: letBindingsToAdd);
@@ -143,8 +111,8 @@ class DesugarVisitor extends IdentityTemplateAstVisitor<void> implements Templat
         propertiesToAdd.add(Property.from(origin, directiveName, starExpression));
       }
 
-      newAst = EmbeddedTemplateAst.from(origin,
-          childNodes: <StandaloneTemplate>[astNode], attributes: attributesToAdd, properties: propertiesToAdd);
+      newAst = EmbeddedNode.from(origin,
+          childNodes: <Standalone>[node], attributes: attributesToAdd, properties: propertiesToAdd);
     }
 
     stars.clear();

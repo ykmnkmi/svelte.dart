@@ -2,7 +2,7 @@
 // see https://html.spec.whatwg.org/multipage/entities.json
 // This list is not exhaustive to keep the compiler footprint low.
 // The `&#123;` / `&#x1ab;` syntax should be used when the named character reference does not exist.
-const NAMED_ENTITIES = {
+const Map<String, String> namedEntities = <String, String>{
   'Aacute': 'Á',
   'aacute': 'á',
   'Acirc': 'Â',
@@ -182,7 +182,7 @@ const NAMED_ENTITIES = {
   'prop': '∝',
   'Psi': 'Ψ',
   'psi': 'ψ',
-  'quot': '\"',
+  'quot': '"',
   'radic': '√',
   'rang': '⟩',
   'raquo': '»',

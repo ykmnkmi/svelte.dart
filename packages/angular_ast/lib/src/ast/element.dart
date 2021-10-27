@@ -1,20 +1,16 @@
-import 'package:collection/collection.dart';
-import 'package:source_span/source_span.dart';
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:source_span/source_span.dart' show SourceFile;
 
 import '../ast.dart';
 import '../token/tokens.dart';
 import '../visitor.dart';
 
-const ListEquality<Object?> _listEquals = ListEquality<Object?>();
+const ListEquality<Object?> listEquals = ListEquality<Object?>();
 
-/// Represents a DOM element that was parsed, that could be upgraded.
-///
-/// Clients should not extend, implement, or mix-in this class.
-abstract class Element implements StandaloneTemplate {
-  /// Create a synthetic element AST.
+abstract class Element implements Standalone {
   factory Element(String name, CloseElement? closeComplement,
       {List<Attribute> attributes,
-      List<StandaloneTemplate> childNodes,
+      List<Standalone> childNodes,
       List<Event> events,
       List<Property> properties,
       List<Reference> references,
@@ -22,10 +18,9 @@ abstract class Element implements StandaloneTemplate {
       List<Star> stars,
       List<Annotation> annotations}) = _SyntheticElement;
 
-  /// Create a synthetic element AST from an existing AST node.
-  factory Element.from(Template origin, String name, CloseElement? closeComplement,
+  factory Element.from(Node origin, String name, CloseElement? closeComplement,
       {List<Attribute> attributes,
-      List<StandaloneTemplate> childNodes,
+      List<Standalone> childNodes,
       List<Event> events,
       List<Property> properties,
       List<Reference> references,
@@ -33,11 +28,10 @@ abstract class Element implements StandaloneTemplate {
       List<Star> stars,
       List<Annotation> annotations}) = _SyntheticElement.from;
 
-  /// Create a new element AST from parsed source.
-  factory Element.parsed(SourceFile sourceFile, NgToken openElementStart, NgToken nameToken, NgToken openElementEnd,
+  factory Element.parsed(SourceFile sourceFile, Token openElementStart, Token nameToken, Token openElementEnd,
       {CloseElement? closeComplement,
       List<Attribute> attributes,
-      List<StandaloneTemplate> childNodes,
+      List<Standalone> childNodes,
       List<Event> events,
       List<Property> properties,
       List<Reference> references,
@@ -45,38 +39,26 @@ abstract class Element implements StandaloneTemplate {
       List<Star> stars,
       List<Annotation> annotations}) = ParsedElement;
 
-  /// Name (tag) of the element.
   String get name;
 
-  /// CloseElement complement
-  ///
-  /// If [closeComplement] == null, then [isVoidElement] is true.
   CloseElement? get closeComplement;
 
   set closeComplement(CloseElement? closeElementAst);
 
-  /// Attributes.
   List<Attribute> get attributes;
 
-  /// Event listeners.
   List<Event> get events;
 
-  /// Property assignments.
   List<Property> get properties;
 
-  /// Reference assignments.
   List<Reference> get references;
 
-  /// Bananas assignments.
   List<Banana> get bananas;
 
-  /// Star assignments.
   List<Star> get stars;
 
-  /// Annotation assignments.
   List<Annotation> get annotations;
 
-  /// Determines whether the element tag name is void element.
   bool get isVoidElement;
 
   @override
@@ -84,14 +66,14 @@ abstract class Element implements StandaloneTemplate {
     return Object.hashAll(<Object?>[
       name,
       closeComplement,
-      _listEquals.hash(attributes),
-      _listEquals.hash(childNodes),
-      _listEquals.hash(events),
-      _listEquals.hash(properties),
-      _listEquals.hash(references),
-      _listEquals.hash(bananas),
-      _listEquals.hash(stars),
-      _listEquals.hash(annotations),
+      listEquals.hash(attributes),
+      listEquals.hash(childNodes),
+      listEquals.hash(events),
+      listEquals.hash(properties),
+      listEquals.hash(references),
+      listEquals.hash(bananas),
+      listEquals.hash(stars),
+      listEquals.hash(annotations),
     ]);
   }
 
@@ -100,18 +82,18 @@ abstract class Element implements StandaloneTemplate {
     return other is Element &&
         name == other.name &&
         closeComplement == other.closeComplement &&
-        _listEquals.equals(attributes, other.attributes) &&
-        _listEquals.equals(childNodes, other.childNodes) &&
-        _listEquals.equals(events, other.events) &&
-        _listEquals.equals(properties, other.properties) &&
-        _listEquals.equals(references, other.references) &&
-        _listEquals.equals(bananas, other.bananas) &&
-        _listEquals.equals(stars, other.stars) &&
-        _listEquals.equals(annotations, other.annotations);
+        listEquals.equals(attributes, other.attributes) &&
+        listEquals.equals(childNodes, other.childNodes) &&
+        listEquals.equals(events, other.events) &&
+        listEquals.equals(properties, other.properties) &&
+        listEquals.equals(references, other.references) &&
+        listEquals.equals(bananas, other.bananas) &&
+        listEquals.equals(stars, other.stars) &&
+        listEquals.equals(annotations, other.annotations);
   }
 
   @override
-  R? accept<R, C>(TemplateVisitor<R, C?> visitor, [C? context]) {
+  R? accept<R, C>(Visitor<R, C?> visitor, [C? context]) {
     return visitor.visitElement(this, context);
   }
 
@@ -186,15 +168,11 @@ abstract class Element implements StandaloneTemplate {
   }
 }
 
-/// Represents a real, non-synthetic DOM element that was parsed,
-/// that could be upgraded.
-///
-/// Clients should not extend, implement, or mix-in this class.
-class ParsedElement extends Template with Element {
-  ParsedElement(SourceFile sourceFile, NgToken openElementStart, this.identifierToken, NgToken openElementEnd,
+class ParsedElement extends Node with Element {
+  ParsedElement(SourceFile sourceFile, Token openElementStart, this.identifierToken, Token openElementEnd,
       {this.closeComplement,
       this.attributes = const <Attribute>[],
-      this.childNodes = const <StandaloneTemplate>[],
+      this.childNodes = const <Standalone>[],
       this.events = const <Event>[],
       this.properties = const <Property>[],
       this.references = const <Reference>[],
@@ -203,46 +181,35 @@ class ParsedElement extends Template with Element {
       this.annotations = const <Annotation>[]})
       : super.parsed(openElementStart, openElementEnd, sourceFile);
 
-  /// [NgToken] that represents the identifier tag in `<tag ...>`.
-  final NgToken identifierToken;
+  final Token identifierToken;
 
-  /// CloseElementAst that complements this elementAst.
   @override
   CloseElement? closeComplement;
 
-  /// Attributes
   @override
   final List<Attribute> attributes;
 
-  /// Children nodes.
   @override
-  final List<StandaloneTemplate> childNodes;
+  final List<Standalone> childNodes;
 
-  /// Event listeners.
   @override
   final List<Event> events;
 
-  /// Property assignments.
   @override
   final List<Property> properties;
 
-  /// Reference assignments.
   @override
   final List<Reference> references;
 
-  /// Banana assignments.
   @override
   final List<Banana> bananas;
 
-  /// Star assignments.
   @override
   final List<Star> stars;
 
-  /// Annotation assignments.
   @override
   final List<Annotation> annotations;
 
-  /// Name (tag) of the element.
   @override
   String get name {
     return identifierToken.lexeme;
@@ -254,10 +221,10 @@ class ParsedElement extends Template with Element {
   }
 }
 
-class _SyntheticElement extends SyntheticTemplate with Element {
+class _SyntheticElement extends Synthetic with Element {
   _SyntheticElement(this.name, this.closeComplement,
       {this.attributes = const <Attribute>[],
-      this.childNodes = const <StandaloneTemplate>[],
+      this.childNodes = const <Standalone>[],
       this.events = const <Event>[],
       this.properties = const <Property>[],
       this.references = const <Reference>[],
@@ -265,9 +232,9 @@ class _SyntheticElement extends SyntheticTemplate with Element {
       this.stars = const <Star>[],
       this.annotations = const <Annotation>[]});
 
-  _SyntheticElement.from(Template origin, this.name, this.closeComplement,
+  _SyntheticElement.from(Node origin, this.name, this.closeComplement,
       {this.attributes = const <Attribute>[],
-      this.childNodes = const <StandaloneTemplate>[],
+      this.childNodes = const <Standalone>[],
       this.events = const <Event>[],
       this.properties = const <Property>[],
       this.references = const <Reference>[],
@@ -286,7 +253,7 @@ class _SyntheticElement extends SyntheticTemplate with Element {
   final List<Attribute> attributes;
 
   @override
-  final List<StandaloneTemplate> childNodes;
+  final List<Standalone> childNodes;
 
   @override
   final List<Event> events;

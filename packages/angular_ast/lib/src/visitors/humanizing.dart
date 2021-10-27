@@ -1,69 +1,70 @@
 import '../ast.dart';
 import '../visitor.dart';
 
-/// Provides a human-readable view of a template AST tree.
-class HumanizingTemplateAstVisitor extends TemplateVisitor<String, StringBuffer?> {
+class HumanizingTemplateAstVisitor extends Visitor<String, StringBuffer?> {
   const HumanizingTemplateAstVisitor();
 
   @override
-  String visitAnnotation(Annotation astNode, [StringBuffer? context]) => '@${astNode.name}';
-
-  @override
-  String visitAttribute(Attribute astNode, [StringBuffer? context]) {
-    if (astNode.value != null) {
-      return '${astNode.name}="${astNode.value}"';
-    }
-
-    return astNode.name;
+  String visitAnnotation(Annotation node, [StringBuffer? context]) {
+    return '@${node.name}';
   }
 
   @override
-  String visitBanana(Banana astNode, [StringBuffer? context]) {
-    var name = '[(${astNode.name})]';
+  String visitAttribute(Attribute node, [StringBuffer? context]) {
+    if (node.value != null) {
+      return '${node.name}="${node.value}"';
+    }
 
-    if (astNode.value != null) {
-      return '$name="${astNode.value}"';
+    return node.name;
+  }
+
+  @override
+  String visitBanana(Banana node, [StringBuffer? context]) {
+    var name = '[(${node.name})]';
+
+    if (node.value != null) {
+      return '$name="${node.value}"';
     }
 
     return name;
   }
 
   @override
-  String visitCloseElement(CloseElement astNode, [StringBuffer? context]) {
+  String visitCloseElement(CloseElement node, [StringBuffer? context]) {
     context ??= StringBuffer();
     context
       ..write('</')
-      ..write(astNode.name)
+      ..write(node.name)
       ..write('>');
     return context.toString();
   }
 
   @override
-  String visitComment(Comment astNode, [StringBuffer? context]) {
-    return '<!--${astNode.value}-->';
+  String visitComment(Comment node, [StringBuffer? context]) {
+    return '<!--${node.value}-->';
   }
 
   @override
-  String visitContainer(Container astNode, [StringBuffer? context]) {
+  String visitContainer(Container node, [StringBuffer? context]) {
     context ??= StringBuffer();
     context.write('<ng-container');
 
-    if (astNode.annotations.isNotEmpty) {
+    if (node.annotations.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.annotations.map<String>(visitAnnotation), ' ');
+        ..writeAll(node.annotations.map<String>(visitAnnotation), ' ');
     }
 
-    if (astNode.stars.isNotEmpty) {
+    if (node.stars.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.stars.map<String>(visitStar), ' ');
+        ..writeAll(node.stars.map<String>(visitStar), ' ');
     }
 
     context.write('>');
 
-    if (astNode.childNodes.isNotEmpty) {
-      context.writeAll(astNode.childNodes.map<String>((child) => child.accept(this) as String));
+    if (node.childNodes.isNotEmpty) {
+      context.writeAll(node.childNodes.map<String>((child) => child.accept(this) as String));
     }
 
     context.write('</ng-container>');
@@ -71,77 +72,77 @@ class HumanizingTemplateAstVisitor extends TemplateVisitor<String, StringBuffer?
   }
 
   @override
-  String visitElement(Element astNode, [StringBuffer? context]) {
+  String visitElement(Element node, [StringBuffer? context]) {
     context ??= StringBuffer();
     context
       ..write('<')
-      ..write(astNode.name);
+      ..write(node.name);
 
-    if (astNode.annotations.isNotEmpty) {
+    if (node.annotations.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.annotations.map<String>(visitAnnotation), ' ');
+        ..writeAll(node.annotations.map<String>(visitAnnotation), ' ');
     }
 
-    if (astNode.attributes.isNotEmpty) {
+    if (node.attributes.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.attributes.map<String>(visitAttribute), ' ');
+        ..writeAll(node.attributes.map<String>(visitAttribute), ' ');
     }
 
-    if (astNode.events.isNotEmpty) {
+    if (node.events.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.events.map<String>(visitEvent), ' ');
+        ..writeAll(node.events.map<String>(visitEvent), ' ');
     }
 
-    if (astNode.properties.isNotEmpty) {
+    if (node.properties.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.properties.map<String>(visitProperty), ' ');
+        ..writeAll(node.properties.map<String>(visitProperty), ' ');
     }
 
-    if (astNode.references.isNotEmpty) {
+    if (node.references.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.references.map<String>(visitReference), ' ');
+        ..writeAll(node.references.map<String>(visitReference), ' ');
     }
 
-    if (astNode.bananas.isNotEmpty) {
+    if (node.bananas.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.bananas.map<String>(visitBanana), ' ');
+        ..writeAll(node.bananas.map<String>(visitBanana), ' ');
     }
 
-    if (astNode.stars.isNotEmpty) {
+    if (node.stars.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.stars.map<String>(visitStar), ' ');
+        ..writeAll(node.stars.map<String>(visitStar), ' ');
     }
 
-    if (astNode.isSynthetic) {
-      context.write(astNode.isVoidElement ? '/>' : '>');
+    if (node.isSynthetic) {
+      context.write(node.isVoidElement ? '/>' : '>');
     } else {
-      context.write(astNode.endToken!.lexeme);
+      context.write(node.endToken!.lexeme);
     }
 
-    if (astNode.childNodes.isNotEmpty) {
-      context.writeAll(astNode.childNodes.map<String>((child) => child.accept(this) as String));
+    if (node.childNodes.isNotEmpty) {
+      context.writeAll(node.childNodes.map<String>((child) => child.accept(this) as String));
     }
 
-    if (astNode.closeComplement != null) {
-      context.write(visitCloseElement(astNode.closeComplement!));
+    if (node.closeComplement != null) {
+      context.write(visitCloseElement(node.closeComplement!));
     }
 
     return context.toString();
   }
 
   @override
-  String visitEmbeddedContent(EmbeddedContent astNode, [StringBuffer? context]) {
+  String visitEmbeddedContent(EmbeddedContent node, [StringBuffer? context]) {
     context ??= StringBuffer();
 
-    if (astNode.selector != null) {
-      context.write('<ng-content select="${astNode.selector}">');
+    if (node.selector != null) {
+      context.write('<ng-content select="${node.selector}">');
     } else {
       context.write('<ng-content>');
     }
@@ -151,44 +152,44 @@ class HumanizingTemplateAstVisitor extends TemplateVisitor<String, StringBuffer?
   }
 
   @override
-  String visitEmbeddedTemplate(EmbeddedTemplateAst astNode, [StringBuffer? context]) {
+  String visitEmbeddedTemplate(EmbeddedNode node, [StringBuffer? context]) {
     context ??= StringBuffer();
     context.write('<template');
 
-    if (astNode.annotations.isNotEmpty) {
+    if (node.annotations.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.annotations.map<String>(visitAnnotation), ' ');
+        ..writeAll(node.annotations.map<String>(visitAnnotation), ' ');
     }
 
-    if (astNode.attributes.isNotEmpty) {
+    if (node.attributes.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.attributes.map<String>(visitAttribute), ' ');
+        ..writeAll(node.attributes.map<String>(visitAttribute), ' ');
     }
 
-    if (astNode.properties.isNotEmpty) {
+    if (node.properties.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.properties.map<String>(visitProperty), ' ');
+        ..writeAll(node.properties.map<String>(visitProperty), ' ');
     }
 
-    if (astNode.references.isNotEmpty) {
+    if (node.references.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.references.map<String>(visitReference), ' ');
+        ..writeAll(node.references.map<String>(visitReference), ' ');
     }
 
-    if (astNode.letBindings.isNotEmpty) {
+    if (node.letBindings.isNotEmpty) {
       context
         ..write(' ')
-        ..writeAll(astNode.letBindings.map<String>(visitLetBinding), ' ');
+        ..writeAll(node.letBindings.map<String>(visitLetBinding), ' ');
     }
 
     context.write('>');
 
-    if (astNode.childNodes.isNotEmpty) {
-      context.writeAll(astNode.childNodes.map<String>((child) => child.accept(this) as String));
+    if (node.childNodes.isNotEmpty) {
+      context.writeAll(node.childNodes.map<String>((child) => child.accept(this) as String));
     }
 
     context.write('</template>');
@@ -196,83 +197,83 @@ class HumanizingTemplateAstVisitor extends TemplateVisitor<String, StringBuffer?
   }
 
   @override
-  String visitEvent(Event astNode, [StringBuffer? context]) {
+  String visitEvent(Event node, [StringBuffer? context]) {
     context ??= StringBuffer();
-    context.write('(${astNode.name}');
+    context.write('(${node.name}');
 
-    if (astNode.reductions.isNotEmpty) {
-      context.write('.${astNode.reductions.join('.')}');
+    if (node.reductions.isNotEmpty) {
+      context.write('.${node.reductions.join('.')}');
     }
 
     context.write(')');
 
-    if (astNode.value != null) {
-      context.write('="${astNode.value}"');
+    if (node.value != null) {
+      context.write('="${node.value}"');
     }
 
     return context.toString();
   }
 
   @override
-  String visitInterpolation(Interpolation astNode, [StringBuffer? context]) {
-    return '{{${astNode.value}}}';
+  String visitInterpolation(Interpolation node, [StringBuffer? context]) {
+    return '{{${node.value}}}';
   }
 
   @override
-  String visitLetBinding(LetBinding astNode, [StringBuffer? context]) {
-    if (astNode.value == null) {
-      return 'let-${astNode.name}';
+  String visitLetBinding(LetBinding node, [StringBuffer? context]) {
+    if (node.value == null) {
+      return 'let-${node.name}';
     }
 
-    return 'let-${astNode.name}="${astNode.value}"';
+    return 'let-${node.name}="${node.value}"';
   }
 
   @override
-  String visitProperty(Property astNode, [StringBuffer? context]) {
+  String visitProperty(Property node, [StringBuffer? context]) {
     context ??= StringBuffer();
-    context.write('[${astNode.name}');
+    context.write('[${node.name}');
 
-    if (astNode.postfix != null) {
-      context.write('.${astNode.postfix}');
+    if (node.postfix != null) {
+      context.write('.${node.postfix}');
     }
 
-    if (astNode.unit != null) {
-      context.write('.${astNode.unit}');
+    if (node.unit != null) {
+      context.write('.${node.unit}');
     }
 
     context.write(']');
 
-    if (astNode.value != null) {
-      context.write('="${astNode.value}"');
+    if (node.value != null) {
+      context.write('="${node.value}"');
     }
 
     return context.toString();
   }
 
   @override
-  String visitReference(Reference astNode, [StringBuffer? context]) {
-    var variable = '#${astNode.variable}';
+  String visitReference(Reference node, [StringBuffer? context]) {
+    var variable = '#${node.variable}';
 
-    if (astNode.identifier != null) {
-      return '$variable="${astNode.identifier}"';
+    if (node.identifier != null) {
+      return '$variable="${node.identifier}"';
     }
 
     return variable;
   }
 
   @override
-  String visitStar(Star astNode, [StringBuffer? context]) {
-    var name = '*${astNode.name}';
+  String visitStar(Star node, [StringBuffer? context]) {
+    var name = '*${node.name}';
 
-    if (astNode.value != null) {
-      return '$name="${astNode.value}"';
+    if (node.value != null) {
+      return '$name="${node.value}"';
     }
 
     return name;
   }
 
   @override
-  String visitText(Text astNode, [StringBuffer? context]) {
-    return astNode.value;
+  String visitText(Text node, [StringBuffer? context]) {
+    return node.value;
   }
 }

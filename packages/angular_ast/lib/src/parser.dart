@@ -1,43 +1,31 @@
-import 'package:meta/meta.dart';
-import 'package:source_span/source_span.dart';
+import 'package:meta/meta.dart' show literal;
+import 'package:source_span/source_span.dart' show SourceFile;
 
 import 'ast.dart';
-import 'exception_handler/exception_handler.dart';
 import 'lexer.dart';
 import 'parser/recursive.dart';
 import 'visitor.dart';
 
-class NgParser {
+class Parser {
   @literal
-  const factory NgParser() = NgParser._;
+  const Parser();
 
-  // Prevent inheritance.
-  const NgParser._();
-
-  /// Return a series of tokens by incrementally scanning [template].
-  ///
-  /// Automatically desugars.
-  List<StandaloneTemplate> parse(String template,
-      {required String sourceUrl,
-      bool desugar = true,
-      ExceptionHandler exceptionHandler = const ThrowingExceptionHandler()}) {
-    var tokens = const NgLexer().tokenize(template, exceptionHandler);
-    var parser = RecursiveAstParser(
-        SourceFile.fromString(template, url: sourceUrl), tokens, _voidElements, _svgElements, exceptionHandler);
-    var asts = parser.parse();
+  List<Standalone> parse(String template, {required String sourceUrl, bool desugar = true}) {
+    var tokens = const Lexer().tokenize(template);
+    var parser = RecursiveASTParser(SourceFile.fromString(template, url: sourceUrl), tokens, voidElements, svgElements);
+    var nodes = parser.parse();
 
     if (desugar) {
-      final desugarVisitor = DesugarVisitor(exceptionHandler: exceptionHandler);
-      asts = asts.map((t) => t.accept(desugarVisitor)).cast<StandaloneTemplate>().toList();
+      nodes = nodes.map((node) => node.accept(const DesugarVisitor())).cast<Standalone>().toList();
     }
 
-    return asts;
+    return nodes;
   }
 
   // Elements that explicitly don't have a closing tag.
   //
   // https://www.w3.org/TR/html/syntax.html#void-elements
-  static const List<String> _voidElements = <String>[
+  static const List<String> voidElements = <String>[
     'area',
     'base',
     'br',
@@ -65,7 +53,7 @@ class NgParser {
   //
   // Some tags (a, script) overlap with HTML. Exclude those, to prefer correct
   // HTML semantics to correct SVG semantics.
-  static const List<String> _svgElements = <String>[
+  static const List<String> svgElements = <String>[
     // 'a', Exclude this because it's also HTML
     'altGlyph',
     'altGlyphDef',

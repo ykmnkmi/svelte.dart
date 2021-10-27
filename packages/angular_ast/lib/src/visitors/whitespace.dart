@@ -1,109 +1,74 @@
 import '../ast.dart';
 import 'recursive.dart';
 
-/// Applies whitespace reduction to implement (`preserveWhitespace: false`).
-///
-/// Use [visitAllRoot] to process root nodes:
-/// ```dart
-/// var nodes = parse(template, sourceUrl: url);
-/// nodes = const MinimizeWhitespaceVisitor().visitAllRoot(nodes);
-/// ```
 class MinimizeWhitespaceVisitor extends RecursiveTemplateAstVisitor<bool> {
   const MinimizeWhitespaceVisitor();
 
-  /// Returns [rootNodes], visited, with whitespace removed.
-  List<StandaloneTemplate> visitAllRoot(List<StandaloneTemplate> rootNodes) {
-    return visitAll(_visitRemovingWhitespace(rootNodes)) as List<StandaloneTemplate>;
+  List<Standalone> visitAllRoot(List<Standalone> rootNodes) {
+    return visitAll(visitRemovingWhitespace(rootNodes)) as List<Standalone>;
   }
 
   @override
-  Template visitContainer(Container astNode, [bool? context]) {
-    if (_bailOutToPreserveWhitespace(astNode)) {
-      return astNode;
+  Node visitContainer(Container node, [bool? context]) {
+    if (bailOutToPreserveWhitespace(node)) {
+      return node;
     }
 
-    if (astNode.childNodes.isNotEmpty) {
-      astNode = Container.from(
-        astNode,
-        annotations: astNode.annotations,
-        childNodes: _visitRemovingWhitespace(astNode.childNodes),
-        stars: astNode.stars,
-      );
+    if (node.childNodes.isNotEmpty) {
+      node = Container.from(node,
+          annotations: node.annotations, childNodes: visitRemovingWhitespace(node.childNodes), stars: node.stars);
     }
-    return super.visitContainer(astNode, true);
+
+    return super.visitContainer(node, true);
   }
 
   @override
-  Template visitElement(Element astNode, [bool? context]) {
-    if (_bailOutToPreserveWhitespace(astNode)) {
-      return astNode;
+  Node visitElement(Element node, [bool? context]) {
+    if (bailOutToPreserveWhitespace(node)) {
+      return node;
     }
 
-    if (astNode.childNodes.isNotEmpty) {
-      astNode = Element.from(astNode, astNode.name, astNode.closeComplement,
-          attributes: astNode.attributes,
-          childNodes: _visitRemovingWhitespace(astNode.childNodes),
-          events: astNode.events,
-          properties: astNode.properties,
-          references: astNode.references,
-          bananas: astNode.bananas,
-          stars: astNode.stars,
-          annotations: astNode.annotations);
+    if (node.childNodes.isNotEmpty) {
+      node = Element.from(node, node.name, node.closeComplement,
+          attributes: node.attributes,
+          childNodes: visitRemovingWhitespace(node.childNodes),
+          events: node.events,
+          properties: node.properties,
+          references: node.references,
+          bananas: node.bananas,
+          stars: node.stars,
+          annotations: node.annotations);
     }
 
-    return super.visitElement(astNode, true)!;
+    return super.visitElement(node, true)!;
   }
 
   @override
-  Template visitEmbeddedTemplate(EmbeddedTemplateAst astNode, [bool? context]) {
-    if (_bailOutToPreserveWhitespace(astNode)) {
-      return astNode;
+  Node visitEmbeddedTemplate(EmbeddedNode node, [bool? context]) {
+    if (bailOutToPreserveWhitespace(node)) {
+      return node;
     }
 
-    if (astNode.childNodes.isNotEmpty) {
-      astNode = EmbeddedTemplateAst.from(astNode,
-          annotations: astNode.annotations,
-          attributes: astNode.attributes,
-          childNodes: _visitRemovingWhitespace(astNode.childNodes),
-          events: astNode.events,
-          properties: astNode.properties,
-          references: astNode.references,
-          letBindings: astNode.letBindings);
+    if (node.childNodes.isNotEmpty) {
+      node = EmbeddedNode.from(node,
+          annotations: node.annotations,
+          attributes: node.attributes,
+          childNodes: visitRemovingWhitespace(node.childNodes),
+          events: node.events,
+          properties: node.properties,
+          references: node.references,
+          letBindings: node.letBindings);
     }
 
-    return super.visitEmbeddedTemplate(astNode, true);
+    return super.visitEmbeddedTemplate(node, true);
   }
 
   @override
-  Template visitText(Text astNode, [bool? context]) {
-    return Text.from(astNode, astNode.value.replaceAll(_ngsp, ' '));
+  Node visitText(Text node, [bool? context]) {
+    return Text.from(node, node.value.replaceAll(ngsp, ' '));
   }
 
-  /// Returns [text], with all significant whitespace reduced to a single space.
-  static Text? _collapseWhitespace(Text text, {required bool trimLeft, required bool trimRight}) {
-    // Collapses all adjacent whitespace into a single space.
-    const preserveNbsp = '\uE501';
-    var value = text.value.replaceAll(_nbsp, preserveNbsp);
-    value = value.replaceAll(_allWhitespace, ' ');
-
-    if (trimLeft) {
-      value = value.trimLeft();
-    }
-
-    if (trimRight) {
-      value = value.trimRight();
-    }
-
-    value = value.replaceAll(preserveNbsp, _nbsp);
-
-    if (value.isEmpty) {
-      return null;
-    }
-
-    return Text.from(text, value);
-  }
-
-  List<StandaloneTemplate> _visitRemovingWhitespace(List<StandaloneTemplate?> childNodes) {
+  List<Standalone> visitRemovingWhitespace(List<Standalone?> childNodes) {
     // 1. Remove whitespace-only text nodes where previous/after nodes are
     //    not an InterpolationAst, but are anything else. For example, in the
     //    following case:
@@ -113,9 +78,9 @@ class MinimizeWhitespaceVisitor extends RecursiveTemplateAstVisitor<bool> {
     // </div>
     //
     // ... we should collapse to "<div><span>Hello World</span></div>".
-    Template? prevNode;
-    Template? nextNode = childNodes.length > 1 ? childNodes[1] : null;
-    var returnedNodes = <StandaloneTemplate>[];
+    Node? prevNode;
+    Node? nextNode = childNodes.length > 1 ? childNodes[1] : null;
+    var returnedNodes = <Standalone>[];
 
     for (var i = 0, l = childNodes.length; i < l; i++) {
       var currentNode = childNodes[i];
@@ -129,18 +94,18 @@ class MinimizeWhitespaceVisitor extends RecursiveTemplateAstVisitor<bool> {
         // Node i, where i - 1 and i + 1 are not interpolations, we can
         // completely remove the (text) node. For example, this would take
         // `<span>\n</span>` and return `<span></span>`.
-        if (_shouldCollapseAdjacentTo(prevNode, lastNode: true) &&
-            _shouldCollapseAdjacentTo(nextNode, lastNode: false) &&
+        if (shouldCollapseAdjacentTo(prevNode, lnode: true) &&
+            shouldCollapseAdjacentTo(nextNode, lnode: false) &&
             currentNodeCasted.value.trim().isEmpty &&
-            !currentNodeCasted.value.contains(_nbsp)) {
+            !currentNodeCasted.value.contains(nbsp)) {
           currentNode = null;
         } else {
           // Otherwise, we collapse whitespace:
           // 1. All adjacent whitespace is collapsed into a single space.
           // 2. Depending on siblings, *also* trimLeft or trimRight.
-          currentNode = _collapseWhitespace(currentNode,
-              trimLeft: _shouldCollapseAdjacentTo(prevNode, lastNode: true),
-              trimRight: _shouldCollapseAdjacentTo(nextNode, lastNode: false));
+          currentNode = collapseWhitespace(currentNode,
+              trimLeft: shouldCollapseAdjacentTo(prevNode, lnode: true),
+              trimRight: shouldCollapseAdjacentTo(nextNode, lnode: false));
         }
       }
 
@@ -156,7 +121,7 @@ class MinimizeWhitespaceVisitor extends RecursiveTemplateAstVisitor<bool> {
   }
 
   // https://developer.mozilla.org/en-US/docs/Web/HTML/Inline_elements
-  static final Set<String> _commonInlineElements = <String>{
+  static final Set<String> commonInlineElements = <String>{
     'a',
     'abbr',
     'acronym',
@@ -191,26 +156,51 @@ class MinimizeWhitespaceVisitor extends RecursiveTemplateAstVisitor<bool> {
     'var',
   };
 
-  static final RegExp _allWhitespace = RegExp(r'\s\s+', multiLine: true);
+  static const String nbsp = '\u00A0';
 
-  static const String _nbsp = '\u00A0';
+  static const String ngsp = '\uE500';
 
-  static const String _ngsp = '\uE500';
+  static RegExp get allWhitespace {
+    return RegExp(r'\s\s+', multiLine: true);
+  }
 
-  static bool _bailOutToPreserveWhitespace(StandaloneTemplate astNode) {
+  static Text? collapseWhitespace(Text text, {required bool trimLeft, required bool trimRight}) {
+    // Collapses all adjacent whitespace into a single space.
+    const preserveNbsp = '\uE501';
+    var value = text.value.replaceAll(nbsp, preserveNbsp);
+    value = value.replaceAll(allWhitespace, ' ');
+
+    if (trimLeft) {
+      value = value.trimLeft();
+    }
+
+    if (trimRight) {
+      value = value.trimRight();
+    }
+
+    value = value.replaceAll(preserveNbsp, nbsp);
+
+    if (value.isEmpty) {
+      return null;
+    }
+
+    return Text.from(text, value);
+  }
+
+  static bool bailOutToPreserveWhitespace(Standalone node) {
     var annotations = const <Annotation>[];
 
-    if (astNode is Container) {
-      annotations = astNode.annotations;
-    } else if (astNode is Element) {
-      if (astNode.name == 'pre') {
+    if (node is Container) {
+      annotations = node.annotations;
+    } else if (node is Element) {
+      if (node.name == 'pre') {
         // Don't modify whitespace of preformatted text.
         return true;
       }
 
-      annotations = astNode.annotations;
-    } else if (astNode is EmbeddedTemplateAst) {
-      annotations = astNode.annotations;
+      annotations = node.annotations;
+    } else if (node is EmbeddedNode) {
+      annotations = node.annotations;
     }
 
     for (var annotation in annotations) {
@@ -222,20 +212,16 @@ class MinimizeWhitespaceVisitor extends RecursiveTemplateAstVisitor<bool> {
     return false;
   }
 
-  /// Returns whether [tagName] is normally an `display: inline` element.
-  ///
-  /// This helps to make the right (default) decision around whitespace.
-  static bool _isPotentiallyInline(Element astNode) {
-    return _commonInlineElements.contains(astNode.name.toLowerCase());
+  static bool isPotentiallyInline(Element node) {
+    return commonInlineElements.contains(node.name.toLowerCase());
   }
 
-  /// Whether [astNode] should be treated as insignficant to nearby whitespace.
-  static bool _shouldCollapseAdjacentTo(Template? astNode, {bool lastNode = false}) {
-    return astNode is! StandaloneTemplate ||
+  static bool shouldCollapseAdjacentTo(Node? node, {bool lnode = false}) {
+    return node is! Standalone ||
         // Sometimes collapse adjacent to another element if not inline.
-        astNode is Element && !_isPotentiallyInline(astNode) ||
+        node is Element && !isPotentiallyInline(node) ||
         // Sometimes collapse adjacent to a template or container node.
-        _shouldCollapseWrapperNode(astNode, lastNode: lastNode);
+        shouldCollapseWrapperNode(node, lnode: lnode);
   }
 
   // Determining how to collapse next to a template/container is more complex.
@@ -245,15 +231,16 @@ class MinimizeWhitespaceVisitor extends RecursiveTemplateAstVisitor<bool> {
   // should be treated just like a <div>.
   //
   // Otherwise, return `false` and assume it could be a source of inline nodes.
-  static bool _shouldCollapseWrapperNode(StandaloneTemplate astNode, {bool lastNode = false}) {
-    if (astNode is! Container && astNode is! EmbeddedTemplateAst) {
+  static bool shouldCollapseWrapperNode(Standalone node, {bool lnode = false}) {
+    if (node is! Container && node is! EmbeddedNode) {
       return false;
     }
 
-    var nodes = astNode.childNodes;
+    var nodes = node.childNodes;
 
     if (nodes.isNotEmpty) {
-      var checkChild = lastNode ? nodes.last : nodes.first;
+      var checkChild = lnode ? nodes.last : nodes.first;
+
       // Cover the corner case of:
       // <template [ngIf]>
       //   <span>Hello</span>
@@ -280,11 +267,12 @@ class MinimizeWhitespaceVisitor extends RecursiveTemplateAstVisitor<bool> {
           return false;
         }
 
-        checkChild = lastNode ? nodes[nodes.length - 2] : nodes[1];
+        checkChild = lnode ? nodes[nodes.length - 2] : nodes[1];
       }
 
-      return _shouldCollapseAdjacentTo(checkChild);
+      return shouldCollapseAdjacentTo(checkChild);
     }
+
     return false;
   }
 }

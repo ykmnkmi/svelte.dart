@@ -1,194 +1,9 @@
-import 'package:string_scanner/string_scanner.dart';
+import 'package:string_scanner/string_scanner.dart' show StringScanner;
 
-import '../../exception_handler/exception_handler.dart';
+import '../../parser_exception.dart';
 import 'token.dart';
 
-class NgMicroScanner {
-  static final _findBeforeAssignment = RegExp(r':(\s*)');
-  static final _findEndExpression = RegExp(r';\s*');
-  static final _findExpression = RegExp(r'[^;]+');
-  static final _findImplicitBind = RegExp(r'[^\s]+');
-  static final _findLetAssignmentBefore = RegExp(r'\s*=\s*');
-  static final _findLetIdentifier = RegExp(r'[^\s=;]+');
-  static final _findStartExpression = RegExp(r'[^\s:;]+');
-  static final _findWhitespace = RegExp(r'\s+');
-
-  final StringScanner _scanner;
-  late int _expressionOffset;
-  late int _expressionLength;
-
-  _NgMicroScannerState _state = _NgMicroScannerState.scanInitial;
-
-  factory NgMicroScanner(String html, {sourceUrl}) {
-    return NgMicroScanner._(StringScanner(html, sourceUrl: sourceUrl));
-  }
-
-  NgMicroScanner._(this._scanner) {
-    _scanner.scan(_findWhitespace);
-    _expressionOffset = _scanner.position;
-    _expressionLength = _scanner.string.length - _expressionOffset;
-  }
-
-  NgMicroToken? scan() {
-    switch (_state) {
-      case _NgMicroScannerState.hasError:
-        throw StateError('An error occurred');
-      case _NgMicroScannerState.isEndOfFile:
-        return null;
-      case _NgMicroScannerState.scanAfterBindIdentifier:
-        return _scanAfterBindIdentifier();
-      case _NgMicroScannerState.scanAfterLetIdentifier:
-        return _scanAfterLetIdentifier();
-      case _NgMicroScannerState.scanAfterLetKeyword:
-        return _scanAfterLetKeyword();
-      case _NgMicroScannerState.scanBeforeBindExpression:
-        return _scanBeforeBindExpression();
-      case _NgMicroScannerState.scanBindExpression:
-        return _scanBindExpression();
-      case _NgMicroScannerState.scanEndExpression:
-        return _scanEndExpression();
-      case _NgMicroScannerState.scanImplicitBind:
-        return _scanImplicitBind();
-      case _NgMicroScannerState.scanInitial:
-        return _scanInitial();
-      case _NgMicroScannerState.scanLetAssignment:
-        return _scanLetAssignment();
-      case _NgMicroScannerState.scanLetIdentifier:
-        return _scanLetIdentifier();
-      default:
-        throw _unexpected();
-    }
-  }
-
-  String _lexeme(int offset) => _scanner.substring(offset);
-
-  NgMicroToken _scanAfterBindIdentifier() {
-    var offset = _scanner.position;
-    if (_scanner.scan(_findBeforeAssignment)) {
-      _state = _NgMicroScannerState.scanBindExpression;
-      return NgMicroToken.bindExpressionBefore(offset, _lexeme(offset));
-    }
-    throw _unexpected();
-  }
-
-  NgMicroToken _scanAfterLetIdentifier() {
-    var offset = _scanner.position;
-    if (_scanner.scan(_findEndExpression)) {
-      _state = _NgMicroScannerState.scanInitial;
-      return NgMicroToken.endExpression(offset, _lexeme(offset));
-    }
-    if (_scanner.scan(_findLetAssignmentBefore)) {
-      _state = _NgMicroScannerState.scanLetAssignment;
-      return NgMicroToken.letAssignmentBefore(offset, _lexeme(offset));
-    }
-    if (_scanner.scan(_findWhitespace)) {
-      _state = _NgMicroScannerState.scanImplicitBind;
-      return NgMicroToken.endExpression(offset, _lexeme(offset));
-    }
-    throw _unexpected();
-  }
-
-  NgMicroToken _scanAfterLetKeyword() {
-    var offset = _scanner.position;
-    if (_scanner.scan(_findWhitespace)) {
-      _state = _NgMicroScannerState.scanLetIdentifier;
-      return NgMicroToken.letKeywordAfter(offset, _lexeme(offset));
-    }
-    throw _unexpected();
-  }
-
-  NgMicroToken _scanBeforeBindExpression() {
-    var offset = _scanner.position;
-    if (_scanner.scan(_findWhitespace)) {
-      _state = _NgMicroScannerState.scanBindExpression;
-      return NgMicroToken.bindExpressionBefore(offset, _lexeme(offset));
-    }
-    throw _unexpected();
-  }
-
-  NgMicroToken _scanBindExpression() {
-    var offset = _scanner.position;
-    if (_scanner.scan(_findExpression)) {
-      _state = _NgMicroScannerState.scanEndExpression;
-      return NgMicroToken.bindExpression(offset, _lexeme(offset));
-    }
-    throw _unexpected();
-  }
-
-  NgMicroToken? _scanEndExpression() {
-    if (_scanner.isDone) {
-      _state = _NgMicroScannerState.isEndOfFile;
-      return null;
-    }
-    var offset = _scanner.position;
-    if (_scanner.scan(_findEndExpression)) {
-      _state = _NgMicroScannerState.scanInitial;
-      return NgMicroToken.endExpression(offset, _lexeme(offset));
-    }
-    throw _unexpected();
-  }
-
-  NgMicroToken _scanImplicitBind() {
-    var offset = _scanner.position;
-    if (_scanner.scan(_findImplicitBind)) {
-      _state = _NgMicroScannerState.scanBeforeBindExpression;
-      return NgMicroToken.bindIdentifier(offset, _lexeme(offset));
-    }
-    throw _unexpected();
-  }
-
-  NgMicroToken _scanInitial() {
-    var offset = _scanner.position;
-    if (_scanner.scan(_findStartExpression)) {
-      var lexeme = _lexeme(offset);
-      if (lexeme == 'let') {
-        _state = _NgMicroScannerState.scanAfterLetKeyword;
-        return NgMicroToken.letKeyword(offset, lexeme);
-      }
-      if (_scanner.matches(_findBeforeAssignment)) {
-        _state = _NgMicroScannerState.scanAfterBindIdentifier;
-        return NgMicroToken.bindIdentifier(offset, lexeme);
-      } else {
-        _state = _NgMicroScannerState.scanEndExpression;
-        return NgMicroToken.bindExpression(offset, lexeme);
-      }
-    }
-    throw _unexpected();
-  }
-
-  NgMicroToken _scanLetAssignment() {
-    var offset = _scanner.position;
-    if (_scanner.scan(_findExpression)) {
-      _state = _NgMicroScannerState.scanEndExpression;
-      return NgMicroToken.letAssignment(offset, _lexeme(offset));
-    }
-    throw _unexpected();
-  }
-
-  NgMicroToken _scanLetIdentifier() {
-    var offset = _scanner.position;
-    if (_scanner.scan(_findLetIdentifier)) {
-      if (_scanner.isDone) {
-        _state = _NgMicroScannerState.isEndOfFile;
-      } else {
-        _state = _NgMicroScannerState.scanAfterLetIdentifier;
-      }
-      return NgMicroToken.letIdentifier(offset, _lexeme(offset));
-    }
-    throw _unexpected();
-  }
-
-  AngularParserException _unexpected() {
-    _state = _NgMicroScannerState.hasError;
-    return AngularParserException(
-      ParserErrorCode.INVALID_MICRO_EXPRESSION,
-      _expressionOffset,
-      _expressionLength,
-    );
-  }
-}
-
-enum _NgMicroScannerState {
+enum NgMicroScannerState {
   hasError,
   isEndOfFile,
   scanAfterLetIdentifier,
@@ -201,4 +16,237 @@ enum _NgMicroScannerState {
   scanInitial,
   scanLetAssignment,
   scanLetIdentifier,
+}
+
+class MicroScanner {
+  factory MicroScanner(String html, {Object? sourceUrl}) {
+    var scanner = StringScanner(html, sourceUrl: sourceUrl);
+    scanner.scan(findWhitespace);
+    var offset = scanner.position;
+    return MicroScanner._(scanner, offset, scanner.string.length - offset);
+  }
+
+  MicroScanner._(this.scanner, this.expressionOffset, this.expressionLength) : state = NgMicroScannerState.scanInitial;
+
+  final StringScanner scanner;
+
+  int expressionOffset;
+
+  int expressionLength;
+
+  NgMicroScannerState state;
+
+  MicroToken? scan() {
+    switch (state) {
+      case NgMicroScannerState.hasError:
+        throw StateError('An error occurred');
+      case NgMicroScannerState.isEndOfFile:
+        return null;
+      case NgMicroScannerState.scanAfterBindIdentifier:
+        return scanAfterBindIdentifier();
+      case NgMicroScannerState.scanAfterLetIdentifier:
+        return scanAfterLetIdentifier();
+      case NgMicroScannerState.scanAfterLetKeyword:
+        return scanAfterLetKeyword();
+      case NgMicroScannerState.scanBeforeBindExpression:
+        return scanBeforeBindExpression();
+      case NgMicroScannerState.scanBindExpression:
+        return scanBindExpression();
+      case NgMicroScannerState.scanEndExpression:
+        return scanEndExpression();
+      case NgMicroScannerState.scanImplicitBind:
+        return scanImplicitBind();
+      case NgMicroScannerState.scanInitial:
+        return scanInitial();
+      case NgMicroScannerState.scanLetAssignment:
+        return scanLetAssignment();
+      case NgMicroScannerState.scanLetIdentifier:
+        return scanLetIdentifier();
+      default:
+        throw unexpected();
+    }
+  }
+
+  String lexeme(int offset) {
+    return scanner.substring(offset);
+  }
+
+  MicroToken scanAfterBindIdentifier() {
+    var offset = scanner.position;
+
+    if (scanner.scan(findBeforeAssignment)) {
+      state = NgMicroScannerState.scanBindExpression;
+      return MicroToken.bindExpressionBefore(offset, lexeme(offset));
+    }
+
+    throw unexpected();
+  }
+
+  MicroToken scanAfterLetIdentifier() {
+    var offset = scanner.position;
+
+    if (scanner.scan(findEndExpression)) {
+      state = NgMicroScannerState.scanInitial;
+      return MicroToken.endExpression(offset, lexeme(offset));
+    }
+
+    if (scanner.scan(findLetAssignmentBefore)) {
+      state = NgMicroScannerState.scanLetAssignment;
+      return MicroToken.letAssignmentBefore(offset, lexeme(offset));
+    }
+
+    if (scanner.scan(findWhitespace)) {
+      state = NgMicroScannerState.scanImplicitBind;
+      return MicroToken.endExpression(offset, lexeme(offset));
+    }
+
+    throw unexpected();
+  }
+
+  MicroToken scanAfterLetKeyword() {
+    var offset = scanner.position;
+
+    if (scanner.scan(findWhitespace)) {
+      state = NgMicroScannerState.scanLetIdentifier;
+      return MicroToken.letKeywordAfter(offset, lexeme(offset));
+    }
+
+    throw unexpected();
+  }
+
+  MicroToken scanBeforeBindExpression() {
+    var offset = scanner.position;
+
+    if (scanner.scan(findWhitespace)) {
+      state = NgMicroScannerState.scanBindExpression;
+      return MicroToken.bindExpressionBefore(offset, lexeme(offset));
+    }
+
+    throw unexpected();
+  }
+
+  MicroToken scanBindExpression() {
+    var offset = scanner.position;
+
+    if (scanner.scan(findExpression)) {
+      state = NgMicroScannerState.scanEndExpression;
+      return MicroToken.bindExpression(offset, lexeme(offset));
+    }
+
+    throw unexpected();
+  }
+
+  MicroToken? scanEndExpression() {
+    if (scanner.isDone) {
+      state = NgMicroScannerState.isEndOfFile;
+      return null;
+    }
+
+    var offset = scanner.position;
+
+    if (scanner.scan(findEndExpression)) {
+      state = NgMicroScannerState.scanInitial;
+      return MicroToken.endExpression(offset, lexeme(offset));
+    }
+
+    throw unexpected();
+  }
+
+  MicroToken scanImplicitBind() {
+    var offset = scanner.position;
+
+    if (scanner.scan(findImplicitBind)) {
+      state = NgMicroScannerState.scanBeforeBindExpression;
+      return MicroToken.bindIdentifier(offset, lexeme(offset));
+    }
+
+    throw unexpected();
+  }
+
+  MicroToken scanInitial() {
+    var offset = scanner.position;
+
+    if (scanner.scan(findStartExpression)) {
+      var lexeme = this.lexeme(offset);
+
+      if (lexeme == 'let') {
+        state = NgMicroScannerState.scanAfterLetKeyword;
+        return MicroToken.letKeyword(offset, lexeme);
+      }
+
+      if (scanner.matches(findBeforeAssignment)) {
+        state = NgMicroScannerState.scanAfterBindIdentifier;
+        return MicroToken.bindIdentifier(offset, lexeme);
+      } else {
+        state = NgMicroScannerState.scanEndExpression;
+        return MicroToken.bindExpression(offset, lexeme);
+      }
+    }
+
+    throw unexpected();
+  }
+
+  MicroToken scanLetAssignment() {
+    var offset = scanner.position;
+
+    if (scanner.scan(findExpression)) {
+      state = NgMicroScannerState.scanEndExpression;
+      return MicroToken.letAssignment(offset, lexeme(offset));
+    }
+
+    throw unexpected();
+  }
+
+  MicroToken scanLetIdentifier() {
+    var offset = scanner.position;
+
+    if (scanner.scan(findLetIdentifier)) {
+      if (scanner.isDone) {
+        state = NgMicroScannerState.isEndOfFile;
+      } else {
+        state = NgMicroScannerState.scanAfterLetIdentifier;
+      }
+
+      return MicroToken.letIdentifier(offset, lexeme(offset));
+    }
+
+    throw unexpected();
+  }
+
+  ParserException unexpected() {
+    state = NgMicroScannerState.hasError;
+    return ParserException(ParserErrorCode.invalidMicroExpression, expressionOffset, expressionLength);
+  }
+
+  static RegExp get findBeforeAssignment {
+    return RegExp(r':(\s*)');
+  }
+
+  static RegExp get findEndExpression {
+    return RegExp(r';\s*');
+  }
+
+  static RegExp get findExpression {
+    return RegExp(r'[^;]+');
+  }
+
+  static RegExp get findImplicitBind {
+    return RegExp(r'[^\s]+');
+  }
+
+  static RegExp get findLetAssignmentBefore {
+    return RegExp(r'\s*=\s*');
+  }
+
+  static RegExp get findLetIdentifier {
+    return RegExp(r'[^\s=;]+');
+  }
+
+  static RegExp get findStartExpression {
+    return RegExp(r'[^\s:;]+');
+  }
+
+  static RegExp get findWhitespace {
+    return RegExp(r'\s+');
+  }
 }
