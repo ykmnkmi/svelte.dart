@@ -1,4 +1,4 @@
-import 'package:angular_ast/angular_ast.dart' show AngularParserException, HumanizingTemplateAstVisitor hide parse;
+import 'package:angular_ast/angular_ast.dart' show HumanizingTemplateAstVisitor, ParserException hide parse;
 import 'package:stack_trace/stack_trace.dart' show Trace;
 
 import 'package:piko/compiler.dart';
@@ -17,7 +17,7 @@ void main() {
     }
 
     print(compileNodes('App', nodes));
-  } on AngularParserException catch (error, stackTrace) {
+  } on ParserException catch (error, stackTrace) {
     var trace = Trace.from(stackTrace);
     print(error.errorCode.message);
 

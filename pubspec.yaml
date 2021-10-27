@@ -1,6 +1,6 @@
 name: piko
 description: Web applications framework for Dart with AngularDart template syntax.
-version: 1.0.0-dev.69
+version: 1.0.0-dev.70
 # homepage: https://piko.ykmnkmi.dev
 
 environment:

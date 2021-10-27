@@ -38,6 +38,7 @@ export 'src/ast.dart'
         Text;
 export 'src/lexer.dart' show Lexer;
 export 'src/parser.dart' show Parser;
+export 'src/parser_exception.dart' show ParserException;
 export 'src/token/tokens.dart' show Token, TokenType, AttributeValueToken;
 export 'src/visitor.dart'
     show
