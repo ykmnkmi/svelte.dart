@@ -1,22 +1,19 @@
 name: piko
-description: Web applications framework for Dart with AngularDart template syntax.
-version: 1.0.0-dev.70
+description: Web applications framework for Dart based on Svelte.
+version: 1.0.0-dev.71
 # homepage: https://piko.ykmnkmi.dev
 
 environment:
   sdk: '>=2.15.0-0 <3.0.0'
 
 dependencies:
-  angular_ast: ^2.0.0
+  analyzer: ^2.7.0
   meta: ^1.7.0
   path: ^1.8.0
+  string_scanner: ^1.1.0
 
 dev_dependencies:
   build_runner: ^2.1.0
   build_web_compilers: ^3.2.0
   lints: ^1.0.0
   stack_trace: ^1.10.0
-
-dependency_overrides:
-  angular_ast:
-    path: ./packages/angular_ast
