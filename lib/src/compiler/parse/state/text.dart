@@ -9,13 +9,12 @@ extension TextParser on Parser {
     var found = template.indexOf(openRe, index);
 
     if (found == -1) {
-      current.add(Text(scanner.rest));
+      current.add(Text(rest));
       index = template.length;
       return;
     }
 
-    var start = index;
+    current.add(Text(template.substring(index, found)));
     index = found;
-    current.add(Text(scanner.substring(start)));
   }
 }

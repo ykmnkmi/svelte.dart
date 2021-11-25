@@ -1,4 +1,4 @@
-import 'package:string_scanner/string_scanner.dart' show StringScanner;
+import 'package:source_span/source_span.dart' show SourceFile;
 
 import '../utils/patterns.dart';
 import '../interface.dart';
@@ -7,55 +7,65 @@ import 'errors.dart';
 import 'state/fragment.dart';
 
 class Parser {
-  Parser(String template, {Object? sourceUrl})
-      : scanner = StringScanner(template.trimRight(), sourceUrl: sourceUrl),
-        stack = <Node>[],
-        root = Fragment() {
-    stack.add(root);
+  Parser(this.template, {Object? sourceUrl})
+      : length = template.length,
+        sourceFile = SourceFile.fromString(template, url: sourceUrl) {
+    stack.add(html);
 
-    parse();
+    while (canParse) {
+      fragment();
+    }
   }
 
-  final StringScanner scanner;
+  final String template;
 
-  final List<Node> stack;
+  final int length;
 
-  Fragment root;
+  final SourceFile sourceFile;
 
-  String get template {
-    return scanner.string;
-  }
+  final List<Node> stack = <Node>[];
 
-  int get index {
-    return scanner.position;
-  }
+  final Fragment html = Fragment();
 
-  set index(int index) {
-    scanner.position = index;
+  int index = 0;
+
+  bool get canParse {
+    return index < length;
   }
 
   String get rest {
-    return scanner.rest;
+    return template.substring(index);
   }
 
   Node get current {
     return stack.last;
   }
 
-  bool get isDone {
-    return scanner.isDone;
-  }
-
-  Never error(String code, String message) {
-    scanner.error(message);
+  void allowWhitespace() {
+    scan(whitespace);
   }
 
   bool match(Pattern pattern) {
-    return scanner.matches(pattern);
+    var match = pattern.matchAsPrefix(template, index);
+    return match != null;
   }
 
   bool scan(Pattern pattern) {
-    return scanner.scan(pattern);
+    var match = pattern.matchAsPrefix(template, index);
+    if (match == null) return false;
+    index = match.end;
+    return true;
+  }
+
+  int readChar() {
+    return template.codeUnitAt(index += 1);
+  }
+
+  String? read(Pattern pattern) {
+    var match = pattern.matchAsPrefix(template, index);
+    if (match == null) return null;
+    index += match.end;
+    return match[0];
   }
 
   void expect(Pattern pattern) {
@@ -63,25 +73,19 @@ class Parser {
       return;
     }
 
-    if (isDone) {
-      unexpectedEOF(pattern);
+    if (canParse) {
+      unexpectedToken(pattern);
     }
 
-    unexpectedToken(pattern);
+    unexpectedEOF(pattern);
   }
 
-  void allowWhitespace() {
-    scan(whitespace);
-  }
-
-  void parse() {
-    while (index < template.length) {
-      fragment();
-    }
+  Never error(String code, String message, {int? position, int? end}) {
+    throw CompileError(code, message, sourceFile.span(position ?? index, end ?? length));
   }
 }
 
 Node parse(String template, {Object? sourceUrl}) {
   var parser = Parser(template, sourceUrl: sourceUrl);
-  return parser.root;
+  return parser.html;
 }

@@ -11,3 +11,5 @@ void main() {
     print(Trace.format(trace, terse: true));
   }
 }
+
+// ignore_for_file: avoid_print
