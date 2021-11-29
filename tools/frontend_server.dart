@@ -1,4 +1,3 @@
-import 'dart:convert' show utf8;
 import 'dart:io' show Platform, Process, exit, stdin;
 
 import 'package:frontend_server_client/frontend_server_client.dart' show FrontendServerClient;
@@ -7,6 +6,10 @@ import 'package:stack_trace/stack_trace.dart' show Trace;
 import 'package:watcher/watcher.dart' show Watcher;
 
 const String platformDill = 'lib/_internal/vm_platform_strong.dill';
+
+late final String dartExecutable = path.normalize(Platform.resolvedExecutable);
+late final String sdkDir = path.dirname(path.dirname(dartExecutable));
+late final String frontendServerPath = path.join(sdkDir, 'bin', 'snapshots', 'frontend_server.dart.snapshot');
 
 Future<void> main(List<String> arguments) async {
   if (arguments.isEmpty) {
@@ -17,23 +20,21 @@ Future<void> main(List<String> arguments) async {
   var filePath = arguments[0];
   var fileUri = Uri.file(filePath);
 
-  var executable = Platform.resolvedExecutable;
-  var sdkRoot = path.dirname(path.dirname(executable));
-  var outputDill = path.join('.dart_tool', 'incremental_build.dill');
+  var outputDill = path.setExtension(filePath, '.dill');
   arguments[0] = outputDill;
 
-  var client = await FrontendServerClient.start(filePath, outputDill, platformDill, sdkRoot: sdkRoot);
+  var client = await FrontendServerClient.start(filePath, outputDill, platformDill);
 
   void run() {
     try {
-      var result = Process.runSync(executable, arguments, stdoutEncoding: null, stderrEncoding: null);
+      var result = Process.runSync(dartExecutable, arguments);
 
       if (result.stdout != null) {
-        print(utf8.decode(result.stdout as List<int>).toString().trimRight());
+        print(result.stdout.toString().trimRight());
       }
 
       if (result.stderr != null) {
-        print(utf8.decode(result.stderr as List<int>));
+        print(result.stderr.toString().trimRight());
       }
     } catch (error, trace) {
       print(error);
@@ -85,8 +86,8 @@ Future<void> main(List<String> arguments) async {
     return watcher.ready;
   }
 
-  await reload();
   await watch(invalidated);
+  print('init done');
 
   stdin.echoMode = false;
   stdin.lineMode = false;
@@ -100,7 +101,7 @@ Future<void> main(List<String> arguments) async {
         break;
       // q
       case 113:
-        exit(0);
+        exit(await client.shutdown());
       // h
       case 104:
         print('usage: press r to reload and q to exit');
