@@ -8,8 +8,9 @@ bin/
 build/
 doc/api/
 pubspec.lock
+**/**.dill
+**/**.jit
 **/**.aot
 **/**.exe
-**/**.jit
 **/**.py
 **/**.pyc
