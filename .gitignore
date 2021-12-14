@@ -12,5 +12,3 @@ pubspec.lock
 **/**.jit
 **/**.aot
 **/**.exe
-**/**.py
-**/**.pyc

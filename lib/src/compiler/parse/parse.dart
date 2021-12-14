@@ -6,10 +6,24 @@ import '../interface.dart';
 import 'errors.dart';
 import 'state/fragment.dart';
 
+class LastAutoClosedTag {
+  LastAutoClosedTag(this.tag, this.reason, this.depth);
+
+  String tag;
+
+  String reason;
+
+  int depth;
+}
+
 class Parser {
   Parser(this.template, {Object? sourceUrl})
       : length = template.length,
-        sourceFile = SourceFile.fromString(template, url: sourceUrl) {
+        sourceFile = SourceFile.fromString(template, url: sourceUrl),
+        metaTags = <String>{},
+        stack = <Node>[],
+        html = Node(type: 'Fragment'),
+        index = 0 {
     stack.add(html);
 
     while (canParse) {
@@ -23,11 +37,15 @@ class Parser {
 
   final SourceFile sourceFile;
 
-  final List<Node> stack = <Node>[];
+  final Set<String> metaTags;
 
-  final Fragment html = Fragment();
+  final List<Node> stack;
 
-  int index = 0;
+  final Node html;
+
+  int index;
+
+  LastAutoClosedTag? lastAutoClosedTag;
 
   bool get canParse {
     return index < length;
@@ -57,17 +75,6 @@ class Parser {
     return true;
   }
 
-  int readChar() {
-    return template.codeUnitAt(index += 1);
-  }
-
-  String? read(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template, index);
-    if (match == null) return null;
-    index += match.end;
-    return match[0];
-  }
-
   void expect(Pattern pattern) {
     if (scan(pattern)) {
       return;
@@ -78,6 +85,29 @@ class Parser {
     }
 
     unexpectedEOF(pattern);
+  }
+
+  int readChar() {
+    return template.codeUnitAt(index += 1);
+  }
+
+  String? read(Pattern pattern) {
+    var match = pattern.matchAsPrefix(template, index);
+    if (match == null) return null;
+    index = match.end;
+    return match[0];
+  }
+
+  String? readUntil(Pattern pattern) {
+    var position = index;
+    var found = template.indexOf(pattern, index);
+
+    if (found == -1) {
+      if (canParse) return null;
+      error('unexpected-eof', 'unexpected end of input');
+    }
+
+    return template.substring(position, index = found);
   }
 
   Never error(String code, String message, {int? position, int? end}) {

@@ -1,67 +1,58 @@
-import 'package:analyzer/dart/ast/ast.dart' show Expression;
+class Node {
+  Node({required this.type, this.name, this.start, this.end, this.data, List<Node>? children})
+      : children = children ?? <Node>[];
 
-abstract class Node {
-  List<Node> get children {
-    throw UnsupportedError('not supported');
-  }
+  String type;
+
+  String? name;
+
+  int? start;
+
+  int? end;
+
+  Object? data;
+
+  List<Node> children;
 
   void add(Node node) {
     children.add(node);
   }
-}
 
-class Text extends Node {
-  Text(this.data);
-
-  String data;
-
-  @override
-  int get hashCode {
-    return 0xE ^ data.hashCode;
-  }
-
-  @override
-  bool operator ==(Object? other) {
-    return other is Text && data == other.data;
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'type': type,
+      if (name != null) 'name': name,
+      if (start != null) 'start': start,
+      if (end != null) 'end': end,
+      if (data != null) 'data': data,
+      if (children.isNotEmpty) 'children': List<Object?>.generate(children.length, (index) => children[index].toJson()),
+    };
   }
 
   @override
   String toString() {
-    return 'Text { $data }';
-  }
-}
+    var buffer = StringBuffer(type);
 
-class Mustache extends Node {
-  Mustache(this.expression);
+    if (name != null) {
+      buffer.write('.$name');
+    }
 
-  Expression expression;
+    if (start != null || end != null) {
+      buffer.write('[$start:$end]');
+    }
 
-  @override
-  String toString() {
-    return 'Mustache { $expression }';
-  }
-}
+    if (data != null) {
+      buffer.write(' ($data)');
+    }
 
-class Fragment extends Node {
-  Fragment() : children = <Node>[];
+    if (children.isNotEmpty) {
+      buffer
+        ..write(' { ')
+        ..writeAll(children, ', ')
+        ..write(' }');
+    }
 
-  @override
-  List<Node> children;
-
-  @override
-  String toString() {
-    return 'Fragment { ${children.join(', ')} }';
-  }
-}
-
-class Element extends Fragment {
-  Element(this.name) : super();
-
-  String name;
-
-  @override
-  String toString() {
-    return 'Element.$name { ${children.join(', ')} }';
+    return buffer.toString();
   }
 }
 

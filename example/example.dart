@@ -1,11 +1,16 @@
 import 'package:piko/compiler.dart';
-import 'package:stack_trace/stack_trace.dart';
+import 'package:stack_trace/stack_trace.dart' show Trace;
 
-const String template = 'Hello { name }!';
+const String helloWorld = '''
+<script>
+	var name = 'world';
+</script>
+
+<h1>Hello {name}!</h1>''';
 
 void main() {
   try {
-    print(parse(template));
+    print(parse(helloWorld));
   } catch (error, trace) {
     print(error);
     print(Trace.format(trace, terse: true));

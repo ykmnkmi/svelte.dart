@@ -1,6 +1,6 @@
 import '../../interface.dart';
-import '../parse.dart';
 import '../read/expression.dart';
+import '../parse.dart';
 
 extension MustacheParser on Parser {
   void mustache() {
@@ -20,7 +20,7 @@ extension MustacheParser on Parser {
     } else if (scan('@debug')) {
       throw UnimplementedError();
     } else {
-      current.add(Mustache(readExpression()));
+      current.add(Node(type: 'MustacheTag', data: readExpression()));
     }
 
     allowWhitespace();

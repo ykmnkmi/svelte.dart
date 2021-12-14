@@ -3,18 +3,18 @@ import '../../interface.dart';
 import '../parse.dart';
 
 extension TextParser on Parser {
-  static late final RegExp openRe = compile('[{<]');
+  static late final RegExp openRe = compile(r'[{<]');
 
   void text() {
     var found = template.indexOf(openRe, index);
 
     if (found == -1) {
-      current.add(Text(rest));
+      current.add(Node(type: 'Text', data: rest));
       index = template.length;
       return;
     }
 
-    current.add(Text(template.substring(index, found)));
+    current.add(Node(type: 'Text', data: template.substring(index, found)));
     index = found;
   }
 }
