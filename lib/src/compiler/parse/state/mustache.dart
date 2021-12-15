@@ -4,6 +4,8 @@ import '../parse.dart';
 
 extension MustacheParser on Parser {
   void mustache() {
+    var start = index;
+
     expect('{');
     allowWhitespace();
 
@@ -20,10 +22,12 @@ extension MustacheParser on Parser {
     } else if (scan('@debug')) {
       throw UnimplementedError();
     } else {
-      current.add(Node(type: 'MustacheTag', data: readExpression()));
-    }
+      var expression = readExpression();
 
-    allowWhitespace();
-    expect('}');
+      allowWhitespace();
+      expect('}');
+
+      current.add(Node(type: 'MustacheTag', data: expression, start: start, end: index));
+    }
   }
 }

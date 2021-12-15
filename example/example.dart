@@ -1,3 +1,5 @@
+import 'dart:convert' show JsonEncoder;
+
 import 'package:piko/compiler.dart';
 import 'package:stack_trace/stack_trace.dart' show Trace;
 
@@ -10,7 +12,7 @@ const String helloWorld = '''
 
 void main() {
   try {
-    print(parse(helloWorld));
+    print(JsonEncoder.withIndent('  ').convert(parse(helloWorld).toJson(printData: true)));
   } catch (error, trace) {
     print(error);
     print(Trace.format(trace, terse: true));

@@ -84,7 +84,7 @@ class Parser {
       unexpectedToken(pattern);
     }
 
-    unexpectedEOF(pattern);
+    unexpectedEOFToken(pattern);
   }
 
   int readChar() {
@@ -98,16 +98,18 @@ class Parser {
     return match[0];
   }
 
-  String? readUntil(Pattern pattern) {
-    var position = index;
+  String readUntil(Pattern pattern) {
     var found = template.indexOf(pattern, index);
 
     if (found == -1) {
-      if (canParse) return null;
+      if (canParse) {
+        return template.substring(index, index = length);
+      }
+
       error('unexpected-eof', 'unexpected end of input');
     }
 
-    return template.substring(position, index = found);
+    return template.substring(index, index = found);
   }
 
   Never error(String code, String message, {int? position, int? end}) {

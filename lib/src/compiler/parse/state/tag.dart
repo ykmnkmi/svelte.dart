@@ -1,3 +1,6 @@
+import 'package:piko/src/compiler/parse/errors.dart';
+import 'package:piko/src/compiler/parse/read/expression.dart';
+
 import '../../utils/html.dart';
 import '../../utils/names.dart';
 import '../../utils/patterns.dart';
@@ -22,6 +25,8 @@ extension TagParser on Parser {
     'svelte:fragment',
   };
 
+  static late final RegExp validTagNameRe = compile(r'^\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\-]*');
+
   static late final RegExp selfRe = compile(r'^svelte:self(?=[\s/>])');
 
   static late final RegExp componentRe = compile(r'^svelte:component(?=[\s/>])');
@@ -29,6 +34,8 @@ extension TagParser on Parser {
   static late final RegExp slotRe = compile(r'^svelte:fragment(?=[\s/>])');
 
   static late final RegExp componentNameRe = compile('^[A-Z].*');
+
+  static late final RegExp tagNameRe = compile(r'(\s|\/|>)');
 
   bool parentIsHead() {
     for (var node in stack.reversed) {
@@ -41,9 +48,10 @@ extension TagParser on Parser {
   }
 
   void tag() {
+    var start = index;
+
     expect('<');
 
-    var start = index;
     var parent = current;
 
     if (scan('!--')) {
@@ -83,16 +91,19 @@ extension TagParser on Parser {
 
     var type = metaTags[name];
 
-    if (type == null && componentNameRe.hasMatch(name) || name == 'svelte:self' || name == 'svelte:component') {
-      type = 'InlineComponent';
-    } else if (name == 'svelte:fragment') {
-      type = 'SlotTemplate';
-    } else if (name == 'title' && parentIsHead()) {
-      type = 'Title';
-    } else if (name == 'slot') {
-      type = 'Slot';
-    } else {
-      type = 'Element';
+    if (type == null) {
+      if (componentNameRe.hasMatch(name) || name == 'svelte:self' || name == 'svelte:component') {
+        print('name: ${componentNameRe.hasMatch(name)}');
+        type = 'InlineComponent';
+      } else if (name == 'svelte:fragment') {
+        type = 'SlotTemplate';
+      } else if (name == 'title' && parentIsHead()) {
+        type = 'Title';
+      } else if (name == 'slot') {
+        type = 'Slot';
+      } else {
+        type = 'Element';
+      }
     }
 
     var element = Node(type: type, name: name, start: start);
@@ -155,18 +166,102 @@ extension TagParser on Parser {
     if (selfClosing) {
       element.end = index;
     } else if (name == 'textarea') {
-      // TODO: read textarea content
-      throw UnimplementedError();
+      var pattern = compile(r'^<\/textarea(\s[^>]*)?>');
+      element.children = readSequence(pattern);
+      scan(pattern);
+      element.end = index;
     } else if (name == 'script' || name == 'style') {
-      // TODO: read script/style content
-      throw UnimplementedError();
+      var start = index;
+      var data = readUntil('</$name>');
+      element.children.add(Node(type: 'Text', data: data, start: start, end: index));
+      expect('</$name>');
+      element.end = index;
     } else {
       stack.add(element);
     }
   }
 
   String readTagName() {
-    // TODO: implement readTagName
-    throw UnimplementedError();
+    var start = index;
+
+    if (scan(selfRe)) {
+      legal:
+      {
+        for (var fragment in stack.reversed) {
+          var type = fragment.type;
+
+          if (type == 'IfBlock' || type == 'EachBlock' || type == 'InlineComponent') {
+            break legal;
+          }
+        }
+
+        invalidSelfPlacement(start);
+      }
+
+      return 'svelte:self';
+    }
+
+    if (scan(componentRe)) {
+      return 'svelte:component';
+    }
+
+    if (scan(slotRe)) {
+      return 'svelte:fragment';
+    }
+
+    var name = readUntil(tagNameRe);
+    var meta = metaTags[name];
+
+    if (meta != null) {
+      return meta;
+    }
+
+    if (name.startsWith('svelte:')) {
+      invalidTagNameSvelteElement(validMetaTags, start);
+    }
+
+    if (!validTagNameRe.hasMatch(name)) {
+      invalidTagName(start);
+    }
+
+    return name;
+  }
+
+  List<Node> readSequence(Pattern pattern) {
+    var buffer = StringBuffer();
+    var chunks = <Node>[];
+
+    void flush(int start, int end) {
+      if (buffer.isNotEmpty) {
+        chunks.add(Node(type: 'Text', data: buffer.toString(), start: start, end: end));
+        buffer.clear();
+      }
+    }
+
+    while (canParse) {
+      var start = index;
+
+      if (match(pattern)) {
+        flush(start, index);
+        return chunks;
+      }
+
+      if (scan('{')) {
+        flush(start, index - 1);
+
+        allowWhitespace();
+
+        var expression = readExpression();
+
+        allowWhitespace();
+        expect('}');
+
+        chunks.add(Node(type: 'MustacheTag', data: expression, start: start, end: index));
+      } else {
+        buffer.writeCharCode(readChar());
+      }
+    }
+
+    unexpectedEOF();
   }
 }

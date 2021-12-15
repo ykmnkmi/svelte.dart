@@ -1,3 +1,5 @@
+import 'dart:math' show min;
+
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart';
@@ -8,13 +10,18 @@ const String prefix = 'void __expression() => ';
 
 extension MustacheParser on Parser {
   Expression readExpression() {
-    var result = parseString(content: prefix + rest, throwIfDiagnostics: false);
+    var found = template.indexOf('}', index);
+    // is there expressions with length longer than 32 characters?
+    var source = found == -1 ? rest : template.substring(index, min(found + 32, length));
+    var result = parseString(content: prefix + source, throwIfDiagnostics: false);
+
     var errors = List<AnalysisError>.of(result.errors);
     errors.sort((a, b) => a.offset.compareTo(b.offset));
 
-    var analysisError = errors.first;
+    var analysisError = errors.removeAt(0);
+    var offset = sourceFile.getColumn(index);
 
-    if (analysisError.offset - index < 0) {
+    if (analysisError.offset - offset < 0) {
       error('parse-error', 'expression expected');
     }
 
@@ -24,8 +31,15 @@ extension MustacheParser on Parser {
 
     var declarations = result.unit.declarations;
 
-    if (declarations.length != 1) {
-      error('parse-error', 'not a valid expression');
+    for (var error in errors) {
+      switch (error.message) {
+        case "Expected to find ';'.":
+        case 'Expected a method, getter, setter or operator declaration.':
+        case "Variables must be declared using the keywords 'const', 'final', 'var' or a type name.":
+          continue;
+        default:
+          throw error;
+      }
     }
 
     var function = declarations.first as FunctionDeclaration;

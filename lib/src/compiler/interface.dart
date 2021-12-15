@@ -18,14 +18,14 @@ class Node {
     children.add(node);
   }
 
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson({bool printData = false}) {
     return <String, Object?>{
       'type': type,
       if (name != null) 'name': name,
       if (start != null) 'start': start,
       if (end != null) 'end': end,
-      if (data != null) 'data': data,
-      if (children.isNotEmpty) 'children': List<Object?>.generate(children.length, (index) => children[index].toJson()),
+      if (data != null) 'data': printData ? data.toString() : data,
+      if (children.isNotEmpty) 'children': List<Object?>.generate(children.length, (index) => children[index].toJson(printData: printData)),
     };
   }
 
