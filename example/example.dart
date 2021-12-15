@@ -8,11 +8,14 @@ const String helloWorld = '''
 	var name = 'world';
 </script>
 
-<h1>Hello {name}!</h1>''';
+<h1 id="title">Hello {name}!</h1>''';
 
 void main() {
   try {
-    print(JsonEncoder.withIndent('  ').convert(parse(helloWorld).toJson(printData: true)));
+    var node = parse(helloWorld);
+    var json = node.toJson(false);
+    print(JsonEncoder.withIndent('  ').convert(json['children']));
+    print(node);
   } catch (error, trace) {
     print(error);
     print(Trace.format(trace, terse: true));

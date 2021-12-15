@@ -22,16 +22,16 @@ extension ParserErrors on Parser {
     error(message, 'css-syntax-error');
   }
 
-  Never duplicateAttribute() {
-    error('duplicate-attribute', 'attributes need to be unique');
+  Never duplicateAttribute(int? position) {
+    error('duplicate-attribute', 'attributes need to be unique', position: position);
   }
 
   Never duplicateStyle() {
     error('duplicate-style', 'you can only have one top-level <style> tag per component');
   }
 
-  Never emptyAttributeShorthand() {
-    error('empty-attribute-shorthand', 'attribute shorthand cannot be empty');
+  Never emptyAttributeShorthand(int? position) {
+    error('empty-attribute-shorthand', 'attribute shorthand cannot be empty', position: position);
   }
 
   Never emptyGlobalSelector() {
@@ -54,8 +54,9 @@ extension ParserErrors on Parser {
     error('invalid-declaration', 'declaration cannot be empty');
   }
 
-  Never invalidDirectiveValue() {
-    error('invalid-directive-value', 'directive value must be a JavaScript expression enclosed in curly braces');
+  Never invalidDirectiveValue(int? position) {
+    error('invalid-directive-value', 'directive value must be a JavaScript expression enclosed in curly braces',
+        position: position);
   }
 
   Never invalidElseif() {
@@ -70,8 +71,8 @@ extension ParserErrors on Parser {
     error('duplicate-$slug', 'a component can only have one <$name> tag');
   }
 
-  Never emptyDirectiveName(String type) {
-    error('empty-directive-name', '$type name cannot be empty');
+  Never emptyDirectiveName(String type, int? position) {
+    error('empty-directive-name', '$type name cannot be empty', position: position);
   }
 
   Never invalidCatchPlacementUnclosedBlock(String block) {
@@ -82,8 +83,8 @@ extension ParserErrors on Parser {
     error('invalid-catch-placement', 'cannot have an {:catch} block outside an {#await ...} block');
   }
 
-  Never invalidComponentDefinition() {
-    error('invalid-component-definition', 'invalid component definition');
+  Never invalidComponentDefinition(int? position) {
+    error('invalid-component-definition', 'invalid component definition', position: position);
   }
 
   Never invalidClosingTagUnopened(String name) {
@@ -111,15 +112,16 @@ extension ParserErrors on Parser {
     error('invalid-$slug-placement', '<$name> tags cannot be inside elements or blocks');
   }
 
-  Never invalidRefDirective(String name) {
-    error('invalid-ref-directive', 'The ref directive is no longer supported — use \'bind:this={$name}\' instead');
+  Never invalidRefDirective(String name, int? position) {
+    error('invalid-ref-directive', 'The ref directive is no longer supported — use \'bind:this={$name}\' instead',
+        position: position);
   }
 
   Never invalidRefSelector() {
     error('invalid-ref-selector', 'ref selectors are no longer supported');
   }
 
-  Never invalidSelfPlacement(int position) {
+  Never invalidSelfPlacement(int? position) {
     error('invalid-self-placement',
         '<svelte:self> components can only exist inside {#if} blocks, {#each} blocks, or slots passed to components',
         position: position);
@@ -141,11 +143,11 @@ extension ParserErrors on Parser {
     error('invalid-script', 'if the context attribute is supplied, its value must be "module"');
   }
 
-  Never invalidTagName(int position) {
+  Never invalidTagName(int? position) {
     error('invalid-tag-name', 'expected valid tag name', position: position);
   }
 
-  Never invalidTagNameSvelteElement(Iterable<String> tags, int position) {
+  Never invalidTagNameSvelteElement(Iterable<String> tags, int? position) {
     error('invalid-tag-name', 'valid <svelte:...> tag names are ${tags.join(', ')}', position: position);
   }
 
@@ -161,8 +163,8 @@ extension ParserErrors on Parser {
     error('invalid-void-content', '<$name> is a void element and cannot have children, or a closing tag');
   }
 
-  Never missingComponentDefinition() {
-    error('missing-component-definition', '<svelte:component> must have a \'this\' attribute');
+  Never missingComponentDefinition(int? position) {
+    error('missing-component-definition', '<svelte:component> must have a \'this\' attribute', position: position);
   }
 
   Never missingAttributeValue() {
@@ -197,8 +199,8 @@ extension ParserErrors on Parser {
     error('unexpected-eof', 'unexpected $token');
   }
 
-  Never unexpectedToken(Pattern pattern) {
-    error('unexpected-token', 'expected $pattern');
+  Never unexpectedToken(Pattern pattern, int? position) {
+    error('unexpected-token', 'expected $pattern', position: position);
   }
 
   Never unexpectedTokenDestructure() {

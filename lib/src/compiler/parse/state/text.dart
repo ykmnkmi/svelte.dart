@@ -10,10 +10,10 @@ extension TextParser on Parser {
     var found = template.indexOf(openRe, index);
 
     if (found == -1) {
-      current.add(Node(type: 'Text', data: rest, start: start, end: index = template.length));
+      current.addChild(Node(type: 'Text', data: rest, start: start, end: index = template.length));
       return;
     }
 
-    current.add(Node(type: 'Text', data: template.substring(index, found), start: start, end: index = found));
+    current.addChild(Node(type: 'Text', data: template.substring(index, found), start: start, end: index = found));
   }
 }

@@ -81,14 +81,14 @@ class Parser {
     }
 
     if (canParse) {
-      unexpectedToken(pattern);
+      unexpectedToken(pattern, index);
     }
 
     unexpectedEOFToken(pattern);
   }
 
   int readChar() {
-    return template.codeUnitAt(index += 1);
+    return template.codeUnitAt(index++);
   }
 
   String? read(Pattern pattern) {
@@ -96,6 +96,10 @@ class Parser {
     if (match == null) return null;
     index = match.end;
     return match[0];
+  }
+
+  String? readIdentifier() {
+    return read(identifier);
   }
 
   String readUntil(Pattern pattern) {

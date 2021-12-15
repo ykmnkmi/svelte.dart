@@ -1,5 +1,18 @@
+import 'package:analyzer/dart/ast/ast.dart' show Expression;
+
 class Node {
-  Node({required this.type, this.name, this.start, this.end, this.data, List<Node>? children})
+  Node(
+      {required this.type,
+      this.name,
+      this.start,
+      this.end,
+      this.data,
+      this.expression,
+      this.intro,
+      this.outro,
+      this.attributes,
+      this.modifiers,
+      List<Node>? children})
       : children = children ?? <Node>[];
 
   String type;
@@ -10,22 +23,44 @@ class Node {
 
   int? end;
 
-  Object? data;
+  String? data;
+
+  Expression? expression;
+
+  List<String>? modifiers;
+
+  List<Node>? attributes;
 
   List<Node> children;
 
-  void add(Node node) {
-    children.add(node);
+  bool? intro;
+
+  bool? outro;
+
+  void addAttribute(Node attribute) {
+    (attributes ??= <Node>[]).add(attribute);
   }
 
-  Map<String, Object?> toJson({bool printData = false}) {
+  void addChild(Node child) {
+    children.add(child);
+  }
+
+  Map<String, Object?> toJson([bool verbose = true]) {
+    var attributes = this.attributes;
+    var modifiers = this.modifiers;
+
     return <String, Object?>{
+      if (verbose && start != null) 'start': start,
+      if (verbose && end != null) 'end': end,
       'type': type,
       if (name != null) 'name': name,
-      if (start != null) 'start': start,
-      if (end != null) 'end': end,
-      if (data != null) 'data': printData ? data.toString() : data,
-      if (children.isNotEmpty) 'children': List<Object?>.generate(children.length, (index) => children[index].toJson(printData: printData)),
+      if (data != null) 'data': data,
+      if (expression != null) 'expression': expression.toString(),
+      if (modifiers != null && modifiers.isNotEmpty) 'modifiers': modifiers,
+      if (attributes != null && attributes.isNotEmpty)
+        'attributes': attributes.map<Map<String, Object?>>((attribute) => attribute.toJson(verbose)).toList(),
+      if (children.isNotEmpty)
+        'children': children.map<Map<String, Object?>>((child) => child.toJson(verbose)).toList(),
     };
   }
 
@@ -37,19 +72,18 @@ class Node {
       buffer.write('.$name');
     }
 
-    if (start != null || end != null) {
-      buffer.write('[$start:$end]');
+    var attributes = this.attributes;
+
+    if (attributes != null && attributes.isNotEmpty) {
+      buffer.write(' (${attributes.join(', ')})');
     }
 
     if (data != null) {
-      buffer.write(' ($data)');
-    }
-
-    if (children.isNotEmpty) {
-      buffer
-        ..write(' { ')
-        ..writeAll(children, ', ')
-        ..write(' }');
+      buffer.write(' {$data}');
+    } else if (expression != null) {
+      buffer.write(' {$expression}');
+    } else if (children.isNotEmpty) {
+      buffer.write(' {${children.join(', ')}}');
     }
 
     return buffer.toString();

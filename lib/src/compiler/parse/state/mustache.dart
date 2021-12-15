@@ -27,7 +27,7 @@ extension MustacheParser on Parser {
       allowWhitespace();
       expect('}');
 
-      current.add(Node(type: 'MustacheTag', data: expression, start: start, end: index));
+      current.addChild(Node(type: 'MustacheTag', expression: expression, start: start, end: index));
     }
   }
 }
