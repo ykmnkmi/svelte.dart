@@ -23,6 +23,8 @@ class Parser {
         metaTags = <String>{},
         stack = <Node>[],
         html = Node(type: 'Fragment'),
+        scripts = <Node>[],
+        styles = <Node>[],
         index = 0 {
     stack.add(html);
 
@@ -42,6 +44,10 @@ class Parser {
   final List<Node> stack;
 
   final Node html;
+
+  final List<Node> scripts;
+
+  final List<Node> styles;
 
   int index;
 
@@ -70,21 +76,29 @@ class Parser {
 
   bool scan(Pattern pattern) {
     var match = pattern.matchAsPrefix(template, index);
-    if (match == null) return false;
+
+    if (match == null) {
+      return false;
+    }
+
     index = match.end;
     return true;
   }
 
-  void expect(Pattern pattern) {
+  void expect(Pattern pattern, [Never Function()? onError]) {
     if (scan(pattern)) {
       return;
     }
 
-    if (canParse) {
-      unexpectedToken(pattern, index);
+    if (onError == null) {
+      if (canParse) {
+        unexpectedToken(pattern, index);
+      }
+
+      unexpectedEOFToken(pattern);
     }
 
-    unexpectedEOFToken(pattern);
+    onError();
   }
 
   int readChar() {
@@ -93,16 +107,21 @@ class Parser {
 
   String? read(Pattern pattern) {
     var match = pattern.matchAsPrefix(template, index);
-    if (match == null) return null;
+
+    if (match == null) {
+      return null;
+    }
+
     index = match.end;
     return match[0];
   }
 
   String? readIdentifier() {
+    // TODO: add reserved word checking
     return read(identifier);
   }
 
-  String readUntil(Pattern pattern) {
+  String readUntil(Pattern pattern, [Never Function()? onError]) {
     var found = template.indexOf(pattern, index);
 
     if (found == -1) {
@@ -110,7 +129,11 @@ class Parser {
         return template.substring(index, index = length);
       }
 
-      error('unexpected-eof', 'unexpected end of input');
+      if (onError == null) {
+        unexpectedEOF();
+      }
+
+      onError();
     }
 
     return template.substring(index, index = found);
@@ -121,7 +144,36 @@ class Parser {
   }
 }
 
-Node parse(String template, {Object? sourceUrl}) {
+AST parse(String template, {Object? sourceUrl}) {
   var parser = Parser(template, sourceUrl: sourceUrl);
-  return parser.html;
+  var ast = AST(parser.html);
+
+  var styles = parser.styles;
+
+  if (styles.length > 1) {
+    parser.duplicateStyle(styles[1].start);
+  } else if (styles.isNotEmpty) {
+    ast.style = styles.first;
+  }
+
+  var scripts = parser.scripts;
+
+  if (scripts.isNotEmpty) {
+    var instances = scripts.where((script) => script.data == 'default').toList();
+    var modules = scripts.where((script) => script.data == 'module').toList();
+
+    if (instances.length > 1) {
+      parser.invalidScriptInstance(instances[1].start);
+    } else if (instances.isNotEmpty) {
+      ast.instance = instances.first;
+    }
+
+    if (modules.length > 1) {
+      parser.invalidScriptModule(modules[1].start);
+    } else if (modules.isNotEmpty) {
+      ast.module = modules.first;
+    }
+  }
+
+  return ast;
 }

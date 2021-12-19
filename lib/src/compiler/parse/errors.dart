@@ -22,15 +22,15 @@ extension ParserErrors on Parser {
     error(message, 'css-syntax-error');
   }
 
-  Never duplicateAttribute(int? position) {
+  Never duplicateAttribute([int? position]) {
     error('duplicate-attribute', 'attributes need to be unique', position: position);
   }
 
-  Never duplicateStyle() {
-    error('duplicate-style', 'you can only have one top-level <style> tag per component');
+  Never duplicateStyle([int? position]) {
+    error('duplicate-style', 'you can only have one top-level <style> tag per component', position: position);
   }
 
-  Never emptyAttributeShorthand(int? position) {
+  Never emptyAttributeShorthand([int? position]) {
     error('empty-attribute-shorthand', 'attribute shorthand cannot be empty', position: position);
   }
 
@@ -54,7 +54,7 @@ extension ParserErrors on Parser {
     error('invalid-declaration', 'declaration cannot be empty');
   }
 
-  Never invalidDirectiveValue(int? position) {
+  Never invalidDirectiveValue([int? position]) {
     error('invalid-directive-value', 'directive value must be a JavaScript expression enclosed in curly braces',
         position: position);
   }
@@ -67,11 +67,11 @@ extension ParserErrors on Parser {
     error('invalid-elseif-placement', 'cannot have an {:else if ...} block outside an {#if ...} block');
   }
 
-  Never duplicateElement(String slug, String name) {
-    error('duplicate-$slug', 'a component can only have one <$name> tag');
+  Never duplicateElement(String slug, String name, [int? position]) {
+    error('duplicate-$slug', 'a component can only have one <$name> tag', position: position);
   }
 
-  Never emptyDirectiveName(String type, int? position) {
+  Never emptyDirectiveName(String type, [int? position]) {
     error('empty-directive-name', '$type name cannot be empty', position: position);
   }
 
@@ -83,17 +83,18 @@ extension ParserErrors on Parser {
     error('invalid-catch-placement', 'cannot have an {:catch} block outside an {#await ...} block');
   }
 
-  Never invalidComponentDefinition(int? position) {
+  Never invalidComponentDefinition([int? position]) {
     error('invalid-component-definition', 'invalid component definition', position: position);
   }
 
-  Never invalidClosingTagUnopened(String name) {
-    error('invalid-closing-tag', '</$name> attempted to close an element that was not open');
+  Never invalidClosingTagUnopened(String name, [int? position]) {
+    error('invalid-closing-tag', '</$name> attempted to close an element that was not open', position: position);
   }
 
-  Never invalidClosingTagAutoclosed(String name, String reason) {
-    error('invalid-closing-tag',
-        '</$name> attempted to close <$name> that was already automatically closed by <$reason>');
+  Never invalidClosingTagAutoclosed(String name, String reason, [int? position]) {
+    error(
+        'invalid-closing-tag', '</$name> attempted to close <$name> that was already automatically closed by <$reason>',
+        position: position);
   }
 
   Never invalidElseifPlacementUnclosedBlock(String block) {
@@ -104,15 +105,15 @@ extension ParserErrors on Parser {
     error('invalid-else-placement', 'expected to close $block before seeing {:else} block');
   }
 
-  Never invalidElementContent(String slug, String name) {
-    error('invalid-$slug-content', '<$name> cannot have children');
+  Never invalidElementContent(String slug, String name, [int? position]) {
+    error('invalid-$slug-content', '<$name> cannot have children', position: position);
   }
 
-  Never invalidElementPlacement(String slug, String name) {
-    error('invalid-$slug-placement', '<$name> tags cannot be inside elements or blocks');
+  Never invalidElementPlacement(String slug, String name, [int? position]) {
+    error('invalid-$slug-placement', '<$name> tags cannot be inside elements or blocks', position: position);
   }
 
-  Never invalidRefDirective(String name, int? position) {
+  Never invalidRefDirective(String name, [int? position]) {
     error('invalid-ref-directive', 'The ref directive is no longer supported — use \'bind:this={$name}\' instead',
         position: position);
   }
@@ -121,33 +122,33 @@ extension ParserErrors on Parser {
     error('invalid-ref-selector', 'ref selectors are no longer supported');
   }
 
-  Never invalidSelfPlacement(int? position) {
+  Never invalidSelfPlacement([int? position]) {
     error('invalid-self-placement',
         '<svelte:self> components can only exist inside {#if} blocks, {#each} blocks, or slots passed to components',
         position: position);
   }
 
-  Never invalidScriptInstance() {
-    error('invalid-script', 'a component can only have one instance-level <script> element');
+  Never invalidScriptInstance([int? position]) {
+    error('invalid-script', 'a component can only have one instance-level <script> element', position: position);
   }
 
-  Never invalidScriptModule() {
-    error('invalid-script', 'a component can only have one <script context="module"> element');
+  Never invalidScriptModule([int? position]) {
+    error('invalid-script', 'a component can only have one <script context="module"> element', position: position);
   }
 
-  Never invalidScriptContextAttribute() {
-    error('invalid-script', 'context attribute must be static');
+  Never invalidScriptContextAttribute([int? position]) {
+    error('invalid-script', 'context attribute must be static', position: position);
   }
 
-  Never invalidScriptContextValue() {
-    error('invalid-script', 'if the context attribute is supplied, its value must be "module"');
+  Never invalidScriptContextValue([int? position]) {
+    error('invalid-script', 'if the context attribute is supplied, its value must be "module"', position: position);
   }
 
-  Never invalidTagName(int? position) {
+  Never invalidTagName([int? position]) {
     error('invalid-tag-name', 'expected valid tag name', position: position);
   }
 
-  Never invalidTagNameSvelteElement(Iterable<String> tags, int? position) {
+  Never invalidTagNameSvelteElement(Iterable<String> tags, [int? position]) {
     error('invalid-tag-name', 'valid <svelte:...> tag names are ${tags.join(', ')}', position: position);
   }
 
@@ -159,11 +160,12 @@ extension ParserErrors on Parser {
     error('invalid-then-placement', 'cannot have an {:then} block outside an {#await ...} block');
   }
 
-  Never invalidVoidContent(String name) {
-    error('invalid-void-content', '<$name> is a void element and cannot have children, or a closing tag');
+  Never invalidVoidContent(String name, [int? position]) {
+    error('invalid-void-content', '<$name> is a void element and cannot have children, or a closing tag',
+        position: position);
   }
 
-  Never missingComponentDefinition(int? position) {
+  Never missingComponentDefinition([int? position]) {
     error('missing-component-definition', '<svelte:component> must have a \'this\' attribute', position: position);
   }
 
@@ -199,7 +201,7 @@ extension ParserErrors on Parser {
     error('unexpected-eof', 'unexpected $token');
   }
 
-  Never unexpectedToken(Pattern pattern, int? position) {
+  Never unexpectedToken(Pattern pattern, [int? position]) {
     error('unexpected-token', 'expected $pattern', position: position);
   }
 

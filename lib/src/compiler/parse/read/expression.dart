@@ -6,9 +6,9 @@ import 'package:analyzer/error/error.dart';
 
 import '../parse.dart';
 
-const String prefix = 'void __expression() => ';
-
 extension MustacheParser on Parser {
+  static const String prefix = 'void __expression() => ';
+
   Expression readExpression() {
     var found = template.indexOf('}', index);
     // is there expressions with length longer than 32 characters?

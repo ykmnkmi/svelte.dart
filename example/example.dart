@@ -12,10 +12,10 @@ const String helloWorld = '''
 
 void main() {
   try {
-    var node = parse(helloWorld);
-    var json = node.toJson(false);
-    print(JsonEncoder.withIndent('  ').convert(json['children']));
-    print(node);
+    var ast = parse(helloWorld);
+    var json = ast.toJson();
+    print(JsonEncoder.withIndent('  ').convert(json));
+    print(ast);
   } catch (error, trace) {
     print(error);
     print(Trace.format(trace, terse: true));

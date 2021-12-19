@@ -1,15 +1,19 @@
 import 'package:analyzer/dart/ast/standard_ast_factory.dart' show astFactory;
 import 'package:analyzer/dart/ast/token.dart' show Token, TokenType;
-import 'package:piko/src/compiler/parse/errors.dart';
-import 'package:piko/src/compiler/parse/read/expression.dart';
 
+import '../parse.dart';
+import '../../interface.dart';
+import '../../parse/errors.dart';
+import '../../parse/read/expression.dart';
+import '../../parse/read/script.dart';
+import '../../parse/read/style.dart';
 import '../../utils/html.dart';
 import '../../utils/names.dart';
 import '../../utils/patterns.dart';
-import '../../interface.dart';
-import '../parse.dart';
 
 extension TagParser on Parser {
+  static late final RegExp validTagNameRe = compile(r'^\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\-]*');
+
   static const Map<String, String> metaTags = <String, String>{
     'svelte:head': 'Head',
     'svelte:options': 'Options',
@@ -27,23 +31,40 @@ extension TagParser on Parser {
     'svelte:fragment',
   };
 
-  static late final RegExp validTagNameRe = compile(r'^\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\-]*');
-
   static late final RegExp selfRe = compile(r'^svelte:self(?=[\s/>])');
-
   static late final RegExp componentRe = compile(r'^svelte:component(?=[\s/>])');
-
   static late final RegExp slotRe = compile(r'^svelte:fragment(?=[\s/>])');
 
   static late final RegExp componentNameRe = compile('^[A-Z].*');
-
   static late final RegExp tagNameRe = compile(r'(\s|\/|>)');
-
   static late final RegExp attributeNameRe = compile(r'[\s=\/>"' ']');
-
   static late final RegExp quoteRe = compile(r'["' "']");
-
   static late final RegExp attributeValueEndRe = compile(r'(\/>|[\s"' "'=<>`])");
+
+  static String? getDirectiveType(String name) {
+    switch (name) {
+      case 'use':
+        return 'Action';
+      case 'animate':
+        return 'Animation';
+      case 'bind':
+        return 'Binding';
+      case 'class':
+        return 'Class';
+      case 'on':
+        return 'EventHandler';
+      case 'let':
+        return 'Let';
+      case 'ref':
+        return 'Ref';
+      case 'in':
+      case 'out':
+      case 'transition':
+        return 'Transition';
+      default:
+        return null;
+    }
+  }
 
   bool parentIsHead() {
     for (var node in stack.reversed) {
@@ -71,12 +92,10 @@ extension TagParser on Parser {
     if (scan('!--')) {
       var data = readUntil('-->');
 
-      if (scan('-->')) {
-        current.addChild(Node(start: start, end: index, type: 'Comment', data: data));
-        return;
-      }
+      expect('-->', unclosedComment);
 
-      error('unclosed-comment', 'comment was left open, expected -->');
+      current.addChild(Node(start: start, end: index, type: 'Comment', data: data));
+      return;
     }
 
     var isClosingTag = scan('/');
@@ -88,15 +107,15 @@ extension TagParser on Parser {
 
       if (isClosingTag) {
         if ((name == 'svelte:window' || name == 'svelte:body') && current.children.isNotEmpty) {
-          error('invalid-$slug-content', '<$name> cannot have children', position: current.children.first.start);
+          invalidElementContent(slug, name, current.children.first.start);
         }
       } else {
         if (this.metaTags.contains(name)) {
-          error('duplicate-$slug', 'a component can only have one <$name> tag', position: start);
+          duplicateElement(slug, name, start);
         }
 
         if (stack.length > 1) {
-          error('invalid-$slug-placement', '<$name> cannot be inside elements or blocks', position: start);
+          invalidElementPlacement(slug, name, start);
         }
 
         this.metaTags.add(name);
@@ -125,8 +144,7 @@ extension TagParser on Parser {
 
     if (isClosingTag) {
       if (isVoid(name)) {
-        var message = '<$name> is a void element and cannot have children, or a closing tag';
-        error('invalid-void-content', message, position: start);
+        invalidVoidContent(name, start);
       }
 
       expect('>');
@@ -135,16 +153,11 @@ extension TagParser on Parser {
 
       while (parent.name != name) {
         if (parent.type != 'Element') {
-          var code = 'invalid-closing-tag';
-          var prefix = '</$name> attempted to close';
-
           if (lastClosedTag != null && lastClosedTag.tag == name) {
-            var message = '$prefix $name that was already automatically closed by ${lastClosedTag.reason}';
-            error(code, message, position: start);
+            invalidClosingTagAutoclosed(name, lastClosedTag.reason, start);
           }
 
-          var message = '$prefix an element that was not open';
-          error(code, message, position: start);
+          invalidClosingTagUnopened(name, start);
         }
 
         parent.end = start;
@@ -202,10 +215,24 @@ extension TagParser on Parser {
         invalidComponentDefinition(definition.start);
       }
 
-      element.expression = children.first.expression;
+      element.source = children.first.source;
     }
 
-    // TODO: top-level script/style parsing
+    if (stack.length == 1) {
+      void Function(int start, List<Node>? attributes)? special;
+
+      if (name == 'script') {
+        special = script;
+      } else if (name == 'style') {
+        special = style;
+      }
+
+      if (special != null) {
+        expect('>');
+        special(start, element.attributes);
+        return;
+      }
+    }
 
     current.addChild(element);
 
@@ -235,20 +262,15 @@ extension TagParser on Parser {
     var start = index;
 
     if (scan(selfRe)) {
-      legal:
-      {
-        for (var fragment in stack.reversed) {
-          var type = fragment.type;
+      for (var fragment in stack.reversed) {
+        var type = fragment.type;
 
-          if (type == 'IfBlock' || type == 'EachBlock' || type == 'InlineComponent') {
-            break legal;
-          }
+        if (type == 'IfBlock' || type == 'EachBlock' || type == 'InlineComponent') {
+          return 'svelte:self';
         }
-
-        invalidSelfPlacement(start);
       }
 
-      return 'svelte:self';
+      invalidSelfPlacement(start);
     }
 
     if (scan(componentRe)) {
@@ -297,7 +319,7 @@ extension TagParser on Parser {
         allowWhitespace();
         expect('}');
 
-        return Node(start: start, end: index, type: 'Spread', expression: expression);
+        return Node(start: start, end: index, type: 'Spread', source: expression);
       } else {
         var valueStart = index;
         var name = readIdentifier();
@@ -314,7 +336,7 @@ extension TagParser on Parser {
         var token = Token(tokenType, valueStart);
         var identifier = astFactory.simpleIdentifier(token);
         var end = valueStart + name.length;
-        var shortHand = Node(start: valueStart, end: end, type: 'AttributeShorthand', expression: identifier);
+        var shortHand = Node(start: valueStart, end: end, type: 'AttributeShorthand', source: identifier);
         return Node(start: start, end: index, type: 'Attribute', name: name, children: <Node>[shortHand]);
       }
     }
@@ -374,7 +396,7 @@ extension TagParser on Parser {
       var directive = Node(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
 
       if (value != null && value.isNotEmpty) {
-        directive.expression = value.first.expression;
+        directive.source = value.first.source;
       }
 
       if (type == 'Transition') {
@@ -386,7 +408,7 @@ extension TagParser on Parser {
       if (value == null && (type == 'Binding' || type == 'Class')) {
         var tokenType = TokenType(directiveName, 'IDENTIFIER', 0, 97);
         var token = Token(tokenType, directive.start! + colonIndex + 1);
-        directive.expression = astFactory.simpleIdentifier(token);
+        directive.source = astFactory.simpleIdentifier(token);
       }
 
       return directive;
@@ -447,37 +469,12 @@ extension TagParser on Parser {
         allowWhitespace();
         expect('}');
 
-        chunks.add(Node(start: start, end: index, type: 'MustacheTag', expression: expression));
+        chunks.add(Node(start: start, end: index, type: 'MustacheTag', source: expression));
       } else {
         buffer.writeCharCode(readChar());
       }
     }
 
     unexpectedEOF();
-  }
-
-  static String? getDirectiveType(String name) {
-    switch (name) {
-      case 'use':
-        return 'Action';
-      case 'animate':
-        return 'Animation';
-      case 'bind':
-        return 'Binding';
-      case 'class':
-        return 'Class';
-      case 'on':
-        return 'EventHandler';
-      case 'let':
-        return 'Let';
-      case 'ref':
-        return 'Ref';
-      case 'in':
-      case 'out':
-      case 'transition':
-        return 'Transition';
-      default:
-        return null;
-    }
   }
 }
