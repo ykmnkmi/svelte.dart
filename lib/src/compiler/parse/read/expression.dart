@@ -1,5 +1,6 @@
 import 'dart:math' show min;
 
+import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart';
@@ -10,16 +11,16 @@ extension MustacheParser on Parser {
   static const String prefix = 'void __expression() => ';
 
   Expression readExpression() {
-    var found = template.indexOf('}', index);
+    int found = template.indexOf('}', index);
     // is there expressions with length longer than 32 characters?
-    var source = found == -1 ? rest : template.substring(index, min(found + 32, length));
-    var result = parseString(content: prefix + source, throwIfDiagnostics: false);
+    String source = found == -1 ? rest : template.substring(index, min(found + 32, length));
+    ParseStringResult result = parseString(content: prefix + source, throwIfDiagnostics: false);
 
-    var errors = List<AnalysisError>.of(result.errors);
+    List<AnalysisError> errors = List<AnalysisError>.of(result.errors);
     errors.sort((a, b) => a.offset.compareTo(b.offset));
 
-    var analysisError = errors.removeAt(0);
-    var offset = sourceFile.getColumn(index);
+    AnalysisError analysisError = errors.removeAt(0);
+    int offset = sourceFile.getColumn(index);
 
     if (analysisError.offset - offset < 0) {
       error('parse-error', 'expression expected');
@@ -29,9 +30,9 @@ extension MustacheParser on Parser {
       error('parse-error', analysisError.message);
     }
 
-    var declarations = result.unit.declarations;
+    NodeList<CompilationUnitMember> declarations = result.unit.declarations;
 
-    for (var error in errors) {
+    for (AnalysisError error in errors) {
       switch (error.message) {
         case "Expected to find ';'.":
         case 'Expected a method, getter, setter or operator declaration.':
@@ -42,9 +43,9 @@ extension MustacheParser on Parser {
       }
     }
 
-    var function = declarations.first as FunctionDeclaration;
-    var body = function.functionExpression.body as ExpressionFunctionBody;
-    var expression = body.expression;
+    FunctionDeclaration function = declarations.first as FunctionDeclaration;
+    ExpressionFunctionBody body = function.functionExpression.body as ExpressionFunctionBody;
+    Expression expression = body.expression;
     index += expression.end - prefix.length;
     return expression;
   }

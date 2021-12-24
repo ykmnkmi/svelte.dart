@@ -16,28 +16,27 @@ class Node {
       : children = children ?? <Node>[];
 
   int? start;
-
   int? end;
-
   String type;
-
   String? name;
 
   String? data;
-
   AstNode? source;
 
   List<String>? modifiers;
-
   List<Node>? attributes;
 
   List<Node> children;
 
-  // TODO(refactoring): move to Directive
-  bool? intro, outro;
+  bool? intro;
+  bool? outro;
+
+  bool? elseIf;
+  Node? elseNode;
 
   void addAttribute(Node attribute) {
-    (attributes ??= <Node>[]).add(attribute);
+    List<Node> attributes = this.attributes ??= <Node>[];
+    attributes.add(attribute);
   }
 
   void addChild(Node child) {
@@ -52,6 +51,8 @@ class Node {
       if (name != null) 'name': name,
       if (data != null) 'data': data,
       if (source != null) 'expression': source.toString(),
+      if (intro != null) 'intro': intro,
+      if (outro != null) 'outro': outro,
       if (modifiers != null && modifiers!.isNotEmpty) 'modifiers': modifiers,
       if (attributes != null && attributes!.isNotEmpty)
         'attributes': attributes!.map<Map<String, Object?>>((attribute) => attribute.toJson(verbose)).toList(),
@@ -62,24 +63,24 @@ class Node {
 
   @override
   String toString() {
-    var buffer = StringBuffer(type);
+    StringBuffer buffer = StringBuffer(type);
 
     if (name != null) {
       buffer.write('.$name');
     }
 
-    var attributes = this.attributes;
+    List<Node>? attributes = this.attributes;
 
     if (attributes != null && attributes.isNotEmpty) {
-      buffer.write(' (${attributes.join(', ')})');
+      buffer.write(' ( ${attributes.join(', ')} )');
     }
 
     if (data != null) {
-      buffer.write(' {$data}');
+      buffer.write(' { ${data!.replaceAll('\n', r'\n')} }');
     } else if (source != null) {
-      buffer.write(' {$source}');
+      buffer.write(' { ${source.toString().replaceAll('\n', r'\n')} }');
     } else if (children.isNotEmpty) {
-      buffer.write(' {${children.join(', ')}}');
+      buffer.write(' { ${children.join(', ')} }');
     }
 
     return buffer.toString();
@@ -108,7 +109,7 @@ class AST {
 
   @override
   String toString() {
-    var buffer = StringBuffer('AST { $html');
+    StringBuffer buffer = StringBuffer('AST { $html');
 
     if (instance != null) {
       buffer.write(', $instance');

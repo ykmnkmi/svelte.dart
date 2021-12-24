@@ -1,3 +1,5 @@
+import 'package:analyzer/dart/ast/ast.dart' show Expression, SimpleIdentifier;
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/standard_ast_factory.dart' show astFactory;
 import 'package:analyzer/dart/ast/token.dart' show Token, TokenType;
 
@@ -67,8 +69,8 @@ extension TagParser on Parser {
   }
 
   bool parentIsHead() {
-    for (var node in stack.reversed) {
-      var type = node.type;
+    for (Node node in stack.reversed) {
+      String type = node.type;
 
       if (type == 'Head') {
         return true;
@@ -83,24 +85,20 @@ extension TagParser on Parser {
   }
 
   void tag() {
-    var start = index;
-
+    int start = index;
     expect('<');
-
-    var parent = current;
+    Node parent = current;
 
     if (scan('!--')) {
-      var data = readUntil('-->');
-
+      String data = readUntil('-->');
       expect('-->', unclosedComment);
-
       current.addChild(Node(start: start, end: index, type: 'Comment', data: data));
       return;
     }
 
-    var isClosingTag = scan('/');
-    var name = readTagName();
-    var slug = metaTags[name];
+    bool isClosingTag = scan('/');
+    String name = readTagName();
+    String? slug = metaTags[name];
 
     if (slug != null) {
       slug = slug.toLowerCase();
@@ -122,7 +120,7 @@ extension TagParser on Parser {
       }
     }
 
-    var type = metaTags[name];
+    String? type = metaTags[name];
 
     if (type == null) {
       if (componentNameRe.hasMatch(name) || name == 'svelte:self' || name == 'svelte:component') {
@@ -138,8 +136,7 @@ extension TagParser on Parser {
       }
     }
 
-    var element = Node(start: start, type: type, name: name);
-
+    Node element = Node(start: start, type: type, name: name);
     allowWhitespace();
 
     if (isClosingTag) {
@@ -148,8 +145,7 @@ extension TagParser on Parser {
       }
 
       expect('>');
-
-      var lastClosedTag = lastAutoClosedTag;
+      LastAutoClosedTag? lastClosedTag = lastAutoClosedTag;
 
       while (parent.name != name) {
         if (parent.type != 'Element') {
@@ -173,20 +169,20 @@ extension TagParser on Parser {
       }
 
       return;
-    } else if (closingTagOmitted(parent.name, name)) {
+    }
+
+    if (closingTagOmitted(parent.name, name)) {
       parent.end = start;
       stack.removeLast();
       lastAutoClosedTag = LastAutoClosedTag(name, name, stack.length);
     }
 
-    var uniqueNames = <String>{};
-    var attribute = readAttribute(uniqueNames);
+    Set<String> uniqueNames = <String>{};
+    Node? attribute = readAttribute(uniqueNames);
 
     while (attribute != null) {
       element.addAttribute(attribute);
-
       allowWhitespace();
-
       attribute = readAttribute(uniqueNames);
     }
 
@@ -195,10 +191,10 @@ extension TagParser on Parser {
 
       component:
       {
-        var attributes = element.attributes;
+        List<Node>? attributes = element.attributes;
 
         if (attributes != null) {
-          for (var attribute in attributes) {
+          for (Node attribute in attributes) {
             if (attribute.type == 'Attribute' && attribute.name == 'this') {
               definition = attribute;
               break component;
@@ -209,7 +205,7 @@ extension TagParser on Parser {
         missingComponentDefinition(start);
       }
 
-      var children = definition.children;
+      List<Node> children = definition.children;
 
       if (children.length != 1 || children.first.type == 'Text') {
         invalidComponentDefinition(definition.start);
@@ -235,21 +231,19 @@ extension TagParser on Parser {
     }
 
     current.addChild(element);
-
-    var selfClosing = scan('/') || isVoid(name);
-
+    bool selfClosing = scan('/') || isVoid(name);
     expect('>');
 
     if (selfClosing) {
       element.end = index;
     } else if (name == 'textarea') {
-      var pattern = compile(r'^<\/textarea(\s[^>]*)?>');
+      RegExp pattern = compile(r'^<\/textarea(\s[^>]*)?>');
       element.children = readSequence(pattern);
       scan(pattern);
       element.end = index;
     } else if (name == 'script' || name == 'style') {
-      var start = index;
-      var data = readUntil('</$name>');
+      int start = index;
+      String data = readUntil('</$name>');
       element.addChild(Node(start: start, end: index, type: 'Text', data: data));
       expect('</$name>');
       element.end = index;
@@ -259,11 +253,11 @@ extension TagParser on Parser {
   }
 
   String readTagName() {
-    var start = index;
+    int start = index;
 
     if (scan(selfRe)) {
-      for (var fragment in stack.reversed) {
-        var type = fragment.type;
+      for (Node fragment in stack.reversed) {
+        String type = fragment.type;
 
         if (type == 'IfBlock' || type == 'EachBlock' || type == 'InlineComponent') {
           return 'svelte:self';
@@ -281,8 +275,8 @@ extension TagParser on Parser {
       return 'svelte:fragment';
     }
 
-    var name = readUntil(tagNameRe);
-    var meta = metaTags[name];
+    String name = readUntil(tagNameRe);
+    String? meta = metaTags[name];
 
     if (meta != null) {
       return meta;
@@ -300,7 +294,7 @@ extension TagParser on Parser {
   }
 
   Node? readAttribute(Set<String> uniqueNames) {
-    var start = index;
+    int start = index;
 
     void checkUnique(String name) {
       if (uniqueNames.contains(name)) {
@@ -314,16 +308,13 @@ extension TagParser on Parser {
       allowWhitespace();
 
       if (scan('...')) {
-        var expression = readExpression();
-
+        Expression expression = readExpression();
         allowWhitespace();
         expect('}');
-
         return Node(start: start, end: index, type: 'Spread', source: expression);
       } else {
-        var valueStart = index;
-        var name = readIdentifier();
-
+        int valueStart = index;
+        String? name = readIdentifier();
         allowWhitespace();
         expect('}');
 
@@ -332,26 +323,24 @@ extension TagParser on Parser {
         }
 
         checkUnique(name);
-        var tokenType = TokenType(name, 'IDENTIFIER', 0, 97);
-        var token = Token(tokenType, valueStart);
-        var identifier = astFactory.simpleIdentifier(token);
-        var end = valueStart + name.length;
-        var shortHand = Node(start: valueStart, end: end, type: 'AttributeShorthand', source: identifier);
+        TokenType tokenType = TokenType(name, 'IDENTIFIER', 0, 97);
+        Token token = Token(tokenType, valueStart);
+        SimpleIdentifier identifier = astFactory.simpleIdentifier(token);
+        int end = valueStart + name.length;
+        Node shortHand = Node(start: valueStart, end: end, type: 'AttributeShorthand', source: identifier);
         return Node(start: start, end: index, type: 'Attribute', name: name, children: <Node>[shortHand]);
       }
     }
 
-    var name = readUntil(attributeNameRe);
+    String name = readUntil(attributeNameRe);
 
     if (name.isEmpty) {
       return null;
     }
 
-    var end = index;
-
+    int end = index;
     allowWhitespace();
-
-    var colonIndex = name.indexOf(':');
+    int colonIndex = name.indexOf(':');
     String? type;
 
     if (colonIndex != -1) {
@@ -362,7 +351,6 @@ extension TagParser on Parser {
 
     if (scan('=')) {
       allowWhitespace();
-
       value = readAttributeValue();
       end = index;
     } else if (match(quoteRe)) {
@@ -370,8 +358,8 @@ extension TagParser on Parser {
     }
 
     if (type != null) {
-      var modifiers = name.substring(colonIndex + 1).split('|');
-      var directiveName = modifiers.removeAt(0);
+      List<String> modifiers = name.substring(colonIndex + 1).split('|');
+      String directiveName = modifiers.removeAt(0);
 
       if (directiveName.isEmpty) {
         emptyDirectiveName(type, start + colonIndex + 1);
@@ -393,21 +381,21 @@ extension TagParser on Parser {
         }
       }
 
-      var directive = Node(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
+      Node directive = Node(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
 
       if (value != null && value.isNotEmpty) {
         directive.source = value.first.source;
       }
 
       if (type == 'Transition') {
-        var direction = name.substring(0, colonIndex);
+        String direction = name.substring(0, colonIndex);
         directive.intro = direction == 'in' || direction == 'transition';
         directive.outro = direction == 'out' || direction == 'transition';
       }
 
       if (value == null && (type == 'Binding' || type == 'Class')) {
-        var tokenType = TokenType(directiveName, 'IDENTIFIER', 0, 97);
-        var token = Token(tokenType, directive.start! + colonIndex + 1);
+        TokenType tokenType = TokenType(directiveName, 'IDENTIFIER', 0, 97);
+        Token token = Token(tokenType, directive.start! + colonIndex + 1);
         directive.source = astFactory.simpleIdentifier(token);
       }
 
@@ -419,15 +407,15 @@ extension TagParser on Parser {
   }
 
   List<Node> readAttributeValue() {
-    var quoteMark = read(quoteRe);
+    String? quoteMark = read(quoteRe);
 
     if (quoteMark != null && scan(quoteMark)) {
       return <Node>[Node(start: index - 1, end: index - 1, type: 'Text')];
     }
 
-    var regex = quoteMark ?? attributeValueEndRe;
+    Pattern regex = quoteMark ?? attributeValueEndRe;
     // TODO(error): test for unclosedAttributeValue
-    var value = readSequence(regex);
+    List<Node> value = readSequence(regex);
 
     if (value.isEmpty && quoteMark == null) {
       missingAttributeValue();
@@ -441,8 +429,8 @@ extension TagParser on Parser {
   }
 
   List<Node> readSequence(Pattern pattern) {
-    var buffer = StringBuffer();
-    var chunks = <Node>[];
+    StringBuffer buffer = StringBuffer();
+    List<Node> chunks = <Node>[];
 
     void flush(int start, int end) {
       if (buffer.isNotEmpty) {
@@ -452,7 +440,7 @@ extension TagParser on Parser {
     }
 
     while (canParse) {
-      var start = index;
+      int start = index;
 
       if (match(pattern)) {
         flush(start, index);
@@ -461,14 +449,10 @@ extension TagParser on Parser {
 
       if (scan('{')) {
         flush(start, index - 1);
-
         allowWhitespace();
-
-        var expression = readExpression();
-
+        Expression expression = readExpression();
         allowWhitespace();
         expect('}');
-
         chunks.add(Node(start: start, end: index, type: 'MustacheTag', source: expression));
       } else {
         buffer.writeCharCode(readChar());

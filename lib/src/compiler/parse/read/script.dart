@@ -1,4 +1,5 @@
-import 'package:analyzer/dart/analysis/utilities.dart' show parseString;
+import 'package:analyzer/dart/analysis/results.dart';
+import 'package:analyzer/dart/analysis/utilities.dart';
 
 import '../../parse/errors.dart';
 import '../../utils/patterns.dart';
@@ -17,7 +18,7 @@ extension ScriptParser on Parser {
 
     Node? context;
 
-    for (var attribute in attributes) {
+    for (Node attribute in attributes) {
       if (attribute.name == 'context') {
         context = attribute;
         break;
@@ -28,13 +29,13 @@ extension ScriptParser on Parser {
       return 'default';
     }
 
-    var children = context.children;
+    List<Node> children = context.children;
 
     if (children.length != 1 || children.first.type != 'Text') {
       invalidScriptContextAttribute(context.start);
     }
 
-    var value = children.first.data;
+    String? value = children.first.data;
 
     if (value == null || value != 'module') {
       invalidScriptContextValue(context.start);
@@ -44,13 +45,13 @@ extension ScriptParser on Parser {
   }
 
   void script(int start, List<Node>? attributes) {
-    var data = readUntil(closeRe, unclosedScript);
+    String data = readUntil(closeRe, unclosedScript);
 
     if (scan(closeRe)) {
-      var context = getContext(attributes);
-      var source = template.substring(0, start).replaceAll(allRe, ' ') + data;
+      String context = getContext(attributes);
+      String source = template.substring(0, start).replaceAll(allRe, ' ') + data;
       // TODO(error): handle
-      var result = parseString(content: source);
+      ParseStringResult result = parseString(content: source);
       scripts.add(Node(start: start, end: index, type: 'Script', data: context, source: result.unit));
       return;
     }
