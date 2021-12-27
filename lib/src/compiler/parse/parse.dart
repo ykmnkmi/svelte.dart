@@ -70,12 +70,12 @@ class Parser {
   }
 
   bool match(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template, index);
+    final match = pattern.matchAsPrefix(template, index);
     return match != null;
   }
 
   bool scan(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template, index);
+    final match = pattern.matchAsPrefix(template, index);
 
     if (match == null) {
       return false;
@@ -106,7 +106,7 @@ class Parser {
   }
 
   String? read(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template, index);
+    final match = pattern.matchAsPrefix(template, index);
 
     if (match == null) {
       return null;
@@ -122,7 +122,7 @@ class Parser {
   }
 
   String readUntil(Pattern pattern, [Never Function()? onError]) {
-    var found = template.indexOf(pattern, index);
+    final found = template.indexOf(pattern, index);
 
     if (found == -1) {
       if (canParse) {
@@ -145,10 +145,10 @@ class Parser {
 }
 
 AST parse(String template, {Object? sourceUrl}) {
-  var parser = Parser(template, sourceUrl: sourceUrl);
-  var ast = AST(parser.html);
+  final parser = Parser(template, sourceUrl: sourceUrl);
+  final ast = AST(parser.html);
 
-  var styles = parser.styles;
+  final styles = parser.styles;
 
   if (styles.length > 1) {
     parser.duplicateStyle(styles[1].start);
@@ -156,11 +156,11 @@ AST parse(String template, {Object? sourceUrl}) {
     ast.style = styles.first;
   }
 
-  var scripts = parser.scripts;
+  final scripts = parser.scripts;
 
   if (scripts.isNotEmpty) {
-    var instances = scripts.where((script) => script.data == 'default').toList();
-    var modules = scripts.where((script) => script.data == 'module').toList();
+    final instances = scripts.where((script) => script.data == 'default').toList();
+    final modules = scripts.where((script) => script.data == 'module').toList();
 
     if (instances.length > 1) {
       parser.invalidScriptInstance(instances[1].start);

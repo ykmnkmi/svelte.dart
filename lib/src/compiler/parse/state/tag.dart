@@ -69,8 +69,8 @@ extension TagParser on Parser {
   }
 
   bool parentIsHead() {
-    for (Node node in stack.reversed) {
-      String type = node.type;
+    for (final node in stack.reversed) {
+      final type = node.type;
 
       if (type == 'Head') {
         return true;
@@ -85,20 +85,20 @@ extension TagParser on Parser {
   }
 
   void tag() {
-    int start = index;
+    final start = index;
     expect('<');
-    Node parent = current;
+    var parent = current;
 
     if (scan('!--')) {
-      String data = readUntil('-->');
+      final data = readUntil('-->');
       expect('-->', unclosedComment);
       current.addChild(Node(start: start, end: index, type: 'Comment', data: data));
       return;
     }
 
-    bool isClosingTag = scan('/');
-    String name = readTagName();
-    String? slug = metaTags[name];
+    final isClosingTag = scan('/');
+    final name = readTagName();
+    var slug = metaTags[name];
 
     if (slug != null) {
       slug = slug.toLowerCase();
@@ -120,7 +120,7 @@ extension TagParser on Parser {
       }
     }
 
-    String? type = metaTags[name];
+    var type = metaTags[name];
 
     if (type == null) {
       if (componentNameRe.hasMatch(name) || name == 'svelte:self' || name == 'svelte:component') {
@@ -136,7 +136,7 @@ extension TagParser on Parser {
       }
     }
 
-    Node element = Node(start: start, type: type, name: name);
+    final element = Node(start: start, type: type, name: name);
     allowWhitespace();
 
     if (isClosingTag) {
@@ -145,7 +145,7 @@ extension TagParser on Parser {
       }
 
       expect('>');
-      LastAutoClosedTag? lastClosedTag = lastAutoClosedTag;
+      final lastClosedTag = lastAutoClosedTag;
 
       while (parent.name != name) {
         if (parent.type != 'Element') {
@@ -177,8 +177,8 @@ extension TagParser on Parser {
       lastAutoClosedTag = LastAutoClosedTag(name, name, stack.length);
     }
 
-    Set<String> uniqueNames = <String>{};
-    Node? attribute = readAttribute(uniqueNames);
+    final uniqueNames = <String>{};
+    var attribute = readAttribute(uniqueNames);
 
     while (attribute != null) {
       element.addAttribute(attribute);
@@ -191,10 +191,10 @@ extension TagParser on Parser {
 
       component:
       {
-        List<Node>? attributes = element.attributes;
+        final attributes = element.attributes;
 
         if (attributes != null) {
-          for (Node attribute in attributes) {
+          for (final attribute in attributes) {
             if (attribute.type == 'Attribute' && attribute.name == 'this') {
               definition = attribute;
               break component;
@@ -205,7 +205,7 @@ extension TagParser on Parser {
         missingComponentDefinition(start);
       }
 
-      List<Node> children = definition.children;
+      final children = definition.children;
 
       if (children.length != 1 || children.first.type == 'Text') {
         invalidComponentDefinition(definition.start);
@@ -231,19 +231,19 @@ extension TagParser on Parser {
     }
 
     current.addChild(element);
-    bool selfClosing = scan('/') || isVoid(name);
+    final selfClosing = scan('/') || isVoid(name);
     expect('>');
 
     if (selfClosing) {
       element.end = index;
     } else if (name == 'textarea') {
-      RegExp pattern = compile(r'^<\/textarea(\s[^>]*)?>');
+      final pattern = compile(r'^<\/textarea(\s[^>]*)?>');
       element.children = readSequence(pattern);
       scan(pattern);
       element.end = index;
     } else if (name == 'script' || name == 'style') {
-      int start = index;
-      String data = readUntil('</$name>');
+      final start = index;
+      final data = readUntil('</$name>');
       element.addChild(Node(start: start, end: index, type: 'Text', data: data));
       expect('</$name>');
       element.end = index;
@@ -253,11 +253,11 @@ extension TagParser on Parser {
   }
 
   String readTagName() {
-    int start = index;
+    final start = index;
 
     if (scan(selfRe)) {
       for (Node fragment in stack.reversed) {
-        String type = fragment.type;
+        final type = fragment.type;
 
         if (type == 'IfBlock' || type == 'EachBlock' || type == 'InlineComponent') {
           return 'svelte:self';
@@ -275,8 +275,8 @@ extension TagParser on Parser {
       return 'svelte:fragment';
     }
 
-    String name = readUntil(tagNameRe);
-    String? meta = metaTags[name];
+    final name = readUntil(tagNameRe);
+    final meta = metaTags[name];
 
     if (meta != null) {
       return meta;
@@ -294,7 +294,7 @@ extension TagParser on Parser {
   }
 
   Node? readAttribute(Set<String> uniqueNames) {
-    int start = index;
+    final start = index;
 
     void checkUnique(String name) {
       if (uniqueNames.contains(name)) {
@@ -308,13 +308,13 @@ extension TagParser on Parser {
       allowWhitespace();
 
       if (scan('...')) {
-        Expression expression = readExpression();
+        final expression = readExpression();
         allowWhitespace();
         expect('}');
         return Node(start: start, end: index, type: 'Spread', source: expression);
       } else {
-        int valueStart = index;
-        String? name = readIdentifier();
+        final valueStart = index;
+        final name = readIdentifier();
         allowWhitespace();
         expect('}');
 
@@ -323,24 +323,24 @@ extension TagParser on Parser {
         }
 
         checkUnique(name);
-        TokenType tokenType = TokenType(name, 'IDENTIFIER', 0, 97);
-        Token token = Token(tokenType, valueStart);
-        SimpleIdentifier identifier = astFactory.simpleIdentifier(token);
-        int end = valueStart + name.length;
-        Node shortHand = Node(start: valueStart, end: end, type: 'AttributeShorthand', source: identifier);
+        final tokenType = TokenType(name, 'IDENTIFIER', 0, 97);
+        final token = Token(tokenType, valueStart);
+        final identifier = astFactory.simpleIdentifier(token);
+        final end = valueStart + name.length;
+        final shortHand = Node(start: valueStart, end: end, type: 'AttributeShorthand', source: identifier);
         return Node(start: start, end: index, type: 'Attribute', name: name, children: <Node>[shortHand]);
       }
     }
 
-    String name = readUntil(attributeNameRe);
+    final name = readUntil(attributeNameRe);
 
     if (name.isEmpty) {
       return null;
     }
 
-    int end = index;
+    var end = index;
     allowWhitespace();
-    int colonIndex = name.indexOf(':');
+    final colonIndex = name.indexOf(':');
     String? type;
 
     if (colonIndex != -1) {
@@ -358,8 +358,8 @@ extension TagParser on Parser {
     }
 
     if (type != null) {
-      List<String> modifiers = name.substring(colonIndex + 1).split('|');
-      String directiveName = modifiers.removeAt(0);
+      final modifiers = name.substring(colonIndex + 1).split('|');
+      final directiveName = modifiers.removeAt(0);
 
       if (directiveName.isEmpty) {
         emptyDirectiveName(type, start + colonIndex + 1);
@@ -381,21 +381,21 @@ extension TagParser on Parser {
         }
       }
 
-      Node directive = Node(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
+      final directive = Node(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
 
       if (value != null && value.isNotEmpty) {
         directive.source = value.first.source;
       }
 
       if (type == 'Transition') {
-        String direction = name.substring(0, colonIndex);
+        final direction = name.substring(0, colonIndex);
         directive.intro = direction == 'in' || direction == 'transition';
         directive.outro = direction == 'out' || direction == 'transition';
       }
 
       if (value == null && (type == 'Binding' || type == 'Class')) {
-        TokenType tokenType = TokenType(directiveName, 'IDENTIFIER', 0, 97);
-        Token token = Token(tokenType, directive.start! + colonIndex + 1);
+        final tokenType = TokenType(directiveName, 'IDENTIFIER', 0, 97);
+        final token = Token(tokenType, directive.start! + colonIndex + 1);
         directive.source = astFactory.simpleIdentifier(token);
       }
 
@@ -407,15 +407,15 @@ extension TagParser on Parser {
   }
 
   List<Node> readAttributeValue() {
-    String? quoteMark = read(quoteRe);
+    final quoteMark = read(quoteRe);
 
     if (quoteMark != null && scan(quoteMark)) {
       return <Node>[Node(start: index - 1, end: index - 1, type: 'Text')];
     }
 
-    Pattern regex = quoteMark ?? attributeValueEndRe;
+    final regex = quoteMark ?? attributeValueEndRe;
     // TODO(error): test for unclosedAttributeValue
-    List<Node> value = readSequence(regex);
+    final value = readSequence(regex);
 
     if (value.isEmpty && quoteMark == null) {
       missingAttributeValue();
@@ -429,8 +429,8 @@ extension TagParser on Parser {
   }
 
   List<Node> readSequence(Pattern pattern) {
-    StringBuffer buffer = StringBuffer();
-    List<Node> chunks = <Node>[];
+    final buffer = StringBuffer();
+    final chunks = <Node>[];
 
     void flush(int start, int end) {
       if (buffer.isNotEmpty) {
@@ -440,7 +440,7 @@ extension TagParser on Parser {
     }
 
     while (canParse) {
-      int start = index;
+      final start = index;
 
       if (match(pattern)) {
         flush(start, index);
@@ -450,7 +450,7 @@ extension TagParser on Parser {
       if (scan('{')) {
         flush(start, index - 1);
         allowWhitespace();
-        Expression expression = readExpression();
+        final expression = readExpression();
         allowWhitespace();
         expect('}');
         chunks.add(Node(start: start, end: index, type: 'MustacheTag', source: expression));

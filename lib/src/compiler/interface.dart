@@ -35,7 +35,7 @@ class Node {
   Node? elseNode;
 
   void addAttribute(Node attribute) {
-    List<Node> attributes = this.attributes ??= <Node>[];
+    final attributes = this.attributes ??= <Node>[];
     attributes.add(attribute);
   }
 
@@ -63,13 +63,13 @@ class Node {
 
   @override
   String toString() {
-    StringBuffer buffer = StringBuffer(type);
+    final buffer = StringBuffer(type);
 
     if (name != null) {
       buffer.write('.$name');
     }
 
-    List<Node>? attributes = this.attributes;
+    final attributes = this.attributes;
 
     if (attributes != null && attributes.isNotEmpty) {
       buffer.write(' ( ${attributes.join(', ')} )');
@@ -109,7 +109,7 @@ class AST {
 
   @override
   String toString() {
-    StringBuffer buffer = StringBuffer('AST { $html');
+    final buffer = StringBuffer('AST { $html');
 
     if (instance != null) {
       buffer.write(', $instance');

@@ -9,7 +9,7 @@ extension StyleParser on Parser {
   // static late final RegExp allRe = compile(r'[^\n]');
 
   void style(int start, List<Node>? attributes) {
-    String data = readUntil(closeRe, unclosedStyle);
+    final data = readUntil(closeRe, unclosedStyle);
 
     if (scan(closeRe)) {
       // TODO(style): parse and tidy up AST

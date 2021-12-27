@@ -2,18 +2,19 @@ import 'package:analyzer/dart/ast/ast.dart' show Expression;
 
 import '../../interface.dart';
 import '../../parse/errors.dart';
+import '../../utils/cast.dart';
 import '../../utils/html.dart';
 import '../read/expression.dart';
 import '../parse.dart';
 
 extension MustacheParser on Parser {
   void mustache() {
-    int start = index;
+    final start = index;
     expect('{');
     allowWhitespace();
 
     if (scan('/')) {
-      Node block = current;
+      var block = current;
       String? expected;
 
       if (closingTagOmitted(block.name)) {
@@ -22,7 +23,7 @@ extension MustacheParser on Parser {
         block = current;
       }
 
-      String type = block.type;
+      final type = block.type;
 
       if (type == 'ElseBlock' || type == 'PendingBlock' || type == 'ThenBlock' || type == 'CatchBlock') {
         block.end = start;
@@ -53,6 +54,11 @@ extension MustacheParser on Parser {
         block = current;
         block.elseNode?.end = start;
       }
+
+      template[unsafeCast<int>(block.start) - 1];
+
+      block.end = index;
+      stack.removeLast();
     } else if (scan(':else')) {
       throw UnimplementedError();
     } else if (match(':then') || match(':catch')) {
@@ -64,7 +70,7 @@ extension MustacheParser on Parser {
     } else if (scan('@debug')) {
       throw UnimplementedError();
     } else {
-      Expression expression = readExpression();
+      final expression = readExpression();
       allowWhitespace();
       expect('}');
       current.addChild(Node(start: start, end: index, type: 'MustacheTag', source: expression));

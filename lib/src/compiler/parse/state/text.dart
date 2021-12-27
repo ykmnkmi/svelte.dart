@@ -6,8 +6,8 @@ extension TextParser on Parser {
   static late final RegExp openRe = compile(r'[{<]');
 
   void text() {
-    int start = index;
-    int found = template.indexOf(openRe, index);
+    final start = index;
+    final found = template.indexOf(openRe, index);
 
     if (found == -1) {
       if (canParse) {
