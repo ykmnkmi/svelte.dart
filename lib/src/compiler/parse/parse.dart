@@ -65,17 +65,27 @@ class Parser {
     return stack.last;
   }
 
-  void allowWhitespace() {
-    scan(whitespace);
+  void allowWhitespace({bool require = false}) {
+    var match = RegExp('\\s*').matchAsPrefix(template, index);
+
+    if (match == null) {
+      if (require) {
+        error('missing-whitespace', 'expected whitespace');
+      }
+
+      return;
+    }
+
+    index = match.end;
   }
 
   bool match(Pattern pattern) {
-    final match = pattern.matchAsPrefix(template, index);
+    var match = pattern.matchAsPrefix(template, index);
     return match != null;
   }
 
   bool scan(Pattern pattern) {
-    final match = pattern.matchAsPrefix(template, index);
+    var match = pattern.matchAsPrefix(template, index);
 
     if (match == null) {
       return false;
@@ -85,20 +95,22 @@ class Parser {
     return true;
   }
 
-  void expect(Pattern pattern, [Never Function()? onError]) {
-    if (scan(pattern)) {
-      return;
-    }
+  void expect(Pattern pattern, {Never Function()? onError}) {
+    var match = pattern.matchAsPrefix(template, index);
 
-    if (onError == null) {
-      if (canParse) {
-        unexpectedToken(pattern, index);
+    if (match == null) {
+      if (onError == null) {
+        if (canParse) {
+          unexpectedToken(pattern, index);
+        }
+
+        unexpectedEOFToken(pattern);
       }
 
-      unexpectedEOFToken(pattern);
+      onError();
     }
 
-    onError();
+    index = match.end;
   }
 
   int readChar() {
@@ -106,7 +118,7 @@ class Parser {
   }
 
   String? read(Pattern pattern) {
-    final match = pattern.matchAsPrefix(template, index);
+    var match = pattern.matchAsPrefix(template, index);
 
     if (match == null) {
       return null;
@@ -118,11 +130,11 @@ class Parser {
 
   String? readIdentifier() {
     // TODO: add reserved word checking
-    return read(identifier);
+    return read(RegExp('[_\$A-Za-z][_\$A-Za-z0-9]*'));
   }
 
   String readUntil(Pattern pattern, [Never Function()? onError]) {
-    final found = template.indexOf(pattern, index);
+    var found = template.indexOf(pattern, index);
 
     if (found == -1) {
       if (canParse) {
@@ -145,10 +157,10 @@ class Parser {
 }
 
 AST parse(String template, {Object? sourceUrl}) {
-  final parser = Parser(template, sourceUrl: sourceUrl);
-  final ast = AST(parser.html);
+  var parser = Parser(template, sourceUrl: sourceUrl);
+  var ast = AST(parser.html);
 
-  final styles = parser.styles;
+  var styles = parser.styles;
 
   if (styles.length > 1) {
     parser.duplicateStyle(styles[1].start);
@@ -156,11 +168,11 @@ AST parse(String template, {Object? sourceUrl}) {
     ast.style = styles.first;
   }
 
-  final scripts = parser.scripts;
+  var scripts = parser.scripts;
 
   if (scripts.isNotEmpty) {
-    final instances = scripts.where((script) => script.data == 'default').toList();
-    final modules = scripts.where((script) => script.data == 'module').toList();
+    var instances = scripts.where((script) => script.data == 'default').toList();
+    var modules = scripts.where((script) => script.data == 'module').toList();
 
     if (instances.length > 1) {
       parser.invalidScriptInstance(instances[1].start);

@@ -46,8 +46,9 @@ extension ParserErrors on Parser {
     error('expected-name', 'expected name');
   }
 
-  Never invalidDebugArgs() {
-    error('invalid-debug-args', '{@debug ...} arguments must be identifiers, not arbitrary expressions');
+  Never invalidDebugArgs([int? position]) {
+    error('invalid-debug-args', '{@debug ...} arguments must be identifiers, not arbitrary expressions',
+        position: position);
   }
 
   Never invalidDeclaration() {
@@ -59,11 +60,11 @@ extension ParserErrors on Parser {
         position: position);
   }
 
-  Never invalidElseif() {
+  Never invalidElseIf() {
     error('invalid-elseif', '\'elseif\' should be \'else if\'');
   }
 
-  Never invalidElseifPlacementOutsideIf() {
+  Never invalidElseIfPlacementOutsideIf() {
     error('invalid-elseif-placement', 'cannot have an {:else if ...} block outside an {#if ...} block');
   }
 
@@ -97,7 +98,7 @@ extension ParserErrors on Parser {
         position: position);
   }
 
-  Never invalidElseifPlacementUnclosedBlock(String block) {
+  Never invalidElseIfPlacementUnclosedBlock(String block) {
     error('invalid-elseif-placement', 'expected to close $block before seeing {:else if ...} block');
   }
 

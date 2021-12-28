@@ -17,7 +17,7 @@ extension ScriptParser on Parser {
 
     Node? context;
 
-    for (final attribute in attributes) {
+    for (var attribute in attributes) {
       if (attribute.name == 'context') {
         context = attribute;
         break;
@@ -28,13 +28,13 @@ extension ScriptParser on Parser {
       return 'default';
     }
 
-    final children = context.children;
+    var children = context.children;
 
     if (children.length != 1 || children.first.type != 'Text') {
       invalidScriptContextAttribute(context.start);
     }
 
-    final value = children.first.data;
+    var value = children.first.data;
 
     if (value == null || value != 'module') {
       invalidScriptContextValue(context.start);
@@ -44,14 +44,14 @@ extension ScriptParser on Parser {
   }
 
   void script(int start, List<Node>? attributes) {
-    final data = readUntil(closeRe, unclosedScript);
+    var data = readUntil(closeRe, unclosedScript);
 
     if (scan(closeRe)) {
-      final context = getContext(attributes);
-      final source = template.substring(0, start).replaceAll(allRe, ' ') + data;
+      var context = getContext(attributes);
+      var source = template.substring(0, start).replaceAll(allRe, ' ') + data;
       // TODO(error): handle
-      final result = parseString(content: source);
-      scripts.add(Node(start: start, end: index, type: 'Script', data: context, source: result.unit));
+      var result = parseString(content: source);
+      scripts.add(Node(start: start, end: index, type: 'Script', data: context, library: result.unit));
       return;
     }
 

@@ -1,32 +1,48 @@
-import 'package:analyzer/dart/ast/ast.dart' show AstNode;
+import 'package:analyzer/dart/ast/ast.dart' show CompilationUnit, Expression, Identifier;
 
 class Node {
-  Node(
-      {this.start,
-      this.end,
-      required this.type,
-      this.name,
-      this.data,
-      this.source,
-      this.intro,
-      this.outro,
-      this.attributes,
-      this.modifiers,
-      List<Node>? children})
-      : children = children ?? <Node>[];
+  Node({
+    this.start,
+    this.end,
+    required this.type,
+    this.name,
+    this.data,
+    this.library,
+    this.expression,
+    this.error,
+    this.intro,
+    this.outro,
+    this.elseIf,
+    this.elseNode,
+    this.index,
+    this.key,
+    this.context,
+    this.pendingNode,
+    this.thenNode,
+    this.catchNode,
+    this.skip,
+    this.modifiers,
+    this.attributes,
+    this.identifiers,
+    List<Node>? children,
+  }) : children = children ?? <Node>[];
 
+  @override
   int? start;
+
+  @override
   int? end;
+
+  @override
   String type;
+
   String? name;
 
   String? data;
-  AstNode? source;
 
-  List<String>? modifiers;
-  List<Node>? attributes;
-
-  List<Node> children;
+  CompilationUnit? library;
+  Expression? expression;
+  Expression? error;
 
   bool? intro;
   bool? outro;
@@ -34,13 +50,24 @@ class Node {
   bool? elseIf;
   Node? elseNode;
 
-  void addAttribute(Node attribute) {
-    final attributes = this.attributes ??= <Node>[];
-    attributes.add(attribute);
-  }
+  String? index;
+  Expression? key;
+  Identifier? context;
+  Node? pendingNode;
+  Node? thenNode;
+  Node? catchNode;
 
-  void addChild(Node child) {
-    children.add(child);
+  bool? skip;
+
+  List<String>? modifiers;
+  List<Node>? attributes;
+  List<Identifier>? identifiers;
+  @override
+  List<Node> children;
+
+  void addAttribute(Node attribute) {
+    var attributes = this.attributes ??= <Node>[];
+    attributes.add(attribute);
   }
 
   Map<String, Object?> toJson([bool verbose = true]) {
@@ -50,12 +77,25 @@ class Node {
       'type': type,
       if (name != null) 'name': name,
       if (data != null) 'data': data,
-      if (source != null) 'expression': source.toString(),
+      if (library != null) 'library': library.toString(),
+      if (expression != null) 'expression': expression.toString(),
+      if (error != null) 'error': error.toString(),
       if (intro != null) 'intro': intro,
       if (outro != null) 'outro': outro,
+      if (elseIf != null && elseIf!) 'elseif': elseIf,
+      if (elseNode != null) 'else': elseNode!.toJson(verbose),
+      if (index != null) 'index': index,
+      if (key != null) 'key': key.toString(),
+      if (context != null) 'context': context.toString(),
+      if (pendingNode != null) 'pending': pendingNode!.toJson(verbose),
+      if (thenNode != null) 'then': thenNode!.toJson(verbose),
+      if (catchNode != null) 'catch': catchNode!.toJson(verbose),
+      if (skip != null && skip!) 'skip': skip,
       if (modifiers != null && modifiers!.isNotEmpty) 'modifiers': modifiers,
       if (attributes != null && attributes!.isNotEmpty)
         'attributes': attributes!.map<Map<String, Object?>>((attribute) => attribute.toJson(verbose)).toList(),
+      if (identifiers != null && identifiers!.isNotEmpty)
+        'identifiers': identifiers!.map<String>((identifier) => identifier.toString()).toList(),
       if (children.isNotEmpty)
         'children': children.map<Map<String, Object?>>((child) => child.toJson(verbose)).toList(),
     };
@@ -63,26 +103,8 @@ class Node {
 
   @override
   String toString() {
-    final buffer = StringBuffer(type);
-
-    if (name != null) {
-      buffer.write('.$name');
-    }
-
-    final attributes = this.attributes;
-
-    if (attributes != null && attributes.isNotEmpty) {
-      buffer.write(' ( ${attributes.join(', ')} )');
-    }
-
-    if (data != null) {
-      buffer.write(' { ${data!.replaceAll('\n', r'\n')} }');
-    } else if (source != null) {
-      buffer.write(' { ${source.toString().replaceAll('\n', r'\n')} }');
-    } else if (children.isNotEmpty) {
-      buffer.write(' { ${children.join(', ')} }');
-    }
-
+    var buffer = StringBuffer(type);
+    // TODO: implement Node.toString()
     return buffer.toString();
   }
 }
@@ -109,7 +131,7 @@ class AST {
 
   @override
   String toString() {
-    final buffer = StringBuffer('AST { $html');
+    var buffer = StringBuffer('AST { $html');
 
     if (instance != null) {
       buffer.write(', $instance');

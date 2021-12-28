@@ -11,14 +11,14 @@ extension TextParser on Parser {
 
     if (found == -1) {
       if (canParse) {
-        current.addChild(Node(start: start, end: length, type: 'Text', data: rest));
+        current.children.add(Node(start: start, end: length, type: 'Text', data: rest));
         index = template.length;
       }
 
       return;
     }
 
-    current.addChild(Node(start: start, end: found, type: 'Text', data: template.substring(start, found)));
+    current.children.add(Node(start: start, end: found, type: 'Text', data: template.substring(start, found)));
     index = found;
   }
 }
