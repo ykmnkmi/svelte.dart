@@ -6,19 +6,23 @@ extension TextParser on Parser {
   static late final RegExp openRe = compile(r'[{<]');
 
   void text() {
-    final start = index;
-    final found = template.indexOf(openRe, index);
+    var start = index;
+    var found = template.indexOf(openRe, index);
+    String data;
 
     if (found == -1) {
       if (canParse) {
-        current.children.add(Node(start: start, end: length, type: 'Text', data: rest));
-        index = template.length;
+        data = rest;
+        found = template.length;
+      } else {
+        return;
       }
-
-      return;
+    } else {
+      data = template.substring(start, found);
     }
 
-    current.children.add(Node(start: start, end: found, type: 'Text', data: template.substring(start, found)));
+    var node = Node(start: start, end: found, type: 'Text', data: data);
+    current.children!.add(node);
     index = found;
   }
 }

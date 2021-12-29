@@ -1,6 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:source_span/source_span.dart' show SourceFile;
 
-import '../utils/patterns.dart';
 import '../interface.dart';
 
 import 'errors.dart';
@@ -22,7 +23,7 @@ class Parser {
         sourceFile = SourceFile.fromString(template, url: sourceUrl),
         metaTags = <String>{},
         stack = <Node>[],
-        html = Node(type: 'Fragment'),
+        html = Node(type: 'Fragment', children: <Node>[]),
         scripts = <Node>[],
         styles = <Node>[],
         index = 0 {
@@ -30,6 +31,25 @@ class Parser {
 
     while (canParse) {
       fragment();
+    }
+
+    var children = html.children;
+
+    if (children != null && children.isNotEmpty) {
+      var nonWhitespace = RegExp('\\S+');
+      var start = children.first.start ?? 0;
+      var index = template.indexOf(nonWhitespace, start);
+      start = math.max(start, index);
+
+      var end = children.last.end ?? template.length;
+      index = template.lastIndexOf(nonWhitespace, end);
+
+      if (index != -1) {
+        end = math.min(index + 1, end);
+      }
+
+      html.start = start;
+      html.end = end;
     }
   }
 
@@ -151,13 +171,13 @@ class Parser {
     return template.substring(index, index = found);
   }
 
-  Never error(String code, String message, {int? position, int? end}) {
-    throw CompileError(code, message, sourceFile.span(position ?? index, end ?? length));
+  Never error(String code, String message, {int? start, int? end}) {
+    throw CompileError(code, message, sourceFile.span(start ?? index, end));
   }
 }
 
 AST parse(String template, {Object? sourceUrl}) {
-  var parser = Parser(template, sourceUrl: sourceUrl);
+  var parser = Parser(template.trimRight(), sourceUrl: sourceUrl);
   var ast = AST(parser.html);
 
   var styles = parser.styles;

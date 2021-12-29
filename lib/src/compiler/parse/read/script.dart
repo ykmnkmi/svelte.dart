@@ -30,7 +30,7 @@ extension ScriptParser on Parser {
 
     var children = context.children;
 
-    if (children.length != 1 || children.first.type != 'Text') {
+    if (children == null || children.length != 1 || children.first.type != 'Text') {
       invalidScriptContextAttribute(context.start);
     }
 

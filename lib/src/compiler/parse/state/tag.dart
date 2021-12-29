@@ -79,7 +79,9 @@ extension TagParser on Parser {
     if (scan('!--')) {
       var data = readUntil('-->');
       expect('-->', onError: unclosedComment);
-      current.children.add(Node(start: start, end: index, type: 'Comment', data: data));
+
+      var node = Node(start: start, end: index, type: 'Comment', data: data, ignores: <String>[]);
+      current.children!.add(node);
       return;
     }
 
@@ -93,8 +95,10 @@ extension TagParser on Parser {
         slug = slug.toLowerCase();
 
         if (isClosingTag) {
-          if ((name == 'svelte:window' || name == 'svelte:body') && current.children.isNotEmpty) {
-            invalidElementContent(slug, name, current.children.first.start);
+          var children = current.children;
+
+          if ((name == 'svelte:window' || name == 'svelte:body') && children != null && children.isNotEmpty) {
+            invalidElementContent(slug, name, children.first.start);
           }
         } else {
           if (this.metaTags.contains(name)) {
@@ -126,7 +130,7 @@ extension TagParser on Parser {
       }
     }
 
-    var element = Node(start: start, type: type, name: name);
+    var element = Node(start: start, type: type, name: name, children: <Node>[]);
     allowWhitespace();
 
     if (isClosingTag) {
@@ -178,31 +182,24 @@ extension TagParser on Parser {
     }
 
     if (name == 'svelte:component') {
-      Node definition;
+      var attributes = element.attributes;
 
-      component:
-      {
-        final attributes = element.attributes;
+      if (attributes != null) {
+        var index = attributes.indexWhere((attribute) => attribute.type == 'Attribute' && attribute.name == 'this');
 
-        if (attributes != null) {
-          for (final attribute in attributes) {
-            if (attribute.type == 'Attribute' && attribute.name == 'this') {
-              definition = attribute;
-              break component;
-            }
-          }
+        if (index == -1) {
+          missingComponentDefinition(start);
         }
 
-        missingComponentDefinition(start);
+        var definition = attributes.removeAt(index);
+        var children = definition.children;
+
+        if (children == null || children.length != 1 || children.first.type == 'Text') {
+          invalidComponentDefinition(definition.start);
+        }
+
+        element.expression = children.first.expression;
       }
-
-      var children = definition.children;
-
-      if (children.length != 1 || children.first.type == 'Text') {
-        invalidComponentDefinition(definition.start);
-      }
-
-      element.expression = children.first.expression;
     }
 
     if (stack.length == 1) {
@@ -221,7 +218,7 @@ extension TagParser on Parser {
       }
     }
 
-    current.children.add(element);
+    current.children!.add(element);
 
     var selfClosing = scan('/') || isVoid(name);
     expect('>');
@@ -236,7 +233,8 @@ extension TagParser on Parser {
     } else if (name == 'script' || name == 'style') {
       var start = index;
       var data = readUntil('</$name>');
-      element.children.add(Node(start: start, end: index, type: 'Text', data: data));
+      var node = Node(start: start, end: index, type: 'Text', data: data);
+      element.children!.add(node);
       expect('</$name>');
       element.end = index;
     } else {
@@ -248,7 +246,7 @@ extension TagParser on Parser {
     var start = index;
 
     if (scan(RegExp('^svelte:self(?=[\\s/>])'))) {
-      for (Node fragment in stack.reversed) {
+      for (var fragment in stack.reversed) {
         var type = fragment.type;
 
         if (type == 'IfBlock' || type == 'EachBlock' || type == 'InlineComponent') {
@@ -268,10 +266,9 @@ extension TagParser on Parser {
     }
 
     var name = readUntil(RegExp('(\\s|\\/|>)'));
-    var meta = metaTags[name];
 
-    if (meta != null) {
-      return meta;
+    if (metaTags.containsKey(name)) {
+      return metaTags[name]!;
     }
 
     if (name.startsWith('svelte:')) {
@@ -290,7 +287,7 @@ extension TagParser on Parser {
 
     void checkUnique(String name) {
       if (uniqueNames.contains(name)) {
-        duplicateAttribute(start);
+        duplicateAttribute(start, index);
       }
 
       uniqueNames.add(name);
@@ -408,8 +405,14 @@ extension TagParser on Parser {
     }
 
     var regex = quoteMark ?? RegExp('(\\/>|[\\s"\'=<>`])');
-    // TODO: test for unclosedAttributeValue
-    var value = readSequence(regex);
+    List<Node> value;
+
+    try {
+      value = readSequence(regex);
+    } catch (error) {
+      // TODO: check error
+      throw UnimplementedError('readAttributeValue: $error');
+    }
 
     if (value.isEmpty && quoteMark == null) {
       missingAttributeValue();

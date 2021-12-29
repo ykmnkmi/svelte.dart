@@ -24,16 +24,14 @@ class Node {
     this.modifiers,
     this.attributes,
     this.identifiers,
-    List<Node>? children,
-  }) : children = children ?? <Node>[];
+    this.ignores,
+    this.children,
+  });
 
-  @override
   int? start;
 
-  @override
   int? end;
 
-  @override
   String type;
 
   String? name;
@@ -62,8 +60,8 @@ class Node {
   List<String>? modifiers;
   List<Node>? attributes;
   List<Identifier>? identifiers;
-  @override
-  List<Node> children;
+  List<String>? ignores;
+  List<Node>? children;
 
   void addAttribute(Node attribute) {
     var attributes = this.attributes ??= <Node>[];
@@ -82,7 +80,7 @@ class Node {
       if (error != null) 'error': error.toString(),
       if (intro != null) 'intro': intro,
       if (outro != null) 'outro': outro,
-      if (elseIf != null && elseIf!) 'elseif': elseIf,
+      if (elseIf != null) 'elseif': elseIf,
       if (elseNode != null) 'else': elseNode!.toJson(verbose),
       if (index != null) 'index': index,
       if (key != null) 'key': key.toString(),
@@ -90,14 +88,15 @@ class Node {
       if (pendingNode != null) 'pending': pendingNode!.toJson(verbose),
       if (thenNode != null) 'then': thenNode!.toJson(verbose),
       if (catchNode != null) 'catch': catchNode!.toJson(verbose),
-      if (skip != null && skip!) 'skip': skip,
+      if (skip != null) 'skip': skip,
       if (modifiers != null && modifiers!.isNotEmpty) 'modifiers': modifiers,
       if (attributes != null && attributes!.isNotEmpty)
         'attributes': attributes!.map<Map<String, Object?>>((attribute) => attribute.toJson(verbose)).toList(),
       if (identifiers != null && identifiers!.isNotEmpty)
         'identifiers': identifiers!.map<String>((identifier) => identifier.toString()).toList(),
-      if (children.isNotEmpty)
-        'children': children.map<Map<String, Object?>>((child) => child.toJson(verbose)).toList(),
+      if (ignores != null && ignores!.isNotEmpty) 'ignores': ignores,
+      if (children != null && children!.isNotEmpty)
+        'children': children!.map<Map<String, Object?>>((child) => child.toJson(verbose)).toList(),
     };
   }
 

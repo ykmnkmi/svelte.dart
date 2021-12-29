@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/ast/ast.dart' show Expression, Identifier;
+import 'package:analyzer/dart/ast/ast.dart' show Identifier;
 
 import '../../interface.dart';
 import '../../parse/errors.dart';
@@ -11,7 +11,7 @@ extension MustacheParser on Parser {
   static void trimWhitespace(Node block, bool trimBefore, bool trimAfter) {
     var children = block.children;
 
-    if (children.isEmpty) {
+    if (children == null || children.isEmpty) {
       return;
     }
 
@@ -288,7 +288,7 @@ extension MustacheParser on Parser {
       }
 
       expect('}');
-      current.children.add(block);
+      current.children!.add(block);
       stack.add(block);
 
       if (type == 'AwaitBlock') {
@@ -302,10 +302,10 @@ extension MustacheParser on Parser {
           childBlock = block.pendingNode!;
         }
 
+        stack.add(childBlock);
         childBlock
           ..start = index
           ..skip = false;
-        stack.add(childBlock);
       }
 
       return;
@@ -317,7 +317,9 @@ extension MustacheParser on Parser {
       var expression = readExpression();
       allowWhitespace();
       expect('}');
-      current.children.add(Node(start: start, end: index, type: 'RawMustacheTag', expression: expression));
+
+      var node = Node(start: start, end: index, type: 'RawMustacheTag', expression: expression);
+      current.children!.add(node);
       return;
     }
 
@@ -340,13 +342,16 @@ extension MustacheParser on Parser {
         expect('}');
       }
 
-      current.children.add(Node(start: start, end: index, type: 'DebugTag', identifiers: identifiers));
+      var node = Node(start: start, end: index, type: 'DebugTag', identifiers: identifiers);
+      current.children!.add(node);
       return;
     }
 
     var expression = readExpression();
     allowWhitespace();
     expect('}');
-    current.children.add(Node(start: start, end: index, type: 'MustacheTag', expression: expression));
+
+    var node = Node(start: start, end: index, type: 'MustacheTag', expression: expression);
+    current.children!.add(node);
   }
 }

@@ -1,6 +1,6 @@
 name: piko
 description: Web applications framework for Dart based on Svelte.
-version: 1.0.0-dev.81
+version: 1.0.0-dev.82
 # homepage: https://piko.ykmnkmi.dev
 
 environment:
@@ -15,5 +15,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.1.7
   build_web_compilers: ^3.2.2
+  collection: ^1.15.0
   lints: ^1.0.1
   stack_trace: ^1.10.0
+  test: ^1.20.1
