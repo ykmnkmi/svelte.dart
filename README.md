@@ -1,6 +1,6 @@
 piko.dart
 =========
 
-Web framework for [Dart](https://dart.dev) based on Svelte v3.44.1.
+[Svelte](https://svelte.dev/) (v3.44.1) web framework ported to [Dart](https://dart.dev).
 
 *work in progress*
