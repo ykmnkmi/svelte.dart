@@ -4,7 +4,7 @@ import 'package:piko/compiler.dart';
 import 'package:piko/src/compiler/interface.dart';
 import 'package:stack_trace/stack_trace.dart' show Trace;
 
-const String helloWorld = '<!-- a comment -->';
+const String helloWorld = '<input use:tooltip={message}>';
 
 const Converter<Object?, String> encoding = JsonEncoder.withIndent('  ');
 
@@ -16,7 +16,7 @@ void main() {
     ast.html.children!.forEach(print);
   } catch (error, trace) {
     print(error);
-    print(Trace.format(trace, terse: true));
+    print(Trace.format(trace));
   }
 }
 

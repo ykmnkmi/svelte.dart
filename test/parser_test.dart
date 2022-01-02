@@ -12,10 +12,10 @@ const MapEquality<Object?, Object?> mapEquality = MapEquality<Object?, Object?>(
 
 void main() {
   group('parser', () {
-    var dirs = Directory(normalize('test/samples/____')).listSync();
+    var dirs = Directory(normalize('test/samples/done')).listSync();
 
     for (var dir in dirs) {
-      var input = File(join(dir.path, 'input.svelte')).readAsStringSync();
+      var input = File(join(dir.path, 'input.piko')).readAsStringSync();
 
       Map<String, Object?>? current;
       Object? expected;

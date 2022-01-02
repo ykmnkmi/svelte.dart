@@ -1,0 +1,24 @@
+{
+  "html": {
+    "start": 0,
+    "end": 40,
+    "type": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 40,
+        "type": "Element",
+        "name": "input",
+        "attributes": [
+          {
+            "start": 7,
+            "end": 39,
+            "type": "Action",
+            "name": "tooltip",
+            "expression": "t('tooltip msg')"
+          }
+        ]
+      }
+    ]
+  }
+}

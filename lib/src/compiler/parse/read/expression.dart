@@ -36,6 +36,7 @@ extension MustacheParser on Parser {
         case "Expected to find ';'.":
         case 'Expected a method, getter, setter or operator declaration.':
         case "Variables must be declared using the keywords 'const', 'final', 'var' or a type name.":
+        case 'Unterminated string literal.':
           continue;
         default:
           throw error;

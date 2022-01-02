@@ -407,12 +407,7 @@ extension TagParser on Parser {
     var regex = quoteMark ?? RegExp('(\\/>|[\\s"\'=<>`])');
     List<Node> value;
 
-    try {
-      value = readSequence(regex);
-    } catch (error) {
-      // TODO: check error
-      throw UnimplementedError('readAttributeValue: $error');
-    }
+    value = readSequence(regex);
 
     if (value.isEmpty && quoteMark == null) {
       missingAttributeValue();
