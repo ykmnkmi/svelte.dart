@@ -6,13 +6,13 @@ import 'package:path/path.dart' show basename, join, normalize;
 import 'package:piko/src/compiler/parse/errors.dart' show CompileError;
 import 'package:test/test.dart';
 
-import 'helpers.dart';
+import '../helpers.dart';
 
 const MapEquality<Object?, Object?> mapEquality = MapEquality<Object?, Object?>();
 
 void main() {
   group('parser', () {
-    var dirs = Directory(normalize('test/samples/done')).listSync();
+    var dirs = Directory(normalize('test/parser/samples')).listSync();
 
     for (var dir in dirs) {
       var input = File(join(dir.path, 'input.piko')).readAsStringSync();

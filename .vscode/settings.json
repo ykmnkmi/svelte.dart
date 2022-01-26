@@ -1,3 +1,11 @@
 {
-  "dart.lineLength": 120
+  "dart.lineLength": 120,
+  "files.trimTrailingWhitespace": false,
+  "yaml.schemas": {
+    "https://json.schemastore.org/dart-build": [
+      "build.yaml",
+      "*.build.yaml",
+      "build.*.yaml"
+    ]
+  }
 }
