@@ -1,12 +1,18 @@
 import 'package:analyzer/dart/ast/ast.dart' show CompilationUnit, Expression, Identifier;
+import 'package:piko/types.dart';
 
 class Node {
+  factory Node.text({int? start, int? end, String data = '', String? raw}) {
+    return Node(start: start, end: end, type: 'Text', data: data, raw: raw ?? data);
+  }
+
   Node({
     this.start,
     this.end,
     required this.type,
     this.name,
     this.data,
+    this.raw,
     this.library,
     this.expression,
     this.error,
@@ -29,14 +35,12 @@ class Node {
   });
 
   int? start;
-
   int? end;
-
   String type;
-
   String? name;
 
   String? data;
+  String? raw;
 
   CompilationUnit? library;
   Expression? expression;
@@ -63,40 +67,35 @@ class Node {
   List<String>? ignores;
   List<Node>? children;
 
-  void addAttribute(Node attribute) {
-    var attributes = this.attributes ??= <Node>[];
-    attributes.add(attribute);
-  }
-
-  Map<String, Object?> toJson([bool verbose = true]) {
+  Map<String, Object?> toJson([bool includePosition = true]) {
     return <String, Object?>{
-      if (verbose && start != null) 'start': start,
-      if (verbose && end != null) 'end': end,
+      if (includePosition && start != null) 'start': start,
+      if (includePosition && end != null) 'end': end,
       'type': type,
       if (name != null) 'name': name,
       if (data != null) 'data': data,
+      if (data != null) 'raw': raw,
       if (library != null) 'library': library.toString(),
       if (expression != null) 'expression': expression.toString(),
       if (error != null) 'error': error.toString(),
       if (intro != null) 'intro': intro,
       if (outro != null) 'outro': outro,
       if (elseIf != null) 'elseif': elseIf,
-      if (elseNode != null) 'else': elseNode!.toJson(verbose),
+      if (elseNode != null) 'else': elseNode!.toJson(includePosition),
       if (index != null) 'index': index,
       if (key != null) 'key': key.toString(),
       if (context != null) 'context': context.toString(),
-      if (pendingNode != null) 'pending': pendingNode!.toJson(verbose),
-      if (thenNode != null) 'then': thenNode!.toJson(verbose),
-      if (catchNode != null) 'catch': catchNode!.toJson(verbose),
+      if (pendingNode != null) 'pending': pendingNode!.toJson(includePosition),
+      if (thenNode != null) 'then': thenNode!.toJson(includePosition),
+      if (catchNode != null) 'catch': catchNode!.toJson(includePosition),
       if (skip != null) 'skip': skip,
-      if (modifiers != null && modifiers!.isNotEmpty) 'modifiers': modifiers,
-      if (attributes != null && attributes!.isNotEmpty)
-        'attributes': attributes!.map<Map<String, Object?>>((attribute) => attribute.toJson(verbose)).toList(),
-      if (identifiers != null && identifiers!.isNotEmpty)
-        'identifiers': identifiers!.map<String>((identifier) => identifier.toString()).toList(),
-      if (ignores != null && ignores!.isNotEmpty) 'ignores': ignores,
-      if (children != null && children!.isNotEmpty)
-        'children': children!.map<Map<String, Object?>>((child) => child.toJson(verbose)).toList(),
+      if (modifiers != null) 'modifiers': modifiers,
+      if (attributes != null)
+        'attributes': attributes!.generate<Map<String, Object?>>((attribute) => attribute.toJson(includePosition)),
+      if (identifiers != null) 'identifiers': identifiers!.generate<String>((identifier) => identifier.toString()),
+      if (ignores != null) 'ignores': ignores,
+      if (children != null)
+        'children': children!.generate<Map<String, Object?>>((child) => child.toJson(includePosition)),
     };
   }
 
@@ -119,12 +118,12 @@ class AST {
 
   Node? style;
 
-  Map<String, Object?> toJson([bool verbose = true]) {
+  Map<String, Object?> toJson([bool includePosition = true]) {
     return <String, Object?>{
-      'html': html.toJson(verbose),
-      if (instance != null) 'instance': instance!.toJson(verbose),
-      if (module != null) 'module': module!.toJson(verbose),
-      if (style != null) 'style': style!.toJson(verbose),
+      'html': html.toJson(includePosition),
+      if (instance != null) 'instance': instance!.toJson(includePosition),
+      if (module != null) 'module': module!.toJson(includePosition),
+      if (style != null) 'style': style!.toJson(includePosition),
     };
   }
 

@@ -51,7 +51,8 @@ extension ScriptParser on Parser {
       var source = template.substring(0, start).replaceAll(allRe, ' ') + data;
       // TODO(error): handle
       var result = parseString(content: source);
-      scripts.add(Node(start: start, end: index, type: 'Script', data: context, library: result.unit));
+      var node = Node(start: start, end: index, type: 'Script', data: context, library: result.unit);
+      scripts.add(node);
       return;
     }
 

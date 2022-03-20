@@ -130,7 +130,7 @@ extension TagParser on Parser {
       }
     }
 
-    var element = Node(start: start, type: type, name: name, children: <Node>[]);
+    var element = Node(start: start, type: type, name: name, attributes: <Node>[], children: <Node>[]);
     allowWhitespace();
 
     if (isClosingTag) {
@@ -176,7 +176,7 @@ extension TagParser on Parser {
     var attribute = readAttribute(uniqueNames);
 
     while (attribute != null) {
-      element.addAttribute(attribute);
+      element.attributes!.add(attribute);
       allowWhitespace();
       attribute = readAttribute(uniqueNames);
     }
@@ -233,7 +233,7 @@ extension TagParser on Parser {
     } else if (name == 'script' || name == 'style') {
       var start = index;
       var data = readUntil('</$name>');
-      var node = Node(start: start, end: index, type: 'Text', data: data);
+      var node = Node.text(start: start, end: index, data: data);
       element.children!.add(node);
       expect('</$name>');
       element.end = index;
@@ -401,7 +401,7 @@ extension TagParser on Parser {
     var quoteMark = read(RegExp('["\']'));
 
     if (quoteMark != null && scan(quoteMark)) {
-      return <Node>[Node(start: index - 1, end: index - 1, type: 'Text')];
+      return <Node>[Node.text(start: index - 1, end: index - 1)];
     }
 
     var regex = quoteMark ?? RegExp('(\\/>|[\\s"\'=<>`])');
@@ -426,7 +426,8 @@ extension TagParser on Parser {
 
     void flush(int start, int end) {
       if (buffer.isNotEmpty) {
-        chunks.add(Node(start: start, end: end, type: 'Text', data: buffer.toString()));
+        var node = Node.text(start: start, end: end, data: buffer.toString());
+        chunks.add(node);
         buffer.clear();
       }
     }
@@ -446,7 +447,9 @@ extension TagParser on Parser {
         var expression = readExpression();
         allowWhitespace();
         expect('}');
-        chunks.add(Node(start: start, end: index, type: 'MustacheTag', expression: expression));
+
+        var node = Node(start: start, end: index, type: 'MustacheTag', expression: expression);
+        chunks.add(node);
       } else {
         buffer.writeCharCode(readChar());
       }
