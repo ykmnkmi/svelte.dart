@@ -1,5 +1,8 @@
-import 'component.dart';
+import 'dart:async';
 
+import 'package:piko/src/runtime/component.dart';
+
+// naive implementation
 class Scheduler {
   Scheduler()
       : dirtyFragments = <Fragment>[],

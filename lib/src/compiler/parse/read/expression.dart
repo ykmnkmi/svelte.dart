@@ -3,8 +3,7 @@ import 'dart:math' show min;
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart';
-
-import '../parse.dart';
+import 'package:piko/src/compiler/parse/parse.dart';
 
 extension MustacheParser on Parser {
   static const String prefix = 'void __expression() => ';

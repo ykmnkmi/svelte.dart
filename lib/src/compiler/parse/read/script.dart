@@ -1,14 +1,13 @@
 import 'package:analyzer/dart/analysis/utilities.dart';
-
-import '../../parse/errors.dart';
-import '../../utils/patterns.dart';
-import '../../interface.dart';
-import '../parse.dart';
+import 'package:piko/src/compiler/interface.dart';
+import 'package:piko/src/compiler/parse/errors.dart';
+import 'package:piko/src/compiler/parse/parse.dart';
+import 'package:piko/src/compiler/utils/patterns.dart';
 
 extension ScriptParser on Parser {
-  static late final RegExp closeRe = compile(r'<\/script\s*>');
+  static final RegExp closeRe = compile(r'<\/script\s*>');
 
-  static late final RegExp allRe = compile(r'[^\n]');
+  static final RegExp allRe = compile(r'[^\n]');
 
   String getContext(List<Node>? attributes) {
     if (attributes == null) {
@@ -46,10 +45,10 @@ extension ScriptParser on Parser {
   void script(int start, List<Node>? attributes) {
     var data = readUntil(closeRe, unclosedScript);
 
+    // TODO(error): handle
     if (scan(closeRe)) {
       var context = getContext(attributes);
       var source = template.substring(0, start).replaceAll(allRe, ' ') + data;
-      // TODO(error): handle
       var result = parseString(content: source);
       var node = Node(start: start, end: index, type: 'Script', data: context, library: result.unit);
       scripts.add(node);

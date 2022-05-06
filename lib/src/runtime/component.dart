@@ -1,7 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
-
-import 'scheduler.dart';
+import 'package:piko/src/runtime/scheduler.dart';
 
 class RenderTree {
   RenderTree() : scheduler = Scheduler();
@@ -13,7 +12,7 @@ abstract class Component<T extends Component<T>> {
   @internal
   late Fragment<T> fragment;
 
-  Fragment<T> render(RenderTree tree);
+  Fragment<T> createFragment(RenderTree tree);
 }
 
 abstract class Fragment<T extends Component<T>> {
@@ -36,6 +35,10 @@ abstract class Fragment<T extends Component<T>> {
   void mount(Element target, [Node? anchor]) {}
 
   void markDirty(String aspect) {
+    if (dirty.contains(aspect)) {
+      return;
+    }
+
     dirty.add(aspect);
     scheduler.scheduleUpdate(this);
   }

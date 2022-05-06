@@ -1,13 +1,14 @@
-import '../../utils/patterns.dart';
-import '../../interface.dart';
-import '../parse.dart';
+import 'package:piko/src/compiler/interface.dart';
+import 'package:piko/src/compiler/parse/parse.dart';
+import 'package:piko/src/compiler/utils/patterns.dart';
 
 extension TextParser on Parser {
-  static late final RegExp openRe = compile(r'[{<]');
+  static final RegExp openRe = compile(r'[{<]');
 
   void text() {
     var start = index;
     var found = template.indexOf(openRe, index);
+
     String data;
 
     if (found == -1) {

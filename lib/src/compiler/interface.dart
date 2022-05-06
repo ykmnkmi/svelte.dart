@@ -1,5 +1,4 @@
 import 'package:analyzer/dart/ast/ast.dart' show CompilationUnit, Expression, Identifier;
-import 'package:piko/types.dart';
 
 class Node {
   factory Node.text({int? start, int? end, String data = '', String? raw}) {
@@ -91,11 +90,11 @@ class Node {
       if (skip != null) 'skip': skip,
       if (modifiers != null) 'modifiers': modifiers,
       if (attributes != null)
-        'attributes': attributes!.generate<Map<String, Object?>>((attribute) => attribute.toJson(includePosition)),
-      if (identifiers != null) 'identifiers': identifiers!.generate<String>((identifier) => identifier.toString()),
+        'attributes': attributes!.map<Map<String, Object?>>((attribute) => attribute.toJson(includePosition)).toList(),
+      if (identifiers != null) 'identifiers': identifiers!.map<String>((identifier) => identifier.toString()).toList(),
       if (ignores != null) 'ignores': ignores,
       if (children != null)
-        'children': children!.generate<Map<String, Object?>>((child) => child.toJson(includePosition)),
+        'children': children!.map<Map<String, Object?>>((child) => child.toJson(includePosition)).toList(),
     };
   }
 

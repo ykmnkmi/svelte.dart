@@ -1,15 +1,14 @@
-import 'package:analyzer/dart/ast/standard_ast_factory.dart' show astFactory;
 import 'package:analyzer/dart/ast/token.dart' show Token, TokenType;
-
-import '../parse.dart';
-import '../../interface.dart';
-import '../../parse/errors.dart';
-import '../../parse/read/expression.dart';
-import '../../parse/read/script.dart';
-import '../../parse/read/style.dart';
-import '../../utils/html.dart';
-import '../../utils/names.dart';
-import '../../utils/patterns.dart';
+import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
+import 'package:piko/src/compiler/interface.dart';
+import 'package:piko/src/compiler/parse/errors.dart';
+import 'package:piko/src/compiler/parse/parse.dart';
+import 'package:piko/src/compiler/parse/read/expression.dart';
+import 'package:piko/src/compiler/parse/read/script.dart';
+import 'package:piko/src/compiler/parse/read/style.dart';
+import 'package:piko/src/compiler/utils/html.dart';
+import 'package:piko/src/compiler/utils/names.dart';
+import 'package:piko/src/compiler/utils/patterns.dart';
 
 extension TagParser on Parser {
   static const Map<String, String> metaTags = <String, String>{

@@ -1,11 +1,10 @@
 import 'package:analyzer/dart/ast/ast.dart' show Identifier;
-
-import '../../interface.dart';
-import '../../parse/errors.dart';
-import '../../utils/html.dart';
-import '../read/context.dart';
-import '../read/expression.dart';
-import '../parse.dart';
+import 'package:piko/src/compiler/interface.dart';
+import 'package:piko/src/compiler/parse/errors.dart';
+import 'package:piko/src/compiler/parse/parse.dart';
+import 'package:piko/src/compiler/parse/read/context.dart';
+import 'package:piko/src/compiler/parse/read/expression.dart';
+import 'package:piko/src/compiler/utils/html.dart';
 
 extension MustacheParser on Parser {
   static void trimWhitespace(Node block, bool trimBefore, bool trimAfter) {
@@ -56,6 +55,7 @@ extension MustacheParser on Parser {
 
     if (scan('/')) {
       var block = current;
+
       String? expected;
 
       if (closingTagOmitted(block.name)) {

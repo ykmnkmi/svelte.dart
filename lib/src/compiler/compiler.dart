@@ -1,1 +1,1 @@
-export 'parse/parse.dart' show parse;
+export 'package:piko/src/compiler/parse/parse.dart' show parse;

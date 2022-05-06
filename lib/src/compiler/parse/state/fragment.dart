@@ -1,7 +1,7 @@
-import '../parse.dart';
-import 'mustache.dart';
-import 'tag.dart';
-import 'text.dart';
+import 'package:piko/src/compiler/parse/parse.dart';
+import 'package:piko/src/compiler/parse/state/mustache.dart';
+import 'package:piko/src/compiler/parse/state/tag.dart';
+import 'package:piko/src/compiler/parse/state/text.dart';
 
 extension FragmentParser on Parser {
   void fragment() {
