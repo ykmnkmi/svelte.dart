@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io' show Directory, File;
 
 import 'package:collection/collection.dart' show MapEquality;
@@ -5,8 +6,6 @@ import 'package:piko/compiler.dart' show parse;
 import 'package:path/path.dart' show basename, join, normalize;
 import 'package:piko/src/compiler/parse/errors.dart' show CompileError;
 import 'package:test/test.dart';
-
-import '../helpers.dart';
 
 const MapEquality<Object?, Object?> mapEquality = MapEquality<Object?, Object?>();
 
@@ -27,7 +26,7 @@ void main() {
 
       try {
         current = parse(input).toJson();
-        expected = loadJSON(join(dir.path, 'output.json'));
+        expected = json.decode(File(join(dir.path, 'output.json')).readAsStringSync());
       } on CompileError catch (error) {
         skip = error.message;
       } catch (error) {

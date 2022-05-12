@@ -1,51 +1,52 @@
 import 'dart:math' show min;
 
-import 'package:analyzer/dart/analysis/utilities.dart';
+import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/listener.dart';
+import 'package:analyzer/source/line_info.dart';
+import 'package:analyzer/src/dart/scanner/scanner.dart';
+import 'package:analyzer/src/generated/parser.dart' as AST;
+import 'package:analyzer/src/string_source.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
 
 extension MustacheParser on Parser {
-  static const String prefix = 'void __expression() => ';
-
   Expression readExpression() {
-    var found = template.indexOf('}', index);
-    // is there expressions with length longer than 32 characters?
-    var source = found == -1 ? rest : template.substring(index, min(found + 32, length));
-    var result = parseString(content: prefix + source, throwIfDiagnostics: false);
+    var source = template.substring(index, length);
+    var errorListener = RecordingErrorListener();
+    var result = parseExpression(source, errorListener);
+    var errors = errorListener.errors;
 
-    var errors = List<AnalysisError>.of(result.errors);
-    errors.sort((a, b) => a.offset.compareTo(b.offset));
-
-    var analysisError = errors.removeAt(0);
-    var offset = sourceFile.getColumn(index);
-
-    if (analysisError.offset - offset < 0) {
-      error('parse-error', 'expression expected');
+    if (errors.isNotEmpty) {
+      Error.throwWithStackTrace(errorListener.errors.first, StackTrace.current);
     }
 
-    if (analysisError.message != 'Expected to find \';\'.') {
-      error('parse-error', analysisError.message);
-    }
+    // TODO: check syntax errors
+    // var analysisError = errors.removeAt(0);
+    // var offset = sourceFile.getColumn(index);
 
-    var declarations = result.unit.declarations;
+    // if (analysisError.offset - offset < 0) {
+    //   error('parse-error', 'expression expected');
+    // }
 
-    for (var error in errors) {
-      switch (error.message) {
-        case "Expected to find ';'.":
-        case 'Expected a method, getter, setter or operator declaration.':
-        case "Variables must be declared using the keywords 'const', 'final', 'var' or a type name.":
-        case 'Unterminated string literal.':
-          continue;
-        default:
-          throw error;
-      }
-    }
+    // if (analysisError.message != 'Expected to find \';\'.') {
+    //   error('parse-error', analysisError.message);
+    // }
 
-    var function = declarations.first as FunctionDeclaration;
-    var body = function.functionExpression.body as ExpressionFunctionBody;
-    var expression = body.expression;
-    index += expression.end - prefix.length;
-    return expression;
+    index += result.end;
+    return result;
+  }
+
+  static Expression parseExpression(String expression, [AnalysisErrorListener? errorListener]) {
+    errorListener ??= RecordingErrorListener();
+
+    var featureSet = FeatureSet.latestLanguageVersion();
+    var source = StringSource(expression, '<expression>');
+    var scanner = Scanner.fasta(source, errorListener);
+    scanner.configureFeatures(featureSetForOverriding: featureSet, featureSet: featureSet);
+
+    var token = scanner.tokenize();
+    var lineInfo = LineInfo(scanner.lineStarts);
+    var parser = AST.Parser(source, errorListener, featureSet: scanner.featureSet, lineInfo: lineInfo);
+    return parser.parseExpression(token);
   }
 }

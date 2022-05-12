@@ -101,7 +101,24 @@ class Node {
   @override
   String toString() {
     var buffer = StringBuffer(type);
-    // TODO: implement Node.toString()
+
+    if (data != null && data!.isNotEmpty) {
+      buffer
+        ..write(' \'')
+        ..write(data!.replaceAll('\'', '\\\''))
+        ..write('\'');
+    } else if (expression != null) {
+      buffer
+        ..write(' { ')
+        ..write(expression)
+        ..write(' }');
+    } else if (children != null && children!.isNotEmpty) {
+      buffer
+        ..write(' { ')
+        ..writeAll(children!, ', ')
+        ..write(' }');
+    }
+
     return buffer.toString();
   }
 }
