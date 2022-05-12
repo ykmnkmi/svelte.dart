@@ -1,126 +1,129 @@
 import 'package:analyzer/dart/ast/ast.dart' show CompilationUnit, Expression, Identifier;
 
-class Node {
-  factory Node.text({int? start, int? end, String data = '', String? raw}) {
-    return Node(start: start, end: end, type: 'Text', data: data, raw: raw ?? data);
-  }
-
-  Node({
-    this.start,
-    this.end,
-    required this.type,
-    this.name,
-    this.data,
-    this.raw,
-    this.library,
-    this.expression,
-    this.error,
-    this.intro,
-    this.outro,
-    this.elseIf,
-    this.elseNode,
-    this.index,
-    this.key,
-    this.context,
-    this.pendingNode,
-    this.thenNode,
-    this.catchNode,
-    this.skip,
-    this.modifiers,
-    this.attributes,
-    this.identifiers,
-    this.ignores,
-    this.children,
-  });
+abstract class Node {
+  Node({this.start, this.end, required this.type});
 
   int? start;
+
   int? end;
+
   String type;
-  String? name;
 
-  String? data;
-  String? raw;
-
-  CompilationUnit? library;
-  Expression? expression;
-  Expression? error;
-
-  bool? intro;
-  bool? outro;
-
-  bool? elseIf;
-  Node? elseNode;
-
-  String? index;
-  Expression? key;
-  Identifier? context;
-  Node? pendingNode;
-  Node? thenNode;
-  Node? catchNode;
-
-  bool? skip;
-
-  List<String>? modifiers;
-  List<Node>? attributes;
-  List<Identifier>? identifiers;
-  List<String>? ignores;
-  List<Node>? children;
-
-  Map<String, Object?> toJson([bool includePosition = true]) {
+  Map<String, Object?> toJson() {
     return <String, Object?>{
-      if (includePosition && start != null) 'start': start,
-      if (includePosition && end != null) 'end': end,
+      if (start != null) 'start': start,
+      if (end != null) 'end': end,
       'type': type,
-      if (name != null) 'name': name,
-      if (data != null) 'data': data,
-      if (data != null) 'raw': raw,
-      if (library != null) 'library': library.toString(),
-      if (expression != null) 'expression': expression.toString(),
-      if (error != null) 'error': error.toString(),
-      if (intro != null) 'intro': intro,
-      if (outro != null) 'outro': outro,
-      if (elseIf != null) 'elseif': elseIf,
-      if (elseNode != null) 'else': elseNode!.toJson(includePosition),
-      if (index != null) 'index': index,
-      if (key != null) 'key': key.toString(),
-      if (context != null) 'context': context.toString(),
-      if (pendingNode != null) 'pending': pendingNode!.toJson(includePosition),
-      if (thenNode != null) 'then': thenNode!.toJson(includePosition),
-      if (catchNode != null) 'catch': catchNode!.toJson(includePosition),
-      if (skip != null) 'skip': skip,
-      if (modifiers != null) 'modifiers': modifiers,
-      if (attributes != null)
-        'attributes': attributes!.map<Map<String, Object?>>((attribute) => attribute.toJson(includePosition)).toList(),
-      if (identifiers != null) 'identifiers': identifiers!.map<String>((identifier) => identifier.toString()).toList(),
-      if (ignores != null) 'ignores': ignores,
-      if (children != null)
-        'children': children!.map<Map<String, Object?>>((child) => child.toJson(includePosition)).toList(),
     };
   }
 
   @override
   String toString() {
-    var buffer = StringBuffer(type);
-
-    if (data != null && data!.isNotEmpty) {
-      buffer
-        ..write(' \'')
-        ..write(data!.replaceAll('\'', '\\\''))
-        ..write('\'');
-    } else if (expression != null) {
-      buffer
-        ..write(' { ')
-        ..write(expression)
-        ..write(' }');
-    } else if (children != null && children!.isNotEmpty) {
-      buffer
-        ..write(' { ')
-        ..writeAll(children!, ', ')
-        ..write(' }');
-    }
-
-    return buffer.toString();
+    return type;
   }
+}
+
+mixin NamedNode on Node {
+  abstract String? name;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+    json['name'] = name;
+    return json;
+  }
+
+  @override
+  String toString() {
+    return name == null ? super.toString() : '${super}.$name';
+  }
+}
+
+mixin DataNode on Node {
+  abstract String? data;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+    json['data'] = data;
+    return json;
+  }
+
+  @override
+  String toString() {
+    return data == null ? '${super} \'\'' : '${super} \'${data!.replaceAll('\'', '\\\'')} \'';
+  }
+}
+
+mixin ElseNode on Node {
+  abstract bool? elseIf;
+
+  abstract Node? elseNode;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+    json['elseIf'] = elseIf;
+    json['elseNode'] = elseNode;
+    return json;
+  }
+}
+
+mixin MultiChildNode on Node {
+  abstract List<Node> children;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+    json['children'] = children;
+    return json;
+  }
+
+  @override
+  String toString() {
+    return children.isEmpty ? super.toString() : '${super} { ${children.join(', ')} }';
+  }
+}
+
+class Text extends Node with DataNode {
+  Text({super.start, super.end, this.data, this.raw}) : super(type: 'Text');
+
+  @override
+  String? data;
+
+  String? raw;
+}
+
+class Comment extends Node with DataNode {
+  Comment({super.start, super.end, this.data, this.ignores}) : super(type: 'Comment');
+
+  @override
+  String? data;
+
+  List<String>? ignores;
+}
+
+class Fragment extends Node with MultiChildNode {
+  Fragment({super.start, super.end, required this.children}) : super(type: 'Fragment');
+
+  @override
+  List<Node> children;
+}
+
+class Script extends Node with DataNode {
+  Script({super.start, super.end, this.data, required this.library}) : super(type: 'Script');
+
+  @override
+  String? data;
+
+  CompilationUnit library;
+}
+
+class Style extends Node with DataNode {
+  Style({super.start, super.end, this.data}) : super(type: 'Style');
+
+  @override
+  String? data;
 }
 
 class AST {
@@ -134,12 +137,12 @@ class AST {
 
   Node? style;
 
-  Map<String, Object?> toJson([bool includePosition = true]) {
+  Map<String, Object?> toJson() {
     return <String, Object?>{
-      'html': html.toJson(includePosition),
-      if (instance != null) 'instance': instance!.toJson(includePosition),
-      if (module != null) 'module': module!.toJson(includePosition),
-      if (style != null) 'style': style!.toJson(includePosition),
+      'html': html.toJson(),
+      if (instance != null) 'instance': instance!.toJson(),
+      if (module != null) 'module': module!.toJson(),
+      if (style != null) 'style': style!.toJson(),
     };
   }
 
@@ -168,4 +171,71 @@ abstract class Visitor {
   void enter(Node node) {}
 
   void leave(Node node) {}
+}
+
+class CommonNode {
+  CommonNode(
+      {this.name,
+      this.library,
+      this.expression,
+      this.error,
+      this.intro,
+      this.outro,
+      this.index,
+      this.key,
+      this.context,
+      this.pendingNode,
+      this.thenNode,
+      this.catchNode,
+      this.skip,
+      this.modifiers,
+      this.attributes,
+      this.identifiers,
+      this.ignores});
+
+  String? name;
+
+  CompilationUnit? library;
+  Expression? expression;
+  Expression? error;
+
+  bool? intro;
+  bool? outro;
+
+  String? index;
+  Expression? key;
+  Identifier? context;
+  Node? pendingNode;
+  Node? thenNode;
+  Node? catchNode;
+
+  bool? skip;
+
+  List<String>? modifiers;
+  List<Node>? attributes;
+  List<Identifier>? identifiers;
+  List<String>? ignores;
+
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      if (name != null) 'name': name,
+      if (library != null) 'library': library.toString(),
+      if (expression != null) 'expression': expression.toString(),
+      if (error != null) 'error': error.toString(),
+      if (intro != null) 'intro': intro,
+      if (outro != null) 'outro': outro,
+      if (index != null) 'index': index,
+      if (key != null) 'key': key.toString(),
+      if (context != null) 'context': context.toString(),
+      if (pendingNode != null) 'pending': pendingNode!.toJson(),
+      if (thenNode != null) 'then': thenNode!.toJson(),
+      if (catchNode != null) 'catch': catchNode!.toJson(),
+      if (skip != null) 'skip': skip,
+      if (modifiers != null) 'modifiers': modifiers,
+      if (attributes != null)
+        'attributes': attributes!.map<Map<String, Object?>>((attribute) => attribute.toJson()).toList(),
+      if (identifiers != null) 'identifiers': identifiers!.map<String>((identifier) => identifier.toString()).toList(),
+      if (ignores != null) 'ignores': ignores,
+    };
+  }
 }

@@ -78,9 +78,7 @@ extension TagParser on Parser {
     if (scan('!--')) {
       var data = readUntil('-->');
       expect('-->', onError: unclosedComment);
-
-      var node = Node(start: start, end: index, type: 'Comment', data: data, ignores: <String>[]);
-      current.children!.add(node);
+      addNode(Comment(start: start, end: index, data: data));
       return;
     }
 
@@ -94,9 +92,16 @@ extension TagParser on Parser {
         slug = slug.toLowerCase();
 
         if (isClosingTag) {
+          var current = this.current;
+
+          if (current is! MultiChildNode) {
+            // TODO(errors): add error
+            throw StateError('current is not multi child node');
+          }
+
           var children = current.children;
 
-          if ((name == 'svelte:window' || name == 'svelte:body') && children != null && children.isNotEmpty) {
+          if ((name == 'svelte:window' || name == 'svelte:body') && children.isNotEmpty) {
             invalidElementContent(slug, name, children.first.start);
           }
         } else {

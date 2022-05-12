@@ -8,16 +8,15 @@ import 'package:piko/src/compiler/utils/html.dart';
 
 extension MustacheParser on Parser {
   static void trimWhitespace(Node block, bool trimBefore, bool trimAfter) {
-    var children = block.children;
-
-    if (children == null || children.isEmpty) {
+    if (block is! MultiChildNode || block.children.isEmpty) {
       return;
     }
 
+    var children = block.children;
     var first = children.first;
     var last = children.last;
 
-    if (trimBefore && first.type == 'Text') {
+    if (trimBefore && first is Text) {
       var data = (first.data as String).trimLeft();
 
       if (data.isEmpty) {
@@ -27,7 +26,7 @@ extension MustacheParser on Parser {
       }
     }
 
-    if (trimAfter && last.type == 'Text') {
+    if (trimAfter && last is Text) {
       var data = (last.data as String).trimRight();
 
       if (data.isEmpty) {
@@ -37,13 +36,11 @@ extension MustacheParser on Parser {
       }
     }
 
-    var elseNode = block.elseNode;
-
-    if (elseNode != null) {
-      trimWhitespace(elseNode, trimBefore, trimAfter);
+    if (block is ElseNode && block.elseNode != null) {
+      trimWhitespace(block.elseNode!, trimBefore, trimAfter);
     }
 
-    if (first.elseIf == true) {
+    if (first is ElseNode && first.elseIf == true) {
       trimWhitespace(first, trimBefore, trimAfter);
     }
   }
@@ -58,7 +55,7 @@ extension MustacheParser on Parser {
 
       String? expected;
 
-      if (closingTagOmitted(block.name)) {
+      if (block is NamedNode && closingTagOmitted(block.name)) {
         block.end = start;
         stack.removeLast();
         block = current;
@@ -89,11 +86,15 @@ extension MustacheParser on Parser {
       allowWhitespace();
       expect('}');
 
-      while (block.elseIf == true) {
+      while (block is ElseNode && block.elseIf == true) {
+        var current = stack.removeLast();
+
+        if (current is ElseNode && current.elseNode != null) {
+          current.elseNode!.end = start;
+        }
+
         block.end = index;
-        stack.removeLast();
         block = current;
-        block.elseNode?.end = start;
       }
 
       // TODO: check range

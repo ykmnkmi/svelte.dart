@@ -13,7 +13,7 @@ extension StyleParser on Parser {
 
     if (scan(closeRe)) {
       // TODO(style): parse and tidy up AST
-      scripts.add(Node(start: start, end: index, type: 'Style', data: data));
+      styles.add(Style(start: start, end: index, data: data));
       return;
     }
 

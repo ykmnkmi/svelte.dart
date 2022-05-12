@@ -22,8 +22,7 @@ extension TextParser on Parser {
       data = template.substring(start, found);
     }
 
-    var node = Node.text(start: start, end: found, data: data);
-    current.children!.add(node);
+    addNode(Text(start: start, end: found, data: data));
     index = found;
   }
 }

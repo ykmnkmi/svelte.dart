@@ -33,13 +33,13 @@ extension ScriptParser on Parser {
       invalidScriptContextAttribute(context.start);
     }
 
-    var value = children.first.data;
+    var first = children.first;
 
-    if (value == null || value != 'module') {
-      invalidScriptContextValue(context.start);
+    if (first is DataNode && first.data == 'module') {
+      return 'module';
     }
 
-    return value;
+    invalidScriptContextValue(context.start);
   }
 
   void script(int start, List<Node>? attributes) {
@@ -50,7 +50,7 @@ extension ScriptParser on Parser {
       var context = getContext(attributes);
       var source = template.substring(0, start).replaceAll(allRe, ' ') + data;
       var result = parseString(content: source);
-      var node = Node(start: start, end: index, type: 'Script', data: context, library: result.unit);
+      var node = Script(start: start, end: index, data: context, library: result.unit);
       scripts.add(node);
       return;
     }

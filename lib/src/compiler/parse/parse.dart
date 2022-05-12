@@ -21,8 +21,8 @@ class Parser {
         sourceFile = SourceFile.fromString(template, url: sourceUrl),
         metaTags = <String>{},
         stack = <Node>[],
-        html = Node(type: 'Fragment', children: <Node>[]),
-        scripts = <Node>[],
+        html = Fragment(children: <Node>[]),
+        scripts = <Script>[],
         styles = <Node>[],
         index = 0 {
     stack.add(html);
@@ -33,7 +33,7 @@ class Parser {
 
     var children = html.children;
 
-    if (children != null && children.isNotEmpty) {
+    if (children.isNotEmpty) {
       var nonWhitespace = RegExp('\\S+');
       var start = children.first.start ?? 0;
       var index = template.indexOf(nonWhitespace, start);
@@ -61,9 +61,9 @@ class Parser {
 
   final List<Node> stack;
 
-  final Node html;
+  final Fragment html;
 
-  final List<Node> scripts;
+  final List<Script> scripts;
 
   final List<Node> styles;
 
@@ -81,6 +81,17 @@ class Parser {
 
   Node get current {
     return stack.last;
+  }
+
+  void addNode(Node node) {
+    var current = this.current;
+
+    if (current is! MultiChildNode) {
+      // TODO(errors): add error
+      throw StateError('current is not multi child node');
+    }
+
+    current.children.add(node);
   }
 
   void allowWhitespace({bool require = false}) {
