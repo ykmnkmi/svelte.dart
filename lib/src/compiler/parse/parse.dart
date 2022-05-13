@@ -88,7 +88,7 @@ class Parser {
 
     if (current is! MultiChildNode) {
       // TODO(errors): add error
-      throw StateError('current is not multi child node');
+      throw StateError('${current.runtimeType} is not multi child node');
     }
 
     current.children.add(node);

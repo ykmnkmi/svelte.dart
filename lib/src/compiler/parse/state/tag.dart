@@ -176,7 +176,7 @@ extension TagParser on Parser {
 
     var uniqueNames = <String>{};
 
-    while (readAttribute(element, uniqueNames)) {
+    while (readAttributeOrDirective(element, uniqueNames)) {
       allowWhitespace();
     }
 
@@ -284,7 +284,7 @@ extension TagParser on Parser {
     return name;
   }
 
-  bool readAttribute(Element element, Set<String> uniqueNames) {
+  bool readAttributeOrDirective(Element element, Set<String> uniqueNames) {
     var start = index;
 
     void checkUnique(String name) {
@@ -346,7 +346,7 @@ extension TagParser on Parser {
 
     if (scan('=')) {
       allowWhitespace();
-      values = readAttributeValues();
+      values = readAttributeOrDirectiveValues();
       end = index;
     } else if (match(RegExp('["\']'))) {
       unexpectedToken('=', start);
@@ -360,9 +360,9 @@ extension TagParser on Parser {
         emptyDirectiveName(type, start + colonIndex + 1);
       }
 
-      if (type == 'Binding' || directiveName != 'this') {
+      if (type == 'Binding' && directiveName != 'this') {
         checkUnique(directiveName);
-      } else if (type != 'Eventhandler' || type != 'Action') {
+      } else if (type != 'EventHandler' && type != 'Action') {
         checkUnique(directiveName);
       }
 
@@ -370,10 +370,8 @@ extension TagParser on Parser {
         invalidRefDirective(name, start);
       }
 
-      if (values != null && values.isNotEmpty) {
-        if (values.length > 1 || values.first.type == 'Text') {
-          invalidDirectiveValue(values.first.start);
-        }
+      if (values != null && (values.length > 1 || values.first is Text)) {
+        invalidDirectiveValue(values.first.start);
       }
 
       var directive = Directive(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
@@ -407,7 +405,7 @@ extension TagParser on Parser {
     return true;
   }
 
-  List<Node> readAttributeValues() {
+  List<Node> readAttributeOrDirectiveValues() {
     var quoteMark = read(RegExp('["\']'));
 
     if (quoteMark != null && scan(quoteMark)) {

@@ -99,12 +99,9 @@ extension MustacheParser on Parser {
         block = current;
       }
 
-      // TODO: check range
-      var charBefore = template[block.start! - 1];
-      var charAfter = template[index];
       var whitespace = RegExp('\\s');
-      var trimBefore = whitespace.hasMatch(charBefore);
-      var trimAfter = whitespace.hasMatch(charAfter);
+      var trimBefore = block.start! == 0 || block.start! > 0 && whitespace.hasMatch(template[block.start! - 1]);
+      var trimAfter = index == length || index < length && whitespace.hasMatch(template[index]);
       trimWhitespace(block, trimBefore, trimAfter);
       block.end = index;
       stack.removeLast();
@@ -202,10 +199,7 @@ extension MustacheParser on Parser {
       }
 
       stack.add(newBlock);
-      return;
-    }
-
-    if (scan('#')) {
+    } else if (scan('#')) {
       Node Function({int? start, int? end, Expression? expression}) factory;
 
       if (scan('if')) {
@@ -306,21 +300,14 @@ extension MustacheParser on Parser {
           ..start = index
           ..skip = false;
       }
-
-      return;
-    }
-
-    if (scan('@html')) {
+    } else if (scan('@html')) {
       allowWhitespace(require: true);
 
       var expression = readExpression();
       allowWhitespace();
       expect('}');
       addNode(RawMustache(start: start, end: index, expression: expression));
-      return;
-    }
-
-    if (scan('@debug')) {
+    } else if (scan('@debug')) {
       allowWhitespace();
 
       List<Identifier> identifiers;
@@ -340,12 +327,11 @@ extension MustacheParser on Parser {
       }
 
       addNode(Debug(start: start, end: index, identifiers: identifiers));
-      return;
+    } else {
+      var expression = readExpression();
+      allowWhitespace();
+      expect('}');
+      addNode(Mustache(start: start, end: index, expression: expression));
     }
-
-    var expression = readExpression();
-    allowWhitespace();
-    expect('}');
-    addNode(Mustache(start: start, end: index, expression: expression));
   }
 }

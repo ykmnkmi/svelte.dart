@@ -1,5 +1,3 @@
-import 'dart:math' show min;
-
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/listener.dart';
@@ -13,40 +11,33 @@ extension MustacheParser on Parser {
   Expression readExpression() {
     var source = template.substring(index, length);
     var errorListener = RecordingErrorListener();
-    var result = parseExpression(source, errorListener);
+    var result = parseExpression(index, source, errorListener);
     var errors = errorListener.errors;
 
-    if (errors.isNotEmpty) {
-      Error.throwWithStackTrace(errorListener.errors.first, StackTrace.current);
+    for (var error in errors) {
+      if (index + error.offset <= result.end) {
+        // TODO(error): update
+        // error('parse-error', analysisError.message);
+        Error.throwWithStackTrace(error, StackTrace.current);
+      }
     }
 
-    // TODO: check syntax errors
-    // var analysisError = errors.removeAt(0);
-    // var offset = sourceFile.getColumn(index);
-
-    // if (analysisError.offset - offset < 0) {
-    //   error('parse-error', 'expression expected');
-    // }
-
-    // if (analysisError.message != 'Expected to find \';\'.') {
-    //   error('parse-error', analysisError.message);
-    // }
-
-    index += result.end;
+    index = result.end;
     return result;
   }
 
-  static Expression parseExpression(String expression, [AnalysisErrorListener? errorListener]) {
+  static Expression parseExpression(int offset, String expression, [AnalysisErrorListener? errorListener]) {
     errorListener ??= RecordingErrorListener();
 
     var featureSet = FeatureSet.latestLanguageVersion();
     var source = StringSource(expression, '<expression>');
-    var scanner = Scanner.fasta(source, errorListener);
+    var scanner = Scanner.fasta(source, errorListener, offset: offset - 1);
     scanner.configureFeatures(featureSetForOverriding: featureSet, featureSet: featureSet);
 
     var token = scanner.tokenize();
     var lineInfo = LineInfo(scanner.lineStarts);
     var parser = AST.Parser(source, errorListener, featureSet: scanner.featureSet, lineInfo: lineInfo);
-    return parser.parseExpression(token);
+    parser.currentToken = token;
+    return parser.parsePrimaryExpression();
   }
 }

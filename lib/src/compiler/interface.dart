@@ -1,4 +1,14 @@
-import 'package:analyzer/dart/ast/ast.dart' show CompilationUnit, Expression, Identifier;
+import 'package:analyzer/dart/ast/ast.dart'
+    show
+        ArgumentList,
+        AstNode,
+        CompilationUnit,
+        Expression,
+        Identifier,
+        MethodInvocation,
+        SimpleIdentifier,
+        SimpleStringLiteral;
+import 'package:analyzer/dart/ast/visitor.dart';
 
 typedef NodeFactory = Node Function({int? start, int? end});
 
@@ -75,7 +85,7 @@ mixin ExpressionNode on Node {
 
     // TODO(json): convert
     if (expression != null) {
-      json['expression'] = expression!.toString();
+      json['expression'] = expression!.accept(const ToJsonVisitor());
     }
 
     return json;
@@ -171,7 +181,7 @@ mixin ErrorNode on Node {
     var json = super.toJson();
 
     if (error != null) {
-      json['error'] = error!.toString();
+      json['error'] = error!.accept(const ToJsonVisitor());
     }
 
     return json;
@@ -414,8 +424,8 @@ class ElseBlock extends Node with MultiChildNode {
   List<Node> children;
 }
 
-class EachBlock extends Node with ExpressionNode {
-  EachBlock({super.start, super.end, this.expression, this.context, this.key}) : super(type: 'EachBlock');
+class EachBlock extends Node with ExpressionNode, MultiChildNode {
+  EachBlock({super.start, super.end, this.expression, this.context, this.key}) : children = <Node>[], super(type: 'EachBlock');
 
   @override
   Expression? expression;
@@ -427,11 +437,14 @@ class EachBlock extends Node with ExpressionNode {
   Expression? key;
 
   @override
+  List<Node> children;
+
+  @override
   Map<String, Object?> toJson() {
     var json = super.toJson();
 
     if (context != null) {
-      json['context'] = context!.toSource();
+      json['context'] = context!.accept(const ToJsonVisitor());
     }
 
     if (index != null) {
@@ -439,7 +452,7 @@ class EachBlock extends Node with ExpressionNode {
     }
 
     if (key != null) {
-      json['key'] = key!.toSource();
+      json['key'] = key!.accept(const ToJsonVisitor());
     }
 
     return json;
@@ -502,7 +515,8 @@ class Debug extends Node {
   @override
   Map<String, Object?> toJson() {
     var json = super.toJson();
-    json['identifiers'] = identifiers.map<String>((identifier) => identifier.toString()).toList();
+    json['identifiers'] =
+        identifiers.map<Map<String, Object?>?>((identifier) => identifier.accept(const ToJsonVisitor())).toList();
     return json;
   }
 }
@@ -514,13 +528,6 @@ class Script extends Node with DataNode {
   String data;
 
   CompilationUnit library;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-    json['library'] = library.toString();
-    return json;
-  }
 }
 
 class Style extends Node with DataNode {
@@ -575,4 +582,52 @@ abstract class Visitor {
   void enter(Node node) {}
 
   void leave(Node node) {}
+}
+
+class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
+  const ToJsonVisitor();
+
+  Map<String, Object?> getLocation(AstNode node) {
+    return <String, Object?>{
+      'start': node.offset,
+      'end': node.end,
+    };
+  }
+
+  @override
+  Map<String, Object?>? visitArgumentList(ArgumentList node) {
+    return <String, Object?>{
+      'type': 'ArgumentList',
+      ...getLocation(node),
+      'arguments': <Map<String, Object?>?>[for (var argument in node.arguments) argument.accept(this)],
+    };
+  }
+
+  @override
+  Map<String, Object?> visitMethodInvocation(MethodInvocation node) {
+    return <String, Object?>{
+      'type': 'MethodInvocation',
+      ...getLocation(node),
+      'methodName': node.methodName.accept(this),
+      'argumentList': node.argumentList.accept(this),
+    };
+  }
+
+  @override
+  Map<String, Object?>? visitSimpleIdentifier(SimpleIdentifier node) {
+    return <String, Object?>{
+      'type': 'SimpleIdentifier',
+      ...getLocation(node),
+      'name': node.name,
+    };
+  }
+
+  @override
+  Map<String, Object?>? visitSimpleStringLiteral(SimpleStringLiteral node) {
+    return <String, Object?>{
+      'type': 'SimpleStringLiteral',
+      ...getLocation(node),
+      'value': node.value,
+    };
+  }
 }
