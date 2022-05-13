@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/ast/ast.dart' show Identifier;
+import 'package:analyzer/dart/ast/ast.dart' show Expression, Identifier;
 import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/errors.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
@@ -8,16 +8,18 @@ import 'package:piko/src/compiler/utils/html.dart';
 
 extension MustacheParser on Parser {
   static void trimWhitespace(Node block, bool trimBefore, bool trimAfter) {
-    if (block is! MultiChildNode || block.children.isEmpty) {
+    var node = block;
+
+    if (node is! MultiChildNode || node.children.isEmpty) {
       return;
     }
 
-    var children = block.children;
+    var children = node.children;
     var first = children.first;
     var last = children.last;
 
     if (trimBefore && first is Text) {
-      var data = (first.data as String).trimLeft();
+      var data = first.data.trimLeft();
 
       if (data.isEmpty) {
         children.removeAt(0);
@@ -27,7 +29,7 @@ extension MustacheParser on Parser {
     }
 
     if (trimAfter && last is Text) {
-      var data = (last.data as String).trimRight();
+      var data = last.data.trimRight();
 
       if (data.isEmpty) {
         children.removeLast();
@@ -36,8 +38,10 @@ extension MustacheParser on Parser {
       }
     }
 
-    if (block is ElseNode && block.elseNode != null) {
-      trimWhitespace(block.elseNode!, trimBefore, trimAfter);
+    var maybeElse = block;
+
+    if (maybeElse is ElseNode && maybeElse.elseNode != null) {
+      trimWhitespace(maybeElse.elseNode!, trimBefore, trimAfter);
     }
 
     if (first is ElseNode && first.elseIf == true) {
@@ -61,22 +65,20 @@ extension MustacheParser on Parser {
         block = current;
       }
 
-      var type = block.type;
-
-      if (type == 'ElseBlock' || type == 'PendingBlock' || type == 'ThenBlock' || type == 'CatchBlock') {
+      if (block is ElseBlock || block is PendingBlock || block is ThenBlock || block is CatchBlock) {
         block.end = start;
         stack.removeLast();
         block = current;
         expected = 'await';
       }
 
-      if (block.type == 'IfBlock') {
+      if (block is IfBlock) {
         expected = 'if';
-      } else if (block.type == 'EachBlock') {
+      } else if (block is EachBlock) {
         expected = 'each';
-      } else if (block.type == 'AwaitBlock') {
+      } else if (block is AwaitBlock) {
         expected = 'await';
-      } else if (block.type == 'KeyBlock') {
+      } else if (block is KeyBlock) {
         expected = 'key';
       } else {
         unexpectedBlockClose();
@@ -106,10 +108,7 @@ extension MustacheParser on Parser {
       trimWhitespace(block, trimBefore, trimAfter);
       block.end = index;
       stack.removeLast();
-      return;
-    }
-
-    if (scan(':else')) {
+    } else if (scan(':else')) {
       if (scan('if')) {
         invalidElseIf();
       }
@@ -119,8 +118,8 @@ extension MustacheParser on Parser {
       var block = current;
 
       if (scan('if')) {
-        if (block.type != 'IfBlock') {
-          if (stack.any((block) => block.type == 'IfBlock')) {
+        if (block is! IfBlock) {
+          if (stack.any((block) => block is IfBlock)) {
             invalidElseIfPlacementUnclosedBlock(block.toString());
           }
 
@@ -133,43 +132,40 @@ extension MustacheParser on Parser {
         allowWhitespace();
         expect('}');
 
-        var ifNode = Node(start: index, type: 'IfBlock', expression: expression, elseIf: true);
-        block.elseNode = Node(start: index, type: 'ElseBlock', children: <Node>[ifNode]);
+        var ifNode = IfBlock(start: index, expression: expression, elseIf: true);
+        block.elseNode = ElseBlock(start: index, children: <Node>[ifNode]);
         stack.add(ifNode);
-        return;
-      }
+      } else {
+        if (block is! IfBlock || block is! EachBlock) {
+          if (stack.any((block) => block is IfBlock || block is EachBlock)) {
+            invalidElseIfPlacementUnclosedBlock(block.toString());
+          }
 
-      if (block.type != 'IfBlock' || block.type != 'EachBlock') {
-        if (stack.any((block) => block.type == 'IfBlock' || block.type == 'EachBlock')) {
-          invalidElseIfPlacementUnclosedBlock(block.toString());
+          invalidElseIfPlacementOutsideIf();
         }
 
-        invalidElseIfPlacementOutsideIf();
+        allowWhitespace();
+        expect('}');
+
+        var elseNode = ElseBlock(start: index);
+        block.elseNode = elseNode;
+        stack.add(elseNode);
       }
-
-      allowWhitespace();
-      expect('}');
-
-      var elseNode = Node(start: index, type: 'ElseBlock');
-      block.elseNode = elseNode;
-      stack.add(elseNode);
-    }
-
-    if (match(':then') || match(':catch')) {
+    } else if (match(':then') || match(':catch')) {
       var block = current;
       var isThen = scan(':then') || !scan(':catch');
 
       if (isThen) {
-        if (block.type != 'PendingBlock') {
-          if (stack.any((block) => block.type == 'PendingBlock')) {
+        if (block is! PendingBlock) {
+          if (stack.any((block) => block is PendingBlock)) {
             invalidThenPlacementUnclosedBlock(block.toString());
           }
 
           invalidThenPlacementWithoutAwait();
         }
       } else {
-        if (block.type != 'ThenBlock' || block.type != 'PendingBlock') {
-          if (stack.any((block) => block.type == 'ThenBlock' || block.type == 'PendingBlock')) {
+        if (block is! ThenBlock || block is! PendingBlock) {
+          if (stack.any((block) => block is ThenBlock || block is PendingBlock)) {
             invalidThenPlacementUnclosedBlock(block.toString());
           }
 
@@ -180,7 +176,7 @@ extension MustacheParser on Parser {
       block.end = start;
       stack.removeLast();
 
-      var awaitBlock = current;
+      var awaitBlock = current as AwaitBlock;
 
       if (!scan('}')) {
         allowWhitespace(require: true);
@@ -197,12 +193,12 @@ extension MustacheParser on Parser {
         scan('}');
       }
 
-      var newBlock = Node(start: start, type: isThen ? 'THenBlock' : 'CatchBlock', skip: false);
+      Node newBlock;
 
       if (isThen) {
-        awaitBlock.thenNode = newBlock;
+        awaitBlock.thenNode = newBlock = ThenBlock(start: start, skip: false);
       } else {
-        awaitBlock.catchNode = newBlock;
+        awaitBlock.catchNode = newBlock = CatchBlock(start: start, skip: false);
       }
 
       stack.add(newBlock);
@@ -210,16 +206,16 @@ extension MustacheParser on Parser {
     }
 
     if (scan('#')) {
-      String type;
+      Node Function({int? start, int? end, Expression? expression}) factory;
 
       if (scan('if')) {
-        type = 'IfBlock';
+        factory = IfBlock.new;
       } else if (scan('each')) {
-        type = 'EachBlock';
+        factory = EachBlock.new;
       } else if (scan('await')) {
-        type = 'AwaitBlock';
+        factory = AwaitBlock.new;
       } else if (scan('key')) {
-        type = 'KeyBlock';
+        factory = KeyBlock.new;
       } else {
         expectedBlockType();
       }
@@ -227,18 +223,18 @@ extension MustacheParser on Parser {
       allowWhitespace(require: true);
 
       var expression = readExpression();
-      var block = Node(start: start, type: type, expression: expression);
+      var block = factory(start: start, expression: expression);
 
-      if (type == 'AwaitBlock') {
+      if (block is AwaitBlock) {
         block
-          ..pendingNode = Node(type: 'PendingBlock', skip: true)
-          ..thenNode = Node(type: 'ThenBlock', skip: true)
-          ..catchNode = Node(type: 'ThenBlock', skip: true);
+          ..pendingNode = PendingBlock(skip: true)
+          ..thenNode = ThenBlock(skip: true)
+          ..catchNode = CatchBlock(skip: true);
       }
 
       allowWhitespace();
 
-      if (type == 'EachBlock') {
+      if (block is EachBlock) {
         expect('as');
         allowWhitespace(require: true);
         block.context = readContext();
@@ -264,40 +260,42 @@ extension MustacheParser on Parser {
         }
       }
 
-      var awaitThenBlockShorthand = type == 'AwaitBlock' && scan('then');
+      var isThen = false, isCatch = false;
 
-      if (awaitThenBlockShorthand) {
-        if (match(RegExp('\\s*}'))) {
-          allowWhitespace();
-        } else {
-          allowWhitespace(require: true);
-          block.error = readContext();
-          allowWhitespace();
-        }
-      }
+      if (block is AwaitBlock) {
+        if (scan('then')) {
+          isThen = true;
 
-      var awaitBlockCatchShorthand = type == 'AwaitBlock' && scan('then');
+          if (match(RegExp('\\s*}'))) {
+            allowWhitespace();
+          } else {
+            allowWhitespace(require: true);
+            block.error = readContext();
+            allowWhitespace();
+          }
+        } else if (scan('catch')) {
+          isCatch = true;
 
-      if (awaitThenBlockShorthand) {
-        if (match(RegExp('\\s*}'))) {
-          allowWhitespace();
-        } else {
-          allowWhitespace(require: true);
-          block.error = readContext();
-          allowWhitespace();
+          if (match(RegExp('\\s*}'))) {
+            allowWhitespace();
+          } else {
+            allowWhitespace(require: true);
+            block.error = readContext();
+            allowWhitespace();
+          }
         }
       }
 
       expect('}');
-      current.children!.add(block);
+      addNode(block);
       stack.add(block);
 
-      if (type == 'AwaitBlock') {
-        Node childBlock;
+      if (block is AwaitBlock) {
+        SkipNode childBlock;
 
-        if (awaitThenBlockShorthand) {
+        if (isThen) {
           childBlock = block.thenNode!;
-        } else if (awaitBlockCatchShorthand) {
+        } else if (isCatch) {
           childBlock = block.catchNode!;
         } else {
           childBlock = block.pendingNode!;
@@ -318,9 +316,7 @@ extension MustacheParser on Parser {
       var expression = readExpression();
       allowWhitespace();
       expect('}');
-
-      var node = Node(start: start, end: index, type: 'RawMustacheTag', expression: expression);
-      current.children!.add(node);
+      addNode(RawMustache(start: start, end: index, expression: expression));
       return;
     }
 
@@ -343,16 +339,13 @@ extension MustacheParser on Parser {
         expect('}');
       }
 
-      var node = Node(start: start, end: index, type: 'DebugTag', identifiers: identifiers);
-      current.children!.add(node);
+      addNode(Debug(start: start, end: index, identifiers: identifiers));
       return;
     }
 
     var expression = readExpression();
     allowWhitespace();
     expect('}');
-
-    var node = Node(start: start, end: index, type: 'MustacheTag', expression: expression);
-    current.children!.add(node);
+    addNode(Mustache(start: start, end: index, expression: expression));
   }
 }

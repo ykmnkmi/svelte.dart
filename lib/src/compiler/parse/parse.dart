@@ -21,9 +21,9 @@ class Parser {
         sourceFile = SourceFile.fromString(template, url: sourceUrl),
         metaTags = <String>{},
         stack = <Node>[],
-        html = Fragment(children: <Node>[]),
+        html = Fragment(),
         scripts = <Script>[],
-        styles = <Node>[],
+        styles = <Style>[],
         index = 0 {
     stack.add(html);
 
@@ -65,7 +65,7 @@ class Parser {
 
   final List<Script> scripts;
 
-  final List<Node> styles;
+  final List<Style> styles;
 
   int index;
 

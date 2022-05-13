@@ -9,12 +9,12 @@ extension ScriptParser on Parser {
 
   static final RegExp allRe = compile(r'[^\n]');
 
-  String getContext(List<Node>? attributes) {
+  String getContext(List<Attribute>? attributes) {
     if (attributes == null) {
       return 'default';
     }
 
-    Node? context;
+    Attribute? context;
 
     for (var attribute in attributes) {
       if (attribute.name == 'context') {
@@ -29,7 +29,7 @@ extension ScriptParser on Parser {
 
     var children = context.children;
 
-    if (children == null || children.length != 1 || children.first.type != 'Text') {
+    if (children.length != 1 || children.first is! Text) {
       invalidScriptContextAttribute(context.start);
     }
 
@@ -42,7 +42,7 @@ extension ScriptParser on Parser {
     invalidScriptContextValue(context.start);
   }
 
-  void script(int start, List<Node>? attributes) {
+  void script(int start, List<Attribute>? attributes) {
     var data = readUntil(closeRe, unclosedScript);
 
     // TODO(error): handle

@@ -11,11 +11,11 @@ import 'package:piko/src/compiler/utils/names.dart';
 import 'package:piko/src/compiler/utils/patterns.dart';
 
 extension TagParser on Parser {
-  static const Map<String, String> metaTags = <String, String>{
-    'svelte:head': 'Head',
-    'svelte:options': 'Options',
-    'svelte:window': 'Window',
-    'svelte:body': 'Body',
+  static const Map<String, ElementFactory> metaTags = <String, ElementFactory>{
+    'svelte:head': Head.new,
+    'svelte:options': Options.new,
+    'svelte:window': Window.new,
+    'svelte:body': Body.new,
   };
 
   static const Set<String> validMetaTags = <String>{
@@ -86,55 +86,53 @@ extension TagParser on Parser {
     var name = readTagName();
 
     if (metaTags.containsKey(name)) {
-      var slug = metaTags[name];
+      var slug = name.substring('svelte:'.length);
 
-      if (slug != null) {
-        slug = slug.toLowerCase();
+      if (isClosingTag) {
+        var current = this.current;
 
-        if (isClosingTag) {
-          var current = this.current;
-
-          if (current is! MultiChildNode) {
-            // TODO(errors): add error
-            throw StateError('current is not multi child node');
-          }
-
-          var children = current.children;
-
-          if ((name == 'svelte:window' || name == 'svelte:body') && children.isNotEmpty) {
-            invalidElementContent(slug, name, children.first.start);
-          }
-        } else {
-          if (this.metaTags.contains(name)) {
-            duplicateElement(slug, name, start);
-          }
-
-          if (stack.length > 1) {
-            invalidElementPlacement(slug, name, start);
-          }
-
-          this.metaTags.add(name);
+        if (current is! MultiChildNode) {
+          // TODO(errors): add error
+          throw StateError('current is not multi child node');
         }
+
+        var children = current.children;
+
+        if ((name == 'svelte:window' || name == 'svelte:body') && children.isNotEmpty) {
+          invalidElementContent(slug, name, children.first.start);
+        }
+      } else {
+        if (this.metaTags.contains(name)) {
+          duplicateElement(slug, name, start);
+        }
+
+        if (stack.length > 1) {
+          invalidElementPlacement(slug, name, start);
+        }
+
+        this.metaTags.add(name);
       }
     }
 
     var type = metaTags[name];
+    Element element;
 
     if (type == null) {
       if (RegExp('^[A-Z]').hasMatch(name) || name == 'svelte:self' || name == 'svelte:component') {
-        type = 'InlineComponent';
+        element = InlineComponent(start: start);
       } else if (name == 'svelte:fragment') {
-        type = 'SlotTemplate';
+        element = SlotTemplate(start: start);
       } else if (name == 'title' && parentIsHead()) {
-        type = 'Title';
+        element = Title(start: start);
       } else if (name == 'slot') {
-        type = 'Slot';
+        element = Slot(start: start);
       } else {
-        type = 'Element';
+        element = Element(start: start, name: name);
       }
+    } else {
+      element = type(start: start);
     }
 
-    var element = Node(start: start, type: type, name: name, attributes: <Node>[], children: <Node>[]);
     allowWhitespace();
 
     if (isClosingTag) {
@@ -146,7 +144,7 @@ extension TagParser on Parser {
 
       var lastClosedTag = lastAutoClosedTag;
 
-      while (parent.name != name) {
+      while (parent is NamedNode && parent.name != name) {
         if (parent.type != 'Element') {
           if (lastClosedTag != null && lastClosedTag.tag == name) {
             invalidClosingTagAutoclosed(name, lastClosedTag.reason, start);
@@ -170,44 +168,44 @@ extension TagParser on Parser {
       return;
     }
 
-    if (closingTagOmitted(parent.name, name)) {
+    if (parent is NamedNode && closingTagOmitted(parent.name, name)) {
       parent.end = start;
       stack.removeLast();
       lastAutoClosedTag = LastAutoClosedTag(name, name, stack.length);
     }
 
     var uniqueNames = <String>{};
-    var attribute = readAttribute(uniqueNames);
 
-    while (attribute != null) {
-      element.attributes!.add(attribute);
+    while (readAttribute(element, uniqueNames)) {
       allowWhitespace();
-      attribute = readAttribute(uniqueNames);
     }
 
     if (name == 'svelte:component') {
       var attributes = element.attributes;
+      var index = attributes.indexWhere((attribute) => attribute.type == 'Attribute' && attribute.name == 'this');
 
-      if (attributes != null) {
-        var index = attributes.indexWhere((attribute) => attribute.type == 'Attribute' && attribute.name == 'this');
-
-        if (index == -1) {
-          missingComponentDefinition(start);
-        }
-
-        var definition = attributes.removeAt(index);
-        var children = definition.children;
-
-        if (children == null || children.length != 1 || children.first.type == 'Text') {
-          invalidComponentDefinition(definition.start);
-        }
-
-        element.expression = children.first.expression;
+      if (index == -1) {
+        missingComponentDefinition(start);
       }
+
+      var definition = attributes.removeAt(index);
+      var children = definition.children;
+
+      if (children.length != 1 || children.first.type == 'Text') {
+        invalidComponentDefinition(definition.start);
+      }
+
+      Node expressionNode = element, first = children.first;
+
+      if (expressionNode is! ExpressionNode || first is! ExpressionNode) {
+        throw StateError('element or first is not ExpressionNode');
+      }
+
+      expressionNode.expression = first.expression;
     }
 
     if (stack.length == 1) {
-      void Function(int start, List<Node>? attributes)? special;
+      void Function(int start, List<Attribute> attributes)? special;
 
       if (name == 'script') {
         special = script;
@@ -222,7 +220,7 @@ extension TagParser on Parser {
       }
     }
 
-    current.children!.add(element);
+    addNode(element);
 
     var selfClosing = scan('/') || isVoid(name);
     expect('>');
@@ -237,8 +235,8 @@ extension TagParser on Parser {
     } else if (name == 'script' || name == 'style') {
       var start = index;
       var data = readUntil('</$name>');
-      var node = Node.text(start: start, end: index, data: data);
-      element.children!.add(node);
+      var node = Text(start: start, end: index, data: data);
+      element.children.add(node);
       expect('</$name>');
       element.end = index;
     } else {
@@ -272,7 +270,7 @@ extension TagParser on Parser {
     var name = readUntil(RegExp('(\\s|\\/|>)'));
 
     if (metaTags.containsKey(name)) {
-      return metaTags[name]!;
+      return name;
     }
 
     if (name.startsWith('svelte:')) {
@@ -286,7 +284,7 @@ extension TagParser on Parser {
     return name;
   }
 
-  Node? readAttribute(Set<String> uniqueNames) {
+  bool readAttribute(Element element, Set<String> uniqueNames) {
     var start = index;
 
     void checkUnique(String name) {
@@ -304,7 +302,8 @@ extension TagParser on Parser {
         var expression = readExpression();
         allowWhitespace();
         expect('}');
-        return Node(start: start, end: index, type: 'Spread', expression: expression);
+        element.attributes.add(Spread(start: start, end: index, expression: expression));
+        return true;
       } else {
         var valueStart = index;
         var name = readIdentifier();
@@ -321,15 +320,16 @@ extension TagParser on Parser {
         var token = Token(tokenType, valueStart);
         var identifier = astFactory.simpleIdentifier(token);
         var end = valueStart + name.length;
-        var shortHand = Node(start: valueStart, end: end, type: 'AttributeShorthand', expression: identifier);
-        return Node(start: start, end: index, type: 'Attribute', name: name, children: <Node>[shortHand]);
+        var shortHand = AttributeShorthand(start: valueStart, end: end, expression: identifier);
+        element.attributes.add(Attribute(start: start, end: index, name: name, children: <Node>[shortHand]));
+        return true;
       }
     }
 
     var name = readUntil(RegExp('[\\s=\\/>"]'));
 
     if (name.isEmpty) {
-      return null;
+      return false;
     }
 
     var end = index;
@@ -342,11 +342,11 @@ extension TagParser on Parser {
       type = getDirectiveType(name.substring(0, colonIndex));
     }
 
-    List<Node>? value;
+    List<Node>? values;
 
     if (scan('=')) {
       allowWhitespace();
-      value = readAttributeValue();
+      values = readAttributeValues();
       end = index;
     } else if (match(RegExp('["\']'))) {
       unexpectedToken('=', start);
@@ -370,16 +370,20 @@ extension TagParser on Parser {
         invalidRefDirective(name, start);
       }
 
-      if (value != null && value.isNotEmpty) {
-        if (value.length > 1 || value.first.type == 'Text') {
-          invalidDirectiveValue(value.first.start);
+      if (values != null && values.isNotEmpty) {
+        if (values.length > 1 || values.first.type == 'Text') {
+          invalidDirectiveValue(values.first.start);
         }
       }
 
-      var directive = Node(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
+      var directive = Directive(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
 
-      if (value != null && value.isNotEmpty) {
-        directive.expression = value.first.expression;
+      if (values != null && values.isNotEmpty) {
+        var first = values.first;
+
+        if (first is ExpressionNode) {
+          directive.expression = first.expression;
+        }
       }
 
       if (type == 'Transition') {
@@ -388,30 +392,30 @@ extension TagParser on Parser {
         directive.outro = direction == 'out' || direction == 'transition';
       }
 
-      if (value == null && (type == 'Binding' || type == 'Class')) {
+      if (values == null && (type == 'Binding' || type == 'Class')) {
         var tokenType = TokenType(directiveName, 'IDENTIFIER', 0, 97);
         var token = Token(tokenType, directive.start! + colonIndex + 1);
         directive.expression = astFactory.simpleIdentifier(token);
       }
 
-      return directive;
+      element.directives.add(directive);
+      return true;
     }
 
     checkUnique(name);
-    return Node(start: start, end: end, type: 'Attribute', name: name, children: value);
+    element.attributes.add(Attribute(start: start, end: end, name: name, children: values));
+    return true;
   }
 
-  List<Node> readAttributeValue() {
+  List<Node> readAttributeValues() {
     var quoteMark = read(RegExp('["\']'));
 
     if (quoteMark != null && scan(quoteMark)) {
-      return <Node>[Node.text(start: index - 1, end: index - 1)];
+      return <Node>[Text(start: index - 1, end: index - 1, data: '')];
     }
 
     var regex = quoteMark ?? RegExp('(\\/>|[\\s"\'=<>`])');
-    List<Node> value;
-
-    value = readSequence(regex);
+    var value = readSequence(regex);
 
     if (value.isEmpty && quoteMark == null) {
       missingAttributeValue();
@@ -430,8 +434,7 @@ extension TagParser on Parser {
 
     void flush(int start, int end) {
       if (buffer.isNotEmpty) {
-        var node = Node.text(start: start, end: end, data: buffer.toString());
-        chunks.add(node);
+        chunks.add(Text(start: start, end: end, data: buffer.toString()));
         buffer.clear();
       }
     }
@@ -451,9 +454,7 @@ extension TagParser on Parser {
         var expression = readExpression();
         allowWhitespace();
         expect('}');
-
-        var node = Node(start: start, end: index, type: 'MustacheTag', expression: expression);
-        chunks.add(node);
+        chunks.add(Mustache(start: start, end: index, expression: expression));
       } else {
         buffer.writeCharCode(readChar());
       }
