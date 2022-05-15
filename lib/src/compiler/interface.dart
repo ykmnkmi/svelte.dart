@@ -5,6 +5,7 @@ import 'package:analyzer/dart/ast/ast.dart'
         CompilationUnit,
         Expression,
         Identifier,
+        IntegerLiteral,
         MethodInvocation,
         SimpleIdentifier,
         SimpleStringLiteral;
@@ -43,11 +44,7 @@ mixin NamedNode on Node {
   @override
   Map<String, Object?> toJson() {
     var json = super.toJson();
-
-    if (name.isNotEmpty) {
-      json['name'] = name;
-    }
-
+    json['name'] = name;
     return json;
   }
 
@@ -67,11 +64,7 @@ mixin DataNode on Node {
   @override
   Map<String, Object?> toJson() {
     var json = super.toJson();
-
-    if (data.isNotEmpty) {
-      json['data'] = data;
-    }
-
+    json['data'] = data;
     return json;
   }
 }
@@ -230,7 +223,7 @@ mixin MultiChildNode on Node {
 
   @override
   String toString() {
-    return '$type { ${children.join(', ')} }';
+    return '${super.toString()} { ${children.join(', ')} }';
   }
 }
 
@@ -286,15 +279,12 @@ class Fragment extends Node with MultiChildNode {
   List<Node> children;
 }
 
-class Attribute extends Node with NamedNode, DataNode, MultiChildNode {
-  Attribute({super.start, super.end, super.type = 'Attribute', this.name = '', this.data = '', List<Node>? children})
+class Attribute extends Node with NamedNode, MultiChildNode {
+  Attribute({super.start, super.end, super.type = 'Attribute', this.name = '', List<Node>? children})
       : children = children ?? <Node>[];
 
   @override
   String name;
-
-  @override
-  String data;
 
   @override
   List<Node> children;
@@ -425,7 +415,9 @@ class ElseBlock extends Node with MultiChildNode {
 }
 
 class EachBlock extends Node with ExpressionNode, MultiChildNode {
-  EachBlock({super.start, super.end, this.expression, this.context, this.key}) : children = <Node>[], super(type: 'EachBlock');
+  EachBlock({super.start, super.end, this.expression, this.context, this.key})
+      : children = <Node>[],
+        super(type: 'EachBlock');
 
   @override
   Expression? expression;
@@ -595,11 +587,20 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
   }
 
   @override
-  Map<String, Object?>? visitArgumentList(ArgumentList node) {
+  Map<String, Object?> visitArgumentList(ArgumentList node) {
     return <String, Object?>{
       'type': 'ArgumentList',
       ...getLocation(node),
       'arguments': <Map<String, Object?>?>[for (var argument in node.arguments) argument.accept(this)],
+    };
+  }
+
+  @override
+  Map<String, Object?> visitIntegerLiteral(IntegerLiteral node) {
+    return <String, Object?>{
+      'type': 'IntegerLiteral',
+      ...getLocation(node),
+      'value': node.value,
     };
   }
 
@@ -614,7 +615,7 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
   }
 
   @override
-  Map<String, Object?>? visitSimpleIdentifier(SimpleIdentifier node) {
+  Map<String, Object?> visitSimpleIdentifier(SimpleIdentifier node) {
     return <String, Object?>{
       'type': 'SimpleIdentifier',
       ...getLocation(node),
@@ -623,7 +624,7 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
   }
 
   @override
-  Map<String, Object?>? visitSimpleStringLiteral(SimpleStringLiteral node) {
+  Map<String, Object?> visitSimpleStringLiteral(SimpleStringLiteral node) {
     return <String, Object?>{
       'type': 'SimpleStringLiteral',
       ...getLocation(node),

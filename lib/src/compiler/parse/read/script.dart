@@ -2,12 +2,11 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/errors.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
-import 'package:piko/src/compiler/utils/patterns.dart';
 
 extension ScriptParser on Parser {
-  static final RegExp closeRe = compile(r'<\/script\s*>');
+  static final RegExp closeRe = RegExp(r'<\/script\s*>');
 
-  static final RegExp allRe = compile(r'[^\n]');
+  static final RegExp allRe = RegExp(r'[^\n]');
 
   String getContext(List<Attribute>? attributes) {
     if (attributes == null) {

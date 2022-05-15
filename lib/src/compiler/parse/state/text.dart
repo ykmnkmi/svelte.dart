@@ -1,9 +1,8 @@
 import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
-import 'package:piko/src/compiler/utils/patterns.dart';
 
 extension TextParser on Parser {
-  static final RegExp openRe = compile(r'[{<]');
+  static final RegExp openRe = RegExp(r'[{<]');
 
   void text() {
     var start = index;

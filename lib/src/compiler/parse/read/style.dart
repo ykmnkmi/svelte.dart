@@ -1,10 +1,9 @@
 import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
-import 'package:piko/src/compiler/utils/patterns.dart';
 import 'package:piko/src/compiler/parse/errors.dart';
 
 extension StyleParser on Parser {
-  static final RegExp closeRe = compile(r'<\/style\s*>');
+  static final RegExp closeRe = RegExp(r'<\/style\s*>');
 
   // static late final RegExp allRe = compile(r'[^\n]');
 

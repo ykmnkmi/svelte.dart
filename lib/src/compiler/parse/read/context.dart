@@ -2,12 +2,11 @@ import 'package:analyzer/dart/ast/ast.dart' show Identifier;
 import 'package:analyzer/dart/ast/token.dart' show Token, TokenType;
 import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
 import 'package:piko/src/compiler/parse/parse.dart';
-import 'package:piko/src/compiler/utils/patterns.dart';
 
 extension ContextParser on Parser {
-  static final RegExp closeRe = compile(r'<\/style\s*>');
+  static final RegExp closeRe = RegExp(r'<\/style\s*>');
 
-  static final RegExp allRe = compile(r'[^\n]');
+  static final RegExp allRe = RegExp(r'[^\n]');
 
   Identifier readContext() {
     var start = index;

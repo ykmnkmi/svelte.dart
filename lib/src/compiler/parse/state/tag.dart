@@ -8,7 +8,6 @@ import 'package:piko/src/compiler/parse/read/script.dart';
 import 'package:piko/src/compiler/parse/read/style.dart';
 import 'package:piko/src/compiler/utils/html.dart';
 import 'package:piko/src/compiler/utils/names.dart';
-import 'package:piko/src/compiler/utils/patterns.dart';
 
 extension TagParser on Parser {
   static const Map<String, ElementFactory> metaTags = <String, ElementFactory>{
@@ -89,13 +88,8 @@ extension TagParser on Parser {
       var slug = name.substring('svelte:'.length);
 
       if (isClosingTag) {
-        var current = this.current;
-
-        if (current is! MultiChildNode) {
-          // TODO(errors): add error
-          throw StateError('current is not multi child node');
-        }
-
+        // TODO(error): wrap cast
+        var current = this.current as MultiChildNode;
         var children = current.children;
 
         if ((name == 'svelte:window' || name == 'svelte:body') && children.isNotEmpty) {
@@ -195,12 +189,9 @@ extension TagParser on Parser {
         invalidComponentDefinition(definition.start);
       }
 
-      Node expressionNode = element, first = children.first;
-
-      if (expressionNode is! ExpressionNode || first is! ExpressionNode) {
-        throw StateError('element or first is not ExpressionNode');
-      }
-
+      // TODO(error): wrap cast
+      var expressionNode = element as ExpressionNode;
+      var first = children.first as ExpressionNode;
       expressionNode.expression = first.expression;
     }
 
@@ -228,7 +219,8 @@ extension TagParser on Parser {
     if (selfClosing) {
       element.end = index;
     } else if (name == 'textarea') {
-      var pattern = compile(r'^<\/textarea(\s[^>]*)?>');
+      // TODO(parser): check ^<\/textarea(\s[^>]*)?>
+      var pattern = RegExp(r'<\/textarea(\s[^>]*)?>');
       element.children = readSequence(pattern);
       scan(pattern);
       element.end = index;
