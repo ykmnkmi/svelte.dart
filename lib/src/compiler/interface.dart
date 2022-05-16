@@ -228,12 +228,21 @@ mixin MultiChildNode on Node {
 }
 
 class Text extends Node with DataNode {
-  Text({super.start, super.end, required this.data, this.raw}) : super(type: 'Text');
+  Text({super.start, super.end, required this.data, String? raw})
+      : raw = raw ?? data,
+        super(type: 'Text');
 
   @override
   String data;
 
-  String? raw;
+  String raw;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+    json['raw'] = raw;
+    return json;
+  }
 }
 
 class Comment extends Node with DataNode {

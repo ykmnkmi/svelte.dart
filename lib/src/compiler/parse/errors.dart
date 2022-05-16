@@ -10,6 +10,16 @@ class CompileError extends Error {
 
   CompileError(this.code, this.message, this.span);
 
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'code': code,
+      'message': message,
+      'offset': span.start.offset,
+      'line': span.start.line + 1,
+      'column': span.start.column,
+    };
+  }
+
   @override
   String toString() {
     return 'CompileError: $message\n${span.highlight(color: true)}';

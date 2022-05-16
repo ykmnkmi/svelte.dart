@@ -44,7 +44,7 @@ const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
 };
 
 bool closingTagOmitted(String? current, [String? next]) {
-  final dissalowed = disallowedContents[current];
+  var dissalowed = disallowedContents[current];
 
   if (dissalowed == null) {
     return false;
