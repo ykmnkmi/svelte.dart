@@ -17,10 +17,11 @@
             "name": "style",
             "children": [
               {
-                "start": 19,
+                "start": 12,
                 "end": 19,
                 "type": "Text",
-                "data": "color: "
+                "data": "color: ",
+                "raw": "color: "
               },
               {
                 "start": 19,
@@ -34,10 +35,11 @@
                 }
               },
               {
-                "start": 27,
+                "start": 26,
                 "end": 27,
                 "type": "Text",
-                "data": ";"
+                "data": ";",
+                "raw": ";"
               }
             ]
           }

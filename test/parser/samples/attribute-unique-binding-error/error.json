@@ -1,0 +1,7 @@
+{
+  "code": "duplicate-attribute",
+  "message": "attributes need to be unique",
+  "offset": 17,
+  "line": 1,
+  "column": 17
+}

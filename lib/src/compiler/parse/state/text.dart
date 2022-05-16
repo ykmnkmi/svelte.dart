@@ -1,11 +1,9 @@
-import 'package:html_unescape/html_unescape.dart';
 import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
+import 'package:piko/src/compiler/utils/html.dart';
 
 extension TextParser on Parser {
   static final RegExp openRe = RegExp(r'[{<]');
-
-  static final HtmlUnescape htmlUnescape = HtmlUnescape();
 
   void text() {
     var start = index;
@@ -24,7 +22,7 @@ extension TextParser on Parser {
       data = template.substring(start, found);
     }
 
-    var escaped = htmlUnescape.convert(data);
+    var escaped = decodeCharacterReferences(data);
     addNode(Text(start: start, end: found, data: escaped, raw: data));
     index = found;
   }

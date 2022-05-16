@@ -163,6 +163,7 @@ extension MustacheParser on Parser {
       } else {
         if (block is! ThenBlock || block is! PendingBlock) {
           if (stack.any((block) => block is ThenBlock || block is PendingBlock)) {
+            print(stack);
             invalidThenPlacementUnclosedBlock(block.toString());
           }
 
@@ -295,10 +296,11 @@ extension MustacheParser on Parser {
           childBlock = block.pendingNode!;
         }
 
-        stack.add(childBlock);
         childBlock
           ..start = index
           ..skip = false;
+
+        stack.add(childBlock);
       }
     } else if (scan('@html')) {
       allowWhitespace(require: true);

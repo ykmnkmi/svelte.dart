@@ -20,7 +20,8 @@
                 "start": 8,
                 "end": 8,
                 "type": "Text",
-                "data": ""
+                "data": "",
+                "raw": ""
               }
             ]
           },
@@ -53,7 +54,8 @@
                 "start": 20,
                 "end": 20,
                 "type": "Text",
-                "data": ""
+                "data": "",
+                "raw": ""
               }
             ]
           },

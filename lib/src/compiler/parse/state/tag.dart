@@ -421,30 +421,33 @@ extension TagParser on Parser {
   List<Node> readSequence(Pattern pattern) {
     var buffer = StringBuffer();
     var chunks = <Node>[];
+    var textStart = index;
 
-    void flush(int start, int end) {
+    void flush(int end) {
       if (buffer.isNotEmpty) {
-        chunks.add(Text(start: start, end: end, data: buffer.toString()));
+        var string = buffer.toString();
+        var data = decodeCharacterReferences(string);
+        chunks.add(Text(start: textStart, end: end, data: data, raw: string));
         buffer.clear();
       }
     }
 
     while (canParse) {
-      var start = index;
-
       if (match(pattern)) {
-        flush(start, index);
+        flush(index);
         return chunks;
       }
 
       if (scan('{')) {
-        flush(start, index - 1);
+        var start = index -1;
+        flush(start);
         allowWhitespace();
 
         var expression = readExpression();
         allowWhitespace();
         expect('}');
         chunks.add(Mustache(start: start, end: index, expression: expression));
+        textStart = index;
       } else {
         buffer.writeCharCode(readChar());
       }

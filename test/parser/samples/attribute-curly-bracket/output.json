@@ -17,10 +17,11 @@
             "name": "foo",
             "children": [
               {
-                "start": 12,
+                "start": 11,
                 "end": 12,
                 "type": "Text",
-                "data": "a"
+                "data": "a",
+                "raw": "a"
               },
               {
                 "start": 12,

@@ -487,11 +487,16 @@ class AwaitBlock extends Node with ExpressionNode, PendingNode, ThenNode, CatchN
   Expression? error;
 }
 
-class PendingBlock extends Node with SkipNode {
-  PendingBlock({super.start, super.end, this.skip = false}) : super(type: 'PendingBlock');
+class PendingBlock extends Node with SkipNode, MultiChildNode {
+  PendingBlock({super.start, super.end, this.skip = false})
+      : children = <Node>[],
+        super(type: 'PendingBlock');
 
   @override
   bool skip;
+
+  @override
+  List<Node> children;
 }
 
 class ThenBlock extends Node with SkipNode {

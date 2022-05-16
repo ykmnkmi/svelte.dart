@@ -1,3 +1,11 @@
+import 'package:html_unescape/html_unescape.dart';
+
+final HtmlUnescape htmlUnescape = HtmlUnescape();
+
+String decodeCharacterReferences(String string) {
+  return htmlUnescape.convert(string);
+}
+
 const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
   'li': <String>{'li'},
   'dt': <String>{'dt', 'dd'},

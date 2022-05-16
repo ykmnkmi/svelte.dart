@@ -1,27 +1,31 @@
 {
   "html": {
     "start": 0,
-    "end": 83,
+    "end": 11,
     "type": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 83,
+        "end": 11,
         "type": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
-            "end": 76,
+            "end": 9,
             "type": "Attribute",
-            "name": "data-foo",
+            "name": "id",
             "children": [
               {
-                "start": 15,
-                "end": 75,
-                "type": "Text",
-                "data": "semi:\"space:\" letter:\"e number:\"1 end:\"",
-                "raw": "semi:&quot;space:&quot letter:&quote number:&quot1 end:&quot"
+                "start": 6,
+                "end": 8,
+                "type": "AttributeShorthand",
+                "expression": {
+                  "type": "SimpleIdentifier",
+                  "start": 6,
+                  "end": 8,
+                  "name": "id"
+                }
               }
             ]
           }

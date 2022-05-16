@@ -33,7 +33,8 @@
                 "start": 51,
                 "end": 56,
                 "type": "Text",
-                "data": "flips"
+                "data": "flips",
+                "raw": "flips"
               }
             ]
           }
