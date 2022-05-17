@@ -9,10 +9,22 @@
         "end": 148,
         "_": "AwaitBlock",
         "expression": {
+          "start": 8,
+          "end": 18,
+          "_": "SimpleIdentifier",
+          "name": "thePromise"
+        },
+        "value": {
           "start": 46,
           "end": 54,
           "_": "SimpleIdentifier",
           "name": "theValue"
+        },
+        "error": {
+          "start": 96,
+          "end": 104,
+          "_": "SimpleIdentifier",
+          "name": "theError"
         },
         "pending": {
           "start": 19,
@@ -130,17 +142,17 @@
                     "start": 118,
                     "end": 134,
                     "_": "PrefixedIdentifier",
-                    "identifier": {
-                      "start": 127,
-                      "end": 134,
-                      "_": "SimpleIdentifier",
-                      "name": "message"
-                    },
                     "prefix": {
                       "start": 118,
                       "end": 126,
                       "_": "SimpleIdentifier",
                       "name": "theError"
+                    },
+                    "identifier": {
+                      "start": 127,
+                      "end": 134,
+                      "_": "SimpleIdentifier",
+                      "name": "message"
                     }
                   }
                 }
@@ -154,12 +166,6 @@
               "raw": "\n"
             }
           ]
-        },
-        "error": {
-          "start": 96,
-          "end": 104,
-          "_": "SimpleIdentifier",
-          "name": "theError"
         }
       }
     ]

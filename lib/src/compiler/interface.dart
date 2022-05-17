@@ -94,9 +94,23 @@ mixin ExpressionNode on Node {
   Map<String, Object?> toJson() {
     var json = super.toJson();
 
-    // TODO(json): convert
     if (expression != null) {
       json['expression'] = expression!.accept(jsonVisitor);
+    }
+
+    return json;
+  }
+}
+
+mixin ValueNode on Node {
+  abstract Expression? value;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+
+    if (value != null) {
+      json['value'] = value!.accept(jsonVisitor);
     }
 
     return json;
@@ -493,12 +507,15 @@ class KeyBlock extends Node with ExpressionNode {
   Expression? expression;
 }
 
-class AwaitBlock extends Node with ExpressionNode, PendingNode, ThenNode, CatchNode, ErrorNode {
-  AwaitBlock({super.start, super.end, this.expression, this.pendingNode, this.thenNode, this.catchNode})
+class AwaitBlock extends Node with ExpressionNode, ValueNode, ErrorNode, PendingNode, ThenNode, CatchNode {
+  AwaitBlock({super.start, super.end, this.expression, this.value, this.pendingNode, this.thenNode, this.catchNode})
       : super(type: 'AwaitBlock');
 
   @override
   Expression? expression;
+
+  @override
+  Expression? value;
 
   @override
   PendingBlock? pendingNode;
@@ -692,7 +709,7 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'NamedType',
-      if (node.isDeferred) 'defered': true,
+      if (node.isDeferred) 'deferred': true,
       'name': node.name.accept(this),
       if (node.typeArguments != null) 'typeArguments': node.typeArguments!.accept(this),
     };
@@ -703,8 +720,9 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'PrefixedIdentifier',
-      'identifier': node.identifier.accept(this),
+      if (node.isDeferred) 'deferred': true,
       'prefix': node.prefix.accept(this),
+      'identifier': node.identifier.accept(this),
     };
   }
 

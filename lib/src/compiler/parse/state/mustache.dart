@@ -181,7 +181,7 @@ extension MustacheParser on Parser {
         var context = readContext();
 
         if (isThen) {
-          awaitBlock.expression = context;
+          awaitBlock.value = context;
         } else {
           awaitBlock.error = context;
         }
@@ -264,7 +264,7 @@ extension MustacheParser on Parser {
             allowWhitespace();
           } else {
             allowWhitespace(require: true);
-            block.error = readContext();
+            block.value = readContext();
             allowWhitespace();
           }
         } else if (scan('catch')) {

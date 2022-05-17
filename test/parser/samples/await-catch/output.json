@@ -14,6 +14,12 @@
           "_": "SimpleIdentifier",
           "name": "thePromise"
         },
+        "error": {
+          "start": 47,
+          "end": 55,
+          "_": "SimpleIdentifier",
+          "name": "theError"
+        },
         "pending": {
           "start": 19,
           "end": 39,
@@ -88,17 +94,17 @@
                     "start": 69,
                     "end": 85,
                     "_": "PrefixedIdentifier",
-                    "identifier": {
-                      "start": 78,
-                      "end": 85,
-                      "_": "SimpleIdentifier",
-                      "name": "message"
-                    },
                     "prefix": {
                       "start": 69,
                       "end": 77,
                       "_": "SimpleIdentifier",
                       "name": "theError"
+                    },
+                    "identifier": {
+                      "start": 78,
+                      "end": 85,
+                      "_": "SimpleIdentifier",
+                      "name": "message"
                     }
                   }
                 }
@@ -112,12 +118,6 @@
               "raw": "\n"
             }
           ]
-        },
-        "error": {
-          "start": 47,
-          "end": 55,
-          "_": "SimpleIdentifier",
-          "name": "theError"
         }
       }
     ]

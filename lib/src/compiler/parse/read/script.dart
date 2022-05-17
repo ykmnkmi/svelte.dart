@@ -19,6 +19,11 @@ class _CompilationUnit extends CompilationUnitImpl implements CompilationUnit {
   int get offset {
     return beginToken.offset;
   }
+
+  @override
+  int get end {
+    return endToken.end;
+  }
 }
 
 extension ScriptParser on Parser {
@@ -59,16 +64,21 @@ extension ScriptParser on Parser {
     invalidScriptContextValue(context.start);
   }
 
-  void script(int start, List<Attribute>? attributes) {
-    var scriptStart = index;
+  void script(int offset, List<Attribute>? attributes) {
+    var contentStart = index;
     var data = readUntil(closeRe, unclosedScript);
+    var contentEnd = index;
 
     // TODO(error): handle
     if (scan(closeRe)) {
       var context = getContext(attributes);
-      var prefix = template.substring(0, scriptStart).replaceAll(allRe, ' ');
-      var unit = parseScript(scriptStart, prefix + data);
-      var node = Script(start: start, end: index, context: context, content: unit);
+      var prefix = template.substring(0, contentStart).replaceAll(allRe, ' ');
+      var unit = parseScript(offset, prefix + data);
+      var begin = Token(unit.beginToken.type, contentStart);
+      var end = Token(unit.endToken.type, contentEnd);
+      unit = _CompilationUnit(begin, null, unit.directives, unit.declarations, end, unit.featureSet, unit.lineInfo);
+
+      var node = Script(start: offset, end: index, context: context, content: unit);
       scripts.add(node);
       return;
     }
@@ -88,8 +98,6 @@ extension ScriptParser on Parser {
     var token = scanner.tokenize();
     var lineInfo = LineInfo(scanner.lineStarts);
     var parser = AST.Parser(source, errorListener, featureSet: scanner.featureSet, lineInfo: lineInfo);
-    var unit = parser.parseCompilationUnit(token);
-    var beginToken = Token(unit.beginToken.type, offset);
-    return _CompilationUnit(beginToken, null, unit.directives, unit.declarations, unit.endToken, featureSet, lineInfo);
+    return parser.parseCompilationUnit(token);
   }
 }
