@@ -52,6 +52,18 @@ extension TagParser on Parser {
     }
   }
 
+  static final RegExp ignoreRe = RegExp('^\\s*ignore:\\s+([\\s\\S]+)\\s*\$', multiLine: true);
+
+  static List<String>? extractIgnore(String text) {
+    var match = ignoreRe.firstMatch(text);
+
+    if (match == null) {
+      return null;
+    }
+
+    return match[1]!.split(',').map<String>((rule) => rule.trim()).where((rule) => rule.isNotEmpty).toList();
+  }
+
   bool parentIsHead() {
     for (var node in stack.reversed) {
       var type = node.type;
@@ -77,7 +89,7 @@ extension TagParser on Parser {
     if (scan('!--')) {
       var data = readUntil('-->');
       expect('-->', onError: unclosedComment);
-      addNode(Comment(start: start, end: index, data: data));
+      addNode(Comment(start: start, end: index, data: data, ignores: extractIgnore(data)));
       return;
     }
 
@@ -439,7 +451,7 @@ extension TagParser on Parser {
       }
 
       if (scan('{')) {
-        var start = index -1;
+        var start = index - 1;
         flush(start);
         allowWhitespace();
 

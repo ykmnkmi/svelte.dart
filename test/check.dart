@@ -15,8 +15,9 @@ void main(List<String> arguments) {
     var ast = parse(source);
     print(encoder.convert(ast.toJson()));
   } on CompileError catch (error, stackTrace) {
-    print(encoder.convert(error.toJson()));
+    print(error);
     print(Trace.format(stackTrace));
+    print(encoder.convert(error.toJson()));
   } catch (error, stackTrace) {
     print(error);
     print(Trace.format(stackTrace));

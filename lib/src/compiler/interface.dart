@@ -7,13 +7,20 @@ import 'package:analyzer/dart/ast/ast.dart'
         Identifier,
         IntegerLiteral,
         MethodInvocation,
+        NamedType,
+        PrefixedIdentifier,
         SimpleIdentifier,
-        SimpleStringLiteral;
+        SimpleStringLiteral,
+        TopLevelVariableDeclaration,
+        VariableDeclaration,
+        VariableDeclarationList;
 import 'package:analyzer/dart/ast/visitor.dart';
 
 typedef NodeFactory = Node Function({int? start, int? end});
 
 typedef ElementFactory = Element Function({int? start, int? end});
+
+const ToJsonVisitor jsonVisitor = ToJsonVisitor();
 
 abstract class Node {
   Node({this.start, this.end, required this.type});
@@ -28,7 +35,7 @@ abstract class Node {
     return <String, Object?>{
       if (start != null) 'start': start,
       if (end != null) 'end': end,
-      'type': type,
+      '_': type,
     };
   }
 
@@ -69,6 +76,17 @@ mixin DataNode on Node {
   }
 }
 
+mixin ContextNode on Node {
+  abstract String context;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+    json['context'] = context;
+    return json;
+  }
+}
+
 mixin ExpressionNode on Node {
   abstract Expression? expression;
 
@@ -78,7 +96,7 @@ mixin ExpressionNode on Node {
 
     // TODO(json): convert
     if (expression != null) {
-      json['expression'] = expression!.accept(const ToJsonVisitor());
+      json['expression'] = expression!.accept(jsonVisitor);
     }
 
     return json;
@@ -129,7 +147,7 @@ mixin PendingNode on Node {
     var json = super.toJson();
 
     if (pendingNode != null) {
-      json['pendingNode'] = pendingNode!.toJson();
+      json['pending'] = pendingNode!.toJson();
     }
 
     return json;
@@ -144,7 +162,7 @@ mixin ThenNode on Node {
     var json = super.toJson();
 
     if (thenNode != null) {
-      json['thenNode'] = thenNode!.toJson();
+      json['then'] = thenNode!.toJson();
     }
 
     return json;
@@ -159,7 +177,7 @@ mixin CatchNode on Node {
     var json = super.toJson();
 
     if (catchNode != null) {
-      json['catchNode'] = catchNode!.toJson();
+      json['catch'] = catchNode!.toJson();
     }
 
     return json;
@@ -189,7 +207,9 @@ mixin MultiAttributeNode on Node {
     var json = super.toJson();
 
     if (attributes.isNotEmpty) {
-      json['attributes'] = attributes.map<Map<String, Object?>>((attribute) => attribute.toJson()).toList();
+      json['attributes'] = <Map<String, Object?>?>[
+        for (var attribute in attributes) attribute.toJson(),
+      ];
     }
 
     return json;
@@ -204,7 +224,9 @@ mixin MultiDirectiveNode on Node {
     var json = super.toJson();
 
     if (directives.isNotEmpty) {
-      json['directives'] = directives.map<Map<String, Object?>>((directive) => directive.toJson()).toList();
+      json['directives'] = <Map<String, Object?>?>[
+        for (var directive in directives) directive.toJson(),
+      ];
     }
 
     return json;
@@ -217,7 +239,11 @@ mixin MultiChildNode on Node {
   @override
   Map<String, Object?> toJson() {
     var json = super.toJson();
-    json['children'] = children.map<Map<String, Object?>>((child) => child.toJson()).toList();
+
+    json['children'] = <Map<String, Object?>?>[
+      for (var child in children) child.toJson(),
+    ];
+
     return json;
   }
 
@@ -445,7 +471,7 @@ class EachBlock extends Node with ExpressionNode, MultiChildNode {
     var json = super.toJson();
 
     if (context != null) {
-      json['context'] = context!.accept(const ToJsonVisitor());
+      json['context'] = context!.accept(jsonVisitor);
     }
 
     if (index != null) {
@@ -453,7 +479,7 @@ class EachBlock extends Node with ExpressionNode, MultiChildNode {
     }
 
     if (key != null) {
-      json['key'] = key!.accept(const ToJsonVisitor());
+      json['key'] = key!.accept(jsonVisitor);
     }
 
     return json;
@@ -499,18 +525,28 @@ class PendingBlock extends Node with SkipNode, MultiChildNode {
   List<Node> children;
 }
 
-class ThenBlock extends Node with SkipNode {
-  ThenBlock({super.start, super.end, this.skip = false}) : super(type: 'ThenBlock');
+class ThenBlock extends Node with SkipNode, MultiChildNode {
+  ThenBlock({super.start, super.end, this.skip = false})
+      : children = <Node>[],
+        super(type: 'ThenBlock');
 
   @override
   bool skip;
+
+  @override
+  List<Node> children;
 }
 
-class CatchBlock extends Node with SkipNode {
-  CatchBlock({super.start, super.end, this.skip = false}) : super(type: 'CatchBlock');
+class CatchBlock extends Node with SkipNode, MultiChildNode {
+  CatchBlock({super.start, super.end, this.skip = false})
+      : children = <Node>[],
+        super(type: 'CatchBlock');
 
   @override
   bool skip;
+
+  @override
+  List<Node> children;
 }
 
 class Debug extends Node {
@@ -521,19 +557,29 @@ class Debug extends Node {
   @override
   Map<String, Object?> toJson() {
     var json = super.toJson();
-    json['identifiers'] =
-        identifiers.map<Map<String, Object?>?>((identifier) => identifier.accept(const ToJsonVisitor())).toList();
+
+    json['identifiers'] = <Map<String, Object?>?>[
+      for (var identifier in identifiers) identifier.accept(jsonVisitor),
+    ];
+
     return json;
   }
 }
 
-class Script extends Node with DataNode {
-  Script({super.start, super.end, required this.data, required this.library}) : super(type: 'Script');
+class Script extends Node with ContextNode {
+  Script({super.start, super.end, required this.context, required this.content}) : super(type: 'Script');
 
   @override
-  String data;
+  String context;
 
-  CompilationUnit library;
+  CompilationUnit content;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+    json['content'] = content.accept(jsonVisitor);
+    return json;
+  }
 }
 
 class Style extends Node with DataNode {
@@ -603,17 +649,30 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?> visitArgumentList(ArgumentList node) {
     return <String, Object?>{
-      'type': 'ArgumentList',
       ...getLocation(node),
-      'arguments': <Map<String, Object?>?>[for (var argument in node.arguments) argument.accept(this)],
+      '_': 'ArgumentList',
+      'arguments': <Map<String, Object?>?>[
+        for (var argument in node.arguments) argument.accept(this),
+      ],
+    };
+  }
+
+  @override
+  Map<String, Object?> visitCompilationUnit(CompilationUnit node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'CompilationUnit',
+      'declarations': <Map<String, Object?>?>[
+        for (var declaration in node.declarations) declaration.accept(this),
+      ],
     };
   }
 
   @override
   Map<String, Object?> visitIntegerLiteral(IntegerLiteral node) {
     return <String, Object?>{
-      'type': 'IntegerLiteral',
       ...getLocation(node),
+      '_': 'IntegerLiteral',
       'value': node.value,
     };
   }
@@ -621,18 +680,39 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?> visitMethodInvocation(MethodInvocation node) {
     return <String, Object?>{
-      'type': 'MethodInvocation',
       ...getLocation(node),
+      '_': 'MethodInvocation',
       'methodName': node.methodName.accept(this),
       'argumentList': node.argumentList.accept(this),
     };
   }
 
   @override
+  Map<String, Object?> visitNamedType(NamedType node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'NamedType',
+      if (node.isDeferred) 'defered': true,
+      'name': node.name.accept(this),
+      if (node.typeArguments != null) 'typeArguments': node.typeArguments!.accept(this),
+    };
+  }
+
+  @override
+  Map<String, Object?> visitPrefixedIdentifier(PrefixedIdentifier node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'PrefixedIdentifier',
+      'identifier': node.identifier.accept(this),
+      'prefix': node.prefix.accept(this),
+    };
+  }
+
+  @override
   Map<String, Object?> visitSimpleIdentifier(SimpleIdentifier node) {
     return <String, Object?>{
-      'type': 'SimpleIdentifier',
       ...getLocation(node),
+      '_': 'SimpleIdentifier',
       'name': node.name,
     };
   }
@@ -640,9 +720,43 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?> visitSimpleStringLiteral(SimpleStringLiteral node) {
     return <String, Object?>{
-      'type': 'SimpleStringLiteral',
       ...getLocation(node),
+      '_': 'SimpleStringLiteral',
       'value': node.value,
+    };
+  }
+
+  @override
+  Map<String, Object?> visitTopLevelVariableDeclaration(TopLevelVariableDeclaration node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'TopLevelVariableDeclaration',
+      'variables': node.variables.accept(this),
+    };
+  }
+
+  @override
+  Map<String, Object?> visitVariableDeclaration(VariableDeclaration node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'VariableDeclaration',
+      'name': node.name.accept(this),
+      if (node.initializer != null) 'type': node.initializer!.accept(this),
+    };
+  }
+
+  @override
+  Map<String, Object?> visitVariableDeclarationList(VariableDeclarationList node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'VariableDeclarationList',
+      if (node.isConst) 'const': true,
+      if (node.isFinal) 'final': true,
+      if (node.isLate) 'late': true,
+      if (node.type != null) 'type': node.type!.accept(this),
+      'variables': <Map<String, Object?>?>[
+        for (var variable in node.variables) variable.accept(this),
+      ],
     };
   }
 }

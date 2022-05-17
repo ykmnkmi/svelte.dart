@@ -181,7 +181,8 @@ class Parser {
   }
 
   Never error(String code, String message, {int? start, int? end}) {
-    throw CompileError(code, message, sourceFile.span(start ?? index, end));
+    start ??= index;
+    throw CompileError(code, message, sourceFile.span(start, end ?? start));
   }
 }
 
@@ -200,8 +201,8 @@ AST parse(String template, {Object? sourceUrl}) {
   var scripts = parser.scripts;
 
   if (scripts.isNotEmpty) {
-    var instances = scripts.where((script) => script.data == 'default').toList();
-    var modules = scripts.where((script) => script.data == 'module').toList();
+    var instances = scripts.where((script) => script.context == 'default').toList();
+    var modules = scripts.where((script) => script.context == 'module').toList();
 
     if (instances.length > 1) {
       parser.invalidScriptInstance(instances[1].start);

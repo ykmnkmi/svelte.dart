@@ -2,24 +2,24 @@
   "html": {
     "start": 0,
     "end": 83,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 83,
-        "type": "Element",
+        "_": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
             "end": 76,
-            "type": "Attribute",
+            "_": "Attribute",
             "name": "data-foo",
             "children": [
               {
                 "start": 15,
                 "end": 75,
-                "type": "Text",
+                "_": "Text",
                 "data": "semi:\"space:\" letter:\"e number:\"1 end:\"",
                 "raw": "semi:&quot;space:&quot letter:&quote number:&quot1 end:&quot"
               }

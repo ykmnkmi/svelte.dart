@@ -2,38 +2,38 @@
   "html": {
     "start": 0,
     "end": 40,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 40,
-        "type": "Element",
+        "_": "Element",
         "name": "input",
         "directives": [
           {
             "start": 7,
             "end": 39,
-            "type": "Action",
+            "_": "Action",
             "name": "tooltip",
             "expression": {
-              "type": "MethodInvocation",
               "start": 21,
               "end": 37,
+              "_": "MethodInvocation",
               "methodName": {
-                "type": "SimpleIdentifier",
                 "start": 21,
                 "end": 22,
+                "_": "SimpleIdentifier",
                 "name": "t"
               },
               "argumentList": {
-                "type": "ArgumentList",
                 "start": 22,
                 "end": 37,
+                "_": "ArgumentList",
                 "arguments": [
                   {
-                    "type": "SimpleStringLiteral",
                     "start": 23,
                     "end": 36,
+                    "_": "SimpleStringLiteral",
                     "value": "tooltip msg"
                   }
                 ]

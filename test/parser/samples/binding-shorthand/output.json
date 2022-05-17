@@ -1,0 +1,73 @@
+{
+  "html": {
+    "start": 31,
+    "end": 49,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 29,
+        "end": 31,
+        "_": "Text",
+        "data": "\n\n",
+        "raw": "\n\n"
+      },
+      {
+        "start": 31,
+        "end": 49,
+        "_": "InlineComponent",
+        "name": "",
+        "directives": [
+          {
+            "start": 39,
+            "end": 47,
+            "_": "Binding",
+            "name": "foo",
+            "expression": {
+              "start": 44,
+              "end": 47,
+              "_": "SimpleIdentifier",
+              "name": "foo"
+            }
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 29,
+    "_": "Script",
+    "context": "default",
+    "content": {
+      "start": 8,
+      "end": 28,
+      "_": "CompilationUnit",
+      "declarations": [
+        {
+          "start": 19,
+          "end": 27,
+          "_": "TopLevelVariableDeclaration",
+          "variables": {
+            "start": 19,
+            "end": 26,
+            "_": "VariableDeclarationList",
+            "variables": [
+              {
+                "start": 23,
+                "end": 26,
+                "_": "VariableDeclaration",
+                "name": {
+                  "start": 23,
+                  "end": 26,
+                  "_": "SimpleIdentifier",
+                  "name": "foo"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -2,23 +2,23 @@
   "html": {
     "start": 0,
     "end": 29,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 29,
-        "type": "Element",
+        "_": "Element",
         "name": "input",
         "directives": [
           {
             "start": 7,
             "end": 28,
-            "type": "Action",
+            "_": "Action",
             "name": "tooltip",
             "expression": {
-              "type": "SimpleIdentifier",
               "start": 20,
               "end": 27,
+              "_": "SimpleIdentifier",
               "name": "message"
             }
           }

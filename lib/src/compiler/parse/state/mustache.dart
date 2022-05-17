@@ -161,9 +161,8 @@ extension MustacheParser on Parser {
           invalidThenPlacementWithoutAwait();
         }
       } else {
-        if (block is! ThenBlock || block is! PendingBlock) {
+        if (block is! ThenBlock && block is! PendingBlock) {
           if (stack.any((block) => block is ThenBlock || block is PendingBlock)) {
-            print(stack);
             invalidThenPlacementUnclosedBlock(block.toString());
           }
 
@@ -217,7 +216,7 @@ extension MustacheParser on Parser {
 
       allowWhitespace(require: true);
 
-      var expression = readExpression();
+      var expression = readExpression(primary: true);
       var block = factory(start: start, expression: expression);
 
       if (block is AwaitBlock) {

@@ -2,42 +2,42 @@
   "html": {
     "start": 0,
     "end": 42,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 42,
-        "type": "Element",
+        "_": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
             "end": 28,
-            "type": "Attribute",
+            "_": "Attribute",
             "name": "style",
             "children": [
               {
                 "start": 12,
                 "end": 19,
-                "type": "Text",
+                "_": "Text",
                 "data": "color: ",
                 "raw": "color: "
               },
               {
                 "start": 19,
                 "end": 26,
-                "type": "MustacheTag",
+                "_": "MustacheTag",
                 "expression": {
-                  "type": "SimpleIdentifier",
                   "start": 20,
                   "end": 25,
+                  "_": "SimpleIdentifier",
                   "name": "color"
                 }
               },
               {
                 "start": 26,
                 "end": 27,
-                "type": "Text",
+                "_": "Text",
                 "data": ";",
                 "raw": ";"
               }
@@ -48,11 +48,11 @@
           {
             "start": 29,
             "end": 36,
-            "type": "MustacheTag",
+            "_": "MustacheTag",
             "expression": {
-              "type": "SimpleIdentifier",
               "start": 30,
               "end": 35,
+              "_": "SimpleIdentifier",
               "name": "color"
             }
           }

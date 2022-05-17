@@ -1,5 +1,5 @@
 <script>
-	let foo;
+  var foo;
 </script>
 
 <Widget bind:foo/>

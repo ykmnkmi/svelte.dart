@@ -2,28 +2,28 @@
   "html": {
     "start": 0,
     "end": 11,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 11,
-        "type": "Element",
+        "_": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
             "end": 9,
-            "type": "Attribute",
+            "_": "Attribute",
             "name": "id",
             "children": [
               {
                 "start": 6,
                 "end": 8,
-                "type": "AttributeShorthand",
+                "_": "AttributeShorthand",
                 "expression": {
-                  "type": "SimpleIdentifier",
                   "start": 6,
                   "end": 8,
+                  "_": "SimpleIdentifier",
                   "name": "id"
                 }
               }

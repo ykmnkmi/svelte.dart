@@ -1,18 +1,18 @@
 {
   "html": {
     "start": 0,
-    "end": 99,
+    "end": 148,
     "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 99,
+        "end": 148,
         "_": "AwaitBlock",
         "expression": {
-          "start": 8,
-          "end": 18,
+          "start": 46,
+          "end": 54,
           "_": "SimpleIdentifier",
-          "name": "thePromise"
+          "name": "theValue"
         },
         "pending": {
           "start": 19,
@@ -51,52 +51,94 @@
           ]
         },
         "then": {
-          "_": "ThenBlock",
-          "skip": true,
-          "children": []
-        },
-        "catch": {
           "start": 39,
-          "end": 91,
-          "_": "CatchBlock",
+          "end": 88,
+          "_": "ThenBlock",
           "children": [
             {
-              "start": 56,
-              "end": 58,
+              "start": 55,
+              "end": 57,
               "_": "Text",
               "data": "\n\t",
               "raw": "\n\t"
             },
             {
-              "start": 58,
-              "end": 90,
+              "start": 57,
+              "end": 87,
               "_": "Element",
               "name": "p",
               "children": [
                 {
-                  "start": 61,
-                  "end": 68,
+                  "start": 60,
+                  "end": 73,
+                  "_": "Text",
+                  "data": "the value is ",
+                  "raw": "the value is "
+                },
+                {
+                  "start": 73,
+                  "end": 83,
+                  "_": "MustacheTag",
+                  "expression": {
+                    "start": 74,
+                    "end": 82,
+                    "_": "SimpleIdentifier",
+                    "name": "theValue"
+                  }
+                }
+              ]
+            },
+            {
+              "start": 87,
+              "end": 88,
+              "_": "Text",
+              "data": "\n",
+              "raw": "\n"
+            }
+          ]
+        },
+        "catch": {
+          "start": 88,
+          "end": 140,
+          "_": "CatchBlock",
+          "children": [
+            {
+              "start": 105,
+              "end": 107,
+              "_": "Text",
+              "data": "\n\t",
+              "raw": "\n\t"
+            },
+            {
+              "start": 107,
+              "end": 139,
+              "_": "Element",
+              "name": "p",
+              "children": [
+                {
+                  "start": 110,
+                  "end": 117,
                   "_": "Text",
                   "data": "oh no! ",
                   "raw": "oh no! "
                 },
                 {
-                  "start": 68,
-                  "end": 86,
+                  "start": 117,
+                  "end": 135,
                   "_": "MustacheTag",
                   "expression": {
-                    "start": 69,
-                    "end": 85,
+                    "start": 118,
+                    "end": 134,
                     "_": "PrefixedIdentifier",
                     "identifier": {
-                      "start": 78,
-                      "end": 85,
+                      "start": 127,
+                      "end": 134,
                       "_": "SimpleIdentifier",
                       "name": "message"
                     },
                     "prefix": {
-                      "start": 69,
-                      "end": 77,
+                      "start": 118,
+                      "end": 126,
                       "_": "SimpleIdentifier",
                       "name": "theError"
                     }
@@ -105,8 +147,8 @@
               ]
             },
             {
-              "start": 90,
-              "end": 91,
+              "start": 139,
+              "end": 140,
               "_": "Text",
               "data": "\n",
               "raw": "\n"
@@ -114,8 +156,8 @@
           ]
         },
         "error": {
-          "start": 47,
-          "end": 55,
+          "start": 96,
+          "end": 104,
           "_": "SimpleIdentifier",
           "name": "theError"
         }
