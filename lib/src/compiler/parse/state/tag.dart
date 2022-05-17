@@ -151,7 +151,7 @@ extension TagParser on Parser {
       var lastClosedTag = lastAutoClosedTag;
 
       while (parent is NamedNode && parent.name != name) {
-        if (parent.type != 'Element') {
+        if (parent is! Element) {
           if (lastClosedTag != null && lastClosedTag.tag == name) {
             invalidClosingTagAutoclosed(name, lastClosedTag.reason, start);
           }
