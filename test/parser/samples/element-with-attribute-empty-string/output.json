@@ -1,0 +1,64 @@
+{
+  "html": {
+    "start": 0,
+    "end": 43,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 21,
+        "_": "Element",
+        "name": "span",
+        "attributes": [
+          {
+            "start": 6,
+            "end": 13,
+            "_": "Attribute",
+            "name": "attr",
+            "children": [
+              {
+                "start": 12,
+                "end": 12,
+                "_": "Text",
+                "data": "",
+                "raw": ""
+              }
+            ]
+          }
+        ],
+        "children": []
+      },
+      {
+        "start": 21,
+        "end": 22,
+        "_": "Text",
+        "data": "\n",
+        "raw": "\n"
+      },
+      {
+        "start": 22,
+        "end": 43,
+        "_": "Element",
+        "name": "span",
+        "attributes": [
+          {
+            "start": 28,
+            "end": 35,
+            "_": "Attribute",
+            "name": "attr",
+            "children": [
+              {
+                "start": 34,
+                "end": 34,
+                "_": "Text",
+                "data": "",
+                "raw": ""
+              }
+            ]
+          }
+        ],
+        "children": []
+      }
+    ]
+  }
+}

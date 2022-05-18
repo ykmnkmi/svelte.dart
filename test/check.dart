@@ -6,9 +6,7 @@ import 'package:stack_trace/stack_trace.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String template = '''
-{#each todos as todo (todo.id)}
-  <p>{todo}</p>
-{/each}
+{:catch theValue}
 ''';
 
 void main(List<String> arguments) {

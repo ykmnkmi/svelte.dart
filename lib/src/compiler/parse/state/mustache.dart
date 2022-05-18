@@ -119,7 +119,7 @@ extension MustacheParser on Parser {
 
         if (block is! IfBlock) {
           if (stack.any((block) => block is IfBlock)) {
-            invalidElseIfPlacementUnclosedBlock(block.toString());
+            invalidElseIfPlacementUnclosedBlock(block.describe());
           }
 
           invalidElseIfPlacementOutsideIf();
@@ -139,7 +139,7 @@ extension MustacheParser on Parser {
 
         if (block is! IfBlock && block is! EachBlock) {
           if (stack.any((block) => block is IfBlock || block is EachBlock)) {
-            invalidElseIfPlacementUnclosedBlock(block.toString());
+            invalidElseIfPlacementUnclosedBlock(block.describe());
           }
 
           invalidElseIfPlacementOutsideIf();
@@ -159,7 +159,7 @@ extension MustacheParser on Parser {
       if (isThen) {
         if (block is! PendingBlock) {
           if (stack.any((block) => block is PendingBlock)) {
-            invalidThenPlacementUnclosedBlock(block.toString());
+            invalidThenPlacementUnclosedBlock(block.describe());
           }
 
           invalidThenPlacementWithoutAwait();
@@ -167,10 +167,10 @@ extension MustacheParser on Parser {
       } else {
         if (block is! ThenBlock && block is! PendingBlock) {
           if (stack.any((block) => block is ThenBlock || block is PendingBlock)) {
-            invalidThenPlacementUnclosedBlock(block.toString());
+            invalidCatchPlacementUnclosedBlock(block.describe());
           }
 
-          invalidThenPlacementWithoutAwait();
+          invalidCatchPlacementWithoutAwait();
         }
       }
 

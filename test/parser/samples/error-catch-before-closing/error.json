@@ -1,0 +1,7 @@
+{
+  "code": "invalid-then-placement",
+  "message": "expected to close {#each} block before seeing {:then} block",
+  "offset": 42,
+  "line": 3,
+  "column": 7
+}

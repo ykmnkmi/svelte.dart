@@ -32,6 +32,10 @@ abstract class Node {
 
   String type;
 
+  String describe() {
+    return type;
+  }
+
   Map<String, Object?> toJson() {
     return <String, Object?>{
       if (start != null) 'start': start,
@@ -350,6 +354,11 @@ class RawMustache extends Node with ExpressionNode {
 
   @override
   Expression? expression;
+
+  @override
+  String describe() {
+    return '{@html} block';
+  }
 }
 
 class Mustache extends Node with ExpressionNode {
@@ -447,12 +456,17 @@ class Element extends Node with NamedNode, MultiAttributeNode, MultiDirectiveNod
 
   @override
   List<Node> children;
+
+  @override
+  String describe() {
+    return '<$name}> tag';
+  }
 }
 
 class InlineComponent extends Node
     with NamedNode, ExpressionNode, MultiAttributeNode, MultiDirectiveNode, MultiChildNode
     implements Element {
-  InlineComponent({super.start, super.end, this.name = ''})
+  InlineComponent({super.start, super.end, required this.name})
       : attributes = <Attribute>[],
         directives = <Directive>[],
         children = <Node>[],
@@ -472,6 +486,11 @@ class InlineComponent extends Node
 
   @override
   List<Node> children;
+
+  @override
+  String describe() {
+    return '<$name}> tag';
+  }
 }
 
 class SlotTemplate extends Element {
@@ -480,10 +499,20 @@ class SlotTemplate extends Element {
 
 class Title extends Element {
   Title({super.start, super.end}) : super(type: 'Title');
+
+  @override
+  String describe() {
+    return '<$name}> tag';
+  }
 }
 
 class Slot extends Element {
   Slot({super.start, super.end}) : super(type: 'Slot');
+
+  @override
+  String describe() {
+    return '<$name}> tag';
+  }
 }
 
 class Head extends Element {
@@ -513,6 +542,11 @@ class IfBlock extends Node with ExpressionNode, ElseIfNode, ElseNode {
 
   @override
   Node? elseNode;
+
+  @override
+  String describe() {
+    return '{#if} block';
+  }
 }
 
 class ElseBlock extends Node with MultiChildNode {
@@ -522,6 +556,11 @@ class ElseBlock extends Node with MultiChildNode {
 
   @override
   List<Node> children;
+
+  @override
+  String describe() {
+    return '{:else} block';
+  }
 }
 
 class EachBlock extends Node
@@ -550,6 +589,11 @@ class EachBlock extends Node
 
   @override
   Node? elseNode;
+
+  @override
+  String describe() {
+    return '{#each} block';
+  }
 
   @override
   Map<String, Object?> toJson() {
@@ -599,6 +643,11 @@ class AwaitBlock extends Node with ExpressionNode, ValueNode, ErrorNode, Pending
 
   @override
   Expression? error;
+
+  @override
+  String describe() {
+    return '{#await} block';
+  }
 }
 
 class PendingBlock extends Node with SkipNode, MultiChildNode {
@@ -611,6 +660,11 @@ class PendingBlock extends Node with SkipNode, MultiChildNode {
 
   @override
   List<Node> children;
+
+  @override
+  String describe() {
+    return '{#await} block';
+  }
 }
 
 class ThenBlock extends Node with SkipNode, MultiChildNode {
@@ -623,6 +677,11 @@ class ThenBlock extends Node with SkipNode, MultiChildNode {
 
   @override
   List<Node> children;
+
+  @override
+  String describe() {
+    return '{:then} block';
+  }
 }
 
 class CatchBlock extends Node with SkipNode, MultiChildNode {
@@ -635,12 +694,22 @@ class CatchBlock extends Node with SkipNode, MultiChildNode {
 
   @override
   List<Node> children;
+
+  @override
+  String describe() {
+    return '{:catch} block';
+  }
 }
 
 class Debug extends Node {
   Debug({super.start, super.end, required this.identifiers}) : super(type: 'Debug');
 
   List<Identifier> identifiers;
+
+  @override
+  String describe() {
+    return '{@debug} block';
+  }
 
   @override
   Map<String, Object?> toJson() {
