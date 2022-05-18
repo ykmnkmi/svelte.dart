@@ -1,12 +1,12 @@
 {
   "html": {
     "start": 0,
-    "end": 70,
+    "end": 71,
     "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 70,
+        "end": 71,
         "_": "EachBlock",
         "expression": {
           "start": 7,
@@ -14,31 +14,6 @@
           "_": "SimpleIdentifier",
           "name": "things"
         },
-        "children": [
-          {
-            "start": 33,
-            "end": 62,
-            "_": "Element",
-            "name": "div",
-            "directives": [
-              {
-                "start": 38,
-                "end": 50,
-                "_": "Animation",
-                "name": "flip"
-              }
-            ],
-            "children": [
-              {
-                "start": 51,
-                "end": 56,
-                "_": "Text",
-                "data": "flips",
-                "raw": "flips"
-              }
-            ]
-          }
-        ],
         "context": {
           "start": 17,
           "end": 22,
@@ -50,7 +25,32 @@
           "end": 29,
           "_": "SimpleIdentifier",
           "name": "thing"
-        }
+        },
+        "children": [
+          {
+            "start": 34,
+            "end": 63,
+            "_": "Element",
+            "name": "div",
+            "directives": [
+              {
+                "start": 39,
+                "end": 51,
+                "_": "Animation",
+                "name": "flip"
+              }
+            ],
+            "children": [
+              {
+                "start": 52,
+                "end": 57,
+                "_": "Text",
+                "data": "flips",
+                "raw": "flips"
+              }
+            ]
+          }
+        ]
       }
     ]
   }

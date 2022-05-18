@@ -1,5 +1,5 @@
 {#each animals as animal}
-	<p>{animal}</p>
+  <p>{animal}</p>
 {:else}
-	<p>no animals</p>
+  <p>no animals</p>
 {/each}

@@ -46,7 +46,7 @@ extension MustacheParser on Parser {
       trimWhitespace(maybeElse.elseNode!, trimBefore, trimAfter);
     }
 
-    if (first is ElseNode && first.elseIf == true) {
+    if (first is ElseIfNode && first.elseIf) {
       trimWhitespace(first, trimBefore, trimAfter);
     }
   }
@@ -90,7 +90,7 @@ extension MustacheParser on Parser {
       allowWhitespace();
       expect('}');
 
-      while (block is ElseNode && block.elseIf == true) {
+      while (block is ElseIfNode && block.elseIf) {
         var current = stack.removeLast();
 
         if (current is ElseNode && current.elseNode != null) {
@@ -114,9 +114,9 @@ extension MustacheParser on Parser {
 
       allowWhitespace();
 
-      var block = current;
-
       if (scan('if')) {
+        var block = current;
+
         if (block is! IfBlock) {
           if (stack.any((block) => block is IfBlock)) {
             invalidElseIfPlacementUnclosedBlock(block.toString());
@@ -135,7 +135,9 @@ extension MustacheParser on Parser {
         block.elseNode = ElseBlock(start: index, children: <Node>[ifNode]);
         stack.add(ifNode);
       } else {
-        if (block is! IfBlock || block is! EachBlock) {
+        var block = current as ElseNode;
+
+        if (block is! IfBlock && block is! EachBlock) {
           if (stack.any((block) => block is IfBlock || block is EachBlock)) {
             invalidElseIfPlacementUnclosedBlock(block.toString());
           }

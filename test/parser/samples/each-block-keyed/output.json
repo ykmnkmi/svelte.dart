@@ -1,0 +1,64 @@
+{
+  "html": {
+    "start": 0,
+    "end": 55,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 55,
+        "_": "EachBlock",
+        "expression": {
+          "start": 7,
+          "end": 12,
+          "_": "SimpleIdentifier",
+          "name": "todos"
+        },
+        "context": {
+          "start": 16,
+          "end": 20,
+          "_": "SimpleIdentifier",
+          "name": "todo"
+        },
+        "key": {
+          "start": 22,
+          "end": 29,
+          "_": "PrefixedIdentifier",
+          "prefix": {
+            "start": 22,
+            "end": 26,
+            "_": "SimpleIdentifier",
+            "name": "todo"
+          },
+          "identifier": {
+            "start": 27,
+            "end": 29,
+            "_": "SimpleIdentifier",
+            "name": "id"
+          }
+        },
+        "children": [
+          {
+            "start": 34,
+            "end": 47,
+            "_": "Element",
+            "name": "p",
+            "children": [
+              {
+                "start": 37,
+                "end": 43,
+                "_": "MustacheTag",
+                "expression": {
+                  "start": 38,
+                  "end": 42,
+                  "_": "SimpleIdentifier",
+                  "name": "todo"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

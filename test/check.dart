@@ -6,7 +6,9 @@ import 'package:stack_trace/stack_trace.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String template = '''
-<piko:component this="{foo ? Foo : Bar}"></piko:component>
+{#each todos as todo (todo.id)}
+  <p>{todo}</p>
+{/each}
 ''';
 
 void main(List<String> arguments) {

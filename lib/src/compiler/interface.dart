@@ -77,17 +77,6 @@ mixin DataNode on Node {
   }
 }
 
-mixin ContextNode on Node {
-  abstract String context;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-    json['context'] = context;
-    return json;
-  }
-}
-
 mixin ExpressionNode on Node {
   abstract Expression? expression;
 
@@ -103,6 +92,17 @@ mixin ExpressionNode on Node {
   }
 }
 
+mixin ContextNode<T> on Node {
+  abstract T context;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+    json['context'] = context;
+    return json;
+  }
+}
+
 mixin ValueNode on Node {
   abstract Expression? value;
 
@@ -112,6 +112,36 @@ mixin ValueNode on Node {
 
     if (value != null) {
       json['value'] = value!.accept(jsonVisitor);
+    }
+
+    return json;
+  }
+}
+
+mixin IndexNode on Node {
+  abstract String? index;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+
+    if (index != null) {
+      json['index'] = index;
+    }
+
+    return json;
+  }
+}
+
+mixin KeyNode on Node {
+  abstract Expression? key;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+
+    if (key != null) {
+      json['key'] = key!.accept(jsonVisitor);
     }
 
     return json;
@@ -133,10 +163,8 @@ mixin SkipNode on Node {
   }
 }
 
-mixin ElseNode on Node {
+mixin ElseIfNode on Node {
   abstract bool elseIf;
-
-  abstract Node? elseNode;
 
   @override
   Map<String, Object?> toJson() {
@@ -146,8 +174,19 @@ mixin ElseNode on Node {
       json['elseIf'] = elseIf;
     }
 
+    return json;
+  }
+}
+
+mixin ElseNode on Node {
+  abstract Node? elseNode;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+
     if (elseNode != null) {
-      json['elseNode'] = elseNode!.toJson();
+      json['else'] = elseNode!.toJson();
     }
 
     return json;
@@ -463,7 +502,7 @@ class Body extends Element {
   Body({super.start, super.end}) : super(type: 'Body');
 }
 
-class IfBlock extends Node with ExpressionNode, ElseNode {
+class IfBlock extends Node with ExpressionNode, ElseIfNode, ElseNode {
   IfBlock({super.start, super.end, this.expression, this.elseIf = false, this.elseNode}) : super(type: 'IfBlock');
 
   @override
@@ -485,22 +524,32 @@ class ElseBlock extends Node with MultiChildNode {
   List<Node> children;
 }
 
-class EachBlock extends Node with ExpressionNode, MultiChildNode {
-  EachBlock({super.start, super.end, this.expression, this.context, this.key})
+class EachBlock extends Node
+    with ExpressionNode, ContextNode<Expression?>, IndexNode, KeyNode, MultiChildNode, ElseIfNode, ElseNode {
+  EachBlock({super.start, super.end, this.expression, this.context, this.key, this.elseIf = false})
       : children = <Node>[],
         super(type: 'EachBlock');
 
   @override
   Expression? expression;
 
+  @override
   Expression? context;
 
+  @override
   String? index;
 
+  @override
   Expression? key;
 
   @override
   List<Node> children;
+
+  @override
+  bool elseIf;
+
+  @override
+  Node? elseNode;
 
   @override
   Map<String, Object?> toJson() {
@@ -605,7 +654,7 @@ class Debug extends Node {
   }
 }
 
-class Script extends Node with ContextNode {
+class Script extends Node with ContextNode<String> {
   Script({super.start, super.end, required this.context, required this.content}) : super(type: 'Script');
 
   @override

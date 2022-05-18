@@ -1,3 +1,3 @@
 {#each todos as todo (todo.id)}
-	<p>{todo}</p>
+  <p>{todo}</p>
 {/each}
