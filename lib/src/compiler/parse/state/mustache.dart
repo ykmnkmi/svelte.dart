@@ -135,21 +135,21 @@ extension MustacheParser on Parser {
         block.elseNode = ElseBlock(start: index, children: <Node>[ifNode]);
         stack.add(ifNode);
       } else {
-        var block = current as ElseNode;
+        var block = current;
 
         if (block is! IfBlock && block is! EachBlock) {
           if (stack.any((block) => block is IfBlock || block is EachBlock)) {
-            invalidElseIfPlacementUnclosedBlock(block.describe());
+            invalidElsePlacementUnclosedBlock(block.describe());
           }
 
-          invalidElseIfPlacementOutsideIf();
+          invalidElsePlacementOutsideIf();
         }
 
         allowWhitespace();
         expect('}');
 
         var elseNode = ElseBlock(start: index);
-        block.elseNode = elseNode;
+        (block as ElseNode).elseNode = elseNode;
         stack.add(elseNode);
       }
     } else if (match(':then') || match(':catch')) {

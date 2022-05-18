@@ -1,0 +1,7 @@
+{
+  "code": "invalid-then-placement",
+  "message": "cannot have an {:then} block outside an {#await ...} block",
+  "offset": 6,
+  "line": 1,
+  "column": 6
+}

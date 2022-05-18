@@ -1,0 +1,7 @@
+{
+  "code": "invalid-else-placement",
+  "message": "expected to close <li> tag before seeing {:else} block",
+  "offset": 24,
+  "line": 3,
+  "column": 6
+}

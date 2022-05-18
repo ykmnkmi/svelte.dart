@@ -1,0 +1,3 @@
+{#if x}
+  <piko:selfdestructive x="{x - 1}"/>
+{/if}

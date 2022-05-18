@@ -9,20 +9,20 @@ import 'package:piko/src/compiler/parse/parse.dart';
 
 extension MustacheParser on Parser {
   Expression readExpression({bool primary = false}) {
-    var source = template.substring(index, length);
+    var source = template.substring(index);
     var errorListener = RecordingErrorListener();
     var result = parseExpression(index, source, primary: primary, errorListener: errorListener);
     var errors = errorListener.errors;
 
-    for (var error in errors) {
-      if (index + error.offset <= result.end) {
-        // TODO(error): update
-        // error('parse-error', analysisError.message);
-        Error.throwWithStackTrace(error, StackTrace.current);
+    for (var analysisError in errors) {
+      if (index + analysisError.offset <= result.end) {
+        error('parse-error', analysisError.message, start: analysisError.offset);
       }
     }
 
     index = result.end;
+    print([result.beginToken.offset, result.beginToken.end]);
+    print([result.endToken.offset, result.endToken.end]);
     return result;
   }
 

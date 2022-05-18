@@ -434,7 +434,14 @@ extension TagParser on Parser {
     }
 
     var regex = quoteMark ?? attributeValueEndRe;
-    var value = readSequence(regex);
+    List<Node> value;
+
+    try {
+      value = readSequence(regex);
+    } on CompileError catch (error) {
+      index = error.span.start.offset;
+      unclosedAttributeValue(quoteMark ?? '}');
+    }
 
     if (value.isEmpty && quoteMark == null) {
       missingAttributeValue();

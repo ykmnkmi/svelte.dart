@@ -1,0 +1,7 @@
+{
+  "code": "empty-attribute-shorthand",
+  "message": "attribute shorthand cannot be empty",
+  "offset": 6,
+  "line": 1,
+  "column": 6
+}

@@ -35,12 +35,20 @@ extension ParserErrors on Parser {
     error('duplicate-attribute', 'attributes need to be unique', start: start, end: end);
   }
 
+  Never duplicateElement(String slug, String name, [int? position]) {
+    error('duplicate-$slug', 'a component can only have one <$name> tag', start: position);
+  }
+
   Never duplicateStyle([int? position]) {
     error('duplicate-style', 'you can only have one top-level <style> tag per component', start: position);
   }
 
   Never emptyAttributeShorthand([int? position]) {
     error('empty-attribute-shorthand', 'attribute shorthand cannot be empty', start: position);
+  }
+
+  Never emptyDirectiveName(String type, [int? position]) {
+    error('empty-directive-name', '$type name cannot be empty', start: position);
   }
 
   Never emptyGlobalSelector() {
@@ -53,36 +61,6 @@ extension ParserErrors on Parser {
 
   Never expectedName() {
     error('expected-name', 'expected name');
-  }
-
-  Never invalidDebugArgs([int? position]) {
-    error('invalid-debug-args', '{@debug ...} arguments must be identifiers, not arbitrary expressions',
-        start: position);
-  }
-
-  Never invalidDeclaration() {
-    error('invalid-declaration', 'declaration cannot be empty');
-  }
-
-  Never invalidDirectiveValue([int? position]) {
-    error('invalid-directive-value', 'directive value must be a JavaScript expression enclosed in curly braces',
-        start: position);
-  }
-
-  Never invalidElseIf() {
-    error('invalid-elseif', '\'elseif\' should be \'else if\'');
-  }
-
-  Never invalidElseIfPlacementOutsideIf() {
-    error('invalid-elseif-placement', 'cannot have an {:else if ...} block outside an {#if ...} block');
-  }
-
-  Never duplicateElement(String slug, String name, [int? position]) {
-    error('duplicate-$slug', 'a component can only have one <$name> tag', start: position);
-  }
-
-  Never emptyDirectiveName(String type, [int? position]) {
-    error('empty-directive-name', '$type name cannot be empty', start: position);
   }
 
   Never invalidCatchPlacementUnclosedBlock(String block) {
@@ -107,8 +85,34 @@ extension ParserErrors on Parser {
         start: position);
   }
 
+  Never invalidDebugArgs([int? position]) {
+    error('invalid-debug-args', '{@debug ...} arguments must be identifiers, not arbitrary expressions',
+        start: position);
+  }
+
+  Never invalidDeclaration() {
+    error('invalid-declaration', 'declaration cannot be empty');
+  }
+
+  Never invalidDirectiveValue([int? position]) {
+    error('invalid-directive-value', 'directive value must be a JavaScript expression enclosed in curly braces',
+        start: position);
+  }
+
+  Never invalidElseIf() {
+    error('invalid-elseif', '\'elseif\' should be \'else if\'');
+  }
+
+  Never invalidElseIfPlacementOutsideIf() {
+    error('invalid-elseif-placement', 'cannot have an {:else if ...} block outside an {#if ...} block');
+  }
+
   Never invalidElseIfPlacementUnclosedBlock(String block) {
     error('invalid-elseif-placement', 'expected to close $block before seeing {:else if ...} block');
+  }
+
+  Never invalidElsePlacementOutsideIf() {
+    error('invalid-else-placement', 'cannot have an {:else} block outside an {#if ...} or {#each ...} block');
   }
 
   Never invalidElsePlacementUnclosedBlock(String block) {

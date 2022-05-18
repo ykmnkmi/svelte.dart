@@ -1,0 +1,7 @@
+{
+  "code": "invalid-then-placement",
+  "message": "expected to close <li> tag before seeing {:then} block",
+  "offset": 27,
+  "line": 3,
+  "column": 6
+}

@@ -459,7 +459,7 @@ class Element extends Node with NamedNode, MultiAttributeNode, MultiDirectiveNod
 
   @override
   String describe() {
-    return '<$name}> tag';
+    return '<$name> tag';
   }
 }
 
@@ -531,11 +531,16 @@ class Body extends Element {
   Body({super.start, super.end}) : super(type: 'Body');
 }
 
-class IfBlock extends Node with ExpressionNode, ElseIfNode, ElseNode {
-  IfBlock({super.start, super.end, this.expression, this.elseIf = false, this.elseNode}) : super(type: 'IfBlock');
+class IfBlock extends Node with ExpressionNode, MultiChildNode, ElseIfNode, ElseNode {
+  IfBlock({super.start, super.end, this.expression, this.elseIf = false, this.elseNode})
+      : children = <Node>[],
+        super(type: 'IfBlock');
 
   @override
   Expression? expression;
+
+  @override
+  List<Node> children;
 
   @override
   bool elseIf;
@@ -546,20 +551,6 @@ class IfBlock extends Node with ExpressionNode, ElseIfNode, ElseNode {
   @override
   String describe() {
     return '{#if} block';
-  }
-}
-
-class ElseBlock extends Node with MultiChildNode {
-  ElseBlock({super.start, super.end, List<Node>? children})
-      : children = children ?? <Node>[],
-        super(type: 'ElseBlock');
-
-  @override
-  List<Node> children;
-
-  @override
-  String describe() {
-    return '{:else} block';
   }
 }
 
@@ -612,6 +603,20 @@ class EachBlock extends Node
     }
 
     return json;
+  }
+}
+
+class ElseBlock extends Node with MultiChildNode {
+  ElseBlock({super.start, super.end, List<Node>? children})
+      : children = children ?? <Node>[],
+        super(type: 'ElseBlock');
+
+  @override
+  List<Node> children;
+
+  @override
+  String describe() {
+    return '{:else} block';
   }
 }
 

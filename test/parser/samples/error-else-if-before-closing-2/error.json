@@ -1,0 +1,7 @@
+{
+  "code": "invalid-elseif-placement",
+  "message": "expected to close <p> tag before seeing {:else if ...} block",
+  "offset": 26,
+  "line": 3,
+  "column": 9
+}

@@ -1,0 +1,7 @@
+{
+  "code": "invalid-elseif-placement",
+  "message": "cannot have an {:else if ...} block outside an {#if ...} block",
+  "offset": 36,
+  "line": 3,
+  "column": 11
+}

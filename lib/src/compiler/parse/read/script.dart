@@ -27,9 +27,9 @@ class _CompilationUnit extends CompilationUnitImpl implements CompilationUnit {
 }
 
 extension ScriptParser on Parser {
-  static final RegExp closeRe = RegExp(r'<\/script\s*>');
+  static final RegExp scriptCloseRe = RegExp(r'<\/script\s*>');
 
-  static final RegExp allRe = RegExp(r'[^\n]');
+  static final RegExp nonNewLineRe = RegExp(r'[^\n]');
 
   String getContext(List<Attribute>? attributes) {
     if (attributes == null) {
@@ -66,13 +66,13 @@ extension ScriptParser on Parser {
 
   void script(int offset, List<Attribute>? attributes) {
     var contentStart = index;
-    var data = readUntil(closeRe, unclosedScript);
+    var data = readUntil(scriptCloseRe, unclosedScript);
     var contentEnd = index;
 
     // TODO(error): handle
-    if (scan(closeRe)) {
+    if (scan(scriptCloseRe)) {
       var context = getContext(attributes);
-      var prefix = template.substring(0, contentStart).replaceAll(allRe, ' ');
+      var prefix = template.substring(0, contentStart).replaceAll(nonNewLineRe, ' ');
       var unit = parseScript(offset, prefix + data);
       var begin = Token(unit.beginToken.type, contentStart);
       var end = Token(unit.endToken.type, contentEnd);

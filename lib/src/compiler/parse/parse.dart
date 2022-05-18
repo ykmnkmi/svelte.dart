@@ -20,6 +20,8 @@ class Parser {
 
   static final RegExp nonWhitespaceRe = RegExp('\\S+');
 
+  static final RegExp identifierRe = RegExp('[_\$A-Za-z][_\$A-Za-z0-9]*');
+
   Parser(this.template, {Object? sourceUrl})
       : length = template.length,
         sourceFile = SourceFile.fromString(template, url: sourceUrl),
@@ -160,9 +162,9 @@ class Parser {
     return match[0];
   }
 
+  // TODO: add reserved word checking
   String? readIdentifier() {
-    // TODO: add reserved word checking
-    return read(RegExp('[_\$A-Za-z][_\$A-Za-z0-9]*'));
+    return read(identifierRe);
   }
 
   String readUntil(Pattern pattern, [Never Function()? onError]) {
