@@ -7,6 +7,8 @@ import 'package:piko/src/compiler/parse/read/expression.dart';
 import 'package:piko/src/compiler/utils/html.dart';
 
 extension MustacheParser on Parser {
+  static final RegExp mustacheEndRe = RegExp('\\s*}');
+
   static void trimWhitespace(Node block, bool trimBefore, bool trimAfter) {
     var node = block;
 
@@ -260,7 +262,7 @@ extension MustacheParser on Parser {
         if (scan('then')) {
           isThen = true;
 
-          if (match(RegExp('\\s*}'))) {
+          if (match(mustacheEndRe)) {
             allowWhitespace();
           } else {
             allowWhitespace(require: true);
@@ -270,7 +272,7 @@ extension MustacheParser on Parser {
         } else if (scan('catch')) {
           isCatch = true;
 
-          if (match(RegExp('\\s*}'))) {
+          if (match(mustacheEndRe)) {
             allowWhitespace();
           } else {
             allowWhitespace(require: true);

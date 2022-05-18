@@ -4,10 +4,6 @@ import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
 import 'package:piko/src/compiler/parse/parse.dart';
 
 extension ContextParser on Parser {
-  static final RegExp closeRe = RegExp(r'<\/style\s*>');
-
-  static final RegExp allRe = RegExp(r'[^\n]');
-
   Identifier readContext() {
     var start = index;
     var identifier = readIdentifier();

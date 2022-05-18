@@ -16,6 +16,10 @@ class LastAutoClosedTag {
 }
 
 class Parser {
+  static final RegExp whitespaceRe = RegExp('\\s*');
+
+  static final RegExp nonWhitespaceRe = RegExp('\\S+');
+
   Parser(this.template, {Object? sourceUrl})
       : length = template.length,
         sourceFile = SourceFile.fromString(template, url: sourceUrl),
@@ -34,13 +38,12 @@ class Parser {
     var children = html.children;
 
     if (children.isNotEmpty) {
-      var nonWhitespace = RegExp('\\S+');
       var start = children.first.start ?? 0;
-      var index = template.indexOf(nonWhitespace, start);
+      var index = template.indexOf(nonWhitespaceRe, start);
       start = math.max(start, index);
 
       var end = children.last.end ?? template.length;
-      index = template.lastIndexOf(nonWhitespace, end);
+      index = template.lastIndexOf(nonWhitespaceRe, end);
 
       if (index != -1) {
         end = math.min(index + 1, end);
@@ -95,7 +98,7 @@ class Parser {
   }
 
   void allowWhitespace({bool require = false}) {
-    var match = RegExp('\\s*').matchAsPrefix(template, index);
+    var match = whitespaceRe.matchAsPrefix(template.substring(index));
 
     if (match == null) {
       if (require) {
@@ -105,27 +108,27 @@ class Parser {
       return;
     }
 
-    index = match.end;
+    index += match.end;
   }
 
   bool match(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template, index);
+    var match = pattern.matchAsPrefix(template.substring(index));
     return match != null;
   }
 
   bool scan(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template, index);
+    var match = pattern.matchAsPrefix(template.substring(index));
 
     if (match == null) {
       return false;
     }
 
-    index = match.end;
+    index += match.end;
     return true;
   }
 
   void expect(Pattern pattern, {Never Function()? onError}) {
-    var match = pattern.matchAsPrefix(template, index);
+    var match = pattern.matchAsPrefix(template.substring(index));
 
     if (match == null) {
       if (onError == null) {
@@ -139,7 +142,7 @@ class Parser {
       onError();
     }
 
-    index = match.end;
+    index += match.end;
   }
 
   int readChar() {
@@ -163,7 +166,7 @@ class Parser {
   }
 
   String readUntil(Pattern pattern, [Never Function()? onError]) {
-    var found = template.indexOf(pattern, index);
+    var found = template.substring(index).indexOf(pattern);
 
     if (found == -1) {
       if (canParse) {
@@ -177,7 +180,7 @@ class Parser {
       onError();
     }
 
-    return template.substring(index, index = found);
+    return template.substring(index, index += found);
   }
 
   Never error(String code, String message, {int? start, int? end}) {

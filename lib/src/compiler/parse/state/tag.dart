@@ -11,21 +11,43 @@ import 'package:piko/src/compiler/utils/names.dart';
 
 extension TagParser on Parser {
   static const Map<String, ElementFactory> metaTags = <String, ElementFactory>{
-    'svelte:head': Head.new,
-    'svelte:options': Options.new,
-    'svelte:window': Window.new,
-    'svelte:body': Body.new,
+    'piko:head': Head.new,
+    'piko:options': Options.new,
+    'piko:window': Window.new,
+    'piko:body': Body.new,
   };
 
   static const Set<String> validMetaTags = <String>{
-    'svelte:head',
-    'svelte:options',
-    'svelte:window',
-    'svelte:body',
-    'svelte:self',
-    'svelte:component',
-    'svelte:fragment',
+    'piko:head',
+    'piko:options',
+    'piko:window',
+    'piko:body',
+    'piko:self',
+    'piko:component',
+    'piko:fragment',
   };
+
+  static final RegExp ignoreRe = RegExp('^\\s*ignore:\\s+([\\s\\S]+)\\s*\$', multiLine: true);
+
+  static final RegExp componentNameRe = RegExp('^[A-Z]');
+
+  static final RegExp selfRe = RegExp('^piko:self(?=[\\s/>])', multiLine: true);
+
+  static final RegExp componentRe = RegExp('^piko:component(?=[\\s/>])', multiLine: true);
+
+  static final RegExp fragmentRe = RegExp('^piko:fragment(?=[\\s/>])', multiLine: true);
+
+  static final RegExp metaTagEndRe = RegExp('(\\s|\\/|>)');
+
+  static final RegExp tagRe = RegExp('^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*', multiLine: true);
+
+  static final RegExp attributeNameEndRe = RegExp('[\\s=\\/>"]');
+
+  static final RegExp attributeValueEndRe = RegExp('(\\/>|[\\s"\'=<>`])');
+
+  static final RegExp quoteRe = RegExp('["\']');
+
+  static final RegExp textareaCloseTagRe = RegExp(r'^<\/textarea(\s[^>]*)?>');
 
   static String? getDirectiveType(String name) {
     switch (name) {
@@ -51,8 +73,6 @@ extension TagParser on Parser {
         return null;
     }
   }
-
-  static final RegExp ignoreRe = RegExp('^\\s*ignore:\\s+([\\s\\S]+)\\s*\$', multiLine: true);
 
   static List<String>? extractIgnore(String text) {
     var match = ignoreRe.firstMatch(text);
@@ -97,14 +117,14 @@ extension TagParser on Parser {
     var name = readTagName();
 
     if (metaTags.containsKey(name)) {
-      var slug = name.substring('svelte:'.length);
+      var slug = name.substring('piko:'.length);
 
       if (isClosingTag) {
         // TODO(error): wrap cast
         var current = this.current as MultiChildNode;
         var children = current.children;
 
-        if ((name == 'svelte:window' || name == 'svelte:body') && children.isNotEmpty) {
+        if ((name == 'piko:window' || name == 'piko:body') && children.isNotEmpty) {
           invalidElementContent(slug, name, children.first.start);
         }
       } else {
@@ -124,9 +144,9 @@ extension TagParser on Parser {
     Element element;
 
     if (type == null) {
-      if (RegExp('^[A-Z]').hasMatch(name) || name == 'svelte:self' || name == 'svelte:component') {
-        element = InlineComponent(start: start);
-      } else if (name == 'svelte:fragment') {
+      if (componentNameRe.hasMatch(name) || name == 'piko:self' || name == 'piko:component') {
+        element = InlineComponent(start: start, name: name);
+      } else if (name == 'piko:fragment') {
         element = SlotTemplate(start: start);
       } else if (name == 'title' && parentIsHead()) {
         element = Title(start: start);
@@ -186,7 +206,7 @@ extension TagParser on Parser {
       allowWhitespace();
     }
 
-    if (name == 'svelte:component') {
+    if (name == 'piko:component') {
       var attributes = element.attributes;
       var index = attributes.indexWhere((attribute) => attribute.type == 'Attribute' && attribute.name == 'this');
 
@@ -232,9 +252,8 @@ extension TagParser on Parser {
       element.end = index;
     } else if (name == 'textarea') {
       // TODO(parser): check ^<\/textarea(\s[^>]*)?>
-      var pattern = RegExp(r'<\/textarea(\s[^>]*)?>');
-      element.children = readSequence(pattern);
-      scan(pattern);
+      element.children = readSequence(textareaCloseTagRe);
+      scan(textareaCloseTagRe);
       element.end = index;
     } else if (name == 'script' || name == 'style') {
       var start = index;
@@ -251,37 +270,35 @@ extension TagParser on Parser {
   String readTagName() {
     var start = index;
 
-    if (scan(RegExp('^svelte:self(?=[\\s/>])'))) {
+    if (scan(selfRe)) {
       for (var fragment in stack.reversed) {
-        var type = fragment.type;
-
-        if (type == 'IfBlock' || type == 'EachBlock' || type == 'InlineComponent') {
-          return 'svelte:self';
+        if (fragment is IfBlock || fragment is EachBlock || fragment is InlineComponent) {
+          return 'piko:self';
         }
       }
 
       invalidSelfPlacement(start);
     }
 
-    if (scan(RegExp('^svelte:component(?=[\\s/>])'))) {
-      return 'svelte:component';
+    if (scan(componentRe)) {
+      return 'piko:component';
     }
 
-    if (scan(RegExp('^svelte:fragment(?=[\\s/>])'))) {
-      return 'svelte:fragment';
+    if (scan(fragmentRe)) {
+      return 'piko:fragment';
     }
 
-    var name = readUntil(RegExp('(\\s|\\/|>)'));
+    var name = readUntil(metaTagEndRe);
 
     if (metaTags.containsKey(name)) {
       return name;
     }
 
-    if (name.startsWith('svelte:')) {
+    if (name.startsWith('piko:')) {
       invalidTagNameSvelteElement(validMetaTags, start);
     }
 
-    if (!RegExp('^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*').hasMatch(name)) {
+    if (!tagRe.hasMatch(name)) {
       invalidTagName(start);
     }
 
@@ -330,7 +347,7 @@ extension TagParser on Parser {
       }
     }
 
-    var name = readUntil(RegExp('[\\s=\\/>"]'));
+    var name = readUntil(attributeNameEndRe);
 
     if (name.isEmpty) {
       return false;
@@ -352,7 +369,7 @@ extension TagParser on Parser {
       allowWhitespace();
       values = readAttributeOrDirectiveValues();
       end = index;
-    } else if (match(RegExp('["\']'))) {
+    } else if (match(quoteRe)) {
       unexpectedToken('=', start);
     }
 
@@ -410,13 +427,13 @@ extension TagParser on Parser {
   }
 
   List<Node> readAttributeOrDirectiveValues() {
-    var quoteMark = read(RegExp('["\']'));
+    var quoteMark = read(quoteRe);
 
     if (quoteMark != null && scan(quoteMark)) {
       return <Node>[Text(start: index - 1, end: index - 1, data: '')];
     }
 
-    var regex = quoteMark ?? RegExp('(\\/>|[\\s"\'=<>`])');
+    var regex = quoteMark ?? attributeValueEndRe;
     var value = readSequence(regex);
 
     if (value.isEmpty && quoteMark == null) {

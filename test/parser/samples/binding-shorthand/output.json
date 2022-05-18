@@ -15,7 +15,7 @@
         "start": 31,
         "end": 49,
         "_": "InlineComponent",
-        "name": "",
+        "name": "Widget",
         "directives": [
           {
             "start": 39,

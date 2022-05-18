@@ -3,11 +3,11 @@ import 'package:piko/src/compiler/parse/parse.dart';
 import 'package:piko/src/compiler/utils/html.dart';
 
 extension TextParser on Parser {
-  static final RegExp openRe = RegExp(r'[{<]');
+  static final RegExp textEndRe = RegExp(r'[{<]');
 
   void text() {
     var start = index;
-    var found = template.indexOf(openRe, index);
+    var found = template.indexOf(textEndRe, index);
 
     String data;
 

@@ -134,7 +134,7 @@ extension ParserErrors on Parser {
 
   Never invalidSelfPlacement([int? position]) {
     error('invalid-self-placement',
-        '<svelte:self> components can only exist inside {#if} blocks, {#each} blocks, or slots passed to components',
+        '<piko:self> components can only exist inside {#if} blocks, {#each} blocks, or slots passed to components',
         start: position);
   }
 
@@ -159,7 +159,7 @@ extension ParserErrors on Parser {
   }
 
   Never invalidTagNameSvelteElement(Iterable<String> tags, [int? position]) {
-    error('invalid-tag-name', 'valid <svelte:...> tag names are ${tags.join(', ')}', start: position);
+    error('invalid-tag-name', 'valid <piko:...> tag names are ${tags.join(', ')}', start: position);
   }
 
   Never invalidThenPlacementUnclosedBlock(String block) {
@@ -176,7 +176,7 @@ extension ParserErrors on Parser {
   }
 
   Never missingComponentDefinition([int? position]) {
-    error('missing-component-definition', '<svelte:component> must have a \'this\' attribute', start: position);
+    error('missing-component-definition', '<piko:component> must have a \'this\' attribute', start: position);
   }
 
   Never missingAttributeValue() {
@@ -211,8 +211,8 @@ extension ParserErrors on Parser {
     error('unexpected-eof', 'unexpected $token');
   }
 
-  Never unexpectedToken(Pattern pattern, [int? position]) {
-    error('unexpected-token', 'expected $pattern', start: position);
+  Never unexpectedToken(Pattern expected, [int? position]) {
+    error('unexpected-token', 'expected $expected', start: position);
   }
 
   Never unexpectedTokenDestructure() {

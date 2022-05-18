@@ -3,6 +3,7 @@ import 'package:analyzer/dart/ast/ast.dart'
         ArgumentList,
         AstNode,
         CompilationUnit,
+        ConditionalExpression,
         Expression,
         Identifier,
         IntegerLiteral,
@@ -409,8 +410,29 @@ class Element extends Node with NamedNode, MultiAttributeNode, MultiDirectiveNod
   List<Node> children;
 }
 
-class InlineComponent extends Element {
-  InlineComponent({super.start, super.end}) : super(type: 'InlineComponent');
+class InlineComponent extends Node
+    with NamedNode, ExpressionNode, MultiAttributeNode, MultiDirectiveNode, MultiChildNode
+    implements Element {
+  InlineComponent({super.start, super.end, this.name = ''})
+      : attributes = <Attribute>[],
+        directives = <Directive>[],
+        children = <Node>[],
+        super(type: 'InlineComponent');
+
+  @override
+  String name;
+
+  @override
+  Expression? expression;
+
+  @override
+  List<Attribute> attributes;
+
+  @override
+  List<Directive> directives;
+
+  @override
+  List<Node> children;
 }
 
 class SlotTemplate extends Element {
@@ -682,6 +704,17 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'declarations': <Map<String, Object?>?>[
         for (var declaration in node.declarations) declaration.accept(this),
       ],
+    };
+  }
+
+  @override
+  Map<String, Object?> visitConditionalExpression(ConditionalExpression node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'IntegerLiteral',
+      'condition': node.condition.accept(this),
+      'then': node.thenExpression.accept(this),
+      'else': node.elseExpression.accept(this),
     };
   }
 
