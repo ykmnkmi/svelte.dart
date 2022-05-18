@@ -251,7 +251,6 @@ extension TagParser on Parser {
     if (selfClosing) {
       element.end = index;
     } else if (name == 'textarea') {
-      // TODO(parser): check ^<\/textarea(\s[^>]*)?>
       element.children = readSequence(textareaCloseTagRe);
       scan(textareaCloseTagRe);
       element.end = index;

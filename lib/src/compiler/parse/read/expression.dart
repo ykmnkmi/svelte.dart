@@ -21,8 +21,6 @@ extension MustacheParser on Parser {
     }
 
     index = result.end;
-    print([result.beginToken.offset, result.beginToken.end]);
-    print([result.endToken.offset, result.endToken.end]);
     return result;
   }
 

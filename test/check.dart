@@ -6,7 +6,7 @@ import 'package:stack_trace/stack_trace.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String template = '''
-<Component test={{'a': 1} />
+<Component test={{a: 1} />
 ''';
 
 void main(List<String> arguments) {

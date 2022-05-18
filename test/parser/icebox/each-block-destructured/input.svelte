@@ -1,7 +1,7 @@
 <script>
-	export let animals;
+  export let animals;
 </script>
 
 {#each animals as [key, value, ...rest]}
-	<p>{key}: {value}</p>
+  <p>{key}: {value}</p>
 {/each}

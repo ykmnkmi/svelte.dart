@@ -1,7 +1,7 @@
 <div>foo</div>
 
 <style>
-	div {
-		color: red;
-	}
+  div {
+    color: red;
+  }
 </style>

@@ -162,7 +162,7 @@ class Parser {
     return match[0];
   }
 
-  // TODO: add reserved word checking
+  // TODO(parser): add reserved word checking
   String? readIdentifier() {
     return read(identifierRe);
   }
