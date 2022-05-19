@@ -1,0 +1,37 @@
+{
+  "html": {
+    "start": 0,
+    "end": 16,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 14,
+        "_": "Element",
+        "name": "div",
+        "children": [
+          {
+            "start": 5,
+            "end": 8,
+            "_": "Text",
+            "data": "foo",
+            "raw": "foo"
+          }
+        ]
+      },
+      {
+        "start": 14,
+        "end": 16,
+        "_": "Text",
+        "data": "\n\n",
+        "raw": "\n\n"
+      }
+    ]
+  },
+  "style": {
+    "start": 16,
+    "end": 70,
+    "_": "Style",
+    "data": "\n  div {\n    color: red;\n  }\n"
+  }
+}

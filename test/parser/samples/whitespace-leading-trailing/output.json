@@ -1,0 +1,31 @@
+{
+  "html": {
+    "start": 10,
+    "end": 40,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 10,
+        "_": "Text",
+        "data": "\n\n        ",
+        "raw": "\n\n        "
+      },
+      {
+        "start": 10,
+        "end": 40,
+        "_": "Element",
+        "name": "p",
+        "children": [
+          {
+            "start": 13,
+            "end": 36,
+            "_": "Text",
+            "data": "just chillin' over here",
+            "raw": "just chillin' over here"
+          }
+        ]
+      }
+    ]
+  }
+}

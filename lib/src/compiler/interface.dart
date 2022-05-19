@@ -10,10 +10,12 @@ import 'package:analyzer/dart/ast/ast.dart'
         Expression,
         Identifier,
         IntegerLiteral,
+        MapLiteralEntry,
         MethodInvocation,
         NamedType,
         PrefixExpression,
         PrefixedIdentifier,
+        SetOrMapLiteral,
         SimpleIdentifier,
         SimpleStringLiteral,
         TopLevelVariableDeclaration,
@@ -858,8 +860,8 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'CompilationUnit',
-      'declarations': <Map<String, Object?>?>[
-        for (var declaration in node.declarations) declaration.accept(this),
+      'library': <Map<String, Object?>?>[
+        for (var node in node.sortedDirectivesAndDeclarations) node.accept(this),
       ],
     };
   }
@@ -881,6 +883,16 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'IntegerLiteral',
       'value': node.value,
+    };
+  }
+
+  @override
+  Map<String, Object?> visitMapLiteralEntry(MapLiteralEntry node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'MapLiteralEntry',
+      'key': node.key.accept(this),
+      'value': node.value.accept(this),
     };
   }
 
@@ -922,6 +934,19 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       if (node.isDeferred) 'deferred': true,
       'prefix': node.prefix.accept(this),
       'identifier': node.identifier.accept(this),
+    };
+  }
+
+  @override
+  Map<String, Object?> visitSetOrMapLiteral(SetOrMapLiteral node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'SetOrMapLiteral',
+      if (node.isMap) 'map': true,
+      if (node.isSet) 'set': true,
+      'elements': <Map<String, Object?>?>[
+        for (var element in node.elements) element.accept(this),
+      ],
     };
   }
 

@@ -1,0 +1,7 @@
+{
+  "code": "missing-whitespace",
+  "message": "expected whitespace",
+  "offset": 6,
+  "line": 1,
+  "column": 6
+}

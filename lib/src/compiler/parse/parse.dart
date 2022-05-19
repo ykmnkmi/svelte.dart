@@ -111,14 +111,10 @@ class Parser {
   }
 
   void allowWhitespace({bool require = false}) {
-    var match = whitespaceRe.matchAsPrefix(template.substring(index));
+    var match = whitespaceRe.matchAsPrefix(template.substring(index)) as Match;
 
-    if (match == null) {
-      if (require) {
-        error('missing-whitespace', 'expected whitespace');
-      }
-
-      return;
+    if (require && match.start == match.end) {
+      error('missing-whitespace', 'expected whitespace');
     }
 
     index += match.end;

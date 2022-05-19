@@ -1,10 +1,7 @@
 {
   "code": "invalid-window-placement",
-  "message": "<svelte:window> tags cannot be inside elements or blocks",
-  "start": {
-    "line": 2,
-    "column": 1,
-    "character": 11
-  },
-  "pos": 11
+  "message": "<piko:window> tags cannot be inside elements or blocks",
+  "offset": 12,
+  "line": 2,
+  "column": 2
 }

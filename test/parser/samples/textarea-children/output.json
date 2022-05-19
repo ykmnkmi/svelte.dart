@@ -1,0 +1,42 @@
+{
+  "html": {
+    "start": 0,
+    "end": 62,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 62,
+        "_": "Element",
+        "name": "textarea",
+        "children": [
+          {
+            "start": 10,
+            "end": 41,
+            "_": "Text",
+            "data": "\n  <p>not actually an element. ",
+            "raw": "\n  <p>not actually an element. "
+          },
+          {
+            "start": 41,
+            "end": 46,
+            "_": "MustacheTag",
+            "expression": {
+              "start": 42,
+              "end": 45,
+              "_": "SimpleIdentifier",
+              "name": "foo"
+            }
+          },
+          {
+            "start": 46,
+            "end": 51,
+            "_": "Text",
+            "data": "</p>\n",
+            "raw": "</p>\n"
+          }
+        ]
+      }
+    ]
+  }
+}

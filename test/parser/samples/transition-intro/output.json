@@ -1,0 +1,57 @@
+{
+  "html": {
+    "start": 0,
+    "end": 45,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 45,
+        "_": "Element",
+        "name": "div",
+        "directives": [
+          {
+            "start": 5,
+            "end": 30,
+            "_": "Transition",
+            "name": "style",
+            "expression": {
+              "start": 16,
+              "end": 28,
+              "_": "SetOrMapLiteral",
+              "elements": [
+                {
+                  "start": 17,
+                  "end": 27,
+                  "_": "MapLiteralEntry",
+                  "key": {
+                    "start": 17,
+                    "end": 24,
+                    "_": "SimpleIdentifier",
+                    "name": "opacity"
+                  },
+                  "value": {
+                    "start": 26,
+                    "end": 27,
+                    "_": "IntegerLiteral",
+                    "value": 0
+                  }
+                }
+              ]
+            },
+            "intro": true
+          }
+        ],
+        "children": [
+          {
+            "start": 31,
+            "end": 39,
+            "_": "Text",
+            "data": "fades in",
+            "raw": "fades in"
+          }
+        ]
+      }
+    ]
+  }
+}

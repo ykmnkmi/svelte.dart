@@ -1,0 +1,32 @@
+{
+  "html": {
+    "start": 0,
+    "end": 42,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 42,
+        "_": "Element",
+        "name": "piko:head",
+        "children": [
+          {
+            "start": 13,
+            "end": 28,
+            "_": "Element",
+            "name": "style",
+            "children": [
+              {
+                "start": 20,
+                "end": 20,
+                "_": "Text",
+                "data": "",
+                "raw": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

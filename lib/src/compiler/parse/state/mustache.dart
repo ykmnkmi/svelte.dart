@@ -18,7 +18,6 @@ extension MustacheParser on Parser {
 
     var children = node.children;
     var first = children.first;
-    var last = children.last;
 
     if (trimBefore && first is Text) {
       var data = first.data.trimLeft();
@@ -30,13 +29,17 @@ extension MustacheParser on Parser {
       }
     }
 
-    if (trimAfter && last is Text) {
-      var data = last.data.trimRight();
+    if (children.isNotEmpty) {
+      var last = children.last;
 
-      if (data.isEmpty) {
-        children.removeLast();
-      } else {
-        last.data = data;
+      if (trimAfter && last is Text) {
+        var data = last.data.trimRight();
+
+        if (data.isEmpty) {
+          children.removeLast();
+        } else {
+          last.data = data;
+        }
       }
     }
 

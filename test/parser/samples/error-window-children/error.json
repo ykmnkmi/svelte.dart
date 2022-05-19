@@ -1,10 +1,7 @@
 {
   "code": "invalid-window-content",
-  "message": "<svelte:window> cannot have children",
-  "start": {
-    "line": 1,
-    "column": 15,
-    "character": 15
-  },
-  "pos": 15
+  "message": "<piko:window> cannot have children",
+  "offset": 13,
+  "line": 1,
+  "column": 13
 }

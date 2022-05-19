@@ -1,0 +1,91 @@
+{
+  "html": {
+    "start": 84,
+    "end": 106,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 82,
+        "end": 84,
+        "_": "Text",
+        "data": "\n\n",
+        "raw": "\n\n"
+      },
+      {
+        "start": 84,
+        "end": 106,
+        "_": "Element",
+        "name": "h1",
+        "children": [
+          {
+            "start": 88,
+            "end": 94,
+            "_": "Text",
+            "data": "Hello ",
+            "raw": "Hello "
+          },
+          {
+            "start": 94,
+            "end": 100,
+            "_": "MustacheTag",
+            "expression": {
+              "start": 95,
+              "end": 99,
+              "_": "SimpleIdentifier",
+              "name": "name"
+            }
+          },
+          {
+            "start": 100,
+            "end": 101,
+            "_": "Text",
+            "data": "!",
+            "raw": "!"
+          }
+        ]
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 82,
+    "_": "Script",
+    "context": "default",
+    "content": {
+      "start": 8,
+      "end": 73,
+      "_": "CompilationUnit",
+      "library": [
+        {
+          "start": 11,
+          "end": 30,
+          "_": "TopLevelVariableDeclaration",
+          "variables": {
+            "start": 11,
+            "end": 29,
+            "_": "VariableDeclarationList",
+            "variables": [
+              {
+                "start": 15,
+                "end": 29,
+                "_": "VariableDeclaration",
+                "name": {
+                  "start": 15,
+                  "end": 19,
+                  "_": "SimpleIdentifier",
+                  "name": "name"
+                },
+                "initializer": {
+                  "start": 22,
+                  "end": 29,
+                  "_": "SimpleStringLiteral",
+                  "value": "world"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

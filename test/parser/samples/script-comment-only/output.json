@@ -1,0 +1,35 @@
+{
+  "html": {
+    "start": 46,
+    "end": 57,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 44,
+        "end": 46,
+        "_": "Text",
+        "data": "\n\n",
+        "raw": "\n\n"
+      },
+      {
+        "start": 46,
+        "end": 57,
+        "_": "Element",
+        "name": "div",
+        "children": []
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 44,
+    "_": "Script",
+    "context": "default",
+    "content": {
+      "start": 8,
+      "end": 35,
+      "_": "CompilationUnit",
+      "library": []
+    }
+  }
+}

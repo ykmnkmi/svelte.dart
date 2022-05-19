@@ -6,13 +6,7 @@ import 'package:stack_trace/stack_trace.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String template = '''
-<ul>
-  <li>a
-  {#if true}
-    <li>b
-  {/if}
-  <li>c
-</ul>
+{@htmlfoo}
 ''';
 
 void main(List<String> arguments) {

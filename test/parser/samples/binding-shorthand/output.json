@@ -43,7 +43,7 @@
       "start": 8,
       "end": 20,
       "_": "CompilationUnit",
-      "declarations": [
+      "library": [
         {
           "start": 11,
           "end": 19,

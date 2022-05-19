@@ -1,0 +1,72 @@
+{
+  "html": {
+    "start": 0,
+    "end": 56,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 56,
+        "_": "IfBlock",
+        "expression": {
+          "start": 5,
+          "end": 14,
+          "_": "BinaryExpression",
+          "left": {
+            "start": 5,
+            "end": 10,
+            "_": "SimpleIdentifier",
+            "name": "depth"
+          },
+          "right": {
+            "start": 13,
+            "end": 14,
+            "_": "IntegerLiteral",
+            "value": 1
+          }
+        },
+        "children": [
+          {
+            "start": 18,
+            "end": 50,
+            "_": "InlineComponent",
+            "name": "piko:self",
+            "attributes": [
+              {
+                "start": 29,
+                "end": 48,
+                "_": "Attribute",
+                "name": "depth",
+                "children": [
+                  {
+                    "start": 36,
+                    "end": 47,
+                    "_": "MustacheTag",
+                    "expression": {
+                      "start": 37,
+                      "end": 46,
+                      "_": "BinaryExpression",
+                      "left": {
+                        "start": 37,
+                        "end": 42,
+                        "_": "SimpleIdentifier",
+                        "name": "depth"
+                      },
+                      "right": {
+                        "start": 45,
+                        "end": 46,
+                        "_": "IntegerLiteral",
+                        "value": 1
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

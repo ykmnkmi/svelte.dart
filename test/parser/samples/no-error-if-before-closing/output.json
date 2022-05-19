@@ -1,0 +1,210 @@
+{
+  "html": {
+    "start": 0,
+    "end": 152,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 34,
+        "_": "IfBlock",
+        "expression": {
+          "start": 5,
+          "end": 9,
+          "_": "BooleanLiteral",
+          "value": true
+        },
+        "children": [
+          {
+            "start": 13,
+            "end": 20,
+            "_": "Element",
+            "name": "input",
+            "children": []
+          }
+        ],
+        "else": {
+          "start": 28,
+          "end": 29,
+          "_": "ElseBlock",
+          "children": []
+        }
+      },
+      {
+        "start": 34,
+        "end": 36,
+        "_": "Text",
+        "data": "\n\n",
+        "raw": "\n\n"
+      },
+      {
+        "start": 36,
+        "end": 67,
+        "_": "IfBlock",
+        "expression": {
+          "start": 41,
+          "end": 45,
+          "_": "BooleanLiteral",
+          "value": true
+        },
+        "children": [
+          {
+            "start": 49,
+            "end": 53,
+            "_": "Element",
+            "name": "br",
+            "children": []
+          }
+        ],
+        "else": {
+          "start": 61,
+          "end": 62,
+          "_": "ElseBlock",
+          "children": []
+        }
+      },
+      {
+        "start": 67,
+        "end": 69,
+        "_": "Text",
+        "data": "\n\n",
+        "raw": "\n\n"
+      },
+      {
+        "start": 69,
+        "end": 111,
+        "_": "AwaitBlock",
+        "expression": {
+          "start": 77,
+          "end": 81,
+          "_": "BooleanLiteral",
+          "value": true
+        },
+        "value": {
+          "start": 100,
+          "end": 101,
+          "_": "SimpleIdentifier",
+          "name": "f"
+        },
+        "pending": {
+          "start": 82,
+          "end": 93,
+          "_": "PendingBlock",
+          "children": [
+            {
+              "start": 82,
+              "end": 85,
+              "_": "Text",
+              "data": "\n  ",
+              "raw": "\n  "
+            },
+            {
+              "start": 85,
+              "end": 92,
+              "_": "Element",
+              "name": "input",
+              "children": []
+            },
+            {
+              "start": 92,
+              "end": 93,
+              "_": "Text",
+              "data": "\n",
+              "raw": "\n"
+            }
+          ]
+        },
+        "then": {
+          "start": 93,
+          "end": 103,
+          "_": "ThenBlock",
+          "children": [
+            {
+              "start": 102,
+              "end": 103,
+              "_": "Text",
+              "data": "\n",
+              "raw": "\n"
+            }
+          ]
+        },
+        "catch": {
+          "_": "CatchBlock",
+          "skip": true,
+          "children": []
+        }
+      },
+      {
+        "start": 111,
+        "end": 113,
+        "_": "Text",
+        "data": "\n\n",
+        "raw": "\n\n"
+      },
+      {
+        "start": 113,
+        "end": 152,
+        "_": "AwaitBlock",
+        "expression": {
+          "start": 121,
+          "end": 125,
+          "_": "BooleanLiteral",
+          "value": true
+        },
+        "value": {
+          "start": 141,
+          "end": 142,
+          "_": "SimpleIdentifier",
+          "name": "f"
+        },
+        "pending": {
+          "start": 126,
+          "end": 134,
+          "_": "PendingBlock",
+          "children": [
+            {
+              "start": 126,
+              "end": 129,
+              "_": "Text",
+              "data": "\n  ",
+              "raw": "\n  "
+            },
+            {
+              "start": 129,
+              "end": 133,
+              "_": "Element",
+              "name": "br",
+              "children": []
+            },
+            {
+              "start": 133,
+              "end": 134,
+              "_": "Text",
+              "data": "\n",
+              "raw": "\n"
+            }
+          ]
+        },
+        "then": {
+          "start": 134,
+          "end": 144,
+          "_": "ThenBlock",
+          "children": [
+            {
+              "start": 143,
+              "end": 144,
+              "_": "Text",
+              "data": "\n",
+              "raw": "\n"
+            }
+          ]
+        },
+        "catch": {
+          "_": "CatchBlock",
+          "skip": true,
+          "children": []
+        }
+      }
+    ]
+  }
+}

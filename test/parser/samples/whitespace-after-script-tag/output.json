@@ -1,0 +1,102 @@
+{
+  "html": {
+    "start": 52,
+    "end": 74,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 50,
+        "end": 52,
+        "_": "Text",
+        "data": "\n\n",
+        "raw": "\n\n"
+      },
+      {
+        "start": 52,
+        "end": 74,
+        "_": "Element",
+        "name": "h1",
+        "children": [
+          {
+            "start": 56,
+            "end": 62,
+            "_": "Text",
+            "data": "Hello ",
+            "raw": "Hello "
+          },
+          {
+            "start": 62,
+            "end": 68,
+            "_": "MustacheTag",
+            "expression": {
+              "start": 63,
+              "end": 67,
+              "_": "SimpleIdentifier",
+              "name": "name"
+            }
+          },
+          {
+            "start": 68,
+            "end": 69,
+            "_": "Text",
+            "data": "!",
+            "raw": "!"
+          }
+        ]
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 50,
+    "_": "Script",
+    "context": "default",
+    "content": {
+      "start": 8,
+      "end": 31,
+      "_": "CompilationUnit",
+      "library": [
+        {
+          "start": 11,
+          "end": 30,
+          "_": "TopLevelVariableDeclaration",
+          "variables": {
+            "start": 11,
+            "end": 29,
+            "_": "VariableDeclarationList",
+            "type": {
+              "start": 11,
+              "end": 14,
+              "_": "NamedType",
+              "name": {
+                "start": 11,
+                "end": 14,
+                "_": "SimpleIdentifier",
+                "name": "let"
+              }
+            },
+            "variables": [
+              {
+                "start": 15,
+                "end": 29,
+                "_": "VariableDeclaration",
+                "name": {
+                  "start": 15,
+                  "end": 19,
+                  "_": "SimpleIdentifier",
+                  "name": "name"
+                },
+                "initializer": {
+                  "start": 22,
+                  "end": 29,
+                  "_": "SimpleStringLiteral",
+                  "value": "world"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
