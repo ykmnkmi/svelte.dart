@@ -6,7 +6,15 @@ import 'package:stack_trace/stack_trace.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String template = '''
-{@htmlfoo}
+<script>
+  import 'foo.dart' deffered as foo;
+
+  void onMount() {
+    foo.loadLibrary().then<void>((_) {
+      print(foo.default);
+    });
+  });
+</script>
 ''';
 
 void main(List<String> arguments) {
