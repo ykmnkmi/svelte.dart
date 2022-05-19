@@ -1,0 +1,29 @@
+{
+  "html": {
+    "start": 0,
+    "end": 17,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 17,
+        "_": "IfBlock",
+        "expression": {
+          "start": 5,
+          "end": 8,
+          "_": "SimpleIdentifier",
+          "name": "foo"
+        },
+        "children": [
+          {
+            "start": 9,
+            "end": 12,
+            "_": "Text",
+            "data": "bar",
+            "raw": "bar"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/ast/ast.dart' show Expression, Identifier;
+import 'package:analyzer/dart/ast/ast.dart' show AsExpression, Expression, Identifier, NamedType;
 import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/errors.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
@@ -132,7 +132,9 @@ extension MustacheParser on Parser {
         expect('}');
 
         var ifNode = IfBlock(start: index, expression: expression, elseIf: true);
-        block.elseNode = ElseBlock(start: index, children: <Node>[ifNode]);
+        var elseBlock = ElseBlock(start: index);
+        elseBlock.children.add(ifNode);
+        block.elseNode = elseBlock;
         stack.add(ifNode);
       } else {
         var block = current;
@@ -220,7 +222,7 @@ extension MustacheParser on Parser {
 
       allowWhitespace(require: true);
 
-      var expression = readExpression(primary: true);
+      var expression = readExpression();
       var block = factory(start: start, expression: expression);
 
       if (block is AwaitBlock) {
@@ -233,10 +235,28 @@ extension MustacheParser on Parser {
       allowWhitespace();
 
       if (block is EachBlock) {
-        expect('as');
-        allowWhitespace(require: true);
-        block.context = readContext();
-        allowWhitespace();
+        // TODO(parser): unreachable code?
+        if (scan('as')) {
+          allowWhitespace(require: true);
+          block.context = readContext();
+          allowWhitespace();
+        } else {
+          var asExpression = block.expression;
+
+          if (asExpression is! AsExpression) {
+            if (canParse) {
+              unexpectedToken('as', index);
+            }
+
+            unexpectedEOFToken('as');
+          }
+
+          block.expression = asExpression.expression;
+
+          // TODO(error): wrap
+          var context = asExpression.type as NamedType;
+          block.context = context.name;
+        }
 
         if (scan(',')) {
           allowWhitespace();

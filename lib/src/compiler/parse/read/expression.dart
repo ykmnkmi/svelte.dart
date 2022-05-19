@@ -9,10 +9,10 @@ import 'package:analyzer/src/string_source.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
 
 extension MustacheParser on Parser {
-  Expression readExpression({bool primary = false}) {
+  Expression readExpression() {
     var source = template.substring(index);
     var errorListener = RecordingErrorListener();
-    var result = parseExpression(index, source, primary: primary, errorListener: errorListener);
+    var result = parseExpression(index, source, errorListener);
     var errors = errorListener.errors;
 
     var nonSynthetic = result.accept(NonSynthetic(this));
@@ -31,9 +31,7 @@ extension MustacheParser on Parser {
     return nonSynthetic;
   }
 
-  static Expression parseExpression(int offset, String expression, //
-      {bool primary = false,
-      AnalysisErrorListener? errorListener}) {
+  static Expression parseExpression(int offset, String expression, [AnalysisErrorListener? errorListener]) {
     errorListener ??= RecordingErrorListener();
 
     var featureSet = FeatureSet.latestLanguageVersion();
@@ -44,12 +42,6 @@ extension MustacheParser on Parser {
     var token = scanner.tokenize();
     var lineInfo = LineInfo(scanner.lineStarts);
     var parser = AST.Parser(source, errorListener, featureSet: scanner.featureSet, lineInfo: lineInfo);
-
-    if (primary) {
-      parser.currentToken = token;
-      return parser.parsePrimaryExpression();
-    }
-
     return parser.parseExpression(token);
   }
 }

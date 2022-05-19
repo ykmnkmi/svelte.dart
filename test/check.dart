@@ -6,11 +6,13 @@ import 'package:stack_trace/stack_trace.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String template = '''
-<button on:click="{visible = !visible}">toggle</button>
-
-{#if visible}
-  <p>hello!</p>
-{/if}
+<ul>
+  <li>a
+  {#if true}
+    <li>b
+  {/if}
+  <li>c
+</ul>
 ''';
 
 void main(List<String> arguments) {

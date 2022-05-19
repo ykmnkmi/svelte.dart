@@ -13,8 +13,7 @@ void main() {
     for (var dir in dirs) {
       var input = File(join(dir.path, 'input.piko')).readAsStringSync();
 
-      Map<String, Object?>? current;
-      Object? expected;
+      Object? current, expected;
       Object? skip;
 
       void callback() {
@@ -23,12 +22,26 @@ void main() {
 
       try {
         current = parse(input).toJson();
-        expected = json.decode(File(join(dir.path, 'output.json')).readAsStringSync());
+
+        var file = File(join(dir.path, 'output.json'));
+
+        if (file.existsSync()) {
+          expected = json.decode(file.readAsStringSync());
+        } else {
+          skip = '${dir.path}: error.json expected';
+        }
       } on CompileError catch (error) {
         current = error.toJson();
-        expected = json.decode(File(join(dir.path, 'error.json')).readAsStringSync());
+
+        var file = File(join(dir.path, 'error.json'));
+
+        if (file.existsSync()) {
+          expected = json.decode(file.readAsStringSync());
+        } else {
+          skip = '${dir.path}: output.json expected';
+        }
       } catch (error) {
-        skip = '$error';
+        skip = '${dir.path}: error';
       }
 
       test('sample: ${basename(dir.path)}', callback, skip: skip);

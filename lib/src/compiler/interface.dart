@@ -3,6 +3,8 @@ import 'package:analyzer/dart/ast/ast.dart'
         ArgumentList,
         AssignmentExpression,
         AstNode,
+        BinaryExpression,
+        BooleanLiteral,
         CompilationUnit,
         ConditionalExpression,
         Expression,
@@ -533,19 +535,19 @@ class Body extends Element {
   Body({super.start, super.end}) : super(type: 'Body');
 }
 
-class IfBlock extends Node with ExpressionNode, MultiChildNode, ElseIfNode, ElseNode {
-  IfBlock({super.start, super.end, this.expression, this.elseIf = false, this.elseNode})
+class IfBlock extends Node with ElseIfNode, ExpressionNode, MultiChildNode, ElseNode {
+  IfBlock({super.start, super.end, this.elseIf = false, this.expression, this.elseNode})
       : children = <Node>[],
         super(type: 'IfBlock');
+
+  @override
+  bool elseIf;
 
   @override
   Expression? expression;
 
   @override
   List<Node> children;
-
-  @override
-  bool elseIf;
 
   @override
   Node? elseNode;
@@ -558,15 +560,16 @@ class IfBlock extends Node with ExpressionNode, MultiChildNode, ElseIfNode, Else
 
 class EachBlock extends Node
     with ExpressionNode, ContextNode<Expression?>, IndexNode, KeyNode, MultiChildNode, ElseIfNode, ElseNode {
-  EachBlock({super.start, super.end, this.expression, this.context, this.key, this.elseIf = false})
+  EachBlock(
+      {super.start, super.end, this.context, this.expression, this.index, this.key, this.elseIf = false, this.elseNode})
       : children = <Node>[],
         super(type: 'EachBlock');
 
   @override
-  Expression? expression;
+  Expression? context;
 
   @override
-  Expression? context;
+  Expression? expression;
 
   @override
   String? index;
@@ -609,8 +612,8 @@ class EachBlock extends Node
 }
 
 class ElseBlock extends Node with MultiChildNode {
-  ElseBlock({super.start, super.end, List<Node>? children})
-      : children = children ?? <Node>[],
+  ElseBlock({super.start, super.end})
+      : children = <Node>[],
         super(type: 'ElseBlock');
 
   @override
@@ -828,6 +831,25 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'AssignmentExpression',
       'left': node.leftHandSide.accept(this),
       'right': node.rightHandSide.accept(this),
+    };
+  }
+
+  @override
+  Map<String, Object?> visitBinaryExpression(BinaryExpression node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'BinaryExpression',
+      'left': node.leftOperand.accept(this),
+      'right': node.rightOperand.accept(this),
+    };
+  }
+
+  @override
+  Map<String, Object?> visitBooleanLiteral(BooleanLiteral node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'BooleanLiteral',
+      'value': node.value,
     };
   }
 
