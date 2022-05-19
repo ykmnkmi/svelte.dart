@@ -1,0 +1,7 @@
+{
+  "code": "unclosed-block",
+  "message": "Block was left open",
+  "offset": 0,
+  "line": 1,
+  "column": 0
+}

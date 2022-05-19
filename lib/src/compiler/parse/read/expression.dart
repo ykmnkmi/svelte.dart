@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/line_info.dart';
 import 'package:analyzer/src/dart/scanner/scanner.dart';
@@ -14,14 +15,20 @@ extension MustacheParser on Parser {
     var result = parseExpression(index, source, primary: primary, errorListener: errorListener);
     var errors = errorListener.errors;
 
+    var nonSynthetic = result.accept(NonSynthetic(this));
+
+    if (nonSynthetic == null) {
+      // TODO(error): add message
+      error('parse-error', '');
+    }
+
     for (var analysisError in errors) {
-      if (index + analysisError.offset <= result.end) {
+      if (index + analysisError.offset <= nonSynthetic.end) {
         error('parse-error', analysisError.message, start: analysisError.offset);
       }
     }
 
-    index = result.end;
-    return result;
+    return nonSynthetic;
   }
 
   static Expression parseExpression(int offset, String expression, //
@@ -44,5 +51,45 @@ extension MustacheParser on Parser {
     }
 
     return parser.parseExpression(token);
+  }
+}
+
+// TODO(parser): remove and update tests if https://github.com/dart-lang/sdk/issues/49057 solved
+class NonSynthetic extends UnifyingAstVisitor<Expression> {
+  NonSynthetic(this.parser);
+
+  final Parser parser;
+
+  @override
+  Expression? visitNode(AstNode node) {
+    if (node is! Expression) {
+      throw UnimplementedError();
+    }
+
+    if (node.isSynthetic) {
+      throw UnimplementedError('${node.runtimeType}');
+    }
+
+    parser.index = node.end;
+    return node;
+  }
+
+  @override
+  Expression? visitBinaryExpression(BinaryExpression node) {
+    if (node.isSynthetic) {
+      return null;
+    }
+
+    if (node.rightOperand.isSynthetic) {
+      if (node.leftOperand.isSynthetic) {
+        return null;
+      }
+
+      parser.index = node.operator.offset;
+      return node.leftOperand;
+    }
+
+    parser.index = node.end;
+    return node;
   }
 }

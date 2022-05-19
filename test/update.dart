@@ -11,16 +11,26 @@ void main() {
 
   for (var dir in dirs) {
     var input = File(join(dir.path, 'input.piko')).readAsStringSync();
+    File file;
+    String content;
 
     try {
       var current = parse(input).toJson();
-      File(join(dir.path, 'output.json')).writeAsStringSync(encoder.convert(current));
+      file = File(join(dir.path, 'output.json'));
+      content = encoder.convert(current);
     } on CompileError catch (error) {
       var current = error.toJson();
-      File(join(dir.path, 'error.json')).writeAsStringSync(encoder.convert(current));
+      file = File(join(dir.path, 'error.json'));
+      content = encoder.convert(current);
     } catch (error) {
-      print('skip: ${dir.path}');
+      print('error: ${dir.path}');
       continue;
+    }
+
+    if (file.existsSync()) {
+      file.writeAsStringSync(content);
+    } else {
+      print('not matched: ${file.parent.path}');
     }
   }
 }

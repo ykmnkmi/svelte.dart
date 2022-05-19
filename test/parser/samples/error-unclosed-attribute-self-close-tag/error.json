@@ -1,0 +1,7 @@
+{
+  "code": "unclosed-attribute-value",
+  "message": "expected to close the attribute value with }",
+  "offset": 25,
+  "line": 1,
+  "column": 25
+}

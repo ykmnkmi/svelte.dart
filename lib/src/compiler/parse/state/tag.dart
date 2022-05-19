@@ -168,12 +168,10 @@ extension TagParser on Parser {
 
       expect('>');
 
-      var lastClosedTag = lastAutoClosedTag;
-
-      while (parent is NamedNode && parent.name != name) {
+      while (parent is! NamedNode || parent.name != name) {
         if (parent is! Element) {
-          if (lastClosedTag != null && lastClosedTag.tag == name) {
-            invalidClosingTagAutoclosed(name, lastClosedTag.reason, start);
+          if (lastAutoClosedTag != null && lastAutoClosedTag!.tag == name) {
+            invalidClosingTagAutoclosed(name, lastAutoClosedTag!.reason, start);
           }
 
           invalidClosingTagUnopened(name, start);
@@ -187,7 +185,7 @@ extension TagParser on Parser {
       parent.end = index;
       stack.removeLast();
 
-      if (lastClosedTag != null && stack.length < lastClosedTag.depth) {
+      if (lastAutoClosedTag != null && stack.length < lastAutoClosedTag!.depth) {
         lastAutoClosedTag = null;
       }
 
@@ -197,7 +195,7 @@ extension TagParser on Parser {
     if (parent is NamedNode && closingTagOmitted(parent.name, name)) {
       parent.end = start;
       stack.removeLast();
-      lastAutoClosedTag = LastAutoClosedTag(name, name, stack.length);
+      lastAutoClosedTag = LastAutoClosedTag(parent.name, name, stack.length);
     }
 
     var uniqueNames = <String>{};

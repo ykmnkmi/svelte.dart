@@ -1,0 +1,7 @@
+{
+  "code": "unclosed-element",
+  "message": "<div> was left open",
+  "offset": 0,
+  "line": 1,
+  "column": 0
+}

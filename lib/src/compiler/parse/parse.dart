@@ -39,6 +39,16 @@ class Parser {
 
     var children = html.children;
 
+    if (stack.length > 1) {
+      var current = this.current;
+
+      if (current is Element) {
+        error('unclosed-element', '<${current.name}> was left open', start: current.start);
+      } else {
+        error('unclosed-block', 'Block was left open', start: current.start);
+      }
+    }
+
     if (children.isNotEmpty) {
       var start = children.first.start ?? 0;
       var index = template.indexOf(nonWhitespaceRe, start);
@@ -51,8 +61,9 @@ class Parser {
         end = math.min(index + 1, end);
       }
 
-      html.start = start;
-      html.end = end;
+      html
+        ..start = start
+        ..end = end;
     }
   }
 

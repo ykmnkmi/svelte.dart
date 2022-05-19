@@ -1,0 +1,7 @@
+{
+  "code": "unexpected-eof",
+  "message": "unexpected end of input",
+  "offset": 2,
+  "line": 1,
+  "column": 2
+}

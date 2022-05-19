@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart'
     show
         ArgumentList,
+        AssignmentExpression,
         AstNode,
         CompilationUnit,
         ConditionalExpression,
@@ -9,6 +10,7 @@ import 'package:analyzer/dart/ast/ast.dart'
         IntegerLiteral,
         MethodInvocation,
         NamedType,
+        PrefixExpression,
         PrefixedIdentifier,
         SimpleIdentifier,
         SimpleStringLiteral,
@@ -820,6 +822,16 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
   }
 
   @override
+  Map<String, Object?> visitAssignmentExpression(AssignmentExpression node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'AssignmentExpression',
+      'left': node.leftHandSide.accept(this),
+      'right': node.rightHandSide.accept(this),
+    };
+  }
+
+  @override
   Map<String, Object?> visitCompilationUnit(CompilationUnit node) {
     return <String, Object?>{
       ...getLocation(node),
@@ -834,7 +846,7 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
   Map<String, Object?> visitConditionalExpression(ConditionalExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      '_': 'IntegerLiteral',
+      '_': 'ConditionalExpression',
       'condition': node.condition.accept(this),
       'then': node.thenExpression.accept(this),
       'else': node.elseExpression.accept(this),
@@ -865,9 +877,18 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'NamedType',
-      if (node.isDeferred) 'deferred': true,
+      if (node.isDeferred) 'deferred': node.isDeferred,
       'name': node.name.accept(this),
       if (node.typeArguments != null) 'typeArguments': node.typeArguments!.accept(this),
+    };
+  }
+
+  @override
+  Map<String, Object?> visitPrefixExpression(PrefixExpression node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      '_': 'PrefixExpression',
+      'operand': node.operand.accept(this),
     };
   }
 
@@ -914,8 +935,11 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'VariableDeclaration',
+      if (node.isConst) 'const': true,
+      if (node.isFinal) 'final': true,
+      if (node.isLate) 'late': true,
       'name': node.name.accept(this),
-      if (node.initializer != null) 'type': node.initializer!.accept(this),
+      if (node.initializer != null) 'initializer': node.initializer!.accept(this),
     };
   }
 
