@@ -94,12 +94,9 @@ Future<void> main() async {
   }
 
   var klasses = library.topLevelElements.whereType<ClassElement>().toList();
+  klasses.sort(((left, right) => left.nameOffset.compareTo(right.nameOffset)));
 
-  klasses.sort(((left, right) {
-    return left.nameOffset.compareTo(right.nameOffset);
-  }));
-
-  var sink = File('lib/src/compiler/json.dart').openWrite();
+  var sink = File('lib/src/compiler/to_json.dart').openWrite();
   sink.write(header);
 
   void writeFields(ClassElement klass) {
@@ -107,18 +104,21 @@ Future<void> main() async {
       return;
     }
 
+    // throws stack overflow or null check on null
+    var writed = <String>{'isQualified', 'unParenthesized'};
+
     for (var accessor in klass.accessors) {
       if (accessor.hasDeprecated) {
         continue;
       }
 
+      var name = accessor.name;
+
+      if (writed.contains(accessor.name)) {
+        continue;
+      }
+
       if (accessor.isGetter) {
-        var name = accessor.name;
-
-        if (name == 'unParenthesized') {
-          continue;
-        }
-
         var check = '';
         String prefix;
 
@@ -143,6 +143,8 @@ Future<void> main() async {
         } else if (isBool(accessor.returnType)) {
           sink.write('$prefix node.$name$check,');
         }
+
+        writed.add(name);
       }
     }
   }

@@ -12,18 +12,20 @@
           "start": 5,
           "end": 11,
           "_": "BinaryExpression",
-          "left": {
+          "leftOperand": {
             "start": 5,
             "end": 6,
             "_": "SimpleIdentifier",
             "name": "x"
           },
-          "right": {
+          "rightOperand": {
             "start": 9,
             "end": 11,
             "_": "IntegerLiteral",
             "value": 10
-          }
+          },
+          "inConstantContext": false,
+          "isAssignable": false
         },
         "children": [
           {
@@ -56,18 +58,20 @@
                 "start": 53,
                 "end": 58,
                 "_": "BinaryExpression",
-                "left": {
+                "leftOperand": {
                   "start": 53,
                   "end": 54,
                   "_": "SimpleIdentifier",
                   "name": "x"
                 },
-                "right": {
+                "rightOperand": {
                   "start": 57,
                   "end": 58,
                   "_": "IntegerLiteral",
                   "value": 5
-                }
+                },
+                "inConstantContext": false,
+                "isAssignable": false
               },
               "children": [
                 {

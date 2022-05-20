@@ -19,13 +19,13 @@
               "start": 19,
               "end": 37,
               "_": "AssignmentExpression",
-              "left": {
+              "leftHandSide": {
                 "start": 19,
                 "end": 26,
                 "_": "SimpleIdentifier",
                 "name": "visible"
               },
-              "right": {
+              "rightHandSide": {
                 "start": 29,
                 "end": 37,
                 "_": "PrefixExpression",
@@ -34,7 +34,9 @@
                   "end": 37,
                   "_": "SimpleIdentifier",
                   "name": "visible"
-                }
+                },
+                "inConstantContext": false,
+                "isAssignable": false
               }
             }
           }

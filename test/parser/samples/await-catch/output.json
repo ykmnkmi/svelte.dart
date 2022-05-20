@@ -94,18 +94,20 @@
                     "start": 71,
                     "end": 87,
                     "_": "PrefixedIdentifier",
+                    "identifier": {
+                      "start": 80,
+                      "end": 87,
+                      "_": "SimpleIdentifier",
+                      "name": "message"
+                    },
+                    "isDeferred": false,
                     "prefix": {
                       "start": 71,
                       "end": 79,
                       "_": "SimpleIdentifier",
                       "name": "theError"
                     },
-                    "identifier": {
-                      "start": 80,
-                      "end": 87,
-                      "_": "SimpleIdentifier",
-                      "name": "message"
-                    }
+                    "name": "theError.message"
                   }
                 }
               ]

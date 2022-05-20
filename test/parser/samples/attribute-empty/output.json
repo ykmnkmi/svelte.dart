@@ -39,7 +39,12 @@
                   "start": 13,
                   "end": 15,
                   "_": "SimpleStringLiteral",
-                  "value": ""
+                  "value": "",
+                  "contentsEnd": 14,
+                  "contentsOffset": 14,
+                  "isMultiline": false,
+                  "isRaw": false,
+                  "isSingleQuoted": true
                 }
               }
             ]
@@ -73,7 +78,12 @@
                   "start": 26,
                   "end": 28,
                   "_": "SimpleStringLiteral",
-                  "value": ""
+                  "value": "",
+                  "contentsEnd": 27,
+                  "contentsOffset": 27,
+                  "isMultiline": false,
+                  "isRaw": false,
+                  "isSingleQuoted": true
                 }
               }
             ]

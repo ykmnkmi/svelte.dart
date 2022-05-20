@@ -1274,7 +1274,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'SimpleIdentifier',
-      'isQualified': node.isQualified,
       'name': node.name,
     };
   }

@@ -55,7 +55,7 @@
       "start": 8,
       "end": 73,
       "_": "CompilationUnit",
-      "library": [
+      "declarations": [
         {
           "start": 11,
           "end": 30,
@@ -64,28 +64,41 @@
             "start": 11,
             "end": 29,
             "_": "VariableDeclarationList",
+            "isConst": false,
+            "isFinal": false,
+            "isLate": false,
             "variables": [
               {
                 "start": 15,
                 "end": 29,
                 "_": "VariableDeclaration",
+                "initializer": {
+                  "start": 22,
+                  "end": 29,
+                  "_": "SimpleStringLiteral",
+                  "value": "world",
+                  "contentsEnd": 28,
+                  "contentsOffset": 23,
+                  "isMultiline": false,
+                  "isRaw": false,
+                  "isSingleQuoted": true
+                },
+                "isConst": false,
+                "isFinal": false,
+                "isLate": false,
                 "name": {
                   "start": 15,
                   "end": 19,
                   "_": "SimpleIdentifier",
                   "name": "name"
-                },
-                "initializer": {
-                  "start": 22,
-                  "end": 29,
-                  "_": "SimpleStringLiteral",
-                  "value": "world"
                 }
               }
-            ]
+            ],
+            "metadata": []
           }
         }
-      ]
+      ],
+      "directives": []
     }
   }
 }

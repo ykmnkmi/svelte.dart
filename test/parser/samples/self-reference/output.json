@@ -12,18 +12,20 @@
           "start": 5,
           "end": 14,
           "_": "BinaryExpression",
-          "left": {
+          "leftOperand": {
             "start": 5,
             "end": 10,
             "_": "SimpleIdentifier",
             "name": "depth"
           },
-          "right": {
+          "rightOperand": {
             "start": 13,
             "end": 14,
             "_": "IntegerLiteral",
             "value": 1
-          }
+          },
+          "inConstantContext": false,
+          "isAssignable": false
         },
         "children": [
           {
@@ -46,18 +48,20 @@
                       "start": 37,
                       "end": 46,
                       "_": "BinaryExpression",
-                      "left": {
+                      "leftOperand": {
                         "start": 37,
                         "end": 42,
                         "_": "SimpleIdentifier",
                         "name": "depth"
                       },
-                      "right": {
+                      "rightOperand": {
                         "start": 45,
                         "end": 46,
                         "_": "IntegerLiteral",
                         "value": 1
-                      }
+                      },
+                      "inConstantContext": false,
+                      "isAssignable": false
                     }
                   }
                 ]

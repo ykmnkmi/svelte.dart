@@ -37,7 +37,10 @@
                     "value": 0
                   }
                 }
-              ]
+              ],
+              "isMap": false,
+              "isSet": false,
+              "isConst": false
             },
             "intro": true
           }

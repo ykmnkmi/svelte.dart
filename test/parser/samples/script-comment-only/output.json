@@ -29,7 +29,8 @@
       "start": 8,
       "end": 35,
       "_": "CompilationUnit",
-      "library": []
+      "declarations": [],
+      "directives": []
     }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:piko/src/compiler/json.dart';
+import 'package:piko/src/compiler/to_json.dart';
 
 typedef NodeFactory = Node Function({int? start, int? end});
 

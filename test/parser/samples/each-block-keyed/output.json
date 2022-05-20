@@ -24,18 +24,20 @@
           "start": 22,
           "end": 29,
           "_": "PrefixedIdentifier",
+          "identifier": {
+            "start": 27,
+            "end": 29,
+            "_": "SimpleIdentifier",
+            "name": "id"
+          },
+          "isDeferred": false,
           "prefix": {
             "start": 22,
             "end": 26,
             "_": "SimpleIdentifier",
             "name": "todo"
           },
-          "identifier": {
-            "start": 27,
-            "end": 29,
-            "_": "SimpleIdentifier",
-            "name": "id"
-          }
+          "name": "todo.id"
         },
         "children": [
           {

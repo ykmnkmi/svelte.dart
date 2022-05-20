@@ -142,18 +142,20 @@
                     "start": 121,
                     "end": 137,
                     "_": "PrefixedIdentifier",
+                    "identifier": {
+                      "start": 130,
+                      "end": 137,
+                      "_": "SimpleIdentifier",
+                      "name": "message"
+                    },
+                    "isDeferred": false,
                     "prefix": {
                       "start": 121,
                       "end": 129,
                       "_": "SimpleIdentifier",
                       "name": "theError"
                     },
-                    "identifier": {
-                      "start": 130,
-                      "end": 137,
-                      "_": "SimpleIdentifier",
-                      "name": "message"
-                    }
+                    "name": "theError.message"
                   }
                 }
               ]

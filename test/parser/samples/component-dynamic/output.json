@@ -19,18 +19,20 @@
             "_": "SimpleIdentifier",
             "name": "foo"
           },
-          "then": {
+          "elseExpression": {
+            "start": 35,
+            "end": 38,
+            "_": "SimpleIdentifier",
+            "name": "Bar"
+          },
+          "thenExpression": {
             "start": 29,
             "end": 32,
             "_": "SimpleIdentifier",
             "name": "Foo"
           },
-          "else": {
-            "start": 35,
-            "end": 38,
-            "_": "SimpleIdentifier",
-            "name": "Bar"
-          }
+          "inConstantContext": false,
+          "isAssignable": false
         },
         "children": []
       }
