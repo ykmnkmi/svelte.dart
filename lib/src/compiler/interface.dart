@@ -1,11 +1,11 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:piko/src/compiler/to_json.dart';
+import 'package:piko/src/compiler/script_to_json.dart';
 
 typedef NodeFactory = Node Function({int? start, int? end});
 
 typedef ElementFactory = Element Function({int? start, int? end});
 
-const ToJsonVisitor jsonVisitor = ToJsonVisitor();
+const ScriptToJsonVisitor scriptToJsonVisitor = ScriptToJsonVisitor();
 
 abstract class Node {
   Node({this.start, this.end, required this.type});
@@ -73,7 +73,7 @@ mixin ExpressionNode on Node {
     var json = super.toJson();
 
     if (expression != null) {
-      json['expression'] = expression!.accept(jsonVisitor);
+      json['expression'] = expression!.accept(scriptToJsonVisitor);
     }
 
     return json;
@@ -99,7 +99,7 @@ mixin ValueNode on Node {
     var json = super.toJson();
 
     if (value != null) {
-      json['value'] = value!.accept(jsonVisitor);
+      json['value'] = value!.accept(scriptToJsonVisitor);
     }
 
     return json;
@@ -129,7 +129,7 @@ mixin KeyNode on Node {
     var json = super.toJson();
 
     if (key != null) {
-      json['key'] = key!.accept(jsonVisitor);
+      json['key'] = key!.accept(scriptToJsonVisitor);
     }
 
     return json;
@@ -234,7 +234,7 @@ mixin ErrorNode on Node {
     var json = super.toJson();
 
     if (error != null) {
-      json['error'] = error!.accept(const ToJsonVisitor());
+      json['error'] = error!.accept(scriptToJsonVisitor);
     }
 
     return json;
@@ -477,10 +477,12 @@ class InlineComponent extends Node
   }
 }
 
+// TODO(ast): change to Node with mixins
 class SlotTemplate extends Element {
   SlotTemplate({super.start, super.end}) : super(type: 'SlotTemplate');
 }
 
+// TODO(ast): change to Node with mixins
 class Title extends Element {
   Title({super.start, super.end}) : super(type: 'Title');
 
@@ -490,6 +492,7 @@ class Title extends Element {
   }
 }
 
+// TODO(ast): change to Node with mixins
 class Slot extends Element {
   Slot({super.start, super.end}) : super(type: 'Slot');
 
@@ -499,10 +502,12 @@ class Slot extends Element {
   }
 }
 
+// TODO(ast): change to Node with mixins
 class Head extends Element {
   Head({super.start, super.end}) : super(type: 'Head');
 }
 
+// TODO(ast): change to Node with mixins
 class Options extends Element {
   Options({super.start, super.end}) : super(type: 'Options');
 }
@@ -511,6 +516,7 @@ class Window extends Element {
   Window({super.start, super.end}) : super(type: 'Window');
 }
 
+// TODO(ast): change to Node with mixins
 class Body extends Element {
   Body({super.start, super.end}) : super(type: 'Body');
 }
@@ -576,7 +582,7 @@ class EachBlock extends Node
     var json = super.toJson();
 
     if (context != null) {
-      json['context'] = context!.accept(jsonVisitor);
+      json['context'] = context!.accept(scriptToJsonVisitor);
     }
 
     if (index != null) {
@@ -584,7 +590,7 @@ class EachBlock extends Node
     }
 
     if (key != null) {
-      json['key'] = key!.accept(jsonVisitor);
+      json['key'] = key!.accept(scriptToJsonVisitor);
     }
 
     return json;
@@ -706,7 +712,7 @@ class Debug extends Node {
     var json = super.toJson();
 
     json['identifiers'] = <Map<String, Object?>?>[
-      for (var identifier in identifiers) identifier.accept(jsonVisitor),
+      for (var identifier in identifiers) identifier.accept(scriptToJsonVisitor),
     ];
 
     return json;
@@ -724,7 +730,7 @@ class Script extends Node with ContextNode<String> {
   @override
   Map<String, Object?> toJson() {
     var json = super.toJson();
-    json['content'] = content.accept(jsonVisitor);
+    json['content'] = content.accept(scriptToJsonVisitor);
     return json;
   }
 }

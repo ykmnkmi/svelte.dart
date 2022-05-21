@@ -25,3 +25,5 @@ void main(List<String> arguments) {
     print(Trace.format(stackTrace));
   }
 }
+
+// ignore_for_file: avoid_print

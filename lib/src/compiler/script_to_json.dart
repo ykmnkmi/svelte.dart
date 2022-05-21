@@ -1,8 +1,8 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 
-class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
-  const ToJsonVisitor();
+class ScriptToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
+  const ScriptToJsonVisitor();
 
   Map<String, Object?> getLocation(AstNode node) {
     return <String, Object?>{
@@ -76,7 +76,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'AssertStatement',
       'condition': node.condition.accept(this),
       if (node.message != null) 'message': node.message!.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -121,7 +120,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'statements': <Map<String, Object?>?>[
         for (var item in node.statements) item.accept(this),
       ],
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -153,7 +151,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'BreakStatement',
       if (node.label != null) 'label': node.label!.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -213,7 +210,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'superclass': node.superclass.accept(this),
       if (node.typeParameters != null) 'typeParameters': node.typeParameters!.accept(this),
       'withClause': node.withClause.accept(this),
-      'name': node.name.accept(this),
     };
   }
 
@@ -342,7 +338,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'ContinueStatement',
       if (node.label != null) 'label': node.label!.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -390,7 +385,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'DoStatement',
       'body': node.body.accept(this),
       'condition': node.condition.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -430,7 +424,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'EmptyStatement',
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -470,7 +463,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'name': node.name.accept(this),
       if (node.typeParameters != null) 'typeParameters': node.typeParameters!.accept(this),
       if (node.withClause != null) 'withClause': node.withClause!.accept(this),
-      'name': node.name.accept(this),
     };
   }
 
@@ -507,7 +499,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'ExpressionStatement',
       'expression': node.expression.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -647,7 +638,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'ForStatement',
       'body': node.body.accept(this),
       'forLoopParts': node.forLoopParts.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -661,7 +651,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'isSetter': node.isSetter,
       'name': node.name.accept(this),
       if (node.returnType != null) 'returnType': node.returnType!.accept(this),
-      'name': node.name.accept(this),
     };
   }
 
@@ -671,7 +660,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'FunctionDeclarationStatement',
       'functionDeclaration': node.functionDeclaration.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -695,7 +683,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'FunctionExpressionInvocation',
       'function': node.function.accept(this),
       'argumentList': node.argumentList.accept(this),
-      'function': node.function.accept(this),
       if (node.typeArguments != null) 'typeArguments': node.typeArguments!.accept(this),
     };
   }
@@ -801,7 +788,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'condition': node.condition.accept(this),
       if (node.elseStatement != null) 'elseStatement': node.elseStatement!.accept(this),
       'thenStatement': node.thenStatement.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -927,7 +913,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         for (var item in node.labels) item.accept(this),
       ],
       'statement': node.statement.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1201,7 +1186,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'ReturnStatement',
       if (node.expression != null) 'expression': node.expression!.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1391,7 +1375,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'members': <Map<String, Object?>?>[
         for (var item in node.members) item.accept(this),
       ],
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1443,7 +1426,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         for (var item in node.catchClauses) item.accept(this),
       ],
       if (node.finallyBlock != null) 'finallyBlock': node.finallyBlock!.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1528,7 +1510,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'VariableDeclarationStatement',
       'variables': node.variables.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1539,7 +1520,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'WhileStatement',
       'body': node.body.accept(this),
       'condition': node.condition.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1560,7 +1540,6 @@ class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'YieldStatement',
       'expression': node.expression.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 }

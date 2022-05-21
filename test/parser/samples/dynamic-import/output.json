@@ -1,0 +1,295 @@
+{
+  "html": {
+    "_": "Fragment",
+    "children": []
+  },
+  "instance": {
+    "start": 0,
+    "end": 154,
+    "_": "Script",
+    "context": "default",
+    "content": {
+      "start": 8,
+      "end": 145,
+      "_": "CompilationUnit",
+      "declarations": [
+        {
+          "start": 49,
+          "end": 142,
+          "_": "FunctionDeclaration",
+          "functionExpression": {
+            "start": 61,
+            "end": 142,
+            "_": "FunctionExpression",
+            "body": {
+              "start": 64,
+              "end": 142,
+              "_": "BlockFunctionBody",
+              "block": {
+                "start": 64,
+                "end": 142,
+                "_": "Block",
+                "statements": [
+                  {
+                    "start": 70,
+                    "end": 138,
+                    "_": "ExpressionStatement",
+                    "expression": {
+                      "start": 70,
+                      "end": 137,
+                      "_": "MethodInvocation",
+                      "isCascaded": false,
+                      "isNullAware": false,
+                      "methodName": {
+                        "start": 88,
+                        "end": 92,
+                        "_": "SimpleIdentifier",
+                        "name": "then"
+                      },
+                      "realTarget": {
+                        "start": 70,
+                        "end": 87,
+                        "_": "MethodInvocation",
+                        "isCascaded": false,
+                        "isNullAware": false,
+                        "methodName": {
+                          "start": 74,
+                          "end": 85,
+                          "_": "SimpleIdentifier",
+                          "name": "loadLibrary"
+                        },
+                        "realTarget": {
+                          "start": 70,
+                          "end": 73,
+                          "_": "SimpleIdentifier",
+                          "name": "foo"
+                        },
+                        "target": {
+                          "start": 70,
+                          "end": 73,
+                          "_": "SimpleIdentifier",
+                          "name": "foo"
+                        },
+                        "argumentList": {
+                          "start": 85,
+                          "end": 87,
+                          "_": "ArgumentList",
+                          "arguments": []
+                        },
+                        "function": {
+                          "start": 74,
+                          "end": 85,
+                          "_": "SimpleIdentifier",
+                          "name": "loadLibrary"
+                        }
+                      },
+                      "target": {
+                        "start": 70,
+                        "end": 87,
+                        "_": "MethodInvocation",
+                        "isCascaded": false,
+                        "isNullAware": false,
+                        "methodName": {
+                          "start": 74,
+                          "end": 85,
+                          "_": "SimpleIdentifier",
+                          "name": "loadLibrary"
+                        },
+                        "realTarget": {
+                          "start": 70,
+                          "end": 73,
+                          "_": "SimpleIdentifier",
+                          "name": "foo"
+                        },
+                        "target": {
+                          "start": 70,
+                          "end": 73,
+                          "_": "SimpleIdentifier",
+                          "name": "foo"
+                        },
+                        "argumentList": {
+                          "start": 85,
+                          "end": 87,
+                          "_": "ArgumentList",
+                          "arguments": []
+                        },
+                        "function": {
+                          "start": 74,
+                          "end": 85,
+                          "_": "SimpleIdentifier",
+                          "name": "loadLibrary"
+                        }
+                      },
+                      "argumentList": {
+                        "start": 98,
+                        "end": 137,
+                        "_": "ArgumentList",
+                        "arguments": [
+                          {
+                            "start": 99,
+                            "end": 136,
+                            "_": "FunctionExpression",
+                            "body": {
+                              "start": 103,
+                              "end": 136,
+                              "_": "BlockFunctionBody",
+                              "block": {
+                                "start": 103,
+                                "end": 136,
+                                "_": "Block",
+                                "statements": [
+                                  {
+                                    "start": 111,
+                                    "end": 130,
+                                    "_": "ExpressionStatement",
+                                    "expression": {
+                                      "start": 111,
+                                      "end": 129,
+                                      "_": "MethodInvocation",
+                                      "isCascaded": false,
+                                      "isNullAware": false,
+                                      "methodName": {
+                                        "start": 111,
+                                        "end": 116,
+                                        "_": "SimpleIdentifier",
+                                        "name": "print"
+                                      },
+                                      "argumentList": {
+                                        "start": 116,
+                                        "end": 129,
+                                        "_": "ArgumentList",
+                                        "arguments": [
+                                          {
+                                            "start": 117,
+                                            "end": 128,
+                                            "_": "PrefixedIdentifier",
+                                            "identifier": {
+                                              "start": 121,
+                                              "end": 128,
+                                              "_": "SimpleIdentifier",
+                                              "name": "default"
+                                            },
+                                            "isDeferred": false,
+                                            "prefix": {
+                                              "start": 117,
+                                              "end": 120,
+                                              "_": "SimpleIdentifier",
+                                              "name": "foo"
+                                            },
+                                            "name": "foo.default"
+                                          }
+                                        ]
+                                      },
+                                      "function": {
+                                        "start": 111,
+                                        "end": 116,
+                                        "_": "SimpleIdentifier",
+                                        "name": "print"
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "isAsynchronous": false,
+                              "isGenerator": false,
+                              "isSynchronous": true
+                            },
+                            "parameters": {
+                              "start": 99,
+                              "end": 102,
+                              "_": "FormalParameterList",
+                              "parameters": [
+                                {
+                                  "start": 100,
+                                  "end": 101,
+                                  "_": "SimpleFormalParameter"
+                                }
+                              ]
+                            },
+                            "inConstantContext": false,
+                            "isAssignable": false
+                          }
+                        ]
+                      },
+                      "function": {
+                        "start": 88,
+                        "end": 92,
+                        "_": "SimpleIdentifier",
+                        "name": "then"
+                      },
+                      "typeArguments": {
+                        "start": 92,
+                        "end": 98,
+                        "_": "TypeArgumentList",
+                        "arguments": [
+                          {
+                            "start": 93,
+                            "end": 97,
+                            "_": "NamedType",
+                            "isDeferred": false,
+                            "name": {
+                              "start": 93,
+                              "end": 97,
+                              "_": "SimpleIdentifier",
+                              "name": "void"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "isAsynchronous": false,
+              "isGenerator": false,
+              "isSynchronous": true
+            },
+            "parameters": {
+              "start": 61,
+              "end": 63,
+              "_": "FormalParameterList",
+              "parameters": []
+            },
+            "inConstantContext": false,
+            "isAssignable": false
+          },
+          "isGetter": false,
+          "isSetter": false,
+          "name": {
+            "start": 54,
+            "end": 61,
+            "_": "SimpleIdentifier",
+            "name": "onMount"
+          },
+          "returnType": {
+            "start": 49,
+            "end": 53,
+            "_": "NamedType",
+            "isDeferred": false,
+            "name": {
+              "start": 49,
+              "end": 53,
+              "_": "SimpleIdentifier",
+              "name": "void"
+            }
+          }
+        }
+      ],
+      "directives": [
+        {
+          "start": 11,
+          "end": 45,
+          "_": "ImportDirective",
+          "prefix": {
+            "start": 41,
+            "end": 44,
+            "_": "SimpleIdentifier",
+            "name": "foo"
+          },
+          "combinators": [],
+          "configurations": []
+        }
+      ]
+    }
+  }
+}

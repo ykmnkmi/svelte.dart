@@ -89,23 +89,19 @@ Future<void> main() async {
   }
 
   bool isBool(DartType type) {
-    // TODO: check for num alone
     return type.isDartCoreBool;
   }
 
   var klasses = library.topLevelElements.whereType<ClassElement>().toList();
   klasses.sort(((left, right) => left.nameOffset.compareTo(right.nameOffset)));
 
-  var sink = File('lib/src/compiler/to_json.dart').openWrite();
+  var sink = File('lib/src/compiler/script_to_json.dart').openWrite();
   sink.write(header);
 
-  void writeFields(ClassElement klass) {
+  void writeFields(ClassElement klass, Set<String> writed) {
     if (klass.name == 'AstNode' || klass.name == 'NullShortableExpression') {
       return;
     }
-
-    // throws stack overflow or null check on null
-    var writed = <String>{'isQualified', 'unParenthesized'};
 
     for (var accessor in klass.accessors) {
       if (accessor.hasDeprecated) {
@@ -171,10 +167,13 @@ Future<void> main() async {
         ..write('\n      ...getLocation(node),')
         ..write('\n      \'_\': \'$name\',');
 
-      writeFields(klass);
+      // throws null check on null or stack overflow
+      var writed = <String>{'isQualified', 'unParenthesized', 'unlabeled'};
+
+      writeFields(klass, writed);
 
       for (var interface in klass.interfaces) {
-        writeFields(interface.element);
+        writeFields(interface.element, writed);
       }
 
       sink
@@ -191,8 +190,8 @@ const String header = '''
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 
-class ToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
-  const ToJsonVisitor();
+class ScriptToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
+  const ScriptToJsonVisitor();
 
   Map<String, Object?> getLocation(AstNode node) {
     return <String, Object?>{
