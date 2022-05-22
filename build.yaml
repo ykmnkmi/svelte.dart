@@ -6,13 +6,13 @@ global_options:
     options:
       # compiler: dart2js
       dart2js_args:
-      # - --verbose
-      - --disable-inlining
-      # - --no-source-maps
+        # - --verbose
+        - --disable-inlining
+        # - --no-source-maps
 
-      # - --minify
-      # - --omit-implicit-checks
-      # - --lax-runtime-type-to-string
-      # - --trust-primitives
-      # - --omit-as-casts
-      # - --fast-startup
+        # - --minify
+        # - --omit-implicit-checks
+        # - --lax-runtime-type-to-string
+        # - --trust-primitives
+        # - --omit-as-casts
+        # - --fast-startup

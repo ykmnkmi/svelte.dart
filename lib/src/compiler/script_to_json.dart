@@ -1,3 +1,5 @@
+// generated with `tools/generate_script_to_json.dart`.
+
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 

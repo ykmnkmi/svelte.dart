@@ -1,0 +1,18 @@
+<script>
+  class Link {
+    Link(super.node) {
+      node.addEventListener('click', onClick);
+    }
+
+    void onClick(Event event) {
+      event.preventDefault();
+      window.history.pushState(null, null, event.target.href);
+    }
+    
+    void destroy() {
+      node.removeEventListener('click', onClick);
+    }
+  }
+</script>
+
+<a href="#" use:link>Test</a>
