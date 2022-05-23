@@ -27,9 +27,9 @@ class _CompilationUnit extends CompilationUnitImpl implements CompilationUnit {
 }
 
 extension ScriptParser on Parser {
-  static final RegExp scriptCloseRe = RegExp(r'<\/script\s*>');
-
   static final RegExp nonNewLineRe = RegExp(r'[^\n]');
+
+  static final RegExp scriptCloseRe = RegExp(r'<\/script\s*>');
 
   String getContext(List<Attribute>? attributes) {
     if (attributes == null) {

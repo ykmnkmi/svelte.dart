@@ -1,14 +1,15 @@
 <script>
-  class Link {
+  class Link extends Action<AnchorElement, Object?> {
     Link(super.node) {
       node.addEventListener('click', onClick);
     }
 
     void onClick(Event event) {
       event.preventDefault();
-      window.history.pushState(null, null, event.target.href);
+      window.history.pushState(null, '', node.href);
     }
-    
+
+    @override
     void destroy() {
       node.removeEventListener('click', onClick);
     }

@@ -1,7 +1,4 @@
-import 'dart:html' show Element, Node;
-
-import 'package:meta/meta.dart';
-import 'package:piko/src/runtime/scheduler.dart';
+part of piko.runtime;
 
 class Context {
   Context(this.root) : scheduler = Scheduler();
@@ -39,6 +36,14 @@ abstract class Fragment<T extends Component> {
 
   void mount(Element target, [Node? anchor]) {}
 
+  void makeDirty(String aspect) {
+    if (dirty.isEmpty) {
+      scheduler.scheduleUpdate(this);
+    }
+
+    dirty.add(aspect);
+  }
+
   void update(Set<String> aspects) {}
 
   void detach([bool detaching = true]) {}
@@ -52,6 +57,6 @@ void mountFragment<T extends Component>(Fragment<T> fragment, Element target, [N
   fragment.mount(target, anchor);
 }
 
-void destryFragment<T extends Component>(Fragment<T> fragment) {
+void destroyFragment<T extends Component>(Fragment<T> fragment) {
   fragment.detach();
 }

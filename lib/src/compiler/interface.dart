@@ -241,6 +241,21 @@ mixin ErrorNode on Node {
   }
 }
 
+mixin IgnoresNode on Node {
+  abstract List<String>? ignores;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+
+    if (ignores != null && ignores!.isNotEmpty) {
+      json['ignores'] = ignores;
+    }
+
+    return json;
+  }
+}
+
 mixin MultiAttributeNode on Node {
   abstract List<Attribute> attributes;
 
@@ -296,41 +311,20 @@ mixin MultiChildNode on Node {
 }
 
 class Text extends Node with DataNode {
-  Text({super.start, super.end, required this.data, String? raw})
-      : raw = raw ?? data,
-        super(type: 'Text');
+  Text({super.start, super.end, required this.data}) : super(type: 'Text');
 
   @override
   String data;
-
-  String raw;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-    json['raw'] = raw;
-    return json;
-  }
 }
 
-class Comment extends Node with DataNode {
+class Comment extends Node with DataNode, IgnoresNode {
   Comment({super.start, super.end, required this.data, this.ignores}) : super(type: 'Comment');
 
   @override
   String data;
 
-  List<String>? ignores;
-
   @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (ignores != null && ignores!.isNotEmpty) {
-      json['ignores'] = ignores;
-    }
-
-    return json;
-  }
+  List<String>? ignores;
 }
 
 class RawMustache extends Node with ExpressionNode {

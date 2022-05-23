@@ -2,12 +2,11 @@ import 'package:analyzer/dart/ast/token.dart' show Token, TokenType;
 import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
 import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/errors.dart';
+import 'package:piko/src/compiler/parse/html.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
 import 'package:piko/src/compiler/parse/read/expression.dart';
 import 'package:piko/src/compiler/parse/read/script.dart';
 import 'package:piko/src/compiler/parse/read/style.dart';
-import 'package:piko/src/compiler/utils/html.dart';
-import 'package:piko/src/compiler/utils/names.dart';
 
 extension TagParser on Parser {
   static const Map<String, ElementFactory> metaTags = <String, ElementFactory>{
@@ -49,6 +48,29 @@ extension TagParser on Parser {
 
   static final RegExp textareaCloseTagRe = RegExp(r'^<\/textarea(\s[^>]*)?>');
 
+  static final RegExp voidElementNames = RegExp('^(?:'
+      'area|'
+      'base|'
+      'br|'
+      'col|'
+      'command|'
+      'embed|'
+      'hr|'
+      'img|'
+      'input|'
+      'keygen|'
+      'link|'
+      'meta|'
+      'param|'
+      'source|'
+      'track|'
+      'wbr'
+      ')\$');
+
+  static bool isVoid(String name) {
+    return voidElementNames.hasMatch(name) || '!doctype' == name.toLowerCase();
+  }
+
   static String? getDirectiveType(String name) {
     switch (name) {
       case 'use':
@@ -59,6 +81,8 @@ extension TagParser on Parser {
         return 'Binding';
       case 'class':
         return 'Class';
+      case 'style':
+        return 'Style';
       case 'on':
         return 'EventHandler';
       case 'let':
@@ -178,12 +202,12 @@ extension TagParser on Parser {
         }
 
         parent.end = start;
-        stack.removeLast();
+        pop();
         parent = current;
       }
 
       parent.end = index;
-      stack.removeLast();
+      pop();
 
       if (lastAutoClosedTag != null && stack.length < lastAutoClosedTag!.depth) {
         lastAutoClosedTag = null;
@@ -194,7 +218,7 @@ extension TagParser on Parser {
 
     if (parent is NamedNode && closingTagOmitted(parent.name, name)) {
       parent.end = start;
-      stack.removeLast();
+      pop();
       lastAutoClosedTag = LastAutoClosedTag(parent.name, name, stack.length);
     }
 
@@ -260,7 +284,7 @@ extension TagParser on Parser {
       expect('</$name>');
       element.end = index;
     } else {
-      stack.add(element);
+      push(element);
     }
   }
 
@@ -458,9 +482,7 @@ extension TagParser on Parser {
 
     void flush(int end) {
       if (buffer.isNotEmpty) {
-        var string = buffer.toString();
-        var data = decodeCharacterReferences(string);
-        chunks.add(Text(start: textStart, end: end, data: data, raw: string));
+        chunks.add(Text(start: textStart, end: end, data: decodeCharacterReferences(buffer.toString())));
         buffer.clear();
       }
     }

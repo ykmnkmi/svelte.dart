@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/errors.dart';
+import 'package:piko/src/compiler/parse/patterns.dart';
 import 'package:piko/src/compiler/parse/state/fragment.dart';
 import 'package:source_span/source_span.dart' show SourceFile;
 
@@ -16,21 +17,9 @@ class LastAutoClosedTag {
 }
 
 class Parser {
-  static final RegExp whitespaceRe = RegExp('\\s*');
-
-  static final RegExp nonWhitespaceRe = RegExp('\\S+');
-
-  static final RegExp identifierRe = RegExp('[_\$A-Za-z][_\$A-Za-z0-9]*');
-
   Parser(this.template, {Object? sourceUrl})
       : length = template.length,
-        sourceFile = SourceFile.fromString(template, url: sourceUrl),
-        metaTags = <String>{},
-        stack = <Node>[],
-        html = Fragment(),
-        scripts = <Script>[],
-        styles = <Style>[],
-        index = 0 {
+        sourceFile = SourceFile.fromString(template, url: sourceUrl) {
     stack.add(html);
 
     while (canParse) {
@@ -73,17 +62,17 @@ class Parser {
 
   final SourceFile sourceFile;
 
-  final Set<String> metaTags;
+  final Set<String> metaTags = <String>{};
 
-  final List<Node> stack;
+  final List<Node> stack = <Node>[];
 
-  final Fragment html;
+  final Fragment html = Fragment();
 
-  final List<Script> scripts;
+  final List<Script> scripts = <Script>[];
 
-  final List<Style> styles;
+  final List<Style> styles = <Style>[];
 
-  int index;
+  int index = 0;
 
   LastAutoClosedTag? lastAutoClosedTag;
 
@@ -108,6 +97,14 @@ class Parser {
     }
 
     current.children.add(node);
+  }
+
+  void push(Node node) {
+    stack.add(node);
+  }
+
+  Node pop() {
+    return stack.removeLast();
   }
 
   void allowWhitespace({bool require = false}) {
@@ -159,7 +156,7 @@ class Parser {
   }
 
   String? read(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template, index);
+    var match = pattern.matchAsPrefix(template.substring(index));
 
     if (match == null) {
       return null;

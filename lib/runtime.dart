@@ -1,13 +1,15 @@
-import 'dart:html' show Element, document;
+library piko.runtime;
 
-import 'package:piko/src/runtime/component.dart';
+import 'package:meta/meta.dart';
+import 'package:piko/dom.dart';
 
-export 'src/runtime/action.dart';
-export 'src/runtime/component.dart';
-export 'src/runtime/scheduler.dart';
+export 'package:piko/dom.dart';
 
-void runApp<T extends Component>(Component component, //
-    {Element? root}) {
+part 'src/runtime/action.dart';
+part 'src/runtime/component.dart';
+part 'src/runtime/scheduler.dart';
+
+void runApp<T extends Component>(Component component, {Element? root}) {
   var target = root ?? document.body!;
   var context = Context(target);
   component.createFragment(context)

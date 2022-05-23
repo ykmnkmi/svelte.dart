@@ -1,6 +1,4 @@
-import 'dart:html' show Node;
-
-import 'package:meta/meta.dart';
+part of piko.runtime;
 
 @optionalTypeArgs
 abstract class Action<T extends Node, P> {

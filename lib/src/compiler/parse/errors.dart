@@ -123,6 +123,10 @@ extension ParserErrors on Parser {
     error('invalid-$slug-content', '<$name> cannot have children', start: position);
   }
 
+  Never invalidElementDefinition() {
+    error('invalid-element-definition', 'Invalid element definition');
+  }
+
   Never invalidElementPlacement(String slug, String name, [int? position]) {
     error('invalid-$slug-placement', '<$name> tags cannot be inside elements or blocks', start: position);
   }

@@ -1,6 +1,6 @@
 import 'package:piko/src/compiler/interface.dart';
+import 'package:piko/src/compiler/parse/html.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
-import 'package:piko/src/compiler/utils/html.dart';
 
 extension TextParser on Parser {
   static final RegExp textEndRe = RegExp(r'[{<]');
@@ -22,8 +22,7 @@ extension TextParser on Parser {
       data = template.substring(start, found);
     }
 
-    var escaped = decodeCharacterReferences(data);
-    addNode(Text(start: start, end: found, data: escaped, raw: data));
+    addNode(Text(start: start, end: found, data: decodeCharacterReferences(data)));
     index = found;
   }
 }

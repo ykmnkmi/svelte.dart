@@ -1,5 +1,3 @@
-import 'dart:html' show AnchorElement, Element, Event, Node, window;
-
 import 'package:piko/runtime.dart';
 
 class Link extends Action<AnchorElement, Object?> {
@@ -26,7 +24,7 @@ class App extends Component {
 }
 
 class AppFragment extends Fragment<App> {
-  AppFragment(super.context, super.tree);
+  AppFragment(super.context, super.component);
 
   late Link link;
 
@@ -36,13 +34,14 @@ class AppFragment extends Fragment<App> {
 
   @override
   void create() {
-    a = AnchorElement(href: '#');
-    a.text = 'Test';
+    a = element<AnchorElement>('a');
+    attribute(a, 'href', '#');
+    content(a, 'Test');
   }
 
   @override
   void mount(Element target, [Node? anchor]) {
-    target.insertBefore(a, anchor);
+    insert(target, a, anchor);
 
     if (!mounted) {
       link = Link(a);
@@ -53,7 +52,7 @@ class AppFragment extends Fragment<App> {
   @override
   void detach([bool detaching = true]) {
     if (detaching) {
-      a.remove();
+      remove(a);
     }
 
     mounted = false;
