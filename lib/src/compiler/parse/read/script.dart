@@ -31,15 +31,15 @@ extension ScriptParser on Parser {
 
   static final RegExp scriptCloseRe = RegExp(r'<\/script\s*>');
 
-  String getContext(List<Attribute>? attributes) {
+  String getContext(List<Node>? attributes) {
     if (attributes == null) {
       return 'default';
     }
 
-    Attribute? context;
+    Node? context;
 
     for (var attribute in attributes) {
-      if (attribute.name == 'context') {
+      if (attribute is NamedNode && attribute.name == 'context') {
         context = attribute;
         break;
       }
@@ -49,7 +49,8 @@ extension ScriptParser on Parser {
       return 'default';
     }
 
-    var children = context.children;
+    var childrenNode = context as ChildrenNode;
+    var children = childrenNode.children;
 
     if (children.length != 1 || children.first is! Text) {
       invalidScriptContextAttribute(context.start);
@@ -64,7 +65,7 @@ extension ScriptParser on Parser {
     invalidScriptContextValue(context.start);
   }
 
-  void script(int offset, List<Attribute>? attributes) {
+  void script(int offset, List<Node>? attributes) {
     var contentStart = index;
     var data = readUntil(scriptCloseRe, unclosedScript);
     var contentEnd = index;

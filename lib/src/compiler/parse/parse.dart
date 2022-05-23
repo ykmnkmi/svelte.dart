@@ -91,7 +91,7 @@ class Parser {
   void addNode(Node node) {
     var current = this.current;
 
-    if (current is! MultiChildNode) {
+    if (current is! ChildrenNode) {
       // TODO(errors): add error
       throw StateError('${current.runtimeType} is not multi child node');
     }
@@ -99,19 +99,15 @@ class Parser {
     current.children.add(node);
   }
 
-  void push(Node node) {
-    stack.add(node);
-  }
-
-  Node pop() {
-    return stack.removeLast();
-  }
-
   void allowWhitespace({bool require = false}) {
-    var match = whitespaceRe.matchAsPrefix(template.substring(index)) as Match;
+    var match = whitespaceRe.matchAsPrefix(template.substring(index));
 
-    if (require && match.start == match.end) {
-      error('missing-whitespace', 'expected whitespace');
+    if (match == null) {
+      if (require) {
+        error('missing-whitespace', 'expected whitespace');
+      }
+
+      return;
     }
 
     index += match.end;
@@ -162,7 +158,7 @@ class Parser {
       return null;
     }
 
-    index = match.end;
+    index += match.end;
     return match[0];
   }
 

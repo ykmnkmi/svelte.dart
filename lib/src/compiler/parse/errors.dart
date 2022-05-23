@@ -95,7 +95,7 @@ extension ParserErrors on Parser {
   }
 
   Never invalidDirectiveValue([int? position]) {
-    error('invalid-directive-value', 'directive value must be a JavaScript expression enclosed in curly braces',
+    error('invalid-directive-value', 'directive value must be a Dart expression enclosed in curly braces',
         start: position);
   }
 

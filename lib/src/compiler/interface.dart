@@ -256,8 +256,8 @@ mixin IgnoresNode on Node {
   }
 }
 
-mixin MultiAttributeNode on Node {
-  abstract List<Attribute> attributes;
+mixin AttributeNode on Node {
+  abstract List<Node> attributes;
 
   @override
   Map<String, Object?> toJson() {
@@ -273,24 +273,7 @@ mixin MultiAttributeNode on Node {
   }
 }
 
-mixin MultiDirectiveNode on Node {
-  abstract List<Directive> directives;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (directives.isNotEmpty) {
-      json['directives'] = <Map<String, Object?>?>[
-        for (var directive in directives) directive.toJson(),
-      ];
-    }
-
-    return json;
-  }
-}
-
-mixin MultiChildNode on Node {
+mixin ChildrenNode on Node {
   abstract List<Node> children;
 
   @override
@@ -346,7 +329,7 @@ class Mustache extends Node with ExpressionNode {
   Expression? expression;
 }
 
-class Fragment extends Node with MultiChildNode {
+class Fragment extends Node with ChildrenNode {
   Fragment({super.start, super.end})
       : children = <Node>[],
         super(type: 'Fragment');
@@ -355,7 +338,7 @@ class Fragment extends Node with MultiChildNode {
   List<Node> children;
 }
 
-class Attribute extends Node with NamedNode, MultiChildNode {
+class Attribute extends Node with NamedNode, ChildrenNode {
   Attribute({super.start, super.end, super.type = 'Attribute', this.name = '', List<Node>? children})
       : children = children ?? <Node>[];
 
@@ -366,7 +349,7 @@ class Attribute extends Node with NamedNode, MultiChildNode {
   List<Node> children;
 }
 
-class Spread extends Attribute with ExpressionNode {
+class Spread extends Node with ExpressionNode {
   Spread({super.start, super.end, this.expression}) : super(type: 'Spread');
 
   @override
@@ -381,16 +364,14 @@ class AttributeShorthand extends Node with ExpressionNode {
 }
 
 class Directive extends Node with NamedNode, ExpressionNode {
-  Directive({super.start, super.end, super.type = 'Directive', required this.name, this.expression, this.modifiers})
-      : intro = false,
-        outro = false;
+  Directive({super.start, super.end, super.type = 'Directive', required this.name, this.expression, this.modifiers});
 
   @override
   String name;
 
-  bool intro;
+  bool intro = false;
 
-  bool outro;
+  bool outro = false;
 
   @override
   Expression? expression;
@@ -417,20 +398,16 @@ class Directive extends Node with NamedNode, ExpressionNode {
   }
 }
 
-class Element extends Node with NamedNode, MultiAttributeNode, MultiDirectiveNode, MultiChildNode {
+class Element extends Node with NamedNode, AttributeNode, ChildrenNode {
   Element({super.start, super.end, super.type = 'Element', this.name = ''})
-      : attributes = <Attribute>[],
-        directives = <Directive>[],
+      : attributes = <Node>[],
         children = <Node>[];
 
   @override
   String name;
 
   @override
-  List<Attribute> attributes;
-
-  @override
-  List<Directive> directives;
+  List<Node> attributes;
 
   @override
   List<Node> children;
@@ -441,13 +418,9 @@ class Element extends Node with NamedNode, MultiAttributeNode, MultiDirectiveNod
   }
 }
 
-class InlineComponent extends Node
-    with NamedNode, ExpressionNode, MultiAttributeNode, MultiDirectiveNode, MultiChildNode
-    implements Element {
+class InlineComponent extends Node with NamedNode, ExpressionNode, AttributeNode {
   InlineComponent({super.start, super.end, required this.name})
       : attributes = <Attribute>[],
-        directives = <Directive>[],
-        children = <Node>[],
         super(type: 'InlineComponent');
 
   @override
@@ -457,77 +430,63 @@ class InlineComponent extends Node
   Expression? expression;
 
   @override
-  List<Attribute> attributes;
-
-  @override
-  List<Directive> directives;
-
-  @override
-  List<Node> children;
+  List<Node> attributes;
 
   @override
   String describe() {
-    return '<$name}> tag';
+    return '<$name> tag';
   }
 }
 
-// TODO(ast): change to Node with mixins
-class SlotTemplate extends Element {
+class SlotTemplate extends Node {
   SlotTemplate({super.start, super.end}) : super(type: 'SlotTemplate');
 }
 
-// TODO(ast): change to Node with mixins
-class Title extends Element {
+class Title extends Node {
   Title({super.start, super.end}) : super(type: 'Title');
 
   @override
   String describe() {
-    return '<$name}> tag';
+    return '<title> tag';
   }
 }
 
-// TODO(ast): change to Node with mixins
-class Slot extends Element {
+class Slot extends Node {
   Slot({super.start, super.end}) : super(type: 'Slot');
 
   @override
   String describe() {
-    return '<$name}> tag';
+    return '<slot> tag';
   }
 }
 
-// TODO(ast): change to Node with mixins
-class Head extends Element {
+class Head extends Node {
   Head({super.start, super.end}) : super(type: 'Head');
 }
 
-// TODO(ast): change to Node with mixins
-class Options extends Element {
+class Options extends Node {
   Options({super.start, super.end}) : super(type: 'Options');
 }
 
-class Window extends Element {
+class Window extends Node {
   Window({super.start, super.end}) : super(type: 'Window');
 }
 
-// TODO(ast): change to Node with mixins
-class Body extends Element {
+class Body extends Node {
   Body({super.start, super.end}) : super(type: 'Body');
 }
 
-class IfBlock extends Node with ElseIfNode, ExpressionNode, MultiChildNode, ElseNode {
-  IfBlock({super.start, super.end, this.elseIf = false, this.expression, this.elseNode})
-      : children = <Node>[],
-        super(type: 'IfBlock');
-
-  @override
-  bool elseIf;
+class IfBlock extends Node with ExpressionNode, ChildrenNode, ElseIfNode, ElseNode {
+  IfBlock({super.start, super.end, this.expression, this.elseIf = false, this.elseNode}) : super(type: 'IfBlock');
 
   @override
   Expression? expression;
 
   @override
-  List<Node> children;
+  List<Node> children = <Node>[];
+
+  @override
+  bool elseIf;
 
   @override
   Node? elseNode;
@@ -539,7 +498,7 @@ class IfBlock extends Node with ElseIfNode, ExpressionNode, MultiChildNode, Else
 }
 
 class EachBlock extends Node
-    with ExpressionNode, ContextNode<Expression?>, IndexNode, KeyNode, MultiChildNode, ElseIfNode, ElseNode {
+    with ExpressionNode, ContextNode<Expression?>, IndexNode, KeyNode, ChildrenNode, ElseIfNode, ElseNode {
   EachBlock(
       {super.start, super.end, this.context, this.expression, this.index, this.key, this.elseIf = false, this.elseNode})
       : children = <Node>[],
@@ -591,7 +550,7 @@ class EachBlock extends Node
   }
 }
 
-class ElseBlock extends Node with MultiChildNode {
+class ElseBlock extends Node with ChildrenNode {
   ElseBlock({super.start, super.end})
       : children = <Node>[],
         super(type: 'ElseBlock');
@@ -640,7 +599,7 @@ class AwaitBlock extends Node with ExpressionNode, ValueNode, ErrorNode, Pending
   }
 }
 
-class PendingBlock extends Node with SkipNode, MultiChildNode {
+class PendingBlock extends Node with SkipNode, ChildrenNode {
   PendingBlock({super.start, super.end, this.skip = false})
       : children = <Node>[],
         super(type: 'PendingBlock');
@@ -657,7 +616,7 @@ class PendingBlock extends Node with SkipNode, MultiChildNode {
   }
 }
 
-class ThenBlock extends Node with SkipNode, MultiChildNode {
+class ThenBlock extends Node with SkipNode, ChildrenNode {
   ThenBlock({super.start, super.end, this.skip = false})
       : children = <Node>[],
         super(type: 'ThenBlock');
@@ -674,7 +633,7 @@ class ThenBlock extends Node with SkipNode, MultiChildNode {
   }
 }
 
-class CatchBlock extends Node with SkipNode, MultiChildNode {
+class CatchBlock extends Node with SkipNode, ChildrenNode {
   CatchBlock({super.start, super.end, this.skip = false})
       : children = <Node>[],
         super(type: 'CatchBlock');

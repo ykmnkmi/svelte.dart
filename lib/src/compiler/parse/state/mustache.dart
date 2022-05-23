@@ -13,7 +13,7 @@ extension MustacheParser on Parser {
   static void trimWhitespace(Node block, bool trimBefore, bool trimAfter) {
     var node = block;
 
-    if (node is! MultiChildNode || node.children.isEmpty) {
+    if (node is! ChildrenNode || node.children.isEmpty) {
       return;
     }
 
@@ -63,12 +63,12 @@ extension MustacheParser on Parser {
 
       if (block is NamedNode && closingTagOmitted(block.name)) {
         block.end = start;
-        block = pop();
+        block = stack.removeLast();
       }
 
       if (block is ElseBlock || block is PendingBlock || block is ThenBlock || block is CatchBlock) {
         block.end = start;
-        block = pop();
+        block = stack.removeLast();
         expected = 'await';
       }
 
@@ -90,7 +90,7 @@ extension MustacheParser on Parser {
 
       while (block is ElseIfNode && block.elseIf) {
         block.end = index;
-        block = pop();
+        block = stack.removeLast();
 
         if (block is ElseNode && block.elseNode != null) {
           block.elseNode!.end = start;
@@ -101,7 +101,7 @@ extension MustacheParser on Parser {
       var trimAfter = index == length || index < length && whitespaceRe.hasMatch(template[index]);
       trimWhitespace(block, trimBefore, trimAfter);
       block.end = index;
-      pop();
+      stack.removeLast();
     } else if (scan(':else')) {
       if (scan('if')) {
         invalidElseIf();
@@ -130,7 +130,7 @@ extension MustacheParser on Parser {
         var elseBlock = ElseBlock(start: index);
         elseBlock.children.add(ifNode);
         block.elseNode = elseBlock;
-        push(ifNode);
+        stack.add(ifNode);
       } else {
         var block = current;
 
@@ -147,7 +147,7 @@ extension MustacheParser on Parser {
 
         var elseNode = ElseBlock(start: index);
         (block as ElseNode).elseNode = elseNode;
-        push(elseNode);
+        stack.add(elseNode);
       }
     } else if (match(':then') || match(':catch')) {
       var block = current;
@@ -173,7 +173,7 @@ extension MustacheParser on Parser {
 
       block.end = start;
 
-      var awaitBlock = pop() as AwaitBlock;
+      var awaitBlock = stack.removeLast() as AwaitBlock;
 
       if (!scan('}')) {
         allowWhitespace(require: true);
@@ -198,7 +198,7 @@ extension MustacheParser on Parser {
         awaitBlock.catchNode = newBlock = CatchBlock(start: start, skip: false);
       }
 
-      push(newBlock);
+      stack.add(newBlock);
     } else if (scan('#')) {
       Node Function({int? start, int? end, Expression? expression}) factory;
 
@@ -300,7 +300,7 @@ extension MustacheParser on Parser {
 
       expect('}');
       addNode(block);
-      push(block);
+      stack.add(block);
 
       if (block is AwaitBlock) {
         SkipNode childBlock;
@@ -317,7 +317,7 @@ extension MustacheParser on Parser {
           ..start = index
           ..skip = false;
 
-        push(childBlock);
+        stack.add(childBlock);
       }
     } else if (scan('@html')) {
       allowWhitespace(require: true);
