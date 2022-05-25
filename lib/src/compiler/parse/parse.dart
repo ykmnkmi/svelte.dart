@@ -88,17 +88,6 @@ class Parser {
     return stack.last;
   }
 
-  void addNode(Node node) {
-    var current = this.current;
-
-    if (current is! ChildrenNode) {
-      // TODO(errors): add error
-      throw StateError('${current.runtimeType} is not multi child node');
-    }
-
-    current.children.add(node);
-  }
-
   void allowWhitespace({bool require = false}) {
     var match = whitespaceRe.matchAsPrefix(template.substring(index));
 
@@ -206,8 +195,8 @@ AST parse(String template, {Object? sourceUrl}) {
   var scripts = parser.scripts;
 
   if (scripts.isNotEmpty) {
-    var instances = scripts.where((script) => script.context == 'default').toList();
-    var modules = scripts.where((script) => script.context == 'module').toList();
+    var instances = scripts.where((script) => script.isNotModule).toList();
+    var modules = scripts.where((script) => script.isModule).toList();
 
     if (instances.length > 1) {
       parser.invalidScriptInstance(instances[1].start);

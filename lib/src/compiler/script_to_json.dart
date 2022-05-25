@@ -1,16 +1,20 @@
-// generated with `tools/generate_script_to_json.dart`.
+// generated with `tools/generate_dart_to_json.dart`.
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 
-class ScriptToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
-  const ScriptToJsonVisitor();
+class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
+  const DartToJsonVisitor();
 
   Map<String, Object?> getLocation(AstNode node) {
     return <String, Object?>{
       'start': node.offset,
       'end': node.end,
     };
+  }
+
+  List<Map<String, Object?>?> visitAll(List<AstNode> nodes) {
+    return <Map<String, Object?>?>[for (var node in nodes) node.accept(this)];
   }
 
   @override

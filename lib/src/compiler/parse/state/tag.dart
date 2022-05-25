@@ -9,11 +9,11 @@ import 'package:piko/src/compiler/parse/read/script.dart';
 import 'package:piko/src/compiler/parse/read/style.dart';
 
 extension TagParser on Parser {
-  static const Set<String> metaTags = <String>{
-    'piko:head',
-    'piko:options',
-    'piko:window',
-    'piko:body',
+  static const Map<String, String> metaTags = <String, String>{
+    'piko:head': 'Head',
+    'piko:options': 'Options',
+    'piko:window': 'Window',
+    'piko:body': 'Body',
   };
 
   static const Set<String> validMetaTags = <String>{
@@ -24,13 +24,22 @@ extension TagParser on Parser {
     'piko:self',
     'piko:component',
     'piko:fragment',
+    'piko:element',
   };
+
+  static final RegExp voidElementNames = RegExp('^(?:'
+      'area|base|br|col|command|embed|hr|img|input|'
+      'keygen|link|meta|param|source|track|wbr)\$');
 
   static final RegExp ignoreRe = RegExp('^\\s*ignore:\\s+([\\s\\S]+)\\s*\$', multiLine: true);
 
   static final RegExp componentNameRe = RegExp('^[A-Z]');
 
+  static final RegExp textareaCloseTagRe = RegExp(r'^<\/textarea(\s[^>]*)?>');
+
   static final RegExp selfRe = RegExp('^piko:self(?=[\\s/>])', multiLine: true);
+
+  static final RegExp elementRe = RegExp('^piko:element(?=[\\s/>])');
 
   static final RegExp componentRe = RegExp('^piko:component(?=[\\s/>])', multiLine: true);
 
@@ -45,27 +54,6 @@ extension TagParser on Parser {
   static final RegExp attributeValueEndRe = RegExp('(\\/>|[\\s"\'=<>`])');
 
   static final RegExp quoteRe = RegExp('["\']');
-
-  static final RegExp textareaCloseTagRe = RegExp(r'^<\/textarea(\s[^>]*)?>');
-
-  static final RegExp voidElementNames = RegExp('^(?:'
-      'area|'
-      'base|'
-      'br|'
-      'col|'
-      'command|'
-      'embed|'
-      'hr|'
-      'img|'
-      'input|'
-      'keygen|'
-      'link|'
-      'meta|'
-      'param|'
-      'source|'
-      'track|'
-      'wbr'
-      ')\$');
 
   static bool isVoid(String name) {
     return voidElementNames.hasMatch(name) || '!doctype' == name.toLowerCase();
@@ -133,20 +121,18 @@ extension TagParser on Parser {
     if (scan('!--')) {
       var data = readUntil('-->');
       expect('-->', onError: unclosedComment);
-      addNode(Comment(start: start, end: index, data: data, ignores: extractIgnore(data)));
+      current.children.add(Comment(start: start, end: index, data: data, ignores: extractIgnore(data)));
       return;
     }
 
     var isClosingTag = scan('/');
     var name = readTagName();
 
-    if (metaTags.contains(name)) {
+    if (metaTags.containsKey(name)) {
       // 'piko:'.length
       var slug = name.substring(5);
 
       if (isClosingTag) {
-        // TODO(error): wrap cast
-        var current = this.current as ChildrenNode;
         var children = current.children;
 
         if ((name == 'piko:window' || name == 'piko:body') && children.isNotEmpty) {
@@ -165,26 +151,26 @@ extension TagParser on Parser {
       }
     }
 
-    Node node;
+    Element element;
 
     if (name == 'piko:head') {
-      node = Head(start: start);
+      element = Element(start: start, type: 'Head', name: name);
     } else if (name == 'piko:options') {
-      node = Options(start: start);
+      element = Element(start: start, type: 'Options', name: name);
     } else if (name == 'piko:window') {
-      node = Window(start: start);
+      element = Element(start: start, type: 'Window', name: name);
     } else if (name == 'piko:body') {
-      node = Body(start: start);
+      element = Element(start: start, type: 'Body', name: name);
     } else if (componentNameRe.hasMatch(name) || name == 'piko:self' || name == 'piko:component') {
-      node = InlineComponent(start: start, name: name);
+      element = Element(start: start, type: 'InlineComponent', name: name);
     } else if (name == 'piko:fragment') {
-      node = SlotTemplate(start: start);
+      element = Element(start: start, type: 'SlotTemplate', name: name);
     } else if (name == 'title' && parentIsHead()) {
-      node = Title(start: start);
+      element = Element(start: start, type: 'Title', name: name);
     } else if (name == 'slot') {
-      node = Slot(start: start);
+      element = Element(start: start, type: 'Slot', name: name);
     } else {
-      node = Element(start: start, name: name);
+      element = Element(start: start, type: 'Element', name: name);
     }
 
     allowWhitespace();
@@ -196,7 +182,7 @@ extension TagParser on Parser {
 
       expect('>');
 
-      while (parent is! NamedNode || parent.name != name) {
+      while (parent is! Element || parent.name != name) {
         if (parent is! Element) {
           if (lastAutoClosedTag != null && lastAutoClosedTag!.tag == name) {
             invalidClosingTagAutoclosed(name, lastAutoClosedTag!.reason, start);
@@ -219,7 +205,7 @@ extension TagParser on Parser {
       return;
     }
 
-    if (parent is NamedNode && closingTagOmitted(parent.name, name)) {
+    if (parent is Element && closingTagOmitted(parent.name, name)) {
       parent.end = start;
       stack.removeLast();
       lastAutoClosedTag = LastAutoClosedTag(parent.name, name, stack.length);
@@ -227,29 +213,66 @@ extension TagParser on Parser {
 
     var uniqueNames = <String>{};
 
-    while (readAttribute(node, uniqueNames)) {
+    while (readAttribute(element, uniqueNames)) {
       allowWhitespace();
     }
 
     if (name == 'piko:component') {
-      var attributeNode = node as AttributeNode;
-      var attributes = attributeNode.attributes;
+      var attributes = element.attributes;
+
+      if (attributes == null) {
+        missingComponentDefinition(start);
+      }
+
       var index = attributes.indexWhere((attribute) => attribute is Attribute && attribute.name == 'this');
 
       if (index == -1) {
         missingComponentDefinition(start);
       }
 
-      var definition = attributes.removeAt(index) as ChildrenNode;
+      var definition = attributes.removeAt(index);
       var children = definition.children;
 
       if (children.length != 1 || children.first.type == 'Text') {
         invalidComponentDefinition(definition.start);
       }
 
-      var expressionNode = node as ExpressionNode;
-      var first = children.first as ExpressionNode;
+      var expressionNode = element as Attribute;
+      var first = children.first as Attribute;
       expressionNode.expression = first.expression;
+    }
+
+    if (name == 'piko:element') {
+      var attributes = element.attributes;
+
+      if (attributes == null) {
+        missingElementDefinition(start);
+      }
+
+      var index = attributes.indexWhere((attribute) => attribute is Attribute && attribute.name == 'this');
+
+      if (index == -1) {
+        missingElementDefinition(start);
+      }
+
+      var definition = attributes.removeAt(index);
+      var children = definition.children;
+
+      if (children.isEmpty) {
+        invalidElementDefinition();
+      }
+
+      var taggedNode = element as TaggedNode;
+      var first = children.first;
+
+      if (first is Text) {
+        var literal = Token(TokenType.STRING, first.start!);
+        taggedNode.tag = astFactory.simpleStringLiteral(literal, first.data ?? '');
+      } else if (first is Attribute) {
+        taggedNode.tag = first.expression;
+      } else {
+        error('parser-error', '${first.runtimeType} not supported');
+      }
     }
 
     if (stack.length == 1) {
@@ -262,35 +285,32 @@ extension TagParser on Parser {
       }
 
       if (special != null) {
-        var attributeNode = node as AttributeNode;
         expect('>');
-        special(start, attributeNode.attributes);
+        special(start, element.attributes);
         return;
       }
     }
 
-    addNode(node);
+    current.children.add(element);
 
     var selfClosing = scan('/') || isVoid(name);
     expect('>');
 
     if (selfClosing) {
-      node.end = index;
+      element.end = index;
     } else if (name == 'textarea') {
-      var childrenNode = node as ChildrenNode;
-      childrenNode.children = readSequence(textareaCloseTagRe);
+      element.children = readSequence(textareaCloseTagRe);
       scan(textareaCloseTagRe);
-      childrenNode.end = index;
+      element.end = index;
     } else if (name == 'script' || name == 'style') {
-      var childrenNode = node as ChildrenNode;
       var start = index;
       var data = readUntil('</$name>');
       var text = Text(start: start, end: index, data: data);
-      childrenNode.children.add(text);
+      element.children.add(text);
       expect('</$name>');
-      childrenNode.end = index;
+      element.end = index;
     } else {
-      stack.add(node);
+      stack.add(element);
     }
   }
 
@@ -311,13 +331,17 @@ extension TagParser on Parser {
       return 'piko:component';
     }
 
+    if (scan(elementRe)) {
+      return 'piko:element';
+    }
+
     if (scan(fragmentRe)) {
       return 'piko:fragment';
     }
 
     var name = readUntil(metaTagEndRe);
 
-    if (metaTags.contains(name)) {
+    if (metaTags.containsKey(name)) {
       return name;
     }
 
@@ -332,7 +356,7 @@ extension TagParser on Parser {
     return name;
   }
 
-  bool readAttribute(Node node, Set<String> uniqueNames) {
+  bool readAttribute(Element element, Set<String> uniqueNames) {
     var start = index;
 
     void checkUnique(String name) {
@@ -347,14 +371,12 @@ extension TagParser on Parser {
       allowWhitespace();
 
       if (scan('...')) {
-        var attributeNode = node as AttributeNode;
         var expression = readExpression();
         allowWhitespace();
         expect('}');
-        attributeNode.attributes.add(Spread(start: start, end: index, expression: expression));
+        element.attributes.add(Attribute(start: start, end: index, type: 'Spread', value: expression));
         return true;
       } else {
-        var attributeNode = node as AttributeNode;
         var valueStart = index;
         var name = readIdentifier();
         allowWhitespace();
@@ -371,7 +393,7 @@ extension TagParser on Parser {
         var identifier = astFactory.simpleIdentifier(token);
         var end = valueStart + name.length;
         var shortHand = AttributeShorthand(start: valueStart, end: end, expression: identifier);
-        attributeNode.attributes.add(Attribute(start: start, end: index, name: name, children: <Node>[shortHand]));
+        element.attributes.add(Attribute(start: start, end: index, name: name, value: shortHand));
         return true;
       }
     }
@@ -420,8 +442,15 @@ extension TagParser on Parser {
         invalidRefDirective(name, start);
       }
 
-      if (values != null && (values.length > 1 || values.first is Text)) {
-        invalidDirectiveValue(values.first.start);
+      if (type == 'StyleDirective') {
+        element.attributes.add(Directive(start: start, end: end, type: type, name: directiveName));
+        return true;
+      }
+
+      if (values != null) {
+        if (values.length > 1 || values.first is Text) {
+          invalidDirectiveValue(values.first.start);
+        }
       }
 
       var directive = Directive(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
@@ -436,8 +465,8 @@ extension TagParser on Parser {
 
       if (type == 'Transition') {
         var direction = name.substring(0, colonIndex);
-        directive.intro = direction == 'in' || direction == 'transition';
-        directive.outro = direction == 'out' || direction == 'transition';
+        directive.isIntro = direction == 'in' || direction == 'transition';
+        directive.isOutro = direction == 'out' || direction == 'transition';
       }
 
       if (values == null && (type == 'Binding' || type == 'Class')) {
@@ -446,14 +475,12 @@ extension TagParser on Parser {
         directive.expression = astFactory.simpleIdentifier(token);
       }
 
-      var attributeNode = node as AttributeNode;
-      attributeNode.attributes.add(directive);
+      element.attributes.add(directive);
       return true;
     }
 
-    var attributeNode = node as AttributeNode;
     checkUnique(name);
-    attributeNode.attributes.add(Attribute(start: start, end: end, name: name, children: values));
+    element.attributes.add(Attribute(start: start, end: end, name: name, value: values));
     return true;
   }
 

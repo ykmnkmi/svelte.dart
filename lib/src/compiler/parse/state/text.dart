@@ -22,7 +22,7 @@ extension TextParser on Parser {
       data = template.substring(start, found);
     }
 
-    addNode(Text(start: start, end: found, data: decodeCharacterReferences(data)));
+    current.children.add(Text(start: start, end: found, data: decodeCharacterReferences(data)));
     index = found;
   }
 }

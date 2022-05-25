@@ -11,9 +11,22 @@ import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/errors.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
 
-class _CompilationUnit extends CompilationUnitImpl implements CompilationUnit {
-  _CompilationUnit(super.beginToken, super.scriptTag, super.directives, super.declarations, super.endToken,
-      super.featureSet, super.lineInfo);
+class _CompilationUnit extends CompilationUnitImpl {
+  factory _CompilationUnit.from(int contentStart, int contentEnd, CompilationUnit unit) {
+    var begin = Token(unit.beginToken.type, contentStart);
+    var end = Token(unit.endToken.type, contentEnd);
+    return _CompilationUnit(begin, null, unit.directives, unit.declarations, end, unit.featureSet, unit.lineInfo);
+  }
+
+  _CompilationUnit(
+    super.beginToken,
+    super.scriptTag,
+    super.directives,
+    super.declarations,
+    super.endToken,
+    super.featureSet,
+    super.lineInfo,
+  );
 
   @override
   int get offset {
@@ -31,38 +44,29 @@ extension ScriptParser on Parser {
 
   static final RegExp scriptCloseRe = RegExp(r'<\/script\s*>');
 
-  String getContext(List<Node>? attributes) {
+  bool isModule(List<Node>? attributes) {
     if (attributes == null) {
-      return 'default';
+      return false;
     }
 
-    Node? context;
+    Node? module;
 
     for (var attribute in attributes) {
-      if (attribute is NamedNode && attribute.name == 'context') {
-        context = attribute;
+      if (attribute is Attribute && attribute.name == 'module') {
+        module = attribute;
         break;
       }
     }
 
-    if (context == null) {
-      return 'default';
+    if (module == null) {
+      return false;
     }
 
-    var childrenNode = context as ChildrenNode;
-    var children = childrenNode.children;
-
-    if (children.length != 1 || children.first is! Text) {
-      invalidScriptContextAttribute(context.start);
+    if (module.children.isNotEmpty) {
+      invalidScriptModuleAttribute(module.start);
     }
 
-    var first = children.first;
-
-    if (first is DataNode && first.data == 'module') {
-      return 'module';
-    }
-
-    invalidScriptContextValue(context.start);
+    return true;
   }
 
   void script(int offset, List<Node>? attributes) {
@@ -72,23 +76,17 @@ extension ScriptParser on Parser {
 
     // TODO(error): handle
     if (scan(scriptCloseRe)) {
-      var context = getContext(attributes);
+      var module = isModule(attributes);
       var prefix = template.substring(0, contentStart).replaceAll(nonNewLineRe, ' ');
-      var unit = parseScript(offset, prefix + data);
-      var begin = Token(unit.beginToken.type, contentStart);
-      var end = Token(unit.endToken.type, contentEnd);
-      unit = _CompilationUnit(begin, null, unit.directives, unit.declarations, end, unit.featureSet, unit.lineInfo);
-
-      var node = Script(start: offset, end: index, context: context, content: unit);
-      scripts.add(node);
+      var unit = _CompilationUnit.from(contentStart, contentEnd, parseScript(offset, prefix + data));
+      scripts.add(Script(start: offset, end: index, isModule: module, content: unit));
       return;
     }
 
     unclosedScript();
   }
 
-  static CompilationUnit parseScript(int offset, String script, //
-      {AnalysisErrorListener? errorListener}) {
+  static CompilationUnit parseScript(int offset, String script, {AnalysisErrorListener? errorListener}) {
     errorListener ??= RecordingErrorListener();
 
     var featureSet = FeatureSet.latestLanguageVersion();

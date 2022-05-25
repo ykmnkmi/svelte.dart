@@ -6,11 +6,10 @@ extension StyleParser on Parser {
   static final RegExp styleCloseTagRe = RegExp(r'<\/style\s*>');
 
   void style(int start, List<Node>? attributes) {
-    var data = readUntil(styleCloseTagRe, unclosedStyle);
+    var content = readUntil(styleCloseTagRe, unclosedStyle);
 
     if (scan(styleCloseTagRe)) {
-      // TODO(style): parse and tidy up AST
-      styles.add(Style(start: start, end: index, data: data));
+      styles.add(Style(start: start, end: index, lang: 'css', content: content));
       return;
     }
 

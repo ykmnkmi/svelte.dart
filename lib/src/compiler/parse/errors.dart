@@ -124,11 +124,15 @@ extension ParserErrors on Parser {
   }
 
   Never invalidElementDefinition() {
-    error('invalid-element-definition', 'Invalid element definition');
+    error('invalid-element-definition', 'invalid element definition');
   }
 
   Never invalidElementPlacement(String slug, String name, [int? position]) {
     error('invalid-$slug-placement', '<$name> tags cannot be inside elements or blocks', start: position);
+  }
+
+  Never missingElementDefinition([int? position]) {
+    error('missing-element-definition', '<piko:element> must have a \'this\' attribute', start: position);
   }
 
   Never invalidRefDirective(String name, [int? position]) {
@@ -151,15 +155,11 @@ extension ParserErrors on Parser {
   }
 
   Never invalidScriptModule([int? position]) {
-    error('invalid-script', 'a component can only have one <script context="module"> element', start: position);
+    error('invalid-script', 'a component can only have one <script module> element', start: position);
   }
 
-  Never invalidScriptContextAttribute([int? position]) {
-    error('invalid-script', 'context attribute must be static', start: position);
-  }
-
-  Never invalidScriptContextValue([int? position]) {
-    error('invalid-script', 'if the context attribute is supplied, its value must be "module"', start: position);
+  Never invalidScriptModuleAttribute([int? position]) {
+    error('invalid-script', 'module attribute don\'t have a value', start: position);
   }
 
   Never invalidTagName([int? position]) {

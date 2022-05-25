@@ -13,7 +13,7 @@ extension MustacheParser on Parser {
   static void trimWhitespace(Node block, bool trimBefore, bool trimAfter) {
     var node = block;
 
-    if (node is! ChildrenNode || node.children.isEmpty) {
+    if (node.children.isEmpty) {
       return;
     }
 
@@ -299,7 +299,7 @@ extension MustacheParser on Parser {
       }
 
       expect('}');
-      addNode(block);
+      current.children.add(block);
       stack.add(block);
 
       if (block is AwaitBlock) {
@@ -325,7 +325,7 @@ extension MustacheParser on Parser {
       var expression = readExpression();
       allowWhitespace();
       expect('}');
-      addNode(RawMustache(start: start, end: index, expression: expression));
+      current.children.add(RawMustache(start: start, end: index, expression: expression));
     } else if (scan('@debug')) {
       allowWhitespace();
 
@@ -348,12 +348,12 @@ extension MustacheParser on Parser {
         expect('}');
       }
 
-      addNode(Debug(start: start, end: index, identifiers: identifiers));
+      current.children.add(Debug(start: start, end: index, identifiers: identifiers));
     } else {
       var expression = readExpression();
       allowWhitespace();
       expect('}');
-      addNode(Mustache(start: start, end: index, expression: expression));
+      current.children.add(Mustache(start: start, end: index, expression: expression));
     }
   }
 }
