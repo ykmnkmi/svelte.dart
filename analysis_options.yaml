@@ -11,5 +11,6 @@ analyzer:
 linter:
   rules:
     avoid_print: true
+    depend_on_referenced_packages: false
     implementation_imports: false
     library_prefixes: false

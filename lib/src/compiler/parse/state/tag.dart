@@ -173,7 +173,7 @@ extension TagParser on Parser {
       element = Element(start: start, type: 'Element', name: name);
     }
 
-    allowWhitespace();
+    allowSpace();
 
     if (isClosingTag) {
       if (isVoid(name)) {
@@ -185,7 +185,7 @@ extension TagParser on Parser {
       while (parent is! Element || parent.name != name) {
         if (parent is! Element) {
           if (lastAutoClosedTag != null && lastAutoClosedTag!.tag == name) {
-            invalidClosingTagAutoclosed(name, lastAutoClosedTag!.reason, start);
+            invalidClosingTagAutoClosed(name, lastAutoClosedTag!.reason, start);
           }
 
           invalidClosingTagUnopened(name, start);
@@ -214,7 +214,7 @@ extension TagParser on Parser {
     var uniqueNames = <String>{};
 
     while (readAttribute(element, uniqueNames)) {
-      allowWhitespace();
+      allowSpace();
     }
 
     if (name == 'piko:component') {
@@ -346,7 +346,7 @@ extension TagParser on Parser {
     }
 
     if (name.startsWith('piko:')) {
-      invalidTagNameSvelteElement(validMetaTags, start);
+      invalidTagNamePikoElement(validMetaTags, start);
     }
 
     if (!tagRe.hasMatch(name)) {
@@ -368,18 +368,18 @@ extension TagParser on Parser {
     }
 
     if (scan('{')) {
-      allowWhitespace();
+      allowSpace();
 
       if (scan('...')) {
         var expression = readExpression();
-        allowWhitespace();
+        allowSpace();
         expect('}');
         element.attributes.add(Attribute(start: start, end: index, type: 'Spread', value: expression));
         return true;
       } else {
         var valueStart = index;
         var name = readIdentifier();
-        allowWhitespace();
+        allowSpace();
         expect('}');
 
         if (name == null) {
@@ -405,7 +405,7 @@ extension TagParser on Parser {
     }
 
     var end = index;
-    allowWhitespace();
+    allowSpace();
 
     var colonIndex = name.indexOf(':');
     String? type;
@@ -417,7 +417,7 @@ extension TagParser on Parser {
     List<Node>? values;
 
     if (scan('=')) {
-      allowWhitespace();
+      allowSpace();
       values = readAttributeValues();
       end = index;
     } else if (match(quoteRe)) {
@@ -465,8 +465,8 @@ extension TagParser on Parser {
 
       if (type == 'Transition') {
         var direction = name.substring(0, colonIndex);
-        directive.isIntro = direction == 'in' || direction == 'transition';
-        directive.isOutro = direction == 'out' || direction == 'transition';
+        directive.intro = direction == 'in' || direction == 'transition';
+        directive.outro = direction == 'out' || direction == 'transition';
       }
 
       if (values == null && (type == 'Binding' || type == 'Class')) {
@@ -533,10 +533,10 @@ extension TagParser on Parser {
       if (scan('{')) {
         var start = index - 1;
         flush(start);
-        allowWhitespace();
+        allowSpace();
 
         var expression = readExpression();
-        allowWhitespace();
+        allowSpace();
         expect('}');
         chunks.add(Mustache(start: start, end: index, expression: expression));
         textStart = index;

@@ -2,13 +2,13 @@ import 'package:piko/src/compiler/parse/parse.dart';
 import 'package:source_span/source_span.dart' show SourceSpan;
 
 class CompileError extends Error {
+  CompileError(this.code, this.message, this.span);
+
   final String code;
 
   final String message;
 
   final SourceSpan span;
-
-  CompileError(this.code, this.message, this.span);
 
   Map<String, Object?> toJson() {
     return <String, Object?>{
@@ -79,7 +79,7 @@ extension ParserErrors on Parser {
     error('invalid-closing-tag', '</$name> attempted to close an element that was not open', start: position);
   }
 
-  Never invalidClosingTagAutoclosed(String name, String reason, [int? position]) {
+  Never invalidClosingTagAutoClosed(String name, String reason, [int? position]) {
     error(
         'invalid-closing-tag', '</$name> attempted to close <$name> that was already automatically closed by <$reason>',
         start: position);
@@ -124,15 +124,11 @@ extension ParserErrors on Parser {
   }
 
   Never invalidElementDefinition() {
-    error('invalid-element-definition', 'invalid element definition');
+    error('invalid-element-definition', 'Invalid element definition');
   }
 
   Never invalidElementPlacement(String slug, String name, [int? position]) {
     error('invalid-$slug-placement', '<$name> tags cannot be inside elements or blocks', start: position);
-  }
-
-  Never missingElementDefinition([int? position]) {
-    error('missing-element-definition', '<piko:element> must have a \'this\' attribute', start: position);
   }
 
   Never invalidRefDirective(String name, [int? position]) {
@@ -155,18 +151,22 @@ extension ParserErrors on Parser {
   }
 
   Never invalidScriptModule([int? position]) {
-    error('invalid-script', 'a component can only have one <script module> element', start: position);
+    error('invalid-script', 'a component can only have one <script context="module"> element', start: position);
   }
 
-  Never invalidScriptModuleAttribute([int? position]) {
-    error('invalid-script', 'module attribute don\'t have a value', start: position);
+  Never invalidScriptContextAttribute([int? position]) {
+    error('invalid-script', 'context attribute must be static', start: position);
+  }
+
+  Never invalidScriptContextValue([int? position]) {
+    error('invalid-script', 'if the context attribute is supplied, its value must be "module"', start: position);
   }
 
   Never invalidTagName([int? position]) {
     error('invalid-tag-name', 'expected valid tag name', start: position);
   }
 
-  Never invalidTagNameSvelteElement(Iterable<String> tags, [int? position]) {
+  Never invalidTagNamePikoElement(Iterable<String> tags, [int? position]) {
     error('invalid-tag-name', 'valid <piko:...> tag names are ${tags.join(', ')}', start: position);
   }
 
@@ -189,6 +189,10 @@ extension ParserErrors on Parser {
 
   Never missingAttributeValue() {
     error('missing-attribute-value', 'expected value for the attribute');
+  }
+
+  Never missingElementDefinition([int? position]) {
+    error('missing-element-definition', '<piko:element> must have a \'this\' attribute', start: position);
   }
 
   Never unclosedScript() {

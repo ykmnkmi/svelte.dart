@@ -9,7 +9,7 @@ extension StyleParser on Parser {
     var content = readUntil(styleCloseTagRe, unclosedStyle);
 
     if (scan(styleCloseTagRe)) {
-      styles.add(Style(start: start, end: index, lang: 'css', content: content));
+      styles.add(Style(start: start, end: index, content: content));
       return;
     }
 

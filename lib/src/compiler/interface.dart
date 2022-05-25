@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/error/error.dart';
 import 'package:piko/src/compiler/script_to_json.dart';
 
 const DartToJsonVisitor dartToJson = DartToJsonVisitor();
@@ -15,6 +16,8 @@ abstract class Node {
   int? end;
 
   String type;
+
+  List<Node> get children;
 
   String describe() {
     return type;
@@ -35,14 +38,19 @@ abstract class Node {
 }
 
 mixin ChildrenNode on Node {
-  abstract List<Node> children;
-
   @override
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
       if (children.isNotEmpty) 'children': children,
     };
+  }
+}
+
+mixin NoChildrenNode on Node {
+  @override
+  List<Node> get children {
+    return const <Node>[];
   }
 }
 
@@ -70,7 +78,7 @@ mixin DataNode on Node {
   }
 }
 
-class Text extends Node with DataNode {
+class Text extends Node with DataNode, NoChildrenNode {
   Text({
     super.start,
     super.end,
@@ -94,7 +102,7 @@ mixin ExpressionNode on Node {
   }
 }
 
-class RawMustache extends Node with ExpressionNode {
+class RawMustache extends Node with ExpressionNode, NoChildrenNode {
   RawMustache({
     super.start,
     super.end,
@@ -111,7 +119,7 @@ class RawMustache extends Node with ExpressionNode {
   }
 }
 
-class Mustache extends Node with ExpressionNode {
+class Mustache extends Node with ExpressionNode, NoChildrenNode {
   Mustache({
     super.start,
     super.end,
@@ -135,7 +143,7 @@ mixin IgnoresNode on Node {
   }
 }
 
-class Comment extends Node with DataNode {
+class Comment extends Node with DataNode, NoChildrenNode {
   Comment({
     super.start,
     super.end,
@@ -162,12 +170,12 @@ mixin IdentifiersNode on Node {
   }
 }
 
-class Debug extends Node with IdentifiersNode {
+class Debug extends Node with IdentifiersNode, NoChildrenNode {
   Debug({
     super.start,
     super.end,
     super.type = 'Debug',
-    required this.identifiers,
+    this.identifiers,
   });
 
   @override
@@ -191,16 +199,298 @@ mixin NamedNode on Node {
   }
 }
 
-mixin DirectiveNode on Node, NamedNode {}
-
-mixin ContextNode on Node {
-  abstract String context;
+mixin ModifiersNode on Node {
+  abstract List<String>? modifiers;
 
   @override
   Map<String, Object?> toJson() {
-    var json = super.toJson();
-    json['context'] = context;
-    return json;
+    return <String, Object?>{
+      ...super.toJson(),
+      if (modifiers != null && modifiers!.isNotEmpty) 'ignores': modifiers,
+    };
+  }
+}
+
+mixin TransitionNode on Node {
+  abstract bool intro;
+
+  abstract bool outro;
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      if (intro) 'intro': intro,
+      if (outro) 'outro': outro,
+    };
+  }
+}
+
+class Directive extends Node with NamedNode, ModifiersNode, ExpressionNode, TransitionNode, NoChildrenNode {
+  Directive({
+    super.start,
+    super.end,
+    super.type = 'Directive',
+    required this.name,
+    this.modifiers,
+    this.expression,
+    this.intro = false,
+    this.outro = false,
+  }) : assert(isDirective(type));
+
+  @override
+  String name;
+
+  @override
+  List<String>? modifiers;
+
+  @override
+  Expression? expression;
+
+  @override
+  bool intro;
+
+  @override
+  bool outro;
+
+  static bool isDirective(String type) {
+    return type == 'Action' ||
+        type == 'Animation' ||
+        type == 'Binding' ||
+        type == 'Class' ||
+        type == 'StyleDirective' ||
+        type == 'EventHandler' ||
+        type == 'Let' ||
+        type == 'Ref' ||
+        type == 'Transition';
+  }
+}
+
+class Attribute extends Node with NamedNode, ExpressionNode, NoChildrenNode {
+  Attribute({
+    super.start,
+    super.end,
+    super.type = 'Attribute',
+    required this.name,
+    this.expression,
+  });
+
+  @override
+  String name;
+
+  @override
+  Expression? expression;
+}
+
+mixin AttributesNode on Node {
+  abstract List<Node> attributes;
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      if (attributes.isNotEmpty) 'attributes': attributes,
+    };
+  }
+}
+
+mixin TagNode on Node {
+  abstract Expression? tag;
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      if (tag != null) 'tag': tag!.accept(dartToJson),
+    };
+  }
+}
+
+class Element extends Node with NamedNode, AttributesNode, ChildrenNode, TagNode {
+  Element({
+    super.start,
+    super.end,
+    super.type = 'Element',
+    required this.name,
+    List<Node>? attributes,
+    List<Node>? children,
+    this.tag,
+  })  : assert(isElement(type)),
+        attributes = attributes ?? <Node>[],
+        children = children ?? <Node>[];
+
+  @override
+  String name;
+
+  @override
+  List<Node> attributes;
+
+  @override
+  List<Node> children;
+
+  @override
+  Expression? tag;
+
+  @override
+  String describe() {
+    return '<$name> tag';
+  }
+
+  static bool isElement(String type) {
+    return type == 'InlineComponent' ||
+        type == 'SlotTemplate' ||
+        type == 'Title' ||
+        type == 'Slot' ||
+        type == 'Element' ||
+        type == 'Head' ||
+        type == 'Options' ||
+        type == 'Window' ||
+        type == 'Body';
+  }
+}
+
+class Script extends Node with NoChildrenNode {
+  Script({
+    super.start,
+    super.end,
+    super.type = 'Script',
+    required this.context,
+    required this.content,
+    this.errors,
+  });
+
+  String context;
+
+  CompilationUnit content;
+
+  List<AnalysisError>? errors;
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      'context': context,
+      'content': content.accept(dartToJson),
+    };
+  }
+}
+
+class Style extends Node with NoChildrenNode {
+  Style({
+    super.start,
+    super.end,
+    super.type = 'Style',
+    required this.content,
+  });
+
+  String content;
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      'content': content,
+    };
+  }
+}
+
+class AST {
+  AST(this.html);
+
+  Node html;
+
+  Node? instance;
+
+  Script? module;
+
+  Style? style;
+
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'html': html.toJson(),
+      if (instance != null) 'instance': instance!.toJson(),
+      if (module != null) 'module': module!.toJson(),
+      if (style != null) 'style': style!.toJson(),
+    };
+  }
+
+  @override
+  String toString() {
+    var buffer = StringBuffer('AST { $html');
+
+    if (instance != null) {
+      buffer.write(', $instance');
+    }
+
+    if (module != null) {
+      buffer.write(', $module');
+    }
+
+    if (style != null) {
+      buffer.write(', $style');
+    }
+
+    buffer.write(' }');
+    return buffer.toString();
+  }
+}
+
+abstract class Visitor {
+  void enter(Node node) {}
+
+  void leave(Node node) {}
+}
+
+mixin ElseIfNode on Node {
+  abstract bool elseIf;
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      if (elseIf) 'elseIf': elseIf,
+    };
+  }
+}
+
+mixin ElseNode on Node {
+  abstract Node? elseNode;
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      if (elseNode != null) 'elseNode': elseNode,
+    };
+  }
+}
+
+class IfBlock extends Node with ElseIfNode, ExpressionNode, ChildrenNode, ElseNode {
+  IfBlock({
+    super.start,
+    super.end,
+    super.type = 'IfBlock',
+    this.elseIf = false,
+    this.expression,
+    List<Node>? children,
+    this.elseNode,
+  }) : children = children ?? <Node>[];
+
+  @override
+  bool elseIf;
+
+  @override
+  Expression? expression;
+
+  @override
+  List<Node> children;
+
+  @override
+  Node? elseNode;
+
+  @override
+  String describe() {
+    return '{#if} block';
   }
 }
 
@@ -216,6 +506,136 @@ mixin IterableNode on Node {
   }
 }
 
+mixin IndexNode on Node {
+  abstract String? index;
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      if (index != null) 'index': index,
+    };
+  }
+}
+
+mixin KeyNode on Node {
+  abstract Expression? key;
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      if (key != null) 'index': key!.accept(dartToJson),
+    };
+  }
+}
+
+class EachBlock extends Node with ExpressionNode, IterableNode, IndexNode, KeyNode, ChildrenNode, ElseIfNode, ElseNode {
+  EachBlock({
+    super.start,
+    super.end,
+    super.type = 'EachBlock',
+    this.iterable,
+    this.expression,
+    this.index,
+    this.key,
+    List<Node>? children,
+    this.elseIf = false,
+    this.elseNode,
+  }) : children = children ?? <Node>[];
+
+  @override
+  Expression? iterable;
+
+  @override
+  Expression? expression;
+
+  @override
+  String? index;
+
+  @override
+  Expression? key;
+
+  @override
+  List<Node> children;
+
+  @override
+  bool elseIf;
+
+  @override
+  Node? elseNode;
+
+  @override
+  String describe() {
+    return '{#each} block';
+  }
+}
+
+class ElseBlock extends Node with ChildrenNode {
+  ElseBlock({
+    super.start,
+    super.end,
+    super.type = 'ElseBlock',
+    List<Node>? children,
+  }) : children = children ?? <Node>[];
+
+  @override
+  List<Node> children;
+
+  @override
+  String describe() {
+    return '{:else} block';
+  }
+}
+
+class AwaitBlock extends Node
+    with ExpressionNode, ValueNode, ErrorNode, PendingNode, ThenNode, CatchNode, NoChildrenNode {
+  AwaitBlock({
+    super.start,
+    super.end,
+    super.type = 'AwaitBlock',
+    this.expression,
+    this.value,
+    this.pendingNode,
+    this.thenNode,
+    this.catchNode,
+  });
+
+  @override
+  Expression? expression;
+
+  @override
+  Expression? value;
+
+  @override
+  PendingBlock? pendingNode;
+
+  @override
+  ThenBlock? thenNode;
+
+  @override
+  CatchBlock? catchNode;
+
+  @override
+  Expression? error;
+
+  @override
+  String describe() {
+    return '{#await} block';
+  }
+}
+
+mixin ContextNode on Node {
+  abstract String context;
+
+  @override
+  Map<String, Object?> toJson() {
+    var json = super.toJson();
+    json['context'] = context;
+    return json;
+  }
+}
+
 mixin ValueNode on Node {
   abstract Expression? value;
 
@@ -228,36 +648,6 @@ mixin ValueNode on Node {
   }
 }
 
-mixin IndexNode on Node {
-  abstract String? index;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (index != null) {
-      json['index'] = index;
-    }
-
-    return json;
-  }
-}
-
-mixin KeyNode on Node {
-  abstract Expression? key;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (key != null) {
-      json['key'] = key!.accept(dartToJson);
-    }
-
-    return json;
-  }
-}
-
 mixin SkipNode on Node {
   abstract bool skip;
 
@@ -267,36 +657,6 @@ mixin SkipNode on Node {
 
     if (skip) {
       json['skip'] = skip;
-    }
-
-    return json;
-  }
-}
-
-mixin ElseIfNode on Node {
-  abstract bool elseIf;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (elseIf) {
-      json['elseIf'] = elseIf;
-    }
-
-    return json;
-  }
-}
-
-mixin ElseNode on Node {
-  abstract Node? elseNode;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (elseNode != null) {
-      json['else'] = elseNode!.toJson();
     }
 
     return json;
@@ -363,333 +723,14 @@ mixin ErrorNode on Node {
   }
 }
 
-mixin MultiAttributeNode on Node {
-  abstract List<Attribute> attributes;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (attributes.isNotEmpty) {
-      json['attributes'] = <Map<String, Object?>?>[
-        for (var attribute in attributes) attribute.toJson(),
-      ];
-    }
-
-    return json;
-  }
-}
-
-mixin MultiDirectiveNode on Node {
-  abstract List<Directive> directives;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (directives.isNotEmpty) {
-      json['directives'] = <Map<String, Object?>?>[
-        for (var directive in directives) directive.toJson(),
-      ];
-    }
-
-    return json;
-  }
-}
-
-class Attribute extends Node with NamedNode, MultiChildNode {
-  Attribute({super.start, super.end, super.type = 'Attribute', this.name = '', List<Node>? children})
-      : children = children ?? <Node>[];
-
-  @override
-  String name;
-
-  @override
-  List<Node> children;
-}
-
-class Spread extends Attribute with ExpressionNode {
-  Spread({super.start, super.end, this.expression}) : super(type: 'Spread');
-
-  @override
-  Expression? expression;
-}
-
-class AttributeShorthand extends Node with ExpressionNode {
-  AttributeShorthand({super.start, super.end, this.expression}) : super(type: 'AttributeShorthand');
-
-  @override
-  Expression? expression;
-}
-
-class Directive extends Node with NamedNode, ExpressionNode {
-  Directive({super.start, super.end, super.type = 'Directive', required this.name, this.expression, this.modifiers})
-      : intro = false,
-        outro = false;
-
-  @override
-  String name;
-
-  bool intro;
-
-  bool outro;
-
-  @override
-  Expression? expression;
-
-  List<String>? modifiers;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (intro) {
-      json['intro'] = intro;
-    }
-
-    if (outro) {
-      json['outro'] = outro;
-    }
-
-    if (modifiers != null && modifiers!.isNotEmpty) {
-      json['modifiers'] = modifiers;
-    }
-
-    return json;
-  }
-}
-
-class Element extends Node with NamedNode, MultiAttributeNode, MultiDirectiveNode, MultiChildNode {
-  Element({super.start, super.end, super.type = 'Element', this.name = ''})
-      : attributes = <Attribute>[],
-        directives = <Directive>[],
-        children = <Node>[];
-
-  @override
-  String name;
-
-  @override
-  List<Attribute> attributes;
-
-  @override
-  List<Directive> directives;
-
-  @override
-  List<Node> children;
-
-  @override
-  String describe() {
-    return '<$name> tag';
-  }
-}
-
-class InlineComponent extends Node
-    with NamedNode, ExpressionNode, MultiAttributeNode, MultiDirectiveNode, MultiChildNode
-    implements Element {
-  InlineComponent({super.start, super.end, required this.name})
-      : attributes = <Attribute>[],
-        directives = <Directive>[],
-        children = <Node>[],
-        super(type: 'InlineComponent');
-
-  @override
-  String name;
-
-  @override
-  Expression? expression;
-
-  @override
-  List<Attribute> attributes;
-
-  @override
-  List<Directive> directives;
-
-  @override
-  List<Node> children;
-
-  @override
-  String describe() {
-    return '<$name}> tag';
-  }
-}
-
-// TODO(ast): change to Node with mixins
-class SlotTemplate extends Element {
-  SlotTemplate({super.start, super.end}) : super(type: 'SlotTemplate');
-}
-
-// TODO(ast): change to Node with mixins
-class Title extends Element {
-  Title({super.start, super.end}) : super(type: 'Title');
-
-  @override
-  String describe() {
-    return '<$name}> tag';
-  }
-}
-
-// TODO(ast): change to Node with mixins
-class Slot extends Element {
-  Slot({super.start, super.end}) : super(type: 'Slot');
-
-  @override
-  String describe() {
-    return '<$name}> tag';
-  }
-}
-
-// TODO(ast): change to Node with mixins
-class Head extends Element {
-  Head({super.start, super.end}) : super(type: 'Head');
-}
-
-// TODO(ast): change to Node with mixins
-class Options extends Element {
-  Options({super.start, super.end}) : super(type: 'Options');
-}
-
-class Window extends Element {
-  Window({super.start, super.end}) : super(type: 'Window');
-}
-
-// TODO(ast): change to Node with mixins
-class Body extends Element {
-  Body({super.start, super.end}) : super(type: 'Body');
-}
-
-class IfBlock extends Node with ElseIfNode, ExpressionNode, MultiChildNode, ElseNode {
-  IfBlock({super.start, super.end, this.elseIf = false, this.expression, this.elseNode})
-      : children = <Node>[],
-        super(type: 'IfBlock');
-
-  @override
-  bool elseIf;
-
-  @override
-  Expression? expression;
-
-  @override
-  List<Node> children;
-
-  @override
-  Node? elseNode;
-
-  @override
-  String describe() {
-    return '{#if} block';
-  }
-}
-
-class EachBlock extends Node
-    with ExpressionNode, IterableNode, IndexNode, KeyNode, MultiChildNode, ElseIfNode, ElseNode {
-  EachBlock({
-    super.start,
-    super.end,
-    this.iterable,
-    this.expression,
-    this.index,
-    this.key,
-    this.elseIf = false,
-    this.elseNode,
-  })  : children = <Node>[],
-        super(type: 'EachBlock');
-
-  @override
-  Expression? iterable;
-
-  @override
-  Expression? expression;
-
-  @override
-  String? index;
-
-  @override
-  Expression? key;
-
-  @override
-  List<Node> children;
-
-  @override
-  bool elseIf;
-
-  @override
-  Node? elseNode;
-
-  @override
-  String describe() {
-    return '{#each} block';
-  }
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (iterable != null) {
-      json['iterable'] = iterable!.accept(dartToJson);
-    }
-
-    if (index != null) {
-      json['index'] = index!;
-    }
-
-    if (key != null) {
-      json['key'] = key!.accept(dartToJson);
-    }
-
-    return json;
-  }
-}
-
-class ElseBlock extends Node with MultiChildNode {
-  ElseBlock({super.start, super.end})
-      : children = <Node>[],
-        super(type: 'ElseBlock');
-
-  @override
-  List<Node> children;
-
-  @override
-  String describe() {
-    return '{:else} block';
-  }
-}
-
-class KeyBlock extends Node with ExpressionNode {
+class KeyBlock extends Node with ExpressionNode, NoChildrenNode {
   KeyBlock({super.start, super.end, this.expression}) : super(type: 'KeyBlock');
 
   @override
   Expression? expression;
 }
 
-class AwaitBlock extends Node with ExpressionNode, ValueNode, ErrorNode, PendingNode, ThenNode, CatchNode {
-  AwaitBlock({super.start, super.end, this.expression, this.value, this.pendingNode, this.thenNode, this.catchNode})
-      : super(type: 'AwaitBlock');
-
-  @override
-  Expression? expression;
-
-  @override
-  Expression? value;
-
-  @override
-  PendingBlock? pendingNode;
-
-  @override
-  ThenBlock? thenNode;
-
-  @override
-  CatchBlock? catchNode;
-
-  @override
-  Expression? error;
-
-  @override
-  String describe() {
-    return '{#await} block';
-  }
-}
-
-class PendingBlock extends Node with SkipNode, MultiChildNode {
+class PendingBlock extends Node with SkipNode, ChildrenNode {
   PendingBlock({super.start, super.end, this.skip = false})
       : children = <Node>[],
         super(type: 'PendingBlock');
@@ -706,7 +747,7 @@ class PendingBlock extends Node with SkipNode, MultiChildNode {
   }
 }
 
-class ThenBlock extends Node with SkipNode, MultiChildNode {
+class ThenBlock extends Node with SkipNode, ChildrenNode {
   ThenBlock({super.start, super.end, this.skip = false})
       : children = <Node>[],
         super(type: 'ThenBlock');
@@ -723,7 +764,7 @@ class ThenBlock extends Node with SkipNode, MultiChildNode {
   }
 }
 
-class CatchBlock extends Node with SkipNode, MultiChildNode {
+class CatchBlock extends Node with SkipNode, ChildrenNode {
   CatchBlock({super.start, super.end, this.skip = false})
       : children = <Node>[],
         super(type: 'CatchBlock');
@@ -738,74 +779,4 @@ class CatchBlock extends Node with SkipNode, MultiChildNode {
   String describe() {
     return '{:catch} block';
   }
-}
-
-class Script extends Node with ContextNode {
-  Script({super.start, super.end, required this.context, required this.content}) : super(type: 'Script');
-
-  @override
-  String context;
-
-  CompilationUnit content;
-
-  @override
-  Map<String, Object?> toJson() {
-    var json = super.toJson();
-    json['content'] = content.accept(dartToJson);
-    return json;
-  }
-}
-
-class Style extends Node with DataNode {
-  Style({super.start, super.end, required this.data}) : super(type: 'Style');
-
-  @override
-  String data;
-}
-
-class AST {
-  AST(this.html);
-
-  Node html;
-
-  Node? instance;
-
-  Script? module;
-
-  Style? style;
-
-  Map<String, Object?> toJson() {
-    return <String, Object?>{
-      'html': html.toJson(),
-      if (instance != null) 'instance': instance!.toJson(),
-      if (module != null) 'module': module!.toJson(),
-      if (style != null) 'style': style!.toJson(),
-    };
-  }
-
-  @override
-  String toString() {
-    var buffer = StringBuffer('AST { $html');
-
-    if (instance != null) {
-      buffer.write(', $instance');
-    }
-
-    if (module != null) {
-      buffer.write(', $module');
-    }
-
-    if (style != null) {
-      buffer.write(', $style');
-    }
-
-    buffer.write(' }');
-    return buffer.toString();
-  }
-}
-
-abstract class Visitor {
-  void enter(Node node) {}
-
-  void leave(Node node) {}
 }

@@ -18,8 +18,7 @@ extension MustacheParser on Parser {
     var nonSynthetic = result.accept(NonSynthetic(this));
 
     if (nonSynthetic == null) {
-      // TODO(error): add message
-      error('parse-error', '');
+      error('parse-error', 'expression expected.');
     }
 
     for (var analysisError in errors) {
@@ -35,7 +34,7 @@ extension MustacheParser on Parser {
     errorListener ??= RecordingErrorListener();
 
     var featureSet = FeatureSet.latestLanguageVersion();
-    var source = StringSource(expression, '<expression>');
+    var source = StringSource(expression, null);
     var scanner = Scanner.fasta(source, errorListener, offset: offset - 1);
     scanner.configureFeatures(featureSetForOverriding: featureSet, featureSet: featureSet);
 
@@ -55,7 +54,7 @@ class NonSynthetic extends UnifyingAstVisitor<Expression> {
   @override
   Expression? visitNode(AstNode node) {
     if (node is! Expression) {
-      throw UnimplementedError();
+      throw UnsupportedError('${node.runtimeType}');
     }
 
     if (node.isSynthetic) {

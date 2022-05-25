@@ -88,7 +88,7 @@ class Parser {
     return stack.last;
   }
 
-  void allowWhitespace({bool require = false}) {
+  void allowSpace({bool require = false}) {
     var match = whitespaceRe.matchAsPrefix(template.substring(index));
 
     if (match == null) {
@@ -195,8 +195,8 @@ AST parse(String template, {Object? sourceUrl}) {
   var scripts = parser.scripts;
 
   if (scripts.isNotEmpty) {
-    var instances = scripts.where((script) => script.isNotModule).toList();
-    var modules = scripts.where((script) => script.isModule).toList();
+    var instances = scripts.where((script) => script.context == 'default').toList();
+    var modules = scripts.where((script) => script.context == 'module').toList();
 
     if (instances.length > 1) {
       parser.invalidScriptInstance(instances[1].start);

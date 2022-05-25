@@ -44,29 +44,37 @@ extension ScriptParser on Parser {
 
   static final RegExp scriptCloseRe = RegExp(r'<\/script\s*>');
 
-  bool isModule(List<Node>? attributes) {
+  String getContext(List<Node>? attributes) {
     if (attributes == null) {
-      return false;
+      return 'default';
     }
 
-    Node? module;
+    Node? context;
 
     for (var attribute in attributes) {
-      if (attribute is Attribute && attribute.name == 'module') {
-        module = attribute;
+      if (attribute is NamedNode && attribute.name == 'context') {
+        context = attribute;
         break;
       }
     }
 
-    if (module == null) {
-      return false;
+    if (context == null) {
+      return 'default';
     }
 
-    if (module.children.isNotEmpty) {
-      invalidScriptModuleAttribute(module.start);
+    var children = context.children;
+
+    if (children.length != 1 || children.first is! Text) {
+      invalidScriptContextAttribute(context.start);
     }
 
-    return true;
+    var first = children.first;
+
+    if (first is DataNode && first.data == 'module') {
+      return 'module';
+    }
+
+    invalidScriptContextValue(context.start);
   }
 
   void script(int offset, List<Node>? attributes) {
@@ -76,27 +84,28 @@ extension ScriptParser on Parser {
 
     // TODO(error): handle
     if (scan(scriptCloseRe)) {
-      var module = isModule(attributes);
+      var context = getContext(attributes);
       var prefix = template.substring(0, contentStart).replaceAll(nonNewLineRe, ' ');
-      var unit = _CompilationUnit.from(contentStart, contentEnd, parseScript(offset, prefix + data));
-      scripts.add(Script(start: offset, end: index, isModule: module, content: unit));
+      var featureSet = FeatureSet.latestLanguageVersion();
+      var source = StringSource(prefix + data, null, uri: sourceFile.url);
+      var errorListener = RecordingErrorListener();
+      var scanner = Scanner.fasta(source, errorListener, offset: offset - 1);
+      scanner.configureFeatures(featureSetForOverriding: featureSet, featureSet: featureSet);
+
+      var token = scanner.tokenize();
+      var lineInfo = LineInfo(scanner.lineStarts);
+      var parser = AST.Parser(source, errorListener, featureSet: scanner.featureSet, lineInfo: lineInfo);
+      var unit = parser.parseCompilationUnit(token);
+      var begin = Token(unit.beginToken.type, contentStart);
+      var end = Token(unit.endToken.type, contentEnd);
+      unit = _CompilationUnit(begin, null, unit.directives, unit.declarations, end, unit.featureSet, unit.lineInfo);
+
+      var errors = errorListener.errors.toList();
+      var node = Script(start: offset, end: index, context: context, content: unit, errors: errors);
+      scripts.add(node);
       return;
     }
 
     unclosedScript();
-  }
-
-  static CompilationUnit parseScript(int offset, String script, {AnalysisErrorListener? errorListener}) {
-    errorListener ??= RecordingErrorListener();
-
-    var featureSet = FeatureSet.latestLanguageVersion();
-    var source = StringSource(script, '<script>');
-    var scanner = Scanner.fasta(source, errorListener, offset: offset - 1);
-    scanner.configureFeatures(featureSetForOverriding: featureSet, featureSet: featureSet);
-
-    var token = scanner.tokenize();
-    var lineInfo = LineInfo(scanner.lineStarts);
-    var parser = AST.Parser(source, errorListener, featureSet: scanner.featureSet, lineInfo: lineInfo);
-    return parser.parseCompilationUnit(token);
   }
 }
