@@ -1,10 +1,7 @@
 {
   "code": "invalid-window-content",
   "message": "<piko:window> cannot have children",
-  "start": {
-    "line": 1,
-    "column": 15,
-    "character": 15
-  },
-  "pos": 15
+  "line": 1,
+  "column": 13,
+  "offset": 13
 }

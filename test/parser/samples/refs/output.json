@@ -1,122 +1,100 @@
 {
   "html": {
-    "start": 30,
-    "end": 63,
-    "type": "Fragment",
+    "start": 81,
+    "end": 114,
+    "_": "Fragment",
     "children": [
       {
-        "start": 28,
-        "end": 30,
-        "type": "Text",
+        "start": 79,
+        "end": 81,
+        "_": "Text",
         "raw": "\n\n",
         "data": "\n\n"
       },
       {
-        "start": 30,
-        "end": 63,
-        "type": "Element",
+        "start": 81,
+        "end": 114,
+        "_": "Element",
         "name": "canvas",
         "attributes": [
           {
-            "start": 38,
-            "end": 53,
-            "type": "Binding",
+            "start": 89,
+            "end": 104,
+            "_": "Binding",
             "name": "this",
-            "modifiers": [],
             "expression": {
-              "type": "Identifier",
-              "start": 49,
-              "end": 52,
-              "loc": {
-                "start": {
-                  "line": 5,
-                  "column": 19
-                },
-                "end": {
-                  "line": 5,
-                  "column": 22
-                }
-              },
+              "start": 100,
+              "end": 103,
+              "_": "SimpleIdentifier",
               "name": "foo"
             }
           }
-        ],
-        "children": []
+        ]
       }
     ]
   },
   "instance": {
-    "type": "Script",
     "start": 0,
-    "end": 28,
+    "end": 79,
+    "_": "Script",
     "context": "default",
     "content": {
-      "type": "Program",
       "start": 8,
-      "end": 19,
-      "loc": {
-        "start": {
-          "line": 1,
-          "column": 0
-        },
-        "end": {
-          "line": 3,
-          "column": 0
-        }
-      },
-      "body": [
+      "end": 70,
+      "_": "CompilationUnit",
+      "declarations": [
         {
-          "type": "VariableDeclaration",
-          "start": 10,
-          "end": 18,
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 1
+          "start": 46,
+          "end": 69,
+          "_": "TopLevelVariableDeclaration",
+          "variables": {
+            "start": 46,
+            "end": 68,
+            "_": "VariableDeclarationList",
+            "isConst": false,
+            "isFinal": false,
+            "isLate": true,
+            "type": {
+              "start": 51,
+              "end": 64,
+              "_": "NamedType",
+              "isDeferred": false,
+              "name": {
+                "start": 51,
+                "end": 64,
+                "_": "SimpleIdentifier",
+                "name": "CanvasElement"
+              }
             },
-            "end": {
-              "line": 2,
-              "column": 9
-            }
-          },
-          "declarations": [
-            {
-              "type": "VariableDeclarator",
-              "start": 14,
-              "end": 17,
-              "loc": {
-                "start": {
-                  "line": 2,
-                  "column": 5
-                },
-                "end": {
-                  "line": 2,
-                  "column": 8
+            "variables": [
+              {
+                "start": 65,
+                "end": 68,
+                "_": "VariableDeclaration",
+                "isConst": false,
+                "isFinal": false,
+                "isLate": true,
+                "name": {
+                  "start": 65,
+                  "end": 68,
+                  "_": "SimpleIdentifier",
+                  "name": "foo"
                 }
-              },
-              "id": {
-                "type": "Identifier",
-                "start": 14,
-                "end": 17,
-                "loc": {
-                  "start": {
-                    "line": 2,
-                    "column": 5
-                  },
-                  "end": {
-                    "line": 2,
-                    "column": 8
-                  }
-                },
-                "name": "foo"
-              },
-              "init": null
-            }
-          ],
-          "kind": "let"
+              }
+            ],
+            "metadata": []
+          }
         }
       ],
-      "sourceType": "module"
+      "directives": [
+        {
+          "start": 11,
+          "end": 42,
+          "_": "ImportDirective",
+          "combinators": [],
+          "configurations": []
+        }
+      ]
     }
   }
 }

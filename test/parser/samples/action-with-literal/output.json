@@ -2,40 +2,32 @@
   "html": {
     "start": 0,
     "end": 37,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 37,
-        "type": "Element",
+        "_": "Element",
         "name": "input",
         "attributes": [
           {
             "start": 7,
             "end": 36,
-            "type": "Action",
+            "_": "Action",
             "name": "tooltip",
-            "modifiers": [],
             "expression": {
-              "type": "Literal",
               "start": 21,
               "end": 34,
-              "loc": {
-                "start": {
-                  "line": 1,
-                  "column": 21
-                },
-                "end": {
-                  "line": 1,
-                  "column": 34
-                }
-              },
+              "_": "SimpleStringLiteral",
               "value": "tooltip msg",
-              "raw": "'tooltip msg'"
+              "contentsEnd": 33,
+              "contentsOffset": 22,
+              "isMultiline": false,
+              "isRaw": false,
+              "isSingleQuoted": true
             }
           }
-        ],
-        "children": []
+        ]
       }
     ]
   }

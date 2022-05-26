@@ -1,67 +1,46 @@
 {
   "html": {
     "start": 0,
-    "end": 50,
-    "type": "Fragment",
+    "end": 51,
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 50,
-        "type": "EachBlock",
+        "end": 51,
+        "_": "EachBlock",
         "expression": {
-          "type": "Identifier",
           "start": 7,
           "end": 14,
-          "loc": {
-            "start": {
-              "line": 1,
-              "column": 7
-            },
-            "end": {
-              "line": 1,
-              "column": 14
-            }
-          },
+          "_": "SimpleIdentifier",
           "name": "animals"
+        },
+        "iterable": {
+          "start": 18,
+          "end": 24,
+          "_": "SimpleIdentifier",
+          "name": "animal"
         },
         "children": [
           {
-            "start": 27,
-            "end": 42,
-            "type": "Element",
+            "start": 28,
+            "end": 43,
+            "_": "Element",
             "name": "p",
-            "attributes": [],
             "children": [
               {
-                "start": 30,
-                "end": 38,
-                "type": "MustacheTag",
+                "start": 31,
+                "end": 39,
+                "_": "MustacheTag",
                 "expression": {
-                  "type": "Identifier",
-                  "start": 31,
-                  "end": 37,
-                  "loc": {
-                    "start": {
-                      "line": 2,
-                      "column": 5
-                    },
-                    "end": {
-                      "line": 2,
-                      "column": 11
-                    }
-                  },
+                  "start": 32,
+                  "end": 38,
+                  "_": "SimpleIdentifier",
                   "name": "animal"
                 }
               }
             ]
           }
-        ],
-        "context": {
-          "type": "Identifier",
-          "name": "animal",
-          "start": 18,
-          "end": 24
-        }
+        ]
       }
     ]
   }

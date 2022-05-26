@@ -1,116 +1,65 @@
 {
   "html": {
     "start": 0,
-    "end": 54,
-    "type": "Fragment",
+    "end": 55,
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 54,
-        "type": "EachBlock",
+        "end": 55,
+        "_": "EachBlock",
         "expression": {
-          "type": "Identifier",
           "start": 7,
           "end": 12,
-          "loc": {
-            "start": {
-              "line": 1,
-              "column": 7
-            },
-            "end": {
-              "line": 1,
-              "column": 12
-            }
-          },
+          "_": "SimpleIdentifier",
           "name": "todos"
+        },
+        "iterable": {
+          "start": 16,
+          "end": 20,
+          "_": "SimpleIdentifier",
+          "name": "todo"
+        },
+        "key": {
+          "start": 22,
+          "end": 29,
+          "_": "PrefixedIdentifier",
+          "identifier": {
+            "start": 27,
+            "end": 29,
+            "_": "SimpleIdentifier",
+            "name": "id"
+          },
+          "isDeferred": false,
+          "prefix": {
+            "start": 22,
+            "end": 26,
+            "_": "SimpleIdentifier",
+            "name": "todo"
+          },
+          "name": "todo.id"
         },
         "children": [
           {
-            "start": 33,
-            "end": 46,
-            "type": "Element",
+            "start": 34,
+            "end": 47,
+            "_": "Element",
             "name": "p",
-            "attributes": [],
             "children": [
               {
-                "start": 36,
-                "end": 42,
-                "type": "MustacheTag",
+                "start": 37,
+                "end": 43,
+                "_": "MustacheTag",
                 "expression": {
-                  "type": "Identifier",
-                  "start": 37,
-                  "end": 41,
-                  "loc": {
-                    "start": {
-                      "line": 2,
-                      "column": 5
-                    },
-                    "end": {
-                      "line": 2,
-                      "column": 9
-                    }
-                  },
+                  "start": 38,
+                  "end": 42,
+                  "_": "SimpleIdentifier",
                   "name": "todo"
                 }
               }
             ]
           }
-        ],
-        "context": {
-          "type": "Identifier",
-          "name": "todo",
-          "start": 16,
-          "end": 20
-        },
-        "key": {
-          "type": "MemberExpression",
-          "start": 22,
-          "end": 29,
-          "loc": {
-            "start": {
-              "line": 1,
-              "column": 22
-            },
-            "end": {
-              "line": 1,
-              "column": 29
-            }
-          },
-          "object": {
-            "type": "Identifier",
-            "start": 22,
-            "end": 26,
-            "loc": {
-              "start": {
-                "line": 1,
-                "column": 22
-              },
-              "end": {
-                "line": 1,
-                "column": 26
-              }
-            },
-            "name": "todo"
-          },
-          "property": {
-            "type": "Identifier",
-            "start": 27,
-            "end": 29,
-            "loc": {
-              "start": {
-                "line": 1,
-                "column": 27
-              },
-              "end": {
-                "line": 1,
-                "column": 29
-              }
-            },
-            "name": "id"
-          },
-          "computed": false,
-          "optional": false
-        }
+        ]
       }
     ]
   }

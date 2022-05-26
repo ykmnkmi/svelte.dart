@@ -468,8 +468,7 @@ extension TagParser on Parser {
       var first = children.first;
 
       if (first is Text) {
-        var literal = Token(TokenType.STRING, first.start!);
-        element.tag = astFactory.simpleStringLiteral(literal, first.data);
+        element.tag = first.data;
       } else if (first is Attribute) {
         element.tag = first.expression;
       }

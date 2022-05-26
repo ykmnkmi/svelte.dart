@@ -1,9 +1,9 @@
 <script>
-  import { onMount } from 'piko';
+  import 'foo.dart' deferred as fpp;
 
-  onMount(() => {
-    import('./foo.js').then(foo => {
-      console.log(foo.default);
+  void onMount() {
+    foo.loadLibrary().then<void>((_) {
+      print(foo.value);
     });
-  });
+  }
 </script>

@@ -1,10 +1,7 @@
 {
   "code": "duplicate-style",
-  "message": "You can only have one top-level <style> tag per component",
-  "start": {
-    "line": 9,
-    "column": 0,
-    "character": 58
-  },
-  "pos": 58
+  "message": "you can only have one top-level <style> tag per component",
+  "line": 9,
+  "column": 0,
+  "offset": 62
 }

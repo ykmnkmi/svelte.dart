@@ -1,5 +1,7 @@
 <script>
-  let foo;
+  import 'package:piko/dom.dart';
+
+  late CanvasElement foo;
 </script>
 
 <canvas bind:this={foo}></canvas>

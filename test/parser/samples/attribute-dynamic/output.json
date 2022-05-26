@@ -2,52 +2,42 @@
   "html": {
     "start": 0,
     "end": 42,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 42,
-        "type": "Element",
+        "_": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
             "end": 28,
-            "type": "Attribute",
+            "_": "Attribute",
             "name": "style",
-            "value": [
+            "children": [
               {
                 "start": 12,
                 "end": 19,
-                "type": "Text",
+                "_": "Text",
                 "raw": "color: ",
                 "data": "color: "
               },
               {
                 "start": 19,
                 "end": 26,
-                "type": "MustacheTag",
+                "_": "MustacheTag",
                 "expression": {
-                  "type": "Identifier",
                   "start": 20,
                   "end": 25,
-                  "loc": {
-                    "start": {
-                      "line": 1,
-                      "column": 20
-                    },
-                    "end": {
-                      "line": 1,
-                      "column": 25
-                    }
-                  },
+                  "_": "SimpleIdentifier",
                   "name": "color"
                 }
               },
               {
                 "start": 26,
                 "end": 27,
-                "type": "Text",
+                "_": "Text",
                 "raw": ";",
                 "data": ";"
               }
@@ -58,21 +48,11 @@
           {
             "start": 29,
             "end": 36,
-            "type": "MustacheTag",
+            "_": "MustacheTag",
             "expression": {
-              "type": "Identifier",
               "start": 30,
               "end": 35,
-              "loc": {
-                "start": {
-                  "line": 1,
-                  "column": 30
-                },
-                "end": {
-                  "line": 1,
-                  "column": 35
-                }
-              },
+              "_": "SimpleIdentifier",
               "name": "color"
             }
           }

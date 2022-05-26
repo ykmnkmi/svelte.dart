@@ -1,99 +1,60 @@
 {
   "html": {
     "start": 0,
-    "end": 45,
-    "type": "Fragment",
+    "end": 47,
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 45,
-        "type": "Element",
+        "end": 47,
+        "_": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
-            "end": 30,
-            "type": "Transition",
+            "end": 32,
+            "_": "Transition",
             "name": "style",
-            "modifiers": [],
             "expression": {
-              "type": "ObjectExpression",
               "start": 16,
-              "end": 28,
-              "loc": {
-                "start": {
-                  "line": 1,
-                  "column": 16
-                },
-                "end": {
-                  "line": 1,
-                  "column": 28
-                }
-              },
-              "properties": [
+              "end": 30,
+              "_": "SetOrMapLiteral",
+              "elements": [
                 {
-                  "type": "Property",
                   "start": 17,
-                  "end": 27,
-                  "loc": {
-                    "start": {
-                      "line": 1,
-                      "column": 17
-                    },
-                    "end": {
-                      "line": 1,
-                      "column": 27
-                    }
-                  },
-                  "method": false,
-                  "shorthand": false,
-                  "computed": false,
+                  "end": 29,
+                  "_": "MapLiteralEntry",
                   "key": {
-                    "type": "Identifier",
                     "start": 17,
-                    "end": 24,
-                    "loc": {
-                      "start": {
-                        "line": 1,
-                        "column": 17
-                      },
-                      "end": {
-                        "line": 1,
-                        "column": 24
-                      }
-                    },
-                    "name": "opacity"
+                    "end": 26,
+                    "_": "SimpleStringLiteral",
+                    "value": "opacity",
+                    "contentsEnd": 25,
+                    "contentsOffset": 18,
+                    "isMultiline": false,
+                    "isRaw": false,
+                    "isSingleQuoted": true
                   },
                   "value": {
-                    "type": "Literal",
-                    "start": 26,
-                    "end": 27,
-                    "loc": {
-                      "start": {
-                        "line": 1,
-                        "column": 26
-                      },
-                      "end": {
-                        "line": 1,
-                        "column": 27
-                      }
-                    },
-                    "value": 0,
-                    "raw": "0"
-                  },
-                  "kind": "init"
+                    "start": 28,
+                    "end": 29,
+                    "_": "IntegerLiteral",
+                    "value": 0
+                  }
                 }
-              ]
+              ],
+              "isMap": false,
+              "isSet": false,
+              "isConst": false
             },
-            "intro": true,
-            "outro": false
+            "intro": true
           }
         ],
         "children": [
           {
-            "start": 31,
-            "end": 39,
-            "type": "Text",
+            "start": 33,
+            "end": 41,
+            "_": "Text",
             "raw": "fades in",
             "data": "fades in"
           }

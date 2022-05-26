@@ -5,6 +5,7 @@ import 'package:piko/compiler.dart' show parse;
 import 'package:piko/src/compiler/parse/errors.dart' show CompileError;
 
 const encoder = JsonEncoder.withIndent('  ');
+
 void main(List<String> arguments) {
   for (var argument in arguments) {
     var samples = Directory.fromUri(Uri.file(argument)).listSync();

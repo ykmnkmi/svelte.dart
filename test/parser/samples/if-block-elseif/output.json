@@ -1,74 +1,43 @@
 {
   "html": {
     "start": 0,
-    "end": 89,
-    "type": "Fragment",
+    "end": 91,
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 89,
-        "type": "IfBlock",
+        "end": 91,
+        "_": "IfBlock",
         "expression": {
-          "type": "BinaryExpression",
           "start": 5,
           "end": 11,
-          "loc": {
-            "start": {
-              "line": 1,
-              "column": 5
-            },
-            "end": {
-              "line": 1,
-              "column": 11
-            }
-          },
-          "left": {
-            "type": "Identifier",
+          "_": "BinaryExpression",
+          "leftOperand": {
             "start": 5,
             "end": 6,
-            "loc": {
-              "start": {
-                "line": 1,
-                "column": 5
-              },
-              "end": {
-                "line": 1,
-                "column": 6
-              }
-            },
+            "_": "SimpleIdentifier",
             "name": "x"
           },
-          "operator": ">",
-          "right": {
-            "type": "Literal",
+          "rightOperand": {
             "start": 9,
             "end": 11,
-            "loc": {
-              "start": {
-                "line": 1,
-                "column": 9
-              },
-              "end": {
-                "line": 1,
-                "column": 11
-              }
-            },
-            "value": 10,
-            "raw": "10"
-          }
+            "_": "IntegerLiteral",
+            "value": 10
+          },
+          "inConstantContext": false,
+          "isAssignable": false
         },
         "children": [
           {
-            "start": 14,
-            "end": 41,
-            "type": "Element",
+            "start": 15,
+            "end": 42,
+            "_": "Element",
             "name": "p",
-            "attributes": [],
             "children": [
               {
-                "start": 17,
-                "end": 37,
-                "type": "Text",
+                "start": 18,
+                "end": 38,
+                "_": "Text",
                 "raw": "x is greater than 10",
                 "data": "x is greater than 10"
               }
@@ -76,76 +45,45 @@
           }
         ],
         "else": {
-          "start": 58,
-          "end": 84,
-          "type": "ElseBlock",
+          "start": 59,
+          "end": 86,
+          "_": "ElseBlock",
           "children": [
             {
-              "start": 58,
-              "end": 89,
-              "type": "IfBlock",
-              "elseif": true,
+              "start": 59,
+              "end": 91,
+              "_": "IfBlock",
+              "elseIf": true,
               "expression": {
-                "type": "BinaryExpression",
-                "start": 52,
-                "end": 57,
-                "loc": {
-                  "start": {
-                    "line": 3,
-                    "column": 10
-                  },
-                  "end": {
-                    "line": 3,
-                    "column": 15
-                  }
-                },
-                "left": {
-                  "type": "Identifier",
-                  "start": 52,
-                  "end": 53,
-                  "loc": {
-                    "start": {
-                      "line": 3,
-                      "column": 10
-                    },
-                    "end": {
-                      "line": 3,
-                      "column": 11
-                    }
-                  },
+                "start": 53,
+                "end": 58,
+                "_": "BinaryExpression",
+                "leftOperand": {
+                  "start": 53,
+                  "end": 54,
+                  "_": "SimpleIdentifier",
                   "name": "x"
                 },
-                "operator": "<",
-                "right": {
-                  "type": "Literal",
-                  "start": 56,
-                  "end": 57,
-                  "loc": {
-                    "start": {
-                      "line": 3,
-                      "column": 14
-                    },
-                    "end": {
-                      "line": 3,
-                      "column": 15
-                    }
-                  },
-                  "value": 5,
-                  "raw": "5"
-                }
+                "rightOperand": {
+                  "start": 57,
+                  "end": 58,
+                  "_": "IntegerLiteral",
+                  "value": 5
+                },
+                "inConstantContext": false,
+                "isAssignable": false
               },
               "children": [
                 {
-                  "start": 60,
-                  "end": 83,
-                  "type": "Element",
+                  "start": 62,
+                  "end": 85,
+                  "_": "Element",
                   "name": "p",
-                  "attributes": [],
                   "children": [
                     {
-                      "start": 63,
-                      "end": 79,
-                      "type": "Text",
+                      "start": 65,
+                      "end": 81,
+                      "_": "Text",
                       "raw": "x is less than 5",
                       "data": "x is less than 5"
                     }

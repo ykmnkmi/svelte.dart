@@ -2,37 +2,26 @@
   "html": {
     "start": 0,
     "end": 22,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 22,
-        "type": "Element",
+        "_": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
-            "end": 15,
-            "type": "Spread",
+            "end": 14,
+            "_": "Spread",
             "expression": {
-              "type": "Identifier",
               "start": 9,
               "end": 14,
-              "loc": {
-                "start": {
-                  "line": 1,
-                  "column": 9
-                },
-                "end": {
-                  "line": 1,
-                  "column": 14
-                }
-              },
+              "_": "SimpleIdentifier",
               "name": "props"
             }
           }
-        ],
-        "children": []
+        ]
       }
     ]
   }

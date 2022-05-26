@@ -34,7 +34,7 @@ class Parser {
       if (current is Element) {
         error('unclosed-element', '<${current.name}> was left open', start: current.start);
       } else {
-        error('unclosed-block', 'Block was left open', start: current.start);
+        error('unclosed-block', '\'Block\' was left open', start: current.start);
       }
     }
 

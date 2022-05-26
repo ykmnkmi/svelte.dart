@@ -1,133 +1,72 @@
 {
   "html": {
     "start": 0,
-    "end": 57,
-    "type": "Fragment",
+    "end": 56,
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 57,
-        "type": "IfBlock",
+        "end": 56,
+        "_": "IfBlock",
         "expression": {
-          "type": "BinaryExpression",
           "start": 5,
           "end": 14,
-          "loc": {
-            "start": {
-              "line": 1,
-              "column": 5
-            },
-            "end": {
-              "line": 1,
-              "column": 14
-            }
-          },
-          "left": {
-            "type": "Identifier",
+          "_": "BinaryExpression",
+          "leftOperand": {
             "start": 5,
             "end": 10,
-            "loc": {
-              "start": {
-                "line": 1,
-                "column": 5
-              },
-              "end": {
-                "line": 1,
-                "column": 10
-              }
-            },
+            "_": "SimpleIdentifier",
             "name": "depth"
           },
-          "operator": ">",
-          "right": {
-            "type": "Literal",
+          "rightOperand": {
             "start": 13,
             "end": 14,
-            "loc": {
-              "start": {
-                "line": 1,
-                "column": 13
-              },
-              "end": {
-                "line": 1,
-                "column": 14
-              }
-            },
-            "value": 1,
-            "raw": "1"
-          }
+            "_": "IntegerLiteral",
+            "value": 1
+          },
+          "inConstantContext": false,
+          "isAssignable": false
         },
         "children": [
           {
-            "start": 17,
-            "end": 51,
-            "type": "InlineComponent",
+            "start": 18,
+            "end": 50,
+            "_": "InlineComponent",
             "name": "piko:self",
             "attributes": [
               {
-                "start": 30,
-                "end": 49,
-                "type": "Attribute",
+                "start": 29,
+                "end": 48,
+                "_": "Attribute",
                 "name": "depth",
-                "value": [
+                "children": [
                   {
-                    "start": 37,
-                    "end": 48,
-                    "type": "MustacheTag",
+                    "start": 36,
+                    "end": 47,
+                    "_": "MustacheTag",
                     "expression": {
-                      "type": "BinaryExpression",
-                      "start": 38,
-                      "end": 47,
-                      "loc": {
-                        "start": {
-                          "line": 2,
-                          "column": 22
-                        },
-                        "end": {
-                          "line": 2,
-                          "column": 31
-                        }
-                      },
-                      "left": {
-                        "type": "Identifier",
-                        "start": 38,
-                        "end": 43,
-                        "loc": {
-                          "start": {
-                            "line": 2,
-                            "column": 22
-                          },
-                          "end": {
-                            "line": 2,
-                            "column": 27
-                          }
-                        },
+                      "start": 37,
+                      "end": 46,
+                      "_": "BinaryExpression",
+                      "leftOperand": {
+                        "start": 37,
+                        "end": 42,
+                        "_": "SimpleIdentifier",
                         "name": "depth"
                       },
-                      "operator": "-",
-                      "right": {
-                        "type": "Literal",
-                        "start": 46,
-                        "end": 47,
-                        "loc": {
-                          "start": {
-                            "line": 2,
-                            "column": 30
-                          },
-                          "end": {
-                            "line": 2,
-                            "column": 31
-                          }
-                        },
-                        "value": 1,
-                        "raw": "1"
-                      }
+                      "rightOperand": {
+                        "start": 45,
+                        "end": 46,
+                        "_": "IntegerLiteral",
+                        "value": 1
+                      },
+                      "inConstantContext": false,
+                      "isAssignable": false
                     }
                   }
                 ]
               }
-            ],
-            "children": []
+            ]
           }
         ]
       }

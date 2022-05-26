@@ -1,157 +1,84 @@
 {
   "html": {
     "start": 0,
-    "end": 97,
-    "type": "Fragment",
+    "end": 92,
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 61,
-        "type": "Element",
+        "end": 55,
+        "_": "Element",
         "name": "button",
         "attributes": [
           {
             "start": 8,
-            "end": 45,
-            "type": "EventHandler",
+            "end": 39,
+            "_": "EventHandler",
             "name": "click",
-            "modifiers": [],
             "expression": {
-              "type": "ArrowFunctionExpression",
               "start": 19,
-              "end": 43,
-              "loc": {
-                "start": {
-                  "line": 1,
-                  "column": 19
-                },
-                "end": {
-                  "line": 1,
-                  "column": 43
-                }
+              "end": 37,
+              "_": "AssignmentExpression",
+              "leftHandSide": {
+                "start": 19,
+                "end": 26,
+                "_": "SimpleIdentifier",
+                "name": "visible"
               },
-              "id": null,
-              "expression": true,
-              "generator": false,
-              "async": false,
-              "params": [],
-              "body": {
-                "type": "AssignmentExpression",
-                "start": 25,
-                "end": 43,
-                "loc": {
-                  "start": {
-                    "line": 1,
-                    "column": 25
-                  },
-                  "end": {
-                    "line": 1,
-                    "column": 43
-                  }
-                },
-                "operator": "=",
-                "left": {
-                  "type": "Identifier",
-                  "start": 25,
-                  "end": 32,
-                  "loc": {
-                    "start": {
-                      "line": 1,
-                      "column": 25
-                    },
-                    "end": {
-                      "line": 1,
-                      "column": 32
-                    }
-                  },
+              "rightHandSide": {
+                "start": 29,
+                "end": 37,
+                "_": "PrefixExpression",
+                "operand": {
+                  "start": 30,
+                  "end": 37,
+                  "_": "SimpleIdentifier",
                   "name": "visible"
                 },
-                "right": {
-                  "type": "UnaryExpression",
-                  "start": 35,
-                  "end": 43,
-                  "loc": {
-                    "start": {
-                      "line": 1,
-                      "column": 35
-                    },
-                    "end": {
-                      "line": 1,
-                      "column": 43
-                    }
-                  },
-                  "operator": "!",
-                  "prefix": true,
-                  "argument": {
-                    "type": "Identifier",
-                    "start": 36,
-                    "end": 43,
-                    "loc": {
-                      "start": {
-                        "line": 1,
-                        "column": 36
-                      },
-                      "end": {
-                        "line": 1,
-                        "column": 43
-                      }
-                    },
-                    "name": "visible"
-                  }
-                }
+                "inConstantContext": false,
+                "isAssignable": false
               }
             }
           }
         ],
         "children": [
           {
-            "start": 46,
-            "end": 52,
-            "type": "Text",
+            "start": 40,
+            "end": 46,
+            "_": "Text",
             "raw": "toggle",
             "data": "toggle"
           }
         ]
       },
       {
-        "start": 61,
-        "end": 63,
-        "type": "Text",
+        "start": 55,
+        "end": 57,
+        "_": "Text",
         "raw": "\n\n",
         "data": "\n\n"
       },
       {
-        "start": 63,
-        "end": 97,
-        "type": "IfBlock",
+        "start": 57,
+        "end": 92,
+        "_": "IfBlock",
         "expression": {
-          "type": "Identifier",
-          "start": 68,
-          "end": 75,
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 5
-            },
-            "end": {
-              "line": 3,
-              "column": 12
-            }
-          },
+          "start": 62,
+          "end": 69,
+          "_": "SimpleIdentifier",
           "name": "visible"
         },
         "children": [
           {
-            "start": 78,
-            "end": 91,
-            "type": "Element",
+            "start": 73,
+            "end": 86,
+            "_": "Element",
             "name": "p",
-            "attributes": [],
             "children": [
               {
-                "start": 81,
-                "end": 87,
-                "type": "Text",
+                "start": 76,
+                "end": 82,
+                "_": "Text",
                 "raw": "hello!",
                 "data": "hello!"
               }

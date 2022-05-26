@@ -2,12 +2,12 @@
   "html": {
     "start": 0,
     "end": 17,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 17,
-        "type": "Text",
+        "_": "Text",
         "raw": "Hello &amp; World",
         "data": "Hello & World"
       }

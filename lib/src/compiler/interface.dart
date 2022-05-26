@@ -159,7 +159,7 @@ mixin IgnoresNode on Node {
   }
 }
 
-class Comment extends Node with DataNode, NoChildrenNode {
+class Comment extends Node with DataNode, IgnoresNode, NoChildrenNode {
   Comment({
     super.start,
     super.end,
@@ -171,6 +171,7 @@ class Comment extends Node with DataNode, NoChildrenNode {
   @override
   String data;
 
+  @override
   List<String>? ignores;
 }
 
@@ -339,13 +340,16 @@ mixin AttributesNode on Node {
 }
 
 mixin TagNode on Node {
-  abstract Expression? tag;
+  abstract Object? tag;
 
   @override
   Map<String, Object?> toJson() {
+    var tag = this.tag;
+
     return <String, Object?>{
       ...super.toJson(),
-      if (tag != null) 'tag': tag!.accept(dartToJson),
+      if (tag is Expression) 'tag': tag.accept(dartToJson),
+      if (tag is String) 'tag': tag,
     };
   }
 }
@@ -373,7 +377,7 @@ class Element extends Node with NamedNode, AttributesNode, ChildrenNode, TagNode
   List<Node> children;
 
   @override
-  Expression? tag;
+  Object? tag;
 
   @override
   String describe() {
@@ -504,7 +508,7 @@ mixin ElseNode on Node {
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (elseNode != null) 'elseNode': elseNode,
+      if (elseNode != null) 'else': elseNode,
     };
   }
 }
@@ -569,7 +573,7 @@ mixin KeyNode on Node {
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (key != null) 'index': key!.accept(dartToJson),
+      if (key != null) 'key': key!.accept(dartToJson),
     };
   }
 }
@@ -674,9 +678,10 @@ mixin ContextNode on Node {
 
   @override
   Map<String, Object?> toJson() {
-    var json = super.toJson();
-    json['context'] = context;
-    return json;
+    return <String, Object?>{
+      ...super.toJson(),
+      'context': context,
+    };
   }
 }
 
@@ -697,13 +702,10 @@ mixin SkipNode on Node {
 
   @override
   Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (skip) {
-      json['skip'] = skip;
-    }
-
-    return json;
+    return <String, Object?>{
+      ...super.toJson(),
+      if (skip) 'skip': skip,
+    };
   }
 }
 
@@ -712,13 +714,10 @@ mixin PendingNode on Node {
 
   @override
   Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (pendingNode != null) {
-      json['pending'] = pendingNode!.toJson();
-    }
-
-    return json;
+    return <String, Object?>{
+      ...super.toJson(),
+      if (pendingNode != null) 'pending': pendingNode,
+    };
   }
 }
 
@@ -727,13 +726,10 @@ mixin ThenNode on Node {
 
   @override
   Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (thenNode != null) {
-      json['then'] = thenNode!.toJson();
-    }
-
-    return json;
+    return <String, Object?>{
+      ...super.toJson(),
+      if (thenNode != null) 'then': thenNode,
+    };
   }
 }
 
@@ -742,13 +738,10 @@ mixin CatchNode on Node {
 
   @override
   Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (catchNode != null) {
-      json['catch'] = catchNode!.toJson();
-    }
-
-    return json;
+    return <String, Object?>{
+      ...super.toJson(),
+      if (catchNode != null) 'catch': catchNode,
+    };
   }
 }
 
@@ -757,13 +750,10 @@ mixin ErrorNode on Node {
 
   @override
   Map<String, Object?> toJson() {
-    var json = super.toJson();
-
-    if (error != null) {
-      json['error'] = error!.accept(dartToJson);
-    }
-
-    return json;
+    return <String, Object?>{
+      ...super.toJson(),
+      if (error != null) 'error': error!.accept(dartToJson),
+    };
   }
 }
 

@@ -14,9 +14,9 @@ class CompileError extends Error {
     return <String, Object?>{
       'code': code,
       'message': message,
-      'offset': span.start.offset,
       'line': span.start.line + 1,
       'column': span.start.column,
+      'offset': span.start.offset,
     };
   }
 

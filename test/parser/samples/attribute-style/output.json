@@ -2,24 +2,24 @@
   "html": {
     "start": 0,
     "end": 34,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 34,
-        "type": "Element",
+        "_": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
             "end": 24,
-            "type": "Attribute",
+            "_": "Attribute",
             "name": "style",
-            "value": [
+            "children": [
               {
                 "start": 12,
                 "end": 23,
-                "type": "Text",
+                "_": "Text",
                 "raw": "color: red;",
                 "data": "color: red;"
               }
@@ -30,7 +30,7 @@
           {
             "start": 25,
             "end": 28,
-            "type": "Text",
+            "_": "Text",
             "raw": "red",
             "data": "red"
           }

@@ -1,122 +1,92 @@
 {
   "html": {
-    "start": 31,
-    "end": 56,
-    "type": "Fragment",
+    "start": 36,
+    "end": 61,
+    "_": "Fragment",
     "children": [
       {
-        "start": 29,
-        "end": 31,
-        "type": "Text",
+        "start": 34,
+        "end": 36,
+        "_": "Text",
         "raw": "\n\n",
         "data": "\n\n"
       },
       {
-        "start": 31,
-        "end": 56,
-        "type": "Element",
+        "start": 36,
+        "end": 61,
+        "_": "Element",
         "name": "input",
         "attributes": [
           {
-            "start": 38,
-            "end": 55,
-            "type": "Binding",
+            "start": 43,
+            "end": 60,
+            "_": "Binding",
             "name": "value",
-            "modifiers": [],
             "expression": {
-              "type": "Identifier",
-              "start": 50,
-              "end": 54,
-              "loc": {
-                "start": {
-                  "line": 5,
-                  "column": 19
-                },
-                "end": {
-                  "line": 5,
-                  "column": 23
-                }
-              },
+              "start": 55,
+              "end": 59,
+              "_": "SimpleIdentifier",
               "name": "name"
             }
           }
-        ],
-        "children": []
+        ]
       }
     ]
   },
   "instance": {
-    "type": "Script",
     "start": 0,
-    "end": 29,
+    "end": 34,
+    "_": "Script",
     "context": "default",
     "content": {
-      "type": "Program",
       "start": 8,
-      "end": 20,
-      "loc": {
-        "start": {
-          "line": 1,
-          "column": 0
-        },
-        "end": {
-          "line": 3,
-          "column": 0
-        }
-      },
-      "body": [
+      "end": 25,
+      "_": "CompilationUnit",
+      "declarations": [
         {
-          "type": "VariableDeclaration",
-          "start": 10,
-          "end": 19,
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 1
-            },
-            "end": {
-              "line": 2,
-              "column": 10
-            }
-          },
-          "declarations": [
-            {
-              "type": "VariableDeclarator",
-              "start": 14,
+          "start": 11,
+          "end": 24,
+          "_": "TopLevelVariableDeclaration",
+          "variables": {
+            "start": 11,
+            "end": 23,
+            "_": "VariableDeclarationList",
+            "isConst": false,
+            "isFinal": false,
+            "isLate": false,
+            "type": {
+              "start": 11,
               "end": 18,
-              "loc": {
-                "start": {
-                  "line": 2,
-                  "column": 5
-                },
-                "end": {
-                  "line": 2,
-                  "column": 9
+              "_": "NamedType",
+              "isDeferred": false,
+              "name": {
+                "start": 11,
+                "end": 17,
+                "_": "SimpleIdentifier",
+                "name": "String"
+              }
+            },
+            "variables": [
+              {
+                "start": 19,
+                "end": 23,
+                "_": "VariableDeclaration",
+                "isConst": false,
+                "isFinal": false,
+                "isLate": false,
+                "name": {
+                  "start": 19,
+                  "end": 23,
+                  "_": "SimpleIdentifier",
+                  "name": "name"
                 }
-              },
-              "id": {
-                "type": "Identifier",
-                "start": 14,
-                "end": 18,
-                "loc": {
-                  "start": {
-                    "line": 2,
-                    "column": 5
-                  },
-                  "end": {
-                    "line": 2,
-                    "column": 9
-                  }
-                },
-                "name": "name"
-              },
-              "init": null
-            }
-          ],
-          "kind": "let"
+              }
+            ],
+            "metadata": []
+          }
         }
       ],
-      "sourceType": "module"
+      "directives": []
     }
   }
 }

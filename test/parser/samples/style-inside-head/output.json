@@ -1,27 +1,26 @@
 {
   "html": {
     "start": 0,
-    "end": 42,
-    "type": "Fragment",
+    "end": 38,
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 42,
-        "type": "Head",
+        "end": 38,
+        "_": "Head",
         "name": "piko:head",
-        "attributes": [],
         "children": [
           {
-            "start": 13,
-            "end": 28,
-            "type": "Element",
+            "start": 11,
+            "end": 26,
+            "_": "Element",
             "name": "style",
-            "attributes": [],
             "children": [
               {
-                "start": 20,
-                "end": 20,
-                "type": "Text",
+                "start": 18,
+                "end": 18,
+                "_": "Text",
+                "raw": "",
                 "data": ""
               }
             ]
