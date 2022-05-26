@@ -2,55 +2,70 @@
   "html": {
     "start": 0,
     "end": 40,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 40,
-        "_": "Element",
+        "type": "Element",
         "name": "input",
-        "directives": [
+        "attributes": [
           {
             "start": 7,
             "end": 39,
-            "_": "Action",
+            "type": "Action",
             "name": "tooltip",
+            "modifiers": [],
             "expression": {
+              "type": "CallExpression",
               "start": 21,
               "end": 37,
-              "_": "MethodInvocation",
-              "isCascaded": false,
-              "isNullAware": false,
-              "methodName": {
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 21
+                },
+                "end": {
+                  "line": 1,
+                  "column": 37
+                }
+              },
+              "callee": {
+                "type": "Identifier",
                 "start": 21,
                 "end": 22,
-                "_": "SimpleIdentifier",
-                "name": "t"
-              },
-              "argumentList": {
-                "start": 22,
-                "end": 37,
-                "_": "ArgumentList",
-                "arguments": [
-                  {
-                    "start": 23,
-                    "end": 36,
-                    "_": "SimpleStringLiteral",
-                    "value": "tooltip msg",
-                    "contentsEnd": 35,
-                    "contentsOffset": 24,
-                    "isMultiline": false,
-                    "isRaw": false,
-                    "isSingleQuoted": true
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 21
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 22
                   }
-                ]
-              },
-              "function": {
-                "start": 21,
-                "end": 22,
-                "_": "SimpleIdentifier",
+                },
                 "name": "t"
-              }
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "start": 23,
+                  "end": 36,
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 23
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 36
+                    }
+                  },
+                  "value": "tooltip msg",
+                  "raw": "'tooltip msg'"
+                }
+              ],
+              "optional": false
             }
           }
         ],

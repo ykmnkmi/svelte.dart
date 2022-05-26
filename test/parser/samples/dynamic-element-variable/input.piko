@@ -1,0 +1,2 @@
+<piko:element this={tag}></piko:element>
+<piko:element this={tag} class="foo"></piko:element>

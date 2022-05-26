@@ -2,41 +2,41 @@
   "html": {
     "start": 0,
     "end": 28,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 28,
-        "_": "Element",
+        "type": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
             "end": 11,
-            "_": "Attribute",
+            "type": "Attribute",
             "name": "id",
-            "children": [
+            "value": [
               {
                 "start": 9,
                 "end": 10,
-                "_": "Text",
-                "data": "x",
-                "raw": "x"
+                "type": "Text",
+                "raw": "x",
+                "data": "x"
               }
             ]
           },
           {
             "start": 12,
             "end": 21,
-            "_": "Attribute",
+            "type": "Attribute",
             "name": "class",
-            "children": [
+            "value": [
               {
                 "start": 19,
                 "end": 20,
-                "_": "Text",
-                "data": "y",
-                "raw": "y"
+                "type": "Text",
+                "raw": "y",
+                "data": "y"
               }
             ]
           }

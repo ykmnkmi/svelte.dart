@@ -64,20 +64,23 @@ extension MustacheParser on Parser {
         block = current;
       }
 
-      if (block is ElseBlock || block is PendingBlock || block is ThenBlock || block is CatchBlock) {
+      if (block.type == 'ElseBlock' ||
+          block.type == 'PendingBlock' ||
+          block.type == 'ThenBlock' ||
+          block.type == 'CatchBlock') {
         block.end = start;
         stack.removeLast();
         block = current;
         expected = 'await';
       }
 
-      if (block is IfBlock) {
+      if (block.type == 'IfBlock') {
         expected = 'if';
-      } else if (block is EachBlock) {
+      } else if (block.type == 'EachBlock') {
         expected = 'each';
-      } else if (block is AwaitBlock) {
+      } else if (block.type == 'AwaitBlock') {
         expected = 'await';
-      } else if (block is KeyBlock) {
+      } else if (block.type == 'KeyBlock') {
         expected = 'key';
       } else {
         unexpectedBlockClose();
@@ -114,7 +117,7 @@ extension MustacheParser on Parser {
 
         if (block is! IfBlock) {
           for (var node in stack) {
-            if (node is IfBlock) {
+            if (node.type != 'IfBlock') {
               invalidElseIfPlacementUnclosedBlock(block.describe());
             }
           }
@@ -134,9 +137,9 @@ extension MustacheParser on Parser {
       } else {
         var block = current;
 
-        if (block is! IfBlock && block is! EachBlock) {
+        if (block.type != 'IfBlock' && block.type != 'EachBlock') {
           for (var node in stack) {
-            if (node is IfBlock || node is EachBlock) {
+            if (node.type == 'IfBlock' || node.type == 'EachBlock') {
               invalidElsePlacementUnclosedBlock(block.describe());
             }
           }
@@ -157,9 +160,9 @@ extension MustacheParser on Parser {
       var isThen = scan(':then') || !scan(':catch');
 
       if (isThen) {
-        if (block is! PendingBlock) {
+        if (block.type != 'PendingBlock') {
           for (var node in stack) {
-            if (node is PendingBlock) {
+            if (node.type == 'PendingBlock') {
               invalidThenPlacementUnclosedBlock(block.describe());
             }
           }
@@ -167,9 +170,9 @@ extension MustacheParser on Parser {
           invalidThenPlacementWithoutAwait();
         }
       } else {
-        if (block is! ThenBlock && block is! PendingBlock) {
+        if (block.type != 'ThenBlock' && block.type != 'PendingBlock') {
           for (var node in stack) {
-            if (node is ThenBlock || node is PendingBlock) {
+            if (node.type == 'ThenBlock' || node.type == 'PendingBlock') {
               invalidCatchPlacementUnclosedBlock(block.describe());
             }
           }
@@ -282,7 +285,7 @@ extension MustacheParser on Parser {
         }
       }
 
-      var isThen = scan('then'), isCatch = scan('catch');
+      var isThen = scan('then'), isCatch = !isThen && scan('catch');
 
       if (block is AwaitBlock) {
         if (isThen) {
@@ -336,13 +339,11 @@ extension MustacheParser on Parser {
     } else if (scan('@debug')) {
       allowSpace();
 
-      List<Identifier>? identifiers;
+      var identifiers = <Identifier>[];
 
       if (scan('}')) {
         // do nothing
       } else {
-        identifiers = <Identifier>[];
-
         do {
           var expression = readExpression();
 

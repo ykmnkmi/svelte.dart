@@ -66,6 +66,18 @@ class Fragment extends Node with ChildrenNode {
   List<Node> children;
 }
 
+mixin RawNode on Node {
+  abstract String raw;
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      'raw': raw,
+    };
+  }
+}
+
 mixin DataNode on Node {
   abstract String data;
 
@@ -78,13 +90,17 @@ mixin DataNode on Node {
   }
 }
 
-class Text extends Node with DataNode, NoChildrenNode {
+class Text extends Node with RawNode, DataNode, NoChildrenNode {
   Text({
     super.start,
     super.end,
     super.type = 'Text',
+    required this.raw,
     required this.data,
   });
+
+  @override
+  String raw;
 
   @override
   String data;
@@ -159,13 +175,13 @@ class Comment extends Node with DataNode, NoChildrenNode {
 }
 
 mixin IdentifiersNode on Node {
-  abstract List<Identifier>? identifiers;
+  abstract List<Identifier> identifiers;
 
   @override
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (identifiers != null && identifiers!.isNotEmpty) 'ignores': dartToJson.visitAll(identifiers!),
+      if (identifiers.isNotEmpty) 'ignores': dartToJson.visitAll(identifiers),
     };
   }
 }
@@ -175,11 +191,11 @@ class Debug extends Node with IdentifiersNode, NoChildrenNode {
     super.start,
     super.end,
     super.type = 'Debug',
-    this.identifiers,
+    required this.identifiers,
   });
 
   @override
-  List<Identifier>? identifiers;
+  List<Identifier> identifiers;
 
   @override
   String describe() {
@@ -266,17 +282,45 @@ class Directive extends Node with NamedNode, ModifiersNode, ExpressionNode, Tran
   }
 }
 
-class Attribute extends Node with NamedNode, ExpressionNode, NoChildrenNode {
+class Attribute extends Node with NamedNode, ExpressionNode, ChildrenNode {
   Attribute({
     super.start,
     super.end,
     super.type = 'Attribute',
     required this.name,
     this.expression,
-  });
+    List<Node>? children,
+  }) : children = children ?? <Node>[];
 
   @override
   String name;
+
+  @override
+  Expression? expression;
+
+  @override
+  List<Node> children;
+}
+
+class Shorthand extends Node with ExpressionNode, NoChildrenNode {
+  Shorthand({
+    super.start,
+    super.end,
+    super.type = 'Shorthand',
+    this.expression,
+  });
+
+  @override
+  Expression? expression;
+}
+
+class Spread extends Node with ExpressionNode, NoChildrenNode {
+  Spread({
+    super.start,
+    super.end,
+    super.type = 'Spread',
+    this.expression,
+  });
 
   @override
   Expression? expression;

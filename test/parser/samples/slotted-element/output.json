@@ -2,32 +2,33 @@
   "html": {
     "start": 0,
     "end": 45,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 45,
-        "_": "InlineComponent",
+        "type": "InlineComponent",
         "name": "Component",
+        "attributes": [],
         "children": [
           {
             "start": 11,
             "end": 33,
-            "_": "Element",
+            "type": "Element",
             "name": "div",
             "attributes": [
               {
                 "start": 16,
                 "end": 26,
-                "_": "Attribute",
+                "type": "Attribute",
                 "name": "slot",
-                "children": [
+                "value": [
                   {
                     "start": 22,
                     "end": 25,
-                    "_": "Text",
-                    "data": "foo",
-                    "raw": "foo"
+                    "type": "Text",
+                    "raw": "foo",
+                    "data": "foo"
                   }
                 ]
               }

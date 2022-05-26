@@ -1,7 +1,6 @@
 {
   "code": "invalid-else-placement",
-  "message": "expected to close {#await} block before seeing {:else} block",
-  "offset": 30,
-  "line": 3,
-  "column": 6
+  "message": "Expected to close {#await} block before seeing {:else} block",
+  "start": { "line": 3, "column": 6, "character": 29 },
+  "pos": 29
 }

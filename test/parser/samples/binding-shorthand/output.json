@@ -1,31 +1,32 @@
 {
   "html": {
-    "start": 31,
-    "end": 49,
-    "_": "Fragment",
+    "start": 30,
+    "end": 48,
+    "type": "Fragment",
     "children": [
       {
-        "start": 29,
-        "end": 31,
-        "_": "Text",
-        "data": "\n\n",
-        "raw": "\n\n"
+        "start": 28,
+        "end": 30,
+        "type": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
       },
       {
-        "start": 31,
-        "end": 49,
-        "_": "InlineComponent",
+        "start": 30,
+        "end": 48,
+        "type": "InlineComponent",
         "name": "Widget",
-        "directives": [
+        "attributes": [
           {
-            "start": 39,
-            "end": 47,
-            "_": "Binding",
+            "start": 38,
+            "end": 46,
+            "type": "Binding",
             "name": "foo",
+            "modifiers": [],
             "expression": {
-              "start": 44,
-              "end": 47,
-              "_": "SimpleIdentifier",
+              "start": 43,
+              "end": 46,
+              "type": "Identifier",
               "name": "foo"
             }
           }
@@ -35,47 +36,77 @@
     ]
   },
   "instance": {
+    "type": "Script",
     "start": 0,
-    "end": 29,
-    "_": "Script",
+    "end": 28,
     "context": "default",
     "content": {
+      "type": "Program",
       "start": 8,
-      "end": 20,
-      "_": "CompilationUnit",
-      "declarations": [
+      "end": 19,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 0
+        }
+      },
+      "body": [
         {
-          "start": 11,
-          "end": 19,
-          "_": "TopLevelVariableDeclaration",
-          "variables": {
-            "start": 11,
-            "end": 18,
-            "_": "VariableDeclarationList",
-            "isConst": false,
-            "isFinal": false,
-            "isLate": false,
-            "variables": [
-              {
-                "start": 15,
-                "end": 18,
-                "_": "VariableDeclaration",
-                "isConst": false,
-                "isFinal": false,
-                "isLate": false,
-                "name": {
-                  "start": 15,
-                  "end": 18,
-                  "_": "SimpleIdentifier",
-                  "name": "foo"
+          "type": "VariableDeclaration",
+          "start": 10,
+          "end": 18,
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 1
+            },
+            "end": {
+              "line": 2,
+              "column": 9
+            }
+          },
+          "declarations": [
+            {
+              "type": "VariableDeclarator",
+              "start": 14,
+              "end": 17,
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 5
+                },
+                "end": {
+                  "line": 2,
+                  "column": 8
                 }
-              }
-            ],
-            "metadata": []
-          }
+              },
+              "id": {
+                "type": "Identifier",
+                "start": 14,
+                "end": 17,
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 5
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 8
+                  }
+                },
+                "name": "foo"
+              },
+              "init": null
+            }
+          ],
+          "kind": "let"
         }
       ],
-      "directives": []
+      "sourceType": "module"
     }
   }
 }

@@ -1,28 +1,29 @@
 {
   "html": {
-    "start": 10,
-    "end": 40,
-    "_": "Fragment",
+    "start": 6,
+    "end": 36,
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 10,
-        "_": "Text",
-        "data": "\n\n        ",
-        "raw": "\n\n        "
+        "end": 6,
+        "type": "Text",
+        "raw": "\n\n\t\t\t\t",
+        "data": "\n\n\t\t\t\t"
       },
       {
-        "start": 10,
-        "end": 40,
-        "_": "Element",
+        "start": 6,
+        "end": 36,
+        "type": "Element",
         "name": "p",
+        "attributes": [],
         "children": [
           {
-            "start": 13,
-            "end": 36,
-            "_": "Text",
-            "data": "just chillin' over here",
-            "raw": "just chillin' over here"
+            "start": 9,
+            "end": 32,
+            "type": "Text",
+            "raw": "just chillin' over here",
+            "data": "just chillin' over here"
           }
         ]
       }

@@ -1,63 +1,85 @@
 {
   "html": {
     "start": 0,
-    "end": 79,
-    "_": "Fragment",
+    "end": 77,
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 79,
-        "_": "EachBlock",
+        "end": 77,
+        "type": "EachBlock",
         "expression": {
+          "type": "Identifier",
           "start": 7,
           "end": 14,
-          "_": "SimpleIdentifier",
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 14
+            }
+          },
           "name": "animals"
-        },
-        "context": {
-          "start": 18,
-          "end": 24,
-          "_": "SimpleIdentifier",
-          "name": "animal"
         },
         "children": [
           {
-            "start": 28,
-            "end": 43,
-            "_": "Element",
+            "start": 27,
+            "end": 42,
+            "type": "Element",
             "name": "p",
+            "attributes": [],
             "children": [
               {
-                "start": 31,
-                "end": 39,
-                "_": "MustacheTag",
+                "start": 30,
+                "end": 38,
+                "type": "MustacheTag",
                 "expression": {
-                  "start": 32,
-                  "end": 38,
-                  "_": "SimpleIdentifier",
+                  "type": "Identifier",
+                  "start": 31,
+                  "end": 37,
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 5
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 11
+                    }
+                  },
                   "name": "animal"
                 }
               }
             ]
           }
         ],
+        "context": {
+          "type": "Identifier",
+          "name": "animal",
+          "start": 18,
+          "end": 24
+        },
         "else": {
-          "start": 51,
-          "end": 72,
-          "_": "ElseBlock",
+          "start": 50,
+          "end": 70,
+          "type": "ElseBlock",
           "children": [
             {
-              "start": 54,
-              "end": 71,
-              "_": "Element",
+              "start": 52,
+              "end": 69,
+              "type": "Element",
               "name": "p",
+              "attributes": [],
               "children": [
                 {
-                  "start": 57,
-                  "end": 67,
-                  "_": "Text",
-                  "data": "no animals",
-                  "raw": "no animals"
+                  "start": 55,
+                  "end": 65,
+                  "type": "Text",
+                  "raw": "no animals",
+                  "data": "no animals"
                 }
               ]
             }

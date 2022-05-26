@@ -2,20 +2,21 @@
   "html": {
     "start": 0,
     "end": 17,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 17,
-        "_": "Element",
+        "type": "Element",
         "name": "span",
+        "attributes": [],
         "children": [
           {
             "start": 6,
             "end": 10,
-            "_": "Text",
-            "data": "test",
-            "raw": "test"
+            "type": "Text",
+            "raw": "test",
+            "data": "test"
           }
         ]
       }

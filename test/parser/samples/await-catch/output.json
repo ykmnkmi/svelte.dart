@@ -1,125 +1,172 @@
 {
   "html": {
     "start": 0,
-    "end": 101,
-    "_": "Fragment",
+    "end": 99,
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 101,
-        "_": "AwaitBlock",
+        "end": 99,
+        "type": "AwaitBlock",
         "expression": {
+          "type": "Identifier",
           "start": 8,
           "end": 18,
-          "_": "SimpleIdentifier",
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 8
+            },
+            "end": {
+              "line": 1,
+              "column": 18
+            }
+          },
           "name": "thePromise"
         },
+        "value": null,
         "error": {
-          "start": 48,
-          "end": 56,
-          "_": "SimpleIdentifier",
-          "name": "theError"
+          "type": "Identifier",
+          "name": "theError",
+          "start": 47,
+          "end": 55
         },
         "pending": {
           "start": 19,
-          "end": 40,
-          "_": "PendingBlock",
+          "end": 39,
+          "type": "PendingBlock",
           "children": [
             {
               "start": 19,
-              "end": 22,
-              "_": "Text",
-              "data": "\n  ",
-              "raw": "\n  "
+              "end": 21,
+              "type": "Text",
+              "raw": "\n\t",
+              "data": "\n\t"
             },
             {
-              "start": 22,
-              "end": 39,
-              "_": "Element",
+              "start": 21,
+              "end": 38,
+              "type": "Element",
               "name": "p",
+              "attributes": [],
               "children": [
                 {
-                  "start": 25,
-                  "end": 35,
-                  "_": "Text",
-                  "data": "loading...",
-                  "raw": "loading..."
+                  "start": 24,
+                  "end": 34,
+                  "type": "Text",
+                  "raw": "loading...",
+                  "data": "loading..."
                 }
               ]
             },
             {
-              "start": 39,
-              "end": 40,
-              "_": "Text",
-              "data": "\n",
-              "raw": "\n"
+              "start": 38,
+              "end": 39,
+              "type": "Text",
+              "raw": "\n",
+              "data": "\n"
             }
-          ]
+          ],
+          "skip": false
         },
         "then": {
-          "_": "ThenBlock",
-          "skip": true,
-          "children": []
+          "start": null,
+          "end": null,
+          "type": "ThenBlock",
+          "children": [],
+          "skip": true
         },
         "catch": {
-          "start": 40,
-          "end": 93,
-          "_": "CatchBlock",
+          "start": 39,
+          "end": 91,
+          "type": "CatchBlock",
           "children": [
             {
-              "start": 57,
-              "end": 60,
-              "_": "Text",
-              "data": "\n  ",
-              "raw": "\n  "
+              "start": 56,
+              "end": 58,
+              "type": "Text",
+              "raw": "\n\t",
+              "data": "\n\t"
             },
             {
-              "start": 60,
-              "end": 92,
-              "_": "Element",
+              "start": 58,
+              "end": 90,
+              "type": "Element",
               "name": "p",
+              "attributes": [],
               "children": [
                 {
-                  "start": 63,
-                  "end": 70,
-                  "_": "Text",
-                  "data": "oh no! ",
-                  "raw": "oh no! "
+                  "start": 61,
+                  "end": 68,
+                  "type": "Text",
+                  "raw": "oh no! ",
+                  "data": "oh no! "
                 },
                 {
-                  "start": 70,
-                  "end": 88,
-                  "_": "MustacheTag",
+                  "start": 68,
+                  "end": 86,
+                  "type": "MustacheTag",
                   "expression": {
-                    "start": 71,
-                    "end": 87,
-                    "_": "PrefixedIdentifier",
-                    "identifier": {
-                      "start": 80,
-                      "end": 87,
-                      "_": "SimpleIdentifier",
-                      "name": "message"
+                    "type": "MemberExpression",
+                    "start": 69,
+                    "end": 85,
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 12
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 28
+                      }
                     },
-                    "isDeferred": false,
-                    "prefix": {
-                      "start": 71,
-                      "end": 79,
-                      "_": "SimpleIdentifier",
+                    "object": {
+                      "type": "Identifier",
+                      "start": 69,
+                      "end": 77,
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 12
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 20
+                        }
+                      },
                       "name": "theError"
                     },
-                    "name": "theError.message"
+                    "property": {
+                      "type": "Identifier",
+                      "start": 78,
+                      "end": 85,
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 21
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 28
+                        }
+                      },
+                      "name": "message"
+                    },
+                    "computed": false,
+                    "optional": false
                   }
                 }
               ]
             },
             {
-              "start": 92,
-              "end": 93,
-              "_": "Text",
-              "data": "\n",
-              "raw": "\n"
+              "start": 90,
+              "end": 91,
+              "type": "Text",
+              "raw": "\n",
+              "data": "\n"
             }
-          ]
+          ],
+          "skip": false
         }
       }
     ]

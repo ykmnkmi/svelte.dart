@@ -1,40 +1,79 @@
 {
   "html": {
     "start": 0,
-    "end": 58,
-    "_": "Fragment",
+    "end": 62,
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 58,
-        "_": "InlineComponent",
+        "end": 62,
+        "type": "InlineComponent",
         "name": "piko:component",
+        "attributes": [],
+        "children": [],
         "expression": {
-          "start": 23,
-          "end": 38,
-          "_": "ConditionalExpression",
-          "condition": {
-            "start": 23,
-            "end": 26,
-            "_": "SimpleIdentifier",
+          "type": "ConditionalExpression",
+          "start": 25,
+          "end": 40,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 25
+            },
+            "end": {
+              "line": 1,
+              "column": 40
+            }
+          },
+          "test": {
+            "type": "Identifier",
+            "start": 25,
+            "end": 28,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 25
+              },
+              "end": {
+                "line": 1,
+                "column": 28
+              }
+            },
             "name": "foo"
           },
-          "elseExpression": {
-            "start": 35,
-            "end": 38,
-            "_": "SimpleIdentifier",
-            "name": "Bar"
-          },
-          "thenExpression": {
-            "start": 29,
-            "end": 32,
-            "_": "SimpleIdentifier",
+          "consequent": {
+            "type": "Identifier",
+            "start": 31,
+            "end": 34,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 31
+              },
+              "end": {
+                "line": 1,
+                "column": 34
+              }
+            },
             "name": "Foo"
           },
-          "inConstantContext": false,
-          "isAssignable": false
-        },
-        "children": []
+          "alternate": {
+            "type": "Identifier",
+            "start": 37,
+            "end": 40,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 37
+              },
+              "end": {
+                "line": 1,
+                "column": 40
+              }
+            },
+            "name": "Bar"
+          }
+        }
       }
     ]
   }

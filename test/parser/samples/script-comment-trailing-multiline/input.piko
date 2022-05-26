@@ -1,5 +1,5 @@
 <script>
-  var name = 'world';
+  let name = 'world';
 
   /*
     trailing multiline comment

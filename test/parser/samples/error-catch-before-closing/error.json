@@ -1,7 +1,6 @@
 {
   "code": "invalid-catch-placement",
-  "message": "expected to close {#each} block before seeing {:catch} block",
-  "offset": 42,
-  "line": 3,
-  "column": 7
+  "message": "Expected to close {#each} block before seeing {:catch} block",
+  "start": { "line": 3, "column": 7, "character": 41 },
+  "pos": 41
 }

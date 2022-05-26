@@ -2,26 +2,26 @@
   "html": {
     "start": 0,
     "end": 23,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 23,
-        "_": "Element",
+        "type": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
             "end": 16,
-            "_": "Attribute",
+            "type": "Attribute",
             "name": "class",
-            "children": [
+            "value": [
               {
                 "start": 12,
                 "end": 15,
-                "_": "Text",
-                "data": "foo",
-                "raw": "foo"
+                "type": "Text",
+                "raw": "foo",
+                "data": "foo"
               }
             ]
           }

@@ -2,25 +2,29 @@
   "html": {
     "start": 0,
     "end": 35,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 35,
-        "_": "Element",
+        "type": "Element",
         "name": "input",
-        "directives": [
+        "attributes": [
           {
             "start": 7,
             "end": 20,
-            "_": "Action",
-            "name": "autofocus"
+            "type": "Action",
+            "name": "autofocus",
+            "modifiers": [],
+            "expression": null
           },
           {
             "start": 21,
             "end": 34,
-            "_": "Action",
-            "name": "autofocus"
+            "type": "Action",
+            "name": "autofocus",
+            "modifiers": [],
+            "expression": null
           }
         ],
         "children": []

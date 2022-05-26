@@ -2,23 +2,34 @@
   "html": {
     "start": 0,
     "end": 38,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 38,
-        "_": "Element",
+        "type": "Element",
         "name": "button",
-        "directives": [
+        "attributes": [
           {
             "start": 8,
             "end": 23,
-            "_": "EventHandler",
+            "type": "EventHandler",
             "name": "click",
+            "modifiers": [],
             "expression": {
+              "type": "Identifier",
               "start": 19,
               "end": 22,
-              "_": "SimpleIdentifier",
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 19
+                },
+                "end": {
+                  "line": 1,
+                  "column": 22
+                }
+              },
               "name": "foo"
             }
           }
@@ -27,9 +38,9 @@
           {
             "start": 24,
             "end": 29,
-            "_": "Text",
-            "data": "Click",
-            "raw": "Click"
+            "type": "Text",
+            "raw": "Click",
+            "data": "Click"
           }
         ]
       }

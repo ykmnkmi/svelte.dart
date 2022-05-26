@@ -1,7 +1,10 @@
 {
   "code": "invalid-window-placement",
   "message": "<piko:window> tags cannot be inside elements or blocks",
-  "offset": 8,
-  "line": 2,
-  "column": 2
+  "start": {
+    "line": 2,
+    "column": 1,
+    "character": 7
+  },
+  "pos": 7
 }

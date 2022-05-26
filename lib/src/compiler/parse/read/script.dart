@@ -96,13 +96,9 @@ extension ScriptParser on Parser {
       var lineInfo = LineInfo(scanner.lineStarts);
       var parser = AST.Parser(source, errorListener, featureSet: scanner.featureSet, lineInfo: lineInfo);
       var unit = parser.parseCompilationUnit(token);
-      var begin = Token(unit.beginToken.type, contentStart);
-      var end = Token(unit.endToken.type, contentEnd);
-      unit = _CompilationUnit(begin, null, unit.directives, unit.declarations, end, unit.featureSet, unit.lineInfo);
-
       var errors = errorListener.errors.toList();
-      var node = Script(start: offset, end: index, context: context, content: unit, errors: errors);
-      scripts.add(node);
+      unit = _CompilationUnit.from(contentStart, contentEnd, unit);
+      scripts.add(Script(start: offset, end: index, context: context, content: unit, errors: errors));
       return;
     }
 

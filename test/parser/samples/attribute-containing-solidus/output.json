@@ -2,26 +2,26 @@
   "html": {
     "start": 0,
     "end": 41,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 41,
-        "_": "Element",
+        "type": "Element",
         "name": "a",
         "attributes": [
           {
             "start": 3,
             "end": 30,
-            "_": "Attribute",
+            "type": "Attribute",
             "name": "href",
-            "children": [
+            "value": [
               {
                 "start": 8,
                 "end": 30,
-                "_": "Text",
-                "data": "https://www.google.com",
-                "raw": "https://www.google.com"
+                "type": "Text",
+                "raw": "https://www.google.com",
+                "data": "https://www.google.com"
               }
             ]
           }
@@ -30,9 +30,9 @@
           {
             "start": 31,
             "end": 37,
-            "_": "Text",
-            "data": "Google",
-            "raw": "Google"
+            "type": "Text",
+            "raw": "Google",
+            "data": "Google"
           }
         ]
       }

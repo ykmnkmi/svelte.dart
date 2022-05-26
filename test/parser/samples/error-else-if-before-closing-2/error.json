@@ -1,7 +1,6 @@
 {
   "code": "invalid-elseif-placement",
-  "message": "expected to close <p> tag before seeing {:else if ...} block",
-  "offset": 26,
-  "line": 3,
-  "column": 9
+  "message": "Expected to close <p> tag before seeing {:else if ...} block",
+  "start": { "line": 3, "column": 9, "character": 25 },
+  "pos": 25
 }

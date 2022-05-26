@@ -1,0 +1,2 @@
+<piko:element this="div"></piko:element>
+<piko:element this="div" class="foo"></piko:element>

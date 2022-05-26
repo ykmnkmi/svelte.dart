@@ -2,20 +2,21 @@
   "html": {
     "start": 0,
     "end": 24,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 24,
-        "_": "Element",
+        "type": "Element",
         "name": "p",
+        "attributes": [],
         "children": [
           {
             "start": 3,
             "end": 20,
-            "_": "Text",
-            "data": "Hello & World",
-            "raw": "Hello &amp; World"
+            "type": "Text",
+            "raw": "Hello &amp; World",
+            "data": "Hello & World"
           }
         ]
       }

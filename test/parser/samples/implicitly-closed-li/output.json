@@ -1,64 +1,68 @@
 {
   "html": {
     "start": 0,
-    "end": 34,
-    "_": "Fragment",
+    "end": 31,
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 34,
-        "_": "Element",
+        "end": 31,
+        "type": "Element",
         "name": "ul",
+        "attributes": [],
         "children": [
           {
             "start": 4,
-            "end": 7,
-            "_": "Text",
-            "data": "\n  ",
-            "raw": "\n  "
+            "end": 6,
+            "type": "Text",
+            "raw": "\n\t",
+            "data": "\n\t"
           },
           {
-            "start": 7,
-            "end": 15,
-            "_": "Element",
+            "start": 6,
+            "end": 13,
+            "type": "Element",
             "name": "li",
+            "attributes": [],
             "children": [
               {
-                "start": 11,
-                "end": 15,
-                "_": "Text",
-                "data": "a\n  ",
-                "raw": "a\n  "
+                "start": 10,
+                "end": 13,
+                "type": "Text",
+                "raw": "a\n\t",
+                "data": "a\n\t"
               }
             ]
           },
           {
-            "start": 15,
-            "end": 23,
-            "_": "Element",
+            "start": 13,
+            "end": 20,
+            "type": "Element",
             "name": "li",
+            "attributes": [],
             "children": [
               {
-                "start": 19,
-                "end": 23,
-                "_": "Text",
-                "data": "b\n  ",
-                "raw": "b\n  "
+                "start": 17,
+                "end": 20,
+                "type": "Text",
+                "raw": "b\n\t",
+                "data": "b\n\t"
               }
             ]
           },
           {
-            "start": 23,
-            "end": 29,
-            "_": "Element",
+            "start": 20,
+            "end": 26,
+            "type": "Element",
             "name": "li",
+            "attributes": [],
             "children": [
               {
-                "start": 27,
-                "end": 29,
-                "_": "Text",
-                "data": "c\n",
-                "raw": "c\n"
+                "start": 24,
+                "end": 26,
+                "type": "Text",
+                "raw": "c\n",
+                "data": "c\n"
               }
             ]
           }

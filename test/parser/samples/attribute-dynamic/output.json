@@ -2,44 +2,54 @@
   "html": {
     "start": 0,
     "end": 42,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 42,
-        "_": "Element",
+        "type": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
             "end": 28,
-            "_": "Attribute",
+            "type": "Attribute",
             "name": "style",
-            "children": [
+            "value": [
               {
                 "start": 12,
                 "end": 19,
-                "_": "Text",
-                "data": "color: ",
-                "raw": "color: "
+                "type": "Text",
+                "raw": "color: ",
+                "data": "color: "
               },
               {
                 "start": 19,
                 "end": 26,
-                "_": "MustacheTag",
+                "type": "MustacheTag",
                 "expression": {
+                  "type": "Identifier",
                   "start": 20,
                   "end": 25,
-                  "_": "SimpleIdentifier",
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 20
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 25
+                    }
+                  },
                   "name": "color"
                 }
               },
               {
                 "start": 26,
                 "end": 27,
-                "_": "Text",
-                "data": ";",
-                "raw": ";"
+                "type": "Text",
+                "raw": ";",
+                "data": ";"
               }
             ]
           }
@@ -48,11 +58,21 @@
           {
             "start": 29,
             "end": 36,
-            "_": "MustacheTag",
+            "type": "MustacheTag",
             "expression": {
+              "type": "Identifier",
               "start": 30,
               "end": 35,
-              "_": "SimpleIdentifier",
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 30
+                },
+                "end": {
+                  "line": 1,
+                  "column": 35
+                }
+              },
               "name": "color"
             }
           }

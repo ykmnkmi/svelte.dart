@@ -1,84 +1,99 @@
 {
   "html": {
     "start": 0,
-    "end": 57,
-    "_": "Fragment",
+    "end": 51,
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 57,
-        "_": "Element",
+        "end": 51,
+        "type": "Element",
         "name": "ul",
+        "attributes": [],
         "children": [
           {
             "start": 4,
-            "end": 7,
-            "_": "Text",
-            "data": "\n  ",
-            "raw": "\n  "
+            "end": 6,
+            "type": "Text",
+            "raw": "\n\t",
+            "data": "\n\t"
           },
           {
-            "start": 7,
-            "end": 46,
-            "_": "Element",
+            "start": 6,
+            "end": 40,
+            "type": "Element",
             "name": "li",
+            "attributes": [],
             "children": [
               {
-                "start": 11,
-                "end": 15,
-                "_": "Text",
-                "data": "a\n  ",
-                "raw": "a\n  "
+                "start": 10,
+                "end": 13,
+                "type": "Text",
+                "raw": "a\n\t",
+                "data": "a\n\t"
               },
               {
-                "start": 15,
-                "end": 43,
-                "_": "IfBlock",
+                "start": 13,
+                "end": 38,
+                "type": "IfBlock",
                 "expression": {
-                  "start": 20,
-                  "end": 24,
-                  "_": "BooleanLiteral",
-                  "value": true
+                  "type": "Literal",
+                  "start": 18,
+                  "end": 22,
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 10
+                    }
+                  },
+                  "value": true,
+                  "raw": "true"
                 },
                 "children": [
                   {
-                    "start": 30,
-                    "end": 38,
-                    "_": "Element",
+                    "start": 26,
+                    "end": 33,
+                    "type": "Element",
                     "name": "li",
+                    "attributes": [],
                     "children": [
                       {
-                        "start": 34,
-                        "end": 38,
-                        "_": "Text",
-                        "data": "b\n  ",
-                        "raw": "b\n  "
+                        "start": 30,
+                        "end": 33,
+                        "type": "Text",
+                        "raw": "b\n\t",
+                        "data": "b\n\t"
                       }
                     ]
                   }
                 ]
               },
               {
-                "start": 43,
-                "end": 46,
-                "_": "Text",
-                "data": "\n  ",
-                "raw": "\n  "
+                "start": 38,
+                "end": 40,
+                "type": "Text",
+                "raw": "\n\t",
+                "data": "\n\t"
               }
             ]
           },
           {
-            "start": 46,
-            "end": 52,
-            "_": "Element",
+            "start": 40,
+            "end": 46,
+            "type": "Element",
             "name": "li",
+            "attributes": [],
             "children": [
               {
-                "start": 50,
-                "end": 52,
-                "_": "Text",
-                "data": "c\n",
-                "raw": "c\n"
+                "start": 44,
+                "end": 46,
+                "type": "Text",
+                "raw": "c\n",
+                "data": "c\n"
               }
             ]
           }

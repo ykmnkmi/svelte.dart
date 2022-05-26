@@ -2,24 +2,32 @@
   "html": {
     "start": 0,
     "end": 22,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 22,
-        "_": "Element",
+        "type": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
             "end": 15,
-            "_": "Spread",
-            "name": "",
-            "children": [],
+            "type": "Spread",
             "expression": {
+              "type": "Identifier",
               "start": 9,
               "end": 14,
-              "_": "SimpleIdentifier",
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 9
+                },
+                "end": {
+                  "line": 1,
+                  "column": 14
+                }
+              },
               "name": "props"
             }
           }

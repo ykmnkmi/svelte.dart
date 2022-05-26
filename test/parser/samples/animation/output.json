@@ -1,56 +1,78 @@
 {
   "html": {
     "start": 0,
-    "end": 71,
-    "_": "Fragment",
+    "end": 70,
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 71,
-        "_": "EachBlock",
+        "end": 70,
+        "type": "EachBlock",
         "expression": {
+          "type": "Identifier",
           "start": 7,
           "end": 13,
-          "_": "SimpleIdentifier",
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            }
+          },
           "name": "things"
-        },
-        "context": {
-          "start": 17,
-          "end": 22,
-          "_": "SimpleIdentifier",
-          "name": "thing"
-        },
-        "key": {
-          "start": 24,
-          "end": 29,
-          "_": "SimpleIdentifier",
-          "name": "thing"
         },
         "children": [
           {
-            "start": 34,
-            "end": 63,
-            "_": "Element",
+            "start": 33,
+            "end": 62,
+            "type": "Element",
             "name": "div",
-            "directives": [
+            "attributes": [
               {
-                "start": 39,
-                "end": 51,
-                "_": "Animation",
-                "name": "flip"
+                "start": 38,
+                "end": 50,
+                "type": "Animation",
+                "name": "flip",
+                "modifiers": [],
+                "expression": null
               }
             ],
             "children": [
               {
-                "start": 52,
-                "end": 57,
-                "_": "Text",
-                "data": "flips",
-                "raw": "flips"
+                "start": 51,
+                "end": 56,
+                "type": "Text",
+                "raw": "flips",
+                "data": "flips"
               }
             ]
           }
-        ]
+        ],
+        "context": {
+          "type": "Identifier",
+          "name": "thing",
+          "start": 17,
+          "end": 22
+        },
+        "key": {
+          "type": "Identifier",
+          "start": 24,
+          "end": 29,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 24
+            },
+            "end": {
+              "line": 1,
+              "column": 29
+            }
+          },
+          "name": "thing"
+        }
       }
     ]
   }

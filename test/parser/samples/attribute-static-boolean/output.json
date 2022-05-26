@@ -2,20 +2,20 @@
   "html": {
     "start": 0,
     "end": 30,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 30,
-        "_": "Element",
+        "type": "Element",
         "name": "textarea",
         "attributes": [
           {
             "start": 10,
             "end": 18,
-            "_": "Attribute",
+            "type": "Attribute",
             "name": "readonly",
-            "children": []
+            "value": true
           }
         ],
         "children": []

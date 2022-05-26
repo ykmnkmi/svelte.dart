@@ -1,11 +1,5 @@
 import 'package:html_unescape/html_unescape.dart';
 
-final HtmlUnescape htmlUnescape = HtmlUnescape();
-
-String decodeCharacterReferences(String string) {
-  return htmlUnescape.convert(string);
-}
-
 const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
   'li': <String>{'li'},
   'dt': <String>{'dt', 'dd'},
@@ -51,6 +45,8 @@ const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
   'th': <String>{'td', 'th', 'tr'},
 };
 
+final HtmlUnescape htmlUnescape = HtmlUnescape();
+
 bool closingTagOmitted(String? current, [String? next]) {
   var dissalowed = disallowedContents[current];
 
@@ -59,4 +55,8 @@ bool closingTagOmitted(String? current, [String? next]) {
   }
 
   return next == null || dissalowed.contains(next);
+}
+
+String decodeCharacterReferences(String string) {
+  return htmlUnescape.convert(string);
 }

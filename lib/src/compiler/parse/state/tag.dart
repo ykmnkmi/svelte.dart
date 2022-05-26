@@ -1,8 +1,12 @@
+import 'package:_fe_analyzer_shared/src/scanner/token.dart' show NO_PRECEDENCE;
+import 'package:_fe_analyzer_shared/src/scanner/token_constants.dart' show IDENTIFIER_TOKEN;
 import 'package:analyzer/dart/ast/token.dart' show Token, TokenType;
 import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
 import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/errors.dart';
+import 'package:piko/src/compiler/parse/extract_piko_ignore.dart';
 import 'package:piko/src/compiler/parse/html.dart';
+import 'package:piko/src/compiler/parse/names.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
 import 'package:piko/src/compiler/parse/read/expression.dart';
 import 'package:piko/src/compiler/parse/read/script.dart';
@@ -27,12 +31,6 @@ extension TagParser on Parser {
     'piko:element',
   };
 
-  static final RegExp voidElementNames = RegExp('^(?:'
-      'area|base|br|col|command|embed|hr|img|input|'
-      'keygen|link|meta|param|source|track|wbr)\$');
-
-  static final RegExp ignoreRe = RegExp('^\\s*ignore:\\s+([\\s\\S]+)\\s*\$', multiLine: true);
-
   static final RegExp componentNameRe = RegExp('^[A-Z]');
 
   static final RegExp textareaCloseTagRe = RegExp(r'^<\/textarea(\s[^>]*)?>');
@@ -54,10 +52,6 @@ extension TagParser on Parser {
   static final RegExp attributeValueEndRe = RegExp('(\\/>|[\\s"\'=<>`])');
 
   static final RegExp quoteRe = RegExp('["\']');
-
-  static bool isVoid(String name) {
-    return voidElementNames.hasMatch(name) || '!doctype' == name.toLowerCase();
-  }
 
   static String? getDirectiveType(String name) {
     switch (name) {
@@ -86,17 +80,7 @@ extension TagParser on Parser {
     }
   }
 
-  static List<String>? extractIgnore(String text) {
-    var match = ignoreRe.firstMatch(text);
-
-    if (match == null) {
-      return null;
-    }
-
-    return match[1]!.split(',').map<String>((rule) => rule.trim()).where((rule) => rule.isNotEmpty).toList();
-  }
-
-  bool parentIsHead() {
+  static bool parentIsHead(List<Node> stack) {
     for (var node in stack.reversed) {
       var type = node.type;
 
@@ -110,6 +94,242 @@ extension TagParser on Parser {
     }
 
     return false;
+  }
+
+  String readTagName() {
+    var start = index;
+
+    if (scan(selfRe)) {
+      for (var node in stack.reversed) {
+        if (node.type == 'IfBlock' || node.type == 'EachBlock' || node.type == 'InlineComponent') {
+          return 'piko:self';
+        }
+      }
+
+      invalidSelfPlacement(start);
+    }
+
+    if (scan(componentRe)) {
+      return 'piko:component';
+    }
+
+    if (scan(elementRe)) {
+      return 'piko:element';
+    }
+
+    if (scan(fragmentRe)) {
+      return 'piko:fragment';
+    }
+
+    var name = readUntil(metaTagEndRe);
+
+    if (metaTags.containsKey(name)) {
+      return name;
+    }
+
+    if (name.startsWith('piko:')) {
+      invalidTagNamePikoElement(validMetaTags, start);
+    }
+
+    if (tagRe.hasMatch(name)) {
+      return name;
+    }
+
+    invalidTagName(start);
+  }
+
+  List<Node> readAttributeValues() {
+    var quoteMark = read(quoteRe);
+
+    if (quoteMark != null && scan(quoteMark)) {
+      return <Node>[Text(start: index - 1, end: index - 1, raw: '', data: '')];
+    }
+
+    var regex = quoteMark ?? attributeValueEndRe;
+    List<Node> values;
+
+    try {
+      values = readSequence(regex);
+    } on CompileError catch (error) {
+      index = error.span.start.offset;
+      unclosedAttributeValue(quoteMark ?? '}');
+    }
+
+    if (values.isEmpty && quoteMark == null) {
+      missingAttributeValue();
+    }
+
+    if (quoteMark != null) {
+      expect(quoteMark);
+    }
+
+    return values;
+  }
+
+  bool readAttribute(Element element, Set<String> uniqueNames) {
+    var start = index;
+
+    void checkUnique(String name) {
+      if (uniqueNames.contains(name)) {
+        duplicateAttribute(start, index);
+      }
+
+      uniqueNames.add(name);
+    }
+
+    if (scan('{')) {
+      allowSpace();
+
+      if (scan('...')) {
+        var expression = readExpression();
+        element.attributes.add(Spread(start: start, end: index, expression: expression));
+        allowSpace();
+        expect('}');
+        return true;
+      } else {
+        var valueStart = index;
+        var name = readIdentifier();
+        allowSpace();
+        expect('}');
+
+        if (name == null) {
+          emptyAttributeShorthand(start);
+        }
+
+        checkUnique(name);
+
+        var tokenType = TokenType(name, 'IDENTIFIER', NO_PRECEDENCE, IDENTIFIER_TOKEN);
+        var token = Token(tokenType, valueStart);
+        var identifier = astFactory.simpleIdentifier(token);
+        var end = valueStart + name.length;
+        var shortHand = Shorthand(start: valueStart, end: end, expression: identifier);
+        element.attributes.add(Attribute(start: start, end: index, name: name, children: <Node>[shortHand]));
+        return true;
+      }
+    }
+
+    var name = readUntil(attributeNameEndRe);
+
+    if (name.isEmpty) {
+      return false;
+    }
+
+    var end = index;
+    allowSpace();
+
+    var colonIndex = name.indexOf(':');
+
+    String? type;
+
+    if (colonIndex != -1) {
+      type = getDirectiveType(name.substring(0, colonIndex));
+    }
+
+    if (match(quoteRe)) {
+      unexpectedToken('=', start);
+    }
+
+    List<Node>? values;
+
+    if (scan('=')) {
+      allowSpace();
+      values = readAttributeValues();
+      end = index;
+    }
+
+    if (type != null) {
+      var modifiers = name.substring(colonIndex + 1).split('|');
+      var directiveName = modifiers.removeAt(0);
+
+      if (directiveName.isEmpty) {
+        emptyDirectiveName(type, start + colonIndex + 1);
+      }
+
+      if (type == 'Binding' && directiveName != 'this') {
+        checkUnique(directiveName);
+      } else if (type != 'EventHandler' && type != 'Action') {
+        checkUnique(directiveName);
+      }
+
+      if (type == 'Ref') {
+        invalidRefDirective(name, start);
+      }
+
+      if (type == 'StyleDirective') {
+        element.attributes.add(Directive(start: start, end: end, type: type, name: directiveName));
+        return true;
+      }
+
+      var directive = Directive(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
+
+      if (values != null && values.isNotEmpty) {
+        if (values.length > 1 || values.first is Text) {
+          invalidDirectiveValue(values.first.start);
+        }
+
+        var first = values.first;
+
+        if (first is ExpressionNode) {
+          directive.expression = first.expression;
+        }
+      }
+
+      if (type == 'Transition') {
+        var direction = name.substring(0, colonIndex);
+        directive.intro = direction == 'in' || direction == 'transition';
+        directive.outro = direction == 'out' || direction == 'transition';
+      }
+
+      if (directive.expression == null && (type == 'Binding' || type == 'Class')) {
+        var tokenType = TokenType(directiveName, 'IDENTIFIER', NO_PRECEDENCE, IDENTIFIER_TOKEN);
+        var token = Token(tokenType, directive.start! + colonIndex + 1);
+        directive.expression = astFactory.simpleIdentifier(token);
+      }
+
+      element.attributes.add(directive);
+      return true;
+    }
+
+    checkUnique(name);
+    element.attributes.add(Attribute(start: start, end: end, name: name, children: values));
+    return true;
+  }
+
+  List<Node> readSequence(Pattern pattern) {
+    var buffer = StringBuffer();
+    var chunks = <Node>[];
+    var textStart = index;
+
+    void flush(int end) {
+      if (buffer.isNotEmpty) {
+        var data = buffer.toString();
+        chunks.add(Text(start: textStart, end: end, raw: data, data: decodeCharacterReferences(data)));
+        buffer.clear();
+      }
+    }
+
+    while (canParse) {
+      if (match(pattern)) {
+        flush(index);
+        return chunks;
+      }
+
+      if (scan('{')) {
+        var start = index - 1;
+        flush(start);
+        allowSpace();
+
+        var expression = readExpression();
+        allowSpace();
+        expect('}');
+        chunks.add(Mustache(start: start, end: index, expression: expression));
+        textStart = index;
+      } else {
+        buffer.writeCharCode(readChar());
+      }
+    }
+
+    unexpectedEOF();
   }
 
   void tag() {
@@ -127,10 +347,11 @@ extension TagParser on Parser {
 
     var isClosingTag = scan('/');
     var name = readTagName();
+    var type = metaTags[name];
 
-    if (metaTags.containsKey(name)) {
+    if (type != null) {
       // 'piko:'.length
-      var slug = name.substring(5);
+      var slug = type.toLowerCase();
 
       if (isClosingTag) {
         var children = current.children;
@@ -149,30 +370,21 @@ extension TagParser on Parser {
 
         this.metaTags.add(name);
       }
-    }
-
-    Element element;
-
-    if (name == 'piko:head') {
-      element = Element(start: start, type: 'Head', name: name);
-    } else if (name == 'piko:options') {
-      element = Element(start: start, type: 'Options', name: name);
-    } else if (name == 'piko:window') {
-      element = Element(start: start, type: 'Window', name: name);
-    } else if (name == 'piko:body') {
-      element = Element(start: start, type: 'Body', name: name);
-    } else if (componentNameRe.hasMatch(name) || name == 'piko:self' || name == 'piko:component') {
-      element = Element(start: start, type: 'InlineComponent', name: name);
-    } else if (name == 'piko:fragment') {
-      element = Element(start: start, type: 'SlotTemplate', name: name);
-    } else if (name == 'title' && parentIsHead()) {
-      element = Element(start: start, type: 'Title', name: name);
-    } else if (name == 'slot') {
-      element = Element(start: start, type: 'Slot', name: name);
     } else {
-      element = Element(start: start, type: 'Element', name: name);
+      if (componentNameRe.hasMatch(name) || name == 'piko:self' || name == 'piko:component') {
+        type = 'InlineComponent';
+      } else if (name == 'piko:fragment') {
+        type = 'SlotTemplate';
+      } else if (name == 'title' && parentIsHead(stack)) {
+        type = 'Title';
+      } else if (name == 'slot') {
+        type = 'Slot';
+      } else {
+        type = 'Element';
+      }
     }
 
+    var element = Element(start: start, type: type, name: name);
     allowSpace();
 
     if (isClosingTag) {
@@ -192,7 +404,8 @@ extension TagParser on Parser {
         }
 
         parent.end = start;
-        parent = stack.removeLast();
+        stack.removeLast();
+        parent = current;
       }
 
       parent.end = index;
@@ -219,11 +432,6 @@ extension TagParser on Parser {
 
     if (name == 'piko:component') {
       var attributes = element.attributes;
-
-      if (attributes == null) {
-        missingComponentDefinition(start);
-      }
-
       var index = attributes.indexWhere((attribute) => attribute is Attribute && attribute.name == 'this');
 
       if (index == -1) {
@@ -244,11 +452,6 @@ extension TagParser on Parser {
 
     if (name == 'piko:element') {
       var attributes = element.attributes;
-
-      if (attributes == null) {
-        missingElementDefinition(start);
-      }
-
       var index = attributes.indexWhere((attribute) => attribute is Attribute && attribute.name == 'this');
 
       if (index == -1) {
@@ -262,16 +465,13 @@ extension TagParser on Parser {
         invalidElementDefinition();
       }
 
-      var taggedNode = element as TaggedNode;
       var first = children.first;
 
       if (first is Text) {
         var literal = Token(TokenType.STRING, first.start!);
-        taggedNode.tag = astFactory.simpleStringLiteral(literal, first.data ?? '');
+        element.tag = astFactory.simpleStringLiteral(literal, first.data);
       } else if (first is Attribute) {
-        taggedNode.tag = first.expression;
-      } else {
-        error('parser-error', '${first.runtimeType} not supported');
+        element.tag = first.expression;
       }
     }
 
@@ -305,246 +505,12 @@ extension TagParser on Parser {
     } else if (name == 'script' || name == 'style') {
       var start = index;
       var data = readUntil('</$name>');
-      var text = Text(start: start, end: index, data: data);
+      var text = Text(start: start, end: index, raw: data, data: data);
       element.children.add(text);
       expect('</$name>');
       element.end = index;
     } else {
       stack.add(element);
     }
-  }
-
-  String readTagName() {
-    var start = index;
-
-    if (scan(selfRe)) {
-      for (var fragment in stack.reversed) {
-        if (fragment is IfBlock || fragment is EachBlock || fragment is InlineComponent) {
-          return 'piko:self';
-        }
-      }
-
-      invalidSelfPlacement(start);
-    }
-
-    if (scan(componentRe)) {
-      return 'piko:component';
-    }
-
-    if (scan(elementRe)) {
-      return 'piko:element';
-    }
-
-    if (scan(fragmentRe)) {
-      return 'piko:fragment';
-    }
-
-    var name = readUntil(metaTagEndRe);
-
-    if (metaTags.containsKey(name)) {
-      return name;
-    }
-
-    if (name.startsWith('piko:')) {
-      invalidTagNamePikoElement(validMetaTags, start);
-    }
-
-    if (!tagRe.hasMatch(name)) {
-      invalidTagName(start);
-    }
-
-    return name;
-  }
-
-  bool readAttribute(Element element, Set<String> uniqueNames) {
-    var start = index;
-
-    void checkUnique(String name) {
-      if (uniqueNames.contains(name)) {
-        duplicateAttribute(start, index);
-      }
-
-      uniqueNames.add(name);
-    }
-
-    if (scan('{')) {
-      allowSpace();
-
-      if (scan('...')) {
-        var expression = readExpression();
-        allowSpace();
-        expect('}');
-        element.attributes.add(Attribute(start: start, end: index, type: 'Spread', value: expression));
-        return true;
-      } else {
-        var valueStart = index;
-        var name = readIdentifier();
-        allowSpace();
-        expect('}');
-
-        if (name == null) {
-          emptyAttributeShorthand(start);
-        }
-
-        checkUnique(name);
-
-        var tokenType = TokenType(name, 'IDENTIFIER', 0, 97);
-        var token = Token(tokenType, valueStart);
-        var identifier = astFactory.simpleIdentifier(token);
-        var end = valueStart + name.length;
-        var shortHand = AttributeShorthand(start: valueStart, end: end, expression: identifier);
-        element.attributes.add(Attribute(start: start, end: index, name: name, value: shortHand));
-        return true;
-      }
-    }
-
-    var name = readUntil(attributeNameEndRe);
-
-    if (name.isEmpty) {
-      return false;
-    }
-
-    var end = index;
-    allowSpace();
-
-    var colonIndex = name.indexOf(':');
-    String? type;
-
-    if (colonIndex != -1) {
-      type = getDirectiveType(name.substring(0, colonIndex));
-    }
-
-    List<Node>? values;
-
-    if (scan('=')) {
-      allowSpace();
-      values = readAttributeValues();
-      end = index;
-    } else if (match(quoteRe)) {
-      unexpectedToken('=', start);
-    }
-
-    if (type != null) {
-      var modifiers = name.substring(colonIndex + 1).split('|');
-      var directiveName = modifiers.removeAt(0);
-
-      if (directiveName.isEmpty) {
-        emptyDirectiveName(type, start + colonIndex + 1);
-      }
-
-      if (type == 'Binding' && directiveName != 'this') {
-        checkUnique(directiveName);
-      } else if (type != 'EventHandler' && type != 'Action') {
-        checkUnique(directiveName);
-      }
-
-      if (type == 'Ref') {
-        invalidRefDirective(name, start);
-      }
-
-      if (type == 'StyleDirective') {
-        element.attributes.add(Directive(start: start, end: end, type: type, name: directiveName));
-        return true;
-      }
-
-      if (values != null) {
-        if (values.length > 1 || values.first is Text) {
-          invalidDirectiveValue(values.first.start);
-        }
-      }
-
-      var directive = Directive(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
-
-      if (values != null && values.isNotEmpty) {
-        var first = values.first;
-
-        if (first is ExpressionNode) {
-          directive.expression = first.expression;
-        }
-      }
-
-      if (type == 'Transition') {
-        var direction = name.substring(0, colonIndex);
-        directive.intro = direction == 'in' || direction == 'transition';
-        directive.outro = direction == 'out' || direction == 'transition';
-      }
-
-      if (values == null && (type == 'Binding' || type == 'Class')) {
-        var tokenType = TokenType(directiveName, 'IDENTIFIER', 0, 97);
-        var token = Token(tokenType, directive.start! + colonIndex + 1);
-        directive.expression = astFactory.simpleIdentifier(token);
-      }
-
-      element.attributes.add(directive);
-      return true;
-    }
-
-    checkUnique(name);
-    element.attributes.add(Attribute(start: start, end: end, name: name, value: values));
-    return true;
-  }
-
-  List<Node> readAttributeValues() {
-    var quoteMark = read(quoteRe);
-
-    if (quoteMark != null && scan(quoteMark)) {
-      return <Node>[Text(start: index - 1, end: index - 1, data: '')];
-    }
-
-    var regex = quoteMark ?? attributeValueEndRe;
-    List<Node> values;
-
-    try {
-      values = readSequence(regex);
-    } on CompileError catch (error) {
-      index = error.span.start.offset;
-      unclosedAttributeValue(quoteMark ?? '}');
-    }
-
-    if (values.isEmpty && quoteMark == null) {
-      missingAttributeValue();
-    }
-
-    if (quoteMark != null) {
-      expect(quoteMark);
-    }
-
-    return values;
-  }
-
-  List<Node> readSequence(Pattern pattern) {
-    var buffer = StringBuffer();
-    var chunks = <Node>[];
-    var textStart = index;
-
-    void flush(int end) {
-      if (buffer.isNotEmpty) {
-        chunks.add(Text(start: textStart, end: end, data: decodeCharacterReferences(buffer.toString())));
-        buffer.clear();
-      }
-    }
-
-    while (canParse) {
-      if (match(pattern)) {
-        flush(index);
-        return chunks;
-      }
-
-      if (scan('{')) {
-        var start = index - 1;
-        flush(start);
-        allowSpace();
-
-        var expression = readExpression();
-        allowSpace();
-        expect('}');
-        chunks.add(Mustache(start: start, end: index, expression: expression));
-        textStart = index;
-      } else {
-        buffer.writeCharCode(readChar());
-      }
-    }
-
-    unexpectedEOF();
   }
 }

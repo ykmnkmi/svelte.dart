@@ -1,7 +1,10 @@
 {
   "code": "unclosed-script",
   "message": "<script> must have a closing tag",
-  "offset": 32,
-  "line": 3,
-  "column": 22
+  "start": {
+    "line": 3,
+    "column": 22,
+    "character": 32
+  },
+  "pos": 32
 }

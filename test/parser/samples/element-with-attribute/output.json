@@ -2,26 +2,26 @@
   "html": {
     "start": 0,
     "end": 49,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 24,
-        "_": "Element",
+        "type": "Element",
         "name": "span",
         "attributes": [
           {
             "start": 6,
             "end": 16,
-            "_": "Attribute",
+            "type": "Attribute",
             "name": "attr",
-            "children": [
+            "value": [
               {
                 "start": 12,
                 "end": 15,
-                "_": "Text",
-                "data": "foo",
-                "raw": "foo"
+                "type": "Text",
+                "raw": "foo",
+                "data": "foo"
               }
             ]
           }
@@ -31,28 +31,28 @@
       {
         "start": 24,
         "end": 25,
-        "_": "Text",
-        "data": "\n",
-        "raw": "\n"
+        "type": "Text",
+        "raw": "\n",
+        "data": "\n"
       },
       {
         "start": 25,
         "end": 49,
-        "_": "Element",
+        "type": "Element",
         "name": "span",
         "attributes": [
           {
             "start": 31,
             "end": 41,
-            "_": "Attribute",
+            "type": "Attribute",
             "name": "attr",
-            "children": [
+            "value": [
               {
                 "start": 37,
                 "end": 40,
-                "_": "Text",
-                "data": "bar",
-                "raw": "bar"
+                "type": "Text",
+                "raw": "bar",
+                "data": "bar"
               }
             ]
           }
