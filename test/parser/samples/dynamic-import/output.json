@@ -37,8 +37,6 @@
                       "start": 70,
                       "end": 135,
                       "_": "MethodInvocation",
-                      "isCascaded": false,
-                      "isNullAware": false,
                       "methodName": {
                         "start": 88,
                         "end": 92,
@@ -49,8 +47,6 @@
                         "start": 70,
                         "end": 87,
                         "_": "MethodInvocation",
-                        "isCascaded": false,
-                        "isNullAware": false,
                         "methodName": {
                           "start": 74,
                           "end": 85,
@@ -72,8 +68,7 @@
                         "argumentList": {
                           "start": 85,
                           "end": 87,
-                          "_": "ArgumentList",
-                          "arguments": []
+                          "_": "ArgumentList"
                         },
                         "function": {
                           "start": 74,
@@ -86,8 +81,6 @@
                         "start": 70,
                         "end": 87,
                         "_": "MethodInvocation",
-                        "isCascaded": false,
-                        "isNullAware": false,
                         "methodName": {
                           "start": 74,
                           "end": 85,
@@ -109,8 +102,7 @@
                         "argumentList": {
                           "start": 85,
                           "end": 87,
-                          "_": "ArgumentList",
-                          "arguments": []
+                          "_": "ArgumentList"
                         },
                         "function": {
                           "start": 74,
@@ -145,8 +137,6 @@
                                       "start": 111,
                                       "end": 127,
                                       "_": "MethodInvocation",
-                                      "isCascaded": false,
-                                      "isNullAware": false,
                                       "methodName": {
                                         "start": 111,
                                         "end": 116,
@@ -168,7 +158,6 @@
                                               "_": "SimpleIdentifier",
                                               "name": "value"
                                             },
-                                            "isDeferred": false,
                                             "prefix": {
                                               "start": 117,
                                               "end": 120,
@@ -189,8 +178,6 @@
                                   }
                                 ]
                               },
-                              "isAsynchronous": false,
-                              "isGenerator": false,
                               "isSynchronous": true
                             },
                             "parameters": {
@@ -204,9 +191,7 @@
                                   "_": "SimpleFormalParameter"
                                 }
                               ]
-                            },
-                            "inConstantContext": false,
-                            "isAssignable": false
+                            }
                           }
                         ]
                       },
@@ -225,7 +210,6 @@
                             "start": 93,
                             "end": 97,
                             "_": "NamedType",
-                            "isDeferred": false,
                             "name": {
                               "start": 93,
                               "end": 97,
@@ -239,21 +223,14 @@
                   }
                 ]
               },
-              "isAsynchronous": false,
-              "isGenerator": false,
               "isSynchronous": true
             },
             "parameters": {
               "start": 61,
               "end": 63,
-              "_": "FormalParameterList",
-              "parameters": []
-            },
-            "inConstantContext": false,
-            "isAssignable": false
+              "_": "FormalParameterList"
+            }
           },
-          "isGetter": false,
-          "isSetter": false,
           "name": {
             "start": 54,
             "end": 61,
@@ -264,7 +241,6 @@
             "start": 49,
             "end": 53,
             "_": "NamedType",
-            "isDeferred": false,
             "name": {
               "start": 49,
               "end": 53,
@@ -283,10 +259,8 @@
             "start": 41,
             "end": 44,
             "_": "SimpleIdentifier",
-            "name": "fpp"
-          },
-          "combinators": [],
-          "configurations": []
+            "name": "foo"
+          }
         }
       ]
     }

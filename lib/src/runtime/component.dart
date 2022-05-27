@@ -16,15 +16,13 @@ abstract class Component {
 }
 
 abstract class Fragment<T extends Component> {
-  Fragment(this.context, this.component, {this.depth = 0}) : dirty = <String>{} {
+  Fragment(this.context, this.component) : dirty = <String>{} {
     component.fragment = this;
   }
 
   final Context context;
 
   final T component;
-
-  final int depth;
 
   final Set<String> dirty;
 
@@ -35,14 +33,6 @@ abstract class Fragment<T extends Component> {
   void create() {}
 
   void mount(Element target, [Node? anchor]) {}
-
-  void makeDirty(String aspect) {
-    if (dirty.isEmpty) {
-      scheduler.scheduleUpdate(this);
-    }
-
-    dirty.add(aspect);
-  }
 
   void update(Set<String> aspects) {}
 

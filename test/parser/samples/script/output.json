@@ -64,9 +64,6 @@
             "start": 11,
             "end": 29,
             "_": "VariableDeclarationList",
-            "isConst": false,
-            "isFinal": false,
-            "isLate": false,
             "variables": [
               {
                 "start": 15,
@@ -79,13 +76,8 @@
                   "value": "world",
                   "contentsEnd": 28,
                   "contentsOffset": 23,
-                  "isMultiline": false,
-                  "isRaw": false,
                   "isSingleQuoted": true
                 },
-                "isConst": false,
-                "isFinal": false,
-                "isLate": false,
                 "name": {
                   "start": 15,
                   "end": 19,
@@ -93,12 +85,10 @@
                   "name": "name"
                 }
               }
-            ],
-            "metadata": []
+            ]
           }
         }
-      ],
-      "directives": []
+      ]
     }
   }
 }

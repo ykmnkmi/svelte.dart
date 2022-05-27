@@ -42,8 +42,6 @@
                   "value": "",
                   "contentsEnd": 14,
                   "contentsOffset": 14,
-                  "isMultiline": false,
-                  "isRaw": false,
                   "isSingleQuoted": true
                 }
               }
@@ -81,8 +79,6 @@
                   "value": "",
                   "contentsEnd": 27,
                   "contentsOffset": 27,
-                  "isMultiline": false,
-                  "isRaw": false,
                   "isSingleQuoted": true
                 }
               }

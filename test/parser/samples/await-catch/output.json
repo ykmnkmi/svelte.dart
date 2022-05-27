@@ -99,7 +99,6 @@
                       "_": "SimpleIdentifier",
                       "name": "message"
                     },
-                    "isDeferred": false,
                     "prefix": {
                       "start": 71,
                       "end": 79,

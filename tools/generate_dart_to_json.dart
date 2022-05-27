@@ -95,7 +95,7 @@ Future<void> main() async {
   var klasses = library.topLevelElements.whereType<ClassElement>().toList();
   klasses.sort(((left, right) => left.nameOffset.compareTo(right.nameOffset)));
 
-  var sink = File('lib/src/compiler/script_to_json.dart').openWrite();
+  var sink = File('lib/src/compiler/dart_to_json.dart').openWrite();
   sink.write(header);
 
   void writeFields(ClassElement klass, Set<String> writed) {
@@ -115,29 +115,30 @@ Future<void> main() async {
       }
 
       if (accessor.isGetter) {
-        var check = '';
-        String prefix;
+        String prefix, check;
 
         if (typeSystem.isNullable(accessor.returnType)) {
           prefix = '\n      if (node.$name != null) \'$name\':';
           check = '!';
         } else {
           prefix = '\n      \'$name\':';
+          check = '';
         }
 
         if (isAstNode(accessor.returnType)) {
           sink.write('$prefix node.$name$check.accept(this),');
         } else if (isNodeList(accessor.returnType)) {
           sink
-            ..write('$prefix <Map<String, Object?>?>[\n')
-            ..write('        for (var item in node.$name$check) item.accept(this),\n')
-            ..write('      ],');
+            ..write('\n      if (node.$name.isNotEmpty)')
+            ..write('\n        \'$name\': <Map<String, Object?>?>[')
+            ..write('\n          for (var item in node.$name) item.accept(this),')
+            ..write('\n        ],');
         } else if (isString(accessor.returnType)) {
           sink.write('$prefix node.$name$check,');
         } else if (isNum(accessor.returnType)) {
           sink.write('$prefix node.$name$check,');
         } else if (isBool(accessor.returnType)) {
-          sink.write('$prefix node.$name$check,');
+          sink.write('\n     if (node.$name) \'$name\': node.$name$check,');
         }
 
         writed.add(name);
@@ -182,7 +183,7 @@ Future<void> main() async {
     }
   }
 
-  sink.write('\n}');
+  sink.write('\n}\n');
   sink.close();
 }
 

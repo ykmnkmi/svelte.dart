@@ -30,7 +30,6 @@
             "_": "SimpleIdentifier",
             "name": "id"
           },
-          "isDeferred": false,
           "prefix": {
             "start": 22,
             "end": 26,

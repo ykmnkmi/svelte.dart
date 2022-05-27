@@ -34,9 +34,7 @@
                   "end": 37,
                   "_": "SimpleIdentifier",
                   "name": "visible"
-                },
-                "inConstantContext": false,
-                "isAssignable": false
+                }
               }
             }
           }

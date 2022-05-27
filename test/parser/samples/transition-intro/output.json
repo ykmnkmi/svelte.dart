@@ -31,8 +31,6 @@
                     "value": "opacity",
                     "contentsEnd": 25,
                     "contentsOffset": 18,
-                    "isMultiline": false,
-                    "isRaw": false,
                     "isSingleQuoted": true
                   },
                   "value": {
@@ -42,10 +40,7 @@
                     "value": 0
                   }
                 }
-              ],
-              "isMap": false,
-              "isSet": false,
-              "isConst": false
+              ]
             },
             "intro": true
           }

@@ -1,5 +1,5 @@
 <script>
-  import 'foo.dart' deferred as fpp;
+  import 'foo.dart' deferred as foo;
 
   void onMount() {
     foo.loadLibrary().then<void>((_) {

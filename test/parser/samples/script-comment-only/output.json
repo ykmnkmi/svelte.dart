@@ -27,9 +27,7 @@
     "content": {
       "start": 8,
       "end": 35,
-      "_": "CompilationUnit",
-      "declarations": [],
-      "directives": []
+      "_": "CompilationUnit"
     }
   }
 }

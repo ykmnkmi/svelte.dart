@@ -23,9 +23,7 @@
             "end": 14,
             "_": "IntegerLiteral",
             "value": 1
-          },
-          "inConstantContext": false,
-          "isAssignable": false
+          }
         },
         "children": [
           {
@@ -59,9 +57,7 @@
                         "end": 46,
                         "_": "IntegerLiteral",
                         "value": 1
-                      },
-                      "inConstantContext": false,
-                      "isAssignable": false
+                      }
                     }
                   }
                 ]

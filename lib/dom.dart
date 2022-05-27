@@ -1,6 +1,6 @@
 import 'dart:html' show Element, EventListener, Node, Text;
 
-export 'dart:html' show AnchorElement, ButtonElement, Element, Event, Node, document, window;
+export 'dart:html' show AnchorElement, ButtonElement, Element, Event, Node, Text, document, window;
 
 Text empty() {
   return text('');
@@ -45,6 +45,10 @@ void Function() listen(Node node, String type, EventListener listener, [bool? us
   return () {
     node.removeEventListener(type, listener, useCapture);
   };
+}
+
+void append(Node target, Node node) {
+  target.append(node);
 }
 
 void insert(Node target, Node node, [Node? anchor]) {

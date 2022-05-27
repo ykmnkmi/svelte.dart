@@ -51,14 +51,11 @@
             "start": 46,
             "end": 68,
             "_": "VariableDeclarationList",
-            "isConst": false,
-            "isFinal": false,
             "isLate": true,
             "type": {
               "start": 51,
               "end": 64,
               "_": "NamedType",
-              "isDeferred": false,
               "name": {
                 "start": 51,
                 "end": 64,
@@ -71,8 +68,6 @@
                 "start": 65,
                 "end": 68,
                 "_": "VariableDeclaration",
-                "isConst": false,
-                "isFinal": false,
                 "isLate": true,
                 "name": {
                   "start": 65,
@@ -81,8 +76,7 @@
                   "name": "foo"
                 }
               }
-            ],
-            "metadata": []
+            ]
           }
         }
       ],
@@ -90,9 +84,7 @@
         {
           "start": 11,
           "end": 42,
-          "_": "ImportDirective",
-          "combinators": [],
-          "configurations": []
+          "_": "ImportDirective"
         }
       ]
     }

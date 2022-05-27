@@ -19,8 +19,6 @@
               "start": 21,
               "end": 37,
               "_": "MethodInvocation",
-              "isCascaded": false,
-              "isNullAware": false,
               "methodName": {
                 "start": 21,
                 "end": 22,
@@ -39,8 +37,6 @@
                     "value": "tooltip msg",
                     "contentsEnd": 35,
                     "contentsOffset": 24,
-                    "isMultiline": false,
-                    "isRaw": false,
                     "isSingleQuoted": true
                   }
                 ]

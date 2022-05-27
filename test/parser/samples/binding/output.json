@@ -51,14 +51,10 @@
             "start": 11,
             "end": 23,
             "_": "VariableDeclarationList",
-            "isConst": false,
-            "isFinal": false,
-            "isLate": false,
             "type": {
               "start": 11,
               "end": 18,
               "_": "NamedType",
-              "isDeferred": false,
               "name": {
                 "start": 11,
                 "end": 17,
@@ -71,9 +67,6 @@
                 "start": 19,
                 "end": 23,
                 "_": "VariableDeclaration",
-                "isConst": false,
-                "isFinal": false,
-                "isLate": false,
                 "name": {
                   "start": 19,
                   "end": 23,
@@ -81,12 +74,10 @@
                   "name": "name"
                 }
               }
-            ],
-            "metadata": []
+            ]
           }
         }
-      ],
-      "directives": []
+      ]
     }
   }
 }
