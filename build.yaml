@@ -16,3 +16,10 @@ global_options:
         - --trust-primitives
         - --omit-as-casts
         - --fast-startup
+
+targets:
+  $default:
+    builders:
+      build_web_compilers:entrypoint:
+        generate_for:
+        - web/**.dart

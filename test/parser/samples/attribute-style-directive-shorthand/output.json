@@ -2,23 +2,21 @@
   "html": {
     "start": 0,
     "end": 23,
-    "type": "Fragment",
+    "_": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 23,
-        "type": "Element",
+        "_": "Element",
         "name": "div",
         "attributes": [
           {
             "start": 5,
             "end": 16,
-            "type": "StyleDirective",
-            "name": "color",
-            "value": true
+            "_": "StyleDirective",
+            "name": "color"
           }
-        ],
-        "children": []
+        ]
       }
     ]
   }

@@ -243,7 +243,7 @@ mixin TransitionNode on Node {
   }
 }
 
-class Directive extends Node with NamedNode, ModifiersNode, ExpressionNode, TransitionNode, NoChildrenNode {
+class Directive extends Node with NamedNode, ModifiersNode, ExpressionNode, TransitionNode, ChildrenNode {
   Directive({
     super.start,
     super.end,
@@ -253,7 +253,9 @@ class Directive extends Node with NamedNode, ModifiersNode, ExpressionNode, Tran
     this.expression,
     this.intro = false,
     this.outro = false,
-  }) : assert(isDirective(type));
+    List<Node>? children,
+  })  : assert(isDirective(type)),
+        children = children ?? <Node>[];
 
   @override
   String name;
@@ -269,6 +271,9 @@ class Directive extends Node with NamedNode, ModifiersNode, ExpressionNode, Tran
 
   @override
   bool outro;
+
+  @override
+  List<Node> children;
 
   static bool isDirective(String type) {
     return type == 'Action' ||

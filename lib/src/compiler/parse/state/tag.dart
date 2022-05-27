@@ -256,7 +256,7 @@ extension TagParser on Parser {
       }
 
       if (type == 'StyleDirective') {
-        element.attributes.add(Directive(start: start, end: end, type: type, name: directiveName));
+        element.attributes.add(Directive(start: start, end: end, type: type, name: directiveName, children: values));
         return true;
       }
 
@@ -469,7 +469,7 @@ extension TagParser on Parser {
 
       if (first is Text) {
         element.tag = first.data;
-      } else if (first is Attribute) {
+      } else if (first is ExpressionNode) {
         element.tag = first.expression;
       }
     }
