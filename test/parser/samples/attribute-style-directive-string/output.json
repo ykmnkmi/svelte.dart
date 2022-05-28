@@ -1,0 +1,296 @@
+{
+  "html": {
+    "start": 0,
+    "end": 252,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 29,
+        "_": "Element",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 22,
+            "_": "StyleDirective",
+            "name": "color",
+            "children": [
+              {
+                "start": 18,
+                "end": 21,
+                "_": "Text",
+                "raw": "red",
+                "data": "red"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "start": 29,
+        "end": 30,
+        "_": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 30,
+        "end": 59,
+        "_": "Element",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 35,
+            "end": 52,
+            "_": "StyleDirective",
+            "name": "color",
+            "children": [
+              {
+                "start": 48,
+                "end": 51,
+                "_": "Text",
+                "raw": "red",
+                "data": "red"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "start": 59,
+        "end": 60,
+        "_": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 60,
+        "end": 87,
+        "_": "Element",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 65,
+            "end": 80,
+            "_": "StyleDirective",
+            "name": "color",
+            "children": [
+              {
+                "start": 77,
+                "end": 80,
+                "_": "Text",
+                "raw": "red",
+                "data": "red"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "start": 87,
+        "end": 88,
+        "_": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 88,
+        "end": 127,
+        "_": "Element",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 93,
+            "end": 120,
+            "_": "StyleDirective",
+            "name": "color",
+            "children": [
+              {
+                "start": 106,
+                "end": 109,
+                "_": "Text",
+                "raw": "red",
+                "data": "red"
+              },
+              {
+                "start": 109,
+                "end": 119,
+                "_": "MustacheTag",
+                "expression": {
+                  "start": 110,
+                  "end": 118,
+                  "_": "SimpleIdentifier",
+                  "name": "variable"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "start": 127,
+        "end": 128,
+        "_": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 128,
+        "end": 167,
+        "_": "Element",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 133,
+            "end": 160,
+            "_": "StyleDirective",
+            "name": "color",
+            "children": [
+              {
+                "start": 146,
+                "end": 149,
+                "_": "Text",
+                "raw": "red",
+                "data": "red"
+              },
+              {
+                "start": 149,
+                "end": 159,
+                "_": "MustacheTag",
+                "expression": {
+                  "start": 150,
+                  "end": 158,
+                  "_": "SimpleIdentifier",
+                  "name": "variable"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "start": 167,
+        "end": 168,
+        "_": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 168,
+        "end": 205,
+        "_": "Element",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 173,
+            "end": 198,
+            "_": "StyleDirective",
+            "name": "color",
+            "children": [
+              {
+                "start": 185,
+                "end": 188,
+                "_": "Text",
+                "raw": "red",
+                "data": "red"
+              },
+              {
+                "start": 188,
+                "end": 198,
+                "_": "MustacheTag",
+                "expression": {
+                  "start": 189,
+                  "end": 197,
+                  "_": "SimpleIdentifier",
+                  "name": "variable"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "start": 205,
+        "end": 206,
+        "_": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 206,
+        "end": 252,
+        "_": "Element",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 211,
+            "end": 245,
+            "_": "StyleDirective",
+            "name": "color",
+            "children": [
+              {
+                "start": 223,
+                "end": 245,
+                "_": "MustacheTag",
+                "expression": {
+                  "start": 224,
+                  "end": 244,
+                  "_": "StringInterpolation",
+                  "elements": [
+                    {
+                      "start": 224,
+                      "end": 233,
+                      "_": "InterpolationString",
+                      "contentsEnd": 233,
+                      "contentsOffset": 225,
+                      "value": "template"
+                    },
+                    {
+                      "start": 233,
+                      "end": 243,
+                      "_": "InterpolationExpression",
+                      "expression": {
+                        "start": 235,
+                        "end": 242,
+                        "_": "SimpleIdentifier",
+                        "name": "literal"
+                      }
+                    },
+                    {
+                      "start": 243,
+                      "end": 244,
+                      "_": "InterpolationString",
+                      "contentsEnd": 243,
+                      "contentsOffset": 243,
+                      "value": ""
+                    }
+                  ],
+                  "firstString": {
+                    "start": 224,
+                    "end": 233,
+                    "_": "InterpolationString",
+                    "contentsEnd": 233,
+                    "contentsOffset": 225,
+                    "value": "template"
+                  },
+                  "lastString": {
+                    "start": 243,
+                    "end": 244,
+                    "_": "InterpolationString",
+                    "contentsEnd": 243,
+                    "contentsOffset": 243,
+                    "value": ""
+                  },
+                  "contentsEnd": 243,
+                  "contentsOffset": 225,
+                  "isSingleQuoted": true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

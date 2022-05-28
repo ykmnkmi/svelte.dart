@@ -2,16 +2,18 @@ import 'dart:convert';
 import 'dart:io' show Directory, File;
 
 import 'package:piko/compiler.dart' show parse;
-import 'package:path/path.dart' show basename, join, normalize;
 import 'package:piko/src/compiler/parse/errors.dart' show CompileError;
 import 'package:test/test.dart';
 
+const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+
 void main() {
   group('parser', () {
-    var dirs = Directory(normalize('test/parser/samples')).listSync();
+    var dirs = Directory.fromUri(Uri.directory('test/parser/samples')).listSync();
 
     for (var dir in dirs) {
-      var input = File(join(dir.path, 'input.piko')).readAsStringSync();
+      var uri = Uri.directory(dir.path).resolveUri(Uri.file('input.piko'));
+      var input = File.fromUri(uri).readAsStringSync();
 
       Object? current, expected;
       Object? skip;
@@ -23,7 +25,7 @@ void main() {
       try {
         current = parse(input).toJson();
 
-        var file = File(join(dir.path, 'output.json'));
+        var file = File.fromUri(uri.resolveUri(Uri.file('output.json')));
 
         if (file.existsSync()) {
           expected = json.decode(file.readAsStringSync());
@@ -33,7 +35,7 @@ void main() {
       } on CompileError catch (error) {
         current = error.toJson();
 
-        var file = File(join(dir.path, 'error.json'));
+        var file = File.fromUri(uri.resolveUri(Uri.file('error.json')));
 
         if (file.existsSync()) {
           expected = json.decode(file.readAsStringSync());
@@ -44,7 +46,7 @@ void main() {
         skip = '${dir.path}: error';
       }
 
-      test('sample: ${basename(dir.path)}', callback, skip: skip);
+      test('sample: ${dir.path}', callback, skip: skip);
     }
   });
 }

@@ -42,7 +42,7 @@ mixin ChildrenNode on Node {
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (children.isNotEmpty) 'children': children,
+      if (children.isNotEmpty) 'children': children.map<Map<String, Object?>>(((child) => child.toJson())).toList(),
     };
   }
 }
@@ -223,7 +223,7 @@ mixin ModifiersNode on Node {
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (modifiers != null && modifiers!.isNotEmpty) 'ignores': modifiers,
+      if (modifiers != null && modifiers!.isNotEmpty) 'modifiers': modifiers,
     };
   }
 }
@@ -339,7 +339,8 @@ mixin AttributesNode on Node {
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (attributes.isNotEmpty) 'attributes': attributes,
+      if (attributes.isNotEmpty)
+        'attributes': attributes.map<Map<String, Object?>>((attribute) => attribute.toJson()).toList(),
     };
   }
 }
@@ -513,7 +514,7 @@ mixin ElseNode on Node {
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (elseNode != null) 'else': elseNode,
+      if (elseNode != null) 'else': elseNode!.toJson(),
     };
   }
 }
@@ -721,7 +722,7 @@ mixin PendingNode on Node {
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (pendingNode != null) 'pending': pendingNode,
+      if (pendingNode != null) 'pending': pendingNode!.toJson(),
     };
   }
 }
@@ -733,7 +734,7 @@ mixin ThenNode on Node {
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (thenNode != null) 'then': thenNode,
+      if (thenNode != null) 'then': thenNode!.toJson(),
     };
   }
 }
@@ -745,7 +746,7 @@ mixin CatchNode on Node {
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (catchNode != null) 'catch': catchNode,
+      if (catchNode != null) 'catch': catchNode!.toJson(),
     };
   }
 }
@@ -763,16 +764,25 @@ mixin ErrorNode on Node {
 }
 
 class KeyBlock extends Node with ExpressionNode, NoChildrenNode {
-  KeyBlock({super.start, super.end, this.expression}) : super(type: 'KeyBlock');
+  KeyBlock({
+    super.start,
+    super.end,
+    super.type = 'KeyBlock',
+    this.expression,
+  });
 
   @override
   Expression? expression;
 }
 
 class PendingBlock extends Node with SkipNode, ChildrenNode {
-  PendingBlock({super.start, super.end, this.skip = false})
-      : children = <Node>[],
-        super(type: 'PendingBlock');
+  PendingBlock({
+    super.start,
+    super.end,
+    super.type = 'PendingBlock',
+    this.skip = false,
+    List<Node>? children,
+  }) : children = children ?? <Node>[];
 
   @override
   bool skip;
@@ -787,9 +797,13 @@ class PendingBlock extends Node with SkipNode, ChildrenNode {
 }
 
 class ThenBlock extends Node with SkipNode, ChildrenNode {
-  ThenBlock({super.start, super.end, this.skip = false})
-      : children = <Node>[],
-        super(type: 'ThenBlock');
+  ThenBlock({
+    super.start,
+    super.end,
+    super.type = 'ThenBlock',
+    this.skip = false,
+    List<Node>? children,
+  }) : children = children ?? <Node>[];
 
   @override
   bool skip;
@@ -804,9 +818,13 @@ class ThenBlock extends Node with SkipNode, ChildrenNode {
 }
 
 class CatchBlock extends Node with SkipNode, ChildrenNode {
-  CatchBlock({super.start, super.end, this.skip = false})
-      : children = <Node>[],
-        super(type: 'CatchBlock');
+  CatchBlock({
+    super.start,
+    super.end,
+    super.type = 'CatchBlock',
+    this.skip = false,
+    List<Node>? children,
+  }) : children = children ?? <Node>[];
 
   @override
   bool skip;
