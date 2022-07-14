@@ -1,7 +1,8 @@
-part of piko.runtime;
+import 'package:meta/meta.dart';
+import 'package:piko/src/compiler/interface.dart';
 
 @optionalTypeArgs
-abstract class Action<T extends Node, P> {
+abstract class Action<T extends Element, P> {
   Action(this.node);
 
   final T node;

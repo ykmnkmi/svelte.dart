@@ -1,18 +1,16 @@
-library piko.runtime;
-
 import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
+import 'package:piko/src/runtime/component.dart';
 
-export 'package:piko/dom.dart';
+export 'package:piko/src/runtime/action.dart';
+export 'package:piko/src/runtime/component.dart';
+export 'package:piko/src/runtime/fragment.dart';
 
-part 'src/runtime/action.dart';
-part 'src/runtime/component.dart';
-part 'src/runtime/scheduler.dart';
+@optionalTypeArgs
+void runApp<T extends Component>(Component component, {Element? target}) {
+  target ??= unsafeCast<Element>(querySelector('body'));
 
-void runApp<T extends Component>(Component component, {Element? root}) {
-  var target = root ?? document.body!;
-  var context = Context(target);
-  component.createFragment(context)
+  component
     ..create()
-    ..mount(target);
+    ..mount(target, null);
 }

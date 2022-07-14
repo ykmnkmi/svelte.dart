@@ -1,52 +1,28 @@
-part of piko.runtime;
+import 'dart:collection';
 
-class Context {
-  Context(this.root) : scheduler = Scheduler();
+import 'package:meta/meta.dart';
+import 'package:piko/src/runtime/fragment.dart';
+import 'package:piko/src/runtime/scheduler.dart';
 
-  final Element root;
-
-  final Scheduler scheduler;
-}
-
-abstract class Component {
+abstract class Component extends Fragment {
   @internal
-  late Fragment<Component> fragment;
+  Set<String> dirty = HashSet<String>();
 
-  Fragment<Component> createFragment(Context tree);
-}
+  @internal
+  void markDirty(String name) {
+    if (dirty.isEmpty) {
+      scheduleUpdateFor(this);
+    }
 
-abstract class Fragment<T extends Component> {
-  Fragment(this.context, this.component) : dirty = <String>{} {
-    component.fragment = this;
+    dirty.add(name);
   }
 
-  final Context context;
+  @internal
+  void invalidate(String name, Object? oldValue, Object? newValue) {
+    if (identical(oldValue, newValue)) {
+      return;
+    }
 
-  final T component;
-
-  final Set<String> dirty;
-
-  Scheduler get scheduler {
-    return context.scheduler;
+    markDirty(name);
   }
-
-  void create() {}
-
-  void mount(Element target, [Node? anchor]) {}
-
-  void update(Set<String> aspects) {}
-
-  void detach([bool detaching = true]) {}
-}
-
-void createFragment<T extends Component>(Fragment<T> fragment) {
-  fragment.create();
-}
-
-void mountFragment<T extends Component>(Fragment<T> fragment, Element target, [Node? anchor]) {
-  fragment.mount(target, anchor);
-}
-
-void destroyFragment<T extends Component>(Fragment<T> fragment) {
-  fragment.detach();
 }

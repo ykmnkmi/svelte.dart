@@ -7,19 +7,24 @@ global_options:
       # compiler: dart2js
       dart2js_args:
         # - --verbose
-        # - --disable-inlining
+        - --disable-inlining
         # - --no-source-maps
+        # - --dump-info
 
-        - --minify
-        - --omit-implicit-checks
+        # - --minify
         - --lax-runtime-type-to-string
+        # - --omit-late-names
+        - --omit-implicit-checks
         - --trust-primitives
-        - --omit-as-casts
-        - --fast-startup
+        # - --omit-as-casts
+        # - --server-mode
+        # - --fast-startup
+
+        # - --csp
 
 targets:
   $default:
     builders:
       build_web_compilers:entrypoint:
         generate_for:
-        - web/**.dart
+          - web/**.dart

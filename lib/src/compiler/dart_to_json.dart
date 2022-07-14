@@ -62,8 +62,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'AsExpression',
       'expression': node.expression.accept(this),
       'type': node.type.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -103,8 +103,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'AwaitExpression',
       'expression': node.expression.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -115,8 +115,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'BinaryExpression',
       'leftOperand': node.leftOperand.accept(this),
       'rightOperand': node.rightOperand.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -138,9 +138,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'BlockFunctionBody',
       'block': node.block.accept(this),
-     if (node.isAsynchronous) 'isAsynchronous': node.isAsynchronous,
-     if (node.isGenerator) 'isGenerator': node.isGenerator,
-     if (node.isSynchronous) 'isSynchronous': node.isSynchronous,
+      if (node.isAsynchronous) 'isAsynchronous': node.isAsynchronous,
+      if (node.isGenerator) 'isGenerator': node.isGenerator,
+      if (node.isSynchronous) 'isSynchronous': node.isSynchronous,
     };
   }
 
@@ -149,7 +149,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'BooleanLiteral',
-     if (node.value) 'value': node.value,
+      if (node.value) 'value': node.value,
     };
   }
 
@@ -172,10 +172,10 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         'cascadeSections': <Map<String, Object?>?>[
           for (var item in node.cascadeSections) item.accept(this),
         ],
-     if (node.isNullAware) 'isNullAware': node.isNullAware,
+      if (node.isNullAware) 'isNullAware': node.isNullAware,
       'target': node.target.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -197,7 +197,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'ClassDeclaration',
       if (node.extendsClause != null) 'extendsClause': node.extendsClause!.accept(this),
-     if (node.isAbstract) 'isAbstract': node.isAbstract,
+      if (node.isAbstract) 'isAbstract': node.isAbstract,
       if (node.nativeClause != null) 'nativeClause': node.nativeClause!.accept(this),
       if (node.withClause != null) 'withClause': node.withClause!.accept(this),
       if (node.implementsClause != null) 'implementsClause': node.implementsClause!.accept(this),
@@ -216,7 +216,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'ClassTypeAlias',
       if (node.implementsClause != null) 'implementsClause': node.implementsClause!.accept(this),
-     if (node.isAbstract) 'isAbstract': node.isAbstract,
+      if (node.isAbstract) 'isAbstract': node.isAbstract,
       'name': node.name.accept(this),
       'superclass': node.superclass.accept(this),
       if (node.typeParameters != null) 'typeParameters': node.typeParameters!.accept(this),
@@ -229,9 +229,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'Comment',
-     if (node.isBlock) 'isBlock': node.isBlock,
-     if (node.isDocumentation) 'isDocumentation': node.isDocumentation,
-     if (node.isEndOfLine) 'isEndOfLine': node.isEndOfLine,
+      if (node.isBlock) 'isBlock': node.isBlock,
+      if (node.isDocumentation) 'isDocumentation': node.isDocumentation,
+      if (node.isEndOfLine) 'isEndOfLine': node.isEndOfLine,
       if (node.references.isNotEmpty)
         'references': <Map<String, Object?>?>[
           for (var item in node.references) item.accept(this),
@@ -273,8 +273,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'condition': node.condition.accept(this),
       'elseExpression': node.elseExpression.accept(this),
       'thenExpression': node.thenExpression.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -332,8 +332,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'ConstructorReference',
       'constructorName': node.constructorName.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -362,8 +362,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'DeclaredIdentifier',
       'identifier': node.identifier.accept(this),
-     if (node.isConst) 'isConst': node.isConst,
-     if (node.isFinal) 'isFinal': node.isFinal,
+      if (node.isConst) 'isConst': node.isConst,
+      if (node.isFinal) 'isFinal': node.isFinal,
       if (node.type != null) 'type': node.type!.accept(this),
     };
   }
@@ -376,17 +376,17 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       if (node.defaultValue != null) 'defaultValue': node.defaultValue!.accept(this),
       'parameter': node.parameter.accept(this),
       if (node.identifier != null) 'identifier': node.identifier!.accept(this),
-     if (node.isConst) 'isConst': node.isConst,
-     if (node.isExplicitlyTyped) 'isExplicitlyTyped': node.isExplicitlyTyped,
-     if (node.isFinal) 'isFinal': node.isFinal,
-     if (node.isNamed) 'isNamed': node.isNamed,
-     if (node.isOptional) 'isOptional': node.isOptional,
-     if (node.isOptionalNamed) 'isOptionalNamed': node.isOptionalNamed,
-     if (node.isOptionalPositional) 'isOptionalPositional': node.isOptionalPositional,
-     if (node.isPositional) 'isPositional': node.isPositional,
-     if (node.isRequired) 'isRequired': node.isRequired,
-     if (node.isRequiredNamed) 'isRequiredNamed': node.isRequiredNamed,
-     if (node.isRequiredPositional) 'isRequiredPositional': node.isRequiredPositional,
+      if (node.isConst) 'isConst': node.isConst,
+      if (node.isExplicitlyTyped) 'isExplicitlyTyped': node.isExplicitlyTyped,
+      if (node.isFinal) 'isFinal': node.isFinal,
+      if (node.isNamed) 'isNamed': node.isNamed,
+      if (node.isOptional) 'isOptional': node.isOptional,
+      if (node.isOptionalNamed) 'isOptionalNamed': node.isOptionalNamed,
+      if (node.isOptionalPositional) 'isOptionalPositional': node.isOptionalPositional,
+      if (node.isPositional) 'isPositional': node.isPositional,
+      if (node.isRequired) 'isRequired': node.isRequired,
+      if (node.isRequiredNamed) 'isRequiredNamed': node.isRequiredNamed,
+      if (node.isRequiredPositional) 'isRequiredPositional': node.isRequiredPositional,
       if (node.metadata.isNotEmpty)
         'metadata': <Map<String, Object?>?>[
           for (var item in node.metadata) item.accept(this),
@@ -430,9 +430,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'EmptyFunctionBody',
-     if (node.isAsynchronous) 'isAsynchronous': node.isAsynchronous,
-     if (node.isGenerator) 'isGenerator': node.isGenerator,
-     if (node.isSynchronous) 'isSynchronous': node.isSynchronous,
+      if (node.isAsynchronous) 'isAsynchronous': node.isAsynchronous,
+      if (node.isGenerator) 'isGenerator': node.isGenerator,
+      if (node.isSynchronous) 'isSynchronous': node.isSynchronous,
     };
   }
 
@@ -508,9 +508,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'ExpressionFunctionBody',
       'expression': node.expression.accept(this),
-     if (node.isAsynchronous) 'isAsynchronous': node.isAsynchronous,
-     if (node.isGenerator) 'isGenerator': node.isGenerator,
-     if (node.isSynchronous) 'isSynchronous': node.isSynchronous,
+      if (node.isAsynchronous) 'isAsynchronous': node.isAsynchronous,
+      if (node.isGenerator) 'isGenerator': node.isGenerator,
+      if (node.isSynchronous) 'isSynchronous': node.isSynchronous,
     };
   }
 
@@ -556,10 +556,10 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'ExtensionOverride',
       'argumentList': node.argumentList.accept(this),
       'extensionName': node.extensionName.accept(this),
-     if (node.isNullAware) 'isNullAware': node.isNullAware,
+      if (node.isNullAware) 'isNullAware': node.isNullAware,
       if (node.typeArguments != null) 'typeArguments': node.typeArguments!.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -569,7 +569,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'FieldDeclaration',
       'fields': node.fields.accept(this),
-     if (node.isStatic) 'isStatic': node.isStatic,
+      if (node.isStatic) 'isStatic': node.isStatic,
     };
   }
 
@@ -672,8 +672,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'FunctionDeclaration',
       'functionExpression': node.functionExpression.accept(this),
-     if (node.isGetter) 'isGetter': node.isGetter,
-     if (node.isSetter) 'isSetter': node.isSetter,
+      if (node.isGetter) 'isGetter': node.isGetter,
+      if (node.isSetter) 'isSetter': node.isSetter,
       'name': node.name.accept(this),
       if (node.returnType != null) 'returnType': node.returnType!.accept(this),
     };
@@ -696,8 +696,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'body': node.body.accept(this),
       if (node.parameters != null) 'parameters': node.parameters!.accept(this),
       if (node.typeParameters != null) 'typeParameters': node.typeParameters!.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -719,8 +719,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'FunctionReference',
       'function': node.function.accept(this),
       if (node.typeArguments != null) 'typeArguments': node.typeArguments!.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -864,8 +864,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'IndexExpression',
       'index': node.index.accept(this),
-     if (node.isCascaded) 'isCascaded': node.isCascaded,
-     if (node.isNullAware) 'isNullAware': node.isNullAware,
+      if (node.isCascaded) 'isCascaded': node.isCascaded,
+      if (node.isNullAware) 'isNullAware': node.isNullAware,
       'realTarget': node.realTarget.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
     };
@@ -878,9 +878,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'InstanceCreationExpression',
       'argumentList': node.argumentList.accept(this),
       'constructorName': node.constructorName.accept(this),
-     if (node.isConst) 'isConst': node.isConst,
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.isConst) 'isConst': node.isConst,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -920,8 +920,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'IsExpression',
       'expression': node.expression.accept(this),
       'type': node.type.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -988,7 +988,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         'elements': <Map<String, Object?>?>[
           for (var item in node.elements) item.accept(this),
         ],
-     if (node.isConst) 'isConst': node.isConst,
+      if (node.isConst) 'isConst': node.isConst,
       if (node.typeArguments != null) 'typeArguments': node.typeArguments!.accept(this),
     };
   }
@@ -1009,11 +1009,11 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'MethodDeclaration',
       'body': node.body.accept(this),
-     if (node.isAbstract) 'isAbstract': node.isAbstract,
-     if (node.isGetter) 'isGetter': node.isGetter,
-     if (node.isOperator) 'isOperator': node.isOperator,
-     if (node.isSetter) 'isSetter': node.isSetter,
-     if (node.isStatic) 'isStatic': node.isStatic,
+      if (node.isAbstract) 'isAbstract': node.isAbstract,
+      if (node.isGetter) 'isGetter': node.isGetter,
+      if (node.isOperator) 'isOperator': node.isOperator,
+      if (node.isSetter) 'isSetter': node.isSetter,
+      if (node.isStatic) 'isStatic': node.isStatic,
       'name': node.name.accept(this),
       if (node.parameters != null) 'parameters': node.parameters!.accept(this),
       if (node.returnType != null) 'returnType': node.returnType!.accept(this),
@@ -1026,8 +1026,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'MethodInvocation',
-     if (node.isCascaded) 'isCascaded': node.isCascaded,
-     if (node.isNullAware) 'isNullAware': node.isNullAware,
+      if (node.isCascaded) 'isCascaded': node.isCascaded,
+      if (node.isNullAware) 'isNullAware': node.isNullAware,
       'methodName': node.methodName.accept(this),
       if (node.realTarget != null) 'realTarget': node.realTarget!.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
@@ -1060,8 +1060,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       '_': 'NamedExpression',
       'expression': node.expression.accept(this),
       'name': node.name.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -1070,7 +1070,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'NamedType',
-     if (node.isDeferred) 'isDeferred': node.isDeferred,
+      if (node.isDeferred) 'isDeferred': node.isDeferred,
       'name': node.name.accept(this),
       if (node.typeArguments != null) 'typeArguments': node.typeArguments!.accept(this),
     };
@@ -1091,9 +1091,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'NativeFunctionBody',
       if (node.stringLiteral != null) 'stringLiteral': node.stringLiteral!.accept(this),
-     if (node.isAsynchronous) 'isAsynchronous': node.isAsynchronous,
-     if (node.isGenerator) 'isGenerator': node.isGenerator,
-     if (node.isSynchronous) 'isSynchronous': node.isSynchronous,
+      if (node.isAsynchronous) 'isAsynchronous': node.isAsynchronous,
+      if (node.isGenerator) 'isGenerator': node.isGenerator,
+      if (node.isSynchronous) 'isSynchronous': node.isSynchronous,
     };
   }
 
@@ -1123,8 +1123,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'ParenthesizedExpression',
       'expression': node.expression.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -1154,8 +1154,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'PostfixExpression',
       'operand': node.operand.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -1165,7 +1165,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'PrefixedIdentifier',
       'identifier': node.identifier.accept(this),
-     if (node.isDeferred) 'isDeferred': node.isDeferred,
+      if (node.isDeferred) 'isDeferred': node.isDeferred,
       'prefix': node.prefix.accept(this),
       'name': node.name,
     };
@@ -1177,8 +1177,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'PrefixExpression',
       'operand': node.operand.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -1187,8 +1187,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'PropertyAccess',
-     if (node.isCascaded) 'isCascaded': node.isCascaded,
-     if (node.isNullAware) 'isNullAware': node.isNullAware,
+      if (node.isCascaded) 'isCascaded': node.isCascaded,
+      if (node.isNullAware) 'isNullAware': node.isNullAware,
       'propertyName': node.propertyName.accept(this),
       'realTarget': node.realTarget.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
@@ -1210,8 +1210,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'RethrowExpression',
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -1241,9 +1241,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         'elements': <Map<String, Object?>?>[
           for (var item in node.elements) item.accept(this),
         ],
-     if (node.isMap) 'isMap': node.isMap,
-     if (node.isSet) 'isSet': node.isSet,
-     if (node.isConst) 'isConst': node.isConst,
+      if (node.isMap) 'isMap': node.isMap,
+      if (node.isSet) 'isSet': node.isSet,
+      if (node.isConst) 'isConst': node.isConst,
       if (node.typeArguments != null) 'typeArguments': node.typeArguments!.accept(this),
     };
   }
@@ -1308,9 +1308,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'value': node.value,
       'contentsEnd': node.contentsEnd,
       'contentsOffset': node.contentsOffset,
-     if (node.isMultiline) 'isMultiline': node.isMultiline,
-     if (node.isRaw) 'isRaw': node.isRaw,
-     if (node.isSingleQuoted) 'isSingleQuoted': node.isSingleQuoted,
+      if (node.isMultiline) 'isMultiline': node.isMultiline,
+      if (node.isRaw) 'isRaw': node.isRaw,
+      if (node.isSingleQuoted) 'isSingleQuoted': node.isSingleQuoted,
     };
   }
 
@@ -1320,7 +1320,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'SpreadElement',
       'expression': node.expression.accept(this),
-     if (node.isNullAware) 'isNullAware': node.isNullAware,
+      if (node.isNullAware) 'isNullAware': node.isNullAware,
     };
   }
 
@@ -1337,9 +1337,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'lastString': node.lastString.accept(this),
       'contentsEnd': node.contentsEnd,
       'contentsOffset': node.contentsOffset,
-     if (node.isMultiline) 'isMultiline': node.isMultiline,
-     if (node.isRaw) 'isRaw': node.isRaw,
-     if (node.isSingleQuoted) 'isSingleQuoted': node.isSingleQuoted,
+      if (node.isMultiline) 'isMultiline': node.isMultiline,
+      if (node.isRaw) 'isRaw': node.isRaw,
+      if (node.isSingleQuoted) 'isSingleQuoted': node.isSingleQuoted,
     };
   }
 
@@ -1358,8 +1358,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'SuperExpression',
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -1435,8 +1435,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'ThisExpression',
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -1446,8 +1446,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'ThrowExpression',
       'expression': node.expression.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -1492,8 +1492,8 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'TypeLiteral',
       'type': node.type.accept(this),
-     if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
-     if (node.isAssignable) 'isAssignable': node.isAssignable,
+      if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
+      if (node.isAssignable) 'isAssignable': node.isAssignable,
     };
   }
 
@@ -1525,9 +1525,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       '_': 'VariableDeclaration',
       if (node.initializer != null) 'initializer': node.initializer!.accept(this),
-     if (node.isConst) 'isConst': node.isConst,
-     if (node.isFinal) 'isFinal': node.isFinal,
-     if (node.isLate) 'isLate': node.isLate,
+      if (node.isConst) 'isConst': node.isConst,
+      if (node.isFinal) 'isFinal': node.isFinal,
+      if (node.isLate) 'isLate': node.isLate,
       'name': node.name.accept(this),
     };
   }
@@ -1537,9 +1537,9 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       '_': 'VariableDeclarationList',
-     if (node.isConst) 'isConst': node.isConst,
-     if (node.isFinal) 'isFinal': node.isFinal,
-     if (node.isLate) 'isLate': node.isLate,
+      if (node.isConst) 'isConst': node.isConst,
+      if (node.isFinal) 'isFinal': node.isFinal,
+      if (node.isLate) 'isLate': node.isLate,
       if (node.type != null) 'type': node.type!.accept(this),
       if (node.variables.isNotEmpty)
         'variables': <Map<String, Object?>?>[

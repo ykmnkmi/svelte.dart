@@ -12,3 +12,5 @@ pubspec.lock
 **/**.jit
 **/**.aot
 **/**.exe
+**/**.js
+**/**.js.*
