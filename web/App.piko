@@ -1,13 +1,13 @@
 <script>
-	import 'nested.dart';
+  import 'nested.dart';
 
-	var count = 0;
+  var count = 0;
 
-	void handleClick() {
-		count += 1;
-	}
+  void handleClick() {
+    count += 1;
+  }
 </script>
 
 <button on:click={handleClick}>
-	<Nested {count} />
+  <Nested {count} />
 </button>

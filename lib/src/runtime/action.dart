@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:piko/src/compiler/interface.dart';
+import 'package:piko/dom.dart';
 
 @optionalTypeArgs
 abstract class Action<T extends Element, P> {

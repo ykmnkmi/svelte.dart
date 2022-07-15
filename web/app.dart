@@ -3,7 +3,7 @@ import 'package:piko/runtime.dart';
 
 import 'nested.dart';
 
-mixin AppState on Component {
+abstract class AppState extends Component {
   int _count = 0;
 
   int get countValue {
@@ -19,16 +19,16 @@ mixin AppState on Component {
   }
 }
 
-class App extends Component with AppState {
+class App extends AppState {
   final Element button1 = element('button');
 
-  final Nested nested = Nested();
+  late final Nested nested;
 
   bool mounted = false;
 
   @override
   void create() {
-    nested.countValue = countValue;
+    nested = Nested(count: countValue);
     nested.create();
   }
 

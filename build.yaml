@@ -7,17 +7,17 @@ global_options:
       # compiler: dart2js
       dart2js_args:
         # - --verbose
-        - --disable-inlining
+        # - --disable-inlining
         # - --no-source-maps
         # - --dump-info
 
-        # - --minify
+        - --minify
         - --lax-runtime-type-to-string
         # - --omit-late-names
         - --omit-implicit-checks
         - --trust-primitives
         # - --omit-as-casts
-        # - --server-mode
+        - --server-mode
         # - --fast-startup
 
         # - --csp

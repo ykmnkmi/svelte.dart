@@ -58,6 +58,14 @@ Element element(String tag) {
 @JS('document.createTextNode')
 external Text _createTextNode(Object? text);
 
+Text empty() {
+  return text(null);
+}
+
+Text space() {
+  return text(' ');
+}
+
 @pragma('dart2js:noInline')
 Text text(Object? text) {
   return _createTextNode(text);

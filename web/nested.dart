@@ -1,7 +1,9 @@
 import 'package:piko/dom.dart';
 import 'package:piko/runtime.dart';
 
-mixin NestedState on Component {
+abstract class NestedState extends Component {
+  NestedState({int count = 0}) : _count = count;
+
   int _count = 0;
 
   int get countValue {
@@ -13,16 +15,18 @@ mixin NestedState on Component {
   }
 }
 
-class Nested extends Component with NestedState {
+class Nested extends NestedState {
+  Nested({super.count});
+
   final Element button1 = element('button');
 
   final Text text1 = text('Clicked ');
 
-  final Text text2 = text(null);
+  final Text text2 = empty();
 
-  final Text text3 = text(' ');
+  final Text text3 = space();
 
-  final Text text4 = text(null);
+  final Text text4 = empty();
 
   String get text4Value {
     return countValue == 1 ? 'time' : 'times';
