@@ -3,32 +3,32 @@ import 'package:piko/runtime.dart';
 
 import 'nested.dart';
 
-abstract class AppState extends Component {
-  int _count = 0;
+mixin AppState on Component {
+  int countValue = 0;
 
-  int get countValue {
-    return _count;
+  int get $count {
+    return countValue;
   }
 
-  set countValue(int count) {
-    invalidate('count', _count, _count = count);
+  set $count(int count) {
+    invalidate('count', countValue, countValue = count);
   }
 
-  void handleClickListener(Event event) {
-    countValue += 1;
+  void $handleClick(Event event) {
+    $count += 1;
   }
 }
 
-class App extends AppState {
+class App extends Component with AppState {
   final Element button1 = element('button');
 
-  late final Nested nested;
+  final Nested nested = Nested();
 
   bool mounted = false;
 
   @override
   void create() {
-    nested = Nested(count: countValue);
+    nested.countValue = countValue;
     nested.create();
   }
 
@@ -38,7 +38,7 @@ class App extends AppState {
     nested.mount(button1, null);
 
     if (!mounted) {
-      listen(button1, 'click', handleClickListener);
+      listen(button1, 'click', $handleClick);
       mounted = true;
     }
   }
@@ -46,7 +46,7 @@ class App extends AppState {
   @override
   void update(Set<String> dirty) {
     if (dirty.contains('count')) {
-      nested.countValue = countValue;
+      nested.$count = $count;
     }
   }
 
@@ -57,7 +57,7 @@ class App extends AppState {
     }
 
     nested.detach(detaching);
-    cancel(button1, 'click', handleClickListener);
+    cancel(button1, 'click', $handleClick);
     mounted = false;
   }
 }

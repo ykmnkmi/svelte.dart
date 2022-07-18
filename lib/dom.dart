@@ -2,25 +2,44 @@
 
 import 'package:js/js.dart';
 import 'package:js/js_util.dart' as utils;
+import 'package:meta/meta.dart';
 
 typedef EventListener = void Function(Event event);
 
 typedef VoidCallback = void Function();
 
 @JS()
+@anonymous
+class EventOptions {
+  external factory EventOptions({bool? bubbles, bool? cancelable, bool? composed});
+}
+
+@JS()
 @staticInterop
-abstract class Event {}
+class Event {
+  external Event(String type, [EventOptions? options]);
+}
+
+extension EventImpl on Event {
+  external String get type;
+}
 
 @JS()
 @anonymous
+@optionalTypeArgs
 class CustomEventOptions<T> {
   external factory CustomEventOptions({bool? bubbles, bool? cancelable, bool? composed, T? detail});
 }
 
 @JS()
 @staticInterop
+@optionalTypeArgs
 class CustomEvent<T> implements Event {
   external CustomEvent(String type, [CustomEventOptions<T>? options]);
+}
+
+extension CustomEventImpl<T> on CustomEvent<T> {
+  external T? get detail;
 }
 
 @JS()

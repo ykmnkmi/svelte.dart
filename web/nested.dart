@@ -1,23 +1,19 @@
 import 'package:piko/dom.dart';
 import 'package:piko/runtime.dart';
 
-abstract class NestedState extends Component {
-  NestedState({int count = 0}) : _count = count;
+mixin NestedState on Component {
+  int countValue = 0;
 
-  int _count = 0;
-
-  int get countValue {
-    return _count;
+  int get $count {
+    return countValue;
   }
 
-  set countValue(int count) {
-    invalidate('count', _count, _count = count);
+  set $count(int value) {
+    invalidate('count', countValue, countValue = value);
   }
 }
 
-class Nested extends NestedState {
-  Nested({super.count});
-
+class Nested extends Component with NestedState {
   final Element button1 = element('button');
 
   final Text text1 = text('Clicked ');
@@ -29,12 +25,12 @@ class Nested extends NestedState {
   final Text text4 = empty();
 
   String get text4Value {
-    return countValue == 1 ? 'time' : 'times';
+    return $count == 1 ? 'time' : 'times';
   }
 
   @override
   void create() {
-    setText(text2, countValue);
+    setText(text2, $count);
     setText(text4, text4Value);
   }
 
@@ -49,7 +45,7 @@ class Nested extends NestedState {
   @override
   void update(Set<String> dirty) {
     if (dirty.contains('count')) {
-      setText(text2, countValue);
+      setText(text2, $count);
       setText(text4, text4Value);
     }
   }

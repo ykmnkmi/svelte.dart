@@ -1,6 +1,6 @@
 <script>
   // some external modifier or annotation
-  var count = 0;
+  external int count = 0;
 </script>
 
 Clicked { count } { count == 1 ? 'time' : 'times' }
