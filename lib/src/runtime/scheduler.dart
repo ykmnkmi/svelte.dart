@@ -9,6 +9,14 @@ bool updateScheduled = false;
 
 int flushIndex = 0;
 
+void update(Component component) {
+  var changed = component.dirty;
+  component
+    ..dirty = HashSet<String>()
+    ..context.update(changed)
+    ..fragment.update(changed);
+}
+
 void flush() {
   do {
     while (flushIndex < components.length) {
@@ -22,14 +30,6 @@ void flush() {
   } while (components.isNotEmpty);
 
   updateScheduled = false;
-}
-
-void update(Component component) {
-  var dirty = component.dirty;
-
-  component
-    ..dirty = HashSet<String>()
-    ..update(dirty);
 }
 
 void scheduleUpdate() {

@@ -1,19 +1,37 @@
+import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
 import 'package:piko/runtime.dart';
 
-mixin NestedState on Component {
-  int countValue = 0;
+class NestedContext extends Context {
+  NestedContext(super.component, {int count = 0}) : countValue = count;
 
-  int get $count {
+  @protected
+  int countValue;
+
+  int get count {
     return countValue;
   }
 
-  set $count(int value) {
-    invalidate('count', countValue, countValue = value);
+  set count(int value) {
+    component.invalidate('count', countValue, countValue = value);
+  }
+
+  @override
+  @protected
+  void update(Set<String> dirty) {
+    if (dirty.contains('count')) {
+      if (count.isEven) {
+        component.dispatch('even', count);
+      }
+    }
   }
 }
 
-class Nested extends Component with NestedState {
+class NestedFragment extends Fragment {
+  NestedFragment(this.context);
+
+  final NestedContext context;
+
   final Element button1 = element('button');
 
   final Text text1 = text('Clicked ');
@@ -25,12 +43,12 @@ class Nested extends Component with NestedState {
   final Text text4 = empty();
 
   String get text4Value {
-    return $count == 1 ? 'time' : 'times';
+    return context.count == 1 ? 'time' : 'times';
   }
 
   @override
   void create() {
-    setText(text2, $count);
+    setText(text2, context.count);
     setText(text4, text4Value);
   }
 
@@ -45,7 +63,7 @@ class Nested extends Component with NestedState {
   @override
   void update(Set<String> dirty) {
     if (dirty.contains('count')) {
-      setText(text2, $count);
+      setText(text2, context.count);
       setText(text4, text4Value);
     }
   }
@@ -59,4 +77,17 @@ class Nested extends Component with NestedState {
       remove(text4);
     }
   }
+}
+
+class Nested extends Component {
+  Nested({int count = 0}) {
+    context = NestedContext(this, count: count);
+    fragment = NestedFragment(context);
+  }
+
+  @override
+  late final NestedFragment fragment;
+
+  @override
+  late final NestedContext context;
 }
