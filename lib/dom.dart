@@ -1,8 +1,21 @@
 @JS()
+library piko.dom;
 
 import 'package:js/js.dart';
 import 'package:js/js_util.dart' as utils;
+import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
+
+@JS()
+@staticInterop
+abstract class Console {}
+
+extension ConsoleImplementation on Console {
+  external void log(Object? object);
+}
+
+@JS()
+external Console get console;
 
 typedef EventListener = void Function(Event event);
 
@@ -61,7 +74,7 @@ abstract class Element implements Node {}
 @JS('document.querySelector')
 external Element? _querySelector(String selector);
 
-@pragma('dart2js:noInline')
+@noInline
 Element? querySelector(String selector) {
   return _querySelector(selector);
 }
@@ -69,7 +82,7 @@ Element? querySelector(String selector) {
 @JS('document.createElement')
 external Element _createElement(String tag);
 
-@pragma('dart2js:noInline')
+@noInline
 Element element(String tag) {
   return _createElement(tag);
 }
@@ -78,54 +91,54 @@ Element element(String tag) {
 external Text _createTextNode(Object? text);
 
 Text empty() {
-  return text(null);
+  return text('');
 }
 
 Text space() {
   return text(' ');
 }
 
-@pragma('dart2js:noInline')
+@noInline
 Text text(Object? text) {
   return _createTextNode(text);
 }
 
-@pragma('dart2js:noInline')
+@noInline
 void setText(Text target, Object? text) {
   setProperty(target, 'data', text);
 }
 
-@pragma('dart2js:noInline')
+@noInline
 void setTextContent(Text target, Object? text) {
   setProperty(target, 'textContent', text);
 }
 
-@pragma('dart2js:noInline')
+@noInline
 void setInnerText(Element target, Object? text) {
   setProperty(target, 'innerText', text);
 }
 
-@pragma('dart2js:noInline')
+@noInline
 void setInnerHtml(Element target, Object? html) {
   setProperty(target, 'innerHtml', html);
 }
 
-@pragma('dart2js:noInline')
+@noInline
 String? getAttribute(Element node, String attribute) {
   return utils.callMethod<String?>(node, 'getAttribute', <Object?>[attribute]);
 }
 
-@pragma('dart2js:noInline')
+@noInline
 void setAttribute(Element element, String attribute, String value) {
   utils.callMethod<void>(element, 'setAttribute', <Object?>[attribute, value]);
 }
 
-@pragma('dart2js:noInline')
+@noInline
 void removeAttribute(Element element, String attribute) {
   utils.callMethod<void>(element, 'removeAttribute', <Object?>[attribute]);
 }
 
-@pragma('dart2js:noInline')
+@noInline
 void updateAttribute(Element element, String attribute, String? value) {
   if (value == null) {
     removeAttribute(element, attribute);
@@ -134,45 +147,62 @@ void updateAttribute(Element element, String attribute, String? value) {
   }
 }
 
+// @pragma('dart2js:parameter:trust')
 @pragma('dart2js:tryInline')
 T getProperty<T>(Node node, String name) {
   return utils.getProperty<T>(node, name);
 }
 
+// @pragma('dart2js:parameter:trust')
 @pragma('dart2js:tryInline')
 void setProperty(Node node, String name, Object? value) {
   utils.setProperty<Object?>(node, name, value);
 }
 
-@pragma('dart2js:noInline')
+@noInline
 void insert(Node node, Node child, [Node? anchor]) {
   utils.callMethod<void>(node, 'insertBefore', <Object?>[child, anchor]);
 }
 
-@pragma('dart2js:noInline')
+@noInline
 void append(Element element, Object? child) {
   utils.callMethod<void>(element, 'append', <Object?>[child]);
 }
 
-@pragma('dart2js:noInline')
-void listen(EventTarget target, String event, EventListener litener) {
-  litener = allowInterop(litener);
-  utils.callMethod<void>(target, 'addEventListener', <Object?>[event, litener]);
+@noInline
+void listen(EventTarget target, String type, EventListener listener) {
+  listener = allowInterop(listener);
+  utils.callMethod<void>(target, 'addEventListener', <Object?>[type, listener]);
 }
 
-@pragma('dart2js:noInline')
-void cancel(EventTarget target, String event, EventListener litener) {
-  litener = allowInterop(litener);
-  utils.callMethod<void>(target, 'removeEventListener', <Object?>[event, litener]);
+@noInline
+void cancel(EventTarget target, String type, EventListener listener) {
+  listener = allowInterop(listener);
+  utils.callMethod<void>(target, 'removeEventListener', <Object?>[type, listener]);
 }
 
-@pragma('dart2js:noInline')
+@noInline
+Node? parentNode(Node node) {
+  return getProperty<Node?>(node, 'parentNode');
+}
+
+@noInline
+Element? parentElement(Node node) {
+  return getProperty<Element?>(node, 'parentElement');
+}
+
+@noInline
 void remove(Node node) {
-  var parentNode = getProperty<Node>(node, 'parentNode');
-  utils.callMethod<void>(parentNode, 'removeChild', <Object?>[node]);
+  var parent = parentNode(node);
+
+  if (parent == null) {
+    return;
+  }
+
+  utils.callMethod<void>(parent, 'removeChild', <Object?>[node]);
 }
 
-@pragma('dart2js:tryInline')
+@tryInline
 @pragma('dart2js:as:trust')
 T unsafeCast<T>(Object? object) {
   return object as T;

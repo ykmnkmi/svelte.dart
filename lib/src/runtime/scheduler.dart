@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:meta/dart2js.dart';
 import 'package:piko/src/runtime/component.dart';
 
 List<Component> components = <Component>[];
@@ -9,6 +10,7 @@ bool updateScheduled = false;
 
 int flushIndex = 0;
 
+@noInline
 void update(Component component) {
   var changed = component.dirty;
   component
@@ -17,6 +19,7 @@ void update(Component component) {
     ..fragment.update(changed);
 }
 
+@noInline
 void flush() {
   do {
     while (flushIndex < components.length) {
@@ -32,6 +35,7 @@ void flush() {
   updateScheduled = false;
 }
 
+@noInline
 void scheduleUpdate() {
   if (updateScheduled) {
     return;
@@ -41,6 +45,7 @@ void scheduleUpdate() {
   scheduleMicrotask(flush);
 }
 
+@noInline
 void scheduleUpdateFor(Component component) {
   components.add(component);
   scheduleUpdate();

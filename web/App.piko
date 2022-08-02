@@ -6,8 +6,16 @@
   void handleClick() {
     count += 1;
   }
+
+  void log(CustomEvent<int> event) {
+    print('${event.type}: ${event.detail}');
+  }
 </script>
 
 <button on:click={handleClick}>
-  <Nested {count} />
+  <Nested {count} on:even={log} on:odd={log}>
+    <piko:fragment slot="zero">
+		  {#if count == 0}, click this button{/if}
+		</piko:fragment>
+  </Nested>
 </button>

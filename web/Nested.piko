@@ -1,6 +1,16 @@
 <script>
   // some external modifier or annotation
   int count = 0;
+
+  $: {
+    if (count.isEven) {
+      dispatch('even', count);
+    }
+
+    if (count.isOdd) {
+      dispatch('odd', count);
+    }
+  }
 </script>
 
-Clicked { count } { count == 1 ? 'time' : 'times' }
+Clicked { count } { count == 1 ? 'time' : 'times' } <slot name="zero">, click it</slot>!
