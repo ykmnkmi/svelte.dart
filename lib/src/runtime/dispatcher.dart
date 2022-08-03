@@ -27,6 +27,6 @@ mixin Dispatcher on Component {
 
   @nonVirtual
   void dispatch<T>(String type, [T? detail]) {
-    controller.add(CustomEvent<T>(type, CustomEventOptions<T>(detail: detail)));
+    controller.add(CustomEvent<T>(type, CustomEventOptions(detail: detail)));
   }
 }

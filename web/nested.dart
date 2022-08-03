@@ -143,9 +143,9 @@ class NestedFragment extends Fragment {
 }
 
 class Nested extends Component with Dispatcher {
-  Nested({int count = 0, Slot? $zero}) {
+  Nested({int count = 0, Fragment? $zero}) {
     context = NestedContext(this, count: count);
-    fragment = NestedFragment(context, $zero: $zero ?? ZeroSlot(this));
+    fragment = NestedFragment(context, $zero: $zero ?? ZeroFragment(context));
   }
 
   @override

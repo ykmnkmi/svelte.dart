@@ -23,6 +23,7 @@ typedef VoidCallback = void Function();
 
 @JS()
 @anonymous
+@doNotStore
 class EventOptions {
   external factory EventOptions({bool? bubbles, bool? cancelable, bool? composed});
 }
@@ -39,16 +40,16 @@ extension EventImpl on Event {
 
 @JS()
 @anonymous
-@optionalTypeArgs
-class CustomEventOptions<T> {
-  external factory CustomEventOptions({bool? bubbles, bool? cancelable, bool? composed, T? detail});
+@doNotStore
+class CustomEventOptions {
+  external factory CustomEventOptions({bool? bubbles, bool? cancelable, bool? composed, Object? detail});
 }
 
 @JS()
 @staticInterop
 @optionalTypeArgs
 class CustomEvent<T> implements Event {
-  external CustomEvent(String type, [CustomEventOptions<T>? options]);
+  external CustomEvent(String type, [CustomEventOptions? options]);
 }
 
 extension CustomEventImpl<T> on CustomEvent<T> {
@@ -147,16 +148,14 @@ void updateAttribute(Element element, String attribute, String? value) {
   }
 }
 
-// @pragma('dart2js:parameter:trust')
 @pragma('dart2js:tryInline')
-T getProperty<T>(Node node, String name) {
-  return utils.getProperty<T>(node, name);
+T getProperty<T>(Object object, String name) {
+  return utils.getProperty<T>(object, name);
 }
 
-// @pragma('dart2js:parameter:trust')
 @pragma('dart2js:tryInline')
-void setProperty(Node node, String name, Object? value) {
-  utils.setProperty<Object?>(node, name, value);
+void setProperty(Object object, String name, Object? value) {
+  utils.setProperty<Object?>(object, name, value);
 }
 
 @noInline

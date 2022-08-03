@@ -27,7 +27,8 @@ class AppContext extends Context {
   }
 
   void log(CustomEvent<int> event) {
-    console.log('${event.type}: ${event.detail}');
+    // console.log('${event.type}: ${event.detail}');
+    console.log(event);
   }
 }
 
@@ -111,19 +112,9 @@ class ZeroFragment extends Fragment {
   }
 }
 
-class ZeroSlot extends Slot {
-  ZeroSlot(this.component) : fragment = ZeroFragment(component.context);
-
-  @override
-  final App component;
-
-  @override
-  final ZeroFragment fragment;
-}
-
 class AppFragment extends Fragment {
-  AppFragment(this.context, ZeroSlot $zero) {
-    nested = Nested(count: context.count, $zero: $zero);
+  AppFragment(this.context) {
+    nested = Nested(count: context.count, $zero: ZeroFragment(context));
     nested.on<int>('even').listen(context.log);
     nested.on<int>('odd').listen(context.log);
   }
@@ -176,7 +167,7 @@ class AppFragment extends Fragment {
 class App extends Component {
   App({int count = 0}) {
     context = AppContext(this, count: count);
-    fragment = AppFragment(context, ZeroSlot(this));
+    fragment = AppFragment(context);
   }
 
   @override
