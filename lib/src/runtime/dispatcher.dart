@@ -12,21 +12,22 @@ mixin Dispatcher on Component {
 
   @internal
   @nonVirtual
-  final Map<String, Stream<CustomEvent>> typeMap = HashMap<String, Stream<CustomEvent>>();
+  final Map<String, Stream<CustomEvent>> eventTypeMap = HashMap<String, Stream<CustomEvent>>();
 
   @nonVirtual
   Stream<CustomEvent<T>> on<T>(String type) {
-    var stream = typeMap[type];
+    var stream = eventTypeMap[type];
 
     if (stream == null) {
-      typeMap[type] = stream = controller.stream.where((event) => event.type == type);
+      stream = controller.stream.where((event) => event.type == type);
+      eventTypeMap[type] = stream;
     }
 
-    return stream.cast<CustomEvent<T>>();
+    return unsafeCast<Stream<CustomEvent<T>>>(stream);
   }
 
   @nonVirtual
-  void dispatch<T>(String type, [T? detail]) {
-    controller.add(CustomEvent<T>(type, CustomEventOptions(detail: detail)));
+  void dispatch<T>(String type, {bool? cancelable, T? detail}) {
+    controller.add(CustomEvent<T>(type, CustomEventOptions(detail: detail, cancelable: cancelable)));
   }
 }

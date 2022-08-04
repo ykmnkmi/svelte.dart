@@ -2,24 +2,28 @@
 library piko.dom;
 
 import 'package:js/js.dart';
-import 'package:js/js_util.dart' as utils;
+import 'package:js/js_util.dart';
 import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
+
+export 'package:js/js_util.dart' show getProperty, setProperty;
+
+typedef EventListener = void Function(Event event);
+
+typedef VoidCallback = void Function();
 
 @JS()
 @staticInterop
 abstract class Console {}
 
-extension ConsoleImplementation on Console {
-  external void log(Object? object);
+extension ConsoleImpl on Console {
+  void log(Object? object) {
+    callMethod<void>(this, 'log', <Object?>[object]);
+  }
 }
 
 @JS()
 external Console get console;
-
-typedef EventListener = void Function(Event event);
-
-typedef VoidCallback = void Function();
 
 @JS()
 @anonymous
@@ -35,7 +39,9 @@ class Event {
 }
 
 extension EventImpl on Event {
-  external String get type;
+  String get type {
+    return getProperty<String>(this, 'type');
+  }
 }
 
 @JS()
@@ -53,7 +59,9 @@ class CustomEvent<T> implements Event {
 }
 
 extension CustomEventImpl<T> on CustomEvent<T> {
-  external T? get detail;
+  T? get detail {
+    return getProperty<T>(this, 'detail');
+  }
 }
 
 @JS()
@@ -110,6 +118,13 @@ void setText(Text target, Object? text) {
 }
 
 @noInline
+void diffText(Text target, Object? oldText, Object? newText) {
+  if (oldText != newText) {
+    setProperty(target, 'data', newText);
+  }
+}
+
+@noInline
 void setTextContent(Text target, Object? text) {
   setProperty(target, 'textContent', text);
 }
@@ -126,17 +141,17 @@ void setInnerHtml(Element target, Object? html) {
 
 @noInline
 String? getAttribute(Element node, String attribute) {
-  return utils.callMethod<String?>(node, 'getAttribute', <Object?>[attribute]);
+  return callMethod<String?>(node, 'getAttribute', <Object?>[attribute]);
 }
 
 @noInline
 void setAttribute(Element element, String attribute, String value) {
-  utils.callMethod<void>(element, 'setAttribute', <Object?>[attribute, value]);
+  callMethod<void>(element, 'setAttribute', <Object?>[attribute, value]);
 }
 
 @noInline
 void removeAttribute(Element element, String attribute) {
-  utils.callMethod<void>(element, 'removeAttribute', <Object?>[attribute]);
+  callMethod<void>(element, 'removeAttribute', <Object?>[attribute]);
 }
 
 @noInline
@@ -148,36 +163,26 @@ void updateAttribute(Element element, String attribute, String? value) {
   }
 }
 
-@pragma('dart2js:tryInline')
-T getProperty<T>(Object object, String name) {
-  return utils.getProperty<T>(object, name);
-}
-
-@pragma('dart2js:tryInline')
-void setProperty(Object object, String name, Object? value) {
-  utils.setProperty<Object?>(object, name, value);
+@noInline
+void insert(Node target, Node child, [Node? anchor]) {
+  callMethod<void>(target, 'insertBefore', <Object?>[child, anchor]);
 }
 
 @noInline
-void insert(Node node, Node child, [Node? anchor]) {
-  utils.callMethod<void>(node, 'insertBefore', <Object?>[child, anchor]);
-}
-
-@noInline
-void append(Element element, Object? child) {
-  utils.callMethod<void>(element, 'append', <Object?>[child]);
+void append(Element target, Object? child) {
+  callMethod<void>(target, 'append', <Object?>[child]);
 }
 
 @noInline
 void listen(EventTarget target, String type, EventListener listener) {
   listener = allowInterop(listener);
-  utils.callMethod<void>(target, 'addEventListener', <Object?>[type, listener]);
+  callMethod<void>(target, 'addEventListener', <Object?>[type, listener]);
 }
 
 @noInline
 void cancel(EventTarget target, String type, EventListener listener) {
   listener = allowInterop(listener);
-  utils.callMethod<void>(target, 'removeEventListener', <Object?>[type, listener]);
+  callMethod<void>(target, 'removeEventListener', <Object?>[type, listener]);
 }
 
 @noInline
@@ -198,7 +203,7 @@ void remove(Node node) {
     return;
   }
 
-  utils.callMethod<void>(parent, 'removeChild', <Object?>[node]);
+  callMethod<void>(parent, 'removeChild', <Object?>[node]);
 }
 
 @tryInline

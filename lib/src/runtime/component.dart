@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
 import 'package:piko/src/runtime/fragment.dart';
@@ -10,9 +11,7 @@ abstract class Context {
   Component get component;
 
   @internal
-  void set() {}
-
-  @internal
+  @noInline
   void update(Set<String> dirty) {}
 }
 
@@ -26,6 +25,7 @@ abstract class Component {
   Fragment get fragment;
 
   @internal
+  @noInline
   @nonVirtual
   void markDirty(String name) {
     if (dirty.isEmpty) {
@@ -36,6 +36,7 @@ abstract class Component {
   }
 
   @internal
+  @noInline
   @nonVirtual
   void invalidate(String name, Object? oldValue, Object? newValue) {
     if (identical(oldValue, newValue)) {
@@ -46,17 +47,17 @@ abstract class Component {
   }
 }
 
-@internal
+@noInline
 void createComponent(Component component) {
   component.fragment.create();
 }
 
-@internal
+@noInline
 void mountComponent(Component component, Element target, Node? anchor) {
   component.fragment.mount(target, anchor);
 }
 
-@internal
+@noInline
 void detachComponent(Component component, bool detaching) {
   component.fragment.detach(detaching);
 }

@@ -13,13 +13,8 @@ TODO:
     - Fragment
     - ...
   - ...
-- Tests
+- Tests 🔥
 - Compiler
 - Builder
 - ...
 - SSR
-
-Done:
-- Parser:
-  - HTML
-  - Script
