@@ -9,15 +9,15 @@
         "end": 59,
         "_": "EachBlock",
         "expression": {
+          "_": "SimpleIdentifier",
           "start": 7,
           "end": 14,
-          "_": "SimpleIdentifier",
           "name": "animals"
         },
         "iterable": {
+          "_": "SimpleIdentifier",
           "start": 18,
           "end": 24,
-          "_": "SimpleIdentifier",
           "name": "animal"
         },
         "index": "i",
@@ -33,9 +33,9 @@
                 "end": 37,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "SimpleIdentifier",
                   "start": 35,
                   "end": 36,
-                  "_": "SimpleIdentifier",
                   "name": "i"
                 }
               },
@@ -51,9 +51,9 @@
                 "end": 47,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "SimpleIdentifier",
                   "start": 40,
                   "end": 46,
-                  "_": "SimpleIdentifier",
                   "name": "animal"
                 }
               }

@@ -16,6 +16,7 @@ abstract class Context {
 }
 
 abstract class Component {
+  // TODO: use bitmask
   @internal
   @nonVirtual
   Set<String> dirty = HashSet<String>();

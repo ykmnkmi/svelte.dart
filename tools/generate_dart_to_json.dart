@@ -37,7 +37,7 @@ Future<void> main() async {
   }
 
   var library = resolvedUnit.libraryElement;
-  var throwingAstVisitor = library.getType('ThrowingAstVisitor');
+  var throwingAstVisitor = library.getClass('ThrowingAstVisitor');
 
   if (throwingAstVisitor == null) {
     throw Exception('ThrowingAstVisitor is not resolved');
@@ -54,26 +54,31 @@ Future<void> main() async {
   var typeSystem = resolvedUnit.typeSystem;
   library = resolvedUnit.libraryElement;
 
-  var astNode = library.getType('AstNode');
+  var astNode = library.getClass('AstNode');
 
   if (astNode == null) {
     throw Exception('AstNode is not resolved');
   }
 
-  var astType = typeSystem.instantiateToBounds2(classElement: astNode, nullabilitySuffix: NullabilitySuffix.question);
+  var astType = typeSystem.instantiateInterfaceToBounds(
+    element: astNode,
+    nullabilitySuffix: NullabilitySuffix.question,
+  );
 
   bool isAstNode(DartType type) {
     return typeSystem.isSubtypeOf(type, astType);
   }
 
-  var nodeList = library.getType('NodeList');
+  var nodeList = library.getClass('NodeList');
 
   if (nodeList == null) {
     throw Exception('NodeList is not resolved');
   }
 
-  var nodeListType =
-      typeSystem.instantiateToBounds2(classElement: nodeList, nullabilitySuffix: NullabilitySuffix.question);
+  var nodeListType = typeSystem.instantiateInterfaceToBounds(
+    element: nodeList,
+    nullabilitySuffix: NullabilitySuffix.question,
+  );
 
   bool isNodeList(DartType type) {
     return typeSystem.isSubtypeOf(type, nodeListType);
@@ -98,12 +103,12 @@ Future<void> main() async {
   var sink = File('lib/src/compiler/dart_to_json.dart').openWrite();
   sink.write(header);
 
-  void writeFields(ClassElement klass, Set<String> writed) {
-    if (klass.name == 'AstNode' || klass.name == 'NullShortableExpression') {
+  void writeFields(InterfaceElement interface, Set<String> writed) {
+    if (interface.name == 'AstNode' || interface.name == 'NullShortableExpression') {
       return;
     }
 
-    for (var accessor in klass.accessors) {
+    for (var accessor in interface.accessors) {
       if (accessor.hasDeprecated) {
         continue;
       }
@@ -165,8 +170,8 @@ Future<void> main() async {
         ..write('\n  @override')
         ..write('\n  Map<String, Object?> visit$name($name node) {')
         ..write('\n    return <String, Object?>{')
-        ..write('\n      ...getLocation(node),')
-        ..write('\n      \'_\': \'$name\',');
+        ..write('\n      \'_\': \'$name\',')
+        ..write('\n      ...getLocation(node),');
 
       // throws null check on null or stack overflow
       var writed = <String>{'isQualified', 'unParenthesized', 'unlabeled'};
@@ -174,7 +179,7 @@ Future<void> main() async {
       writeFields(klass, writed);
 
       for (var interface in klass.interfaces) {
-        writeFields(interface.element, writed);
+        writeFields(interface.element2, writed);
       }
 
       sink

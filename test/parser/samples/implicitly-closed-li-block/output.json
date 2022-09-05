@@ -35,9 +35,9 @@
                 "end": 43,
                 "_": "IfBlock",
                 "expression": {
+                  "_": "BooleanLiteral",
                   "start": 20,
                   "end": 24,
-                  "_": "BooleanLiteral",
                   "value": true
                 },
                 "children": [

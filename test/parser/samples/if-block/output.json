@@ -9,9 +9,9 @@
         "end": 17,
         "_": "IfBlock",
         "expression": {
+          "_": "SimpleIdentifier",
           "start": 5,
           "end": 8,
-          "_": "SimpleIdentifier",
           "name": "foo"
         },
         "children": [

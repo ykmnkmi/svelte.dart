@@ -21,9 +21,9 @@
                 "end": 26,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "SimpleIdentifier",
                   "start": 18,
                   "end": 25,
-                  "_": "SimpleIdentifier",
                   "name": "myColor"
                 }
               }

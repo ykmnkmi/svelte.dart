@@ -16,23 +16,23 @@
             "_": "EventHandler",
             "name": "click",
             "expression": {
+              "_": "AssignmentExpression",
               "start": 19,
               "end": 37,
-              "_": "AssignmentExpression",
               "leftHandSide": {
+                "_": "SimpleIdentifier",
                 "start": 19,
                 "end": 26,
-                "_": "SimpleIdentifier",
                 "name": "visible"
               },
               "rightHandSide": {
+                "_": "PrefixExpression",
                 "start": 29,
                 "end": 37,
-                "_": "PrefixExpression",
                 "operand": {
+                  "_": "SimpleIdentifier",
                   "start": 30,
                   "end": 37,
-                  "_": "SimpleIdentifier",
                   "name": "visible"
                 }
               }
@@ -61,9 +61,9 @@
         "end": 92,
         "_": "IfBlock",
         "expression": {
+          "_": "SimpleIdentifier",
           "start": 62,
           "end": 69,
-          "_": "SimpleIdentifier",
           "name": "visible"
         },
         "children": [

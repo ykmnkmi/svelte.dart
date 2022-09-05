@@ -15,9 +15,9 @@
             "end": 14,
             "_": "Spread",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 9,
               "end": 14,
-              "_": "SimpleIdentifier",
               "name": "props"
             }
           }

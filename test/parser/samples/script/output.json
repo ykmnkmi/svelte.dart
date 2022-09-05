@@ -29,9 +29,9 @@
             "end": 58,
             "_": "MustacheTag",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 53,
               "end": 57,
-              "_": "SimpleIdentifier",
               "name": "name"
             }
           },
@@ -52,37 +52,31 @@
     "_": "Script",
     "context": "default",
     "content": {
+      "_": "CompilationUnit",
       "start": 8,
       "end": 31,
-      "_": "CompilationUnit",
       "declarations": [
         {
+          "_": "TopLevelVariableDeclaration",
           "start": 11,
           "end": 30,
-          "_": "TopLevelVariableDeclaration",
           "variables": {
+            "_": "VariableDeclarationList",
             "start": 11,
             "end": 29,
-            "_": "VariableDeclarationList",
             "variables": [
               {
+                "_": "VariableDeclaration",
                 "start": 15,
                 "end": 29,
-                "_": "VariableDeclaration",
                 "initializer": {
+                  "_": "SimpleStringLiteral",
                   "start": 22,
                   "end": 29,
-                  "_": "SimpleStringLiteral",
                   "value": "world",
                   "contentsEnd": 28,
                   "contentsOffset": 23,
                   "isSingleQuoted": true
-                },
-                "name": {
-                  "start": 15,
-                  "end": 19,
-                  "_": "SimpleIdentifier",
-                  "name": "name"
                 }
               }
             ]

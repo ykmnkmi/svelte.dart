@@ -16,9 +16,9 @@
             "_": "EventHandler",
             "name": "click",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 19,
               "end": 22,
-              "_": "SimpleIdentifier",
               "name": "foo"
             }
           }

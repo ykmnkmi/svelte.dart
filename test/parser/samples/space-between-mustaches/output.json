@@ -22,9 +22,9 @@
             "end": 7,
             "_": "MustacheTag",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 5,
               "end": 6,
-              "_": "SimpleIdentifier",
               "name": "a"
             }
           },
@@ -40,9 +40,9 @@
             "end": 11,
             "_": "MustacheTag",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 9,
               "end": 10,
-              "_": "SimpleIdentifier",
               "name": "b"
             }
           },
@@ -58,9 +58,9 @@
             "end": 17,
             "_": "MustacheTag",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 15,
               "end": 16,
-              "_": "SimpleIdentifier",
               "name": "c"
             }
           },

@@ -16,9 +16,9 @@
             "_": "Action",
             "name": "tooltip",
             "expression": {
+              "_": "SimpleStringLiteral",
               "start": 21,
               "end": 34,
-              "_": "SimpleStringLiteral",
               "value": "tooltip msg",
               "contentsEnd": 33,
               "contentsOffset": 22,

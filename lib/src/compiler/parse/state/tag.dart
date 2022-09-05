@@ -1,5 +1,4 @@
-import 'package:_fe_analyzer_shared/src/scanner/token.dart' show NO_PRECEDENCE;
-import 'package:_fe_analyzer_shared/src/scanner/token_constants.dart' show IDENTIFIER_TOKEN;
+import 'package:_fe_analyzer_shared/src/scanner/token.dart' show StringToken;
 import 'package:analyzer/dart/ast/token.dart' show Token, TokenType;
 import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
 import 'package:piko/src/compiler/interface.dart';
@@ -198,8 +197,7 @@ extension TagParser on Parser {
 
         checkUnique(name);
 
-        var tokenType = TokenType(name, 'IDENTIFIER', NO_PRECEDENCE, IDENTIFIER_TOKEN);
-        var token = Token(tokenType, valueStart);
+        var token = StringToken(TokenType.IDENTIFIER, name, valueStart);
         var identifier = astFactory.simpleIdentifier(token);
         var end = valueStart + name.length;
         var shortHand = Shorthand(start: valueStart, end: end, expression: identifier);
@@ -281,8 +279,7 @@ extension TagParser on Parser {
       }
 
       if (directive.expression == null && (type == 'Binding' || type == 'Class')) {
-        var tokenType = TokenType(directiveName, 'IDENTIFIER', NO_PRECEDENCE, IDENTIFIER_TOKEN);
-        var token = Token(tokenType, directive.start! + colonIndex + 1);
+        var token = StringToken(TokenType.IDENTIFIER, directiveName, directive.start! + colonIndex + 1);
         directive.expression = astFactory.simpleIdentifier(token);
       }
 

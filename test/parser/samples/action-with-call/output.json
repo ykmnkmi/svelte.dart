@@ -16,24 +16,24 @@
             "_": "Action",
             "name": "tooltip",
             "expression": {
+              "_": "MethodInvocation",
               "start": 21,
               "end": 37,
-              "_": "MethodInvocation",
               "methodName": {
+                "_": "SimpleIdentifier",
                 "start": 21,
                 "end": 22,
-                "_": "SimpleIdentifier",
                 "name": "t"
               },
               "argumentList": {
+                "_": "ArgumentList",
                 "start": 22,
                 "end": 37,
-                "_": "ArgumentList",
                 "arguments": [
                   {
+                    "_": "SimpleStringLiteral",
                     "start": 23,
                     "end": 36,
-                    "_": "SimpleStringLiteral",
                     "value": "tooltip msg",
                     "contentsEnd": 35,
                     "contentsOffset": 24,
@@ -42,9 +42,9 @@
                 ]
               },
               "function": {
+                "_": "SimpleIdentifier",
                 "start": 21,
                 "end": 22,
-                "_": "SimpleIdentifier",
                 "name": "t"
               }
             }

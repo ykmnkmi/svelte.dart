@@ -16,9 +16,9 @@
             "_": "Action",
             "name": "tooltip",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 20,
               "end": 27,
-              "_": "SimpleIdentifier",
               "name": "message"
             }
           }

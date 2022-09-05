@@ -56,7 +56,7 @@ class ZeroFragment extends Fragment {
 }
 
 class NestedFragment extends Fragment {
-  NestedFragment(this.context, {this.$zero})
+  NestedFragment(this.context, {this.zero})
       : button1 = element('button'),
         text1 = text('Clicked '),
         text2 = empty(),
@@ -68,7 +68,7 @@ class NestedFragment extends Fragment {
 
   final NestedContext context;
 
-  final Fragment? $zero;
+  final Fragment? zero;
 
   final Element button1;
 
@@ -92,7 +92,7 @@ class NestedFragment extends Fragment {
   void create() {
     setText(text2, context.count);
     setText(text4, text4Data);
-    $zero?.create();
+    zero?.create();
   }
 
   @override
@@ -101,7 +101,7 @@ class NestedFragment extends Fragment {
     append(target, text2);
     append(target, text3);
     append(target, text4);
-    $zero?.mount(target, anchor);
+    zero?.mount(target, anchor);
     append(target, text5);
   }
 
@@ -120,16 +120,16 @@ class NestedFragment extends Fragment {
       remove(text2);
       remove(text3);
       remove(text4);
-      $zero?.detach(detaching);
+      zero?.detach(detaching);
       remove(text5);
     }
   }
 }
 
 class Nested extends Component with Dispatcher {
-  Nested({int count = 0, Fragment? $zero}) {
+  Nested({int count = 0, Fragment? zero}) {
     var context = NestedContext(this, count: count);
-    var fragment = NestedFragment(context, $zero: $zero ?? ZeroFragment(context));
+    var fragment = NestedFragment(context, zero: zero ?? ZeroFragment(context));
     this.context = context;
     this.fragment = fragment;
   }

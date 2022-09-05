@@ -10,9 +10,9 @@
         "_": "Element",
         "name": "piko:element",
         "tag": {
+          "_": "SimpleIdentifier",
           "start": 20,
           "end": 23,
-          "_": "SimpleIdentifier",
           "name": "tag"
         }
       },
@@ -46,9 +46,9 @@
           }
         ],
         "tag": {
+          "_": "SimpleIdentifier",
           "start": 61,
           "end": 64,
-          "_": "SimpleIdentifier",
           "name": "tag"
         }
       }

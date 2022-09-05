@@ -22,9 +22,9 @@
             "end": 16,
             "_": "RawMustacheTag",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 11,
               "end": 15,
-              "_": "SimpleIdentifier",
               "name": "raw1"
             }
           },
@@ -40,9 +40,9 @@
             "end": 29,
             "_": "RawMustacheTag",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 24,
               "end": 28,
-              "_": "SimpleIdentifier",
               "name": "raw2"
             }
           },

@@ -28,9 +28,9 @@
                 "end": 15,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "IntegerLiteral",
                   "start": 13,
                   "end": 14,
-                  "_": "IntegerLiteral",
                   "value": 1
                 }
               }

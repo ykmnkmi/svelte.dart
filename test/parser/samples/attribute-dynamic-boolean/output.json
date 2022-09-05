@@ -21,9 +21,9 @@
                 "end": 29,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "SimpleIdentifier",
                   "start": 20,
                   "end": 28,
-                  "_": "SimpleIdentifier",
                   "name": "readonly"
                 }
               }

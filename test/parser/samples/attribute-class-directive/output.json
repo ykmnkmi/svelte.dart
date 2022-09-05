@@ -16,9 +16,9 @@
             "_": "Class",
             "name": "foo",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 16,
               "end": 21,
-              "_": "SimpleIdentifier",
               "name": "isFoo"
             }
           }

@@ -9,21 +9,21 @@
         "end": 71,
         "_": "EachBlock",
         "expression": {
+          "_": "SimpleIdentifier",
           "start": 7,
           "end": 13,
-          "_": "SimpleIdentifier",
           "name": "things"
         },
         "iterable": {
+          "_": "SimpleIdentifier",
           "start": 17,
           "end": 22,
-          "_": "SimpleIdentifier",
           "name": "thing"
         },
         "key": {
+          "_": "SimpleIdentifier",
           "start": 24,
           "end": 29,
-          "_": "SimpleIdentifier",
           "name": "thing"
         },
         "children": [

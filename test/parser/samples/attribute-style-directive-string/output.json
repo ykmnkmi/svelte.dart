@@ -118,9 +118,9 @@
                 "end": 119,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "SimpleIdentifier",
                   "start": 110,
                   "end": 118,
-                  "_": "SimpleIdentifier",
                   "name": "variable"
                 }
               }
@@ -159,9 +159,9 @@
                 "end": 159,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "SimpleIdentifier",
                   "start": 150,
                   "end": 158,
-                  "_": "SimpleIdentifier",
                   "name": "variable"
                 }
               }
@@ -200,9 +200,9 @@
                 "end": 198,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "SimpleIdentifier",
                   "start": 189,
                   "end": 197,
-                  "_": "SimpleIdentifier",
                   "name": "variable"
                 }
               }
@@ -234,50 +234,50 @@
                 "end": 245,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "StringInterpolation",
                   "start": 224,
                   "end": 244,
-                  "_": "StringInterpolation",
                   "elements": [
                     {
+                      "_": "InterpolationString",
                       "start": 224,
                       "end": 233,
-                      "_": "InterpolationString",
                       "contentsEnd": 233,
                       "contentsOffset": 225,
                       "value": "template"
                     },
                     {
+                      "_": "InterpolationExpression",
                       "start": 233,
                       "end": 243,
-                      "_": "InterpolationExpression",
                       "expression": {
+                        "_": "SimpleIdentifier",
                         "start": 235,
                         "end": 242,
-                        "_": "SimpleIdentifier",
                         "name": "literal"
                       }
                     },
                     {
+                      "_": "InterpolationString",
                       "start": 243,
                       "end": 244,
-                      "_": "InterpolationString",
                       "contentsEnd": 243,
                       "contentsOffset": 243,
                       "value": ""
                     }
                   ],
                   "firstString": {
+                    "_": "InterpolationString",
                     "start": 224,
                     "end": 233,
-                    "_": "InterpolationString",
                     "contentsEnd": 233,
                     "contentsOffset": 225,
                     "value": "template"
                   },
                   "lastString": {
+                    "_": "InterpolationString",
                     "start": 243,
                     "end": 244,
-                    "_": "InterpolationString",
                     "contentsEnd": 243,
                     "contentsOffset": 243,
                     "value": ""

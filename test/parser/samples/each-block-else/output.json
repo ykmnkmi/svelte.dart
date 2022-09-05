@@ -9,15 +9,15 @@
         "end": 79,
         "_": "EachBlock",
         "expression": {
+          "_": "SimpleIdentifier",
           "start": 7,
           "end": 14,
-          "_": "SimpleIdentifier",
           "name": "animals"
         },
         "iterable": {
+          "_": "SimpleIdentifier",
           "start": 18,
           "end": 24,
-          "_": "SimpleIdentifier",
           "name": "animal"
         },
         "children": [
@@ -32,9 +32,9 @@
                 "end": 39,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "SimpleIdentifier",
                   "start": 32,
                   "end": 38,
-                  "_": "SimpleIdentifier",
                   "name": "animal"
                 }
               }

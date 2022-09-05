@@ -110,7 +110,7 @@ class ZeroFragment extends Fragment {
 class AppFragment extends Fragment {
   AppFragment(this.context, this.zero)
       : button1 = element('button'),
-        nested = Nested(count: context.count, $zero: zero) {
+        nested = Nested(count: context.count, zero: zero) {
     nested.on<int>('even').listen(context.log);
     nested.on<int>('odd').listen(context.log);
   }

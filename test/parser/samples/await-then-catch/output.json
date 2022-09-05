@@ -9,21 +9,21 @@
         "end": 151,
         "_": "AwaitBlock",
         "expression": {
+          "_": "SimpleIdentifier",
           "start": 8,
           "end": 18,
-          "_": "SimpleIdentifier",
           "name": "thePromise"
         },
         "value": {
+          "_": "SimpleIdentifier",
           "start": 47,
           "end": 55,
-          "_": "SimpleIdentifier",
           "name": "theValue"
         },
         "error": {
+          "_": "SimpleIdentifier",
           "start": 98,
           "end": 106,
-          "_": "SimpleIdentifier",
           "name": "theError"
         },
         "pending": {
@@ -92,9 +92,9 @@
                   "end": 85,
                   "_": "MustacheTag",
                   "expression": {
+                    "_": "SimpleIdentifier",
                     "start": 76,
                     "end": 84,
-                    "_": "SimpleIdentifier",
                     "name": "theValue"
                   }
                 }
@@ -139,19 +139,19 @@
                   "end": 138,
                   "_": "MustacheTag",
                   "expression": {
+                    "_": "PrefixedIdentifier",
                     "start": 121,
                     "end": 137,
-                    "_": "PrefixedIdentifier",
                     "identifier": {
+                      "_": "SimpleIdentifier",
                       "start": 130,
                       "end": 137,
-                      "_": "SimpleIdentifier",
                       "name": "message"
                     },
                     "prefix": {
+                      "_": "SimpleIdentifier",
                       "start": 121,
                       "end": 129,
-                      "_": "SimpleIdentifier",
                       "name": "theError"
                     },
                     "name": "theError.message"

@@ -22,9 +22,9 @@
             "end": 46,
             "_": "MustacheTag",
             "expression": {
+              "_": "SimpleIdentifier",
               "start": 42,
               "end": 45,
-              "_": "SimpleIdentifier",
               "name": "foo"
             }
           },

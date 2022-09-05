@@ -9,31 +9,31 @@
         "end": 55,
         "_": "EachBlock",
         "expression": {
+          "_": "SimpleIdentifier",
           "start": 7,
           "end": 12,
-          "_": "SimpleIdentifier",
           "name": "todos"
         },
         "iterable": {
+          "_": "SimpleIdentifier",
           "start": 16,
           "end": 20,
-          "_": "SimpleIdentifier",
           "name": "todo"
         },
         "key": {
+          "_": "PrefixedIdentifier",
           "start": 22,
           "end": 29,
-          "_": "PrefixedIdentifier",
           "identifier": {
+            "_": "SimpleIdentifier",
             "start": 27,
             "end": 29,
-            "_": "SimpleIdentifier",
             "name": "id"
           },
           "prefix": {
+            "_": "SimpleIdentifier",
             "start": 22,
             "end": 26,
-            "_": "SimpleIdentifier",
             "name": "todo"
           },
           "name": "todo.id"
@@ -50,9 +50,9 @@
                 "end": 43,
                 "_": "MustacheTag",
                 "expression": {
+                  "_": "SimpleIdentifier",
                   "start": 38,
                   "end": 42,
-                  "_": "SimpleIdentifier",
                   "name": "todo"
                 }
               }

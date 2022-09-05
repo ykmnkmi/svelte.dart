@@ -9,19 +9,19 @@
         "end": 91,
         "_": "IfBlock",
         "expression": {
+          "_": "BinaryExpression",
           "start": 5,
           "end": 11,
-          "_": "BinaryExpression",
           "leftOperand": {
+            "_": "SimpleIdentifier",
             "start": 5,
             "end": 6,
-            "_": "SimpleIdentifier",
             "name": "x"
           },
           "rightOperand": {
+            "_": "IntegerLiteral",
             "start": 9,
             "end": 11,
-            "_": "IntegerLiteral",
             "value": 10
           }
         },
@@ -53,19 +53,19 @@
               "_": "IfBlock",
               "elseIf": true,
               "expression": {
+                "_": "BinaryExpression",
                 "start": 53,
                 "end": 58,
-                "_": "BinaryExpression",
                 "leftOperand": {
+                  "_": "SimpleIdentifier",
                   "start": 53,
                   "end": 54,
-                  "_": "SimpleIdentifier",
                   "name": "x"
                 },
                 "rightOperand": {
+                  "_": "IntegerLiteral",
                   "start": 57,
                   "end": 58,
-                  "_": "IntegerLiteral",
                   "value": 5
                 }
               },

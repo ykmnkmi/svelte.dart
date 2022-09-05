@@ -21,9 +21,9 @@
                 "end": 8,
                 "_": "Shorthand",
                 "expression": {
+                  "_": "SimpleIdentifier",
                   "start": 6,
                   "end": 8,
-                  "_": "SimpleIdentifier",
                   "name": "id"
                 }
               }

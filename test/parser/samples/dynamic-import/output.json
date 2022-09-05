@@ -8,160 +8,160 @@
     "_": "Script",
     "context": "default",
     "content": {
+      "_": "CompilationUnit",
       "start": 8,
       "end": 141,
-      "_": "CompilationUnit",
       "declarations": [
         {
+          "_": "FunctionDeclaration",
           "start": 49,
           "end": 140,
-          "_": "FunctionDeclaration",
           "functionExpression": {
+            "_": "FunctionExpression",
             "start": 61,
             "end": 140,
-            "_": "FunctionExpression",
             "body": {
+              "_": "BlockFunctionBody",
               "start": 64,
               "end": 140,
-              "_": "BlockFunctionBody",
               "block": {
+                "_": "Block",
                 "start": 64,
                 "end": 140,
-                "_": "Block",
                 "statements": [
                   {
+                    "_": "ExpressionStatement",
                     "start": 70,
                     "end": 136,
-                    "_": "ExpressionStatement",
                     "expression": {
+                      "_": "MethodInvocation",
                       "start": 70,
                       "end": 135,
-                      "_": "MethodInvocation",
                       "methodName": {
+                        "_": "SimpleIdentifier",
                         "start": 88,
                         "end": 92,
-                        "_": "SimpleIdentifier",
                         "name": "then"
                       },
                       "realTarget": {
+                        "_": "MethodInvocation",
                         "start": 70,
                         "end": 87,
-                        "_": "MethodInvocation",
                         "methodName": {
+                          "_": "SimpleIdentifier",
                           "start": 74,
                           "end": 85,
-                          "_": "SimpleIdentifier",
                           "name": "loadLibrary"
                         },
                         "realTarget": {
+                          "_": "SimpleIdentifier",
                           "start": 70,
                           "end": 73,
-                          "_": "SimpleIdentifier",
                           "name": "foo"
                         },
                         "target": {
+                          "_": "SimpleIdentifier",
                           "start": 70,
                           "end": 73,
-                          "_": "SimpleIdentifier",
                           "name": "foo"
                         },
                         "argumentList": {
+                          "_": "ArgumentList",
                           "start": 85,
-                          "end": 87,
-                          "_": "ArgumentList"
+                          "end": 87
                         },
                         "function": {
+                          "_": "SimpleIdentifier",
                           "start": 74,
                           "end": 85,
-                          "_": "SimpleIdentifier",
                           "name": "loadLibrary"
                         }
                       },
                       "target": {
+                        "_": "MethodInvocation",
                         "start": 70,
                         "end": 87,
-                        "_": "MethodInvocation",
                         "methodName": {
+                          "_": "SimpleIdentifier",
                           "start": 74,
                           "end": 85,
-                          "_": "SimpleIdentifier",
                           "name": "loadLibrary"
                         },
                         "realTarget": {
+                          "_": "SimpleIdentifier",
                           "start": 70,
                           "end": 73,
-                          "_": "SimpleIdentifier",
                           "name": "foo"
                         },
                         "target": {
+                          "_": "SimpleIdentifier",
                           "start": 70,
                           "end": 73,
-                          "_": "SimpleIdentifier",
                           "name": "foo"
                         },
                         "argumentList": {
+                          "_": "ArgumentList",
                           "start": 85,
-                          "end": 87,
-                          "_": "ArgumentList"
+                          "end": 87
                         },
                         "function": {
+                          "_": "SimpleIdentifier",
                           "start": 74,
                           "end": 85,
-                          "_": "SimpleIdentifier",
                           "name": "loadLibrary"
                         }
                       },
                       "argumentList": {
+                        "_": "ArgumentList",
                         "start": 98,
                         "end": 135,
-                        "_": "ArgumentList",
                         "arguments": [
                           {
+                            "_": "FunctionExpression",
                             "start": 99,
                             "end": 134,
-                            "_": "FunctionExpression",
                             "body": {
+                              "_": "BlockFunctionBody",
                               "start": 103,
                               "end": 134,
-                              "_": "BlockFunctionBody",
                               "block": {
+                                "_": "Block",
                                 "start": 103,
                                 "end": 134,
-                                "_": "Block",
                                 "statements": [
                                   {
+                                    "_": "ExpressionStatement",
                                     "start": 111,
                                     "end": 128,
-                                    "_": "ExpressionStatement",
                                     "expression": {
+                                      "_": "MethodInvocation",
                                       "start": 111,
                                       "end": 127,
-                                      "_": "MethodInvocation",
                                       "methodName": {
+                                        "_": "SimpleIdentifier",
                                         "start": 111,
                                         "end": 116,
-                                        "_": "SimpleIdentifier",
                                         "name": "print"
                                       },
                                       "argumentList": {
+                                        "_": "ArgumentList",
                                         "start": 116,
                                         "end": 127,
-                                        "_": "ArgumentList",
                                         "arguments": [
                                           {
+                                            "_": "PrefixedIdentifier",
                                             "start": 117,
                                             "end": 126,
-                                            "_": "PrefixedIdentifier",
                                             "identifier": {
+                                              "_": "SimpleIdentifier",
                                               "start": 121,
                                               "end": 126,
-                                              "_": "SimpleIdentifier",
                                               "name": "value"
                                             },
                                             "prefix": {
+                                              "_": "SimpleIdentifier",
                                               "start": 117,
                                               "end": 120,
-                                              "_": "SimpleIdentifier",
                                               "name": "foo"
                                             },
                                             "name": "foo.value"
@@ -169,9 +169,9 @@
                                         ]
                                       },
                                       "function": {
+                                        "_": "SimpleIdentifier",
                                         "start": 111,
                                         "end": 116,
-                                        "_": "SimpleIdentifier",
                                         "name": "print"
                                       }
                                     }
@@ -181,14 +181,14 @@
                               "isSynchronous": true
                             },
                             "parameters": {
+                              "_": "FormalParameterList",
                               "start": 99,
                               "end": 102,
-                              "_": "FormalParameterList",
                               "parameters": [
                                 {
+                                  "_": "SimpleFormalParameter",
                                   "start": 100,
-                                  "end": 101,
-                                  "_": "SimpleFormalParameter"
+                                  "end": 101
                                 }
                               ]
                             }
@@ -196,24 +196,24 @@
                         ]
                       },
                       "function": {
+                        "_": "SimpleIdentifier",
                         "start": 88,
                         "end": 92,
-                        "_": "SimpleIdentifier",
                         "name": "then"
                       },
                       "typeArguments": {
+                        "_": "TypeArgumentList",
                         "start": 92,
                         "end": 98,
-                        "_": "TypeArgumentList",
                         "arguments": [
                           {
+                            "_": "NamedType",
                             "start": 93,
                             "end": 97,
-                            "_": "NamedType",
                             "name": {
+                              "_": "SimpleIdentifier",
                               "start": 93,
                               "end": 97,
-                              "_": "SimpleIdentifier",
                               "name": "void"
                             }
                           }
@@ -226,25 +226,19 @@
               "isSynchronous": true
             },
             "parameters": {
+              "_": "FormalParameterList",
               "start": 61,
-              "end": 63,
-              "_": "FormalParameterList"
+              "end": 63
             }
           },
-          "name": {
-            "start": 54,
-            "end": 61,
-            "_": "SimpleIdentifier",
-            "name": "onMount"
-          },
           "returnType": {
+            "_": "NamedType",
             "start": 49,
             "end": 53,
-            "_": "NamedType",
             "name": {
+              "_": "SimpleIdentifier",
               "start": 49,
               "end": 53,
-              "_": "SimpleIdentifier",
               "name": "void"
             }
           }
@@ -252,13 +246,13 @@
       ],
       "directives": [
         {
+          "_": "ImportDirective",
           "start": 11,
           "end": 45,
-          "_": "ImportDirective",
           "prefix": {
+            "_": "SimpleIdentifier",
             "start": 41,
             "end": 44,
-            "_": "SimpleIdentifier",
             "name": "foo"
           }
         }

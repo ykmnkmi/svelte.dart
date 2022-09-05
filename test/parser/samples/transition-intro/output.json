@@ -16,27 +16,27 @@
             "_": "Transition",
             "name": "style",
             "expression": {
+              "_": "SetOrMapLiteral",
               "start": 16,
               "end": 30,
-              "_": "SetOrMapLiteral",
               "elements": [
                 {
+                  "_": "MapLiteralEntry",
                   "start": 17,
                   "end": 29,
-                  "_": "MapLiteralEntry",
                   "key": {
+                    "_": "SimpleStringLiteral",
                     "start": 17,
                     "end": 26,
-                    "_": "SimpleStringLiteral",
                     "value": "opacity",
                     "contentsEnd": 25,
                     "contentsOffset": 18,
                     "isSingleQuoted": true
                   },
                   "value": {
+                    "_": "IntegerLiteral",
                     "start": 28,
                     "end": 29,
-                    "_": "IntegerLiteral",
                     "value": 0
                   }
                 }

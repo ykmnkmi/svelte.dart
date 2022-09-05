@@ -9,9 +9,9 @@
         "end": 34,
         "_": "IfBlock",
         "expression": {
+          "_": "BooleanLiteral",
           "start": 5,
           "end": 9,
-          "_": "BooleanLiteral",
           "value": true
         },
         "children": [
@@ -40,9 +40,9 @@
         "end": 67,
         "_": "IfBlock",
         "expression": {
+          "_": "BooleanLiteral",
           "start": 41,
           "end": 45,
-          "_": "BooleanLiteral",
           "value": true
         },
         "children": [
@@ -71,15 +71,15 @@
         "end": 111,
         "_": "AwaitBlock",
         "expression": {
+          "_": "BooleanLiteral",
           "start": 77,
           "end": 81,
-          "_": "BooleanLiteral",
           "value": true
         },
         "value": {
+          "_": "SimpleIdentifier",
           "start": 100,
           "end": 101,
-          "_": "SimpleIdentifier",
           "name": "f"
         },
         "pending": {
@@ -140,15 +140,15 @@
         "end": 152,
         "_": "AwaitBlock",
         "expression": {
+          "_": "BooleanLiteral",
           "start": 121,
           "end": 125,
-          "_": "BooleanLiteral",
           "value": true
         },
         "value": {
+          "_": "SimpleIdentifier",
           "start": 141,
           "end": 142,
-          "_": "SimpleIdentifier",
           "name": "f"
         },
         "pending": {
