@@ -8,9 +8,7 @@ import 'package:meta/meta.dart';
 
 export 'package:js/js_util.dart' show getProperty, setProperty;
 
-typedef EventListener = void Function(Event event);
-
-typedef VoidCallback = void Function();
+typedef EventListener<T extends Event> = void Function(T event);
 
 @JS()
 @staticInterop
@@ -174,13 +172,13 @@ void append(Element target, Object? child) {
 }
 
 @noInline
-void listen(EventTarget target, String type, EventListener listener) {
+void listen<T extends Event>(EventTarget target, String type, EventListener<T> listener) {
   listener = allowInterop(listener);
   callMethod<void>(target, 'addEventListener', <Object?>[type, listener]);
 }
 
 @noInline
-void cancel(EventTarget target, String type, EventListener listener) {
+void cancel<T extends Event>(EventTarget target, String type, EventListener<T> listener) {
   listener = allowInterop(listener);
   callMethod<void>(target, 'removeEventListener', <Object?>[type, listener]);
 }
@@ -204,10 +202,4 @@ void remove(Node node) {
   }
 
   callMethod<void>(parent, 'removeChild', <Object?>[node]);
-}
-
-@tryInline
-@pragma('dart2js:as:trust')
-T unsafeCast<T>(Object? object) {
-  return object as T;
 }

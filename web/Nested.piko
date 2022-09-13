@@ -1,14 +1,12 @@
-<script>
+<script type="text/dart">
   // some external modifier or annotation
   int count = 0;
 
   $: {
     if (count.isEven) {
-      dispatch('even', count);
-    }
-
-    if (count.isOdd) {
-      dispatch('odd', count);
+      dispatch('even', detail: count);
+    } else {
+      dispatch('odd', detail: count);
     }
   }
 </script>

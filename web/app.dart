@@ -1,42 +1,14 @@
-import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
 import 'package:piko/runtime.dart';
 
 import 'nested.dart';
 
-class AppContext extends Context {
-  AppContext(this.component, {int count = 0}) : countValue = count;
-
-  @override
-  final App component;
-
-  @protected
-  int countValue;
-
-  int get count {
-    return countValue;
-  }
-
-  set count(int value) {
-    component.invalidate('count', countValue, countValue = value);
-  }
-
-  void handleClick(Event event) {
-    count += 1;
-  }
-
-  void log(CustomEvent<int> event) {
-    console.log('${event.type}: ${event.detail}');
-    // console.log(event);
-  }
-}
-
 class IfBlock extends Fragment {
-  IfBlock(this.context)
+  IfBlock(this.component)
       : text1 = text(', click this button'),
         mounted = false;
 
-  final AppContext context;
+  final App component;
 
   final Text text1;
 
@@ -56,12 +28,12 @@ class IfBlock extends Fragment {
   }
 }
 
-class ZeroFragment extends Fragment {
-  ZeroFragment(this.context)
+class ZeroFragment extends StatefulFragment {
+  ZeroFragment(this.component)
       : ifBlock1Anchor = empty(),
-        ifBlock1 = IfBlock(context);
+        ifBlock1 = IfBlock(component);
 
-  final AppContext context;
+  final App component;
 
   final Text ifBlock1Anchor;
 
@@ -69,7 +41,7 @@ class ZeroFragment extends Fragment {
 
   @override
   void create() {
-    if (context.count == 0) {
+    if (component.count == 0) {
       ifBlock1.create();
     }
   }
@@ -88,7 +60,7 @@ class ZeroFragment extends Fragment {
       if (ifBlock1.mounted) {
         ifBlock1.detach(true);
       } else {
-        if (context.count == 0) {
+        if (component.count == 0) {
           var target = unsafeCast<Element>(parentElement(ifBlock1Anchor));
           ifBlock1.create();
           ifBlock1.mount(target, ifBlock1Anchor);
@@ -107,15 +79,15 @@ class ZeroFragment extends Fragment {
   }
 }
 
-class AppFragment extends Fragment {
-  AppFragment(this.context, this.zero)
+class AppFragment extends StatefulFragment {
+  AppFragment(this.component, this.zero)
       : button1 = element('button'),
-        nested = Nested(count: context.count, zero: zero) {
-    nested.on<int>('even').listen(context.log);
-    nested.on<int>('odd').listen(context.log);
+        nested = Nested(count: component.count, zero: zero) {
+    nested.on<int>('even').listen(component.log);
+    nested.on<int>('odd').listen(component.log);
   }
 
-  final AppContext context;
+  final App component;
 
   final Element button1;
 
@@ -136,7 +108,7 @@ class AppFragment extends Fragment {
     mountComponent(nested, button1, null);
 
     if (!mounted) {
-      listen(button1, 'click', context.handleClick);
+      listen<Event>(button1, 'click', component.handleClick);
       mounted = true;
     }
   }
@@ -144,7 +116,7 @@ class AppFragment extends Fragment {
   @override
   void update(Set<String> dirty) {
     if (dirty.contains('count')) {
-      nested.context.count = context.count;
+      nested.count = component.count;
     }
 
     zero.update(dirty);
@@ -157,24 +129,33 @@ class AppFragment extends Fragment {
     }
 
     detachComponent(nested, detaching);
-    cancel(button1, 'click', context.handleClick);
+    cancel<Event>(button1, 'click', component.handleClick);
     mounted = false;
   }
 }
 
-class App extends Component {
+class App extends StatefulComponent {
   App({int count = 0}) {
-    var context = AppContext(this, count: count);
-    var fragment = AppFragment(context, ZeroFragment(context));
-    this.context = context;
-    this.fragment = fragment;
+    context['count'] = count;
+    fragment = AppFragment(this, ZeroFragment(this));
   }
 
   @override
-  @pragma('dart2js:late:trust')
   late final AppFragment fragment;
 
-  @override
-  @pragma('dart2js:late:trust')
-  late final AppContext context;
+  int get count {
+    return unsafeCast(context['count']);
+  }
+
+  set count(int value) {
+    invalidate('count', context['count'], context['count'] = value);
+  }
+
+  void handleClick(Event event) {
+    count += 1;
+  }
+
+  void log(CustomEvent<int> event) {
+    console.log('${event.type}: ${event.detail}');
+  }
 }

@@ -89,7 +89,6 @@ Future<void> main() async {
   }
 
   bool isNum(DartType type) {
-    // TODO: check for num alone
     return type.isDartCoreInt || type.isDartCoreDouble || type.isDartCoreNum;
   }
 
@@ -98,7 +97,7 @@ Future<void> main() async {
   }
 
   var klasses = library.topLevelElements.whereType<ClassElement>().toList();
-  klasses.sort(((left, right) => left.nameOffset.compareTo(right.nameOffset)));
+  klasses.sort((left, right) => left.nameOffset.compareTo(right.nameOffset));
 
   var sink = File('lib/src/compiler/dart_to_json.dart').openWrite();
   sink.write(header);

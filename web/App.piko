@@ -15,7 +15,7 @@
 <button on:click={handleClick}>
   <Nested {count} on:even={log} on:odd={log}>
     <piko:fragment slot="zero">
-		  {#if count == 0}, click this button{/if}
-		</piko:fragment>
+      {#if count == 0}, click this button{/if}
+    </piko:fragment>
   </Nested>
 </button>

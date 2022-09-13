@@ -1,44 +1,13 @@
-import 'package:meta/meta.dart';
+import 'package:meta/dart2js.dart';
 import 'package:piko/dom.dart';
 import 'package:piko/runtime.dart';
 import 'package:piko/src/runtime/dispatcher.dart';
-
-class NestedContext extends Context {
-  NestedContext(this.component, {int count = 0}) : countValue = count;
-
-  @override
-  final Nested component;
-
-  @protected
-  int countValue;
-
-  int get count {
-    return countValue;
-  }
-
-  set count(int value) {
-    component.invalidate('count', countValue, countValue = value);
-  }
-
-  @override
-  @protected
-  void update(Set<String> dirty) {
-    if (dirty.contains('count')) {
-      if (count.isEven) {
-        component.dispatch('even', detail: count);
-      }
-
-      if (count.isOdd) {
-        component.dispatch('odd', detail: count);
-      }
-    }
-  }
-}
+import 'package:piko/src/runtime/stateful.dart';
 
 class ZeroFragment extends Fragment {
-  ZeroFragment(this.context);
+  ZeroFragment(this.component);
 
-  final NestedContext context;
+  final Nested component;
 
   final Text text1 = text(', click it');
 
@@ -55,18 +24,16 @@ class ZeroFragment extends Fragment {
   }
 }
 
-class NestedFragment extends Fragment {
-  NestedFragment(this.context, {this.zero})
+class NestedFragment extends StatefulFragment {
+  NestedFragment(this.component, {this.zero})
       : button1 = element('button'),
         text1 = text('Clicked '),
         text2 = empty(),
         text3 = space(),
         text4 = empty(),
-        text5 = text('!') {
-    text4Data = text4Data_;
-  }
+        text5 = text('!');
 
-  final NestedContext context;
+  final Nested component;
 
   final Fragment? zero;
 
@@ -82,15 +49,13 @@ class NestedFragment extends Fragment {
 
   final Text text5;
 
-  String? text4Data;
-
-  String get text4Data_ {
-    return context.count == 1 ? 'time' : 'times';
+  String get text4Data {
+    return component.count == 1 ? 'time' : 'times';
   }
 
   @override
   void create() {
-    setText(text2, context.count);
+    setText(text2, component.count);
     setText(text4, text4Data);
     zero?.create();
   }
@@ -108,8 +73,8 @@ class NestedFragment extends Fragment {
   @override
   void update(Set<String> dirty) {
     if (dirty.contains('count')) {
-      setText(text2, context.count);
-      diffText(text4, text4Data, text4Data = text4Data_);
+      setText(text2, component.count);
+      setText(text4, text4Data);
     }
   }
 
@@ -126,19 +91,34 @@ class NestedFragment extends Fragment {
   }
 }
 
-class Nested extends Component with Dispatcher {
+class Nested extends StatefulComponent with Dispatcher {
   Nested({int count = 0, Fragment? zero}) {
-    var context = NestedContext(this, count: count);
-    var fragment = NestedFragment(context, zero: zero ?? ZeroFragment(context));
-    this.context = context;
-    this.fragment = fragment;
+    fragment = NestedFragment(this, zero: zero ?? ZeroFragment(this));
+    context['count'] = count;
   }
 
   @override
   @pragma('dart2js:late:trust')
   late final NestedFragment fragment;
 
+  @noInline
+  int get count {
+    return unsafeCast<int>(context['count']);
+  }
+
+  @noInline
+  set count(int value) {
+    invalidate('count', context['count'], context['count'] = value);
+  }
+
   @override
-  @pragma('dart2js:late:trust')
-  late final NestedContext context;
+  void afterChanges() {
+    if (dirty.contains('count')) {
+      if (count.isEven) {
+        dispatch('even', detail: count);
+      } else {
+        dispatch('odd', detail: count);
+      }
+    }
+  }
 }

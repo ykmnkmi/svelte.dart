@@ -1,52 +1,70 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:meta/dart2js.dart';
+import 'package:meta/meta.dart';
+
 import 'package:piko/src/runtime/component.dart';
+import 'package:piko/src/runtime/stateful.dart';
 
-List<Component> components = <Component>[];
+@protected
+List<void Function()> renderCallbacks = <void Function()>[];
 
+@protected
+List<Component> dirtyComponents = <Component>[];
+
+@protected
 bool updateScheduled = false;
 
-int flushIndex = 0;
-
-@noInline
+@protected
 void update(Component component) {
-  var changed = component.dirty;
-  component
-    ..dirty = HashSet<String>()
-    ..context.update(changed)
-    ..fragment.update(changed);
+  component.afterChanges();
+
+  if (component is StatefulComponent) {
+    var changed = component.dirty;
+    component
+      ..beforeUpdate()
+      ..dirty = HashSet<String>()
+      ..fragment.update(changed);
+    addRenderCallback(component.afterUpdate);
+  }
 }
 
-@noInline
+@protected
 void flush() {
+  assert(updateScheduled);
+
   do {
-    while (flushIndex < components.length) {
-      var component = components[flushIndex];
-      flushIndex += 1;
+    var components = dirtyComponents;
+    dirtyComponents = <Component>[];
+
+    for (var component in components) {
       update(component);
     }
 
-    components = <Component>[];
-    flushIndex = 0;
-  } while (components.isNotEmpty);
+    var callbacks = renderCallbacks;
+    renderCallbacks = <void Function()>[];
+
+    for (var callback in callbacks) {
+      callback();
+    }
+  } while (dirtyComponents.isNotEmpty);
 
   updateScheduled = false;
 }
 
-@noInline
+@protected
 void scheduleUpdate() {
-  if (updateScheduled) {
-    return;
+  if (!updateScheduled) {
+    updateScheduled = true;
+    scheduleMicrotask(flush);
   }
-
-  updateScheduled = true;
-  scheduleMicrotask(flush);
 }
 
-@noInline
+void addRenderCallback(void Function() callback) {
+  renderCallbacks.add(callback);
+}
+
 void scheduleUpdateFor(Component component) {
-  components.add(component);
+  dirtyComponents.add(component);
   scheduleUpdate();
 }
