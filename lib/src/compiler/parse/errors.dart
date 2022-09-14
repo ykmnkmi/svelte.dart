@@ -166,10 +166,6 @@ extension ParserErrors on Parser {
     error('invalid-tag-name', 'expected valid tag name', start: position);
   }
 
-  Never invalidTagNamePikoElement(Iterable<String> tags, [int? position]) {
-    error('invalid-tag-name', 'valid <piko:...> tag names are ${tags.join(', ')}', start: position);
-  }
-
   Never invalidThenPlacementUnclosedBlock(String block) {
     error('invalid-then-placement', 'expected to close $block before seeing {:then} block');
   }

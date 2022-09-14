@@ -4,10 +4,9 @@ import 'dart:collection';
 import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
 
-import 'package:piko/src/runtime/component.dart';
 import 'package:piko/src/runtime/utilities.dart';
 
-mixin Dispatcher on Component {
+mixin Dispatcher {
   @internal
   @nonVirtual
   final StreamController<CustomEvent> controller = StreamController<CustomEvent>.broadcast(sync: true);

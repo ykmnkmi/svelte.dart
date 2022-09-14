@@ -1,8 +1,8 @@
+import 'package:js/js.dart';
 import 'package:meta/dart2js.dart';
+import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
 import 'package:piko/runtime.dart';
-import 'package:piko/src/runtime/dispatcher.dart';
-import 'package:piko/src/runtime/stateful.dart';
 
 class ZeroFragment extends Fragment {
   ZeroFragment(this.component);
@@ -24,7 +24,7 @@ class ZeroFragment extends Fragment {
   }
 }
 
-class NestedFragment extends StatefulFragment {
+class NestedFragment extends Fragment {
   NestedFragment(this.component, {this.zero})
       : button1 = element('button'),
         text1 = text('Clicked '),
@@ -91,24 +91,30 @@ class NestedFragment extends StatefulFragment {
   }
 }
 
-class Nested extends StatefulComponent with Dispatcher {
-  Nested({int count = 0, Fragment? zero}) {
+@JS()
+@anonymous
+class NestedState {
+  external factory NestedState({required int count});
+
+  external int count;
+}
+
+class Nested extends Component<NestedState> with Dispatcher {
+  Nested({int count = 0, Fragment? zero}) : super(NestedState(count: count)) {
     fragment = NestedFragment(this, zero: zero ?? ZeroFragment(this));
-    context['count'] = count;
   }
 
   @override
-  @pragma('dart2js:late:trust')
   late final NestedFragment fragment;
 
   @noInline
   int get count {
-    return unsafeCast<int>(context['count']);
+    return unsafeCast<int>(state.count);
   }
 
   @noInline
   set count(int value) {
-    invalidate('count', context['count'], context['count'] = value);
+    invalidate('count', state.count, state.count = value);
   }
 
   @override

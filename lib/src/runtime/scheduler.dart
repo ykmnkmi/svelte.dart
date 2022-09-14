@@ -4,7 +4,6 @@ import 'dart:collection';
 import 'package:meta/meta.dart';
 
 import 'package:piko/src/runtime/component.dart';
-import 'package:piko/src/runtime/stateful.dart';
 
 @protected
 List<void Function()> renderCallbacks = <void Function()>[];
@@ -19,14 +18,14 @@ bool updateScheduled = false;
 void update(Component component) {
   component.afterChanges();
 
-  if (component is StatefulComponent) {
-    var changed = component.dirty;
-    component
-      ..beforeUpdate()
-      ..dirty = HashSet<String>()
-      ..fragment.update(changed);
-    addRenderCallback(component.afterUpdate);
-  }
+  var changed = component.dirty;
+
+  component
+    ..beforeUpdate()
+    ..dirty = HashSet<String>()
+    ..fragment.update(changed);
+
+  addRenderCallback(component.afterUpdate);
 }
 
 @protected
@@ -37,15 +36,15 @@ void flush() {
     var components = dirtyComponents;
     dirtyComponents = <Component>[];
 
-    for (var component in components) {
-      update(component);
+    for (var i = 0; i < components.length; i += 1) {
+      update(components[i]);
     }
 
     var callbacks = renderCallbacks;
     renderCallbacks = <void Function()>[];
 
-    for (var callback in callbacks) {
-      callback();
+    for (var i = 0; i < callbacks.length; i += 1) {
+      callbacks[i]();
     }
   } while (dirtyComponents.isNotEmpty);
 

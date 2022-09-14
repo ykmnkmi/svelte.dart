@@ -1,4 +1,4 @@
-<script>
+<script type="text/dart">
   import 'nested.dart';
 
   var count = 0;
@@ -14,8 +14,8 @@
 
 <button on:click={handleClick}>
   <Nested {count} on:even={log} on:odd={log}>
-    <piko:fragment slot="zero">
+    <fragment slot="zero">
       {#if count == 0}, click this button{/if}
-    </piko:fragment>
+    </fragment>
   </Nested>
 </button>

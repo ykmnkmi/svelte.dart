@@ -1,1 +1,1 @@
-<piko:component this="{foo ? Foo : Bar}"></piko:component>
+<component this="{foo ? Foo : Bar}"></component>

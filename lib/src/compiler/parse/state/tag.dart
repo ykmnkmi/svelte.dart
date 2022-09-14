@@ -3,7 +3,7 @@ import 'package:analyzer/dart/ast/token.dart' show TokenType;
 import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
 import 'package:piko/src/compiler/interface.dart';
 import 'package:piko/src/compiler/parse/errors.dart';
-import 'package:piko/src/compiler/parse/extract_piko_ignore.dart';
+import 'package:piko/src/compiler/parse/extract_ignore.dart';
 import 'package:piko/src/compiler/parse/html.dart';
 import 'package:piko/src/compiler/parse/names.dart';
 import 'package:piko/src/compiler/parse/parse.dart';
@@ -13,34 +13,34 @@ import 'package:piko/src/compiler/parse/read/style.dart';
 
 extension TagParser on Parser {
   static const Map<String, String> metaTags = <String, String>{
-    'piko:head': 'Head',
-    'piko:options': 'Options',
-    'piko:window': 'Window',
-    'piko:body': 'Body',
+    'head': 'Head',
+    'options': 'Options',
+    'window': 'Window',
+    'body': 'Body',
   };
 
   static const Set<String> validMetaTags = <String>{
-    'piko:head',
-    'piko:options',
-    'piko:window',
-    'piko:body',
-    'piko:self',
-    'piko:component',
-    'piko:fragment',
-    'piko:element',
+    'head',
+    'options',
+    'window',
+    'body',
+    'self',
+    'component',
+    'fragment',
+    'element',
   };
 
   static final RegExp componentNameRe = RegExp('^[A-Z]');
 
   static final RegExp textareaCloseTagRe = RegExp(r'^<\/textarea(\s[^>]*)?>');
 
-  static final RegExp selfRe = RegExp('^piko:self(?=[\\s/>])', multiLine: true);
+  static final RegExp selfRe = RegExp('^self(?=[\\s/>])', multiLine: true);
 
-  static final RegExp elementRe = RegExp('^piko:element(?=[\\s/>])');
+  static final RegExp elementRe = RegExp('^element(?=[\\s/>])');
 
-  static final RegExp componentRe = RegExp('^piko:component(?=[\\s/>])', multiLine: true);
+  static final RegExp componentRe = RegExp('^component(?=[\\s/>])', multiLine: true);
 
-  static final RegExp fragmentRe = RegExp('^piko:fragment(?=[\\s/>])', multiLine: true);
+  static final RegExp fragmentRe = RegExp('^fragment(?=[\\s/>])', multiLine: true);
 
   static final RegExp metaTagEndRe = RegExp('(\\s|\\/|>)');
 
@@ -124,10 +124,6 @@ extension TagParser on Parser {
 
     if (metaTags.containsKey(name)) {
       return name;
-    }
-
-    if (name.startsWith('piko:')) {
-      invalidTagNamePikoElement(validMetaTags, start);
     }
 
     if (tagRe.hasMatch(name)) {

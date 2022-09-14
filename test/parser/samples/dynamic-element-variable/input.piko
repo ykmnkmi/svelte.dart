@@ -1,2 +1,2 @@
-<piko:element this={tag}></piko:element>
-<piko:element this={tag} class="foo"></piko:element>
+<element this={tag}></element>
+<element this={tag} class="foo"></element>

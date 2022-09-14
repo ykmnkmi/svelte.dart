@@ -1,3 +1,5 @@
+import 'package:js/js.dart';
+import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
 import 'package:piko/runtime.dart';
 
@@ -28,7 +30,7 @@ class IfBlock extends Fragment {
   }
 }
 
-class ZeroFragment extends StatefulFragment {
+class ZeroFragment extends Fragment {
   ZeroFragment(this.component)
       : ifBlock1Anchor = empty(),
         ifBlock1 = IfBlock(component);
@@ -79,7 +81,7 @@ class ZeroFragment extends StatefulFragment {
   }
 }
 
-class AppFragment extends StatefulFragment {
+class AppFragment extends Fragment {
   AppFragment(this.component, this.zero)
       : button1 = element('button'),
         nested = Nested(count: component.count, zero: zero) {
@@ -134,9 +136,16 @@ class AppFragment extends StatefulFragment {
   }
 }
 
-class App extends StatefulComponent {
-  App({int count = 0}) {
-    context['count'] = count;
+@JS()
+@anonymous
+class AppState {
+  external factory AppState({required int count});
+
+  external int count;
+}
+
+class App extends Component<AppState> {
+  App({int count = 0}) : super(AppState(count: count)) {
     fragment = AppFragment(this, ZeroFragment(this));
   }
 
@@ -144,11 +153,11 @@ class App extends StatefulComponent {
   late final AppFragment fragment;
 
   int get count {
-    return unsafeCast(context['count']);
+    return unsafeCast<int>(state.count);
   }
 
   set count(int value) {
-    invalidate('count', context['count'], context['count'] = value);
+    invalidate('count', state.count, state.count = value);
   }
 
   void handleClick(Event event) {
