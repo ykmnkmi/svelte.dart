@@ -1,5 +1,4 @@
 import 'package:js/js.dart';
-import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
 import 'package:piko/runtime.dart';
 
@@ -153,7 +152,7 @@ class App extends Component<AppState> {
   late final AppFragment fragment;
 
   int get count {
-    return unsafeCast<int>(state.count);
+    return state.count;
   }
 
   set count(int value) {

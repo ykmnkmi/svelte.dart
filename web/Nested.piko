@@ -1,8 +1,9 @@
 <script type="text/dart">
-  // some external modifier or annotation
+  @input
   int count = 0;
 
-  $: {
+  @override
+  void afterChanges() {
     if (count.isEven) {
       dispatch('even', detail: count);
     } else {

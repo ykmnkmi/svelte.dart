@@ -1,6 +1,5 @@
 import 'package:js/js.dart';
 import 'package:meta/dart2js.dart';
-import 'package:meta/meta.dart';
 import 'package:piko/dom.dart';
 import 'package:piko/runtime.dart';
 
@@ -109,7 +108,7 @@ class Nested extends Component<NestedState> with Dispatcher {
 
   @noInline
   int get count {
-    return unsafeCast<int>(state.count);
+    return state.count;
   }
 
   @noInline
