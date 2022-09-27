@@ -1,6 +1,6 @@
-import 'package:piko/src/compiler/interface.dart';
-import 'package:piko/src/compiler/parse/parse.dart';
-import 'package:piko/src/compiler/parse/errors.dart';
+import 'package:nutty/src/compiler/interface.dart';
+import 'package:nutty/src/compiler/parse/parse.dart';
+import 'package:nutty/src/compiler/parse/errors.dart';
 
 extension StyleParser on Parser {
   static final RegExp styleCloseTagRe = RegExp(r'<\/style\s*>');

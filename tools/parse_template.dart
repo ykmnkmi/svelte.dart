@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:piko/compiler.dart';
+import 'package:nutty/compiler.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
@@ -11,8 +11,13 @@ void main(List<String> arguments) {
     exit(1);
   }
 
+  var file = File(arguments.first);
+
+  if (!file.existsSync()) {
+    exit(2);
+  }
+
   try {
-    var file = File(arguments.first);
     var content = file.readAsStringSync();
     var ast = parse(content);
     print(encoder.convert(ast.toJson()));

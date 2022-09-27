@@ -1,10 +1,10 @@
 import 'dart:collection';
 
 import 'package:meta/meta.dart';
-import 'package:piko/dom.dart';
+import 'package:nutty/dom.dart';
 
-import 'package:piko/src/runtime/fragment.dart';
-import 'package:piko/src/runtime/scheduler.dart';
+import 'package:nutty/src/runtime/fragment.dart';
+import 'package:nutty/src/runtime/scheduler.dart';
 
 abstract class Component<T extends Object> {
   Component(this.state);

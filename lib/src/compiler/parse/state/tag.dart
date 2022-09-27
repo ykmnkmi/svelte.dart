@@ -1,15 +1,15 @@
 import 'package:_fe_analyzer_shared/src/scanner/token.dart' show StringToken;
 import 'package:analyzer/dart/ast/token.dart' show TokenType;
 import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
-import 'package:piko/src/compiler/interface.dart';
-import 'package:piko/src/compiler/parse/errors.dart';
-import 'package:piko/src/compiler/parse/extract_ignore.dart';
-import 'package:piko/src/compiler/parse/html.dart';
-import 'package:piko/src/compiler/parse/names.dart';
-import 'package:piko/src/compiler/parse/parse.dart';
-import 'package:piko/src/compiler/parse/read/expression.dart';
-import 'package:piko/src/compiler/parse/read/script.dart';
-import 'package:piko/src/compiler/parse/read/style.dart';
+import 'package:nutty/src/compiler/interface.dart';
+import 'package:nutty/src/compiler/parse/errors.dart';
+import 'package:nutty/src/compiler/parse/extract_ignore.dart';
+import 'package:nutty/src/compiler/parse/html.dart';
+import 'package:nutty/src/compiler/parse/names.dart';
+import 'package:nutty/src/compiler/parse/parse.dart';
+import 'package:nutty/src/compiler/parse/read/expression.dart';
+import 'package:nutty/src/compiler/parse/read/script.dart';
+import 'package:nutty/src/compiler/parse/read/style.dart';
 
 extension TagParser on Parser {
   static const Map<String, String> metaTags = <String, String>{
@@ -101,7 +101,7 @@ extension TagParser on Parser {
     if (scan(selfRe)) {
       for (var node in stack.reversed) {
         if (node.type == 'IfBlock' || node.type == 'EachBlock' || node.type == 'InlineComponent') {
-          return 'piko:self';
+          return 'self';
         }
       }
 
@@ -109,15 +109,15 @@ extension TagParser on Parser {
     }
 
     if (scan(componentRe)) {
-      return 'piko:component';
+      return 'component';
     }
 
     if (scan(elementRe)) {
-      return 'piko:element';
+      return 'element';
     }
 
     if (scan(fragmentRe)) {
-      return 'piko:fragment';
+      return 'fragment';
     }
 
     var name = readUntil(metaTagEndRe);
@@ -343,13 +343,12 @@ extension TagParser on Parser {
     var type = metaTags[name];
 
     if (type != null) {
-      // 'piko:'.length
       var slug = type.toLowerCase();
 
       if (isClosingTag) {
         var children = current.children;
 
-        if ((name == 'piko:window' || name == 'piko:body') && children.isNotEmpty) {
+        if ((name == 'window' || name == 'body') && children.isNotEmpty) {
           invalidElementContent(slug, name, children.first.start);
         }
       } else {
@@ -364,9 +363,9 @@ extension TagParser on Parser {
         this.metaTags.add(name);
       }
     } else {
-      if (componentNameRe.hasMatch(name) || name == 'piko:self' || name == 'piko:component') {
+      if (componentNameRe.hasMatch(name) || name == 'self' || name == 'component') {
         type = 'InlineComponent';
-      } else if (name == 'piko:fragment') {
+      } else if (name == 'fragment') {
         type = 'SlotTemplate';
       } else if (name == 'title' && parentIsHead(stack)) {
         type = 'Title';
@@ -423,7 +422,7 @@ extension TagParser on Parser {
       allowSpace();
     }
 
-    if (name == 'piko:component') {
+    if (name == 'component') {
       var attributes = element.attributes;
       var index = attributes.indexWhere((attribute) => attribute is Attribute && attribute.name == 'this');
 
@@ -443,7 +442,7 @@ extension TagParser on Parser {
       expressionNode.expression = first.expression;
     }
 
-    if (name == 'piko:element') {
+    if (name == 'element') {
       var attributes = element.attributes;
       var index = attributes.indexWhere((attribute) => attribute is Attribute && attribute.name == 'this');
 

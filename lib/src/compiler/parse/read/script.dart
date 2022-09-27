@@ -7,9 +7,9 @@ import 'package:analyzer/src/dart/ast/ast.dart' show CompilationUnitImpl;
 import 'package:analyzer/src/dart/scanner/scanner.dart';
 import 'package:analyzer/src/generated/parser.dart' as AST;
 import 'package:analyzer/src/string_source.dart';
-import 'package:piko/src/compiler/interface.dart';
-import 'package:piko/src/compiler/parse/errors.dart';
-import 'package:piko/src/compiler/parse/parse.dart';
+import 'package:nutty/src/compiler/interface.dart';
+import 'package:nutty/src/compiler/parse/errors.dart';
+import 'package:nutty/src/compiler/parse/parse.dart';
 
 class _CompilationUnit extends CompilationUnitImpl {
   factory _CompilationUnit.from(int contentStart, int contentEnd, CompilationUnit unit) {

@@ -1,7 +1,7 @@
 import 'package:js/js.dart';
 import 'package:meta/dart2js.dart';
-import 'package:piko/dom.dart';
-import 'package:piko/runtime.dart';
+import 'package:nutty/dom.dart';
+import 'package:nutty/runtime.dart';
 
 class ZeroFragment extends Fragment {
   ZeroFragment(this.component);

@@ -1,7 +1,0 @@
-{
-  "code": "invalid-tag-name",
-  "message": "valid <piko:...> tag names are piko:head, piko:options, piko:window, piko:body, piko:self, piko:component, piko:fragment, piko:element",
-  "line": 2,
-  "column": 3,
-  "offset": 11
-}

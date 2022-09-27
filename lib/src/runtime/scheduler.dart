@@ -3,7 +3,7 @@ import 'dart:collection';
 
 import 'package:meta/meta.dart';
 
-import 'package:piko/src/runtime/component.dart';
+import 'package:nutty/src/runtime/component.dart';
 
 @protected
 List<void Function()> renderCallbacks = <void Function()>[];

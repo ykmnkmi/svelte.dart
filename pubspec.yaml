@@ -1,7 +1,7 @@
-name: piko
+name: nutty
 description: Web applications framework for Dart based on Svelte.
-version: 1.0.0-dev.128
-# homepage: https://piko.ykmnkmi.dev
+version: 1.0.0-dev.129
+# homepage: https://nutty.ykmnkmi.dev
 
 environment:
   sdk: '>=2.18.0 <3.0.0'

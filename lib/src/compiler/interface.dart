@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart';
-import 'package:piko/src/compiler/dart_to_json.dart';
+import 'package:nutty/src/compiler/dart_to_json.dart';
 
 const DartToJsonVisitor dartToJson = DartToJsonVisitor();
 

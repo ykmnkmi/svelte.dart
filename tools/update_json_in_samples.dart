@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:io' show Directory, File;
 
-import 'package:piko/compiler.dart' show parse;
-import 'package:piko/src/compiler/parse/errors.dart' show CompileError;
+import 'package:nutty/compiler.dart' show CompileError, parse;
 
 const encoder = JsonEncoder.withIndent('  ');
 
@@ -11,7 +10,7 @@ void main(List<String> arguments) {
     var samples = Directory.fromUri(Uri.file(argument)).listSync();
 
     for (var sample in samples) {
-      var file = File.fromUri(sample.uri.resolveUri(Uri.file('input.piko')));
+      var file = File.fromUri(sample.uri.resolveUri(Uri.file('input.nutty')));
       var content = file.readAsStringSync().trimRight();
       file.writeAsStringSync(content);
 

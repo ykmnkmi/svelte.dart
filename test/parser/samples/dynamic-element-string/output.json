@@ -1,38 +1,38 @@
 {
   "html": {
     "start": 0,
-    "end": 93,
+    "end": 73,
     "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 40,
+        "end": 30,
         "_": "Element",
-        "name": "piko:element",
+        "name": "element",
         "tag": "div"
       },
       {
-        "start": 40,
-        "end": 41,
+        "start": 30,
+        "end": 31,
         "_": "Text",
         "raw": "\n",
         "data": "\n"
       },
       {
-        "start": 41,
-        "end": 93,
+        "start": 31,
+        "end": 73,
         "_": "Element",
-        "name": "piko:element",
+        "name": "element",
         "attributes": [
           {
-            "start": 66,
-            "end": 77,
+            "start": 51,
+            "end": 62,
             "_": "Attribute",
             "name": "class",
             "children": [
               {
-                "start": 73,
-                "end": 76,
+                "start": 58,
+                "end": 61,
                 "_": "Text",
                 "raw": "foo",
                 "data": "foo"

@@ -1,12 +1,12 @@
 {
   "html": {
     "start": 0,
-    "end": 56,
+    "end": 51,
     "_": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 56,
+        "end": 51,
         "_": "IfBlock",
         "expression": {
           "_": "BinaryExpression",
@@ -28,34 +28,34 @@
         "children": [
           {
             "start": 18,
-            "end": 50,
+            "end": 45,
             "_": "InlineComponent",
-            "name": "piko:self",
+            "name": "self",
             "attributes": [
               {
-                "start": 29,
-                "end": 48,
+                "start": 24,
+                "end": 43,
                 "_": "Attribute",
                 "name": "depth",
                 "children": [
                   {
-                    "start": 36,
-                    "end": 47,
+                    "start": 31,
+                    "end": 42,
                     "_": "MustacheTag",
                     "expression": {
                       "_": "BinaryExpression",
-                      "start": 37,
-                      "end": 46,
+                      "start": 32,
+                      "end": 41,
                       "leftOperand": {
                         "_": "SimpleIdentifier",
-                        "start": 37,
-                        "end": 42,
+                        "start": 32,
+                        "end": 37,
                         "name": "depth"
                       },
                       "rightOperand": {
                         "_": "IntegerLiteral",
-                        "start": 45,
-                        "end": 46,
+                        "start": 40,
+                        "end": 41,
                         "value": 1
                       }
                     }

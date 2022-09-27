@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io' show Directory, File;
 
-import 'package:piko/compiler.dart' show parse;
-import 'package:piko/src/compiler/parse/errors.dart' show CompileError;
+import 'package:nutty/compiler.dart' show parse;
+import 'package:nutty/src/compiler/parse/errors.dart' show CompileError;
 import 'package:test/test.dart';
 
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');

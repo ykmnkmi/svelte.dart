@@ -1,10 +1,12 @@
 import 'dart:math' as math;
 
-import 'package:piko/src/compiler/interface.dart';
-import 'package:piko/src/compiler/parse/errors.dart';
-import 'package:piko/src/compiler/parse/patterns.dart';
-import 'package:piko/src/compiler/parse/state/fragment.dart';
+import 'package:nutty/src/compiler/interface.dart';
+import 'package:nutty/src/compiler/parse/errors.dart';
+import 'package:nutty/src/compiler/parse/patterns.dart';
+import 'package:nutty/src/compiler/parse/state/fragment.dart';
 import 'package:source_span/source_span.dart' show SourceFile;
+
+export 'package:nutty/src/compiler/parse/errors.dart' show CompileError;
 
 class LastAutoClosedTag {
   LastAutoClosedTag(this.tag, this.reason, this.depth);

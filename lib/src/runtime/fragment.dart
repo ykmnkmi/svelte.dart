@@ -1,4 +1,4 @@
-import 'package:piko/dom.dart';
+import 'package:nutty/dom.dart';
 
 typedef FragmentFactory = Fragment Function();
 

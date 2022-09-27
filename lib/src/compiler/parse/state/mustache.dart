@@ -1,11 +1,11 @@
 import 'package:analyzer/dart/ast/ast.dart' show AsExpression, Expression, Identifier, NamedType;
-import 'package:piko/src/compiler/interface.dart';
-import 'package:piko/src/compiler/parse/errors.dart';
-import 'package:piko/src/compiler/parse/html.dart';
-import 'package:piko/src/compiler/parse/parse.dart';
-import 'package:piko/src/compiler/parse/patterns.dart';
-import 'package:piko/src/compiler/parse/read/context.dart';
-import 'package:piko/src/compiler/parse/read/expression.dart';
+import 'package:nutty/src/compiler/interface.dart';
+import 'package:nutty/src/compiler/parse/errors.dart';
+import 'package:nutty/src/compiler/parse/html.dart';
+import 'package:nutty/src/compiler/parse/parse.dart';
+import 'package:nutty/src/compiler/parse/patterns.dart';
+import 'package:nutty/src/compiler/parse/read/context.dart';
+import 'package:nutty/src/compiler/parse/read/expression.dart';
 
 extension MustacheParser on Parser {
   static final RegExp mustacheEndRe = RegExp('\\s*}');

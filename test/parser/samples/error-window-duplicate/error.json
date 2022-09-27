@@ -1,7 +1,7 @@
 {
   "code": "duplicate-window",
-  "message": "a component can only have one <piko:window> tag",
+  "message": "a component can only have one <window> tag",
   "line": 2,
   "column": 0,
-  "offset": 15
+  "offset": 10
 }

@@ -6,7 +6,7 @@ import 'package:analyzer/source/line_info.dart';
 import 'package:analyzer/src/dart/scanner/scanner.dart';
 import 'package:analyzer/src/generated/parser.dart' as AST;
 import 'package:analyzer/src/string_source.dart';
-import 'package:piko/src/compiler/parse/parse.dart';
+import 'package:nutty/src/compiler/parse/parse.dart';
 
 extension MustacheParser on Parser {
   Expression readExpression() {

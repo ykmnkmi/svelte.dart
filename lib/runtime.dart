@@ -1,4 +1,4 @@
-export 'package:piko/src/runtime/component.dart';
-export 'package:piko/src/runtime/dispatcher.dart';
-export 'package:piko/src/runtime/fragment.dart';
-export 'package:piko/src/runtime/utilities.dart';
+export 'package:nutty/src/runtime/component.dart';
+export 'package:nutty/src/runtime/dispatcher.dart';
+export 'package:nutty/src/runtime/fragment.dart';
+export 'package:nutty/src/runtime/utilities.dart';

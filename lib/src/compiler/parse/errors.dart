@@ -1,4 +1,4 @@
-import 'package:piko/src/compiler/parse/parse.dart';
+import 'package:nutty/src/compiler/parse/parse.dart';
 import 'package:source_span/source_span.dart' show SourceSpan;
 
 class CompileError extends Error {

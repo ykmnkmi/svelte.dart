@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:piko/dom.dart';
-import 'package:piko/runtime.dart';
+import 'package:nutty/dom.dart';
+import 'package:nutty/runtime.dart';
 
 @optionalTypeArgs
 void runApp(Component component, {Element? target, Node? anchor}) {

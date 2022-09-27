@@ -1,31 +1,31 @@
 {
   "html": {
-    "start": 81,
-    "end": 114,
+    "start": 76,
+    "end": 109,
     "_": "Fragment",
     "children": [
       {
-        "start": 79,
-        "end": 81,
+        "start": 74,
+        "end": 76,
         "_": "Text",
         "raw": "\n\n",
         "data": "\n\n"
       },
       {
-        "start": 81,
-        "end": 114,
+        "start": 76,
+        "end": 109,
         "_": "Element",
         "name": "canvas",
         "attributes": [
           {
-            "start": 89,
-            "end": 104,
+            "start": 84,
+            "end": 99,
             "_": "Binding",
             "name": "this",
             "expression": {
               "_": "SimpleIdentifier",
-              "start": 100,
-              "end": 103,
+              "start": 95,
+              "end": 98,
               "name": "foo"
             }
           }
@@ -35,39 +35,39 @@
   },
   "instance": {
     "start": 0,
-    "end": 79,
+    "end": 74,
     "_": "Script",
     "context": "default",
     "content": {
       "_": "CompilationUnit",
       "start": 8,
-      "end": 70,
+      "end": 65,
       "declarations": [
         {
           "_": "TopLevelVariableDeclaration",
-          "start": 46,
-          "end": 69,
+          "start": 47,
+          "end": 64,
           "variables": {
             "_": "VariableDeclarationList",
-            "start": 46,
-            "end": 68,
+            "start": 47,
+            "end": 63,
             "isLate": true,
             "type": {
               "_": "NamedType",
-              "start": 51,
-              "end": 64,
+              "start": 52,
+              "end": 59,
               "name": {
                 "_": "SimpleIdentifier",
-                "start": 51,
-                "end": 64,
-                "name": "CanvasElement"
+                "start": 52,
+                "end": 59,
+                "name": "Element"
               }
             },
             "variables": [
               {
                 "_": "VariableDeclaration",
-                "start": 65,
-                "end": 68,
+                "start": 60,
+                "end": 63,
                 "isLate": true
               }
             ]
@@ -78,7 +78,7 @@
         {
           "_": "ImportDirective",
           "start": 11,
-          "end": 42
+          "end": 43
         }
       ]
     }

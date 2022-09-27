@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:meta/meta.dart';
-import 'package:piko/dom.dart';
+import 'package:nutty/dom.dart';
 
-import 'package:piko/src/runtime/utilities.dart';
+import 'package:nutty/src/runtime/utilities.dart';
 
 mixin Dispatcher {
   @internal
