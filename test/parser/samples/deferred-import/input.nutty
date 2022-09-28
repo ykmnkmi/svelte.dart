@@ -1,4 +1,4 @@
-<script>
+<script type="text/dart">
   import 'foo.dart' deferred as foo;
 
   void onMount() {

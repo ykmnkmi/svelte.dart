@@ -6,13 +6,7 @@ import 'package:nutty/dom.dart';
 import 'package:nutty/src/runtime/fragment.dart';
 import 'package:nutty/src/runtime/scheduler.dart';
 
-abstract class Component<T extends Object> {
-  Component(this.state);
-
-  @internal
-  @nonVirtual
-  final T state;
-
+abstract class Component {
   Fragment get fragment;
 
   // TODO: use bitmask

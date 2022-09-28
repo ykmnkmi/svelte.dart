@@ -1,6 +1,6 @@
 name: nutty
 description: Web applications framework for Dart based on Svelte.
-version: 1.0.0-dev.129
+version: 1.0.0-dev.130
 # homepage: https://nutty.ykmnkmi.dev
 
 environment:
@@ -11,9 +11,9 @@ dependencies:
   meta: ^1.8.0
 
 dev_dependencies:
-  analyzer: ^4.7.0
-  build_runner: ^2.2.0
-  build_web_compilers: ^3.2.5
+  analyzer: ^5.1.0
+  build_runner: ^2.2.1
+  build_web_compilers: ^3.2.6
   lints: ^2.0.0
   source_span: ^1.9.1
   stack_trace: ^1.10.0

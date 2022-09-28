@@ -1,4 +1,3 @@
-import 'package:js/js.dart';
 import 'package:nutty/dom.dart';
 import 'package:nutty/runtime.dart';
 
@@ -81,9 +80,9 @@ class ZeroFragment extends Fragment {
 }
 
 class AppFragment extends Fragment {
-  AppFragment(this.component, this.zero)
+  AppFragment(this.component, {required this.$zero})
       : button1 = element('button'),
-        nested = Nested(count: component.count, zero: zero) {
+        nested = Nested(count: component.count, $zero: $zero) {
     nested.on<int>('even').listen(component.log);
     nested.on<int>('odd').listen(component.log);
   }
@@ -94,7 +93,7 @@ class AppFragment extends Fragment {
 
   final Nested nested;
 
-  final ZeroFragment zero;
+  final ZeroFragment $zero;
 
   bool mounted = false;
 
@@ -120,7 +119,7 @@ class AppFragment extends Fragment {
       nested.count = component.count;
     }
 
-    zero.update(dirty);
+    $zero.update(dirty);
   }
 
   @override
@@ -135,28 +134,26 @@ class AppFragment extends Fragment {
   }
 }
 
-@JS()
-@anonymous
-class AppState {
-  external factory AppState({required int count});
-
-  external int count;
-}
-
-class App extends Component<AppState> {
-  App({int count = 0}) : super(AppState(count: count)) {
-    fragment = AppFragment(this, ZeroFragment(this));
+class App extends Component {
+  App({int count = 0}) : _count = count {
+    _fragment = AppFragment(this, $zero: ZeroFragment(this));
   }
+
+  int _count;
+
+  AppFragment? _fragment;
 
   @override
-  late final AppFragment fragment;
-
-  int get count {
-    return state.count;
+  AppFragment get fragment {
+    return unsafeCast<AppFragment>(_fragment);
   }
 
-  set count(int value) {
-    invalidate('count', state.count, state.count = value);
+  int get count {
+    return _count;
+  }
+
+  set count(int count) {
+    invalidate('count', _count, _count = count);
   }
 
   void handleClick(Event event) {

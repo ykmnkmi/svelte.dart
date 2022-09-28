@@ -1,4 +1,3 @@
-import 'package:js/js.dart';
 import 'package:meta/dart2js.dart';
 import 'package:nutty/dom.dart';
 import 'package:nutty/runtime.dart';
@@ -90,30 +89,28 @@ class NestedFragment extends Fragment {
   }
 }
 
-@JS()
-@anonymous
-class NestedState {
-  external factory NestedState({required int count});
-
-  external int count;
-}
-
-class Nested extends Component<NestedState> with Dispatcher {
-  Nested({int count = 0, Fragment? zero}) : super(NestedState(count: count)) {
-    fragment = NestedFragment(this, zero: zero ?? ZeroFragment(this));
+class Nested extends Component with Dispatcher {
+  Nested({int count = 0, Fragment? $zero}) : _count = count {
+    _fragment = NestedFragment(this, zero: $zero ?? ZeroFragment(this));
   }
 
+  int _count;
+
+  NestedFragment? _fragment;
+
   @override
-  late final NestedFragment fragment;
+  NestedFragment get fragment {
+    return unsafeCast<NestedFragment>(_fragment);
+  }
 
   @noInline
   int get count {
-    return state.count;
+    return _count;
   }
 
   @noInline
-  set count(int value) {
-    invalidate('count', state.count, state.count = value);
+  set count(int count) {
+    invalidate('count', _count, _count = count);
   }
 
   @override

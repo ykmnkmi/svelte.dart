@@ -1,5 +1,8 @@
 {
   "dart.lineLength": 120,
+  "files.associations": {
+    "*.nutty": "html"
+  },
   "yaml.schemas": {
     "https://json.schemastore.org/dart-build": [
       "build.yaml",
