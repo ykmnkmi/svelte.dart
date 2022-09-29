@@ -15,7 +15,14 @@
 <button on:click={handleClick}>
   <Nested {count} on:even={log} on:odd={log}>
     <fragment slot="zero">
-      {#if count == 0}, click this button{/if}
+      ,
+      {#if count == 0}
+        click this button
+      {:else if count.isOdd}
+        is odd!
+      {:else}
+        is even!
+      {/if}
     </fragment>
   </Nested>
 </button>

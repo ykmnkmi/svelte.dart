@@ -1,4 +1,6 @@
-import 'package:nutty/dom.dart';
+import 'dart:html';
+
+import 'package:meta/meta.dart';
 import 'package:nutty/runtime.dart';
 
 import 'nested.dart';
@@ -61,7 +63,7 @@ class ZeroFragment extends Fragment {
         ifBlock1.detach(true);
       } else {
         if (component.count == 0) {
-          var target = unsafeCast<Element>(parentElement(ifBlock1Anchor));
+          var target = unsafeCast<Element>(ifBlock1Anchor.parent);
           ifBlock1.create();
           ifBlock1.mount(target, ifBlock1Anchor);
         }
@@ -84,8 +86,8 @@ class AppFragment extends Fragment {
       : button1 = element('button'),
         button1ClickListener = eventListener(component.handleClick),
         nested = Nested(count: component.count, $zero: $zero) {
-    nested.on<int>('even').listen(component.log);
-    nested.on<int>('odd').listen(component.log);
+    nested.on('even').listen(component.log);
+    nested.on('odd').listen(component.log);
   }
 
   final App component;
@@ -111,7 +113,7 @@ class AppFragment extends Fragment {
     mountComponent(nested, button1, null);
 
     if (!mounted) {
-      listen<Event>(button1, 'click', button1ClickListener);
+      listen(button1, 'click', button1ClickListener);
       mounted = true;
     }
   }
@@ -131,39 +133,41 @@ class AppFragment extends Fragment {
       remove(button1);
     }
 
-    detachComponent(nested, detaching);
-    cancel<Event>(button1, 'click', button1ClickListener);
+    destroyComponent(nested, detaching);
+    cancel(button1, 'click', button1ClickListener);
     mounted = false;
   }
 }
 
-class App extends Component {
-  App({int count = 0}) : _count = count {
-    _fragment = AppFragment(this, $zero: ZeroFragment(this));
+class AppContext {
+  AppContext({required this.count});
+
+  int count;
+}
+
+class App extends Component<AppContext> {
+  App({int count = 0}) : super(AppContext(count: count)) {
+    fragment = AppFragment(this, $zero: ZeroFragment(this));
   }
 
-  AppFragment? _fragment;
-
+  @nonVirtual
   @override
-  AppFragment get fragment {
-    return unsafeCast<AppFragment>(_fragment);
-  }
-
-  int _count;
+  @pragma('dart2js:late:trust')
+  late AppFragment fragment;
 
   int get count {
-    return _count;
+    return context.count;
   }
 
   set count(int count) {
-    invalidate('count', _count, _count = count);
+    invalidate('count', context.count, context.count = count);
   }
 
   void handleClick() {
     count += 1;
   }
 
-  void log(CustomEvent<int> event) {
+  void log(CustomEvent event) {
     print('${event.type}: ${event.detail}');
   }
 }

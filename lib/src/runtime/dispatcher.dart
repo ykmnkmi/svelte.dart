@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:html';
 
 import 'package:meta/meta.dart';
-import 'package:nutty/dom.dart';
-
-import 'package:nutty/src/runtime/utilities.dart';
 
 mixin Dispatcher {
   @internal
@@ -16,7 +14,7 @@ mixin Dispatcher {
   final Map<String, Stream<CustomEvent>> eventTypeMap = HashMap<String, Stream<CustomEvent>>();
 
   @nonVirtual
-  Stream<CustomEvent<T>> on<T>(String type) {
+  Stream<CustomEvent> on(String type) {
     var stream = eventTypeMap[type];
 
     if (stream == null) {
@@ -24,11 +22,11 @@ mixin Dispatcher {
       eventTypeMap[type] = stream;
     }
 
-    return unsafeCast<Stream<CustomEvent<T>>>(stream);
+    return stream;
   }
 
   @nonVirtual
-  void dispatch<T>(String type, {bool? cancelable, T? detail}) {
-    controller.add(CustomEvent<T>(type, CustomEventOptions(detail: detail, cancelable: cancelable)));
+  void dispatch(String type, {bool cancelable = true, Object? detail}) {
+    controller.add(CustomEvent(type, detail: detail, cancelable: cancelable));
   }
 }

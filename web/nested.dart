@@ -1,4 +1,6 @@
-import 'package:nutty/dom.dart';
+import 'dart:html';
+
+import 'package:meta/meta.dart';
 import 'package:nutty/runtime.dart';
 
 class ZeroFragment extends Fragment {
@@ -46,13 +48,17 @@ class NestedFragment extends Fragment {
 
   final Text text5;
 
+  String get text2Data {
+    return '${component.count}';
+  }
+
   String get text4Data {
     return component.count == 1 ? 'time' : 'times';
   }
 
   @override
   void create() {
-    setText(text2, component.count);
+    setText(text2, '${component.count}');
     setText(text4, text4Data);
     zero?.create();
   }
@@ -70,7 +76,7 @@ class NestedFragment extends Fragment {
   @override
   void update(Set<String> dirty) {
     if (dirty.contains('count')) {
-      setText(text2, component.count);
+      setText(text2, text2Data);
       setText(text4, text4Data);
     }
   }
@@ -88,26 +94,28 @@ class NestedFragment extends Fragment {
   }
 }
 
-class Nested extends Component with Dispatcher {
-  Nested({int count = 0, Fragment? $zero}) : _count = count {
-    _fragment = NestedFragment(this, zero: $zero ?? ZeroFragment(this));
+class NestedContext {
+  NestedContext({required this.count});
+
+  int count;
+}
+
+class Nested extends Component<NestedContext> with Dispatcher {
+  Nested({int count = 0, Fragment? $zero}) : super(NestedContext(count: count)) {
+    fragment = NestedFragment(this, zero: $zero ?? ZeroFragment(this));
   }
 
-  int _count;
-
-  NestedFragment? _fragment;
-
+  @nonVirtual
   @override
-  NestedFragment get fragment {
-    return unsafeCast<NestedFragment>(_fragment);
-  }
+  @pragma('dart2js:late:trust')
+  late NestedFragment fragment;
 
   int get count {
-    return _count;
+    return context.count;
   }
 
   set count(int count) {
-    invalidate('count', _count, _count = count);
+    invalidate('count', context.count, context.count = count);
   }
 
   @override

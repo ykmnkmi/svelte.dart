@@ -1,10 +1,12 @@
-import 'package:meta/meta.dart';
-import 'package:nutty/dom.dart';
+import 'dart:html';
+
 import 'package:nutty/runtime.dart';
 
-@optionalTypeArgs
-void runApp(Component component, {Element? target, Node? anchor}) {
-  target ??= unsafeCast<Element>(querySelector('body'));
+void Function() runApp(Component component, {Element? target, Node? anchor}) {
+  target ??= unsafeCast<Element>(document.body);
   createComponent(component);
   mountComponent(component, target, anchor);
+  return () {
+    destroyComponent(component, true);
+  };
 }

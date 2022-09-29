@@ -453,7 +453,7 @@ class AST {
 
   Node html;
 
-  Node? instance;
+  Script? instance;
 
   Script? module;
 

@@ -1,4 +1,4 @@
-import 'package:nutty/dom.dart';
+import 'dart:html';
 
 typedef FragmentFactory = Fragment Function();
 
