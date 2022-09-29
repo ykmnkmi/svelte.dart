@@ -1,4 +1,3 @@
-import 'package:meta/dart2js.dart';
 import 'package:nutty/dom.dart';
 import 'package:nutty/runtime.dart';
 
@@ -103,12 +102,10 @@ class Nested extends Component with Dispatcher {
     return unsafeCast<NestedFragment>(_fragment);
   }
 
-  @noInline
   int get count {
     return _count;
   }
 
-  @noInline
   set count(int count) {
     invalidate('count', _count, _count = count);
   }

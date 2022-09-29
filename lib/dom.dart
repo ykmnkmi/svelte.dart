@@ -11,19 +11,6 @@ export 'package:js/js_util.dart' show getProperty, setProperty;
 typedef EventListener<T extends Event> = void Function(T event);
 
 @JS()
-@staticInterop
-abstract class Console {}
-
-extension ConsoleImpl on Console {
-  void log(Object? object) {
-    callMethod<void>(this, 'log', <Object?>[object]);
-  }
-}
-
-@JS()
-external Console get console;
-
-@JS()
 @anonymous
 @doNotStore
 class EventOptions {
@@ -169,6 +156,13 @@ void insert(Node target, Node child, [Node? anchor]) {
 @noInline
 void append(Element target, Object? child) {
   callMethod<void>(target, 'append', <Object?>[child]);
+}
+
+@noInline
+EventListener<T> eventListener<T extends Event>(void Function() function) {
+  return (T event) {
+    function();
+  };
 }
 
 @noInline

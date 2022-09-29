@@ -82,6 +82,7 @@ class ZeroFragment extends Fragment {
 class AppFragment extends Fragment {
   AppFragment(this.component, {required this.$zero})
       : button1 = element('button'),
+        button1ClickListener = eventListener(component.handleClick),
         nested = Nested(count: component.count, $zero: $zero) {
     nested.on<int>('even').listen(component.log);
     nested.on<int>('odd').listen(component.log);
@@ -90,6 +91,8 @@ class AppFragment extends Fragment {
   final App component;
 
   final Element button1;
+
+  final EventListener button1ClickListener;
 
   final Nested nested;
 
@@ -108,7 +111,7 @@ class AppFragment extends Fragment {
     mountComponent(nested, button1, null);
 
     if (!mounted) {
-      listen<Event>(button1, 'click', component.handleClick);
+      listen<Event>(button1, 'click', button1ClickListener);
       mounted = true;
     }
   }
@@ -129,7 +132,7 @@ class AppFragment extends Fragment {
     }
 
     detachComponent(nested, detaching);
-    cancel<Event>(button1, 'click', component.handleClick);
+    cancel<Event>(button1, 'click', button1ClickListener);
     mounted = false;
   }
 }
@@ -139,14 +142,14 @@ class App extends Component {
     _fragment = AppFragment(this, $zero: ZeroFragment(this));
   }
 
-  int _count;
-
   AppFragment? _fragment;
 
   @override
   AppFragment get fragment {
     return unsafeCast<AppFragment>(_fragment);
   }
+
+  int _count;
 
   int get count {
     return _count;
@@ -156,11 +159,11 @@ class App extends Component {
     invalidate('count', _count, _count = count);
   }
 
-  void handleClick(Event event) {
+  void handleClick() {
     count += 1;
   }
 
   void log(CustomEvent<int> event) {
-    console.log('${event.type}: ${event.detail}');
+    print('${event.type}: ${event.detail}');
   }
 }

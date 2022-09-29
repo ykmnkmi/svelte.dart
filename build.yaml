@@ -7,13 +7,13 @@ global_options:
         # - --disable-inlining
         # - --no-source-maps
 
-        # - --minify
+        - --minify
         - --lax-runtime-type-to-string
         # - --omit-late-names
         - --omit-implicit-checks
         - --trust-primitives
         # - --omit-as-casts
-        - --server-mode
+        # - --server-mode
 
         # - --csp
 
