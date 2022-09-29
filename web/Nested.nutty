@@ -1,14 +1,17 @@
-<script type="text/dart">
+<script dispatcher type="text/dart">
   @input
-  int count = 0;
+  var count = 0;
+
+  var dispatchEven = createEventDispatcher<int>('even');
+  var dispatchOdd = createEventDispatcher<int>('odd');
 
   void afterChanges() {
     if (count.isEven) {
-      dispatch('even', detail: count);
+      dispatchEven(count);
     } else {
-      dispatch('odd', detail: count);
+      dispatchOdd(count);
     }
   }
 </script>
 
-Clicked { count } { count == 1 ? 'time' : 'times' } <slot name="zero">, click it</slot>!
+Clicked {count} {count == 1 ? 'time' : 'times'} <slot name="zero">, click it</slot>!

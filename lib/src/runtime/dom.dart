@@ -1,10 +1,10 @@
 import 'dart:html';
 
 import 'package:meta/dart2js.dart';
+import 'package:nutty/src/runtime/utilities.dart';
 
-@noInline
-Element element(String tag) {
-  return Element.tag(tag);
+T element<T extends Element>(String tag) {
+  return unsafeCast<T>(Element.tag(tag));
 }
 
 Text empty() {
@@ -15,20 +15,19 @@ Text space() {
   return text(' ');
 }
 
-@noInline
 Text text(String text) {
   return Text(text);
 }
 
 @noInline
-void setText(Text target, String? text) {
-  target.data = text;
+void setData(Text text, String? data) {
+  text.data = data;
 }
 
 @noInline
-void diffText(Text target, String? oldText, String? newText) {
-  if (oldText != newText) {
-    target.data = newText;
+void updateData(Text text, String? data) {
+  if (text.wholeText != data) {
+    text.data = data;
   }
 }
 
@@ -57,8 +56,8 @@ void updateAttribute(Element element, String attribute, Object? value) {
 }
 
 @noInline
-void insert(Node target, Node child, [Node? anchor]) {
-  target.insertBefore(child, anchor);
+void insert(Node node, Node child, [Node? anchor]) {
+  node.insertBefore(child, anchor);
 }
 
 @noInline
@@ -67,7 +66,7 @@ void append(Node node, Node child) {
 }
 
 @noInline
-EventListener eventListener<T extends Event>(void Function() function) {
+EventListener eventListener(void Function() function) {
   return (Event event) {
     function();
   };

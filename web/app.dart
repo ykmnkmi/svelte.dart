@@ -1,6 +1,5 @@
 import 'dart:html';
 
-import 'package:meta/meta.dart';
 import 'package:nutty/runtime.dart';
 
 import 'nested.dart';
@@ -10,7 +9,7 @@ class IfBlock extends Fragment {
       : text1 = text(', click this button'),
         mounted = false;
 
-  final App component;
+  final AppComponent component;
 
   final Text text1;
 
@@ -35,7 +34,7 @@ class ZeroFragment extends Fragment {
       : ifBlock1Anchor = empty(),
         ifBlock1 = IfBlock(component);
 
-  final App component;
+  final AppComponent component;
 
   final Text ifBlock1Anchor;
 
@@ -83,20 +82,20 @@ class ZeroFragment extends Fragment {
 
 class AppFragment extends Fragment {
   AppFragment(this.component, {required this.$zero})
-      : button1 = element('button'),
+      : button1 = element<ButtonElement>('button'),
         button1ClickListener = eventListener(component.handleClick),
-        nested = Nested(count: component.count, $zero: $zero) {
-    nested.on('even').listen(component.log);
-    nested.on('odd').listen(component.log);
+        nested = NestedComponent(count: component.count, $zero: $zero) {
+    nested.on<int>('even').listen(component.logEven);
+    nested.on<int>('odd').listen(component.logOdd);
   }
 
-  final App component;
+  final AppComponent component;
 
-  final Element button1;
+  final ButtonElement button1;
 
   final EventListener button1ClickListener;
 
-  final Nested nested;
+  final NestedComponent nested;
 
   final ZeroFragment $zero;
 
@@ -139,35 +138,57 @@ class AppFragment extends Fragment {
   }
 }
 
+abstract class App implements Component {
+  factory App({int count}) = AppComponent;
+
+  abstract int count;
+
+  void handleClick();
+
+  void logEven(int count);
+
+  void logOdd(int count);
+}
+
 class AppContext {
   AppContext({required this.count});
 
   int count;
 }
 
-class App extends Component<AppContext> {
-  App({int count = 0}) : super(AppContext(count: count)) {
+class AppComponent extends Component implements App {
+  AppComponent({int count = 0}) : context = AppContext(count: count) {
     fragment = AppFragment(this, $zero: ZeroFragment(this));
   }
 
-  @nonVirtual
+  final AppContext context;
+
   @override
   @pragma('dart2js:late:trust')
   late AppFragment fragment;
 
+  @override
   int get count {
     return context.count;
   }
 
+  @override
   set count(int count) {
     invalidate('count', context.count, context.count = count);
   }
 
+  @override
   void handleClick() {
     count += 1;
   }
 
-  void log(CustomEvent event) {
-    print('${event.type}: ${event.detail}');
+  @override
+  void logEven(int count) {
+    print('even: $count');
+  }
+
+  @override
+  void logOdd(int count) {
+    print('odd: $count');
   }
 }

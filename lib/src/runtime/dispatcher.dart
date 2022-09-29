@@ -1,32 +1,42 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:html';
 
 import 'package:meta/meta.dart';
+import 'package:nutty/src/runtime/component.dart';
+import 'package:nutty/src/runtime/utilities.dart';
 
-mixin Dispatcher {
-  @internal
-  @nonVirtual
-  final StreamController<CustomEvent> controller = StreamController<CustomEvent>.broadcast(sync: true);
+typedef EventDispatcher<T> = void Function([T? detail]);
 
-  @internal
-  @nonVirtual
-  final Map<String, Stream<CustomEvent>> eventTypeMap = HashMap<String, Stream<CustomEvent>>();
+mixin Dispatcher on Component {
+  final controllers = HashMap<String, StreamController<Object?>>();
 
-  @nonVirtual
-  Stream<CustomEvent> on(String type) {
-    var stream = eventTypeMap[type];
+  EventDispatcher<T> createEventDispatcher<T>(String type) {
+    var controller = controllers[type];
+    StreamSink<T> sink;
 
-    if (stream == null) {
-      stream = controller.stream.where((event) => event.type == type);
-      eventTypeMap[type] = stream;
+    if (controller == null) {
+      var controller = StreamController<T>.broadcast(sync: true);
+      controllers[type] = controller;
+      sink = controller;
+    } else {
+      sink = unsafeCast<StreamSink<T>>(controller);
     }
 
-    return stream;
+    return ([T? detail]) {
+      sink.add(unsafeCast<T>(detail));
+    };
   }
 
-  @nonVirtual
-  void dispatch(String type, {bool cancelable = true, Object? detail}) {
-    controller.add(CustomEvent(type, detail: detail, cancelable: cancelable));
+  Stream<T> on<T>(String type) {
+    var controller = unsafeCast<StreamController<T>>(controllers[type]);
+    return controller.stream;
+  }
+
+  @mustCallSuper
+  @override
+  void onDestroy() {
+    controllers.forEach((type, controller) {
+      controller.close();
+    });
   }
 }

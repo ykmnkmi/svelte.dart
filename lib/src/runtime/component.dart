@@ -1,29 +1,15 @@
 import 'dart:collection';
 import 'dart:html';
 
-import 'package:meta/meta.dart';
-
 import 'package:nutty/src/runtime/fragment.dart';
 import 'package:nutty/src/runtime/scheduler.dart';
 
-abstract class Component<T extends Object> {
-  Component(this.context);
-
-  // TODO: use list
-  @internal
-  @nonVirtual
-  T context;
-
-  @internal
+abstract class Component {
   Fragment get fragment;
 
   // TODO: use bitmask
-  @internal
-  @nonVirtual
   Set<String> dirty = HashSet<String>();
 
-  @internal
-  @nonVirtual
   void markDirty(String name) {
     if (dirty.isEmpty) {
       scheduleUpdateFor(this);
@@ -33,8 +19,6 @@ abstract class Component<T extends Object> {
   }
 
   // TODO: use bitmask
-  @internal
-  @nonVirtual
   void invalidate(String name, Object? oldValue, Object? newValue) {
     if (identical(oldValue, newValue)) {
       return;

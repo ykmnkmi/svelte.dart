@@ -58,8 +58,8 @@ class NestedFragment extends Fragment {
 
   @override
   void create() {
-    setText(text2, '${component.count}');
-    setText(text4, text4Data);
+    setData(text2, '${component.count}');
+    setData(text4, text4Data);
     zero?.create();
   }
 
@@ -76,8 +76,8 @@ class NestedFragment extends Fragment {
   @override
   void update(Set<String> dirty) {
     if (dirty.contains('count')) {
-      setText(text2, text2Data);
-      setText(text4, text4Data);
+      setData(text2, text2Data);
+      setData(text4, text4Data);
     }
   }
 
@@ -94,26 +94,47 @@ class NestedFragment extends Fragment {
   }
 }
 
+abstract class Nested {
+  factory Nested({int count}) = NestedComponent;
+
+  abstract int count;
+
+  abstract EventDispatcher<int> dispatchEven;
+
+  abstract EventDispatcher<int> dispatchOdd;
+}
+
 class NestedContext {
   NestedContext({required this.count});
 
   int count;
 }
 
-class Nested extends Component<NestedContext> with Dispatcher {
-  Nested({int count = 0, Fragment? $zero}) : super(NestedContext(count: count)) {
+class NestedComponent extends Component with Dispatcher implements Nested {
+  NestedComponent({int count = 0, Fragment? $zero}) : context = NestedContext(count: count) {
     fragment = NestedFragment(this, zero: $zero ?? ZeroFragment(this));
   }
 
-  @nonVirtual
+  final NestedContext context;
+
   @override
   @pragma('dart2js:late:trust')
   late NestedFragment fragment;
 
+  @override
+  @pragma('dart2js:late:trust')
+  late var dispatchEven = createEventDispatcher<int>('even');
+
+  @override
+  @pragma('dart2js:late:trust')
+  late var dispatchOdd = createEventDispatcher<int>('odd');
+
+  @override
   int get count {
     return context.count;
   }
 
+  @override
   set count(int count) {
     invalidate('count', context.count, context.count = count);
   }
@@ -122,9 +143,9 @@ class Nested extends Component<NestedContext> with Dispatcher {
   void afterChanges() {
     if (dirty.contains('count')) {
       if (count.isEven) {
-        dispatch('even', detail: count);
+        dispatchEven(count);
       } else {
-        dispatch('odd', detail: count);
+        dispatchOdd(count);
       }
     }
   }
