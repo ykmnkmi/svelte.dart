@@ -1,4 +1,5 @@
-import 'package:analyzer/dart/ast/ast.dart' show AsExpression, Expression, Identifier, NamedType;
+import 'package:analyzer/dart/ast/ast.dart'
+    show AsExpression, Expression, Identifier, NamedType;
 import 'package:nutty/src/compiler/interface.dart';
 import 'package:nutty/src/compiler/parse/errors.dart';
 import 'package:nutty/src/compiler/parse/html.dart';
@@ -100,8 +101,10 @@ extension MustacheParser on Parser {
         }
       }
 
-      var trimBefore = block.start == 0 || block.start! > 0 && whitespaceRe.hasMatch(template[block.start! - 1]);
-      var trimAfter = index == length || index < length && whitespaceRe.hasMatch(template[index]);
+      var trimBefore = block.start == 0 ||
+          block.start! > 0 && whitespaceRe.hasMatch(template[block.start! - 1]);
+      var trimAfter = index == length ||
+          index < length && whitespaceRe.hasMatch(template[index]);
       trimSpace(block, trimBefore, trimAfter);
       block.end = index;
       stack.removeLast();
@@ -131,7 +134,8 @@ extension MustacheParser on Parser {
         allowSpace();
         expect('}');
 
-        var ifNode = IfBlock(start: index, expression: expression, elseIf: true);
+        var ifNode =
+            IfBlock(start: index, expression: expression, elseIf: true);
         block.elseNode = ElseBlock(start: index, children: <Node>[ifNode]);
         stack.add(ifNode);
       } else {
@@ -335,7 +339,8 @@ extension MustacheParser on Parser {
 
       allowSpace();
       expect('}');
-      current.children.add(RawMustache(start: start, end: index, expression: expression));
+      current.children
+          .add(RawMustache(start: start, end: index, expression: expression));
     } else if (scan('@debug')) {
       allowSpace();
 
@@ -358,12 +363,14 @@ extension MustacheParser on Parser {
         expect('}');
       }
 
-      current.children.add(Debug(start: start, end: index, identifiers: identifiers));
+      current.children
+          .add(Debug(start: start, end: index, identifiers: identifiers));
     } else {
       var expression = readExpression();
       allowSpace();
       expect('}');
-      current.children.add(Mustache(start: start, end: index, expression: expression));
+      current.children
+          .add(Mustache(start: start, end: index, expression: expression));
     }
   }
 }

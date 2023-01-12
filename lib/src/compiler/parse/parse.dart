@@ -34,9 +34,10 @@ class Parser {
       var current = this.current;
 
       if (current is Element) {
-        error('unclosed-element', '<${current.name}> was left open', start: current.start);
+        error('unclosed-element', '<${current.name}> was left open',
+            start: current.start);
       } else {
-        error('unclosed-block', '\'Block\' was left open', start: current.start);
+        error('unclosed-block', "'Block' was left open", start: current.start);
       }
     }
 
@@ -197,8 +198,10 @@ AST parse(String template, {Object? sourceUrl}) {
   var scripts = parser.scripts;
 
   if (scripts.isNotEmpty) {
-    var instances = scripts.where((script) => script.context == 'default').toList();
-    var modules = scripts.where((script) => script.context == 'module').toList();
+    var instances =
+        scripts.where((script) => script.context == 'default').toList();
+    var modules =
+        scripts.where((script) => script.context == 'module').toList();
 
     if (instances.length > 1) {
       parser.invalidScriptInstance(instances[1].start);

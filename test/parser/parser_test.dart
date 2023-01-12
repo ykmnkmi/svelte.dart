@@ -9,7 +9,8 @@ const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 void main() {
   group('parser', () {
-    var dirs = Directory.fromUri(Uri.directory('test/parser/samples')).listSync();
+    var dirs =
+        Directory.fromUri(Uri.directory('test/parser/samples')).listSync();
 
     for (var dir in dirs) {
       var uri = Uri.directory(dir.path).resolveUri(Uri.file('input.piko'));

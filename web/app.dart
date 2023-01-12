@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:html';
 
 import 'package:nutty/runtime.dart';

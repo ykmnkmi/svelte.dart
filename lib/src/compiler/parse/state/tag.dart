@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, implementation_imports
+
 import 'package:_fe_analyzer_shared/src/scanner/token.dart' show StringToken;
 import 'package:analyzer/dart/ast/token.dart' show TokenType;
 import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
@@ -38,13 +40,16 @@ extension TagParser on Parser {
 
   static final RegExp elementRe = RegExp('^element(?=[\\s/>])');
 
-  static final RegExp componentRe = RegExp('^component(?=[\\s/>])', multiLine: true);
+  static final RegExp componentRe =
+      RegExp('^component(?=[\\s/>])', multiLine: true);
 
-  static final RegExp fragmentRe = RegExp('^fragment(?=[\\s/>])', multiLine: true);
+  static final RegExp fragmentRe =
+      RegExp('^fragment(?=[\\s/>])', multiLine: true);
 
   static final RegExp metaTagEndRe = RegExp('(\\s|\\/|>)');
 
-  static final RegExp tagRe = RegExp('^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*', multiLine: true);
+  static final RegExp tagRe =
+      RegExp('^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*', multiLine: true);
 
   static final RegExp attributeNameEndRe = RegExp('[\\s=\\/>"]');
 
@@ -100,7 +105,9 @@ extension TagParser on Parser {
 
     if (scan(selfRe)) {
       for (var node in stack.reversed) {
-        if (node.type == 'IfBlock' || node.type == 'EachBlock' || node.type == 'InlineComponent') {
+        if (node.type == 'IfBlock' ||
+            node.type == 'EachBlock' ||
+            node.type == 'InlineComponent') {
           return 'self';
         }
       }
@@ -177,7 +184,8 @@ extension TagParser on Parser {
 
       if (scan('...')) {
         var expression = readExpression();
-        element.attributes.add(Spread(start: start, end: index, expression: expression));
+        element.attributes
+            .add(Spread(start: start, end: index, expression: expression));
         allowSpace();
         expect('}');
         return true;
@@ -196,8 +204,10 @@ extension TagParser on Parser {
         var token = StringToken(TokenType.IDENTIFIER, name, valueStart);
         var identifier = astFactory.simpleIdentifier(token);
         var end = valueStart + name.length;
-        var shortHand = Shorthand(start: valueStart, end: end, expression: identifier);
-        element.attributes.add(Attribute(start: start, end: index, name: name, children: <Node>[shortHand]));
+        var shortHand =
+            Shorthand(start: valueStart, end: end, expression: identifier);
+        element.attributes.add(Attribute(
+            start: start, end: index, name: name, children: <Node>[shortHand]));
         return true;
       }
     }
@@ -250,11 +260,21 @@ extension TagParser on Parser {
       }
 
       if (type == 'StyleDirective') {
-        element.attributes.add(Directive(start: start, end: end, type: type, name: directiveName, children: values));
+        element.attributes.add(Directive(
+            start: start,
+            end: end,
+            type: type,
+            name: directiveName,
+            children: values));
         return true;
       }
 
-      var directive = Directive(start: start, end: end, type: type, name: directiveName, modifiers: modifiers);
+      var directive = Directive(
+          start: start,
+          end: end,
+          type: type,
+          name: directiveName,
+          modifiers: modifiers);
 
       if (values != null && values.isNotEmpty) {
         if (values.length > 1 || values.first is Text) {
@@ -274,8 +294,10 @@ extension TagParser on Parser {
         directive.outro = direction == 'out' || direction == 'transition';
       }
 
-      if (directive.expression == null && (type == 'Binding' || type == 'Class')) {
-        var token = StringToken(TokenType.IDENTIFIER, directiveName, directive.start! + colonIndex + 1);
+      if (directive.expression == null &&
+          (type == 'Binding' || type == 'Class')) {
+        var token = StringToken(TokenType.IDENTIFIER, directiveName,
+            directive.start! + colonIndex + 1);
         directive.expression = astFactory.simpleIdentifier(token);
       }
 
@@ -284,7 +306,8 @@ extension TagParser on Parser {
     }
 
     checkUnique(name);
-    element.attributes.add(Attribute(start: start, end: end, name: name, children: values));
+    element.attributes
+        .add(Attribute(start: start, end: end, name: name, children: values));
     return true;
   }
 
@@ -296,7 +319,11 @@ extension TagParser on Parser {
     void flush(int end) {
       if (buffer.isNotEmpty) {
         var data = buffer.toString();
-        chunks.add(Text(start: textStart, end: end, raw: data, data: decodeCharacterReferences(data)));
+        chunks.add(Text(
+            start: textStart,
+            end: end,
+            raw: data,
+            data: decodeCharacterReferences(data)));
         buffer.clear();
       }
     }
@@ -334,7 +361,8 @@ extension TagParser on Parser {
     if (scan('!--')) {
       var data = readUntil('-->');
       expect('-->', onError: unclosedComment);
-      current.children.add(Comment(start: start, end: index, data: data, ignores: extractIgnore(data)));
+      current.children.add(Comment(
+          start: start, end: index, data: data, ignores: extractIgnore(data)));
       return;
     }
 
@@ -363,7 +391,9 @@ extension TagParser on Parser {
         this.metaTags.add(name);
       }
     } else {
-      if (componentNameRe.hasMatch(name) || name == 'self' || name == 'component') {
+      if (componentNameRe.hasMatch(name) ||
+          name == 'self' ||
+          name == 'component') {
         type = 'InlineComponent';
       } else if (name == 'fragment') {
         type = 'SlotTemplate';
@@ -403,7 +433,8 @@ extension TagParser on Parser {
       parent.end = index;
       stack.removeLast();
 
-      if (lastAutoClosedTag != null && stack.length < lastAutoClosedTag!.depth) {
+      if (lastAutoClosedTag != null &&
+          stack.length < lastAutoClosedTag!.depth) {
         lastAutoClosedTag = null;
       }
 
@@ -424,7 +455,8 @@ extension TagParser on Parser {
 
     if (name == 'component') {
       var attributes = element.attributes;
-      var index = attributes.indexWhere((attribute) => attribute is Attribute && attribute.name == 'this');
+      var index = attributes.indexWhere(
+          (attribute) => attribute is Attribute && attribute.name == 'this');
 
       if (index == -1) {
         missingComponentDefinition(start);
@@ -444,7 +476,8 @@ extension TagParser on Parser {
 
     if (name == 'element') {
       var attributes = element.attributes;
-      var index = attributes.indexWhere((attribute) => attribute is Attribute && attribute.name == 'this');
+      var index = attributes.indexWhere(
+          (attribute) => attribute is Attribute && attribute.name == 'this');
 
       if (index == -1) {
         missingElementDefinition(start);

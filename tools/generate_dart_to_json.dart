@@ -15,7 +15,8 @@ Future<void> main() async {
     throw Exception('ast uri is not resolved');
   }
 
-  var visitorUri = Uri(scheme: 'package', path: 'analyzer/dart/ast/visitor.dart');
+  var visitorUri =
+      Uri(scheme: 'package', path: 'analyzer/dart/ast/visitor.dart');
   var visitorFileUri = await Isolate.resolvePackageUri(visitorUri);
 
   if (visitorFileUri == null) {
@@ -23,14 +24,17 @@ Future<void> main() async {
   }
 
   var astFile = File.fromUri(astFileUri);
-  var visitorFile = File.fromUri(visitorFileUri);
+  astFile = astFile.absolute;
 
-  var includedPaths = <String>[astFile.absolute.path, visitorFile.absolute.path];
+  var visitorFile = File.fromUri(visitorFileUri);
+  visitorFile = visitorFile.absolute;
+
+  var includedPaths = <String>[astFile.path, visitorFile.path];
   var collection = AnalysisContextCollection(includedPaths: includedPaths);
 
   var context = collection.contextFor(visitorFile.absolute.path);
   var session = context.currentSession;
-  var resolvedUnit = await session.getResolvedUnit(visitorFile.absolute.path);
+  var resolvedUnit = await session.getResolvedUnit(visitorFile.path);
 
   if (resolvedUnit is! ResolvedUnitResult) {
     throw Exception('library is not resolved');
@@ -43,9 +47,9 @@ Future<void> main() async {
     throw Exception('ThrowingAstVisitor is not resolved');
   }
 
-  context = collection.contextFor(astFile.absolute.path);
+  context = collection.contextFor(astFile.path);
   session = context.currentSession;
-  resolvedUnit = await session.getResolvedUnit(astFile.absolute.path);
+  resolvedUnit = await session.getResolvedUnit(astFile.path);
 
   if (resolvedUnit is! ResolvedUnitResult) {
     throw Exception('library is not resolved');
@@ -103,7 +107,8 @@ Future<void> main() async {
   sink.write(header);
 
   void writeFields(InterfaceElement interface, Set<String> writed) {
-    if (interface.name == 'AstNode' || interface.name == 'NullShortableExpression') {
+    if (interface.name == 'AstNode' ||
+        interface.name == 'NullShortableExpression') {
       return;
     }
 
@@ -122,10 +127,10 @@ Future<void> main() async {
         String prefix, check;
 
         if (typeSystem.isNullable(accessor.returnType)) {
-          prefix = '\n      if (node.$name != null) \'$name\':';
+          prefix = "\n      if (node.$name != null) '$name':";
           check = '!';
         } else {
-          prefix = '\n      \'$name\':';
+          prefix = "\n      '$name':";
           check = '';
         }
 
@@ -134,15 +139,16 @@ Future<void> main() async {
         } else if (isNodeList(accessor.returnType)) {
           sink
             ..write('\n      if (node.$name.isNotEmpty)')
-            ..write('\n        \'$name\': <Map<String, Object?>?>[')
-            ..write('\n          for (var item in node.$name) item.accept(this),')
+            ..write("\n        '$name': <Map<String, Object?>?>[")
+            ..write(
+                '\n          for (var item in node.$name) item.accept(this),')
             ..write('\n        ],');
         } else if (isString(accessor.returnType)) {
           sink.write('$prefix node.$name$check,');
         } else if (isNum(accessor.returnType)) {
           sink.write('$prefix node.$name$check,');
         } else if (isBool(accessor.returnType)) {
-          sink.write('\n     if (node.$name) \'$name\': node.$name$check,');
+          sink.write("\n     if (node.$name) '$name': node.$name$check,");
         }
 
         writed.add(name);
@@ -169,7 +175,7 @@ Future<void> main() async {
         ..write('\n  @override')
         ..write('\n  Map<String, Object?> visit$name($name node) {')
         ..write('\n    return <String, Object?>{')
-        ..write('\n      \'_\': \'$name\',')
+        ..write("\n      '_': '$name',")
         ..write('\n      ...getLocation(node),');
 
       // throws null check on null or stack overflow
@@ -178,7 +184,7 @@ Future<void> main() async {
       writeFields(klass, writed);
 
       for (var interface in klass.interfaces) {
-        writeFields(interface.element2, writed);
+        writeFields(interface.element, writed);
       }
 
       sink
@@ -192,7 +198,8 @@ Future<void> main() async {
 }
 
 const String header = '''
-// generated with `tools/generate_script_to_json.dart`.
+// generated with `tools/generate_script_to_json.dart`
+// ignore_for_file: depend_on_referenced_packages
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';

@@ -1,6 +1,5 @@
 import 'dart:html';
 
-import 'package:meta/meta.dart';
 import 'package:nutty/runtime.dart';
 
 class ZeroFragment extends Fragment {
@@ -111,7 +110,8 @@ class NestedContext {
 }
 
 class NestedComponent extends Component with Dispatcher implements Nested {
-  NestedComponent({int count = 0, Fragment? $zero}) : context = NestedContext(count: count) {
+  NestedComponent({int count = 0, Fragment? $zero})
+      : context = NestedContext(count: count) {
     fragment = NestedFragment(this, zero: $zero ?? ZeroFragment(this));
   }
 

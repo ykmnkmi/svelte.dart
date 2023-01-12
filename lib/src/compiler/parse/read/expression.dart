@@ -1,11 +1,15 @@
-import 'package:analyzer/dart/analysis/features.dart';
-import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/ast/visitor.dart';
-import 'package:analyzer/error/listener.dart';
-import 'package:analyzer/source/line_info.dart';
-import 'package:analyzer/src/dart/scanner/scanner.dart';
-import 'package:analyzer/src/generated/parser.dart' as AST;
-import 'package:analyzer/src/string_source.dart';
+// ignore_for_file: implementation_imports
+
+import 'package:analyzer/dart/analysis/features.dart' show FeatureSet;
+import 'package:analyzer/dart/ast/ast.dart'
+    show AstNode, BinaryExpression, Expression;
+import 'package:analyzer/dart/ast/visitor.dart' show UnifyingAstVisitor;
+import 'package:analyzer/error/listener.dart'
+    show AnalysisErrorListener, RecordingErrorListener;
+import 'package:analyzer/source/line_info.dart' show LineInfo;
+import 'package:analyzer/src/dart/scanner/scanner.dart' show Scanner;
+import 'package:analyzer/src/generated/parser.dart' as ast show Parser;
+import 'package:analyzer/src/string_source.dart' show StringSource;
 import 'package:nutty/src/compiler/parse/parse.dart';
 
 extension MustacheParser on Parser {
@@ -23,24 +27,28 @@ extension MustacheParser on Parser {
 
     for (var analysisError in errors) {
       if (index + analysisError.offset <= nonSynthetic.end) {
-        error('parse-error', analysisError.message, start: analysisError.offset);
+        error('parse-error', analysisError.message,
+            start: analysisError.offset);
       }
     }
 
     return nonSynthetic;
   }
 
-  static Expression parseExpression(int offset, String expression, [AnalysisErrorListener? errorListener]) {
+  static Expression parseExpression(int offset, String expression,
+      [AnalysisErrorListener? errorListener]) {
     errorListener ??= RecordingErrorListener();
 
     var featureSet = FeatureSet.latestLanguageVersion();
     var source = StringSource(expression, null);
     var scanner = Scanner.fasta(source, errorListener, offset: offset - 1);
-    scanner.configureFeatures(featureSetForOverriding: featureSet, featureSet: featureSet);
+    scanner.configureFeatures(
+        featureSetForOverriding: featureSet, featureSet: featureSet);
 
     var token = scanner.tokenize();
     var lineInfo = LineInfo(scanner.lineStarts);
-    var parser = AST.Parser(source, errorListener, featureSet: scanner.featureSet, lineInfo: lineInfo);
+    var parser = ast.Parser(source, errorListener,
+        featureSet: scanner.featureSet, lineInfo: lineInfo);
     return parser.parseExpression(token);
   }
 }

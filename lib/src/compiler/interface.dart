@@ -1,5 +1,6 @@
-import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/dart/ast/ast.dart'
+    show CompilationUnit, Expression, Identifier;
+import 'package:analyzer/error/error.dart' show AnalysisError;
 import 'package:nutty/src/compiler/dart_to_json.dart';
 
 const DartToJsonVisitor dartToJson = DartToJsonVisitor();
@@ -42,7 +43,10 @@ mixin ChildrenNode on Node {
   Map<String, Object?> toJson() {
     return <String, Object?>{
       ...super.toJson(),
-      if (children.isNotEmpty) 'children': children.map<Map<String, Object?>>(((child) => child.toJson())).toList(),
+      if (children.isNotEmpty)
+        'children': children
+            .map<Map<String, Object?>>((child) => child.toJson())
+            .toList(),
     };
   }
 }
@@ -243,7 +247,13 @@ mixin TransitionNode on Node {
   }
 }
 
-class Directive extends Node with NamedNode, ModifiersNode, ExpressionNode, TransitionNode, ChildrenNode {
+class Directive extends Node
+    with
+        NamedNode,
+        ModifiersNode,
+        ExpressionNode,
+        TransitionNode,
+        ChildrenNode {
   Directive({
     super.start,
     super.end,
@@ -340,7 +350,9 @@ mixin AttributesNode on Node {
     return <String, Object?>{
       ...super.toJson(),
       if (attributes.isNotEmpty)
-        'attributes': attributes.map<Map<String, Object?>>((attribute) => attribute.toJson()).toList(),
+        'attributes': attributes
+            .map<Map<String, Object?>>((attribute) => attribute.toJson())
+            .toList(),
     };
   }
 }
@@ -360,7 +372,8 @@ mixin TagNode on Node {
   }
 }
 
-class Element extends Node with NamedNode, AttributesNode, ChildrenNode, TagNode {
+class Element extends Node
+    with NamedNode, AttributesNode, ChildrenNode, TagNode {
   Element({
     super.start,
     super.end,
@@ -519,7 +532,8 @@ mixin ElseNode on Node {
   }
 }
 
-class IfBlock extends Node with ElseIfNode, ExpressionNode, ChildrenNode, ElseNode {
+class IfBlock extends Node
+    with ElseIfNode, ExpressionNode, ChildrenNode, ElseNode {
   IfBlock({
     super.start,
     super.end,
@@ -584,7 +598,15 @@ mixin KeyNode on Node {
   }
 }
 
-class EachBlock extends Node with ExpressionNode, IterableNode, IndexNode, KeyNode, ChildrenNode, ElseIfNode, ElseNode {
+class EachBlock extends Node
+    with
+        ExpressionNode,
+        IterableNode,
+        IndexNode,
+        KeyNode,
+        ChildrenNode,
+        ElseIfNode,
+        ElseNode {
   EachBlock({
     super.start,
     super.end,
@@ -643,7 +665,14 @@ class ElseBlock extends Node with ChildrenNode {
 }
 
 class AwaitBlock extends Node
-    with ExpressionNode, ValueNode, ErrorNode, PendingNode, ThenNode, CatchNode, NoChildrenNode {
+    with
+        ExpressionNode,
+        ValueNode,
+        ErrorNode,
+        PendingNode,
+        ThenNode,
+        CatchNode,
+        NoChildrenNode {
   AwaitBlock({
     super.start,
     super.end,

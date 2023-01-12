@@ -1,16 +1,3 @@
 .dart_tool/
-.DS_Store
-.idea/
-.vscode/
-.notes
-.packages
-bin/
 build/
-doc/api/
 pubspec.lock
-**/**.dill
-**/**.jit
-**/**.aot
-**/**.exe
-**/**.js
-**/**.js.*

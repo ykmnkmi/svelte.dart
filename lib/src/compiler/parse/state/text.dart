@@ -3,7 +3,7 @@ import 'package:nutty/src/compiler/parse/html.dart';
 import 'package:nutty/src/compiler/parse/parse.dart';
 
 extension TextParser on Parser {
-  static final RegExp textEndRe = RegExp(r'[{<]');
+  static final RegExp textEndRe = RegExp('[{<]');
 
   void text() {
     var start = index;
@@ -22,7 +22,11 @@ extension TextParser on Parser {
       data = template.substring(start, found);
     }
 
-    current.children.add(Text(start: start, end: found, raw: data, data: decodeCharacterReferences(data)));
+    current.children.add(Text(
+        start: start,
+        end: found,
+        raw: data,
+        data: decodeCharacterReferences(data)));
     index = found;
   }
 }

@@ -1,4 +1,5 @@
-final RegExp ignoreRe = RegExp('^\\s*ignore:\\s*([\\s\\S]+)\\s*\$', multiLine: true);
+final RegExp ignoreRe =
+    RegExp('^\\s*ignore:\\s*([\\s\\S]+)\\s*\$', multiLine: true);
 
 List<String>? extractIgnore(String text) {
   var match = ignoreRe.matchAsPrefix(text);
@@ -7,5 +8,9 @@ List<String>? extractIgnore(String text) {
     return null;
   }
 
-  return match[1]!.split(',').map<String>((rule) => rule.trim()).where((rule) => rule.isNotEmpty).toList();
+  return match[1]!
+      .split(',')
+      .map<String>((rule) => rule.trim())
+      .where((rule) => rule.isNotEmpty)
+      .toList();
 }

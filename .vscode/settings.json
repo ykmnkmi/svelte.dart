@@ -1,5 +1,4 @@
 {
-  "dart.lineLength": 120,
   "files.associations": {
     "*.nutty": "html"
   },

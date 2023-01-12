@@ -12,16 +12,18 @@ void main() {
   var source = StringSource(string, '<memory>');
   var errorListener = RecordingErrorListener();
   var scanner = Scanner.fasta(source, errorListener);
-  scanner.configureFeatures(featureSetForOverriding: featureSet, featureSet: featureSet);
+  scanner.configureFeatures(
+      featureSetForOverriding: featureSet, featureSet: featureSet);
 
   var token = scanner.tokenize();
   var lineInfo = LineInfo(scanner.lineStarts);
-  var parser = Parser(source, errorListener, featureSet: scanner.featureSet, lineInfo: lineInfo);
+  var parser = Parser(source, errorListener,
+      featureSet: scanner.featureSet, lineInfo: lineInfo);
   var result = parser.parseCompilationUnit(token);
 
   for (var declaration in result.declarations) {
     if (declaration is TopLevelVariableDeclaration) {
-      print(declaration.externalKeyword);
+      print(declaration);
     }
   }
 }
