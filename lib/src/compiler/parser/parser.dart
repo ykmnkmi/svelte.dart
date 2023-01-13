@@ -1,17 +1,13 @@
-import 'dart:math' as math;
-
-import 'package:nutty/src/compiler/interface.dart';
+import 'package:nutty/src/compiler/ast.dart';
 import 'package:nutty/src/compiler/parser/errors.dart';
 import 'package:nutty/src/compiler/parser/patterns.dart';
 import 'package:nutty/src/compiler/parser/state/fragment.dart';
 import 'package:source_span/source_span.dart' show SourceFile;
 
-export 'package:nutty/src/compiler/parser/errors.dart' show CompileError;
+class AutoCloseTag {
+  AutoCloseTag(this.tag, this.reason, this.depth);
 
-class LastAutoClosedTag {
-  LastAutoClosedTag(this.tag, this.reason, this.depth);
-
-  String tag;
+  String? tag;
 
   String reason;
 
@@ -22,40 +18,11 @@ class Parser {
   Parser(this.template, {Object? sourceUrl})
       : length = template.length,
         sourceFile = SourceFile.fromString(template, url: sourceUrl) {
-    stack.add(html);
+    var root = Element(start: 0, end: length, type: 'Fragment');
+    stack.add(root);
 
-    while (canParse) {
+    while (isNotDone) {
       fragment();
-    }
-
-    var children = html.children;
-
-    if (stack.length > 1) {
-      var current = this.current;
-
-      if (current is Element) {
-        error('unclosed-element', '<${current.name}> was left open',
-            start: current.start);
-      } else {
-        error('unclosed-block', "'Block' was left open", start: current.start);
-      }
-    }
-
-    if (children.isNotEmpty) {
-      var start = children.first.start ?? 0;
-      var index = template.indexOf(nonWhitespaceRe, start);
-      start = math.max(start, index);
-
-      var end = children.last.end ?? template.length;
-      index = template.lastIndexOf(nonWhitespaceRe, end);
-
-      if (index != -1) {
-        end = math.min(index + 1, end);
-      }
-
-      html
-        ..start = start
-        ..end = end;
     }
   }
 
@@ -67,67 +34,57 @@ class Parser {
 
   final Set<String> metaTags = <String>{};
 
-  final List<Node> stack = <Node>[];
+  final List<Element> stack = <Element>[];
 
-  final Fragment html = Fragment();
+  int position = 0;
 
-  final List<Script> scripts = <Script>[];
+  AutoCloseTag? lastAutoCloseTag;
 
-  final List<Style> styles = <Style>[];
-
-  int index = 0;
-
-  LastAutoClosedTag? lastAutoClosedTag;
-
-  bool get canParse {
-    return index < length;
-  }
-
-  String get rest {
-    return template.substring(index);
-  }
-
-  Node get current {
+  Element get current {
     return stack.last;
   }
 
+  bool get isNotDone {
+    return position < length;
+  }
+
   void allowSpace({bool require = false}) {
-    var match = whitespaceRe.matchAsPrefix(template.substring(index));
+    var match = spaceRe.matchAsPrefix(template, position);
 
     if (match == null) {
       if (require) {
-        error('missing-whitespace', 'expected whitespace');
+        error('missing-whitespace', 'Expected whitespace.');
       }
 
       return;
     }
 
-    index += match.end;
+    position = match.end;
   }
 
   bool match(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template.substring(index));
+    var match = pattern.matchAsPrefix(template, position);
     return match != null;
   }
 
   bool scan(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template.substring(index));
+    var match = pattern.matchAsPrefix(template, position);
 
     if (match == null) {
       return false;
     }
 
-    index += match.end;
+    position = match.end;
     return true;
   }
 
-  void expect(Pattern pattern, {Never Function()? onError}) {
-    var match = pattern.matchAsPrefix(template.substring(index));
+  void expect(Pattern pattern, [Never Function()? onError]) {
+    var match = pattern.matchAsPrefix(template, position);
 
     if (match == null) {
       if (onError == null) {
-        if (canParse) {
-          unexpectedToken(pattern, index);
+        if (isNotDone) {
+          unexpectedToken(pattern, position);
         }
 
         unexpectedEOFToken(pattern);
@@ -136,35 +93,30 @@ class Parser {
       onError();
     }
 
-    index += match.end;
+    position = match.end;
   }
 
   int readChar() {
-    return template.codeUnitAt(index++);
+    return template.codeUnitAt(position++);
   }
 
   String? read(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template.substring(index));
+    var match = pattern.matchAsPrefix(template, position);
 
     if (match == null) {
       return null;
     }
 
-    index += match.end;
+    position = match.end;
     return match[0];
   }
 
-  // TODO(parser): add reserved word checking
-  String? readIdentifier() {
-    return read(identifierRe);
-  }
-
-  String readUntil(Pattern pattern, [Never Function()? onError]) {
-    var found = template.substring(index).indexOf(pattern);
+  String readUntil(Pattern pattern, {Never Function()? onError}) {
+    var found = template.indexOf(pattern, position);
 
     if (found == -1) {
-      if (canParse) {
-        return template.substring(index, index = length);
+      if (isNotDone) {
+        return template.substring(position, position = length);
       }
 
       if (onError == null) {
@@ -174,47 +126,11 @@ class Parser {
       onError();
     }
 
-    return template.substring(index, index += found);
+    return template.substring(position, position = found);
   }
 
-  Never error(String code, String message, {int? start, int? end}) {
-    start ??= index;
-    throw CompileError(code, message, sourceFile.span(start, end ?? start));
+  Never error(String code, String message, [int? start, int? end]) {
+    start ??= position;
+    throw CompileError(code, message, sourceFile.span(start, end));
   }
-}
-
-AST parse(String template, {Object? sourceUrl}) {
-  var parser = Parser(template.trimRight(), sourceUrl: sourceUrl);
-  var ast = AST(parser.html);
-
-  var styles = parser.styles;
-
-  if (styles.length > 1) {
-    parser.duplicateStyle(styles[1].start);
-  } else if (styles.isNotEmpty) {
-    ast.style = styles.first;
-  }
-
-  var scripts = parser.scripts;
-
-  if (scripts.isNotEmpty) {
-    var instances =
-        scripts.where((script) => script.context == 'default').toList();
-    var modules =
-        scripts.where((script) => script.context == 'module').toList();
-
-    if (instances.length > 1) {
-      parser.invalidScriptInstance(instances[1].start);
-    } else if (instances.isNotEmpty) {
-      ast.instance = instances.first;
-    }
-
-    if (modules.length > 1) {
-      parser.invalidScriptModule(modules[1].start);
-    } else if (modules.isNotEmpty) {
-      ast.module = modules.first;
-    }
-  }
-
-  return ast;
 }

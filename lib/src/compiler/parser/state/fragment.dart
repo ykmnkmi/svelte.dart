@@ -7,14 +7,10 @@ extension FragmentParser on Parser {
   void fragment() {
     if (match('<')) {
       tag();
-      return;
-    }
-
-    if (match('{')) {
+    } else if (match('{')) {
       mustache();
-      return;
+    } else {
+      text();
     }
-
-    text();
   }
 }

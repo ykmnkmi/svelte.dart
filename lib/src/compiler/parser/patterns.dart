@@ -1,5 +1,3 @@
-final RegExp identifierRe = RegExp('[_\$A-Za-z][_\$A-Za-z0-9]*');
+final RegExp nonSpaceRe = RegExp('\\S+');
 
-final RegExp nonWhitespaceRe = RegExp('\\S+');
-
-final RegExp whitespaceRe = RegExp('\\s+');
+final RegExp spaceRe = RegExp('[ \t\r\n]');

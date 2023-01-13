@@ -22,39 +22,83 @@ class CompileError extends Error {
 
   @override
   String toString() {
-    return 'CompileError: $message\n${span.highlight(color: true)}';
+    return 'CompileError: $message';
   }
 }
 
-extension ParserErrors on Parser {
-  Never cssSyntaxError(String message) {
-    error(message, 'css-syntax-error');
-  }
-
+extension ScannerErrors on Parser {
   Never duplicateAttribute([int? start, int? end]) {
-    error('duplicate-attribute', 'attributes need to be unique',
-        start: start, end: end);
+    error('duplicate-attribute', 'Attributes need to be unique.', start, end);
   }
 
-  Never duplicateElement(String slug, String name, [int? position]) {
-    error('duplicate-$slug', 'a component can only have one <$name> tag',
-        start: position);
+  Never duplicateElement(String slug, String name, [int? start, int? end]) {
+    error('duplicate-$slug', 'A component can only have one <$name> tag.',
+        start, end);
+  }
+
+  Never invalidElementContent(String slug, String name,
+      [int? start, int? end]) {
+    error('invalid-$slug-content', '<$name> cannot have children.', start, end);
+  }
+
+  Never invalidElementPlacement(String slug, String name,
+      [int? start, int? end]) {
+    error('invalid-$slug-placement',
+        '<$name> tags cannot be inside elements or blocks.', start, end);
+  }
+
+  Never invalidTagName([int? start, int? end]) {
+    error('invalid-tag-name', 'Expected valid tag name.', start, end);
+  }
+
+  Never invalidTagNameSvelteElement(List<String> tags, [int? start, int? end]) {
+    error('invalid-tag-name',
+        'Valid <svelte:...> tag names are ${tags.join(', ')}.', start, end);
+  }
+
+  Never invalidVoidContent(String name, [int? start, int? end]) {
+    error(
+        'invalid-void-content',
+        '<$name> is a void element and cannot have children, or a closing tag.',
+        start,
+        end);
+  }
+
+  Never unclosedComment([int? start, int? end]) {
+    error(
+        'unclosed-comment', 'Comment was left open, expected -->.', start, end);
+  }
+
+  Never unexpectedEOF([int? start, int? end]) {
+    error('unexpected-eof', 'Unexpected end of input.', start, end);
+  }
+
+  Never unexpectedEOFToken(Pattern token, [int? start, int? end]) {
+    error('unexpected-eof', 'Unexpected $token.', start, end);
+  }
+
+  Never unexpectedToken(Pattern expected, [int? start, int? end]) {
+    error('unexpected-token', 'Expected $expected.', start, end);
+  }
+
+  // ...
+
+  Never cssSyntaxError(String message) {
+    error('css-syntax-error', message);
   }
 
   Never duplicateStyle([int? position]) {
     error('duplicate-style',
-        'you can only have one top-level <style> tag per component',
-        start: position);
+        'you can only have one top-level <style> tag per component', position);
   }
 
   Never emptyAttributeShorthand([int? position]) {
     error('empty-attribute-shorthand', 'attribute shorthand cannot be empty',
-        start: position);
+        position);
   }
 
   Never emptyDirectiveName(String type, [int? position]) {
-    error('empty-directive-name', '$type name cannot be empty',
-        start: position);
+    error('empty-directive-name', '$type name cannot be empty', position);
   }
 
   Never emptyGlobalSelector() {
@@ -81,26 +125,27 @@ extension ParserErrors on Parser {
 
   Never invalidComponentDefinition([int? position]) {
     error('invalid-component-definition', 'invalid component definition',
-        start: position);
+        position);
   }
 
   Never invalidClosingTagUnopened(String name, [int? position]) {
     error('invalid-closing-tag',
-        '</$name> attempted to close an element that was not open',
-        start: position);
+        '</$name> attempted to close an element that was not open', position);
   }
 
   Never invalidClosingTagAutoClosed(String name, String reason,
       [int? position]) {
-    error('invalid-closing-tag',
+    error(
+        'invalid-closing-tag',
         '</$name> attempted to close <$name> that was already automatically closed by <$reason>',
-        start: position);
+        position);
   }
 
   Never invalidDebugArgs([int? position]) {
-    error('invalid-debug-args',
+    error(
+        'invalid-debug-args',
         '{@debug ...} arguments must be identifiers, not arbitrary expressions',
-        start: position);
+        position);
   }
 
   Never invalidDeclaration() {
@@ -108,9 +153,10 @@ extension ParserErrors on Parser {
   }
 
   Never invalidDirectiveValue([int? position]) {
-    error('invalid-directive-value',
+    error(
+        'invalid-directive-value',
         'directive value must be a Dart expression enclosed in curly braces',
-        start: position);
+        position);
   }
 
   Never invalidElseIf() {
@@ -137,25 +183,15 @@ extension ParserErrors on Parser {
         'expected to close $block before seeing {:else} block');
   }
 
-  Never invalidElementContent(String slug, String name, [int? position]) {
-    error('invalid-$slug-content', '<$name> cannot have children',
-        start: position);
-  }
-
   Never invalidElementDefinition() {
     error('invalid-element-definition', 'Invalid element definition');
   }
 
-  Never invalidElementPlacement(String slug, String name, [int? position]) {
-    error('invalid-$slug-placement',
-        '<$name> tags cannot be inside elements or blocks',
-        start: position);
-  }
-
   Never invalidRefDirective(String name, [int? position]) {
-    error('invalid-ref-directive',
+    error(
+        'invalid-ref-directive',
         "The ref directive is no longer supported — use 'bind:this={$name}' instead",
-        start: position);
+        position);
   }
 
   Never invalidRefSelector() {
@@ -163,36 +199,35 @@ extension ParserErrors on Parser {
   }
 
   Never invalidSelfPlacement([int? position]) {
-    error('invalid-self-placement',
+    error(
+        'invalid-self-placement',
         '<piko:self> components can only exist inside {#if} blocks, {#each} blocks, or slots passed to components',
-        start: position);
+        position);
   }
 
   Never invalidScriptInstance([int? position]) {
-    error('invalid-script',
+    error(
+        'invalid-script',
         'a component can only have one instance-level <script> element',
-        start: position);
+        position);
   }
 
   Never invalidScriptModule([int? position]) {
-    error('invalid-script',
+    error(
+        'invalid-script',
         'a component can only have one <script context="module"> element',
-        start: position);
+        position);
   }
 
   Never invalidScriptContextAttribute([int? position]) {
-    error('invalid-script', 'context attribute must be static',
-        start: position);
+    error('invalid-script', 'context attribute must be static', position);
   }
 
   Never invalidScriptContextValue([int? position]) {
-    error('invalid-script',
+    error(
+        'invalid-script',
         'if the context attribute is supplied, its value must be "module"',
-        start: position);
-  }
-
-  Never invalidTagName([int? position]) {
-    error('invalid-tag-name', 'expected valid tag name', start: position);
+        position);
   }
 
   Never invalidThenPlacementUnclosedBlock(String block) {
@@ -205,16 +240,9 @@ extension ParserErrors on Parser {
         'cannot have an {:then} block outside an {#await ...} block');
   }
 
-  Never invalidVoidContent(String name, [int? position]) {
-    error('invalid-void-content',
-        '<$name> is a void element and cannot have children, or a closing tag',
-        start: position);
-  }
-
   Never missingComponentDefinition([int? position]) {
     error('missing-component-definition',
-        "<piko:component> must have a 'this' attribute",
-        start: position);
+        "<piko:component> must have a 'this' attribute", position);
   }
 
   Never missingAttributeValue() {
@@ -223,8 +251,7 @@ extension ParserErrors on Parser {
 
   Never missingElementDefinition([int? position]) {
     error('missing-element-definition',
-        "<piko:element> must have a 'this' attribute",
-        start: position);
+        "<piko:element> must have a 'this' attribute", position);
   }
 
   Never unclosedScript() {
@@ -235,10 +262,6 @@ extension ParserErrors on Parser {
     error('unclosed-style', '<style> must have a closing tag');
   }
 
-  Never unclosedComment() {
-    error('unclosed-comment', 'comment was left open, expected -->');
-  }
-
   Never unclosedAttributeValue(String token) {
     error('unclosed-attribute-value',
         'expected to close the attribute value with $token');
@@ -246,18 +269,6 @@ extension ParserErrors on Parser {
 
   Never unexpectedBlockClose() {
     error('unexpected-block-close', 'unexpected block closing tag');
-  }
-
-  Never unexpectedEOF() {
-    error('unexpected-eof', 'unexpected end of input');
-  }
-
-  Never unexpectedEOFToken(Pattern token) {
-    error('unexpected-eof', 'unexpected $token');
-  }
-
-  Never unexpectedToken(Pattern expected, [int? position]) {
-    error('unexpected-token', 'expected $expected', start: position);
   }
 
   Never unexpectedTokenDestructure() {

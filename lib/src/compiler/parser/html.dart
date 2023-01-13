@@ -1,50 +1,5 @@
 import 'package:nutty/src/compiler/parser/entities.dart';
 
-const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
-  'li': <String>{'li'},
-  'dt': <String>{'dt', 'dd'},
-  'dd': <String>{'dt', 'dd'},
-  'p': <String>{
-    'address',
-    'article',
-    'aside',
-    'blockquote',
-    'div',
-    'dl',
-    'fieldset',
-    'footer',
-    'form',
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'h6',
-    'header',
-    'hgroup',
-    'hr',
-    'main',
-    'menu',
-    'nav',
-    'ol',
-    'p',
-    'pre',
-    'section',
-    'table',
-    'ul',
-  },
-  'rt': <String>{'rt', 'rp'},
-  'rp': <String>{'rt', 'rp'},
-  'optgroup': <String>{'optgroup'},
-  'option': <String>{'option', 'optgroup'},
-  'thead': <String>{'tbody', 'tfoot'},
-  'tbody': <String>{'tbody', 'tfoot'},
-  'tfoot': <String>{'tbody'},
-  'tr': <String>{'tr', 'tbody'},
-  'td': <String>{'td', 'th', 'tr'},
-  'th': <String>{'td', 'th', 'tr'},
-};
-
 const List<int> windows1252 = <int>[
   0x20AC, 0x0081, 0x201A, 0x0192, //
   0x201E, 0x2026, 0x2020, 0x2021, //
@@ -55,16 +10,6 @@ const List<int> windows1252 = <int>[
   0x02DC, 0x2122, 0x0161, 0x203A, //
   0x0153, 0x009D, 0x017E, 0x0178
 ];
-
-bool closingTagOmitted(String? current, [String? next]) {
-  var dissalowed = disallowedContents[current];
-
-  if (dissalowed == null) {
-    return false;
-  }
-
-  return next == null || dissalowed.contains(next);
-}
 
 int validateCode(int code) {
   if (code == 10) {
@@ -124,4 +69,63 @@ String decodeCharacterReferences(String string) {
 
     return String.fromCharCode(validateCode(code));
   });
+}
+
+const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
+  'li': <String>{'li'},
+  'dt': <String>{'dt', 'dd'},
+  'dd': <String>{'dt', 'dd'},
+  'p': <String>{
+    'address',
+    'article',
+    'aside',
+    'blockquote',
+    'div',
+    'dl',
+    'fieldset',
+    'footer',
+    'form',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'header',
+    'hgroup',
+    'hr',
+    'main',
+    'menu',
+    'nav',
+    'ol',
+    'p',
+    'pre',
+    'section',
+    'table',
+    'ul',
+  },
+  'rt': <String>{'rt', 'rp'},
+  'rp': <String>{'rt', 'rp'},
+  'optgroup': <String>{'optgroup'},
+  'option': <String>{'option', 'optgroup'},
+  'thead': <String>{'tbody', 'tfoot'},
+  'tbody': <String>{'tbody', 'tfoot'},
+  'tfoot': <String>{'tbody'},
+  'tr': <String>{'tr', 'tbody'},
+  'td': <String>{'td', 'th', 'tr'},
+  'th': <String>{'td', 'th', 'tr'},
+};
+
+bool closingTagOmitted(String? current, [String? next]) {
+  if (current == null) {
+    return false;
+  }
+
+  var disallowed = disallowedContents[current];
+
+  if (disallowed == null) {
+    return false;
+  }
+
+  return next == null || disallowed.contains(next);
 }
