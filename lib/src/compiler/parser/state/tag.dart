@@ -8,7 +8,7 @@ import 'package:nutty/src/compiler/parser/errors.dart';
 import 'package:nutty/src/compiler/parser/extract_ignore.dart';
 import 'package:nutty/src/compiler/parser/html.dart';
 import 'package:nutty/src/compiler/parser/names.dart';
-import 'package:nutty/src/compiler/parser/parse.dart';
+import 'package:nutty/src/compiler/parser/parser.dart';
 import 'package:nutty/src/compiler/parser/read/expression.dart';
 import 'package:nutty/src/compiler/parser/read/script.dart';
 import 'package:nutty/src/compiler/parser/read/style.dart';

@@ -1,6 +1,6 @@
 import 'package:nutty/src/compiler/interface.dart';
 import 'package:nutty/src/compiler/parser/errors.dart';
-import 'package:nutty/src/compiler/parser/parse.dart';
+import 'package:nutty/src/compiler/parser/parser.dart';
 
 extension StyleParser on Parser {
   static final RegExp styleCloseTagRe = RegExp(r'<\/style\s*>');

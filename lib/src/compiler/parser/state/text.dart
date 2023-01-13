@@ -1,6 +1,6 @@
 import 'package:nutty/src/compiler/interface.dart';
 import 'package:nutty/src/compiler/parser/html.dart';
-import 'package:nutty/src/compiler/parser/parse.dart';
+import 'package:nutty/src/compiler/parser/parser.dart';
 
 extension TextParser on Parser {
   static final RegExp textEndRe = RegExp('[{<]');

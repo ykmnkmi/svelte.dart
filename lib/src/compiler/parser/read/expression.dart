@@ -10,7 +10,7 @@ import 'package:analyzer/source/line_info.dart' show LineInfo;
 import 'package:analyzer/src/dart/scanner/scanner.dart' show Scanner;
 import 'package:analyzer/src/generated/parser.dart' as ast show Parser;
 import 'package:analyzer/src/string_source.dart' show StringSource;
-import 'package:nutty/src/compiler/parser/parse.dart';
+import 'package:nutty/src/compiler/parser/parser.dart';
 
 extension MustacheParser on Parser {
   Expression readExpression() {

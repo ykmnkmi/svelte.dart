@@ -12,7 +12,7 @@ import 'package:analyzer/src/generated/parser.dart' as ast show Parser;
 import 'package:analyzer/src/string_source.dart' show StringSource;
 import 'package:nutty/src/compiler/interface.dart';
 import 'package:nutty/src/compiler/parser/errors.dart';
-import 'package:nutty/src/compiler/parser/parse.dart';
+import 'package:nutty/src/compiler/parser/parser.dart';
 
 class _CompilationUnit extends CompilationUnitImpl {
   factory _CompilationUnit.from(

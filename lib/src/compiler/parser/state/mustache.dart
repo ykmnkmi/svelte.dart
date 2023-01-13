@@ -3,7 +3,7 @@ import 'package:analyzer/dart/ast/ast.dart'
 import 'package:nutty/src/compiler/interface.dart';
 import 'package:nutty/src/compiler/parser/errors.dart';
 import 'package:nutty/src/compiler/parser/html.dart';
-import 'package:nutty/src/compiler/parser/parse.dart';
+import 'package:nutty/src/compiler/parser/parser.dart';
 import 'package:nutty/src/compiler/parser/patterns.dart';
 import 'package:nutty/src/compiler/parser/read/context.dart';
 import 'package:nutty/src/compiler/parser/read/expression.dart';
