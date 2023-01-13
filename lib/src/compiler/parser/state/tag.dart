@@ -4,14 +4,14 @@ import 'package:_fe_analyzer_shared/src/scanner/token.dart' show StringToken;
 import 'package:analyzer/dart/ast/token.dart' show TokenType;
 import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
 import 'package:nutty/src/compiler/interface.dart';
-import 'package:nutty/src/compiler/parse/errors.dart';
-import 'package:nutty/src/compiler/parse/extract_ignore.dart';
-import 'package:nutty/src/compiler/parse/html.dart';
-import 'package:nutty/src/compiler/parse/names.dart';
-import 'package:nutty/src/compiler/parse/parse.dart';
-import 'package:nutty/src/compiler/parse/read/expression.dart';
-import 'package:nutty/src/compiler/parse/read/script.dart';
-import 'package:nutty/src/compiler/parse/read/style.dart';
+import 'package:nutty/src/compiler/parser/errors.dart';
+import 'package:nutty/src/compiler/parser/extract_ignore.dart';
+import 'package:nutty/src/compiler/parser/html.dart';
+import 'package:nutty/src/compiler/parser/names.dart';
+import 'package:nutty/src/compiler/parser/parse.dart';
+import 'package:nutty/src/compiler/parser/read/expression.dart';
+import 'package:nutty/src/compiler/parser/read/script.dart';
+import 'package:nutty/src/compiler/parser/read/style.dart';
 
 extension TagParser on Parser {
   static const Map<String, String> metaTags = <String, String>{

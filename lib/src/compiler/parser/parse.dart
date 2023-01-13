@@ -1,12 +1,12 @@
 import 'dart:math' as math;
 
 import 'package:nutty/src/compiler/interface.dart';
-import 'package:nutty/src/compiler/parse/errors.dart';
-import 'package:nutty/src/compiler/parse/patterns.dart';
-import 'package:nutty/src/compiler/parse/state/fragment.dart';
+import 'package:nutty/src/compiler/parser/errors.dart';
+import 'package:nutty/src/compiler/parser/patterns.dart';
+import 'package:nutty/src/compiler/parser/state/fragment.dart';
 import 'package:source_span/source_span.dart' show SourceFile;
 
-export 'package:nutty/src/compiler/parse/errors.dart' show CompileError;
+export 'package:nutty/src/compiler/parser/errors.dart' show CompileError;
 
 class LastAutoClosedTag {
   LastAutoClosedTag(this.tag, this.reason, this.depth);

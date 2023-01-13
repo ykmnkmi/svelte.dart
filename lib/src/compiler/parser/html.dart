@@ -1,4 +1,4 @@
-import 'package:nutty/src/compiler/parse/entities.dart';
+import 'package:nutty/src/compiler/parser/entities.dart';
 
 const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
   'li': <String>{'li'},

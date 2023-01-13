@@ -11,8 +11,8 @@ import 'package:analyzer/src/dart/scanner/scanner.dart' show Scanner;
 import 'package:analyzer/src/generated/parser.dart' as ast show Parser;
 import 'package:analyzer/src/string_source.dart' show StringSource;
 import 'package:nutty/src/compiler/interface.dart';
-import 'package:nutty/src/compiler/parse/errors.dart';
-import 'package:nutty/src/compiler/parse/parse.dart';
+import 'package:nutty/src/compiler/parser/errors.dart';
+import 'package:nutty/src/compiler/parser/parse.dart';
 
 class _CompilationUnit extends CompilationUnitImpl {
   factory _CompilationUnit.from(
