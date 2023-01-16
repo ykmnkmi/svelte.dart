@@ -21,7 +21,7 @@ void main(List<String> arguments) {
     var content = file.readAsStringSync();
     var ast = parse(content);
     print(encoder.convert(ast.toJson()));
-  } on CompileError catch (error, stackTrace) {
+  } on ParseError catch (error, stackTrace) {
     print(error);
     print(Trace.format(stackTrace));
     print(encoder.convert(error.toJson()));

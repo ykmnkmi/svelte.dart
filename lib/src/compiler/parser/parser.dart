@@ -1,8 +1,9 @@
-import 'package:nutty/src/compiler/ast.dart';
+import 'package:nutty/src/compiler/interface.dart';
 import 'package:nutty/src/compiler/parser/errors.dart';
-import 'package:nutty/src/compiler/parser/patterns.dart';
 import 'package:nutty/src/compiler/parser/state/fragment.dart';
 import 'package:source_span/source_span.dart' show SourceFile;
+
+final RegExp spaceRe = RegExp('[ \t\r\n]');
 
 class AutoCloseTag {
   AutoCloseTag(this.tag, this.reason, this.depth);
@@ -15,37 +16,77 @@ class AutoCloseTag {
 }
 
 class Parser {
-  Parser(this.template, {Object? sourceUrl})
-      : length = template.length,
-        sourceFile = SourceFile.fromString(template, url: sourceUrl) {
-    var root = Element(start: 0, end: length, type: 'Fragment');
-    stack.add(root);
+  Parser(String template, {Object? sourceUrl})
+      : template = template.trimRight(),
+        sourceFile = SourceFile.fromString(template, url: sourceUrl),
+        html = Node(type: 'Fragment') {
+    stack.add(html);
 
     while (isNotDone) {
       fragment();
+    }
+
+    if (stack.length > 1) {
+      var current = this.current;
+
+      String type, slug;
+
+      if (current.type == 'Element') {
+        type = '<${current.name}>';
+        slug = 'element';
+      } else {
+        type = 'Block';
+        slug = 'block';
+      }
+
+      error(code: 'unclose-$slug', message: '$type was left open.');
+    }
+
+    var children = html.children;
+
+    if (children.isNotEmpty) {
+      var start = children.first.start ?? 0;
+
+      while (spaceRe.hasMatch(template[start])) {
+        start += 1;
+      }
+
+      html.start = start;
+
+      var end = children.last.end ?? template.length;
+
+      while (spaceRe.hasMatch(template[end])) {
+        end -= 1;
+      }
+
+      html.end = end;
     }
   }
 
   final String template;
 
-  final int length;
-
   final SourceFile sourceFile;
+
+  final Node html;
 
   final Set<String> metaTags = <String>{};
 
-  final List<Element> stack = <Element>[];
+  final List<Node> stack = <Node>[];
 
   int position = 0;
 
   AutoCloseTag? lastAutoCloseTag;
 
-  Element get current {
+  Node get current {
     return stack.last;
   }
 
   bool get isNotDone {
-    return position < length;
+    return position < template.length;
+  }
+
+  bool get isDone {
+    return position == template.length;
   }
 
   void allowSpace({bool require = false}) {
@@ -53,7 +94,7 @@ class Parser {
 
     if (match == null) {
       if (require) {
-        error('missing-whitespace', 'Expected whitespace.');
+        error(code: 'missing-whitespace', message: 'Expected whitespace');
       }
 
       return;
@@ -87,17 +128,13 @@ class Parser {
           unexpectedToken(pattern, position);
         }
 
-        unexpectedEOFToken(pattern);
+        unexpectedEofToken(pattern);
       }
 
       onError();
     }
 
     position = match.end;
-  }
-
-  int readChar() {
-    return template.codeUnitAt(position++);
   }
 
   String? read(Pattern pattern) {
@@ -116,11 +153,11 @@ class Parser {
 
     if (found == -1) {
       if (isNotDone) {
-        return template.substring(position, position = length);
+        return template.substring(position, position = template.length);
       }
 
       if (onError == null) {
-        unexpectedEOF();
+        unexpectedEof();
       }
 
       onError();
@@ -129,8 +166,8 @@ class Parser {
     return template.substring(position, position = found);
   }
 
-  Never error(String code, String message, [int? start, int? end]) {
-    start ??= position;
-    throw CompileError(code, message, sourceFile.span(start, end));
+  Never error({required String code, required String message, int? position}) {
+    var span = sourceFile.span(position ?? this.position);
+    throw ParseError(code, message, span);
   }
 }

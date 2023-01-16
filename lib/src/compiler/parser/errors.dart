@@ -1,8 +1,8 @@
 import 'package:nutty/src/compiler/parser/parser.dart';
 import 'package:source_span/source_span.dart' show SourceSpan;
 
-class CompileError extends Error {
-  CompileError(this.code, this.message, this.span);
+class ParseError extends Error {
+  ParseError(this.code, this.message, this.span);
 
   final String code;
 
@@ -27,251 +27,401 @@ class CompileError extends Error {
 }
 
 extension ScannerErrors on Parser {
-  Never duplicateAttribute([int? start, int? end]) {
-    error('duplicate-attribute', 'Attributes need to be unique.', start, end);
-  }
-
-  Never duplicateElement(String slug, String name, [int? start, int? end]) {
-    error('duplicate-$slug', 'A component can only have one <$name> tag.',
-        start, end);
-  }
-
-  Never invalidElementContent(String slug, String name,
-      [int? start, int? end]) {
-    error('invalid-$slug-content', '<$name> cannot have children.', start, end);
-  }
-
-  Never invalidElementPlacement(String slug, String name,
-      [int? start, int? end]) {
-    error('invalid-$slug-placement',
-        '<$name> tags cannot be inside elements or blocks.', start, end);
-  }
-
-  Never invalidTagName([int? start, int? end]) {
-    error('invalid-tag-name', 'Expected valid tag name.', start, end);
-  }
-
-  Never invalidTagNameSvelteElement(List<String> tags, [int? start, int? end]) {
-    error('invalid-tag-name',
-        'Valid <svelte:...> tag names are ${tags.join(', ')}.', start, end);
-  }
-
-  Never invalidVoidContent(String name, [int? start, int? end]) {
-    error(
-        'invalid-void-content',
-        '<$name> is a void element and cannot have children, or a closing tag.',
-        start,
-        end);
-  }
-
-  Never unclosedComment([int? start, int? end]) {
-    error(
-        'unclosed-comment', 'Comment was left open, expected -->.', start, end);
-  }
-
-  Never unexpectedEOF([int? start, int? end]) {
-    error('unexpected-eof', 'Unexpected end of input.', start, end);
-  }
-
-  Never unexpectedEOFToken(Pattern token, [int? start, int? end]) {
-    error('unexpected-eof', 'Unexpected $token.', start, end);
-  }
-
-  Never unexpectedToken(Pattern expected, [int? start, int? end]) {
-    error('unexpected-token', 'Expected $expected.', start, end);
-  }
-
-  // ...
-
   Never cssSyntaxError(String message) {
-    error('css-syntax-error', message);
+    error(
+      code: 'css-syntax-error',
+      message: message,
+    );
   }
 
-  Never duplicateStyle([int? position]) {
-    error('duplicate-style',
-        'you can only have one top-level <style> tag per component', position);
+  Never duplicateAttribute([int? position]) {
+    error(
+      code: 'duplicate-attribute',
+      message: 'Attributes need to be unique',
+      position: position,
+    );
   }
 
-  Never emptyAttributeShorthand([int? position]) {
-    error('empty-attribute-shorthand', 'attribute shorthand cannot be empty',
-        position);
+  Never duplicateElement(String slug, String name, [int? position]) {
+    error(
+      code: 'duplicate-$slug',
+      message: 'A component can only have one <$name> tag',
+      position: position,
+    );
+  }
+
+  Never duplicateStyle() {
+    error(
+      code: 'duplicate-style',
+      message: 'You can only have one top-level <style> tag per component',
+    );
+  }
+
+  Never emptyAttributeShorthand() {
+    error(
+      code: 'empty-attribute-shorthand',
+      message: 'Attribute shorthand cannot be empty',
+    );
   }
 
   Never emptyDirectiveName(String type, [int? position]) {
-    error('empty-directive-name', '$type name cannot be empty', position);
+    error(
+      code: 'empty-directive-name',
+      message: '$type name cannot be empty',
+      position: position,
+    );
   }
 
   Never emptyGlobalSelector() {
-    error('css-syntax-error', ':global() must contain a selector');
+    error(
+      code: 'css-syntax-error',
+      message: ':global() must contain a selector',
+    );
   }
 
   Never expectedBlockType() {
-    error('expected-block-type', 'expected if, each or await');
+    error(
+      code: 'expected-block-type',
+      message: 'Expected if, each or await',
+    );
   }
 
   Never expectedName() {
-    error('expected-name', 'expected name');
+    error(
+      code: 'expected-name',
+      message: 'Expected name',
+    );
   }
 
   Never invalidCatchPlacementUnclosedBlock(String block) {
-    error('invalid-catch-placement',
-        'expected to close $block before seeing {:catch} block');
+    error(
+      code: 'invalid-catch-placement',
+      message: 'Expected to close $block before seeing {:catch} block',
+    );
   }
 
   Never invalidCatchPlacementWithoutAwait() {
-    error('invalid-catch-placement',
-        'cannot have an {:catch} block outside an {#await ...} block');
+    error(
+      code: 'invalid-catch-placement',
+      message: 'Cannot have an {:catch} block outside an {#await ...} block',
+    );
   }
 
-  Never invalidComponentDefinition([int? position]) {
-    error('invalid-component-definition', 'invalid component definition',
-        position);
+  Never invalidComponentDefinition() {
+    error(
+      code: 'invalid-component-definition',
+      message: 'invalid component definition',
+    );
   }
 
   Never invalidClosingTagUnopened(String name, [int? position]) {
-    error('invalid-closing-tag',
-        '</$name> attempted to close an element that was not open', position);
+    error(
+      code: 'invalid-closing-tag',
+      message: '</$name> attempted to close an element that was not open',
+      position: position,
+    );
   }
 
-  Never invalidClosingTagAutoClosed(String name, String reason,
-      [int? position]) {
+  Never invalidClosingTagAutoClosed(
+    String name,
+    String reason, [
+    int? position,
+  ]) {
     error(
-        'invalid-closing-tag',
-        '</$name> attempted to close <$name> that was already automatically closed by <$reason>',
-        position);
+      code: 'invalid-closing-tag',
+      message:
+          '</$name> attempted to close <$name> that was already automatically closed by <$reason>',
+      position: position,
+    );
   }
 
-  Never invalidDebugArgs([int? position]) {
+  Never invalidDebugArgs() {
     error(
-        'invalid-debug-args',
-        '{@debug ...} arguments must be identifiers, not arbitrary expressions',
-        position);
+      code: 'invalid-debug-args',
+      message: ''
+          '{@debu ...} arguments must be identifiers, '
+          'not arbitrary expressions',
+    );
   }
 
   Never invalidDeclaration() {
-    error('invalid-declaration', 'declaration cannot be empty');
+    error(
+      code: 'invalid-declaration',
+      message: 'Declaration cannot be empty',
+    );
   }
 
   Never invalidDirectiveValue([int? position]) {
     error(
-        'invalid-directive-value',
-        'directive value must be a Dart expression enclosed in curly braces',
-        position);
+      code: 'invalid-directive-value',
+      message: ''
+          'Directive value must be a JavaScript expression '
+          'enclosed in curly braces',
+      position: position,
+    );
   }
 
   Never invalidElseIf() {
-    error('invalid-elseif', "'elseif' should be 'else if'");
+    error(
+      code: 'invalid-elseif',
+      message: "'elseif' should be 'else if'",
+    );
   }
 
   Never invalidElseIfPlacementOutsideIf() {
-    error('invalid-elseif-placement',
-        'cannot have an {:else if ...} block outside an {#if ...} block');
+    error(
+      code: 'invalid-elseif-placement',
+      message: 'Cannot have an {:else if ...} block outside an {#if ...} block',
+    );
   }
 
   Never invalidElseIfPlacementUnclosedBlock(String block) {
-    error('invalid-elseif-placement',
-        'expected to close $block before seeing {:else if ...} block');
+    error(
+      code: 'invalid-elseif-placement',
+      message: 'Expected to close $block before seeing {:else if ...} block',
+    );
   }
 
   Never invalidElsePlacementOutsideIf() {
-    error('invalid-else-placement',
-        'cannot have an {:else} block outside an {#if ...} or {#each ...} block');
+    error(
+      code: 'invalid-else-placement',
+      message: ''
+          'Cannot have an {:else} block '
+          'outside an {#if ...} or {#each ...} block',
+    );
   }
 
   Never invalidElsePlacementUnclosedBlock(String block) {
-    error('invalid-else-placement',
-        'expected to close $block before seeing {:else} block');
+    error(
+      code: 'invalid-else-placement',
+      message: 'Expected to close $block before seeing {:else} block',
+    );
+  }
+
+  Never invalidElementContent(String slug, String name, [int? position]) {
+    error(
+      code: 'invalid-$slug-content',
+      message: '<$name> cannot have children',
+      position: position,
+    );
   }
 
   Never invalidElementDefinition() {
-    error('invalid-element-definition', 'Invalid element definition');
+    error(
+      code: 'invalid-element-definition',
+      message: 'Invalid element definition',
+    );
+  }
+
+  Never invalidElementPlacement(String slug, String name, [int? position]) {
+    error(
+      code: 'invalid-$slug-placement',
+      message: '<$name> tags cannot be inside elements or blocks',
+      position: position,
+    );
+  }
+
+  Never invalidLogicBlockPlacement(
+    String location,
+    String name, [
+    int? position,
+  ]) {
+    error(
+      code: 'invalid-logic-block-placement',
+      message: '{#$name} logic block cannot be $location',
+      position: position,
+    );
+  }
+
+  Never invalidTagPlacement(String location, String name, [int? position]) {
+    error(
+      code: 'invalid-tag-placement',
+      message: '{@$name} tag cannot be $location',
+      position: position,
+    );
   }
 
   Never invalidRefDirective(String name, [int? position]) {
     error(
-        'invalid-ref-directive',
-        "The ref directive is no longer supported — use 'bind:this={$name}' instead",
-        position);
+      code: 'invalid-ref-directive',
+      message: ''
+          'The ref directive is no longer supported '
+          "— use 'bind:this={$name}' instead",
+      position: position,
+    );
   }
 
   Never invalidRefSelector() {
-    error('invalid-ref-selector', 'ref selectors are no longer supported');
+    error(
+      code: 'invalid-ref-selector',
+      message: 'Ref selectors are no longer supported',
+    );
   }
 
   Never invalidSelfPlacement([int? position]) {
     error(
-        'invalid-self-placement',
-        '<piko:self> components can only exist inside {#if} blocks, {#each} blocks, or slots passed to components',
-        position);
+      code: 'invalid-self-placement',
+      message: ''
+          '<svelte:self> components can only exist inside {#if} blocks, '
+          '{#each} blocks, or slots passed to components',
+      position: position,
+    );
   }
 
-  Never invalidScriptInstance([int? position]) {
+  Never invalidScriptInstance() {
     error(
-        'invalid-script',
-        'a component can only have one instance-level <script> element',
-        position);
+      code: 'invalid-script',
+      message: 'A component can only have one instance-level <script> element',
+    );
   }
 
-  Never invalidScriptModule([int? position]) {
+  Never invalidScriptModule() {
     error(
-        'invalid-script',
-        'a component can only have one <script context="module"> element',
-        position);
+      code: 'invalid-script',
+      message: ''
+          'A component can only have one '
+          '<script context="module"> element',
+    );
   }
 
-  Never invalidScriptContextAttribute([int? position]) {
-    error('invalid-script', 'context attribute must be static', position);
-  }
-
-  Never invalidScriptContextValue([int? position]) {
+  Never invalidScriptContextAttribute() {
     error(
-        'invalid-script',
-        'if the context attribute is supplied, its value must be "module"',
-        position);
+      code: 'invalid-script',
+      message: 'Context attribute must be static',
+    );
+  }
+
+  Never invalidScriptContextValue() {
+    error(
+      code: 'invalid-script',
+      message: ''
+          'If the context attribute is supplied, '
+          'it\'s value must be "module"',
+    );
+  }
+
+  Never invalidTagName([int? position]) {
+    error(
+      code: 'invalid-tag-name',
+      message: 'Expected valid tag name',
+      position: position,
+    );
+  }
+
+  Never invalidTagNameSvelteElement(List<String> tags, [int? position]) {
+    error(
+      code: 'invalid-tag-name',
+      message: 'Valid <svelte:...> tag names are ${tags.join(', ')}',
+      position: position,
+    );
   }
 
   Never invalidThenPlacementUnclosedBlock(String block) {
-    error('invalid-then-placement',
-        'expected to close $block before seeing {:then} block');
+    error(
+      code: 'invalid-then-placement',
+      message: 'Expected to close $block before seeing {:then} block',
+    );
   }
 
   Never invalidThenPlacementWithoutAwait() {
-    error('invalid-then-placement',
-        'cannot have an {:then} block outside an {#await ...} block');
+    error(
+      code: 'invalid-then-placement',
+      message: 'Cannot have an {:then} block outside an {#await ...} block',
+    );
   }
 
-  Never missingComponentDefinition([int? position]) {
-    error('missing-component-definition',
-        "<piko:component> must have a 'this' attribute", position);
+  Never invalidVoidContent(String name, [int? position]) {
+    error(
+      code: 'invalid-void-content',
+      message: ''
+          '<$name> is a void element and cannot have children, '
+          'or a closing tag',
+      position: position,
+    );
+  }
+
+  Never missingComponentDefinition() {
+    error(
+      code: 'missing-component-definition',
+      message: "<svelte:component> must have a 'this' attribute",
+    );
   }
 
   Never missingAttributeValue() {
-    error('missing-attribute-value', 'expected value for the attribute');
+    error(
+      code: 'missing-attribute-value',
+      message: 'Expected value for the attribute',
+    );
   }
 
-  Never missingElementDefinition([int? position]) {
-    error('missing-element-definition',
-        "<piko:element> must have a 'this' attribute", position);
+  Never missingElementDefinition() {
+    error(
+      code: 'missing-element-definition',
+      message: "<svelte:element> must have a 'this' attribute",
+    );
   }
 
   Never unclosedScript() {
-    error('unclosed-script', '<script> must have a closing tag');
+    error(
+      code: 'unclosed-script',
+      message: '<script> must have a closing tag',
+    );
   }
 
   Never unclosedStyle() {
-    error('unclosed-style', '<style> must have a closing tag');
+    error(
+      code: 'unclosed-style',
+      message: '<style> must have a closing tag',
+    );
+  }
+
+  Never unclosedComment() {
+    error(
+      code: 'unclosed-comment',
+      message: 'Comment was left open, expected -->',
+    );
   }
 
   Never unclosedAttributeValue(String token) {
-    error('unclosed-attribute-value',
-        'expected to close the attribute value with $token');
+    error(
+      code: 'unclosed-attribute-value',
+      message: 'Expected to close the attribute value with $token',
+    );
   }
 
   Never unexpectedBlockClose() {
-    error('unexpected-block-close', 'unexpected block closing tag');
+    error(
+      code: 'unexpected-block-close',
+      message: 'Unexpected block closing tag',
+    );
+  }
+
+  Never unexpectedEof() {
+    error(
+      code: 'unexpected-eof',
+      message: 'Unexpected end of input',
+    );
+  }
+
+  Never unexpectedEofToken(Pattern token) {
+    error(
+      code: 'unexpected-eof',
+      message: 'Unexpected $token',
+    );
+  }
+
+  Never unexpectedToken(Pattern token, [int? position]) {
+    error(
+      code: 'unexpected-token',
+      message: 'Expected $token',
+      position: position,
+    );
   }
 
   Never unexpectedTokenDestructure() {
-    error('unexpected-token', 'expected identifier or destructure pattern');
+    error(
+      code: 'unexpected-token',
+      message: 'Expected identifier or destructure pattern',
+    );
   }
 }
