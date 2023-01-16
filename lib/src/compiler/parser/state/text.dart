@@ -1,6 +1,6 @@
-import 'package:nutty/src/compiler/interface.dart';
-import 'package:nutty/src/compiler/parser/html.dart';
-import 'package:nutty/src/compiler/parser/parser.dart';
+import 'package:svelte/src/compiler/interface.dart';
+import 'package:svelte/src/compiler/parser/html.dart';
+import 'package:svelte/src/compiler/parser/parser.dart';
 
 final RegExp textEndRe = RegExp('[<{]');
 
@@ -17,14 +17,14 @@ extension TextScanner on Parser {
     }
 
     var raw = template.substring(position, found);
-    var text = decodeCharacterReferences(raw);
+    var data = decodeCharacterReferences(raw);
 
-    current.children.add(Node(
+    current.children!.add(TemplateNode(
       start: position,
       end: found,
       type: 'Text',
-      text: text,
       raw: raw,
+      data: data,
     ));
 
     position = found;

@@ -1,7 +1,6 @@
 {
-  "code": "invalid-elseif-placement",
-  "message": "expected to close {#await} block before seeing {:else if ...} block",
-  "line": 3,
-  "column": 9,
-  "offset": 35
+	"code": "invalid-elseif-placement",
+	"message": "Expected to close {#await} block before seeing {:else if ...} block",
+	"start": { "line": 3, "column": 9, "character": 34 },
+	"pos": 34
 }

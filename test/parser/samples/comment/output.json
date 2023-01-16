@@ -1,15 +1,16 @@
 {
-  "html": {
-    "start": 0,
-    "end": 18,
-    "_": "Fragment",
-    "children": [
-      {
-        "start": 0,
-        "end": 18,
-        "_": "Comment",
-        "data": " a comment "
-      }
-    ]
-  }
+	"html": {
+		"start": 0,
+		"end": 18,
+		"type": "Fragment",
+		"children": [
+			{
+				"start": 0,
+				"end": 18,
+				"type": "Comment",
+				"data": " a comment ",
+				"ignores": []
+			}
+		]
+	}
 }

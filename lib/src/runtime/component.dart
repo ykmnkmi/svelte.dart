@@ -1,8 +1,8 @@
 import 'dart:collection';
 import 'dart:html';
 
-import 'package:nutty/src/runtime/fragment.dart';
-import 'package:nutty/src/runtime/scheduler.dart';
+import 'package:svelte/src/runtime/fragment.dart';
+import 'package:svelte/src/runtime/scheduler.dart';
 
 abstract class Component {
   Fragment get fragment;

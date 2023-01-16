@@ -1,5 +1,0 @@
-<script>
-  String? name;
-</script>
-
-<input bind:value={name}>

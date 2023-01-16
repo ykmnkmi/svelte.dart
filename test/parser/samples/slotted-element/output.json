@@ -1,40 +1,42 @@
 {
-  "html": {
-    "start": 0,
-    "end": 45,
-    "_": "Fragment",
-    "children": [
-      {
-        "start": 0,
-        "end": 45,
-        "_": "InlineComponent",
-        "name": "Component",
-        "children": [
-          {
-            "start": 11,
-            "end": 33,
-            "_": "Element",
-            "name": "div",
-            "attributes": [
-              {
-                "start": 16,
-                "end": 26,
-                "_": "Attribute",
-                "name": "slot",
-                "children": [
-                  {
-                    "start": 22,
-                    "end": 25,
-                    "_": "Text",
-                    "raw": "foo",
-                    "data": "foo"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+	"html": {
+		"start": 0,
+		"end": 45,
+		"type": "Fragment",
+		"children": [
+			{
+				"start": 0,
+				"end": 45,
+				"type": "InlineComponent",
+				"name": "Component",
+				"attributes": [],
+				"children": [
+					{
+						"start": 11,
+						"end": 33,
+						"type": "Element",
+						"name": "div",
+						"attributes": [
+							{
+								"start": 16,
+								"end": 26,
+								"type": "Attribute",
+								"name": "slot",
+								"value": [
+									{
+										"start": 22,
+										"end": 25,
+										"type": "Text",
+										"raw": "foo",
+										"data": "foo"
+									}
+								]
+							}
+						],
+						"children": []
+					}
+				]
+			}
+		]
+	}
 }

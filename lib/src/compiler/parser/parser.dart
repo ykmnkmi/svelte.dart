@@ -1,7 +1,7 @@
-import 'package:nutty/src/compiler/interface.dart';
-import 'package:nutty/src/compiler/parser/errors.dart';
-import 'package:nutty/src/compiler/parser/state/fragment.dart';
 import 'package:source_span/source_span.dart' show SourceFile;
+import 'package:svelte/src/compiler/interface.dart';
+import 'package:svelte/src/compiler/parser/errors.dart';
+import 'package:svelte/src/compiler/parser/state/fragment.dart';
 
 final RegExp spaceRe = RegExp('[ \t\r\n]');
 
@@ -19,7 +19,7 @@ class Parser {
   Parser(String template, {Object? sourceUrl})
       : template = template.trimRight(),
         sourceFile = SourceFile.fromString(template, url: sourceUrl),
-        html = Node(type: 'Fragment') {
+        html = TemplateNode(type: 'Fragment', children: <Node>[]) {
     stack.add(html);
 
     while (isNotDone) {
@@ -44,7 +44,7 @@ class Parser {
 
     var children = html.children;
 
-    if (children.isNotEmpty) {
+    if (children != null && children.isNotEmpty) {
       var start = children.first.start ?? 0;
 
       while (spaceRe.hasMatch(template[start])) {
@@ -55,7 +55,7 @@ class Parser {
 
       var end = children.last.end ?? template.length;
 
-      while (spaceRe.hasMatch(template[end])) {
+      while (spaceRe.hasMatch(template[end - 1])) {
         end -= 1;
       }
 
@@ -67,17 +67,17 @@ class Parser {
 
   final SourceFile sourceFile;
 
-  final Node html;
+  final TemplateNode html;
 
   final Set<String> metaTags = <String>{};
 
-  final List<Node> stack = <Node>[];
+  final List<TemplateNode> stack = <TemplateNode>[];
 
   int position = 0;
 
   AutoCloseTag? lastAutoCloseTag;
 
-  Node get current {
+  TemplateNode get current {
     return stack.last;
   }
 

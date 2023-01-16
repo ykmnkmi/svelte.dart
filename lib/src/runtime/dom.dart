@@ -1,7 +1,7 @@
 import 'dart:html';
 
 import 'package:meta/dart2js.dart';
-import 'package:nutty/src/runtime/utilities.dart';
+import 'package:svelte/src/runtime/utilities.dart';
 
 T element<T extends Element>(String tag) {
   return unsafeCast<T>(Element.tag(tag));

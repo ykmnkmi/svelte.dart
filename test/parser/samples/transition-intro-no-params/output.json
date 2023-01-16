@@ -1,33 +1,36 @@
 {
-  "html": {
-    "start": 0,
-    "end": 27,
-    "_": "Fragment",
-    "children": [
-      {
-        "start": 0,
-        "end": 27,
-        "_": "Element",
-        "name": "div",
-        "attributes": [
-          {
-            "start": 5,
-            "end": 12,
-            "_": "Transition",
-            "name": "fade",
-            "intro": true
-          }
-        ],
-        "children": [
-          {
-            "start": 13,
-            "end": 21,
-            "_": "Text",
-            "raw": "fades in",
-            "data": "fades in"
-          }
-        ]
-      }
-    ]
-  }
+	"html": {
+		"start": 0,
+		"end": 27,
+		"type": "Fragment",
+		"children": [
+			{
+				"start": 0,
+				"end": 27,
+				"type": "Element",
+				"name": "div",
+				"attributes": [
+					{
+						"start": 5,
+						"end": 12,
+						"type": "Transition",
+						"name": "fade",
+						"modifiers": [],
+						"expression": null,
+						"intro": true,
+						"outro": false
+					}
+				],
+				"children": [
+					{
+						"start": 13,
+						"end": 21,
+						"type": "Text",
+						"raw": "fades in",
+						"data": "fades in"
+					}
+				]
+			}
+		]
+	}
 }

@@ -1,2 +1,0 @@
-<element this={tag}></element>
-<element this={tag} class="foo"></element>

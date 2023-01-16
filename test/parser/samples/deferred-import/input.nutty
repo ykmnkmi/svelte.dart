@@ -1,9 +1,0 @@
-<script type="text/dart">
-  import 'foo.dart' deferred as foo;
-
-  void onMount() {
-    foo.loadLibrary().then<void>((_) {
-      print(foo.value);
-    });
-  }
-</script>

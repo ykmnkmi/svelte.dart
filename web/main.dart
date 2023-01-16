@@ -1,4 +1,4 @@
-import 'package:nutty/nutty.dart';
+import 'package:svelte/svelte.dart';
 
 import 'app.dart';
 

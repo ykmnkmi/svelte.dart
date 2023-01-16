@@ -2,41 +2,53 @@
   "html": {
     "start": 0,
     "end": 18,
-    "_": "Fragment",
+    "type": "Fragment",
     "children": [
       {
         "start": 0,
         "end": 18,
-        "_": "Element",
+        "type": "Element",
         "name": "input",
         "attributes": [
           {
             "start": 7,
             "end": 15,
-            "_": "Attribute",
+            "type": "Attribute",
             "name": "foo",
-            "children": [
+            "value": [
               {
                 "start": 11,
                 "end": 12,
-                "_": "Text",
+                "type": "Text",
                 "raw": "a",
                 "data": "a"
               },
               {
                 "start": 12,
                 "end": 15,
-                "_": "MustacheTag",
+                "type": "MustacheTag",
                 "expression": {
-                  "_": "IntegerLiteral",
+                  "type": "Literal",
                   "start": 13,
                   "end": 14,
-                  "value": 1
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 13
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 14
+                    }
+                  },
+                  "value": 1,
+                  "raw": "1"
                 }
               }
             ]
           }
-        ]
+        ],
+        "children": []
       }
     ]
   }

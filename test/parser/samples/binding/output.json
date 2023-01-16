@@ -1,77 +1,122 @@
 {
-  "html": {
-    "start": 36,
-    "end": 61,
-    "_": "Fragment",
-    "children": [
-      {
-        "start": 34,
-        "end": 36,
-        "_": "Text",
-        "raw": "\n\n",
-        "data": "\n\n"
-      },
-      {
-        "start": 36,
-        "end": 61,
-        "_": "Element",
-        "name": "input",
-        "attributes": [
-          {
-            "start": 43,
-            "end": 60,
-            "_": "Binding",
-            "name": "value",
-            "expression": {
-              "_": "SimpleIdentifier",
-              "start": 55,
-              "end": 59,
-              "name": "name"
-            }
-          }
-        ]
-      }
-    ]
-  },
-  "instance": {
-    "start": 0,
-    "end": 34,
-    "_": "Script",
-    "context": "default",
-    "content": {
-      "_": "CompilationUnit",
-      "start": 8,
-      "end": 25,
-      "declarations": [
-        {
-          "_": "TopLevelVariableDeclaration",
-          "start": 11,
-          "end": 24,
-          "variables": {
-            "_": "VariableDeclarationList",
-            "start": 11,
-            "end": 23,
-            "type": {
-              "_": "NamedType",
-              "start": 11,
-              "end": 18,
-              "name": {
-                "_": "SimpleIdentifier",
-                "start": 11,
-                "end": 17,
-                "name": "String"
-              }
-            },
-            "variables": [
-              {
-                "_": "VariableDeclaration",
-                "start": 19,
-                "end": 23
-              }
-            ]
-          }
-        }
-      ]
-    }
-  }
+	"html": {
+		"start": 31,
+		"end": 56,
+		"type": "Fragment",
+		"children": [
+			{
+				"start": 29,
+				"end": 31,
+				"type": "Text",
+				"raw": "\n\n",
+				"data": "\n\n"
+			},
+			{
+				"start": 31,
+				"end": 56,
+				"type": "Element",
+				"name": "input",
+				"attributes": [
+					{
+						"start": 38,
+						"end": 55,
+						"type": "Binding",
+						"name": "value",
+						"modifiers": [],
+						"expression": {
+							"type": "Identifier",
+							"start": 50,
+							"end": 54,
+							"loc": {
+								"start": {
+									"line": 5,
+									"column": 19
+								},
+								"end": {
+									"line": 5,
+									"column": 23
+								}
+							},
+							"name": "name"
+						}
+					}
+				],
+				"children": []
+			}
+		]
+	},
+	"instance": {
+		"type": "Script",
+		"start": 0,
+		"end": 29,
+		"context": "default",
+		"content": {
+			"type": "Program",
+			"start": 8,
+			"end": 20,
+			"loc": {
+				"start": {
+					"line": 1,
+					"column": 0
+				},
+				"end": {
+					"line": 3,
+					"column": 0
+				}
+			},
+			"body": [
+				{
+					"type": "VariableDeclaration",
+					"start": 10,
+					"end": 19,
+					"loc": {
+						"start": {
+							"line": 2,
+							"column": 1
+						},
+						"end": {
+							"line": 2,
+							"column": 10
+						}
+					},
+					"declarations": [
+						{
+							"type": "VariableDeclarator",
+							"start": 14,
+							"end": 18,
+							"loc": {
+								"start": {
+									"line": 2,
+									"column": 5
+								},
+								"end": {
+									"line": 2,
+									"column": 9
+								}
+							},
+							"id": {
+								"type": "Identifier",
+								"start": 14,
+								"end": 18,
+								"loc": {
+									"start": {
+										"line": 2,
+										"column": 5
+									},
+									"end": {
+										"line": 2,
+										"column": 9
+									}
+								},
+								"name": "name"
+							},
+							"init": null
+						}
+					],
+					"kind": "let"
+				}
+			],
+			"sourceType": "module"
+		}
+	}
 }

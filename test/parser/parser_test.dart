@@ -1,53 +1,56 @@
 import 'dart:convert';
 import 'dart:io' show Directory, File;
 
-import 'package:nutty/compiler.dart' show parse;
-import 'package:nutty/src/compiler/parser/errors.dart' show ParseError;
+import 'package:svelte/compiler.dart' show parse;
+import 'package:svelte/src/compiler/parser/errors.dart' show ParseError;
 import 'package:test/test.dart';
 
-const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+const JsonEncoder encoder = JsonEncoder.withIndent('\t');
 
 void main() {
   group('parser', () {
-    var dirs =
-        Directory.fromUri(Uri.directory('test/parser/samples')).listSync();
+    var uri = Uri.directory('test/parser/samples');
+    var dirs = Directory.fromUri(uri).listSync();
+
+    File file;
 
     for (var dir in dirs) {
-      var uri = Uri.directory(dir.path).resolveUri(Uri.file('input.piko'));
+      var uri = dir.uri.resolve('input.svelte');
       var input = File.fromUri(uri).readAsStringSync();
 
-      Object? current, expected;
+      Object? actual, output;
       Object? skip;
 
       void callback() {
-        expect(current, equals(expected));
+        expect(actual, equals(output));
       }
 
       try {
-        current = parse(input).toJson();
+        actual = parse(input).toJson();
+        file = File.fromUri(uri.resolve('_actual.json'));
+        file.writeAsStringSync(encoder.convert(actual));
 
-        var file = File.fromUri(uri.resolveUri(Uri.file('output.json')));
+        file = File.fromUri(uri.resolve('output.json'));
 
         if (file.existsSync()) {
-          expected = json.decode(file.readAsStringSync());
+          output = json.decode(file.readAsStringSync());
         } else {
-          skip = '${dir.path}: error.json expected';
+          skip = '${dir.path}: error expected';
         }
       } on ParseError catch (error) {
-        current = error.toJson();
-
-        var file = File.fromUri(uri.resolveUri(Uri.file('error.json')));
+        actual = error.toJson();
+        file = File.fromUri(uri.resolve('error.json'));
 
         if (file.existsSync()) {
-          expected = json.decode(file.readAsStringSync());
+          output = json.decode(file.readAsStringSync());
         } else {
-          skip = '${dir.path}: output.json expected';
+          skip = '${dir.path}: output expected';
         }
       } catch (error) {
-        skip = '${dir.path}: error';
+        skip = '${dir.path}: $error';
       }
 
-      test('sample: ${dir.path}', callback, skip: skip);
+      test(dir.path, callback, skip: skip);
     }
   });
 }

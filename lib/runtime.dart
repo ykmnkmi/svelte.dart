@@ -1,5 +1,5 @@
-export 'package:nutty/src/runtime/component.dart';
-export 'package:nutty/src/runtime/dispatcher.dart';
-export 'package:nutty/src/runtime/dom.dart';
-export 'package:nutty/src/runtime/fragment.dart';
-export 'package:nutty/src/runtime/utilities.dart';
+export 'package:svelte/src/runtime/component.dart';
+export 'package:svelte/src/runtime/dispatcher.dart';
+export 'package:svelte/src/runtime/dom.dart';
+export 'package:svelte/src/runtime/fragment.dart';
+export 'package:svelte/src/runtime/utilities.dart';

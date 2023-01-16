@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:nutty/compiler.dart';
+import 'package:svelte/compiler.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 void main() {
   var source = '<p>Hello <span>world</span>!</p>';
-  var sourceUrl = 'index.nutty';
+  var sourceUrl = 'index.svelte';
 
   try {
     var nodes = parse(source, sourceUrl: sourceUrl);

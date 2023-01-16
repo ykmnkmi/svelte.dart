@@ -1,2 +1,2 @@
-export 'package:nutty/src/compiler/parser/errors.dart' show ParseError;
-export 'package:nutty/src/compiler/parser/parse.dart' show parse;
+export 'package:svelte/src/compiler/parser/errors.dart';
+export 'package:svelte/src/compiler/parser/parse.dart';

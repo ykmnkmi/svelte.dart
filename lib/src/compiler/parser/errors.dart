@@ -1,4 +1,4 @@
-import 'package:nutty/src/compiler/parser/parser.dart';
+import 'package:svelte/src/compiler/parser/parser.dart';
 import 'package:source_span/source_span.dart' show SourceSpan;
 
 class ParseError extends Error {

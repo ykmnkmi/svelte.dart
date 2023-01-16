@@ -1,6 +1,6 @@
 import 'dart:html';
 
-import 'package:nutty/runtime.dart';
+import 'package:svelte/runtime.dart';
 
 class ZeroFragment extends Fragment {
   ZeroFragment(this.component);

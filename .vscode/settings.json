@@ -1,6 +1,6 @@
 {
   "files.associations": {
-    "*.nutty": "html"
+    "*.svelte": "html"
   },
   "yaml.schemas": {
     "https://json.schemastore.org/dart-build": [

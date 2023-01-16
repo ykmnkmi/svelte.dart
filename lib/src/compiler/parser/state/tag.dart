@@ -1,9 +1,8 @@
-import 'package:nutty/src/compiler/interface.dart';
-import 'package:nutty/src/compiler/parser/errors.dart';
-import 'package:nutty/src/compiler/parser/html.dart';
-import 'package:nutty/src/compiler/parser/names.dart';
-import 'package:nutty/src/compiler/parser/parser.dart';
-import 'package:source_span/source_span.dart';
+import 'package:svelte/src/compiler/interface.dart';
+import 'package:svelte/src/compiler/parser/errors.dart';
+import 'package:svelte/src/compiler/parser/html.dart';
+import 'package:svelte/src/compiler/parser/names.dart';
+import 'package:svelte/src/compiler/parser/parser.dart';
 
 const Map<String, String> metaTags = <String, String>{
   'svelte:head': 'Head',
@@ -70,7 +69,7 @@ String? getDirectiveType(String name) {
   }
 }
 
-bool parentIsHead(List<Node> stack) {
+bool parentIsHead(List<TemplateNode> stack) {
   for (var node in stack.reversed) {
     var type = node.type;
 
@@ -87,227 +86,6 @@ bool parentIsHead(List<Node> stack) {
 }
 
 extension TagScanner on Parser {
-  bool readAttributeTo(List<Node> attributes, Set<String> uniqueNames) {
-    var start = position;
-
-    void checkUnique(String name) {
-      if (uniqueNames.contains(name)) {
-        duplicateAttribute(start);
-      }
-
-      uniqueNames.add(name);
-    }
-
-    if (scan('{')) {
-      // TODO(parser): parse attribute expression
-      throw UnimplementedError();
-    }
-
-    var name = readUntil(attributeNameEndRe);
-
-    if (name.isEmpty) {
-      return false;
-    }
-
-    var end = position;
-
-    allowSpace();
-
-    var colonIndex = name.indexOf(':');
-
-    String? type;
-
-    if (colonIndex != -1) {
-      type = getDirectiveType(name.substring(0, colonIndex));
-    }
-
-    var values = <Node>[];
-
-    if (scan('=')) {
-      allowSpace();
-
-      values = readAttributeValue();
-      end = position;
-    } else if (match(quoteRe)) {
-      unexpectedToken('=', position);
-    }
-
-    if (type != null) {
-      var parts = name.substring(colonIndex + 1).split('|');
-      var directiveName = parts.first;
-      var modifiers = parts.sublist(1);
-
-      if (directiveName == '') {
-        emptyDirectiveName(type, start + colonIndex + 1);
-      }
-
-      if (type == 'Binding' && directiveName != 'this') {
-        checkUnique(directiveName);
-      } else if (type != 'EventHandler' && type != 'Action') {
-        checkUnique(name);
-      }
-
-      if (type == 'Ref') {
-        invalidRefDirective(directiveName, start);
-      }
-
-      if (type == 'StyleDirective') {
-        attributes.add(Node(
-          start: start,
-          end: end,
-          type: type,
-          name: directiveName,
-          modifiers: modifiers,
-          values: values,
-        ));
-      }
-
-      Node? firstValue;
-
-      Object? expression;
-
-      if (values.isNotEmpty) {
-        firstValue = values.first;
-
-        if (values.length > 1 || firstValue.type == 'Text') {
-          invalidDirectiveValue(firstValue.start);
-        } else {
-          expression = firstValue.expression;
-        }
-      }
-
-      var directive = Node(
-        start: start,
-        end: end,
-        type: type,
-        name: directiveName,
-        modifiers: modifiers,
-        expression: expression,
-      );
-
-      if (type == 'Transition') {
-        var direction = name.substring(0, colonIndex);
-
-        directive
-          ..intro = direction == 'in' || direction == 'transition'
-          ..outro = direction == 'out' || direction == 'transition';
-      }
-
-      if (expression == null && (type == 'Binding' || type == 'Class')) {
-        // TODO(parser): parse expression
-        throw UnimplementedError();
-      }
-
-      attributes.add(directive);
-      return true;
-    }
-
-    checkUnique(name);
-
-    attributes.add(Node(
-      start: start,
-      end: end,
-      type: 'Attribute',
-      name: name,
-      values: values,
-    ));
-
-    return true;
-  }
-
-  List<Node> readAttributeValue() {
-    var quoteMark = read('"') ?? read("'");
-
-    if (quoteMark != null && scan(quoteMark)) {
-      return <Node>[
-        Node(
-          start: position - 1,
-          end: position - 1,
-          type: 'Text',
-          text: '',
-          raw: '',
-        )
-      ];
-    }
-
-    var endRe = quoteMark ?? attributeValueEndRe;
-    List<Node> values;
-
-    try {
-      values = readSequence(endRe, 'in attribute value');
-    } on ParseError catch (error) {
-      if (error.code == 'parse-error') {
-        var offset = error.span.start.offset;
-        var substring = template.substring(offset - 1, offset + 1);
-
-        if (substring == '/>') {
-          position = offset;
-          unclosedAttributeValue(quoteMark ?? '}');
-        }
-      }
-
-      rethrow;
-    }
-
-    if (values.isEmpty && quoteMark == null) {
-      missingAttributeValue();
-    }
-
-    if (quoteMark != null) {
-      expect(quoteMark);
-    }
-
-    return values;
-  }
-
-  List<Node> readSequence(Pattern endRe, String location) {
-    var textStart = position;
-    var chunks = <Node>[];
-
-    void flush(int end) {
-      if (textStart < end) {
-        var raw = template.substring(textStart, end);
-        var text = decodeCharacterReferences(raw);
-
-        chunks.add(Node(
-          start: textStart,
-          end: end,
-          type: 'Text',
-          text: text,
-          raw: raw,
-        ));
-      }
-    }
-
-    while (isNotDone) {
-      if (match(endRe)) {
-        flush(position);
-        return chunks;
-      }
-
-      if (scan('{')) {
-        if (scan('#')) {
-          var index = position - 2;
-          var name = readUntil(RegExp('[^a-z]'));
-          invalidLogicBlockPlacement(location, name, index);
-        }
-
-        if (scan('@')) {
-          var index = position - 2;
-          var name = readUntil(RegExp('[^a-z]'));
-          invalidTagPlacement(location, name, index);
-        }
-
-        // TODO(parser): parse mustache
-        throw UnimplementedError();
-      } else {
-        position += 1;
-      }
-    }
-
-    return chunks;
-  }
-
   String readTagName() {
     var start = position;
 
@@ -352,21 +130,243 @@ extension TagScanner on Parser {
     invalidTagName(start);
   }
 
+  bool readAttributeTo(List<TemplateNode> attributes, Set<String> uniqueNames) {
+    var start = position;
+
+    void checkUnique(String name) {
+      if (uniqueNames.contains(name)) {
+        duplicateAttribute(start);
+      }
+
+      uniqueNames.add(name);
+    }
+
+    if (scan('{')) {
+      // TODO(parser): parse attribute expression
+      throw UnimplementedError();
+    }
+
+    var name = readUntil(attributeNameEndRe);
+
+    if (name.isEmpty) {
+      return false;
+    }
+
+    var end = position;
+
+    allowSpace();
+
+    var colonIndex = name.indexOf(':');
+
+    String? type;
+
+    if (colonIndex != -1) {
+      type = getDirectiveType(name.substring(0, colonIndex));
+    }
+
+    var values = <TemplateNode>[];
+
+    if (scan('=')) {
+      allowSpace();
+
+      values = readAttributeValue();
+      end = position;
+    } else if (match(quoteRe)) {
+      unexpectedToken('=', position);
+    }
+
+    if (type != null) {
+      var parts = name.substring(colonIndex + 1).split('|');
+      var directiveName = parts.first;
+      var modifiers = parts.sublist(1);
+
+      if (directiveName == '') {
+        emptyDirectiveName(type, start + colonIndex + 1);
+      }
+
+      if (type == 'Binding' && directiveName != 'this') {
+        checkUnique(directiveName);
+      } else if (type != 'EventHandler' && type != 'Action') {
+        checkUnique(name);
+      }
+
+      if (type == 'Ref') {
+        invalidRefDirective(directiveName, start);
+      }
+
+      if (type == 'StyleDirective') {
+        attributes.add(TemplateNode(
+          start: start,
+          end: end,
+          type: type,
+          name: directiveName,
+          modifiers: modifiers,
+          values: values,
+        ));
+      }
+
+      TemplateNode? firstValue;
+
+      Object? expression;
+
+      if (values.isNotEmpty) {
+        firstValue = values.first;
+
+        if (values.length > 1 || firstValue.type == 'Text') {
+          invalidDirectiveValue(firstValue.start);
+        } else {
+          expression = firstValue.expression;
+        }
+      }
+
+      var directive = TemplateNode(
+        start: start,
+        end: end,
+        type: type,
+        name: directiveName,
+        modifiers: modifiers,
+        expression: expression,
+      );
+
+      if (type == 'Transition') {
+        var direction = name.substring(0, colonIndex);
+
+        directive
+          ..intro = direction == 'in' || direction == 'transition'
+          ..outro = direction == 'out' || direction == 'transition';
+      }
+
+      if (expression == null && (type == 'Binding' || type == 'Class')) {
+        // TODO(parser): parse expression
+        throw UnimplementedError();
+      }
+
+      attributes.add(directive);
+      return true;
+    }
+
+    checkUnique(name);
+
+    attributes.add(TemplateNode(
+      start: start,
+      end: end,
+      type: 'Attribute',
+      name: name,
+      values: values,
+    ));
+
+    return true;
+  }
+
+  List<TemplateNode> readAttributeValue() {
+    var quoteMark = read('"') ?? read("'");
+
+    if (quoteMark != null && scan(quoteMark)) {
+      return <TemplateNode>[
+        TemplateNode(
+          start: position - 1,
+          end: position - 1,
+          type: 'Text',
+          raw: '',
+          data: '',
+        )
+      ];
+    }
+
+    var endRe = quoteMark ?? attributeValueEndRe;
+    List<TemplateNode> values;
+
+    try {
+      values = readSequence(endRe, 'in attribute value');
+    } on ParseError catch (error) {
+      if (error.code == 'parse-error') {
+        var offset = error.span.start.offset;
+        var substring = template.substring(offset - 1, offset + 1);
+
+        if (substring == '/>') {
+          position = offset;
+          unclosedAttributeValue(quoteMark ?? '}');
+        }
+      }
+
+      rethrow;
+    }
+
+    if (values.isEmpty && quoteMark == null) {
+      missingAttributeValue();
+    }
+
+    if (quoteMark != null) {
+      expect(quoteMark);
+    }
+
+    return values;
+  }
+
+  List<TemplateNode> readSequence(Pattern endRe, String location) {
+    var textStart = position;
+    var chunks = <TemplateNode>[];
+
+    void flush(int end) {
+      if (textStart < end) {
+        var raw = template.substring(textStart, end);
+        var data = decodeCharacterReferences(raw);
+
+        chunks.add(TemplateNode(
+          start: textStart,
+          end: end,
+          type: 'Text',
+          raw: raw,
+          data: data,
+        ));
+      }
+    }
+
+    while (isNotDone) {
+      if (match(endRe)) {
+        flush(position);
+        return chunks;
+      }
+
+      if (scan('{')) {
+        if (scan('#')) {
+          var index = position - 2;
+          var name = readUntil(RegExp('[^a-z]'));
+          invalidLogicBlockPlacement(location, name, index);
+        }
+
+        if (scan('@')) {
+          var index = position - 2;
+          var name = readUntil(RegExp('[^a-z]'));
+          invalidTagPlacement(location, name, index);
+        }
+
+        // TODO(parser): parse mustache
+        throw UnimplementedError();
+      } else {
+        position += 1;
+      }
+    }
+
+    return chunks;
+  }
+
   void tag() {
     var start = position;
 
     expect('<');
 
     if (scan('!--')) {
-      var text = readUntil('-->');
+      // TODO(parser): parse comment ignores
+      var data = readUntil('-->');
 
       expect('-->', unclosedComment);
 
-      current.children.add(Node(
+      current.children!.add(TemplateNode(
         start: start,
         end: position,
         type: 'Comment',
-        text: text,
+        data: data,
       ));
 
       return;
@@ -382,9 +382,12 @@ extension TagScanner on Parser {
       var slug = type.toLowerCase();
 
       if (isClosingTag) {
+        var children = parent.children;
+
         if ((name == 'svelte:window' || name == 'svelte:body') &&
-            parent.children.isNotEmpty) {
-          invalidElementContent(slug, name, parent.children.first.start);
+            children != null &&
+            children.isNotEmpty) {
+          invalidElementContent(slug, name, children.first.start);
         }
       } else {
         if (this.metaTags.contains(name)) {
@@ -411,7 +414,12 @@ extension TagScanner on Parser {
       type = 'Element';
     }
 
-    var element = Node(start: start, type: type, name: name);
+    var element = TemplateNode(
+      start: start,
+      type: type,
+      name: name,
+      children: <Node>[],
+    );
 
     allowSpace();
 
@@ -454,7 +462,7 @@ extension TagScanner on Parser {
       lastAutoCloseTag = AutoCloseTag(parent.name, name, stack.length);
     }
 
-    var attributes = <Node>[];
+    var attributes = <TemplateNode>[];
     var uniqueNames = <String>{};
 
     while (readAttributeTo(attributes, uniqueNames)) {
@@ -469,7 +477,7 @@ extension TagScanner on Parser {
     // TODO(parser): parse svelte:element
     // TODO(parser): parse specials
 
-    current.children.add(element);
+    current.children!.add(element);
 
     var selfClosing = scan('/') || isVoid(name);
 

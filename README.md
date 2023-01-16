@@ -1,13 +1,13 @@
-nutty.dart
+svelte.dart
 =========
 
-[Svelte](https://svelte.dev/) ([v3.50.0](https://github.com/sveltejs/svelte/tree/v3.50.0))
+[Svelte](https://svelte.dev/) ([v3.55.1](https://github.com/sveltejs/svelte/tree/v3.55.1))
 web framework ported to [Dart](https://dart.dev).
 
 TODO:
-- Parser:
+- Parser 🔥
   - Style
-- Runtime 🔥
+- Runtime
   - internal
     - Component
     - Fragment

@@ -1,4 +1,4 @@
-import 'package:nutty/src/compiler/parser/entities.dart';
+import 'package:svelte/src/compiler/parser/entities.dart';
 
 const List<int> windows1252 = <int>[
   0x20AC, 0x0081, 0x201A, 0x0192, //

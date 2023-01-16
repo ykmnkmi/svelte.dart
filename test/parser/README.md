@@ -1,1 +1,0 @@
-To update expected files run `tools/generate_script_to_json.dart` and `tools/update_json_in_sampes.dart`.

@@ -2,7 +2,7 @@
 
 import 'dart:html';
 
-import 'package:nutty/runtime.dart';
+import 'package:svelte/runtime.dart';
 
 import 'nested.dart';
 

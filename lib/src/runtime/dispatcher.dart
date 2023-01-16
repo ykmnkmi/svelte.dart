@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:meta/meta.dart';
-import 'package:nutty/src/runtime/component.dart';
-import 'package:nutty/src/runtime/utilities.dart';
+import 'package:svelte/src/runtime/component.dart';
+import 'package:svelte/src/runtime/utilities.dart';
 
 typedef EventDispatcher<T> = void Function([T? detail]);
 

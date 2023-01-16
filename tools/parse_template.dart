@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:nutty/compiler.dart';
+import 'package:svelte/compiler.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');

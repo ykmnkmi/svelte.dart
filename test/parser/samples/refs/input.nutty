@@ -1,7 +1,0 @@
-<script>
-  import 'package:nutty/dom.dart';
-
-  late Element foo;
-</script>
-
-<canvas bind:this={foo}></canvas>

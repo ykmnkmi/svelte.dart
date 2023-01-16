@@ -1,36 +1,37 @@
 {
-  "html": {
-    "start": 0,
-    "end": 11,
-    "_": "Fragment",
-    "children": [
-      {
-        "start": 0,
-        "end": 11,
-        "_": "Element",
-        "name": "div",
-        "attributes": [
-          {
-            "start": 5,
-            "end": 9,
-            "_": "Attribute",
-            "name": "id",
-            "children": [
-              {
-                "start": 6,
-                "end": 8,
-                "_": "Shorthand",
-                "expression": {
-                  "_": "SimpleIdentifier",
-                  "start": 6,
-                  "end": 8,
-                  "name": "id"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+	"html": {
+		"start": 0,
+		"end": 11,
+		"type": "Fragment",
+		"children": [
+			{
+				"start": 0,
+				"end": 11,
+				"type": "Element",
+				"name": "div",
+				"attributes": [
+					{
+						"start": 5,
+						"end": 9,
+						"type": "Attribute",
+						"name": "id",
+						"value": [
+							{
+								"start": 6,
+								"end": 8,
+								"type": "AttributeShorthand",
+								"expression": {
+									"start": 6,
+									"end": 8,
+									"type": "Identifier",
+									"name": "id"
+								}
+							}
+						]
+					}
+				],
+				"children": []
+			}
+		]
+	}
 }
