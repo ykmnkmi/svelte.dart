@@ -106,7 +106,8 @@ Future<void> main() async {
   var klasses = library.topLevelElements.whereType<ClassElement>().toList();
   klasses.sort((left, right) => left.nameOffset.compareTo(right.nameOffset));
 
-  var sink = File('lib/src/compiler/dart_to_json.dart').openWrite();
+  var file = File('lib/src/compiler/dart_to_json.dart');
+  var sink = file.openWrite();
   sink.write(header);
 
   void writeFields(InterfaceElement interface, Set<String> writed) {
@@ -197,7 +198,10 @@ Future<void> main() async {
   }
 
   sink.write('\n}\n');
-  sink.close();
+  await sink.close();
+
+  var result = Process.runSync('dart', <String>['format', file.path]);
+  exitCode = result.exitCode;
 }
 
 const String header = '''

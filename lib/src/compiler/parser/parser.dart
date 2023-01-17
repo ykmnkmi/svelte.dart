@@ -18,8 +18,7 @@ class AutoCloseTag {
 class Parser {
   Parser(String template, {Object? sourceUrl})
       : template = template.trimRight(),
-        sourceFile = SourceFile.fromString(template, url: sourceUrl),
-        html = TemplateNode(type: 'Fragment', children: <Node>[]) {
+        sourceFile = SourceFile.fromString(template, url: sourceUrl) {
     stack.add(html);
 
     while (isNotDone) {
@@ -67,17 +66,19 @@ class Parser {
 
   final SourceFile sourceFile;
 
-  final TemplateNode html;
+  final Node html = Node(type: 'Fragment', children: <Node>[]);
+
+  final List<Script> scripts = <Script>[];
 
   final Set<String> metaTags = <String>{};
 
-  final List<TemplateNode> stack = <TemplateNode>[];
+  final List<Node> stack = <Node>[];
 
   int position = 0;
 
   AutoCloseTag? lastAutoCloseTag;
 
-  TemplateNode get current {
+  Node get current {
     return stack.last;
   }
 
@@ -148,7 +149,7 @@ class Parser {
     return match[0];
   }
 
-  String readUntil(Pattern pattern, {Never Function()? onError}) {
+  String readUntil(Pattern pattern, [Never Function()? onError]) {
     var found = template.indexOf(pattern, position);
 
     if (found == -1) {

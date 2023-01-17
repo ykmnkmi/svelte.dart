@@ -1,4 +1,5 @@
 import 'package:source_span/source_span.dart' show SourceSpan;
+import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/parser.dart';
 
 class ParseError extends Error {
@@ -10,7 +11,7 @@ class ParseError extends Error {
 
   final SourceSpan span;
 
-  Map<String, Object?> toJson() {
+  Json toJson() {
     return <String, Object?>{
       'code': code,
       'message': message,
@@ -107,10 +108,11 @@ extension ParserErrors on Parser {
     );
   }
 
-  Never invalidComponentDefinition() {
+  Never invalidComponentDefinition([int? position]) {
     error(
       code: 'invalid-component-definition',
       message: 'invalid component definition',
+      position: position,
     );
   }
 
@@ -206,10 +208,11 @@ extension ParserErrors on Parser {
     );
   }
 
-  Never invalidElementDefinition() {
+  Never invalidElementDefinition([int? position]) {
     error(
       code: 'invalid-element-definition',
       message: 'Invalid element definition',
+      position: position,
     );
   }
 
@@ -284,19 +287,21 @@ extension ParserErrors on Parser {
     );
   }
 
-  Never invalidScriptContextAttribute() {
+  Never invalidScriptContextAttribute([int? position]) {
     error(
       code: 'invalid-script',
       message: 'Context attribute must be static',
+      position: position,
     );
   }
 
-  Never invalidScriptContextValue() {
+  Never invalidScriptContextValue([int? position]) {
     error(
       code: 'invalid-script',
       message: ''
           'If the context attribute is supplied, '
           'it\'s value must be "module"',
+      position: position,
     );
   }
 
@@ -340,10 +345,11 @@ extension ParserErrors on Parser {
     );
   }
 
-  Never missingComponentDefinition() {
+  Never missingComponentDefinition([int? position]) {
     error(
       code: 'missing-component-definition',
       message: "<svelte:component> must have a 'this' attribute",
+      position: position,
     );
   }
 
@@ -354,10 +360,11 @@ extension ParserErrors on Parser {
     );
   }
 
-  Never missingElementDefinition() {
+  Never missingElementDefinition([int? position]) {
     error(
       code: 'missing-element-definition',
       message: "<svelte:element> must have a 'this' attribute",
+      position: position,
     );
   }
 

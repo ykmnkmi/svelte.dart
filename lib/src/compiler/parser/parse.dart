@@ -13,7 +13,7 @@ class Ast {
 
   final Fragment html;
 
-  Map<String, Object?> toJson() {
+  Json toJson() {
     return <String, Object?>{
       'html': html.toJson(),
     };

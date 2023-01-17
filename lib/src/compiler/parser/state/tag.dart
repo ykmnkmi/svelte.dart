@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:analyzer/dart/ast/ast.dart' show Expression;
 import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/errors.dart';
@@ -8,6 +6,8 @@ import 'package:svelte/src/compiler/parser/html.dart';
 import 'package:svelte/src/compiler/parser/names.dart';
 import 'package:svelte/src/compiler/parser/parser.dart';
 import 'package:svelte/src/compiler/parser/read/expression.dart';
+import 'package:svelte/src/compiler/parser/read/script.dart';
+import 'package:svelte/src/compiler/parser/read/style.dart';
 
 const Map<String, String> metaTags = <String, String>{
   'svelte:head': 'Head',
@@ -41,6 +41,12 @@ final RegExp attributeValueEndRe = RegExp('(\\/>|[\\s"\'=<>`])');
 final RegExp quoteRe = RegExp('["\']');
 
 final RegExp componentRe = RegExp('^[A-Z]', multiLine: true);
+
+final RegExp textAreaEndRe = RegExp(
+  '^<\\/textarea(\\s[^>]*)?>',
+  caseSensitive: false,
+  multiLine: true,
+);
 
 final RegExp svelteSelfRe = RegExp(
   '^svelte:self(?=[\\s/>])',
@@ -89,7 +95,7 @@ String? getDirectiveType(String name) {
   }
 }
 
-bool parentIsHead(List<Node> stack) {
+bool parentIsHead(List<BaseNode> stack) {
   for (var node in stack.reversed) {
     var type = node.type;
 
@@ -103,6 +109,10 @@ bool parentIsHead(List<Node> stack) {
   }
 
   return false;
+}
+
+bool nodeIsThisAttribute(Node node) {
+  return node.type == 'Attribute' && node.name == 'this';
 }
 
 extension TagScanner on Parser {
@@ -150,7 +160,7 @@ extension TagScanner on Parser {
     invalidTagName(start);
   }
 
-  bool readAttributeTo(List<Node> attributes, Set<String> uniqueNames) {
+  bool readAttributeTo(List<BaseNode> attributes, Set<String> uniqueNames) {
     var start = position;
 
     void checkUnique(String name) {
@@ -173,22 +183,19 @@ extension TagScanner on Parser {
     }
 
     var end = position;
-
     allowSpace();
 
     var colonIndex = name.indexOf(':');
-
     String? type;
 
     if (colonIndex != -1) {
       type = getDirectiveType(name.substring(0, colonIndex));
     }
 
-    var values = <TemplateNode>[];
+    List<Node>? values;
 
     if (scan('=')) {
       allowSpace();
-
       values = readAttributeValue();
       end = position;
     } else if (match(quoteRe)) {
@@ -215,7 +222,7 @@ extension TagScanner on Parser {
       }
 
       if (type == 'StyleDirective') {
-        attributes.add(TemplateNode(
+        attributes.add(Node(
           start: start,
           end: end,
           type: type,
@@ -225,11 +232,10 @@ extension TagScanner on Parser {
         ));
       }
 
-      TemplateNode? firstValue;
-
+      Node? firstValue;
       Expression? expression;
 
-      if (values.isNotEmpty) {
+      if (values != null && values.isNotEmpty) {
         firstValue = values.first;
 
         if (values.length > 1 || firstValue.type == 'Text') {
@@ -239,7 +245,7 @@ extension TagScanner on Parser {
         }
       }
 
-      var directive = TemplateNode(
+      var directive = Node(
         start: start,
         end: end,
         type: type,
@@ -267,7 +273,7 @@ extension TagScanner on Parser {
 
     checkUnique(name);
 
-    attributes.add(TemplateNode(
+    attributes.add(Node(
       start: start,
       end: end,
       type: 'Attribute',
@@ -278,12 +284,12 @@ extension TagScanner on Parser {
     return true;
   }
 
-  List<TemplateNode> readAttributeValue() {
+  List<Node> readAttributeValue() {
     var quoteMark = read('"') ?? read("'");
 
     if (quoteMark != null && scan(quoteMark)) {
-      return <TemplateNode>[
-        TemplateNode(
+      return <Node>[
+        Node(
           start: position - 1,
           end: position - 1,
           type: 'Text',
@@ -294,7 +300,7 @@ extension TagScanner on Parser {
     }
 
     var endRe = quoteMark ?? attributeValueEndRe;
-    List<TemplateNode> values;
+    List<Node> values;
 
     try {
       values = readSequence(endRe, 'in attribute value');
@@ -323,16 +329,16 @@ extension TagScanner on Parser {
     return values;
   }
 
-  List<TemplateNode> readSequence(Pattern endRe, String location) {
+  List<Node> readSequence(Pattern endRe, String location) {
     var textStart = position;
-    var chunks = <TemplateNode>[];
+    var chunks = <Node>[];
 
     void flush(int end) {
       if (textStart < end) {
         var raw = template.substring(textStart, end);
         var data = decodeCharacterReferences(raw);
 
-        chunks.add(TemplateNode(
+        chunks.add(Node(
           start: textStart,
           end: end,
           type: 'Text',
@@ -364,15 +370,13 @@ extension TagScanner on Parser {
         }
 
         flush(position - 1);
-
         allowSpace();
 
         var expression = readExpression();
-
         allowSpace();
         expect('}');
 
-        chunks.add(TemplateNode(
+        chunks.add(Node(
           start: start,
           end: position,
           type: 'MustacheTag',
@@ -390,17 +394,15 @@ extension TagScanner on Parser {
 
   void tag() {
     var start = position;
-
     expect('<');
 
     if (scan('!--')) {
       // TODO(parser): parse comment ignores
       var data = readUntil('-->');
       var ignores = extractSvelteIgnore(data);
-
       expect('-->', unclosedComment);
 
-      current.children!.add(TemplateNode(
+      current.children!.add(Node(
         start: start,
         end: position,
         type: 'Comment',
@@ -453,7 +455,7 @@ extension TagScanner on Parser {
       type = 'Element';
     }
 
-    var element = TemplateNode(
+    var element = Node(
       start: start,
       type: type,
       name: name,
@@ -510,21 +512,63 @@ extension TagScanner on Parser {
 
     element.attributes = attributes;
 
-    // TODO(parser): parse svelte:component
-    // TODO(parser): parse svelte:element
-    // TODO(parser): parse specials
+    if (name == 'svelte:component') {
+      var index = attributes.indexWhere(nodeIsThisAttribute);
+
+      if (index == -1) {
+        missingComponentDefinition(start);
+      }
+
+      var definition = attributes.removeAt(index);
+      var values = definition.values;
+
+      if (values == null || values.length != 1 || values.first.type == 'Text') {
+        invalidComponentDefinition(definition.start);
+      }
+
+      element.expression = values.first.expression;
+    }
+
+    if (name == 'svelte:element') {
+      var index = attributes.indexWhere(nodeIsThisAttribute);
+
+      if (index == -1) {
+        missingElementDefinition(start);
+      }
+
+      var definition = attributes.removeAt(index);
+      var values = definition.values;
+
+      if (values == null || values.isEmpty) {
+        invalidElementDefinition(definition.start);
+      }
+
+      element.tag = values.first.data ?? values.first.expression;
+    }
+
+    if ((name == 'script' || name == 'style') && stack.length == 1) {
+      expect('>');
+
+      if (name == 'script') {
+        script(start, attributes);
+      } else {
+        style(start, attributes);
+      }
+
+      return;
+    }
 
     current.children!.add(element);
 
     var selfClosing = scan('/') || isVoid(name);
-
     expect('>');
 
     if (selfClosing) {
       element.end = position;
     } else if (name == 'textarea') {
-      // TODO(parser): parse textarea
-      throw UnimplementedError();
+      element.children = readSequence(textAreaEndRe, 'inside <textarea>');
+      expect(textAreaEndRe);
+      element.end = position;
     } else {
       stack.add(element);
     }

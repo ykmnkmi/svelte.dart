@@ -1,10 +1,25 @@
-import 'package:analyzer/dart/ast/ast.dart' show Expression;
+import 'package:analyzer/dart/ast/ast.dart' show CompilationUnit, Expression;
+import 'package:analyzer/error/error.dart';
 import 'package:svelte/src/compiler/dart_to_json.dart';
 
 const DartToJsonVisitor dartToJson = DartToJsonVisitor();
 
-abstract class Node {
-  Node({
+typedef Json = Map<String, Object?>;
+
+extension on List<BaseNode> {
+  List<Json> toJson() {
+    return List<Json>.generate(length, (i) => this[i].toJson());
+  }
+}
+
+extension on List<Expression> {
+  List<Json> toJson() {
+    return List<Json>.generate(length, (i) => this[i].accept(dartToJson)!);
+  }
+}
+
+abstract class BaseNode {
+  BaseNode({
     this.start,
     this.end,
     required this.type,
@@ -24,44 +39,41 @@ abstract class Node {
       'start': start,
       'end': end,
       'type': type,
-      if (children != null)
-        'children': children!
-            .map<Map<String, Object?>>((node) => node.toJson())
-            .toList(),
+      if (children != null) 'children': children!.toJson(),
     };
   }
 }
 
-abstract class Fragment implements Node {
+abstract class Fragment implements BaseNode {
   @override
   List<Node>? get children;
 }
 
-abstract class Text implements Node {
+abstract class Text implements BaseNode {
   String? get raw;
 
   String? get data;
 }
 
-abstract class Mustache implements Node {
+abstract class Mustache implements BaseNode {
   Expression? get expression;
 }
 
-abstract class Comment implements Node {
+abstract class Comment implements BaseNode {
   String? get data;
 
   List<String>? get ignores;
 }
 
-abstract class Const implements Node {
+abstract class Const implements BaseNode {
   Expression? get expression;
 }
 
-abstract class Debug implements Node {
+abstract class Debug implements BaseNode {
   List<Object?>? get identifiers;
 }
 
-abstract class Directive implements Node {
+abstract class Directive implements BaseNode {
   String? get name;
 }
 
@@ -69,19 +81,19 @@ abstract class ExpressionDirective implements Directive {
   List<String>? get modifiers;
 }
 
-abstract class Element implements Node {
+abstract class Element implements BaseNode {
   String? get name;
 
-  List<Node>? attributes;
+  covariant List<Node>? attributes;
 }
 
-abstract class Atribute implements Node {
+abstract class Atribute implements BaseNode {
   String? get name;
 
   List<Node>? values;
 }
 
-abstract class SpreadAtribute implements Node {
+abstract class SpreadAtribute implements BaseNode {
   Expression? get expression;
 }
 
@@ -91,7 +103,7 @@ abstract class Transition implements ExpressionDirective {
   bool? get outro;
 }
 
-class TemplateNode extends Node
+class Node extends BaseNode
     implements
         Fragment,
         Text,
@@ -105,16 +117,16 @@ class TemplateNode extends Node
         Atribute,
         SpreadAtribute,
         Transition {
-  TemplateNode({
+  Node({
     super.start,
     super.end,
     required super.type,
     this.name,
-    this.tag,
     this.raw,
     this.data,
     this.ignores,
     this.modifiers,
+    this.tag,
     this.expression,
     this.identifiers,
     this.attributes,
@@ -127,8 +139,6 @@ class TemplateNode extends Node
   @override
   String? name;
 
-  String? tag;
-
   @override
   String? raw;
 
@@ -140,6 +150,8 @@ class TemplateNode extends Node
 
   @override
   List<String>? modifiers;
+
+  Object? tag;
 
   @override
   Expression? expression;
@@ -166,30 +178,40 @@ class TemplateNode extends Node
       'end': end,
       'type': type,
       if (name != null) 'name': name,
-      if (tag != null) 'tag': tag,
       if (raw != null) 'raw': raw,
       if (data != null) 'data': data,
       if (ignores != null && ignores!.isNotEmpty) 'ignores': ignores,
       if (modifiers != null && modifiers!.isNotEmpty) 'modifiers': modifiers,
+      if (tag is String)
+        'tag': tag
+      else if (tag is Expression)
+        'tag': (tag as Expression).accept(dartToJson),
       if (expression != null) 'expression': expression!.accept(dartToJson),
       if (identifiers != null && identifiers!.isNotEmpty)
-        'identifiers': identifiers!
-            .map<Map<String, Object?>>(
-                (identifier) => identifier.accept(dartToJson)!)
-            .toList(),
+        'identifiers': identifiers!.toJson(),
       if (attributes != null && attributes!.isNotEmpty)
-        'attributes': attributes!
-            .map<Map<String, Object?>>((node) => node.toJson())
-            .toList(),
-      if (values != null && values!.isNotEmpty)
-        'values':
-            values!.map<Map<String, Object?>>((node) => node.toJson()).toList(),
+        'attributes': attributes!.toJson(),
+      if (values != null && values!.isNotEmpty) 'values': values!.toJson(),
       if (intro != null) 'intro': intro,
       if (outro != null) 'outro': outro,
       if (children != null && children!.isNotEmpty)
-        'children': children!
-            .map<Map<String, Object?>>((node) => node.toJson())
-            .toList(),
+        'children': children!.toJson(),
     };
   }
+}
+
+class Script extends BaseNode {
+  Script({
+    super.start,
+    super.end,
+    required this.context,
+    required this.unit,
+    this.errors,
+  }) : super(type: 'Script');
+
+  final String context;
+
+  final CompilationUnit unit;
+
+  final List<AnalysisError>? errors;
 }
