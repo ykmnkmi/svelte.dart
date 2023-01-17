@@ -16,7 +16,7 @@ bool updateScheduled = false;
 
 @protected
 void update(Component component) {
-  component.afterChanges();
+  component.onChanges();
 
   var changed = component.dirty;
 

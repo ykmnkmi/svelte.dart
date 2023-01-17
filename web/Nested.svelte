@@ -1,11 +1,14 @@
-<script dispatcher type="text/dart">
+<svelte:options dispatcher />
+
+<script type="text/dart">
   @input
   var count = 0;
 
   var dispatchEven = createEventDispatcher<int>('even');
   var dispatchOdd = createEventDispatcher<int>('odd');
 
-  void afterChanges() {
+  // same as `$:`
+  void onChanges() {
     if (count.isEven) {
       dispatchEven(count);
     } else {

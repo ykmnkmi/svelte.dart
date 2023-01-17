@@ -1,3 +1,8 @@
+import 'package:analyzer/dart/ast/ast.dart' show Expression;
+import 'package:svelte/src/compiler/dart_to_json.dart';
+
+const DartToJsonVisitor dartToJson = DartToJsonVisitor();
+
 abstract class Node {
   Node({
     this.start,
@@ -19,7 +24,10 @@ abstract class Node {
       'start': start,
       'end': end,
       'type': type,
-      if (children != null) 'children': children,
+      if (children != null)
+        'children': children!
+            .map<Map<String, Object?>>((node) => node.toJson())
+            .toList(),
     };
   }
 }
@@ -36,7 +44,7 @@ abstract class Text implements Node {
 }
 
 abstract class Mustache implements Node {
-  Object? get expression;
+  Expression? get expression;
 }
 
 abstract class Comment implements Node {
@@ -46,7 +54,7 @@ abstract class Comment implements Node {
 }
 
 abstract class Const implements Node {
-  Object? get expression;
+  Expression? get expression;
 }
 
 abstract class Debug implements Node {
@@ -74,7 +82,7 @@ abstract class Atribute implements Node {
 }
 
 abstract class SpreadAtribute implements Node {
-  Object? get expression;
+  Expression? get expression;
 }
 
 abstract class Transition implements ExpressionDirective {
@@ -134,10 +142,10 @@ class TemplateNode extends Node
   List<String>? modifiers;
 
   @override
-  Object? expression;
+  Expression? expression;
 
   @override
-  List<Object?>? identifiers;
+  List<Expression>? identifiers;
 
   @override
   List<Node>? attributes;
@@ -161,15 +169,27 @@ class TemplateNode extends Node
       if (tag != null) 'tag': tag,
       if (raw != null) 'raw': raw,
       if (data != null) 'data': data,
-      if (ignores != null) 'ignores': ignores,
-      if (modifiers != null) 'modifiers': modifiers,
-      if (expression != null) 'expression': expression,
-      if (identifiers != null) 'identifiers': identifiers,
-      if (attributes != null) 'attributes': attributes,
-      if (values != null) 'values': values,
+      if (ignores != null && ignores!.isNotEmpty) 'ignores': ignores,
+      if (modifiers != null && modifiers!.isNotEmpty) 'modifiers': modifiers,
+      if (expression != null) 'expression': expression!.accept(dartToJson),
+      if (identifiers != null && identifiers!.isNotEmpty)
+        'identifiers': identifiers!
+            .map<Map<String, Object?>>(
+                (identifier) => identifier.accept(dartToJson)!)
+            .toList(),
+      if (attributes != null && attributes!.isNotEmpty)
+        'attributes': attributes!
+            .map<Map<String, Object?>>((node) => node.toJson())
+            .toList(),
+      if (values != null && values!.isNotEmpty)
+        'values':
+            values!.map<Map<String, Object?>>((node) => node.toJson()).toList(),
       if (intro != null) 'intro': intro,
       if (outro != null) 'outro': outro,
-      if (children != null) 'children': children,
+      if (children != null && children!.isNotEmpty)
+        'children': children!
+            .map<Map<String, Object?>>((node) => node.toJson())
+            .toList(),
     };
   }
 }

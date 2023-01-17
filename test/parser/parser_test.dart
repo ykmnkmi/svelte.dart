@@ -27,9 +27,6 @@ void main() {
 
       try {
         actual = parse(input).toJson();
-        file = File.fromUri(uri.resolve('_actual.json'));
-        file.writeAsStringSync(encoder.convert(actual));
-
         file = File.fromUri(uri.resolve('output.json'));
 
         if (file.existsSync()) {

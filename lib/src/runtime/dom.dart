@@ -3,18 +3,22 @@ import 'dart:html';
 import 'package:meta/dart2js.dart';
 import 'package:svelte/src/runtime/utilities.dart';
 
+@noInline
 T element<T extends Element>(String tag) {
   return unsafeCast<T>(Element.tag(tag));
 }
 
+@noInline
 Text empty() {
   return text('');
 }
 
+@noInline
 Text space() {
   return text(' ');
 }
 
+@noInline
 Text text(String text) {
   return Text(text);
 }

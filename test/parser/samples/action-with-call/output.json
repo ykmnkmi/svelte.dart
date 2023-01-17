@@ -15,61 +15,41 @@
 						"end": 39,
 						"type": "Action",
 						"name": "tooltip",
-						"modifiers": [],
 						"expression": {
-							"type": "CallExpression",
 							"start": 21,
 							"end": 37,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 21
-								},
-								"end": {
-									"line": 1,
-									"column": 37
-								}
-							},
-							"callee": {
-								"type": "Identifier",
+							"class": "MethodInvocation",
+							"methodName": {
 								"start": 21,
 								"end": 22,
-								"loc": {
-									"start": {
-										"line": 1,
-										"column": 21
-									},
-									"end": {
-										"line": 1,
-										"column": 22
-									}
-								},
+								"class": "SimpleIdentifier",
 								"name": "t"
 							},
-							"arguments": [
-								{
-									"type": "Literal",
-									"start": 23,
-									"end": 36,
-									"loc": {
-										"start": {
-											"line": 1,
-											"column": 23
-										},
-										"end": {
-											"line": 1,
-											"column": 36
-										}
-									},
-									"value": "tooltip msg",
-									"raw": "'tooltip msg'"
-								}
-							],
-							"optional": false
+							"argumentList": {
+								"start": 22,
+								"end": 37,
+								"class": "ArgumentList",
+								"arguments": [
+									{
+										"start": 23,
+										"end": 36,
+										"class": "SimpleStringLiteral",
+										"value": "tooltip msg",
+										"contentsEnd": 35,
+										"contentsOffset": 24,
+										"isSingleQuoted": true
+									}
+								]
+							},
+							"function": {
+								"start": 21,
+								"end": 22,
+								"class": "SimpleIdentifier",
+								"name": "t"
+							}
 						}
 					}
-				],
-				"children": []
+				]
 			}
 		]
 	}

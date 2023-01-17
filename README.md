@@ -13,8 +13,8 @@ TODO:
     - Fragment
     - ...
   - ...
-- Tests 🔥
 - Compiler
 - Builder
+- Tests 🔥
 - ...
 - SSR (shelf first)

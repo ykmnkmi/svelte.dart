@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:analyzer/dart/ast/ast.dart' show Expression;
 import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/errors.dart';
+import 'package:svelte/src/compiler/parser/extract_svelte_ignore.dart';
 import 'package:svelte/src/compiler/parser/html.dart';
 import 'package:svelte/src/compiler/parser/names.dart';
 import 'package:svelte/src/compiler/parser/parser.dart';
+import 'package:svelte/src/compiler/parser/read/expression.dart';
 
 const Map<String, String> metaTags = <String, String>{
   'svelte:head': 'Head',
@@ -22,7 +27,10 @@ const List<String> validMetaTags = <String>[
   'svelte:element'
 ];
 
-final RegExp tagNameRe = RegExp('^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*');
+final RegExp tagNameRe = RegExp(
+  '^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*',
+  multiLine: true,
+);
 
 final RegExp tagNameEndRe = RegExp('(\\s|\\/|>)');
 
@@ -32,15 +40,27 @@ final RegExp attributeValueEndRe = RegExp('(\\/>|[\\s"\'=<>`])');
 
 final RegExp quoteRe = RegExp('["\']');
 
-final RegExp componentRe = RegExp('^[A-Z]');
+final RegExp componentRe = RegExp('^[A-Z]', multiLine: true);
 
-final RegExp svelteSelfRe = RegExp('^svelte:self(?=[\\s/>])');
+final RegExp svelteSelfRe = RegExp(
+  '^svelte:self(?=[\\s/>])',
+  multiLine: true,
+);
 
-final RegExp svelteComponentRe = RegExp('^svelte:component(?=[\\s/>])');
+final RegExp svelteComponentRe = RegExp(
+  '^svelte:component(?=[\\s/>])',
+  multiLine: true,
+);
 
-final RegExp svelteElementRe = RegExp('^svelte:element(?=[\\s/>])');
+final RegExp svelteElementRe = RegExp(
+  '^svelte:element(?=[\\s/>])',
+  multiLine: true,
+);
 
-final RegExp svelteFragmentRe = RegExp('^svelte:fragment(?=[\\s/>])');
+final RegExp svelteFragmentRe = RegExp(
+  '^svelte:fragment(?=[\\s/>])',
+  multiLine: true,
+);
 
 String? getDirectiveType(String name) {
   switch (name) {
@@ -69,7 +89,7 @@ String? getDirectiveType(String name) {
   }
 }
 
-bool parentIsHead(List<TemplateNode> stack) {
+bool parentIsHead(List<Node> stack) {
   for (var node in stack.reversed) {
     var type = node.type;
 
@@ -130,7 +150,7 @@ extension TagScanner on Parser {
     invalidTagName(start);
   }
 
-  bool readAttributeTo(List<TemplateNode> attributes, Set<String> uniqueNames) {
+  bool readAttributeTo(List<Node> attributes, Set<String> uniqueNames) {
     var start = position;
 
     void checkUnique(String name) {
@@ -207,7 +227,7 @@ extension TagScanner on Parser {
 
       TemplateNode? firstValue;
 
-      Object? expression;
+      Expression? expression;
 
       if (values.isNotEmpty) {
         firstValue = values.first;
@@ -323,6 +343,8 @@ extension TagScanner on Parser {
     }
 
     while (isNotDone) {
+      var start = position;
+
       if (match(endRe)) {
         flush(position);
         return chunks;
@@ -341,8 +363,23 @@ extension TagScanner on Parser {
           invalidTagPlacement(location, name, index);
         }
 
-        // TODO(parser): parse mustache
-        throw UnimplementedError();
+        flush(position - 1);
+
+        allowSpace();
+
+        var expression = readExpression();
+
+        allowSpace();
+        expect('}');
+
+        chunks.add(TemplateNode(
+          start: start,
+          end: position,
+          type: 'MustacheTag',
+          expression: expression,
+        ));
+
+        textStart = position;
       } else {
         position += 1;
       }
@@ -359,6 +396,7 @@ extension TagScanner on Parser {
     if (scan('!--')) {
       // TODO(parser): parse comment ignores
       var data = readUntil('-->');
+      var ignores = extractSvelteIgnore(data);
 
       expect('-->', unclosedComment);
 
@@ -367,6 +405,7 @@ extension TagScanner on Parser {
         end: position,
         type: 'Comment',
         data: data,
+        ignores: ignores,
       ));
 
       return;
@@ -446,7 +485,7 @@ extension TagScanner on Parser {
         parent = current;
       }
 
-      parent.end = start;
+      parent.end = position;
       stack.removeLast();
 
       if (lastAutoCloseTag != null && stack.length < lastAutoCloseTag.depth) {
@@ -462,16 +501,14 @@ extension TagScanner on Parser {
       lastAutoCloseTag = AutoCloseTag(parent.name, name, stack.length);
     }
 
-    var attributes = <TemplateNode>[];
+    var attributes = <Node>[];
     var uniqueNames = <String>{};
 
     while (readAttributeTo(attributes, uniqueNames)) {
       allowSpace();
     }
 
-    if (attributes.isNotEmpty) {
-      element.attributes = attributes;
-    }
+    element.attributes = attributes;
 
     // TODO(parser): parse svelte:component
     // TODO(parser): parse svelte:element

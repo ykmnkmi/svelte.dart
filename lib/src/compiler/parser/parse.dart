@@ -1,13 +1,13 @@
 import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/parser.dart';
 
-ParseResult parse(String source, {Object? sourceUrl}) {
+Ast parse(String source, {Object? sourceUrl}) {
   var parser = Parser(source, sourceUrl: sourceUrl);
-  return ParseResult(html: parser.html);
+  return Ast(html: parser.html);
 }
 
-class ParseResult {
-  ParseResult({
+class Ast {
+  Ast({
     required this.html,
   });
 
@@ -15,7 +15,7 @@ class ParseResult {
 
   Map<String, Object?> toJson() {
     return <String, Object?>{
-      'html': html,
+      'html': html.toJson(),
     };
   }
 }

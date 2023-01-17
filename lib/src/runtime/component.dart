@@ -27,7 +27,7 @@ abstract class Component {
     markDirty(name);
   }
 
-  void afterChanges() {}
+  void onChanges() {}
 
   void onMount() {}
 
@@ -39,9 +39,10 @@ abstract class Component {
 }
 
 void createComponent(Component component) {
-  component.afterChanges();
-  component.beforeUpdate();
-  component.fragment.create();
+  component
+    ..onChanges()
+    ..beforeUpdate()
+    ..fragment.create();
 }
 
 void mountComponent(Component component, Element target, [Node? anchor]) {
@@ -51,6 +52,7 @@ void mountComponent(Component component, Element target, [Node? anchor]) {
 }
 
 void destroyComponent(Component component, bool detaching) {
-  component.onDestroy();
-  component.fragment.detach(detaching);
+  component
+    ..onDestroy()
+    ..fragment.detach(detaching);
 }

@@ -9,7 +9,6 @@
 				"end": 65,
 				"type": "Element",
 				"name": "h1",
-				"attributes": [],
 				"children": [
 					{
 						"start": 4,
@@ -23,26 +22,15 @@
 						"end": 35,
 						"type": "Element",
 						"name": "strong",
-						"attributes": [],
 						"children": [
 							{
 								"start": 18,
 								"end": 24,
 								"type": "MustacheTag",
 								"expression": {
-									"type": "Identifier",
 									"start": 19,
 									"end": 23,
-									"loc": {
-										"start": {
-											"line": 1,
-											"column": 19
-										},
-										"end": {
-											"line": 1,
-											"column": 23
-										}
-									},
+									"class": "SimpleIdentifier",
 									"name": "name"
 								}
 							},
@@ -60,7 +48,6 @@
 						"end": 60,
 						"type": "Element",
 						"name": "span",
-						"attributes": [],
 						"children": [
 							{
 								"start": 41,

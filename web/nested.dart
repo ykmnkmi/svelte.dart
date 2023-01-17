@@ -140,7 +140,7 @@ class NestedComponent extends Component with Dispatcher implements Nested {
   }
 
   @override
-  void afterChanges() {
+  void onChanges() {
     if (dirty.contains('count')) {
       if (count.isEven) {
         dispatchEven(count);

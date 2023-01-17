@@ -15,8 +15,11 @@ Future<void> main() async {
     throw Exception('ast uri is not resolved');
   }
 
-  var visitorUri =
-      Uri(scheme: 'package', path: 'analyzer/dart/ast/visitor.dart');
+  var visitorUri = Uri(
+    scheme: 'package',
+    path: 'analyzer/dart/ast/visitor.dart',
+  );
+
   var visitorFileUri = await Isolate.resolvePackageUri(visitorUri);
 
   if (visitorFileUri == null) {
@@ -175,11 +178,11 @@ Future<void> main() async {
         ..write('\n  @override')
         ..write('\n  Map<String, Object?> visit$name($name node) {')
         ..write('\n    return <String, Object?>{')
-        ..write("\n      '_': '$name',")
-        ..write('\n      ...getLocation(node),');
+        ..write('\n      ...getLocation(node),')
+        ..write("\n      'class': '$name',");
 
       // throws null check on null or stack overflow
-      var writed = <String>{'isQualified', 'unParenthesized', 'unlabeled'};
+      var writed = <String>{'isQualified' /*, 'unParenthesized', 'unlabeled'*/};
 
       writeFields(klass, writed);
 

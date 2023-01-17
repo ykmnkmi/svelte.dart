@@ -1,5 +1,5 @@
-import 'package:svelte/src/compiler/parser/parser.dart';
 import 'package:source_span/source_span.dart' show SourceSpan;
+import 'package:svelte/src/compiler/parser/parser.dart';
 
 class ParseError extends Error {
   ParseError(this.code, this.message, this.span);
@@ -22,11 +22,11 @@ class ParseError extends Error {
 
   @override
   String toString() {
-    return 'CompileError: $message';
+    return 'ParseError: $message';
   }
 }
 
-extension ScannerErrors on Parser {
+extension ParserErrors on Parser {
   Never cssSyntaxError(String message) {
     error(
       code: 'css-syntax-error',
@@ -155,7 +155,7 @@ extension ScannerErrors on Parser {
     error(
       code: 'invalid-directive-value',
       message: ''
-          'Directive value must be a JavaScript expression '
+          'Directive value must be a Dart expression '
           'enclosed in curly braces',
       position: position,
     );
