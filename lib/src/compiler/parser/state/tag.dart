@@ -546,16 +546,18 @@ extension TagScanner on Parser {
       element.tag = values.first.data ?? values.first.expression;
     }
 
-    if ((name == 'script' || name == 'style') && stack.length == 1) {
-      expect('>');
-
+    if (stack.length == 1) {
       if (name == 'script') {
+        expect('>');
         script(start, attributes);
-      } else {
-        style(start, attributes);
+        return;
       }
 
-      return;
+      if (name == 'style') {
+        expect('>');
+        style(start, attributes);
+        return;
+      }
     }
 
     current.children!.add(element);
