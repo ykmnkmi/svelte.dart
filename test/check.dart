@@ -6,7 +6,7 @@ import 'package:svelte/compiler.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String content = '''
-<Component test={{'a': 1} />
+hello {[name, email]}!
 ''';
 
 void main() {

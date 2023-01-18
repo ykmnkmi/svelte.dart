@@ -122,7 +122,6 @@ extension ScriptParser on Parser {
       end: position,
       context: context,
       unit: unit,
-      errors: errorListener.errors,
     ));
   }
 }

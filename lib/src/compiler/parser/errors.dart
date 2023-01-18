@@ -138,12 +138,13 @@ extension ParserErrors on Parser {
     );
   }
 
-  Never invalidDebugArgs() {
+  Never invalidDebugArgs([int? position]) {
     error(
       code: 'invalid-debug-args',
       message: ''
           '{@debu ...} arguments must be identifiers, '
           'not arbitrary expressions',
+      position: position,
     );
   }
 

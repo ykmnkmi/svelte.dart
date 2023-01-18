@@ -1,5 +1,6 @@
-import 'package:analyzer/dart/ast/ast.dart' show CompilationUnit, Expression;
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/dart/ast/ast.dart'
+    show CompilationUnit, Expression, SimpleIdentifier;
+import 'package:analyzer/error/error.dart' show AnalysisError;
 import 'package:svelte/src/compiler/dart_to_json.dart';
 
 const DartToJsonVisitor dartToJson = DartToJsonVisitor();
@@ -70,7 +71,7 @@ abstract class Const implements BaseNode {
 }
 
 abstract class Debug implements BaseNode {
-  List<Object?>? get identifiers;
+  List<SimpleIdentifier>? get identifiers;
 }
 
 abstract class Directive implements BaseNode {
@@ -157,7 +158,7 @@ class Node extends BaseNode
   Expression? expression;
 
   @override
-  List<Expression>? identifiers;
+  List<SimpleIdentifier>? identifiers;
 
   @override
   List<Node>? attributes;
@@ -206,14 +207,21 @@ class Script extends BaseNode {
     super.end,
     required this.context,
     required this.unit,
-    this.errors,
   }) : super(type: 'Script');
 
   final String context;
 
   final CompilationUnit unit;
 
-  final List<AnalysisError>? errors;
+  @override
+  Json toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      'type': type,
+      'unit': unit.accept(dartToJson),
+    };
+  }
 }
 
 class Style extends BaseNode {
@@ -227,6 +235,18 @@ class Style extends BaseNode {
   final List<Node>? attributes;
 
   final StyleContent content;
+
+  @override
+  Json toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      'type': type,
+      if (attributes != null && attributes!.isNotEmpty)
+        'attributes': attributes!.toJson(),
+      'content': content,
+    };
+  }
 }
 
 class StyleContent extends BaseNode {
@@ -237,4 +257,14 @@ class StyleContent extends BaseNode {
   }) : super(type: 'StyleContent');
 
   final String styles;
+
+  @override
+  Json toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      'type': type,
+      'styles': styles,
+    };
+  }
 }

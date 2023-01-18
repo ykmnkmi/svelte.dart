@@ -3,9 +3,14 @@ import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/errors.dart';
 import 'package:svelte/src/compiler/parser/state/fragment.dart';
 
+// TODO(parser): add reserved words
 const Set<String> reserved = <String>{};
 
 final RegExp spaceRe = RegExp('[ \t\r\n]');
+
+final RegExp openCurlRe = RegExp('{\\s*');
+
+final RegExp closeCurlRe = RegExp('\\s*}');
 
 final RegExp identifierRe = RegExp('[_\$a-zA-Z][_\$a-zA-Z0-9]*');
 
