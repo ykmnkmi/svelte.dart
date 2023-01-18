@@ -58,10 +58,11 @@ extension ParserErrors on Parser {
     );
   }
 
-  Never emptyAttributeShorthand() {
+  Never emptyAttributeShorthand([int? position]) {
     error(
       code: 'empty-attribute-shorthand',
       message: 'Attribute shorthand cannot be empty',
+      position: position,
     );
   }
 

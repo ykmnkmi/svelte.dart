@@ -6,7 +6,7 @@ import 'package:svelte/compiler.dart';
 
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
-const JsonEncoder encoderTab = JsonEncoder.withIndent('  ');
+// const JsonEncoder encoderTab = JsonEncoder.withIndent('  ');
 
 void main(List<String> arguments) {
   if (arguments.isEmpty) {
@@ -22,8 +22,8 @@ void main(List<String> arguments) {
       var json = ast.toJson();
       print(encoder.convert(json));
 
-      file = File.fromUri(file.uri.resolve('_actual.json'));
-      file.writeAsStringSync(encoderTab.convert(json));
+      // file = File.fromUri(file.uri.resolve('_actual.json'));
+      // file.writeAsStringSync(encoderTab.convert(json));
     } on ParseError catch (error, stackTrace) {
       print(error);
       print(Trace.format(stackTrace));

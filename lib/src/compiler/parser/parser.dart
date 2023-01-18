@@ -3,7 +3,11 @@ import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/errors.dart';
 import 'package:svelte/src/compiler/parser/state/fragment.dart';
 
+const Set<String> reserved = <String>{};
+
 final RegExp spaceRe = RegExp('[ \t\r\n]');
+
+final RegExp identifierRe = RegExp('[_\$a-zA-Z][_\$a-zA-Z0-9]*');
 
 class AutoCloseTag {
   AutoCloseTag(this.tag, this.reason, this.depth);
@@ -70,6 +74,8 @@ class Parser {
 
   final List<Script> scripts = <Script>[];
 
+  final List<Style> styles = <Style>[];
+
   final Set<String> metaTags = <String>{};
 
   final List<Node> stack = <Node>[];
@@ -112,59 +118,82 @@ class Parser {
   bool scan(Pattern pattern) {
     var match = pattern.matchAsPrefix(template, position);
 
-    if (match == null) {
-      return false;
+    if (match != null) {
+      position = match.end;
+      return true;
     }
 
-    position = match.end;
-    return true;
+    return false;
   }
 
   void expect(Pattern pattern, [Never Function()? onError]) {
     var match = pattern.matchAsPrefix(template, position);
 
-    if (match == null) {
-      if (onError == null) {
-        if (isNotDone) {
-          unexpectedToken(pattern, position);
-        }
-
-        unexpectedEofToken(pattern);
-      }
-
-      onError();
+    if (match != null) {
+      position = match.end;
+      return;
     }
 
-    position = match.end;
+    if (onError == null) {
+      if (isNotDone) {
+        unexpectedToken(pattern, position);
+      }
+
+      unexpectedEofToken(pattern);
+    }
+
+    onError();
   }
 
   String? read(Pattern pattern) {
     var match = pattern.matchAsPrefix(template, position);
 
+    if (match != null) {
+      position = match.end;
+      return match[0];
+    }
+
+    return null;
+  }
+
+  String? readIdentifier({bool allowReserved = false}) {
+    var start = position;
+    var match = identifierRe.matchAsPrefix(template, position);
+
     if (match == null) {
       return null;
     }
 
-    position = match.end;
-    return match[0];
+    var identifier = match[0]!;
+
+    if (!allowReserved && reserved.contains(identifier)) {
+      error(
+        code: 'unexpected-reserved-word',
+        message:
+            "'$identifier' is a reserved word in Dart and cannot be used here",
+        position: start,
+      );
+    }
+
+    return identifier;
   }
 
   String readUntil(Pattern pattern, [Never Function()? onError]) {
     var found = template.indexOf(pattern, position);
 
-    if (found == -1) {
-      if (isNotDone) {
-        return template.substring(position, position = template.length);
-      }
-
-      if (onError == null) {
-        unexpectedEof();
-      }
-
-      onError();
+    if (found != -1) {
+      return template.substring(position, position = found);
     }
 
-    return template.substring(position, position = found);
+    if (isNotDone) {
+      return template.substring(position, position = template.length);
+    }
+
+    if (onError == null) {
+      unexpectedEof();
+    }
+
+    onError();
   }
 
   Never error({required String code, required String message, int? position}) {

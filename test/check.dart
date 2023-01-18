@@ -6,7 +6,7 @@ import 'package:svelte/compiler.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String content = '''
-<p>hello world!</p>
+<Component test={{'a': 1} />
 ''';
 
 void main() {
@@ -17,6 +17,8 @@ void main() {
     print(error);
     print(Trace.format(stackTrace));
     print(encoder.convert(error.toJson()));
+    print('');
+    print(error.span.highlight());
   } catch (error, stackTrace) {
     print(error);
     print(Trace.format(stackTrace));

@@ -1,4 +1,9 @@
+// ignore_for_file: implementation_imports, depend_on_referenced_packages
+
+import 'package:_fe_analyzer_shared/src/scanner/token.dart' show StringToken;
 import 'package:analyzer/dart/ast/ast.dart' show Expression;
+import 'package:analyzer/dart/ast/token.dart' show TokenType;
+import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
 import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/errors.dart';
 import 'package:svelte/src/compiler/parser/extract_svelte_ignore.dart';
@@ -8,6 +13,12 @@ import 'package:svelte/src/compiler/parser/parser.dart';
 import 'package:svelte/src/compiler/parser/read/expression.dart';
 import 'package:svelte/src/compiler/parser/read/script.dart';
 import 'package:svelte/src/compiler/parser/read/style.dart';
+
+typedef ParserSpecial = void Function(
+  Parser parser,
+  int offset,
+  List<Node> attributes,
+);
 
 const Map<String, String> metaTags = <String, String>{
   'svelte:head': 'Head',
@@ -27,45 +38,36 @@ const List<String> validMetaTags = <String>[
   'svelte:element'
 ];
 
-final RegExp tagNameRe = RegExp(
-  '^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*',
-  multiLine: true,
-);
+const Map<String, ParserSpecial> specials = <String, ParserSpecial>{
+  'script': script,
+  'style': style,
+};
+
+final RegExp svelteSelfRe = RegExp('svelte:self(?=[\\s/>])');
+
+final RegExp svelteComponentRe = RegExp('svelte:component(?=[\\s/>])');
+
+final RegExp svelteElementRe = RegExp('svelte:element(?=[\\s/>])');
+
+final RegExp svelteFragmentRe = RegExp('svelte:fragment(?=[\\s/>])');
+
+final RegExp tagNameRe = RegExp('^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*');
 
 final RegExp tagNameEndRe = RegExp('(\\s|\\/|>)');
 
 final RegExp attributeNameEndRe = RegExp('[\\s=\\/>"\']');
 
-final RegExp attributeValueEndRe = RegExp('(\\/>|[\\s"\'=<>`])');
-
 final RegExp quoteRe = RegExp('["\']');
 
-final RegExp componentRe = RegExp('^[A-Z]', multiLine: true);
+final RegExp attributeValueEndRe = RegExp('(\\/>|[\\s"\'=<>`])');
 
-final RegExp textAreaEndRe = RegExp(
-  '^<\\/textarea(\\s[^>]*)?>',
+final RegExp controlNameEnd = RegExp('[^a-z]');
+
+final RegExp componentRe = RegExp('^[A-Z]');
+
+final RegExp textareaEndRe = RegExp(
+  '<\\/textarea(\\s[^>]*)?>',
   caseSensitive: false,
-  multiLine: true,
-);
-
-final RegExp svelteSelfRe = RegExp(
-  '^svelte:self(?=[\\s/>])',
-  multiLine: true,
-);
-
-final RegExp svelteComponentRe = RegExp(
-  '^svelte:component(?=[\\s/>])',
-  multiLine: true,
-);
-
-final RegExp svelteElementRe = RegExp(
-  '^svelte:element(?=[\\s/>])',
-  multiLine: true,
-);
-
-final RegExp svelteFragmentRe = RegExp(
-  '^svelte:fragment(?=[\\s/>])',
-  multiLine: true,
 );
 
 String? getDirectiveType(String name) {
@@ -172,8 +174,54 @@ extension TagScanner on Parser {
     }
 
     if (scan('{')) {
-      // TODO(parser): parse attribute expression
-      throw UnimplementedError();
+      allowSpace();
+
+      if (scan('...')) {
+        var expression = readExpression();
+        allowSpace();
+        expect('}');
+
+        attributes.add(Node(
+          start: start,
+          end: position,
+          type: 'Spread',
+          expression: expression,
+        ));
+
+        return true;
+      }
+
+      var valueStart = position;
+      var name = readIdentifier();
+      allowSpace();
+      expect('}');
+
+      if (name == null) {
+        emptyAttributeShorthand(start);
+      }
+
+      checkUnique(name);
+
+      attributes.add(Node(
+        start: start,
+        end: position,
+        type: 'Attribute',
+        name: name,
+        values: <Node>[
+          Node(
+            start: valueStart,
+            end: valueStart + name.length,
+            type: 'AttributeShorthand',
+            expression: astFactory.simpleIdentifier(StringToken(
+              TokenType.IDENTIFIER,
+              name,
+              valueStart,
+            )),
+          ),
+        ],
+      ));
+
+      return true;
     }
 
     var name = readUntil(attributeNameEndRe);
@@ -263,8 +311,11 @@ extension TagScanner on Parser {
       }
 
       if (expression == null && (type == 'Binding' || type == 'Class')) {
-        // TODO(parser): parse expression
-        throw UnimplementedError();
+        directive.expression = astFactory.simpleIdentifier(StringToken(
+          TokenType.IDENTIFIER,
+          directiveName,
+          directive.start! + colonIndex + 1,
+        ));
       }
 
       attributes.add(directive);
@@ -359,13 +410,13 @@ extension TagScanner on Parser {
       if (scan('{')) {
         if (scan('#')) {
           var index = position - 2;
-          var name = readUntil(RegExp('[^a-z]'));
+          var name = readUntil(controlNameEnd);
           invalidLogicBlockPlacement(location, name, index);
         }
 
         if (scan('@')) {
           var index = position - 2;
-          var name = readUntil(RegExp('[^a-z]'));
+          var name = readUntil(controlNameEnd);
           invalidTagPlacement(location, name, index);
         }
 
@@ -397,7 +448,6 @@ extension TagScanner on Parser {
     expect('<');
 
     if (scan('!--')) {
-      // TODO(parser): parse comment ignores
       var data = readUntil('-->');
       var ignores = extractSvelteIgnore(data);
       expect('-->', unclosedComment);
@@ -505,12 +555,11 @@ extension TagScanner on Parser {
 
     var attributes = <Node>[];
     var uniqueNames = <String>{};
+    element.attributes = attributes;
 
     while (readAttributeTo(attributes, uniqueNames)) {
       allowSpace();
     }
-
-    element.attributes = attributes;
 
     if (name == 'svelte:component') {
       var index = attributes.indexWhere(nodeIsThisAttribute);
@@ -546,18 +595,12 @@ extension TagScanner on Parser {
       element.tag = values.first.data ?? values.first.expression;
     }
 
-    if (stack.length == 1) {
-      if (name == 'script') {
-        expect('>');
-        script(start, attributes);
-        return;
-      }
+    var special = specials[name];
 
-      if (name == 'style') {
-        expect('>');
-        style(start, attributes);
-        return;
-      }
+    if (special != null && stack.length == 1) {
+      expect('>');
+      special(this, start, attributes);
+      return;
     }
 
     current.children!.add(element);
@@ -568,8 +611,8 @@ extension TagScanner on Parser {
     if (selfClosing) {
       element.end = position;
     } else if (name == 'textarea') {
-      element.children = readSequence(textAreaEndRe, 'inside <textarea>');
-      expect(textAreaEndRe);
+      element.children = readSequence(textareaEndRe, 'inside <textarea>');
+      expect(textareaEndRe);
       element.end = position;
     } else {
       stack.add(element);

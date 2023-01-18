@@ -215,3 +215,26 @@ class Script extends BaseNode {
 
   final List<AnalysisError>? errors;
 }
+
+class Style extends BaseNode {
+  Style({
+    super.start,
+    super.end,
+    this.attributes,
+    required this.content,
+  }) : super(type: 'Style');
+
+  final List<Node>? attributes;
+
+  final StyleContent content;
+}
+
+class StyleContent extends BaseNode {
+  StyleContent({
+    super.start,
+    super.end,
+    required this.styles,
+  }) : super(type: 'StyleContent');
+
+  final String styles;
+}

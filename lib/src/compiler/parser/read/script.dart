@@ -16,7 +16,7 @@ import 'package:svelte/src/compiler/parser/parser.dart';
 
 final RegExp nonNewLineRe = RegExp('[^\\n]');
 
-final RegExp scriptCloseRe = RegExp('<\\/script\\s*>');
+final RegExp scriptEndRe = RegExp('<\\/script\\s*>');
 
 class _CompilationUnit extends CompilationUnitImpl {
   factory _CompilationUnit.from(int start, int end, CompilationUnit unit) {
@@ -87,15 +87,15 @@ extension ScriptParser on Parser {
 
   void script(int offset, List<Node> attributes) {
     var start = position;
-    var data = readUntil(scriptCloseRe, unclosedScript);
-    expect(scriptCloseRe, unclosedScript);
+    var content = readUntil(scriptEndRe, unclosedScript);
+    expect(scriptEndRe, unclosedScript);
 
     var end = position;
 
     var context = getContext(attributes);
     var prefix = template.substring(0, start).replaceAll(nonNewLineRe, ' ');
     var featureSet = FeatureSet.latestLanguageVersion();
-    var source = StringSource(prefix + data, null, uri: sourceFile.url);
+    var source = StringSource(prefix + content, null, uri: sourceFile.url);
     var errorListener = RecordingErrorListener();
     var scanner = Scanner.fasta(source, errorListener, offset: offset - 1);
 
@@ -125,4 +125,8 @@ extension ScriptParser on Parser {
       errors: errorListener.errors,
     ));
   }
+}
+
+void script(Parser parser, int offset, List<Node> attributes) {
+  parser.script(offset, attributes);
 }

@@ -2,6 +2,7 @@
 
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/line_info.dart';
 import 'package:analyzer/src/dart/scanner/scanner.dart';
@@ -26,6 +27,7 @@ extension ExpressionParser on Parser {
       }
     }
 
+    result.accept<void>(Synthetic(this));
     position = result.end;
     return result;
   }
@@ -57,5 +59,24 @@ extension ExpressionParser on Parser {
     );
 
     return parser.parseExpression(token);
+  }
+}
+
+class Synthetic extends UnifyingAstVisitor<void> {
+  Synthetic(this.parser);
+
+  final Parser parser;
+
+  @override
+  void visitNode(AstNode node) {
+    if (node.isSynthetic) {
+      parser.error(
+        code: 'parse-error',
+        message: 'Synthetic expression',
+        position: node.offset,
+      );
+    }
+
+    node.visitChildren(this);
   }
 }
