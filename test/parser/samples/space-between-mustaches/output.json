@@ -9,7 +9,6 @@
 				"end": 24,
 				"type": "Element",
 				"name": "p",
-				"attributes": [],
 				"children": [
 					{
 						"start": 3,
@@ -23,19 +22,9 @@
 						"end": 7,
 						"type": "MustacheTag",
 						"expression": {
-							"type": "Identifier",
 							"start": 5,
 							"end": 6,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 5
-								},
-								"end": {
-									"line": 1,
-									"column": 6
-								}
-							},
+							"class": "SimpleIdentifier",
 							"name": "a"
 						}
 					},
@@ -51,19 +40,9 @@
 						"end": 11,
 						"type": "MustacheTag",
 						"expression": {
-							"type": "Identifier",
 							"start": 9,
 							"end": 10,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 9
-								},
-								"end": {
-									"line": 1,
-									"column": 10
-								}
-							},
+							"class": "SimpleIdentifier",
 							"name": "b"
 						}
 					},
@@ -79,19 +58,9 @@
 						"end": 17,
 						"type": "MustacheTag",
 						"expression": {
-							"type": "Identifier",
 							"start": 15,
 							"end": 16,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 15
-								},
-								"end": {
-									"line": 1,
-									"column": 16
-								}
-							},
+							"class": "SimpleIdentifier",
 							"name": "c"
 						}
 					},

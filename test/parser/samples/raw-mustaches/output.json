@@ -9,7 +9,6 @@
 				"end": 34,
 				"type": "Element",
 				"name": "p",
-				"attributes": [],
 				"children": [
 					{
 						"start": 3,
@@ -23,19 +22,9 @@
 						"end": 16,
 						"type": "RawMustacheTag",
 						"expression": {
-							"type": "Identifier",
 							"start": 11,
 							"end": 15,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 11
-								},
-								"end": {
-									"line": 1,
-									"column": 15
-								}
-							},
+							"class": "SimpleIdentifier",
 							"name": "raw1"
 						}
 					},
@@ -51,19 +40,9 @@
 						"end": 29,
 						"type": "RawMustacheTag",
 						"expression": {
-							"type": "Identifier",
 							"start": 24,
 							"end": 28,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 24
-								},
-								"end": {
-									"line": 1,
-									"column": 28
-								}
-							},
+							"class": "SimpleIdentifier",
 							"name": "raw2"
 						}
 					},

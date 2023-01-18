@@ -173,13 +173,10 @@ extension TagScanner on Parser {
       uniqueNames.add(name);
     }
 
-    if (scan('{')) {
-      allowSpace();
-
+    if (scan(openCurlRe)) {
       if (scan('...')) {
         var expression = readExpression();
-        allowSpace();
-        expect('}');
+        expect(closeCurlRe);
 
         attributes.add(Node(
           start: start,
@@ -193,8 +190,7 @@ extension TagScanner on Parser {
 
       var valueStart = position;
       var name = readIdentifier();
-      allowSpace();
-      expect('}');
+      expect(closeCurlRe);
 
       if (name == null) {
         emptyAttributeShorthand(start);
@@ -207,7 +203,7 @@ extension TagScanner on Parser {
         end: position,
         type: 'Attribute',
         name: name,
-        values: <Node>[
+        value: <Node>[
           Node(
             start: valueStart,
             end: valueStart + name.length,
@@ -240,11 +236,11 @@ extension TagScanner on Parser {
       type = getDirectiveType(name.substring(0, colonIndex));
     }
 
-    List<Node>? values;
+    List<Node>? value;
 
     if (scan('=')) {
       allowSpace();
-      values = readAttributeValue();
+      value = readAttributeValue();
       end = position;
     } else if (match(quoteRe)) {
       unexpectedToken('=', position);
@@ -276,17 +272,17 @@ extension TagScanner on Parser {
           type: type,
           name: directiveName,
           modifiers: modifiers,
-          values: values,
+          value: value,
         ));
       }
 
       Node? firstValue;
       Expression? expression;
 
-      if (values != null && values.isNotEmpty) {
-        firstValue = values.first;
+      if (value != null && value.isNotEmpty) {
+        firstValue = value.first;
 
-        if (values.length > 1 || firstValue.type == 'Text') {
+        if (value.length > 1 || firstValue.type == 'Text') {
           invalidDirectiveValue(firstValue.start);
         } else {
           expression = firstValue.expression;
@@ -329,7 +325,7 @@ extension TagScanner on Parser {
       end: end,
       type: 'Attribute',
       name: name,
-      values: values,
+      value: value,
     ));
 
     return true;
@@ -351,10 +347,10 @@ extension TagScanner on Parser {
     }
 
     var endRe = quoteMark ?? attributeValueEndRe;
-    List<Node> values;
+    List<Node> value;
 
     try {
-      values = readSequence(endRe, 'in attribute value');
+      value = readSequence(endRe, 'in attribute value');
     } on ParseError catch (error) {
       if (error.code == 'parse-error') {
         var offset = error.span.start.offset;
@@ -369,7 +365,7 @@ extension TagScanner on Parser {
       rethrow;
     }
 
-    if (values.isEmpty && quoteMark == null) {
+    if (value.isEmpty && quoteMark == null) {
       missingAttributeValue();
     }
 
@@ -377,7 +373,7 @@ extension TagScanner on Parser {
       expect(quoteMark);
     }
 
-    return values;
+    return value;
   }
 
   List<Node> readSequence(Pattern endRe, String location) {
@@ -407,7 +403,7 @@ extension TagScanner on Parser {
         return chunks;
       }
 
-      if (scan('{')) {
+      if (scan(openCurlRe)) {
         if (scan('#')) {
           var index = position - 2;
           var name = readUntil(controlNameEnd);
@@ -420,12 +416,10 @@ extension TagScanner on Parser {
           invalidTagPlacement(location, name, index);
         }
 
-        flush(position - 1);
-        allowSpace();
+        flush(start);
 
         var expression = readExpression();
-        allowSpace();
-        expect('}');
+        expect(closeCurlRe);
 
         chunks.add(Node(
           start: start,
@@ -569,13 +563,13 @@ extension TagScanner on Parser {
       }
 
       var definition = attributes.removeAt(index);
-      var values = definition.values;
+      var value = definition.value;
 
-      if (values == null || values.length != 1 || values.first.type == 'Text') {
+      if (value == null || value.length != 1 || value.first.type == 'Text') {
         invalidComponentDefinition(definition.start);
       }
 
-      element.expression = values.first.expression;
+      element.expression = value.first.expression;
     }
 
     if (name == 'svelte:element') {
@@ -586,13 +580,13 @@ extension TagScanner on Parser {
       }
 
       var definition = attributes.removeAt(index);
-      var values = definition.values;
+      var value = definition.value;
 
-      if (values == null || values.isEmpty) {
+      if (value == null || value.isEmpty) {
         invalidElementDefinition(definition.start);
       }
 
-      element.tag = values.first.data ?? values.first.expression;
+      element.tag = value.first.data ?? value.first.expression;
     }
 
     var special = specials[name];

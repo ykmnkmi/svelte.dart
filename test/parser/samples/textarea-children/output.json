@@ -9,7 +9,6 @@
 				"end": 61,
 				"type": "Element",
 				"name": "textarea",
-				"attributes": [],
 				"children": [
 					{
 						"start": 10,
@@ -23,19 +22,9 @@
 						"end": 45,
 						"type": "MustacheTag",
 						"expression": {
-							"type": "Identifier",
 							"start": 41,
 							"end": 44,
-							"loc": {
-								"start": {
-									"line": 2,
-									"column": 30
-								},
-								"end": {
-									"line": 2,
-									"column": 33
-								}
-							},
+							"class": "SimpleIdentifier",
 							"name": "foo"
 						}
 					},

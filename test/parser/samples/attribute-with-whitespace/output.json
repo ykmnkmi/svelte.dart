@@ -15,21 +15,10 @@
 						"end": 23,
 						"type": "EventHandler",
 						"name": "click",
-						"modifiers": [],
 						"expression": {
-							"type": "Identifier",
 							"start": 19,
 							"end": 22,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 19
-								},
-								"end": {
-									"line": 1,
-									"column": 22
-								}
-							},
+							"class": "SimpleIdentifier",
 							"name": "foo"
 						}
 					}

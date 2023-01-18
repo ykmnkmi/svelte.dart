@@ -180,6 +180,7 @@ class Parser {
       );
     }
 
+    position = match.end;
     return identifier;
   }
 

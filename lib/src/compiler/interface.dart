@@ -91,7 +91,7 @@ abstract class Element implements BaseNode {
 abstract class Atribute implements BaseNode {
   String? get name;
 
-  List<Node>? values;
+  List<Node>? value;
 }
 
 abstract class SpreadAtribute implements BaseNode {
@@ -131,7 +131,7 @@ class Node extends BaseNode
     this.expression,
     this.identifiers,
     this.attributes,
-    this.values,
+    this.value,
     this.intro,
     this.outro,
     super.children,
@@ -164,7 +164,7 @@ class Node extends BaseNode
   List<Node>? attributes;
 
   @override
-  List<Node>? values;
+  List<Node>? value;
 
   @override
   bool? intro;
@@ -192,7 +192,7 @@ class Node extends BaseNode
         'identifiers': identifiers!.toJson(),
       if (attributes != null && attributes!.isNotEmpty)
         'attributes': attributes!.toJson(),
-      if (values != null && values!.isNotEmpty) 'values': values!.toJson(),
+      if (value != null && value!.isNotEmpty) 'value': value!.toJson(),
       if (intro != null) 'intro': intro,
       if (outro != null) 'outro': outro,
       if (children != null && children!.isNotEmpty)

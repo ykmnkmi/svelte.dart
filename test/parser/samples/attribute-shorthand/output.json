@@ -23,14 +23,13 @@
 								"expression": {
 									"start": 6,
 									"end": 8,
-									"type": "Identifier",
+									"class": "SimpleIdentifier",
 									"name": "id"
 								}
 							}
 						]
 					}
-				],
-				"children": []
+				]
 			}
 		]
 	}

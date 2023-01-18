@@ -36,21 +36,13 @@
 								"end": 16,
 								"type": "MustacheTag",
 								"expression": {
-									"type": "Literal",
 									"start": 13,
 									"end": 15,
-									"loc": {
-										"start": {
-											"line": 1,
-											"column": 13
-										},
-										"end": {
-											"line": 1,
-											"column": 15
-										}
-									},
+									"class": "SimpleStringLiteral",
 									"value": "",
-									"raw": "''"
+									"contentsEnd": 14,
+									"contentsOffset": 14,
+									"isSingleQuoted": true
 								}
 							}
 						]
@@ -81,27 +73,18 @@
 								"end": 29,
 								"type": "MustacheTag",
 								"expression": {
-									"type": "Literal",
 									"start": 26,
 									"end": 28,
-									"loc": {
-										"start": {
-											"line": 1,
-											"column": 26
-										},
-										"end": {
-											"line": 1,
-											"column": 28
-										}
-									},
+									"class": "SimpleStringLiteral",
 									"value": "",
-									"raw": "''"
+									"contentsEnd": 27,
+									"contentsOffset": 27,
+									"isSingleQuoted": true
 								}
 							}
 						]
 					}
-				],
-				"children": []
+				]
 			}
 		]
 	}

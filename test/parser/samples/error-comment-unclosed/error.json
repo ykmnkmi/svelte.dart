@@ -1,10 +1,7 @@
 {
 	"code": "unclosed-comment",
-	"message": "comment was left open, expected -->",
-	"start": {
-		"line": 1,
-		"column": 24,
-		"character": 24
-	},
-	"pos": 24
+	"message": "Comment was left open, expected -->",
+	"line": 1,
+	"column": 24,
+	"offset": 24
 }
