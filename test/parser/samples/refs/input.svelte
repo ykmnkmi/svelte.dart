@@ -1,5 +1,5 @@
 <script>
-	let foo;
+	var foo;
 </script>
 
 <canvas bind:this={foo}></canvas>

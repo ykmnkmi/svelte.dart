@@ -50,10 +50,11 @@ extension ParserErrors on Parser {
     );
   }
 
-  Never duplicateStyle() {
+  Never duplicateStyle([int? position]) {
     error(
       code: 'duplicate-style',
       message: 'You can only have one top-level <style> tag per component',
+      position: position,
     );
   }
 
@@ -272,19 +273,21 @@ extension ParserErrors on Parser {
     );
   }
 
-  Never invalidScriptInstance() {
+  Never invalidScriptInstance([int? position]) {
     error(
       code: 'invalid-script',
       message: 'A component can only have one instance-level <script> element',
+      position: position,
     );
   }
 
-  Never invalidScriptModule() {
+  Never invalidScriptModule([int? position]) {
     error(
       code: 'invalid-script',
       message: ''
           'A component can only have one '
           '<script context="module"> element',
+      position: position,
     );
   }
 

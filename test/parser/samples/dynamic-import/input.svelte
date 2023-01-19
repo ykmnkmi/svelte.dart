@@ -1,9 +1,9 @@
 <script>
-	import { onMount } from 'svelte';
+	import 'foo.dart' deferred as foo;
 
-	onMount(() => {
-		import('./foo.js').then(foo => {
-			console.log(foo.default);
+	void onMount() {
+		foo.loadLibrary().then((_) {
+			print(foo.main);
 		});
-	});
+	}
 </script>

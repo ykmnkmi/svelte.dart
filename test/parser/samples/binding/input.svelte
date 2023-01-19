@@ -1,5 +1,5 @@
 <script>
-	let name;
+	var name;
 </script>
 
 <input bind:value={name}>

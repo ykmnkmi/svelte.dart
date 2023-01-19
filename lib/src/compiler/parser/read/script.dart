@@ -88,9 +88,8 @@ extension ScriptParser on Parser {
   void script(int offset, List<TemplateNode> attributes) {
     var start = position;
     var content = readUntil(scriptEndRe, unclosedScript);
-    expect(scriptEndRe, unclosedScript);
-
     var end = position;
+    expect(scriptEndRe, unclosedScript);
 
     var context = getContext(attributes);
     var prefix = template.substring(0, start).replaceAll(nonNewLineRe, ' ');

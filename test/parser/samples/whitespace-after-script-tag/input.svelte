@@ -1,6 +1,6 @@
 <script>
-	let name = 'world';
-</script     
+	var name = 'world';
+</script
 
 
 
