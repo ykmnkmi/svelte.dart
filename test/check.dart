@@ -6,7 +6,15 @@ import 'package:svelte/compiler.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String content = '''
-hello {[name, email]}!
+<script>
+	var name = 'world';
+
+	/*
+		trailing multiline comment
+	*/
+</script>
+
+<h1>Hello {name}!</h1>
 ''';
 
 void main() {

@@ -56,8 +56,8 @@ class _CompilationUnit extends CompilationUnitImpl {
 }
 
 extension ScriptParser on Parser {
-  String getContext(List<Node> attributes) {
-    Node? context;
+  String getContext(List<TemplateNode> attributes) {
+    TemplateNode? context;
 
     for (var attribute in attributes) {
       if (attribute.name == 'context') {
@@ -85,7 +85,7 @@ extension ScriptParser on Parser {
     invalidScriptContextValue(context.start);
   }
 
-  void script(int offset, List<Node> attributes) {
+  void script(int offset, List<TemplateNode> attributes) {
     var start = position;
     var content = readUntil(scriptEndRe, unclosedScript);
     expect(scriptEndRe, unclosedScript);
@@ -126,6 +126,6 @@ extension ScriptParser on Parser {
   }
 }
 
-void script(Parser parser, int offset, List<Node> attributes) {
+void script(Parser parser, int offset, List<TemplateNode> attributes) {
   parser.script(offset, attributes);
 }

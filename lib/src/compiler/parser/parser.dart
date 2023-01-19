@@ -29,6 +29,7 @@ class Parser {
       : template = template.trimRight(),
         sourceFile = SourceFile.fromString(template, url: sourceUrl) {
     stack.add(html);
+    html.children = <TemplateNode>[];
 
     while (isNotDone) {
       fragment();
@@ -75,7 +76,7 @@ class Parser {
 
   final SourceFile sourceFile;
 
-  final Node html = Node(type: 'Fragment', children: <Node>[]);
+  final TemplateNode html = TemplateNode(type: 'Fragment');
 
   final List<Script> scripts = <Script>[];
 
@@ -83,13 +84,13 @@ class Parser {
 
   final Set<String> metaTags = <String>{};
 
-  final List<Node> stack = <Node>[];
+  final List<TemplateNode> stack = <TemplateNode>[];
 
   int position = 0;
 
   AutoCloseTag? lastAutoCloseTag;
 
-  Node get current {
+  TemplateNode get current {
     return stack.last;
   }
 

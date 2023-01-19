@@ -17,7 +17,7 @@ import 'package:svelte/src/compiler/parser/read/style.dart';
 typedef ParserSpecial = void Function(
   Parser parser,
   int offset,
-  List<Node> attributes,
+  List<TemplateNode> attributes,
 );
 
 const Map<String, String> metaTags = <String, String>{
@@ -97,7 +97,7 @@ String? getDirectiveType(String name) {
   }
 }
 
-bool parentIsHead(List<BaseNode> stack) {
+bool parentIsHead(List<Node> stack) {
   for (var node in stack.reversed) {
     var type = node.type;
 
@@ -113,7 +113,7 @@ bool parentIsHead(List<BaseNode> stack) {
   return false;
 }
 
-bool nodeIsThisAttribute(Node node) {
+bool nodeIsThisAttribute(TemplateNode node) {
   return node.type == 'Attribute' && node.name == 'this';
 }
 
@@ -162,7 +162,7 @@ extension TagScanner on Parser {
     invalidTagName(start);
   }
 
-  bool readAttributeTo(List<BaseNode> attributes, Set<String> uniqueNames) {
+  bool readAttributeTo(List<Node> attributes, Set<String> uniqueNames) {
     var start = position;
 
     void checkUnique(String name) {
@@ -178,7 +178,7 @@ extension TagScanner on Parser {
         var expression = readExpression();
         expect(closeCurlRe);
 
-        attributes.add(Node(
+        attributes.add(TemplateNode(
           start: start,
           end: position,
           type: 'Spread',
@@ -198,13 +198,13 @@ extension TagScanner on Parser {
 
       checkUnique(name);
 
-      attributes.add(Node(
+      attributes.add(TemplateNode(
         start: start,
         end: position,
         type: 'Attribute',
         name: name,
-        value: <Node>[
-          Node(
+        value: <TemplateNode>[
+          TemplateNode(
             start: valueStart,
             end: valueStart + name.length,
             type: 'AttributeShorthand',
@@ -236,7 +236,7 @@ extension TagScanner on Parser {
       type = getDirectiveType(name.substring(0, colonIndex));
     }
 
-    List<Node>? value;
+    List<TemplateNode>? value;
 
     if (scan('=')) {
       allowSpace();
@@ -266,7 +266,7 @@ extension TagScanner on Parser {
       }
 
       if (type == 'StyleDirective') {
-        attributes.add(Node(
+        attributes.add(TemplateNode(
           start: start,
           end: end,
           type: type,
@@ -274,9 +274,11 @@ extension TagScanner on Parser {
           modifiers: modifiers,
           value: value,
         ));
+
+        return true;
       }
 
-      Node? firstValue;
+      TemplateNode? firstValue;
       Expression? expression;
 
       if (value != null && value.isNotEmpty) {
@@ -289,7 +291,7 @@ extension TagScanner on Parser {
         }
       }
 
-      var directive = Node(
+      var directive = TemplateNode(
         start: start,
         end: end,
         type: type,
@@ -320,7 +322,7 @@ extension TagScanner on Parser {
 
     checkUnique(name);
 
-    attributes.add(Node(
+    attributes.add(TemplateNode(
       start: start,
       end: end,
       type: 'Attribute',
@@ -331,23 +333,23 @@ extension TagScanner on Parser {
     return true;
   }
 
-  List<Node> readAttributeValue() {
+  List<TemplateNode> readAttributeValue() {
     var quoteMark = read('"') ?? read("'");
 
     if (quoteMark != null && scan(quoteMark)) {
-      return <Node>[
-        Node(
+      return <TemplateNode>[
+        TemplateNode(
           start: position - 1,
           end: position - 1,
           type: 'Text',
-          raw: '',
           data: '',
+          raw: '',
         )
       ];
     }
 
     var endRe = quoteMark ?? attributeValueEndRe;
-    List<Node> value;
+    List<TemplateNode> value;
 
     try {
       value = readSequence(endRe, 'in attribute value');
@@ -376,21 +378,21 @@ extension TagScanner on Parser {
     return value;
   }
 
-  List<Node> readSequence(Pattern endRe, String location) {
+  List<TemplateNode> readSequence(Pattern endRe, String location) {
     var textStart = position;
-    var chunks = <Node>[];
+    var chunks = <TemplateNode>[];
 
     void flush(int end) {
       if (textStart < end) {
         var raw = template.substring(textStart, end);
         var data = decodeCharacterReferences(raw);
 
-        chunks.add(Node(
+        chunks.add(TemplateNode(
           start: textStart,
           end: end,
           type: 'Text',
-          raw: raw,
           data: data,
+          raw: raw,
         ));
       }
     }
@@ -421,7 +423,7 @@ extension TagScanner on Parser {
         var expression = readExpression();
         expect(closeCurlRe);
 
-        chunks.add(Node(
+        chunks.add(TemplateNode(
           start: start,
           end: position,
           type: 'MustacheTag',
@@ -446,7 +448,7 @@ extension TagScanner on Parser {
       var ignores = extractSvelteIgnore(data);
       expect('-->', unclosedComment);
 
-      current.children!.add(Node(
+      current.children!.add(TemplateNode(
         start: start,
         end: position,
         type: 'Comment',
@@ -499,11 +501,11 @@ extension TagScanner on Parser {
       type = 'Element';
     }
 
-    var element = Node(
+    var element = TemplateNode(
       start: start,
       type: type,
       name: name,
-      children: <Node>[],
+      children: <TemplateNode>[],
     );
 
     allowSpace();
@@ -547,7 +549,7 @@ extension TagScanner on Parser {
       lastAutoCloseTag = AutoCloseTag(parent.name, name, stack.length);
     }
 
-    var attributes = <Node>[];
+    var attributes = <TemplateNode>[];
     var uniqueNames = <String>{};
     element.attributes = attributes;
 

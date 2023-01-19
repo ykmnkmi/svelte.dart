@@ -1,5 +1,4 @@
 import 'package:source_span/source_span.dart' show SourceSpan;
-import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/parser.dart';
 
 class ParseError extends Error {
@@ -11,7 +10,7 @@ class ParseError extends Error {
 
   final SourceSpan span;
 
-  Json toJson() {
+  Map<String, Object?> toJson() {
     return <String, Object?>{
       'code': code,
       'message': message,

@@ -19,12 +19,12 @@ extension TextScanner on Parser {
     var raw = template.substring(position, found);
     var data = decodeCharacterReferences(raw);
 
-    current.children!.add(Node(
+    current.children!.add(TemplateNode(
       start: position,
       end: found,
       type: 'Text',
-      raw: raw,
       data: data,
+      raw: raw,
     ));
 
     position = found;
