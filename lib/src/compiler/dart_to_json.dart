@@ -2,7 +2,17 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
+
+Map<String, Object?> describeToken(Token token) {
+  return <String, Object?>{
+    'start': token.offset,
+    'end': token.end,
+    'type': token.type.name,
+    'lexeme': token.lexeme,
+  };
+}
 
 class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
   const DartToJsonVisitor();
@@ -109,6 +119,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'AssignmentExpression',
       'leftHandSide': node.leftHandSide.accept(this),
       'rightHandSide': node.rightHandSide.accept(this),
+      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -217,6 +228,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
       'unParenthesized': node.unParenthesized.accept(this),
+      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -855,6 +867,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'FunctionExpressionInvocation',
       'function': node.function.accept(this),
+      'nullShortingTermination': node.nullShortingTermination.accept(this),
       'argumentList': node.argumentList.accept(this),
       if (node.typeArguments != null)
         'typeArguments': node.typeArguments!.accept(this),
@@ -1028,6 +1041,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       if (node.isNullAware) 'isNullAware': node.isNullAware,
       'realTarget': node.realTarget.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
+      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -1237,6 +1251,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'methodName': node.methodName.accept(this),
       if (node.realTarget != null) 'realTarget': node.realTarget!.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
+      'nullShortingTermination': node.nullShortingTermination.accept(this),
       'argumentList': node.argumentList.accept(this),
       'function': node.function.accept(this),
       if (node.typeArguments != null)
@@ -1435,6 +1450,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
       'unParenthesized': node.unParenthesized.accept(this),
+      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -1469,6 +1485,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
       'unParenthesized': node.unParenthesized.accept(this),
+      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -1482,6 +1499,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'propertyName': node.propertyName.accept(this),
       'realTarget': node.realTarget.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
+      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 

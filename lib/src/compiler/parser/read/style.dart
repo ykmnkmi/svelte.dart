@@ -27,5 +27,5 @@ extension StyleParser on Parser {
 }
 
 void style(Parser parser, int offset, List<TemplateNode> attributes) {
-  parser.style(offset, attributes);
+  throw UnimplementedError();
 }

@@ -8,6 +8,14 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 
 Future<void> main() async {
+  var tokenUri = Uri(
+      scheme: 'package', path: '_fe_analyzer_shared/src/scanner/token.dart');
+  var tokenFileUri = await Isolate.resolvePackageUri(tokenUri);
+
+  if (tokenFileUri == null) {
+    throw Exception('token uri is not resolved');
+  }
+
   var astUri = Uri(scheme: 'package', path: 'analyzer/dart/ast/ast.dart');
   var astFileUri = await Isolate.resolvePackageUri(astUri);
 
@@ -15,16 +23,16 @@ Future<void> main() async {
     throw Exception('ast uri is not resolved');
   }
 
-  var visitorUri = Uri(
-    scheme: 'package',
-    path: 'analyzer/dart/ast/visitor.dart',
-  );
-
+  var visitorUri =
+      Uri(scheme: 'package', path: 'analyzer/dart/ast/visitor.dart');
   var visitorFileUri = await Isolate.resolvePackageUri(visitorUri);
 
   if (visitorFileUri == null) {
     throw Exception('visitor uri is not resolved');
   }
+
+  var tokenFile = File.fromUri(tokenFileUri);
+  tokenFile = tokenFile.absolute;
 
   var astFile = File.fromUri(astFileUri);
   astFile = astFile.absolute;
@@ -32,67 +40,79 @@ Future<void> main() async {
   var visitorFile = File.fromUri(visitorFileUri);
   visitorFile = visitorFile.absolute;
 
-  var includedPaths = <String>[astFile.path, visitorFile.path];
+  var includedPaths = <String>[tokenFile.path, astFile.path, visitorFile.path];
   var collection = AnalysisContextCollection(includedPaths: includedPaths);
 
-  var context = collection.contextFor(visitorFile.absolute.path);
-  var session = context.currentSession;
-  var resolvedUnit = await session.getResolvedUnit(visitorFile.path);
+  // Token
+  var tokenContext = collection.contextFor(tokenFile.path);
+  var tokenSession = tokenContext.currentSession;
+  var tokenResolvedUnit = await tokenSession.getResolvedUnit(tokenFile.path);
 
-  if (resolvedUnit is! ResolvedUnitResult) {
+  if (tokenResolvedUnit is! ResolvedUnitResult) {
     throw Exception('library is not resolved');
   }
 
-  var library = resolvedUnit.libraryElement;
-  var throwingAstVisitor = library.getClass('ThrowingAstVisitor');
+  var tokenLibrary = tokenResolvedUnit.libraryElement;
+  var tokenClass = tokenLibrary.getClass('Token');
 
-  if (throwingAstVisitor == null) {
-    throw Exception('ThrowingAstVisitor is not resolved');
+  if (tokenClass == null) {
+    throw Exception('Token is not resolved');
   }
 
-  context = collection.contextFor(astFile.path);
-  session = context.currentSession;
-  resolvedUnit = await session.getResolvedUnit(astFile.path);
+  var tokenTypeSystem = tokenResolvedUnit.typeSystem;
 
-  if (resolvedUnit is! ResolvedUnitResult) {
+  var tokenType = tokenTypeSystem.instantiateInterfaceToBounds(
+    element: tokenClass,
+    nullabilitySuffix: NullabilitySuffix.question,
+  );
+
+  var astContext = collection.contextFor(astFile.path);
+  var astSession = astContext.currentSession;
+  var astResolvedUnit = await astSession.getResolvedUnit(astFile.path);
+
+  if (astResolvedUnit is! ResolvedUnitResult) {
     throw Exception('library is not resolved');
   }
 
-  var typeSystem = resolvedUnit.typeSystem;
-  library = resolvedUnit.libraryElement;
+  var astLibrary = astResolvedUnit.libraryElement;
+  var astNodeClass = astLibrary.getClass('AstNode');
 
-  var astNode = library.getClass('AstNode');
-
-  if (astNode == null) {
+  if (astNodeClass == null) {
     throw Exception('AstNode is not resolved');
   }
 
-  var astType = typeSystem.instantiateInterfaceToBounds(
-    element: astNode,
+  var astTypeSystem = astResolvedUnit.typeSystem;
+
+  var astNodeType = astTypeSystem.instantiateInterfaceToBounds(
+    element: astNodeClass,
     nullabilitySuffix: NullabilitySuffix.question,
   );
 
-  bool isAstNode(DartType type) {
-    return typeSystem.isSubtypeOf(type, astType);
-  }
+  var nodeListClass = astLibrary.getClass('NodeList');
 
-  var nodeList = library.getClass('NodeList');
-
-  if (nodeList == null) {
+  if (nodeListClass == null) {
     throw Exception('NodeList is not resolved');
   }
 
-  var nodeListType = typeSystem.instantiateInterfaceToBounds(
-    element: nodeList,
+  var nodeListType = astTypeSystem.instantiateInterfaceToBounds(
+    element: nodeListClass,
     nullabilitySuffix: NullabilitySuffix.question,
   );
 
-  bool isNodeList(DartType type) {
-    return typeSystem.isSubtypeOf(type, nodeListType);
+  var visitorContext = collection.contextFor(visitorFile.path);
+  var visitorSession = visitorContext.currentSession;
+  var visitorResolvedUnit =
+      await visitorSession.getResolvedUnit(visitorFile.path);
+
+  if (visitorResolvedUnit is! ResolvedUnitResult) {
+    throw Exception('library is not resolved');
   }
 
-  bool isString(DartType type) {
-    return type.isDartCoreString;
+  var visitorLibrary = visitorResolvedUnit.libraryElement;
+  var throwingAstVisitorClass = visitorLibrary.getClass('ThrowingAstVisitor');
+
+  if (throwingAstVisitorClass == null) {
+    throw Exception('ThrowingAstVisitor is not resolved');
   }
 
   bool isNum(DartType type) {
@@ -103,7 +123,32 @@ Future<void> main() async {
     return type.isDartCoreBool;
   }
 
-  var klasses = library.topLevelElements.whereType<ClassElement>().toList();
+  bool isString(DartType type) {
+    return type.isDartCoreString;
+  }
+
+  bool isToken(DartType type) {
+    return tokenTypeSystem.isSubtypeOf(type, tokenType);
+  }
+
+  bool isAstNode(DartType type) {
+    return astTypeSystem.isSubtypeOf(type, astNodeType);
+  }
+
+  bool isNodeList(DartType type) {
+    return astTypeSystem.isSubtypeOf(type, nodeListType);
+  }
+
+  bool isVisitorMethod(ClassElement element) {
+    var method = throwingAstVisitorClass.getMethod('visit${element.name}');
+    return method != null;
+  }
+
+  var klasses = astLibrary.topLevelElements
+      .whereType<ClassElement>()
+      .where(isVisitorMethod)
+      .toList();
+
   klasses.sort((left, right) => left.nameOffset.compareTo(right.nameOffset));
 
   var file = File('lib/src/compiler/dart_to_json.dart');
@@ -111,8 +156,7 @@ Future<void> main() async {
   sink.write(header);
 
   void writeFields(InterfaceElement interface, Set<String> writed) {
-    if (interface.name == 'AstNode' ||
-        interface.name == 'NullShortableExpression') {
+    if (interface.name == 'AstNode') {
       return;
     }
 
@@ -130,7 +174,7 @@ Future<void> main() async {
       if (accessor.isGetter) {
         String prefix, check;
 
-        if (typeSystem.isNullable(accessor.returnType)) {
+        if (astTypeSystem.isNullable(accessor.returnType)) {
           prefix = "\n      if (node.$name != null) '$name':";
           check = '!';
         } else {
@@ -138,7 +182,15 @@ Future<void> main() async {
           check = '';
         }
 
-        if (isAstNode(accessor.returnType)) {
+        if (isBool(accessor.returnType)) {
+          sink.write("\n     if (node.$name) '$name': node.$name$check,");
+        } else if (isNum(accessor.returnType)) {
+          sink.write('$prefix node.$name$check,');
+        } else if (isString(accessor.returnType)) {
+          sink.write('$prefix node.$name$check,');
+        } else if (isToken(accessor.returnType)) {
+          sink.write('$prefix describeToken(node.$name$check),');
+        } else if (isAstNode(accessor.returnType)) {
           sink.write('$prefix node.$name$check.accept(this),');
         } else if (isNodeList(accessor.returnType)) {
           sink
@@ -147,12 +199,6 @@ Future<void> main() async {
             ..write(
                 '\n          for (var item in node.$name) item.accept(this),')
             ..write('\n        ],');
-        } else if (isString(accessor.returnType)) {
-          sink.write('$prefix node.$name$check,');
-        } else if (isNum(accessor.returnType)) {
-          sink.write('$prefix node.$name$check,');
-        } else if (isBool(accessor.returnType)) {
-          sink.write("\n     if (node.$name) '$name': node.$name$check,");
         }
 
         writed.add(name);
@@ -168,12 +214,6 @@ Future<void> main() async {
     }
 
     if (isAstNode(klass.thisType)) {
-      var method = throwingAstVisitor.getMethod('visit$name');
-
-      if (method == null) {
-        continue;
-      }
-
       sink
         ..write('\n')
         ..write('\n  @override')
@@ -209,7 +249,17 @@ const String header = '''
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
+
+Map<String, Object?> describeToken(Token token) {
+  return <String, Object?>{
+    'start': token.offset,
+    'end': token.end,
+    'type': token.type.name,
+    'lexeme': token.lexeme,
+  };
+}
 
 class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
   const DartToJsonVisitor();

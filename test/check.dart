@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte/compiler.dart';
 
@@ -7,20 +8,25 @@ const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String content = '''
 <script>
-	var name = 'world';
-
-	/*
-		trailing multiline comment
-	*/
+	var name;
 </script>
 
-<h1>Hello {name}!</h1>
+<input bind:value={name}>
 ''';
 
 void main() {
   try {
     var ast = parse(content);
-    print(encoder.convert(ast.toJson()));
+
+    for (var child in ast.instance!.unit.childEntities) {
+      if (child is TopLevelVariableDeclaration) {
+        for (var variable in child.variables.variables) {
+          print(variable);
+        }
+      }
+    }
+
+    // print(encoder.convert(ast.toJson()));
   } on ParseError catch (error, stackTrace) {
     print(error);
     print(Trace.format(stackTrace));
