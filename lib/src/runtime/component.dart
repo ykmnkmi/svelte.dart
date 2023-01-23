@@ -7,7 +7,7 @@ import 'package:svelte/src/runtime/scheduler.dart';
 abstract class Component {
   Fragment get fragment;
 
-  // TODO: use bitmask
+  // TODO(runtime): use bitmask
   Set<String> dirty = HashSet<String>();
 
   void markDirty(String name) {
@@ -18,7 +18,7 @@ abstract class Component {
     dirty.add(name);
   }
 
-  // TODO: use bitmask
+  // TODO(runtime): use bitmask
   void invalidate(String name, Object? oldValue, Object? newValue) {
     if (identical(oldValue, newValue)) {
       return;

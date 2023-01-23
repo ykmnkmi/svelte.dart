@@ -9,119 +9,79 @@
 				"end": 33,
 				"type": "IfBlock",
 				"expression": {
-					"type": "Literal",
 					"start": 5,
 					"end": 9,
-					"loc": {
-						"start": {
-							"line": 1,
-							"column": 5
-						},
-						"end": {
-							"line": 1,
-							"column": 9
-						}
-					},
-					"value": true,
-					"raw": "true"
+					"class": "BooleanLiteral",
+					"value": true
 				},
 				"children": [
 					{
 						"start": 12,
 						"end": 19,
 						"type": "Element",
-						"name": "input",
-						"attributes": [],
-						"children": []
+						"name": "input"
 					}
 				],
 				"else": {
 					"start": 27,
 					"end": 28,
-					"type": "ElseBlock",
-					"children": []
+					"type": "ElseBlock"
 				}
 			},
 			{
 				"start": 33,
 				"end": 35,
 				"type": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
+				"data": "\n\n",
+				"raw": "\n\n"
 			},
 			{
 				"start": 35,
 				"end": 65,
 				"type": "IfBlock",
 				"expression": {
-					"type": "Literal",
 					"start": 40,
 					"end": 44,
-					"loc": {
-						"start": {
-							"line": 6,
-							"column": 5
-						},
-						"end": {
-							"line": 6,
-							"column": 9
-						}
-					},
-					"value": true,
-					"raw": "true"
+					"class": "BooleanLiteral",
+					"value": true
 				},
 				"children": [
 					{
 						"start": 47,
 						"end": 51,
 						"type": "Element",
-						"name": "br",
-						"attributes": [],
-						"children": []
+						"name": "br"
 					}
 				],
 				"else": {
 					"start": 59,
 					"end": 60,
-					"type": "ElseBlock",
-					"children": []
+					"type": "ElseBlock"
 				}
 			},
 			{
 				"start": 65,
 				"end": 67,
 				"type": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
+				"data": "\n\n",
+				"raw": "\n\n"
 			},
 			{
 				"start": 67,
 				"end": 108,
 				"type": "AwaitBlock",
 				"expression": {
-					"type": "Literal",
 					"start": 75,
 					"end": 79,
-					"loc": {
-						"start": {
-							"line": 11,
-							"column": 8
-						},
-						"end": {
-							"line": 11,
-							"column": 12
-						}
-					},
-					"value": true,
-					"raw": "true"
+					"class": "BooleanLiteral",
+					"value": true
 				},
 				"value": {
-					"type": "Identifier",
-					"name": "f",
 					"start": 97,
-					"end": 98
+					"end": 98,
+					"class": "SimpleIdentifier",
+					"name": "f"
 				},
-				"error": null,
 				"pending": {
 					"start": 80,
 					"end": 90,
@@ -131,26 +91,23 @@
 							"start": 80,
 							"end": 82,
 							"type": "Text",
-							"raw": "\n\t",
-							"data": "\n\t"
+							"data": "\n\t",
+							"raw": "\n\t"
 						},
 						{
 							"start": 82,
 							"end": 89,
 							"type": "Element",
-							"name": "input",
-							"attributes": [],
-							"children": []
+							"name": "input"
 						},
 						{
 							"start": 89,
 							"end": 90,
 							"type": "Text",
-							"raw": "\n",
-							"data": "\n"
+							"data": "\n",
+							"raw": "\n"
 						}
-					],
-					"skip": false
+					]
 				},
 				"then": {
 					"start": 90,
@@ -161,55 +118,35 @@
 							"start": 99,
 							"end": 100,
 							"type": "Text",
-							"raw": "\n",
-							"data": "\n"
+							"data": "\n",
+							"raw": "\n"
 						}
-					],
-					"skip": false
-				},
-				"catch": {
-					"start": null,
-					"end": null,
-					"type": "CatchBlock",
-					"children": [],
-					"skip": true
+					]
 				}
 			},
 			{
 				"start": 108,
 				"end": 110,
 				"type": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
+				"data": "\n\n",
+				"raw": "\n\n"
 			},
 			{
 				"start": 110,
 				"end": 148,
 				"type": "AwaitBlock",
 				"expression": {
-					"type": "Literal",
 					"start": 118,
 					"end": 122,
-					"loc": {
-						"start": {
-							"line": 16,
-							"column": 8
-						},
-						"end": {
-							"line": 16,
-							"column": 12
-						}
-					},
-					"value": true,
-					"raw": "true"
+					"class": "BooleanLiteral",
+					"value": true
 				},
 				"value": {
-					"type": "Identifier",
-					"name": "f",
 					"start": 137,
-					"end": 138
+					"end": 138,
+					"class": "SimpleIdentifier",
+					"name": "f"
 				},
-				"error": null,
 				"pending": {
 					"start": 123,
 					"end": 130,
@@ -219,26 +156,23 @@
 							"start": 123,
 							"end": 125,
 							"type": "Text",
-							"raw": "\n\t",
-							"data": "\n\t"
+							"data": "\n\t",
+							"raw": "\n\t"
 						},
 						{
 							"start": 125,
 							"end": 129,
 							"type": "Element",
-							"name": "br",
-							"attributes": [],
-							"children": []
+							"name": "br"
 						},
 						{
 							"start": 129,
 							"end": 130,
 							"type": "Text",
-							"raw": "\n",
-							"data": "\n"
+							"data": "\n",
+							"raw": "\n"
 						}
-					],
-					"skip": false
+					]
 				},
 				"then": {
 					"start": 130,
@@ -249,18 +183,10 @@
 							"start": 139,
 							"end": 140,
 							"type": "Text",
-							"raw": "\n",
-							"data": "\n"
+							"data": "\n",
+							"raw": "\n"
 						}
-					],
-					"skip": false
-				},
-				"catch": {
-					"start": null,
-					"end": null,
-					"type": "CatchBlock",
-					"children": [],
-					"skip": true
+					]
 				}
 			}
 		]

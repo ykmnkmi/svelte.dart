@@ -23,8 +23,8 @@ extension TextScanner on Parser {
       start: position,
       end: found,
       type: 'Text',
-      data: data,
       raw: raw,
+      data: data,
     ));
 
     position = found;

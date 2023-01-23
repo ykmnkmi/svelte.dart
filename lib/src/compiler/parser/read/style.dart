@@ -1,4 +1,5 @@
-import 'package:svelte/compiler.dart';
+import 'package:svelte/src/compiler/interface.dart';
+import 'package:svelte/src/compiler/parser/errors.dart';
 import 'package:svelte/src/compiler/parser/parser.dart';
 
 final RegExp styleEndRe = RegExp('<\\/style\\s*>');

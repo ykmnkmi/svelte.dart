@@ -120,7 +120,7 @@ extension ScriptParser on Parser {
       start: offset,
       end: position,
       context: context,
-      unit: unit,
+      content: unit,
     ));
   }
 }

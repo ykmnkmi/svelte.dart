@@ -9,19 +9,9 @@
 				"end": 58,
 				"type": "EachBlock",
 				"expression": {
-					"type": "Identifier",
 					"start": 7,
 					"end": 14,
-					"loc": {
-						"start": {
-							"line": 1,
-							"column": 7
-						},
-						"end": {
-							"line": 1,
-							"column": 14
-						}
-					},
+					"class": "SimpleIdentifier",
 					"name": "animals"
 				},
 				"children": [
@@ -30,26 +20,15 @@
 						"end": 50,
 						"type": "Element",
 						"name": "p",
-						"attributes": [],
 						"children": [
 							{
 								"start": 33,
 								"end": 36,
 								"type": "MustacheTag",
 								"expression": {
-									"type": "Identifier",
 									"start": 34,
 									"end": 35,
-									"loc": {
-										"start": {
-											"line": 2,
-											"column": 5
-										},
-										"end": {
-											"line": 2,
-											"column": 6
-										}
-									},
+									"class": "SimpleIdentifier",
 									"name": "i"
 								}
 							},
@@ -57,27 +36,17 @@
 								"start": 36,
 								"end": 38,
 								"type": "Text",
-								"raw": ": ",
-								"data": ": "
+								"data": ": ",
+								"raw": ": "
 							},
 							{
 								"start": 38,
 								"end": 46,
 								"type": "MustacheTag",
 								"expression": {
-									"type": "Identifier",
 									"start": 39,
 									"end": 45,
-									"loc": {
-										"start": {
-											"line": 2,
-											"column": 10
-										},
-										"end": {
-											"line": 2,
-											"column": 16
-										}
-									},
+									"class": "SimpleIdentifier",
 									"name": "animal"
 								}
 							}
@@ -85,10 +54,10 @@
 					}
 				],
 				"context": {
-					"type": "Identifier",
-					"name": "animal",
 					"start": 18,
-					"end": 24
+					"end": 24,
+					"class": "SimpleIdentifier",
+					"name": "animal"
 				},
 				"index": "i"
 			}

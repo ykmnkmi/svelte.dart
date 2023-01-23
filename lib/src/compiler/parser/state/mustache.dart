@@ -1,9 +1,10 @@
 import 'package:analyzer/dart/ast/ast.dart'
-    show AssignmentExpression, SimpleIdentifier;
+    show AsExpression, AssignmentExpression, SimpleIdentifier;
 import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/errors.dart';
 import 'package:svelte/src/compiler/parser/html.dart';
 import 'package:svelte/src/compiler/parser/parser.dart';
+import 'package:svelte/src/compiler/parser/read/context.dart';
 import 'package:svelte/src/compiler/parser/read/expression.dart';
 
 final RegExp comma = RegExp('\\s*,\\s*');
@@ -32,7 +33,7 @@ void trimSpace(TemplateNode block, bool before, bool after) {
       }
     }
 
-    if (first.elseIf == true) {
+    if (first.ifElseIf == true) {
       trimSpace(first, before, after);
     }
   }
@@ -51,15 +52,16 @@ void trimSpace(TemplateNode block, bool before, bool after) {
     }
   }
 
-  if (block.elseNode != null) {
-    trimSpace(block.elseNode!, before, after);
+  if (block.ifElse != null) {
+    trimSpace(block.ifElse!, before, after);
   }
 }
 
 extension MustacheParser on Parser {
   void mustache() {
     var start = position;
-    expect(openCurlRe);
+    expect('{');
+    allowSpace();
 
     if (scan('/')) {
       var block = current;
@@ -93,22 +95,23 @@ extension MustacheParser on Parser {
       }
 
       expect(expected);
-      expect(openCurlRe);
+      allowSpace();
+      expect('}');
 
-      while (block.elseIf == true) {
+      while (block.ifElseIf == true) {
         block.end = position;
         stack.removeLast();
         block = current;
 
-        if (block.elseNode != null) {
-          block.elseNode!.end = start;
+        if (block.ifElse != null) {
+          block.ifElse!.end = start;
         }
       }
 
       start = block.start!;
 
-      var before = start != 0 && spaceRe.hasMatch(template[start - 1]);
-      var after = isNotDone && spaceRe.hasMatch(template[position]);
+      var before = start == 0 || spaceRe.hasMatch(template[start - 1]);
+      var after = isDone || spaceRe.hasMatch(template[position]);
       trimSpace(block, before, after);
       block.end = position;
       stack.removeLast();
@@ -117,7 +120,7 @@ extension MustacheParser on Parser {
         invalidElseIf();
       }
 
-      allowSpace(require: true);
+      allowSpace();
 
       if (scan('if')) {
         var block = current;
@@ -132,20 +135,21 @@ extension MustacheParser on Parser {
           invalidElseIfPlacementOutsideIf();
         }
 
-        allowSpace(require: true);
+        allowSpace(required: true);
 
         var expression = readExpression();
-        expect(closeCurlRe);
+        allowSpace();
+        expect('}');
 
         var node = TemplateNode(
           start: position,
           type: 'IfBlock',
-          elseIf: true,
+          ifElseIf: true,
           expression: expression,
           children: <TemplateNode>[],
         );
 
-        block.elseNode = TemplateNode(
+        block.ifElse = TemplateNode(
           start: position,
           type: 'ElseBlock',
           children: <TemplateNode>[node],
@@ -165,7 +169,8 @@ extension MustacheParser on Parser {
           invalidElsePlacementOutsideIf();
         }
 
-        expect(closeCurlRe);
+        allowSpace();
+        expect('}');
 
         var node = TemplateNode(
           start: position,
@@ -173,16 +178,184 @@ extension MustacheParser on Parser {
           children: <TemplateNode>[],
         );
 
-        block.elseNode = node;
+        block.ifElse = node;
         stack.add(node);
       }
-    } else if (match('#')) {
-      throw UnimplementedError();
-    } else if (scan('@html')) {
-      allowSpace(require: true);
+    } else if (match(':then') || match(':catch')) {
+      var block = current;
+      var isThen = scan(':then') || !scan(':catch');
+
+      if (isThen) {
+        if (block.type != 'PendingBlock') {
+          for (var node in stack) {
+            if (node.type == 'PendingBlock') {
+              invalidThenPlacementUnclosedBlock(block.toString());
+            }
+          }
+
+          invalidThenPlacementWithoutAwait();
+        }
+      } else {
+        if (block.type != 'ThenBlock' && block.type != 'PendingBlock') {
+          for (var node in stack) {
+            if (node.type == 'ThenBlock' || node.type == 'PendingBlock') {
+              invalidCatchPlacementUnclosedBlock(block.toString());
+            }
+          }
+
+          invalidCatchPlacementWithoutAwait();
+        }
+      }
+
+      block.end = start;
+      stack.removeLast();
+
+      var awaitBlock = current;
+
+      if (!scan('}')) {
+        allowSpace(required: true);
+
+        if (isThen) {
+          awaitBlock.awaitValue = readContext();
+        } else {
+          awaitBlock.awaitError = readContext();
+        }
+
+        allowSpace();
+        expect('}');
+      }
+
+      var newBlock = TemplateNode(
+        start: start,
+        type: isThen ? 'ThenBlock' : 'CatchBlock',
+        children: <TemplateNode>[],
+      );
+
+      if (isThen) {
+        awaitBlock.awaitThen = newBlock;
+      } else {
+        awaitBlock.awaitCatch = newBlock;
+      }
+
+      stack.add(newBlock);
+    } else if (scan('#')) {
+      String type;
+
+      if (scan('if')) {
+        type = 'IfBlock';
+      } else if (scan('each')) {
+        type = 'EachBlock';
+      } else if (scan('await')) {
+        type = 'AwaitBlock';
+      } else if (scan('key')) {
+        type = 'KeyBlock';
+      } else {
+        expectedBlockType();
+      }
+
+      allowSpace(required: true);
 
       var expression = readExpression();
-      expect(closeCurlRe);
+
+      if (expression is AsExpression) {
+        expression = expression.expression;
+        position = expression.end;
+      }
+
+      var block = TemplateNode(
+        start: start,
+        type: type,
+        expression: expression,
+        children: <TemplateNode>[],
+      );
+
+      allowSpace();
+
+      if (type == 'EachBlock') {
+        expect('as');
+        allowSpace(required: true);
+        block.eachContext = readContext();
+        allowSpace();
+
+        if (scan(',')) {
+          allowSpace();
+
+          var index = readIdentifier();
+
+          if (index == null) {
+            expectedName();
+          }
+
+          block.eachIndex = index;
+          allowSpace();
+        }
+
+        if (scan('(')) {
+          allowSpace();
+          block.eachKey = readExpression();
+          allowSpace();
+          expect(')');
+          allowSpace();
+        }
+      }
+
+      TemplateNode? child;
+
+      if (type == 'AwaitBlock') {
+        if (scan('then')) {
+          if (match(closeCurlRe)) {
+            allowSpace();
+          } else {
+            allowSpace(required: true);
+            block.awaitValue = readContext();
+            allowSpace();
+
+            child = TemplateNode(
+              type: 'ThenBlock',
+              children: <TemplateNode>[],
+            );
+
+            block.awaitThen = child;
+          }
+        } else if (scan('catch')) {
+          if (match(closeCurlRe)) {
+            allowSpace();
+          } else {
+            allowSpace(required: true);
+            block.awaitError = readContext();
+            allowSpace();
+
+            child = TemplateNode(
+              type: 'CatchBlock',
+              children: <TemplateNode>[],
+            );
+
+            block.awaitCatch = child;
+          }
+        } else {
+          child = TemplateNode(
+            type: 'PendingBlock',
+            children: <TemplateNode>[],
+          );
+
+          block.awaitPending = child;
+        }
+      }
+
+      expect('}');
+      current.children!.add(block);
+      stack.add(block);
+
+      if (child != null) {
+        child.start = position;
+        stack.add(child);
+      }
+    } else if (scan('@html')) {
+      allowSpace(required: true);
+
+      var expression = readExpression();
+      allowSpace();
+      expect('}');
 
       current.children!.add(TemplateNode(
         start: start,
@@ -194,7 +367,7 @@ extension MustacheParser on Parser {
       var identifiers = <SimpleIdentifier>[];
 
       if (!scan(closeCurlRe)) {
-        allowSpace(require: true);
+        allowSpace(required: true);
 
         do {
           var expression = readExpression();
@@ -206,7 +379,8 @@ extension MustacheParser on Parser {
           identifiers.add(expression);
         } while (scan(comma));
 
-        expect(closeCurlRe);
+        allowSpace();
+        expect('}');
       }
 
       current.children!.add(TemplateNode(
@@ -216,7 +390,7 @@ extension MustacheParser on Parser {
         identifiers: identifiers,
       ));
     } else if (scan('@const')) {
-      allowSpace(require: true);
+      allowSpace(required: true);
 
       var expression = readExpression();
 
@@ -229,7 +403,8 @@ extension MustacheParser on Parser {
         );
       }
 
-      expect(closeCurlRe);
+      allowSpace();
+      expect('}');
 
       current.children!.add(TemplateNode(
         start: start,
@@ -239,7 +414,8 @@ extension MustacheParser on Parser {
       ));
     } else {
       var expression = readExpression();
-      expect(closeCurlRe);
+      allowSpace();
+      expect('}');
 
       current.children!.add(TemplateNode(
         start: start,

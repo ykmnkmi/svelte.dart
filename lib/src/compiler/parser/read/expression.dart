@@ -1,13 +1,14 @@
 // ignore_for_file: implementation_imports
 
-import 'package:analyzer/dart/analysis/features.dart';
-import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/ast/visitor.dart';
-import 'package:analyzer/error/listener.dart';
-import 'package:analyzer/source/line_info.dart';
-import 'package:analyzer/src/dart/scanner/scanner.dart';
-import 'package:analyzer/src/generated/parser.dart' as analyzer;
-import 'package:analyzer/src/string_source.dart';
+import 'package:analyzer/dart/analysis/features.dart' show FeatureSet;
+import 'package:analyzer/dart/ast/ast.dart' show AstNode, Expression;
+import 'package:analyzer/dart/ast/visitor.dart' show UnifyingAstVisitor;
+import 'package:analyzer/error/listener.dart'
+    show AnalysisErrorListener, RecordingErrorListener;
+import 'package:analyzer/source/line_info.dart' show LineInfo;
+import 'package:analyzer/src/dart/scanner/scanner.dart' show Scanner;
+import 'package:analyzer/src/generated/parser.dart' as analyzer show Parser;
+import 'package:analyzer/src/string_source.dart' show StringSource;
 import 'package:svelte/src/compiler/parser/parser.dart';
 
 extension ExpressionParser on Parser {

@@ -8,8 +8,8 @@
 				"start": 28,
 				"end": 30,
 				"type": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
+				"data": "\n\n",
+				"raw": "\n\n"
 			},
 			{
 				"start": 30,
@@ -22,91 +22,45 @@
 						"end": 46,
 						"type": "Binding",
 						"name": "foo",
-						"modifiers": [],
 						"expression": {
 							"start": 43,
 							"end": 46,
-							"type": "Identifier",
+							"class": "SimpleIdentifier",
 							"name": "foo"
 						}
 					}
-				],
-				"children": []
+				]
 			}
 		]
 	},
 	"instance": {
-		"type": "Script",
 		"start": 0,
 		"end": 28,
+		"type": "Script",
 		"context": "default",
 		"content": {
-			"type": "Program",
 			"start": 8,
 			"end": 19,
-			"loc": {
-				"start": {
-					"line": 1,
-					"column": 0
-				},
-				"end": {
-					"line": 3,
-					"column": 0
-				}
-			},
-			"body": [
+			"class": "CompilationUnit",
+			"declarations": [
 				{
-					"type": "VariableDeclaration",
 					"start": 10,
 					"end": 18,
-					"loc": {
-						"start": {
-							"line": 2,
-							"column": 1
-						},
-						"end": {
-							"line": 2,
-							"column": 9
-						}
-					},
-					"declarations": [
-						{
-							"type": "VariableDeclarator",
-							"start": 14,
-							"end": 17,
-							"loc": {
-								"start": {
-									"line": 2,
-									"column": 5
-								},
-								"end": {
-									"line": 2,
-									"column": 8
-								}
-							},
-							"id": {
-								"type": "Identifier",
+					"class": "TopLevelVariableDeclaration",
+					"variables": {
+						"start": 10,
+						"end": 17,
+						"class": "VariableDeclarationList",
+						"variables": [
+							{
 								"start": 14,
 								"end": 17,
-								"loc": {
-									"start": {
-										"line": 2,
-										"column": 5
-									},
-									"end": {
-										"line": 2,
-										"column": 8
-									}
-								},
-								"name": "foo"
-							},
-							"init": null
-						}
-					],
-					"kind": "let"
+								"class": "VariableDeclaration"
+							}
+						]
+					}
 				}
-			],
-			"sourceType": "module"
+			]
 		}
 	}
 }

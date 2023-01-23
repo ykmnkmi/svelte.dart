@@ -9,49 +9,36 @@
 				"end": 51,
 				"type": "Element",
 				"name": "ul",
-				"attributes": [],
 				"children": [
 					{
 						"start": 4,
 						"end": 6,
 						"type": "Text",
-						"raw": "\n\t",
-						"data": "\n\t"
+						"data": "\n\t",
+						"raw": "\n\t"
 					},
 					{
 						"start": 6,
 						"end": 40,
 						"type": "Element",
 						"name": "li",
-						"attributes": [],
 						"children": [
 							{
 								"start": 10,
 								"end": 13,
 								"type": "Text",
-								"raw": "a\n\t",
-								"data": "a\n\t"
+								"data": "a\n\t",
+								"raw": "a\n\t"
 							},
 							{
 								"start": 13,
 								"end": 38,
 								"type": "IfBlock",
 								"expression": {
-									"type": "Literal",
 									"start": 18,
 									"end": 22,
-									"loc": {
-										"start": {
-											"line": 3,
-											"column": 6
-										},
-										"end": {
-											"line": 3,
-											"column": 10
-										}
-									},
-									"value": true,
-									"raw": "true"
+									"class": "BooleanLiteral",
+									"value": true
 								},
 								"children": [
 									{
@@ -59,14 +46,13 @@
 										"end": 33,
 										"type": "Element",
 										"name": "li",
-										"attributes": [],
 										"children": [
 											{
 												"start": 30,
 												"end": 33,
 												"type": "Text",
-												"raw": "b\n\t",
-												"data": "b\n\t"
+												"data": "b\n\t",
+												"raw": "b\n\t"
 											}
 										]
 									}
@@ -76,8 +62,8 @@
 								"start": 38,
 								"end": 40,
 								"type": "Text",
-								"raw": "\n\t",
-								"data": "\n\t"
+								"data": "\n\t",
+								"raw": "\n\t"
 							}
 						]
 					},
@@ -86,14 +72,13 @@
 						"end": 46,
 						"type": "Element",
 						"name": "li",
-						"attributes": [],
 						"children": [
 							{
 								"start": 44,
 								"end": 46,
 								"type": "Text",
-								"raw": "c\n",
-								"data": "c\n"
+								"data": "c\n",
+								"raw": "c\n"
 							}
 						]
 					}

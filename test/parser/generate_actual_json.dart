@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert' show JsonEncoder, json;
-import 'dart:io' show Directory, File, Platform;
+import 'dart:io' show Directory, File;
 
 import 'package:collection/collection.dart' show DeepCollectionEquality;
 import 'package:svelte/compiler.dart' show ParseError, parse;
@@ -11,7 +11,7 @@ const DeepCollectionEquality equality = DeepCollectionEquality.unordered();
 const JsonEncoder encoder = JsonEncoder.withIndent('\t');
 
 void main() {
-  var uri = Platform.script.resolve('samples');
+  var uri = Directory.current.uri.resolve('test/parser/samples');
   var directory = Directory.fromUri(uri);
 
   for (var sample in directory.listSync()) {

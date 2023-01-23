@@ -1,4 +1,4 @@
-// ignore_for_file: implementation_imports, depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, implementation_imports
 
 import 'package:_fe_analyzer_shared/src/scanner/token.dart' show StringToken;
 import 'package:analyzer/dart/ast/ast.dart' show Expression;
@@ -173,10 +173,13 @@ extension TagScanner on Parser {
       uniqueNames.add(name);
     }
 
-    if (scan(openCurlRe)) {
+    if (scan('{')) {
+      allowSpace();
+
       if (scan('...')) {
         var expression = readExpression();
-        expect(closeCurlRe);
+        allowSpace();
+        expect('}');
 
         attributes.add(TemplateNode(
           start: start,
@@ -190,7 +193,8 @@ extension TagScanner on Parser {
 
       var valueStart = position;
       var name = readIdentifier();
-      expect(closeCurlRe);
+      allowSpace();
+      expect('}');
 
       if (name == null) {
         emptyAttributeShorthand(start);
@@ -405,7 +409,7 @@ extension TagScanner on Parser {
         return chunks;
       }
 
-      if (scan(openCurlRe)) {
+      if (scan('{')) {
         if (scan('#')) {
           var index = position - 2;
           var name = readUntil(controlNameEnd);
@@ -421,7 +425,8 @@ extension TagScanner on Parser {
         flush(start);
 
         var expression = readExpression();
-        expect(closeCurlRe);
+        allowSpace();
+        expect('}');
 
         chunks.add(TemplateNode(
           start: start,
@@ -481,7 +486,7 @@ extension TagScanner on Parser {
           duplicateElement(slug, name, start);
         }
 
-        if (stack.isNotEmpty) {
+        if (stack.length > 1) {
           invalidElementPlacement(slug, name, start);
         }
 

@@ -8,48 +8,26 @@
 				"start": 43,
 				"end": 45,
 				"type": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
+				"data": "\n\n",
+				"raw": "\n\n"
 			},
 			{
 				"start": 45,
 				"end": 56,
 				"type": "Element",
-				"name": "div",
-				"attributes": [],
-				"children": []
+				"name": "div"
 			}
 		]
 	},
 	"instance": {
-		"type": "Script",
 		"start": 0,
 		"end": 43,
+		"type": "Script",
 		"context": "default",
 		"content": {
-			"type": "Program",
 			"start": 8,
 			"end": 34,
-			"loc": {
-				"start": {
-					"line": 1,
-					"column": 0
-				},
-				"end": {
-					"line": 3,
-					"column": 0
-				}
-			},
-			"body": [],
-			"sourceType": "module",
-			"trailingComments": [
-				{
-					"type": "Line",
-					"value": " TODO write some code",
-					"start": 10,
-					"end": 33
-				}
-			]
+			"class": "CompilationUnit"
 		}
 	}
 }

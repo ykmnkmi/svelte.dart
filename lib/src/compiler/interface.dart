@@ -130,16 +130,24 @@ class TemplateNode extends Node
     this.raw,
     this.ignores,
     this.modifiers,
-    this.tag,
     this.expression,
     this.identifiers,
     this.attributes,
     this.value,
     this.intro = false,
     this.outro = false,
-    this.elseIf = false,
-    this.elseNode,
     super.children,
+    this.tag,
+    this.ifElseIf = false,
+    this.ifElse,
+    this.eachContext,
+    this.eachIndex,
+    this.eachKey,
+    this.awaitValue,
+    this.awaitError,
+    this.awaitPending,
+    this.awaitThen,
+    this.awaitCatch,
   });
 
   @override
@@ -156,8 +164,6 @@ class TemplateNode extends Node
 
   @override
   List<String>? modifiers;
-
-  Object? tag;
 
   @override
   Expression? expression;
@@ -177,9 +183,27 @@ class TemplateNode extends Node
   @override
   bool outro;
 
-  bool elseIf;
+  Object? tag;
 
-  TemplateNode? elseNode;
+  bool ifElseIf;
+
+  TemplateNode? ifElse;
+
+  SimpleIdentifier? eachContext;
+
+  String? eachIndex;
+
+  Expression? eachKey;
+
+  SimpleIdentifier? awaitValue;
+
+  SimpleIdentifier? awaitError;
+
+  TemplateNode? awaitPending;
+
+  TemplateNode? awaitThen;
+
+  TemplateNode? awaitCatch;
 
   @override
   Map<String, Object?> toJson() {
@@ -192,10 +216,6 @@ class TemplateNode extends Node
       if (raw != null) 'raw': raw,
       if (ignores != null && ignores!.isNotEmpty) 'ignores': ignores,
       if (modifiers != null && modifiers!.isNotEmpty) 'modifiers': modifiers,
-      if (tag is String)
-        'tag': tag
-      else if (tag is Expression)
-        'tag': (tag as Expression).accept(dartToJson),
       if (expression != null) 'expression': expression!.accept(dartToJson),
       if (identifiers != null && identifiers!.isNotEmpty)
         'identifiers': identifiers!.toJson(),
@@ -204,10 +224,22 @@ class TemplateNode extends Node
       if (value != null && value!.isNotEmpty) 'value': value!.toJson(),
       if (intro) 'intro': intro,
       if (outro) 'outro': outro,
-      if (elseIf) 'elseIf': elseIf,
-      if (elseNode != null) 'elseNode': elseNode!.toJson(),
       if (children != null && children!.isNotEmpty)
         'children': children!.toJson(),
+      if (tag is String)
+        'tag': tag
+      else if (tag is Expression)
+        'tag': (tag as Expression).accept(dartToJson),
+      if (ifElseIf) 'elseIf': ifElseIf,
+      if (ifElse != null) 'else': ifElse!.toJson(),
+      if (eachContext != null) 'context': eachContext!.accept(dartToJson),
+      if (eachIndex != null) 'index': eachIndex,
+      if (eachKey != null) 'key': eachKey!.accept(dartToJson),
+      if (awaitValue != null) 'value': awaitValue!.accept(dartToJson),
+      if (awaitError != null) 'error': awaitError!.accept(dartToJson),
+      if (awaitPending != null) 'pending': awaitPending!.toJson(),
+      if (awaitThen != null) 'then': awaitThen!.toJson(),
+      if (awaitCatch != null) 'catch': awaitCatch!.toJson(),
     };
   }
 
@@ -249,12 +281,12 @@ class Script extends Node {
     super.start,
     super.end,
     required this.context,
-    required this.unit,
+    required this.content,
   }) : super(type: 'Script');
 
   final String context;
 
-  final CompilationUnit unit;
+  final CompilationUnit content;
 
   @override
   Map<String, Object?> toJson() {
@@ -262,7 +294,8 @@ class Script extends Node {
       'start': start,
       'end': end,
       'type': type,
-      'unit': unit.accept(dartToJson),
+      'context': context,
+      'content': content.accept(dartToJson),
     };
   }
 }

@@ -48,7 +48,10 @@ class Parser {
         slug = 'block';
       }
 
-      error(code: 'unclose-$slug', message: '$type was left open.');
+      error(
+          code: 'unclosed-$slug',
+          message: '$type was left open',
+          position: current.start);
     }
 
     var children = html.children;
@@ -102,11 +105,11 @@ class Parser {
     return position == template.length;
   }
 
-  void allowSpace({bool require = false}) {
+  void allowSpace({bool required = false}) {
     var match = spaceRe.matchAsPrefix(template, position);
 
     if (match == null) {
-      if (require) {
+      if (required) {
         error(code: 'missing-whitespace', message: 'Expected whitespace');
       }
 
