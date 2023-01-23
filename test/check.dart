@@ -6,9 +6,13 @@ import 'package:svelte/compiler.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String content = '''
-{#each animals as animal}
-	<p>{animal}</p>
-{/each}
+<div>foo</div>
+
+<style>
+	div {
+		color: red;
+	}
+</style>
 ''';
 
 void main() {

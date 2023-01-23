@@ -117,7 +117,7 @@ bool nodeIsThisAttribute(TemplateNode node) {
   return node.type == 'Attribute' && node.name == 'this';
 }
 
-extension TagScanner on Parser {
+extension TagParser on Parser {
   String readTagName() {
     var start = position;
 

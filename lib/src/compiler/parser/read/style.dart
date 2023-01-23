@@ -8,11 +8,10 @@ extension StyleParser on Parser {
   void style(int offset, List<TemplateNode> attributes) {
     var start = position;
     var content = readUntil(styleEndRe, unclosedStyle);
+    var end = position;
     expect(styleEndRe, unclosedStyle);
 
-    var end = position;
-
-    // TODO(parser): parse styles
+    // TODO(parser): parse css
 
     styles.add(Style(
       start: offset,
@@ -28,5 +27,5 @@ extension StyleParser on Parser {
 }
 
 void style(Parser parser, int offset, List<TemplateNode> attributes) {
-  throw UnimplementedError();
+  parser.style(offset, attributes);
 }
