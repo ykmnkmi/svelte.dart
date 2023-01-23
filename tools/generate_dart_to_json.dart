@@ -223,7 +223,7 @@ Future<void> main() async {
         ..write("\n      'class': '$name',");
 
       // throws null check on null or stack overflow
-      var writed = <String>{'isQualified' /*, 'unParenthesized', 'unlabeled'*/};
+      var writed = <String>{'nullShortingTermination', 'unlabeled', 'unParenthesized'};
 
       writeFields(klass, writed);
 

@@ -9,52 +9,20 @@
 				"end": 89,
 				"type": "IfBlock",
 				"expression": {
-					"type": "BinaryExpression",
 					"start": 5,
 					"end": 11,
-					"loc": {
-						"start": {
-							"line": 1,
-							"column": 5
-						},
-						"end": {
-							"line": 1,
-							"column": 11
-						}
-					},
-					"left": {
-						"type": "Identifier",
+					"class": "BinaryExpression",
+					"leftOperand": {
 						"start": 5,
 						"end": 6,
-						"loc": {
-							"start": {
-								"line": 1,
-								"column": 5
-							},
-							"end": {
-								"line": 1,
-								"column": 6
-							}
-						},
+						"class": "SimpleIdentifier",
 						"name": "x"
 					},
-					"operator": ">",
-					"right": {
-						"type": "Literal",
+					"rightOperand": {
 						"start": 9,
 						"end": 11,
-						"loc": {
-							"start": {
-								"line": 1,
-								"column": 9
-							},
-							"end": {
-								"line": 1,
-								"column": 11
-							}
-						},
-						"value": 10,
-						"raw": "10"
+						"class": "IntegerLiteral",
+						"value": 10
 					}
 				},
 				"children": [
@@ -63,14 +31,13 @@
 						"end": 41,
 						"type": "Element",
 						"name": "p",
-						"attributes": [],
 						"children": [
 							{
 								"start": 17,
 								"end": 37,
 								"type": "Text",
-								"raw": "x is greater than 10",
-								"data": "x is greater than 10"
+								"data": "x is greater than 10",
+								"raw": "x is greater than 10"
 							}
 						]
 					}
@@ -84,54 +51,21 @@
 							"start": 58,
 							"end": 89,
 							"type": "IfBlock",
-							"elseif": true,
 							"expression": {
-								"type": "BinaryExpression",
 								"start": 52,
 								"end": 57,
-								"loc": {
-									"start": {
-										"line": 3,
-										"column": 10
-									},
-									"end": {
-										"line": 3,
-										"column": 15
-									}
-								},
-								"left": {
-									"type": "Identifier",
+								"class": "BinaryExpression",
+								"leftOperand": {
 									"start": 52,
 									"end": 53,
-									"loc": {
-										"start": {
-											"line": 3,
-											"column": 10
-										},
-										"end": {
-											"line": 3,
-											"column": 11
-										}
-									},
+									"class": "SimpleIdentifier",
 									"name": "x"
 								},
-								"operator": "<",
-								"right": {
-									"type": "Literal",
+								"rightOperand": {
 									"start": 56,
 									"end": 57,
-									"loc": {
-										"start": {
-											"line": 3,
-											"column": 14
-										},
-										"end": {
-											"line": 3,
-											"column": 15
-										}
-									},
-									"value": 5,
-									"raw": "5"
+									"class": "IntegerLiteral",
+									"value": 5
 								}
 							},
 							"children": [
@@ -140,18 +74,18 @@
 									"end": 83,
 									"type": "Element",
 									"name": "p",
-									"attributes": [],
 									"children": [
 										{
 											"start": 63,
 											"end": 79,
 											"type": "Text",
-											"raw": "x is less than 5",
-											"data": "x is less than 5"
+											"data": "x is less than 5",
+											"raw": "x is less than 5"
 										}
 									]
 								}
-							]
+							],
+							"elseIf": true
 						}
 					]
 				}

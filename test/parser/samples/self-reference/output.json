@@ -9,52 +9,20 @@
 				"end": 57,
 				"type": "IfBlock",
 				"expression": {
-					"type": "BinaryExpression",
 					"start": 5,
 					"end": 14,
-					"loc": {
-						"start": {
-							"line": 1,
-							"column": 5
-						},
-						"end": {
-							"line": 1,
-							"column": 14
-						}
-					},
-					"left": {
-						"type": "Identifier",
+					"class": "BinaryExpression",
+					"leftOperand": {
 						"start": 5,
 						"end": 10,
-						"loc": {
-							"start": {
-								"line": 1,
-								"column": 5
-							},
-							"end": {
-								"line": 1,
-								"column": 10
-							}
-						},
+						"class": "SimpleIdentifier",
 						"name": "depth"
 					},
-					"operator": ">",
-					"right": {
-						"type": "Literal",
+					"rightOperand": {
 						"start": 13,
 						"end": 14,
-						"loc": {
-							"start": {
-								"line": 1,
-								"column": 13
-							},
-							"end": {
-								"line": 1,
-								"column": 14
-							}
-						},
-						"value": 1,
-						"raw": "1"
+						"class": "IntegerLiteral",
+						"value": 1
 					}
 				},
 				"children": [
@@ -75,59 +43,26 @@
 										"end": 48,
 										"type": "MustacheTag",
 										"expression": {
-											"type": "BinaryExpression",
 											"start": 38,
 											"end": 47,
-											"loc": {
-												"start": {
-													"line": 2,
-													"column": 22
-												},
-												"end": {
-													"line": 2,
-													"column": 31
-												}
-											},
-											"left": {
-												"type": "Identifier",
+											"class": "BinaryExpression",
+											"leftOperand": {
 												"start": 38,
 												"end": 43,
-												"loc": {
-													"start": {
-														"line": 2,
-														"column": 22
-													},
-													"end": {
-														"line": 2,
-														"column": 27
-													}
-												},
+												"class": "SimpleIdentifier",
 												"name": "depth"
 											},
-											"operator": "-",
-											"right": {
-												"type": "Literal",
+											"rightOperand": {
 												"start": 46,
 												"end": 47,
-												"loc": {
-													"start": {
-														"line": 2,
-														"column": 30
-													},
-													"end": {
-														"line": 2,
-														"column": 31
-													}
-												},
-												"value": 1,
-												"raw": "1"
+												"class": "IntegerLiteral",
+												"value": 1
 											}
 										}
 									}
 								]
 							}
-						],
-						"children": []
+						]
 					}
 				]
 			}

@@ -9,69 +9,27 @@
 				"end": 62,
 				"type": "InlineComponent",
 				"name": "svelte:component",
-				"attributes": [],
-				"children": [],
 				"expression": {
-					"type": "ConditionalExpression",
 					"start": 25,
 					"end": 40,
-					"loc": {
-						"start": {
-							"line": 1,
-							"column": 25
-						},
-						"end": {
-							"line": 1,
-							"column": 40
-						}
-					},
-					"test": {
-						"type": "Identifier",
+					"class": "ConditionalExpression",
+					"condition": {
 						"start": 25,
 						"end": 28,
-						"loc": {
-							"start": {
-								"line": 1,
-								"column": 25
-							},
-							"end": {
-								"line": 1,
-								"column": 28
-							}
-						},
+						"class": "SimpleIdentifier",
 						"name": "foo"
 					},
-					"consequent": {
-						"type": "Identifier",
-						"start": 31,
-						"end": 34,
-						"loc": {
-							"start": {
-								"line": 1,
-								"column": 31
-							},
-							"end": {
-								"line": 1,
-								"column": 34
-							}
-						},
-						"name": "Foo"
-					},
-					"alternate": {
-						"type": "Identifier",
+					"elseExpression": {
 						"start": 37,
 						"end": 40,
-						"loc": {
-							"start": {
-								"line": 1,
-								"column": 37
-							},
-							"end": {
-								"line": 1,
-								"column": 40
-							}
-						},
+						"class": "SimpleIdentifier",
 						"name": "Bar"
+					},
+					"thenExpression": {
+						"start": 31,
+						"end": 34,
+						"class": "SimpleIdentifier",
+						"name": "Foo"
 					}
 				}
 			}

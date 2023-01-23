@@ -77,7 +77,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'type': node.type.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -98,7 +97,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'AssertStatement',
       'condition': node.condition.accept(this),
       if (node.message != null) 'message': node.message!.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -108,7 +106,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       'class': 'AssignedVariablePattern',
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -119,7 +116,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'AssignmentExpression',
       'leftHandSide': node.leftHandSide.accept(this),
       'rightHandSide': node.rightHandSide.accept(this),
-      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -141,7 +137,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'expression': node.expression.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -154,7 +149,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'rightOperand': node.rightOperand.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -165,7 +159,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'BinaryPattern',
       'leftOperand': node.leftOperand.accept(this),
       'rightOperand': node.rightOperand.accept(this),
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -178,7 +171,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         'statements': <Map<String, Object?>?>[
           for (var item in node.statements) item.accept(this),
         ],
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -210,7 +202,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'BreakStatement',
       if (node.label != null) 'label': node.label!.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -227,8 +218,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'target': node.target.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
-      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -248,7 +237,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'CastPattern',
       'pattern': node.pattern.accept(this),
       'type': node.type.accept(this),
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -361,7 +349,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'thenExpression': node.thenExpression.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -382,7 +369,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'ConstantPattern',
       'expression': node.expression.accept(this),
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -433,7 +419,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'constructorName': node.constructorName.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -453,7 +438,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'ContinueStatement',
       if (node.label != null) 'label': node.label!.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -475,7 +459,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'DeclaredVariablePattern',
       if (node.type != null) 'type': node.type!.accept(this),
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -515,7 +498,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'DoStatement',
       'body': node.body.accept(this),
       'condition': node.condition.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -556,7 +538,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       'class': 'EmptyStatement',
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -639,7 +620,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'ExpressionStatement',
       'expression': node.expression.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -679,7 +659,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         'typeArguments': node.typeArguments!.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -818,7 +797,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'ForStatement',
       'body': node.body.accept(this),
       'forLoopParts': node.forLoopParts.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -841,7 +819,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'FunctionDeclarationStatement',
       'functionDeclaration': node.functionDeclaration.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -856,7 +833,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         'typeParameters': node.typeParameters!.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -867,7 +843,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'FunctionExpressionInvocation',
       'function': node.function.accept(this),
-      'nullShortingTermination': node.nullShortingTermination.accept(this),
       'argumentList': node.argumentList.accept(this),
       if (node.typeArguments != null)
         'typeArguments': node.typeArguments!.accept(this),
@@ -884,7 +859,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         'typeArguments': node.typeArguments!.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -987,7 +961,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         'elseStatement': node.elseStatement!.accept(this),
       'expression': node.expression.accept(this),
       'thenStatement': node.thenStatement.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1041,7 +1014,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       if (node.isNullAware) 'isNullAware': node.isNullAware,
       'realTarget': node.realTarget.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
-      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -1056,7 +1028,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       if (node.isConst) 'isConst': node.isConst,
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1099,7 +1070,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'type': node.type.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1122,7 +1092,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
           for (var item in node.labels) item.accept(this),
         ],
       'statement': node.statement.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1184,7 +1153,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         ],
       if (node.typeArguments != null)
         'typeArguments': node.typeArguments!.accept(this),
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1209,7 +1177,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         ],
       if (node.typeArguments != null)
         'typeArguments': node.typeArguments!.accept(this),
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1251,7 +1218,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'methodName': node.methodName.accept(this),
       if (node.realTarget != null) 'realTarget': node.realTarget!.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
-      'nullShortingTermination': node.nullShortingTermination.accept(this),
       'argumentList': node.argumentList.accept(this),
       'function': node.function.accept(this),
       if (node.typeArguments != null)
@@ -1285,7 +1251,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'name': node.name.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1341,7 +1306,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
           for (var item in node.fields) item.accept(this),
         ],
       'type': node.type.accept(this),
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1366,7 +1330,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'expression': node.expression.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1376,7 +1339,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'ParenthesizedPattern',
       'pattern': node.pattern.accept(this),
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1409,7 +1371,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'pattern': node.pattern.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1437,7 +1398,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'PatternVariableDeclarationStatement',
       'declaration': node.declaration.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1449,8 +1409,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'operand': node.operand.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
-      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -1460,7 +1418,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'PostfixPattern',
       'operand': node.operand.accept(this),
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1484,8 +1441,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'operand': node.operand.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
-      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -1499,7 +1454,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'propertyName': node.propertyName.accept(this),
       'realTarget': node.realTarget.accept(this),
       if (node.target != null) 'target': node.target!.accept(this),
-      'nullShortingTermination': node.nullShortingTermination.accept(this),
     };
   }
 
@@ -1525,7 +1479,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         'fields': <Map<String, Object?>?>[
           for (var item in node.fields) item.accept(this),
         ],
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1621,7 +1574,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'RelationalPattern',
       'operand': node.operand.accept(this),
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1641,7 +1593,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'RethrowExpression',
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1651,7 +1602,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'ReturnStatement',
       if (node.expression != null) 'expression': node.expression!.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1708,6 +1658,7 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       'class': 'SimpleIdentifier',
+      if (node.isQualified) 'isQualified': node.isQualified,
       'name': node.name,
     };
   }
@@ -1774,7 +1725,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'SuperExpression',
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1837,7 +1787,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'expression': node.expression.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1878,7 +1827,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         'members': <Map<String, Object?>?>[
           for (var item in node.members) item.accept(this),
         ],
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1897,7 +1845,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'ThisExpression',
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1909,7 +1856,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'expression': node.expression.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -1935,7 +1881,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
         ],
       if (node.finallyBlock != null)
         'finallyBlock': node.finallyBlock!.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -1959,7 +1904,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'type': node.type.accept(this),
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
-      'unParenthesized': node.unParenthesized.accept(this),
     };
   }
 
@@ -2027,7 +1971,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'VariableDeclarationStatement',
       'variables': node.variables.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -2047,7 +1990,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       'class': 'WhileStatement',
       'body': node.body.accept(this),
       'condition': node.condition.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 
@@ -2069,7 +2011,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'YieldStatement',
       'expression': node.expression.accept(this),
-      'unlabeled': node.unlabeled.accept(this),
     };
   }
 }
