@@ -11,7 +11,7 @@ const DeepCollectionEquality equality = DeepCollectionEquality.unordered();
 const JsonEncoder encoder = JsonEncoder.withIndent('\t');
 
 void main() {
-  var uri = Directory.current.uri.resolve('test/parser/samples');
+  var uri = Uri(path: 'test/parser/samples');
   var directory = Directory.fromUri(uri);
 
   for (var sample in directory.listSync()) {

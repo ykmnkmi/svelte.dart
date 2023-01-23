@@ -43,7 +43,6 @@
 												"start": 84,
 												"end": 88,
 												"class": "SimpleIdentifier",
-												"isQualified": true,
 												"name": "then"
 											},
 											"realTarget": {
@@ -54,7 +53,6 @@
 													"start": 70,
 													"end": 81,
 													"class": "SimpleIdentifier",
-													"isQualified": true,
 													"name": "loadLibrary"
 												},
 												"realTarget": {
@@ -78,7 +76,6 @@
 													"start": 70,
 													"end": 81,
 													"class": "SimpleIdentifier",
-													"isQualified": true,
 													"name": "loadLibrary"
 												}
 											},
@@ -90,7 +87,6 @@
 													"start": 70,
 													"end": 81,
 													"class": "SimpleIdentifier",
-													"isQualified": true,
 													"name": "loadLibrary"
 												},
 												"realTarget": {
@@ -114,7 +110,6 @@
 													"start": 70,
 													"end": 81,
 													"class": "SimpleIdentifier",
-													"isQualified": true,
 													"name": "loadLibrary"
 												}
 											},
@@ -163,7 +158,6 @@
 																							"start": 108,
 																							"end": 112,
 																							"class": "SimpleIdentifier",
-																							"isQualified": true,
 																							"name": "main"
 																						},
 																						"prefix": {
@@ -207,7 +201,6 @@
 												"start": 84,
 												"end": 88,
 												"class": "SimpleIdentifier",
-												"isQualified": true,
 												"name": "then"
 											}
 										}

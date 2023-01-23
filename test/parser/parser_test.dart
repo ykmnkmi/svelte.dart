@@ -9,45 +9,43 @@ const JsonEncoder encoder = JsonEncoder.withIndent('\t');
 
 void main() {
   group('parser', () {
-    var uri = Uri.directory('test/parser/samples');
-    var dirs = Directory.fromUri(uri).listSync();
+    var uri = Uri(path: 'test/parser/samples');
+    var directory = Directory.fromUri(uri);
 
-    File file;
+    for (var sample in directory.listSync()) {
+      var input = File.fromUri(sample.uri.resolve('input.svelte'));
+      var content = input.readAsStringSync().trimRight();
 
-    for (var dir in dirs) {
-      var uri = dir.uri.resolve('input.svelte');
-      var input = File.fromUri(uri).readAsStringSync();
-
-      Object? actual, output;
-      Object? skip;
+      Object? actual, expected;
+      String? skip;
 
       void callback() {
-        expect(actual, equals(output));
+        expect(actual, equals(expected));
       }
 
       try {
-        actual = parse(input).toJson();
-        file = File.fromUri(uri.resolve('output.json'));
+        actual = parse(content).toJson();
+        input = File.fromUri(sample.uri.resolve('output.json'));
 
-        if (file.existsSync()) {
-          output = json.decode(file.readAsStringSync());
+        if (input.existsSync()) {
+          expected = json.decode(input.readAsStringSync());
         } else {
-          skip = '${dir.path}: error expected';
+          skip = 'output expected ${sample.path}';
         }
       } on ParseError catch (error) {
         actual = error.toJson();
-        file = File.fromUri(uri.resolve('error.json'));
+        input = File.fromUri(sample.uri.resolve('error.json'));
 
-        if (file.existsSync()) {
-          output = json.decode(file.readAsStringSync());
+        if (input.existsSync()) {
+          expected = json.decode(input.readAsStringSync());
         } else {
-          skip = '${dir.path}: output expected';
+          skip = 'error expected ${sample.path}';
         }
       } catch (error) {
-        skip = '${dir.path}: $error';
+        skip = 'error: ${sample.path}';
       }
 
-      test(dir.path, callback, skip: skip);
+      test(sample.path, callback, skip: skip);
     }
   });
 }

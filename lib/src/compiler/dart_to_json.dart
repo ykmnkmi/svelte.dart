@@ -1658,7 +1658,6 @@ class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       'class': 'SimpleIdentifier',
-      if (node.isQualified) 'isQualified': node.isQualified,
       'name': node.name,
     };
   }

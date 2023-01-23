@@ -6,15 +6,9 @@ import 'package:svelte/compiler.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String content = '''
-<script>
-	import 'foo.dart' deferred as foo;
-
-	void onMount() {
-		foo.loadLibrary().then((_) {
-			print(foo.main);
-		});
-	}
-</script>
+{#each animals as animal}
+	<p>{animal}</p>
+{/each}
 ''';
 
 void main() {
