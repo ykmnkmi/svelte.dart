@@ -1,11 +1,10 @@
-// generated with `tools/generate_script_to_json.dart`
-// ignore_for_file: depend_on_referenced_packages
+// generated with `tools/generate_dart_to_json.dart`
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 
-Map<String, Object?> describeToken(Token token) {
+Map<String, Object?> getToken(Token token) {
   return <String, Object?>{
     'start': token.offset,
     'end': token.end,
@@ -14,15 +13,15 @@ Map<String, Object?> describeToken(Token token) {
   };
 }
 
-class DartToJsonVisitor extends ThrowingAstVisitor<Map<String, Object?>> {
-  const DartToJsonVisitor();
+Map<String, Object?> getLocation(AstNode node) {
+  return <String, Object?>{
+    'start': node.offset,
+    'end': node.end,
+  };
+}
 
-  Map<String, Object?> getLocation(AstNode node) {
-    return <String, Object?>{
-      'start': node.offset,
-      'end': node.end,
-    };
-  }
+class DartToJsonVisitor implements ThrowingAstVisitor<Map<String, Object?>> {
+  const DartToJsonVisitor();
 
   List<Map<String, Object?>?> visitAll(List<AstNode> nodes) {
     return <Map<String, Object?>?>[for (var node in nodes) node.accept(this)];

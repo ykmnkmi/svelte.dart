@@ -27,10 +27,11 @@ class ParseError extends Error {
 }
 
 extension ParserErrors on Parser {
-  Never cssSyntaxError(String message) {
+  Never cssSyntaxError(String message, [int? position]) {
     error(
       code: 'css-syntax-error',
       message: message,
+      position: position,
     );
   }
 

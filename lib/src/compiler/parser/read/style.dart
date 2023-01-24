@@ -1,3 +1,4 @@
+import 'package:csslib/parser.dart' show Message, parse;
 import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/errors.dart';
 import 'package:svelte/src/compiler/parser/parser.dart';
@@ -11,12 +12,26 @@ extension StyleParser on Parser {
     var end = position;
     expect(styleEndRe, unclosedStyle);
 
-    // TODO(parser): parse css
+    if (cssMode == CssMode.none) {
+      return;
+    }
+
+    var prefix = template.substring(0, start).replaceAll(nonNewLineRe, ' ');
+    var errors = <Message>[];
+    var sheet = parse(prefix + content, errors: errors);
+
+    if (errors.isNotEmpty) {
+      var error = errors.first;
+      cssSyntaxError(error.message, error.span?.start.offset);
+    }
+
+    // TODO(parser): css validation
 
     styles.add(Style(
       start: offset,
       end: position,
       attributes: attributes,
+      sheet: sheet,
       content: StyleContent(
         start: start,
         end: end,

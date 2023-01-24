@@ -6,12 +6,8 @@ import 'package:svelte/compiler.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String content = '''
-<div>foo</div>
-
 <style>
-	div {
-		color: red;
-	}
+	this is not css
 </style>
 ''';
 

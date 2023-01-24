@@ -14,8 +14,6 @@ import 'package:svelte/src/compiler/interface.dart';
 import 'package:svelte/src/compiler/parser/errors.dart';
 import 'package:svelte/src/compiler/parser/parser.dart';
 
-final RegExp nonNewLineRe = RegExp('[^\\n]');
-
 final RegExp scriptEndRe = RegExp('<\\/script\\s*>');
 
 class _CompilationUnit extends CompilationUnitImpl {
@@ -112,6 +110,16 @@ extension ScriptParser on Parser {
       featureSet: scanner.featureSet,
       lineInfo: lineInfo,
     );
+
+    if (errorListener.errors.isNotEmpty) {
+      var analysisError = errorListener.errors.first;
+
+      error(
+        code: 'parse-error',
+        message: analysisError.message,
+        position: analysisError.offset,
+      );
+    }
 
     var unit = parser.parseCompilationUnit(token);
     unit = _CompilationUnit.from(start, end, unit);

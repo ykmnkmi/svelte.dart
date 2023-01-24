@@ -8,11 +8,19 @@ const Set<String> reserved = <String>{};
 
 final RegExp spaceRe = RegExp('[ \t\r\n]');
 
+final RegExp nonNewLineRe = RegExp('[^\\n]');
+
 final RegExp openCurlRe = RegExp('{\\s*');
 
 final RegExp closeCurlRe = RegExp('\\s*}');
 
 final RegExp identifierRe = RegExp('[_\$a-zA-Z][_\$a-zA-Z0-9]*');
+
+enum CssMode {
+  injected,
+  external,
+  none,
+}
 
 class AutoCloseTag {
   AutoCloseTag(this.tag, this.reason, this.depth);
@@ -25,9 +33,13 @@ class AutoCloseTag {
 }
 
 class Parser {
-  Parser(String template, {Object? sourceUrl})
-      : template = template.trimRight(),
-        sourceFile = SourceFile.fromString(template, url: sourceUrl) {
+  Parser(
+    String template, {
+    Object? sourceUrl,
+    CssMode? cssMode,
+  })  : template = template.trimRight(),
+        sourceFile = SourceFile.fromString(template, url: sourceUrl),
+        cssMode = cssMode ?? CssMode.injected {
     stack.add(html);
     html.children = <TemplateNode>[];
 
@@ -78,6 +90,8 @@ class Parser {
   final String template;
 
   final SourceFile sourceFile;
+
+  final CssMode cssMode;
 
   final TemplateNode html = TemplateNode(type: 'Fragment');
 

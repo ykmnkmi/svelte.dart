@@ -1,8 +1,12 @@
 import 'package:analyzer/dart/ast/ast.dart'
     show CompilationUnit, Expression, SimpleIdentifier;
+import 'package:csslib/visitor.dart' show StyleSheet;
+import 'package:svelte/src/compiler/css_to_json.dart';
 import 'package:svelte/src/compiler/dart_to_json.dart';
 
 const DartToJsonVisitor dartToJson = DartToJsonVisitor();
+
+const CssToJsonVisitor cssToJson = CssToJsonVisitor();
 
 extension on List<Node> {
   List<Map<String, Object?>> toJson() {
@@ -305,10 +309,13 @@ class Style extends Node {
     super.start,
     super.end,
     this.attributes,
+    required this.sheet,
     required this.content,
   }) : super(type: 'Style');
 
   final List<TemplateNode>? attributes;
+
+  final StyleSheet sheet;
 
   final StyleContent content;
 
@@ -320,7 +327,8 @@ class Style extends Node {
       'type': type,
       if (attributes != null && attributes!.isNotEmpty)
         'attributes': attributes!.toJson(),
-      'content': content,
+      'sheet': sheet.visit(cssToJson),
+      'content': content.toJson(),
     };
   }
 }
@@ -339,7 +347,6 @@ class StyleContent extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      'type': type,
       'styles': styles,
     };
   }

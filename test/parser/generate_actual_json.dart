@@ -4,7 +4,8 @@ import 'dart:convert' show JsonEncoder, json;
 import 'dart:io' show Directory, File;
 
 import 'package:collection/collection.dart' show DeepCollectionEquality;
-import 'package:svelte/compiler.dart' show ParseError, parse;
+import 'package:svelte/compiler.dart' show Ast, ParseError, parse;
+import 'package:svelte/src/compiler/parser/parser.dart' show CssMode;
 
 const DeepCollectionEquality equality = DeepCollectionEquality.unordered();
 
@@ -15,35 +16,54 @@ void main() {
   var directory = Directory.fromUri(uri);
 
   for (var sample in directory.listSync()) {
-    var input = File.fromUri(sample.uri.resolve('input.svelte'));
-    var content = input.readAsStringSync().trimRight();
+    File file;
+    String content;
+
+    Map<String, Object?>? options;
+    Ast ast;
 
     Object? actual, expected;
-    File? file;
 
     try {
-      actual = parse(content).toJson();
-      input = File.fromUri(sample.uri.resolve('output.json'));
+      CssMode? cssMode;
+      file = File.fromUri(sample.uri.resolve('options.json'));
 
-      if (input.existsSync()) {
-        expected = json.decode(input.readAsStringSync());
-        file = input;
+      if (file.existsSync()) {
+        content = file.readAsStringSync();
+        options = json.decode(content) as Map<String, Object?>?;
+
+        if (options != null) {
+          if (options['css'] is String) {
+            cssMode = CssMode.values.byName(options['css'] as String);
+          }
+        }
+      }
+
+      file = File.fromUri(sample.uri.resolve('input.svelte'));
+      content = file.readAsStringSync();
+      ast = parse(content, sourceUrl: file.path, cssMode: cssMode);
+      actual = ast.toJson();
+
+      file = File.fromUri(sample.uri.resolve('output.json'));
+
+      if (file.existsSync()) {
+        expected = json.decode(file.readAsStringSync());
       } else {
-        print('output expected ${sample.path}');
+        print('error expected ${sample.path}');
         continue;
       }
     } on ParseError catch (error) {
       actual = error.toJson();
-      input = File.fromUri(sample.uri.resolve('error.json'));
+      file = File.fromUri(sample.uri.resolve('error.json'));
 
-      if (input.existsSync()) {
-        expected = json.decode(input.readAsStringSync());
-        file = input;
+      if (file.existsSync()) {
+        expected = json.decode(file.readAsStringSync());
       } else {
-        print('error expected ${sample.path}');
+        print('output expected ${sample.path}');
+        continue;
       }
     } catch (error) {
-      print('error: ${sample.path}');
+      print(error);
       continue;
     }
 
@@ -51,9 +71,6 @@ void main() {
       continue;
     }
 
-    if (file != null) {
-      print('not equal: ${sample.path}');
-      file.writeAsStringSync(encoder.convert(actual));
-    }
+    file.writeAsStringSync(encoder.convert(actual));
   }
 }

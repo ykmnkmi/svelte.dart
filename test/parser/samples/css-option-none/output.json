@@ -14,8 +14,8 @@
 						"start": 5,
 						"end": 8,
 						"type": "Text",
-						"raw": "foo",
-						"data": "foo"
+						"data": "foo",
+						"raw": "foo"
 					}
 				]
 			},
@@ -23,8 +23,8 @@
 				"start": 14,
 				"end": 16,
 				"type": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
+				"data": "\n\n",
+				"raw": "\n\n"
 			}
 		]
 	}

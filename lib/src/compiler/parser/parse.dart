@@ -1,8 +1,8 @@
 import 'package:svelte/compiler.dart';
 import 'package:svelte/src/compiler/parser/parser.dart';
 
-Ast parse(String source, {Object? sourceUrl}) {
-  var parser = Parser(source, sourceUrl: sourceUrl);
+Ast parse(String source, {Object? sourceUrl, CssMode? cssMode}) {
+  var parser = Parser(source, sourceUrl: sourceUrl, cssMode: cssMode);
 
   Script? instance, module;
 
