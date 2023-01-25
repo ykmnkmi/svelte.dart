@@ -20,8 +20,8 @@
 								"start": 12,
 								"end": 19,
 								"type": "Text",
-								"raw": "color: ",
-								"data": "color: "
+								"data": "color: ",
+								"raw": "color: "
 							},
 							{
 								"start": 19,
@@ -31,15 +31,16 @@
 									"start": 20,
 									"end": 25,
 									"class": "SimpleIdentifier",
-									"name": "color"
+									"name": "color",
+									"isAssignable": true
 								}
 							},
 							{
 								"start": 26,
 								"end": 27,
 								"type": "Text",
-								"raw": ";",
-								"data": ";"
+								"data": ";",
+								"raw": ";"
 							}
 						]
 					}
@@ -53,7 +54,8 @@
 							"start": 30,
 							"end": 35,
 							"class": "SimpleIdentifier",
-							"name": "color"
+							"name": "color",
+							"isAssignable": true
 						}
 					}
 				]

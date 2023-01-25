@@ -14,8 +14,8 @@
 						"start": 10,
 						"end": 40,
 						"type": "Text",
-						"raw": "\n\t<p>not actually an element. ",
-						"data": "\n\t<p>not actually an element. "
+						"data": "\n\t<p>not actually an element. ",
+						"raw": "\n\t<p>not actually an element. "
 					},
 					{
 						"start": 40,
@@ -25,15 +25,16 @@
 							"start": 41,
 							"end": 44,
 							"class": "SimpleIdentifier",
-							"name": "foo"
+							"name": "foo",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 45,
 						"end": 50,
 						"type": "Text",
-						"raw": "</p>\n",
-						"data": "</p>\n"
+						"data": "</p>\n",
+						"raw": "</p>\n"
 					}
 				]
 			}

@@ -14,8 +14,8 @@
 						"start": 4,
 						"end": 10,
 						"type": "Text",
-						"raw": "hello ",
-						"data": "hello "
+						"data": "hello ",
+						"raw": "hello "
 					},
 					{
 						"start": 10,
@@ -25,15 +25,16 @@
 							"start": 11,
 							"end": 15,
 							"class": "SimpleIdentifier",
-							"name": "name"
+							"name": "name",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 16,
 						"end": 17,
 						"type": "Text",
-						"raw": "!",
-						"data": "!"
+						"data": "!",
+						"raw": "!"
 					}
 				]
 			}

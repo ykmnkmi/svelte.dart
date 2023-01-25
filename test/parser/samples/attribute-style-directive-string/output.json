@@ -121,7 +121,8 @@
 									"start": 110,
 									"end": 118,
 									"class": "SimpleIdentifier",
-									"name": "variable"
+									"name": "variable",
+									"isAssignable": true
 								}
 							}
 						]
@@ -162,7 +163,8 @@
 									"start": 150,
 									"end": 158,
 									"class": "SimpleIdentifier",
-									"name": "variable"
+									"name": "variable",
+									"isAssignable": true
 								}
 							}
 						]
@@ -203,7 +205,8 @@
 									"start": 189,
 									"end": 197,
 									"class": "SimpleIdentifier",
-									"name": "variable"
+									"name": "variable",
+									"isAssignable": true
 								}
 							}
 						]
@@ -254,7 +257,8 @@
 												"start": 234,
 												"end": 241,
 												"class": "SimpleIdentifier",
-												"name": "literal"
+												"name": "literal",
+												"isAssignable": true
 											}
 										},
 										{

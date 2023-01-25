@@ -12,7 +12,8 @@
 					"start": 7,
 					"end": 13,
 					"class": "SimpleIdentifier",
-					"name": "things"
+					"name": "things",
+					"isAssignable": true
 				},
 				"children": [
 					{
@@ -43,13 +44,15 @@
 					"start": 17,
 					"end": 22,
 					"class": "SimpleIdentifier",
-					"name": "thing"
+					"name": "thing",
+					"isAssignable": true
 				},
 				"key": {
 					"start": 24,
 					"end": 29,
 					"class": "SimpleIdentifier",
-					"name": "thing"
+					"name": "thing",
+					"isAssignable": true
 				}
 			}
 		]

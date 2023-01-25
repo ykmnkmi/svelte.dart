@@ -32,7 +32,8 @@
 							"start": 79,
 							"end": 83,
 							"class": "SimpleIdentifier",
-							"name": "name"
+							"name": "name",
+							"isAssignable": true
 						}
 					},
 					{
@@ -76,7 +77,8 @@
 									"value": "world",
 									"contentsEnd": 27,
 									"contentsOffset": 22,
-									"isSingleQuoted": true
+									"isSingleQuoted": true,
+									"stringValue": "world"
 								}
 							}
 						]

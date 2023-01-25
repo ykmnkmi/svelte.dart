@@ -24,7 +24,8 @@
 									"start": 6,
 									"end": 8,
 									"class": "SimpleIdentifier",
-									"name": "id"
+									"name": "id",
+									"isAssignable": true
 								}
 							}
 						]

@@ -17,19 +17,22 @@
 						"start": 25,
 						"end": 28,
 						"class": "SimpleIdentifier",
-						"name": "foo"
+						"name": "foo",
+						"isAssignable": true
 					},
 					"elseExpression": {
 						"start": 37,
 						"end": 40,
 						"class": "SimpleIdentifier",
-						"name": "Bar"
+						"name": "Bar",
+						"isAssignable": true
 					},
 					"thenExpression": {
 						"start": 31,
 						"end": 34,
 						"class": "SimpleIdentifier",
-						"name": "Foo"
+						"name": "Foo",
+						"isAssignable": true
 					}
 				}
 			}

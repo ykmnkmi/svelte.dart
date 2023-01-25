@@ -14,8 +14,8 @@
 						"start": 3,
 						"end": 4,
 						"type": "Text",
-						"raw": " ",
-						"data": " "
+						"data": " ",
+						"raw": " "
 					},
 					{
 						"start": 4,
@@ -25,15 +25,16 @@
 							"start": 5,
 							"end": 6,
 							"class": "SimpleIdentifier",
-							"name": "a"
+							"name": "a",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 7,
 						"end": 8,
 						"type": "Text",
-						"raw": " ",
-						"data": " "
+						"data": " ",
+						"raw": " "
 					},
 					{
 						"start": 8,
@@ -43,15 +44,16 @@
 							"start": 9,
 							"end": 10,
 							"class": "SimpleIdentifier",
-							"name": "b"
+							"name": "b",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 11,
 						"end": 14,
 						"type": "Text",
-						"raw": " : ",
-						"data": " : "
+						"data": " : ",
+						"raw": " : "
 					},
 					{
 						"start": 14,
@@ -61,15 +63,16 @@
 							"start": 15,
 							"end": 16,
 							"class": "SimpleIdentifier",
-							"name": "c"
+							"name": "c",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 17,
 						"end": 20,
 						"type": "Text",
-						"raw": " : ",
-						"data": " : "
+						"data": " : ",
+						"raw": " : "
 					}
 				]
 			}

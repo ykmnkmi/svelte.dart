@@ -22,7 +22,8 @@
 							"value": "tooltip msg",
 							"contentsEnd": 33,
 							"contentsOffset": 22,
-							"isSingleQuoted": true
+							"isSingleQuoted": true,
+							"stringValue": "tooltip msg"
 						}
 					}
 				]

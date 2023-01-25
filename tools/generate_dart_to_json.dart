@@ -1,167 +1,71 @@
 import 'dart:io';
-import 'dart:isolate';
 
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
-import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 
+import 'shared/utils.dart';
+
+// TODO(dart2json): serialize Token, ...
 Future<void> main() async {
-  var tokenUri = Uri(
-      scheme: 'package', path: '_fe_analyzer_shared/src/scanner/token.dart');
-  var tokenFileUri = await Isolate.resolvePackageUri(tokenUri);
+  var analyzerRoot = await getRoot('analyzer');
 
-  if (tokenFileUri == null) {
-    throw Exception('token uri is not resolved');
-  }
-
-  var astUri = Uri(scheme: 'package', path: 'analyzer/dart/ast/ast.dart');
-  var astFileUri = await Isolate.resolvePackageUri(astUri);
-
-  if (astFileUri == null) {
-    throw Exception('ast uri is not resolved');
-  }
-
-  var visitorUri =
-      Uri(scheme: 'package', path: 'analyzer/dart/ast/visitor.dart');
-  var visitorFileUri = await Isolate.resolvePackageUri(visitorUri);
-
-  if (visitorFileUri == null) {
-    throw Exception('visitor uri is not resolved');
-  }
-
-  var tokenFile = File.fromUri(tokenFileUri);
-  tokenFile = tokenFile.absolute;
-
-  var astFile = File.fromUri(astFileUri);
-  astFile = astFile.absolute;
-
-  var visitorFile = File.fromUri(visitorFileUri);
-  visitorFile = visitorFile.absolute;
-
-  var includedPaths = <String>[tokenFile.path, astFile.path, visitorFile.path];
+  var includedPaths = <String>[analyzerRoot.path];
   var collection = AnalysisContextCollection(includedPaths: includedPaths);
 
-  // Token
-  var tokenContext = collection.contextFor(tokenFile.path);
-  var tokenSession = tokenContext.currentSession;
-  var tokenResolvedUnit = await tokenSession.getResolvedUnit(tokenFile.path);
+  var context = collection.contextFor(analyzerRoot.path);
+  var session = context.currentSession;
 
-  if (tokenResolvedUnit is! ResolvedUnitResult) {
-    throw Exception('library is not resolved');
-  }
+  var astUri = Uri(path: 'lib/dart/ast/ast.dart');
+  astUri = analyzerRoot.uri.resolveUri(astUri);
 
-  var tokenLibrary = tokenResolvedUnit.libraryElement;
-  var tokenClass = tokenLibrary.getClass('Token');
+  var astlibrary = await getLibrary(session, astUri);
 
-  if (tokenClass == null) {
-    throw Exception('Token is not resolved');
-  }
+  var typeSystem = astlibrary.typeSystem;
+  var typeProvider = astlibrary.typeProvider;
 
-  var tokenTypeSystem = tokenResolvedUnit.typeSystem;
+  var astNodeClass = getClass(astlibrary, 'AstNode');
+  var throwingAstVisitorClass = getClass(astlibrary, 'AstVisitor');
 
-  var tokenType = tokenTypeSystem.instantiateInterfaceToBounds(
-    element: tokenClass,
-    nullabilitySuffix: NullabilitySuffix.question,
-  );
-
-  var astContext = collection.contextFor(astFile.path);
-  var astSession = astContext.currentSession;
-  var astResolvedUnit = await astSession.getResolvedUnit(astFile.path);
-
-  if (astResolvedUnit is! ResolvedUnitResult) {
-    throw Exception('library is not resolved');
-  }
-
-  var astLibrary = astResolvedUnit.libraryElement;
-  var astNodeClass = astLibrary.getClass('AstNode');
-
-  if (astNodeClass == null) {
-    throw Exception('AstNode is not resolved');
-  }
-
-  var astTypeSystem = astResolvedUnit.typeSystem;
-
-  var astNodeType = astTypeSystem.instantiateInterfaceToBounds(
+  var astNodeType = typeSystem.instantiateInterfaceToBounds(
     element: astNodeClass,
     nullabilitySuffix: NullabilitySuffix.question,
   );
 
-  var nodeListClass = astLibrary.getClass('NodeList');
+  var nodeListType = typeProvider.listType(astNodeClass.thisType);
 
-  if (nodeListClass == null) {
-    throw Exception('NodeList is not resolved');
+  bool isBool(DartType type) {
+    return type.isDartCoreBool;
   }
 
-  var nodeListType = astTypeSystem.instantiateInterfaceToBounds(
-    element: nodeListClass,
-    nullabilitySuffix: NullabilitySuffix.question,
-  );
-
-  var visitorContext = collection.contextFor(visitorFile.path);
-  var visitorSession = visitorContext.currentSession;
-  var visitorResolvedUnit =
-      await visitorSession.getResolvedUnit(visitorFile.path);
-
-  if (visitorResolvedUnit is! ResolvedUnitResult) {
-    throw Exception('library is not resolved');
-  }
-
-  var visitorLibrary = visitorResolvedUnit.libraryElement;
-  var throwingAstVisitorClass = visitorLibrary.getClass('ThrowingAstVisitor');
-
-  if (throwingAstVisitorClass == null) {
-    throw Exception('ThrowingAstVisitor is not resolved');
+  bool isEnum(DartType type) {
+    return type.isDartCoreEnum;
   }
 
   bool isNum(DartType type) {
     return type.isDartCoreInt || type.isDartCoreDouble || type.isDartCoreNum;
   }
 
-  bool isBool(DartType type) {
-    return type.isDartCoreBool;
-  }
-
   bool isString(DartType type) {
     return type.isDartCoreString;
   }
 
-  bool isToken(DartType type) {
-    return tokenTypeSystem.isSubtypeOf(type, tokenType);
-  }
-
   bool isAstNode(DartType type) {
-    return astTypeSystem.isSubtypeOf(type, astNodeType);
+    return typeSystem.isSubtypeOf(type, astNodeType);
   }
 
   bool isNodeList(DartType type) {
-    return astTypeSystem.isSubtypeOf(type, nodeListType);
+    return typeSystem.isSubtypeOf(type, nodeListType);
   }
-
-  bool isVisitorMethod(ClassElement element) {
-    var method = throwingAstVisitorClass.getMethod('visit${element.name}');
-    return method != null;
-  }
-
-  var klasses = astLibrary.topLevelElements
-      .whereType<ClassElement>()
-      .where(isVisitorMethod)
-      .toList();
-
-  klasses.sort((left, right) => left.nameOffset.compareTo(right.nameOffset));
 
   var file = File('lib/src/compiler/dart_to_json.dart');
   var sink = file.openWrite();
   sink.write(header);
 
   void writeFields(InterfaceElement interface, Set<String> writed) {
-    if (interface.name == 'AstNode') {
-      return;
-    }
-
     for (var accessor in interface.accessors) {
-      if (accessor.hasDeprecated) {
+      if (accessor.hasDeprecated || accessor.isPrivate || accessor.isStatic) {
         continue;
       }
 
@@ -172,9 +76,10 @@ Future<void> main() async {
       }
 
       if (accessor.isGetter) {
+        var returnType = accessor.returnType;
         String prefix, check;
 
-        if (astTypeSystem.isNullable(accessor.returnType)) {
+        if (typeSystem.isNullable(returnType)) {
           prefix = "\n      if (node.$name != null) '$name':";
           check = '!';
         } else {
@@ -182,23 +87,23 @@ Future<void> main() async {
           check = '';
         }
 
-        if (isBool(accessor.returnType)) {
+        if (isBool(returnType)) {
           sink.write("\n      if (node.$name) '$name': node.$name$check,");
-        } else if (isNum(accessor.returnType)) {
+        } else if (isEnum(returnType)) {
+          sink.write('$prefix node.$name$check.toString(),');
+        } else if (isNum(returnType) || isString(returnType)) {
           sink.write('$prefix node.$name$check,');
-        } else if (isString(accessor.returnType)) {
-          sink.write('$prefix node.$name$check,');
-        } else if (isToken(accessor.returnType)) {
-          sink.write('$prefix getToken(node.$name$check),');
-        } else if (isAstNode(accessor.returnType)) {
+        } else if (isAstNode(returnType)) {
           sink.write('$prefix node.$name$check.accept(this),');
-        } else if (isNodeList(accessor.returnType)) {
+        } else if (isNodeList(returnType)) {
           sink
             ..write('\n      if (node.$name.isNotEmpty)')
             ..write("\n        '$name': <Map<String, Object?>?>[")
             ..write(
                 '\n          for (var item in node.$name) item.accept(this),')
             ..write('\n        ],');
+        } else {
+          sink.write("\n     // '$name': $returnType");
         }
 
         writed.add(name);
@@ -206,18 +111,34 @@ Future<void> main() async {
     }
   }
 
-  for (var klass in klasses) {
-    var name = klass.name;
+  void writeSuperFields(InterfaceType type, String parent, Set<String> writed) {
+    for (var interface in type.interfaces) {
+      var name = interface.getDisplayString(withNullability: false);
 
-    if (name == 'AstNode') {
-      continue;
+      if (name == 'AstNode' || name == 'Object') {
+        continue;
+      }
+
+      sink.write('\n      // $parent - $name');
+      writeFields(interface.element, writed);
+      writeSuperFields(interface, name, writed);
     }
+  }
 
-    if (isAstNode(klass.thisType)) {
+  for (var method in throwingAstVisitorClass.methods) {
+    if (method.name.startsWith('visit')) {
+      var type = method.parameters.first.type as InterfaceType;
+
+      if (!isAstNode(type)) {
+        continue;
+      }
+
+      var name = type.getDisplayString(withNullability: false);
+
       sink
         ..write('\n')
         ..write('\n  @override')
-        ..write('\n  Map<String, Object?> visit$name($name node) {')
+        ..write('\n  Map<String, Object?>? visit$name($name node) {')
         ..write('\n    return <String, Object?>{')
         ..write('\n      ...getLocation(node),')
         ..write("\n      'class': '$name',");
@@ -230,13 +151,13 @@ Future<void> main() async {
         'nullShortingTermination',
         'unlabeled',
         'unParenthesized',
+
+        // alias
+        'sortedDirectivesAndDeclarations',
       };
 
-      writeFields(klass, writed);
-
-      for (var interface in klass.interfaces) {
-        writeFields(interface.element, writed);
-      }
+      writeFields(type.element, writed);
+      writeSuperFields(type, name, writed);
 
       sink
         ..write('\n    };')
@@ -256,7 +177,6 @@ const String header = '''
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
-import 'package:analyzer/dart/ast/visitor.dart';
 
 Map<String, Object?> getToken(Token token) {
   return <String, Object?>{

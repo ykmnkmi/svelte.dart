@@ -14,8 +14,8 @@
 						"start": 10,
 						"end": 50,
 						"type": "Text",
-						"raw": "\n\t<p>not actu </textar ally an element. ",
-						"data": "\n\t<p>not actu </textar ally an element. "
+						"data": "\n\t<p>not actu </textar ally an element. ",
+						"raw": "\n\t<p>not actu </textar ally an element. "
 					},
 					{
 						"start": 50,
@@ -25,15 +25,16 @@
 							"start": 51,
 							"end": 54,
 							"class": "SimpleIdentifier",
-							"name": "foo"
+							"name": "foo",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 55,
 						"end": 91,
 						"type": "Text",
-						"raw": "</p>\n</textare\n\n\n> </textaread >asdf",
-						"data": "</p>\n</textare\n\n\n> </textaread >asdf"
+						"data": "</p>\n</textare\n\n\n> </textaread >asdf",
+						"raw": "</p>\n</textare\n\n\n> </textaread >asdf"
 					}
 				]
 			}

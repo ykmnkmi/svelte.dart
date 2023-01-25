@@ -12,7 +12,8 @@
 					"start": 5,
 					"end": 8,
 					"class": "SimpleIdentifier",
-					"name": "foo"
+					"name": "foo",
+					"isAssignable": true
 				},
 				"children": [
 					{

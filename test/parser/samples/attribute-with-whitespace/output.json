@@ -19,7 +19,8 @@
 							"start": 19,
 							"end": 22,
 							"class": "SimpleIdentifier",
-							"name": "foo"
+							"name": "foo",
+							"isAssignable": true
 						}
 					}
 				],
@@ -28,8 +29,8 @@
 						"start": 24,
 						"end": 29,
 						"type": "Text",
-						"raw": "Click",
-						"data": "Click"
+						"data": "Click",
+						"raw": "Click"
 					}
 				]
 			}

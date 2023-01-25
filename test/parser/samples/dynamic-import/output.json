@@ -43,7 +43,8 @@
 												"start": 84,
 												"end": 88,
 												"class": "SimpleIdentifier",
-												"name": "then"
+												"name": "then",
+												"isAssignable": true
 											},
 											"realTarget": {
 												"start": 66,
@@ -53,19 +54,22 @@
 													"start": 70,
 													"end": 81,
 													"class": "SimpleIdentifier",
-													"name": "loadLibrary"
+													"name": "loadLibrary",
+													"isAssignable": true
 												},
 												"realTarget": {
 													"start": 66,
 													"end": 69,
 													"class": "SimpleIdentifier",
-													"name": "foo"
+													"name": "foo",
+													"isAssignable": true
 												},
 												"target": {
 													"start": 66,
 													"end": 69,
 													"class": "SimpleIdentifier",
-													"name": "foo"
+													"name": "foo",
+													"isAssignable": true
 												},
 												"argumentList": {
 													"start": 81,
@@ -76,7 +80,8 @@
 													"start": 70,
 													"end": 81,
 													"class": "SimpleIdentifier",
-													"name": "loadLibrary"
+													"name": "loadLibrary",
+													"isAssignable": true
 												}
 											},
 											"target": {
@@ -87,19 +92,22 @@
 													"start": 70,
 													"end": 81,
 													"class": "SimpleIdentifier",
-													"name": "loadLibrary"
+													"name": "loadLibrary",
+													"isAssignable": true
 												},
 												"realTarget": {
 													"start": 66,
 													"end": 69,
 													"class": "SimpleIdentifier",
-													"name": "foo"
+													"name": "foo",
+													"isAssignable": true
 												},
 												"target": {
 													"start": 66,
 													"end": 69,
 													"class": "SimpleIdentifier",
-													"name": "foo"
+													"name": "foo",
+													"isAssignable": true
 												},
 												"argumentList": {
 													"start": 81,
@@ -110,7 +118,8 @@
 													"start": 70,
 													"end": 81,
 													"class": "SimpleIdentifier",
-													"name": "loadLibrary"
+													"name": "loadLibrary",
+													"isAssignable": true
 												}
 											},
 											"argumentList": {
@@ -143,7 +152,8 @@
 																				"start": 98,
 																				"end": 103,
 																				"class": "SimpleIdentifier",
-																				"name": "print"
+																				"name": "print",
+																				"isAssignable": true
 																			},
 																			"argumentList": {
 																				"start": 103,
@@ -158,15 +168,18 @@
 																							"start": 108,
 																							"end": 112,
 																							"class": "SimpleIdentifier",
-																							"name": "main"
+																							"name": "main",
+																							"isAssignable": true
 																						},
 																						"prefix": {
 																							"start": 104,
 																							"end": 107,
 																							"class": "SimpleIdentifier",
-																							"name": "foo"
+																							"name": "foo",
+																							"isAssignable": true
 																						},
-																						"name": "foo.main"
+																						"name": "foo.main",
+																						"isAssignable": true
 																					}
 																				]
 																			},
@@ -174,7 +187,8 @@
 																				"start": 98,
 																				"end": 103,
 																				"class": "SimpleIdentifier",
-																				"name": "print"
+																				"name": "print",
+																				"isAssignable": true
 																			}
 																		}
 																	}
@@ -190,7 +204,10 @@
 																{
 																	"start": 90,
 																	"end": 91,
-																	"class": "SimpleFormalParameter"
+																	"class": "SimpleFormalParameter",
+																	"isPositional": true,
+																	"isRequired": true,
+																	"isRequiredPositional": true
 																}
 															]
 														}
@@ -201,7 +218,8 @@
 												"start": 84,
 												"end": 88,
 												"class": "SimpleIdentifier",
-												"name": "then"
+												"name": "then",
+												"isAssignable": true
 											}
 										}
 									}
@@ -223,7 +241,8 @@
 							"start": 47,
 							"end": 51,
 							"class": "SimpleIdentifier",
-							"name": "void"
+							"name": "void",
+							"isAssignable": true
 						}
 					}
 				}
@@ -237,7 +256,18 @@
 						"start": 40,
 						"end": 43,
 						"class": "SimpleIdentifier",
-						"name": "foo"
+						"name": "foo",
+						"isAssignable": true
+					},
+					"uri": {
+						"start": 17,
+						"end": 27,
+						"class": "SimpleStringLiteral",
+						"value": "foo.dart",
+						"contentsEnd": 26,
+						"contentsOffset": 18,
+						"isSingleQuoted": true,
+						"stringValue": "foo.dart"
 					}
 				}
 			]

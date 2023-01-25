@@ -14,8 +14,8 @@
 						"start": 4,
 						"end": 10,
 						"type": "Text",
-						"raw": "Hello ",
-						"data": "Hello "
+						"data": "Hello ",
+						"raw": "Hello "
 					},
 					{
 						"start": 10,
@@ -31,15 +31,16 @@
 									"start": 19,
 									"end": 23,
 									"class": "SimpleIdentifier",
-									"name": "name"
+									"name": "name",
+									"isAssignable": true
 								}
 							},
 							{
 								"start": 24,
 								"end": 26,
 								"type": "Text",
-								"raw": "! ",
-								"data": "! "
+								"data": "! ",
+								"raw": "! "
 							}
 						]
 					},
@@ -53,8 +54,8 @@
 								"start": 41,
 								"end": 53,
 								"type": "Text",
-								"raw": "How are you?",
-								"data": "How are you?"
+								"data": "How are you?",
+								"raw": "How are you?"
 							}
 						]
 					}

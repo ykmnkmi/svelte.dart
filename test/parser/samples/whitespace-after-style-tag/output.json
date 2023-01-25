@@ -35,57 +35,57 @@
 		"sheet": {
 			"start": 25,
 			"end": 48,
-			"type": "StyleSheet",
+			"class": "StyleSheet",
 			"topLevels": [
 				{
 					"start": 25,
 					"end": 28,
-					"type": "RuleSet",
+					"class": "RuleSet",
 					"selectorGroup": {
 						"start": 25,
 						"end": 28,
-						"type": "SelectorGroup",
+						"class": "SelectorGroup",
 						"selectors": [
 							{
 								"start": 25,
 								"end": 28,
-								"type": "Selector",
+								"class": "Selector",
 								"simpleSelectorSequences": [
 									{
 										"start": 25,
 										"end": 28,
-										"type": "SimpleSelectorSequence",
+										"class": "SimpleSelectorSequence",
+										"combinator": 513,
 										"simpleSelector": {
 											"start": 25,
 											"end": 28,
-											"type": "ElementSelector",
-											"name": "div"
+											"class": "ElementSelector"
 										},
 										"isCombinatorNone": true
 									}
-								]
+								],
+								"length": 1
 							}
 						]
 					},
 					"declarationGroup": {
 						"start": 29,
 						"end": 47,
-						"type": "DeclarationGroup",
+						"class": "DeclarationGroup",
 						"declarations": [
 							{
 								"start": 33,
 								"end": 43,
-								"type": "Declaration",
+								"class": "Declaration",
 								"expression": {
 									"start": 40,
 									"end": 43,
-									"type": "Expressions",
+									"class": "Expressions",
 									"expressions": [
 										{
 											"start": 40,
 											"end": 43,
-											"type": "HexColorTerm",
-											"text": "f00"
+											"class": "HexColorTerm"
 										}
 									]
 								},

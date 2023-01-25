@@ -29,11 +29,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitCalcTerm(CalcTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'CalcTerm',
+      'class': 'CalcTerm',
       'expr': node.expr.visit(this),
-      // LiteralTerm
-      'text': node.text,
-      // Expression
     };
   }
 
@@ -41,7 +38,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitCssComment(CssComment node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'CssComment',
+      'class': 'CssComment',
       'comment': node.comment,
     };
   }
@@ -50,9 +47,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitCommentDefinition(CommentDefinition node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'CommentDefinition',
-      // CssComment
-      'comment': node.comment,
+      'class': 'CommentDefinition',
     };
   }
 
@@ -60,12 +55,13 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitStyleSheet(StyleSheet node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'StyleSheet',
+      'class': 'StyleSheet',
       if (node.topLevels.isNotEmpty)
         'topLevels': <Map<String, Object?>>[
           for (var item in node.topLevels)
             item.visit(this) as Map<String, Object?>,
         ],
+      // 'span': dynamic
     };
   }
 
@@ -73,7 +69,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitNoOp(NoOp node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'NoOp',
+      'class': 'NoOp',
     };
   }
 
@@ -81,7 +77,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitTopLevelProduction(TopLevelProduction node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'TopLevelProduction',
+      'class': 'TopLevelProduction',
+      // 'span': dynamic
     };
   }
 
@@ -89,9 +86,10 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitDirective(Directive node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'Directive',
+      'class': 'Directive',
       if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
       if (node.isExtension) 'isExtension': node.isExtension,
+      // 'span': dynamic
     };
   }
 
@@ -99,7 +97,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitDocumentDirective(DocumentDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'DocumentDirective',
+      'class': 'DocumentDirective',
       if (node.functions.isNotEmpty)
         'functions': <Map<String, Object?>>[
           for (var item in node.functions)
@@ -110,9 +108,6 @@ class CssToJsonVisitor implements VisitorBase {
           for (var item in node.groupRuleBody)
             item.visit(this) as Map<String, Object?>,
         ],
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -120,16 +115,13 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitSupportsDirective(SupportsDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'SupportsDirective',
+      'class': 'SupportsDirective',
       if (node.condition != null) 'condition': node.condition!.visit(this),
       if (node.groupRuleBody.isNotEmpty)
         'groupRuleBody': <Map<String, Object?>>[
           for (var item in node.groupRuleBody)
             item.visit(this) as Map<String, Object?>,
         ],
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -138,9 +130,8 @@ class CssToJsonVisitor implements VisitorBase {
       SupportsConditionInParens node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'SupportsConditionInParens',
+      'class': 'SupportsConditionInParens',
       if (node.condition != null) 'condition': node.condition!.visit(this),
-      // SupportsCondition
     };
   }
 
@@ -148,9 +139,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitSupportsNegation(SupportsNegation node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'SupportsNegation',
+      'class': 'SupportsNegation',
       'condition': node.condition.visit(this),
-      // SupportsCondition
     };
   }
 
@@ -158,13 +148,12 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitSupportsConjunction(SupportsConjunction node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'SupportsConjunction',
+      'class': 'SupportsConjunction',
       if (node.conditions.isNotEmpty)
         'conditions': <Map<String, Object?>>[
           for (var item in node.conditions)
             item.visit(this) as Map<String, Object?>,
         ],
-      // SupportsCondition
     };
   }
 
@@ -172,13 +161,12 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitSupportsDisjunction(SupportsDisjunction node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'SupportsDisjunction',
+      'class': 'SupportsDisjunction',
       if (node.conditions.isNotEmpty)
         'conditions': <Map<String, Object?>>[
           for (var item in node.conditions)
             item.visit(this) as Map<String, Object?>,
         ],
-      // SupportsCondition
     };
   }
 
@@ -186,12 +174,9 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitViewportDirective(ViewportDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ViewportDirective',
+      'class': 'ViewportDirective',
       'name': node.name,
       'declarations': node.declarations.visit(this),
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -199,10 +184,11 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitMediaExpression(MediaExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'MediaExpression',
+      'class': 'MediaExpression',
       if (node.andOperator) 'andOperator': node.andOperator,
       'exprs': node.exprs.visit(this),
       'mediaFeature': node.mediaFeature,
+      // 'span': dynamic
     };
   }
 
@@ -210,7 +196,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitMediaQuery(MediaQuery node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'MediaQuery',
+      'class': 'MediaQuery',
       if (node.expressions.isNotEmpty)
         'expressions': <Map<String, Object?>>[
           for (var item in node.expressions)
@@ -220,6 +206,7 @@ class CssToJsonVisitor implements VisitorBase {
       'mediaType': node.mediaType,
       if (node.hasUnary) 'hasUnary': node.hasUnary,
       'unary': node.unary,
+      // 'span': dynamic
     };
   }
 
@@ -227,7 +214,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitMediaDirective(MediaDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'MediaDirective',
+      'class': 'MediaDirective',
       if (node.mediaQueries.isNotEmpty)
         'mediaQueries': <Map<String, Object?>>[
           for (var item in node.mediaQueries)
@@ -237,9 +224,6 @@ class CssToJsonVisitor implements VisitorBase {
         'rules': <Map<String, Object?>>[
           for (var item in node.rules) item.visit(this) as Map<String, Object?>,
         ],
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -247,14 +231,11 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitHostDirective(HostDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'HostDirective',
+      'class': 'HostDirective',
       if (node.rules.isNotEmpty)
         'rules': <Map<String, Object?>>[
           for (var item in node.rules) item.visit(this) as Map<String, Object?>,
         ],
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -262,12 +243,9 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitPageDirective(PageDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'PageDirective',
+      'class': 'PageDirective',
       if (node.hasIdent) 'hasIdent': node.hasIdent,
       if (node.hasPseudoPage) 'hasPseudoPage': node.hasPseudoPage,
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -275,11 +253,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitCharsetDirective(CharsetDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'CharsetDirective',
+      'class': 'CharsetDirective',
       'charEncoding': node.charEncoding,
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -287,16 +262,13 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitImportDirective(ImportDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ImportDirective',
+      'class': 'ImportDirective',
       'import': node.import,
       if (node.mediaQueries.isNotEmpty)
         'mediaQueries': <Map<String, Object?>>[
           for (var item in node.mediaQueries)
             item.visit(this) as Map<String, Object?>,
         ],
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -304,12 +276,9 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitKeyFrameDirective(KeyFrameDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'KeyFrameDirective',
+      'class': 'KeyFrameDirective',
       if (node.name != null) 'name': node.name!.visit(this),
       if (node.keyFrameName != null) 'keyFrameName': node.keyFrameName!,
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -317,8 +286,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitKeyFrameBlock(KeyFrameBlock node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'KeyFrameBlock',
-      // Expression
+      'class': 'KeyFrameBlock',
     };
   }
 
@@ -326,10 +294,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitFontFaceDirective(FontFaceDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'FontFaceDirective',
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
+      'class': 'FontFaceDirective',
     };
   }
 
@@ -337,7 +302,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitStyletDirective(StyletDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'StyletDirective',
+      'class': 'StyletDirective',
       'dartClassName': node.dartClassName,
       if (node.rules.isNotEmpty)
         'rules': <Map<String, Object?>>[
@@ -345,7 +310,6 @@ class CssToJsonVisitor implements VisitorBase {
         ],
       if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
       if (node.isExtension) 'isExtension': node.isExtension,
-      // Directive
     };
   }
 
@@ -353,11 +317,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitNamespaceDirective(NamespaceDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'NamespaceDirective',
+      'class': 'NamespaceDirective',
       'prefix': node.prefix,
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -366,11 +327,8 @@ class CssToJsonVisitor implements VisitorBase {
       VarDefinitionDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'VarDefinitionDirective',
+      'class': 'VarDefinitionDirective',
       'def': node.def.visit(this),
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -378,7 +336,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitMixinDefinition(MixinDefinition node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'MixinDefinition',
+      'class': 'MixinDefinition',
       'name': node.name,
       if (node.definedArgs.isNotEmpty)
         'definedArgs': <Map<String, Object?>>[
@@ -386,9 +344,6 @@ class CssToJsonVisitor implements VisitorBase {
             item.visit(this) as Map<String, Object?>,
         ],
       if (node.varArgs) 'varArgs': node.varArgs,
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -396,23 +351,12 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitMixinRulesetDirective(MixinRulesetDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'MixinRulesetDirective',
+      'class': 'MixinRulesetDirective',
       if (node.rulesets.isNotEmpty)
         'rulesets': <Map<String, Object?>>[
           for (var item in node.rulesets)
             item.visit(this) as Map<String, Object?>,
         ],
-      // MixinDefinition
-      'name': node.name,
-      if (node.definedArgs.isNotEmpty)
-        'definedArgs': <Map<String, Object?>>[
-          for (var item in node.definedArgs)
-            item.visit(this) as Map<String, Object?>,
-        ],
-      if (node.varArgs) 'varArgs': node.varArgs,
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -421,19 +365,8 @@ class CssToJsonVisitor implements VisitorBase {
       MixinDeclarationDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'MixinDeclarationDirective',
+      'class': 'MixinDeclarationDirective',
       'declarations': node.declarations.visit(this),
-      // MixinDefinition
-      'name': node.name,
-      if (node.definedArgs.isNotEmpty)
-        'definedArgs': <Map<String, Object?>>[
-          for (var item in node.definedArgs)
-            item.visit(this) as Map<String, Object?>,
-        ],
-      if (node.varArgs) 'varArgs': node.varArgs,
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
     };
   }
 
@@ -441,11 +374,9 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitIncludeDirective(IncludeDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'IncludeDirective',
+      'class': 'IncludeDirective',
       'name': node.name,
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
+      // 'args': List<List<Expression>>
     };
   }
 
@@ -453,10 +384,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitContentDirective(ContentDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ContentDirective',
-      // Directive
-      if (node.isBuiltIn) 'isBuiltIn': node.isBuiltIn,
-      if (node.isExtension) 'isExtension': node.isExtension,
+      'class': 'ContentDirective',
     };
   }
 
@@ -464,11 +392,10 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitRuleSet(RuleSet node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'RuleSet',
+      'class': 'RuleSet',
       if (node.selectorGroup != null)
         'selectorGroup': node.selectorGroup!.visit(this),
       'declarationGroup': node.declarationGroup.visit(this),
-      // TopLevelProduction
     };
   }
 
@@ -476,12 +403,13 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitDeclarationGroup(DeclarationGroup node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'DeclarationGroup',
+      'class': 'DeclarationGroup',
       if (node.declarations.isNotEmpty)
         'declarations': <Map<String, Object?>>[
           for (var item in node.declarations)
             item.visit(this) as Map<String, Object?>,
         ],
+      // 'span': dynamic
     };
   }
 
@@ -489,13 +417,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitMarginGroup(MarginGroup node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'MarginGroup',
-      // DeclarationGroup
-      if (node.declarations.isNotEmpty)
-        'declarations': <Map<String, Object?>>[
-          for (var item in node.declarations)
-            item.visit(this) as Map<String, Object?>,
-        ],
+      'class': 'MarginGroup',
+      'margin_sym': node.margin_sym,
     };
   }
 
@@ -503,13 +426,14 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitDeclaration(Declaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'Declaration',
+      'class': 'Declaration',
       if (node.expression != null) 'expression': node.expression!.visit(this),
       if (node.dartStyle != null) 'dartStyle': node.dartStyle!.visit(this),
       if (node.important) 'important': node.important,
       if (node.isIE7) 'isIE7': node.isIE7,
       'property': node.property,
       if (node.hasDartStyle) 'hasDartStyle': node.hasDartStyle,
+      // 'span': dynamic
     };
   }
 
@@ -517,16 +441,9 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitVarDefinition(VarDefinition node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'VarDefinition',
+      'class': 'VarDefinition',
       if (node.badUsage) 'badUsage': node.badUsage,
       'definedName': node.definedName,
-      // Declaration
-      if (node.expression != null) 'expression': node.expression!.visit(this),
-      if (node.dartStyle != null) 'dartStyle': node.dartStyle!.visit(this),
-      if (node.important) 'important': node.important,
-      if (node.isIE7) 'isIE7': node.isIE7,
-      'property': node.property,
-      if (node.hasDartStyle) 'hasDartStyle': node.hasDartStyle,
     };
   }
 
@@ -535,15 +452,8 @@ class CssToJsonVisitor implements VisitorBase {
       IncludeMixinAtDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'IncludeMixinAtDeclaration',
+      'class': 'IncludeMixinAtDeclaration',
       'include': node.include.visit(this),
-      // Declaration
-      if (node.expression != null) 'expression': node.expression!.visit(this),
-      if (node.dartStyle != null) 'dartStyle': node.dartStyle!.visit(this),
-      if (node.important) 'important': node.important,
-      if (node.isIE7) 'isIE7': node.isIE7,
-      'property': node.property,
-      if (node.hasDartStyle) 'hasDartStyle': node.hasDartStyle,
     };
   }
 
@@ -551,19 +461,12 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitExtendDeclaration(ExtendDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ExtendDeclaration',
+      'class': 'ExtendDeclaration',
       if (node.selectors.isNotEmpty)
         'selectors': <Map<String, Object?>>[
           for (var item in node.selectors)
             item.visit(this) as Map<String, Object?>,
         ],
-      // Declaration
-      if (node.expression != null) 'expression': node.expression!.visit(this),
-      if (node.dartStyle != null) 'dartStyle': node.dartStyle!.visit(this),
-      if (node.important) 'important': node.important,
-      if (node.isIE7) 'isIE7': node.isIE7,
-      'property': node.property,
-      if (node.hasDartStyle) 'hasDartStyle': node.hasDartStyle,
     };
   }
 
@@ -571,7 +474,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitSelectorGroup(SelectorGroup node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'SelectorGroup',
+      'class': 'SelectorGroup',
       if (node.selectors.isNotEmpty)
         'selectors': <Map<String, Object?>>[
           for (var item in node.selectors)
@@ -584,12 +487,13 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitSelector(Selector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'Selector',
+      'class': 'Selector',
       if (node.simpleSelectorSequences.isNotEmpty)
         'simpleSelectorSequences': <Map<String, Object?>>[
           for (var item in node.simpleSelectorSequences)
             item.visit(this) as Map<String, Object?>,
         ],
+      'length': node.length,
     };
   }
 
@@ -598,7 +502,8 @@ class CssToJsonVisitor implements VisitorBase {
       SimpleSelectorSequence node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'SimpleSelectorSequence',
+      'class': 'SimpleSelectorSequence',
+      'combinator': node.combinator,
       'simpleSelector': node.simpleSelector.visit(this),
       if (node.isCombinatorNone) 'isCombinatorNone': node.isCombinatorNone,
       if (node.isCombinatorPlus) 'isCombinatorPlus': node.isCombinatorPlus,
@@ -614,7 +519,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitSimpleSelector(SimpleSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'SimpleSelector',
+      'class': 'SimpleSelector',
       'name': node.name,
       if (node.isWildcard) 'isWildcard': node.isWildcard,
       if (node.isThis) 'isThis': node.isThis,
@@ -625,11 +530,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitElementSelector(ElementSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ElementSelector',
-      // SimpleSelector
-      'name': node.name,
-      if (node.isWildcard) 'isWildcard': node.isWildcard,
-      if (node.isThis) 'isThis': node.isThis,
+      'class': 'ElementSelector',
     };
   }
 
@@ -637,16 +538,12 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitNamespaceSelector(NamespaceSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'NamespaceSelector',
+      'class': 'NamespaceSelector',
       'namespace': node.namespace,
       if (node.isNamespaceWildcard)
         'isNamespaceWildcard': node.isNamespaceWildcard,
       if (node.nameAsSimpleSelector != null)
         'nameAsSimpleSelector': node.nameAsSimpleSelector!.visit(this),
-      // SimpleSelector
-      'name': node.name,
-      if (node.isWildcard) 'isWildcard': node.isWildcard,
-      if (node.isThis) 'isThis': node.isThis,
     };
   }
 
@@ -654,11 +551,9 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitAttributeSelector(AttributeSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'AttributeSelector',
-      // SimpleSelector
-      'name': node.name,
-      if (node.isWildcard) 'isWildcard': node.isWildcard,
-      if (node.isThis) 'isThis': node.isThis,
+      'class': 'AttributeSelector',
+      // 'value': dynamic
+      'operatorKind': node.operatorKind,
     };
   }
 
@@ -666,11 +561,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitIdSelector(IdSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'IdSelector',
-      // SimpleSelector
-      'name': node.name,
-      if (node.isWildcard) 'isWildcard': node.isWildcard,
-      if (node.isThis) 'isThis': node.isThis,
+      'class': 'IdSelector',
     };
   }
 
@@ -678,11 +569,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitClassSelector(ClassSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ClassSelector',
-      // SimpleSelector
-      'name': node.name,
-      if (node.isWildcard) 'isWildcard': node.isWildcard,
-      if (node.isThis) 'isThis': node.isThis,
+      'class': 'ClassSelector',
     };
   }
 
@@ -690,11 +577,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitPseudoClassSelector(PseudoClassSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'PseudoClassSelector',
-      // SimpleSelector
-      'name': node.name,
-      if (node.isWildcard) 'isWildcard': node.isWildcard,
-      if (node.isThis) 'isThis': node.isThis,
+      'class': 'PseudoClassSelector',
     };
   }
 
@@ -702,12 +585,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitPseudoElementSelector(PseudoElementSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'PseudoElementSelector',
+      'class': 'PseudoElementSelector',
       if (node.isLegacy) 'isLegacy': node.isLegacy,
-      // SimpleSelector
-      'name': node.name,
-      if (node.isWildcard) 'isWildcard': node.isWildcard,
-      if (node.isThis) 'isThis': node.isThis,
     };
   }
 
@@ -716,15 +595,10 @@ class CssToJsonVisitor implements VisitorBase {
       PseudoClassFunctionSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'PseudoClassFunctionSelector',
+      'class': 'PseudoClassFunctionSelector',
       'argument': node.argument.visit(this),
       'selector': node.selector.visit(this),
       'expression': node.expression.visit(this),
-      // PseudoClassSelector
-      // SimpleSelector
-      'name': node.name,
-      if (node.isWildcard) 'isWildcard': node.isWildcard,
-      if (node.isThis) 'isThis': node.isThis,
     };
   }
 
@@ -733,14 +607,8 @@ class CssToJsonVisitor implements VisitorBase {
       PseudoElementFunctionSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'PseudoElementFunctionSelector',
+      'class': 'PseudoElementFunctionSelector',
       'expression': node.expression.visit(this),
-      // PseudoElementSelector
-      if (node.isLegacy) 'isLegacy': node.isLegacy,
-      // SimpleSelector
-      'name': node.name,
-      if (node.isWildcard) 'isWildcard': node.isWildcard,
-      if (node.isThis) 'isThis': node.isThis,
     };
   }
 
@@ -748,13 +616,9 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitNegationSelector(NegationSelector node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'NegationSelector',
+      'class': 'NegationSelector',
       if (node.negationArg != null)
         'negationArg': node.negationArg!.visit(this),
-      // SimpleSelector
-      'name': node.name,
-      if (node.isWildcard) 'isWildcard': node.isWildcard,
-      if (node.isThis) 'isThis': node.isThis,
     };
   }
 
@@ -762,12 +626,13 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitSelectorExpression(SelectorExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'SelectorExpression',
+      'class': 'SelectorExpression',
       if (node.expressions.isNotEmpty)
         'expressions': <Map<String, Object?>>[
           for (var item in node.expressions)
             item.visit(this) as Map<String, Object?>,
         ],
+      // 'span': dynamic
     };
   }
 
@@ -775,11 +640,10 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitUnicodeRangeTerm(UnicodeRangeTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'UnicodeRangeTerm',
+      'class': 'UnicodeRangeTerm',
       if (node.first != null) 'first': node.first!,
       if (node.second != null) 'second': node.second!,
       if (node.hasSecond) 'hasSecond': node.hasSecond,
-      // Expression
     };
   }
 
@@ -787,9 +651,9 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitLiteralTerm(LiteralTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'LiteralTerm',
+      'class': 'LiteralTerm',
+      // 'value': dynamic
       'text': node.text,
-      // Expression
     };
   }
 
@@ -797,10 +661,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitHexColorTerm(HexColorTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'HexColorTerm',
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'HexColorTerm',
     };
   }
 
@@ -808,10 +669,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitNumberTerm(NumberTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'NumberTerm',
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'NumberTerm',
     };
   }
 
@@ -819,10 +677,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitUnitTerm(UnitTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'UnitTerm',
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'UnitTerm',
+      'unit': node.unit,
     };
   }
 
@@ -830,11 +686,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitLengthTerm(LengthTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'LengthTerm',
-      // UnitTerm
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'LengthTerm',
     };
   }
 
@@ -842,10 +694,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitPercentageTerm(PercentageTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'PercentageTerm',
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'PercentageTerm',
     };
   }
 
@@ -853,10 +702,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitEmTerm(EmTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'EmTerm',
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'EmTerm',
     };
   }
 
@@ -864,10 +710,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitExTerm(ExTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ExTerm',
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'ExTerm',
     };
   }
 
@@ -875,11 +718,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitAngleTerm(AngleTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'AngleTerm',
-      // UnitTerm
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'AngleTerm',
     };
   }
 
@@ -887,11 +726,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitTimeTerm(TimeTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'TimeTerm',
-      // UnitTerm
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'TimeTerm',
     };
   }
 
@@ -899,11 +734,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitFreqTerm(FreqTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'FreqTerm',
-      // UnitTerm
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'FreqTerm',
     };
   }
 
@@ -911,10 +742,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitFractionTerm(FractionTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'FractionTerm',
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'FractionTerm',
     };
   }
 
@@ -922,10 +750,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitUriTerm(UriTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'UriTerm',
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'UriTerm',
     };
   }
 
@@ -933,11 +758,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitResolutionTerm(ResolutionTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ResolutionTerm',
-      // UnitTerm
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'ResolutionTerm',
     };
   }
 
@@ -945,11 +766,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitChTerm(ChTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ChTerm',
-      // UnitTerm
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'ChTerm',
     };
   }
 
@@ -957,11 +774,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitRemTerm(RemTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'RemTerm',
-      // UnitTerm
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'RemTerm',
     };
   }
 
@@ -969,11 +782,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitViewportTerm(ViewportTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ViewportTerm',
-      // UnitTerm
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'ViewportTerm',
     };
   }
 
@@ -981,10 +790,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitFunctionTerm(FunctionTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'FunctionTerm',
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'FunctionTerm',
     };
   }
 
@@ -992,8 +798,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitGroupTerm(GroupTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'GroupTerm',
-      // Expression
+      'class': 'GroupTerm',
     };
   }
 
@@ -1001,11 +806,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitItemTerm(ItemTerm node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ItemTerm',
-      // NumberTerm
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'ItemTerm',
     };
   }
 
@@ -1013,10 +814,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitIE8Term(IE8Term node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'IE8Term',
-      // LiteralTerm
-      'text': node.text,
-      // Expression
+      'class': 'IE8Term',
     };
   }
 
@@ -1024,8 +822,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitOperatorSlash(OperatorSlash node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'OperatorSlash',
-      // Expression
+      'class': 'OperatorSlash',
     };
   }
 
@@ -1033,8 +830,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitOperatorComma(OperatorComma node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'OperatorComma',
-      // Expression
+      'class': 'OperatorComma',
     };
   }
 
@@ -1042,8 +838,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitOperatorPlus(OperatorPlus node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'OperatorPlus',
-      // Expression
+      'class': 'OperatorPlus',
     };
   }
 
@@ -1051,8 +846,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitOperatorMinus(OperatorMinus node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'OperatorMinus',
-      // Expression
+      'class': 'OperatorMinus',
     };
   }
 
@@ -1060,14 +854,13 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitVarUsage(VarUsage node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'VarUsage',
+      'class': 'VarUsage',
       'name': node.name,
       if (node.defaultValues.isNotEmpty)
         'defaultValues': <Map<String, Object?>>[
           for (var item in node.defaultValues)
             item.visit(this) as Map<String, Object?>,
         ],
-      // Expression
     };
   }
 
@@ -1075,13 +868,12 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitExpressions(Expressions node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'Expressions',
+      'class': 'Expressions',
       if (node.expressions.isNotEmpty)
         'expressions': <Map<String, Object?>>[
           for (var item in node.expressions)
             item.visit(this) as Map<String, Object?>,
         ],
-      // Expression
     };
   }
 
@@ -1089,10 +881,10 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitBinaryExpression(BinaryExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'BinaryExpression',
+      'class': 'BinaryExpression',
+      // 'op': Token
       'x': node.x.visit(this),
       'y': node.y.visit(this),
-      // Expression
     };
   }
 
@@ -1100,9 +892,9 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitUnaryExpression(UnaryExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'UnaryExpression',
+      'class': 'UnaryExpression',
+      // 'op': Token
       'self': node.self.visit(this),
-      // Expression
     };
   }
 
@@ -1110,7 +902,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitIdentifier(Identifier node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'Identifier',
+      'class': 'Identifier',
       'name': node.name,
     };
   }
@@ -1119,7 +911,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitWildcard(Wildcard node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'Wildcard',
+      'class': 'Wildcard',
       'name': node.name,
     };
   }
@@ -1128,7 +920,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitThisOperator(ThisOperator node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'ThisOperator',
+      'class': 'ThisOperator',
       'name': node.name,
     };
   }
@@ -1137,7 +929,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitNegation(Negation node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'Negation',
+      'class': 'Negation',
       'name': node.name,
     };
   }
@@ -1146,7 +938,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitDartStyleExpression(DartStyleExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'DartStyleExpression',
+      'class': 'DartStyleExpression',
+      if (node.priority != null) 'priority': node.priority!,
       if (node.isUnknown) 'isUnknown': node.isUnknown,
       if (node.isFont) 'isFont': node.isFont,
       if (node.isMargin) 'isMargin': node.isMargin,
@@ -1155,6 +948,7 @@ class CssToJsonVisitor implements VisitorBase {
       if (node.isHeight) 'isHeight': node.isHeight,
       if (node.isWidth) 'isWidth': node.isWidth,
       if (node.isBoxExpression) 'isBoxExpression': node.isBoxExpression,
+      // 'span': dynamic
     };
   }
 
@@ -1162,16 +956,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitFontExpression(FontExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'FontExpression',
-      // DartStyleExpression
-      if (node.isUnknown) 'isUnknown': node.isUnknown,
-      if (node.isFont) 'isFont': node.isFont,
-      if (node.isMargin) 'isMargin': node.isMargin,
-      if (node.isBorder) 'isBorder': node.isBorder,
-      if (node.isPadding) 'isPadding': node.isPadding,
-      if (node.isHeight) 'isHeight': node.isHeight,
-      if (node.isWidth) 'isWidth': node.isWidth,
-      if (node.isBoxExpression) 'isBoxExpression': node.isBoxExpression,
+      'class': 'FontExpression',
+      // 'font': Font
     };
   }
 
@@ -1179,17 +965,9 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitBoxExpression(BoxExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'BoxExpression',
+      'class': 'BoxExpression',
+      // 'box': BoxEdge?
       'formattedBoxEdge': node.formattedBoxEdge,
-      // DartStyleExpression
-      if (node.isUnknown) 'isUnknown': node.isUnknown,
-      if (node.isFont) 'isFont': node.isFont,
-      if (node.isMargin) 'isMargin': node.isMargin,
-      if (node.isBorder) 'isBorder': node.isBorder,
-      if (node.isPadding) 'isPadding': node.isPadding,
-      if (node.isHeight) 'isHeight': node.isHeight,
-      if (node.isWidth) 'isWidth': node.isWidth,
-      if (node.isBoxExpression) 'isBoxExpression': node.isBoxExpression,
     };
   }
 
@@ -1197,18 +975,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitMarginExpression(MarginExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'MarginExpression',
-      // BoxExpression
-      'formattedBoxEdge': node.formattedBoxEdge,
-      // DartStyleExpression
-      if (node.isUnknown) 'isUnknown': node.isUnknown,
-      if (node.isFont) 'isFont': node.isFont,
-      if (node.isMargin) 'isMargin': node.isMargin,
-      if (node.isBorder) 'isBorder': node.isBorder,
-      if (node.isPadding) 'isPadding': node.isPadding,
-      if (node.isHeight) 'isHeight': node.isHeight,
-      if (node.isWidth) 'isWidth': node.isWidth,
-      if (node.isBoxExpression) 'isBoxExpression': node.isBoxExpression,
+      'class': 'MarginExpression',
     };
   }
 
@@ -1216,18 +983,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitBorderExpression(BorderExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'BorderExpression',
-      // BoxExpression
-      'formattedBoxEdge': node.formattedBoxEdge,
-      // DartStyleExpression
-      if (node.isUnknown) 'isUnknown': node.isUnknown,
-      if (node.isFont) 'isFont': node.isFont,
-      if (node.isMargin) 'isMargin': node.isMargin,
-      if (node.isBorder) 'isBorder': node.isBorder,
-      if (node.isPadding) 'isPadding': node.isPadding,
-      if (node.isHeight) 'isHeight': node.isHeight,
-      if (node.isWidth) 'isWidth': node.isWidth,
-      if (node.isBoxExpression) 'isBoxExpression': node.isBoxExpression,
+      'class': 'BorderExpression',
     };
   }
 
@@ -1235,16 +991,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitHeightExpression(HeightExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'HeightExpression',
-      // DartStyleExpression
-      if (node.isUnknown) 'isUnknown': node.isUnknown,
-      if (node.isFont) 'isFont': node.isFont,
-      if (node.isMargin) 'isMargin': node.isMargin,
-      if (node.isBorder) 'isBorder': node.isBorder,
-      if (node.isPadding) 'isPadding': node.isPadding,
-      if (node.isHeight) 'isHeight': node.isHeight,
-      if (node.isWidth) 'isWidth': node.isWidth,
-      if (node.isBoxExpression) 'isBoxExpression': node.isBoxExpression,
+      'class': 'HeightExpression',
+      // 'height': dynamic
     };
   }
 
@@ -1252,18 +1000,7 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitPaddingExpression(PaddingExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'PaddingExpression',
-      // BoxExpression
-      'formattedBoxEdge': node.formattedBoxEdge,
-      // DartStyleExpression
-      if (node.isUnknown) 'isUnknown': node.isUnknown,
-      if (node.isFont) 'isFont': node.isFont,
-      if (node.isMargin) 'isMargin': node.isMargin,
-      if (node.isBorder) 'isBorder': node.isBorder,
-      if (node.isPadding) 'isPadding': node.isPadding,
-      if (node.isHeight) 'isHeight': node.isHeight,
-      if (node.isWidth) 'isWidth': node.isWidth,
-      if (node.isBoxExpression) 'isBoxExpression': node.isBoxExpression,
+      'class': 'PaddingExpression',
     };
   }
 
@@ -1271,16 +1008,8 @@ class CssToJsonVisitor implements VisitorBase {
   Map<String, Object?> visitWidthExpression(WidthExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'type': 'WidthExpression',
-      // DartStyleExpression
-      if (node.isUnknown) 'isUnknown': node.isUnknown,
-      if (node.isFont) 'isFont': node.isFont,
-      if (node.isMargin) 'isMargin': node.isMargin,
-      if (node.isBorder) 'isBorder': node.isBorder,
-      if (node.isPadding) 'isPadding': node.isPadding,
-      if (node.isHeight) 'isHeight': node.isHeight,
-      if (node.isWidth) 'isWidth': node.isWidth,
-      if (node.isBoxExpression) 'isBoxExpression': node.isBoxExpression,
+      'class': 'WidthExpression',
+      // 'width': dynamic
     };
   }
 }

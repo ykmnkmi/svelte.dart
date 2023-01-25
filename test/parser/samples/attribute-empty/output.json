@@ -20,8 +20,8 @@
 								"start": 8,
 								"end": 8,
 								"type": "Text",
-								"raw": "",
-								"data": ""
+								"data": "",
+								"raw": ""
 							}
 						]
 					},
@@ -42,7 +42,8 @@
 									"value": "",
 									"contentsEnd": 14,
 									"contentsOffset": 14,
-									"isSingleQuoted": true
+									"isSingleQuoted": true,
+									"stringValue": ""
 								}
 							}
 						]
@@ -57,8 +58,8 @@
 								"start": 20,
 								"end": 20,
 								"type": "Text",
-								"raw": "",
-								"data": ""
+								"data": "",
+								"raw": ""
 							}
 						]
 					},
@@ -79,7 +80,8 @@
 									"value": "",
 									"contentsEnd": 27,
 									"contentsOffset": 27,
-									"isSingleQuoted": true
+									"isSingleQuoted": true,
+									"stringValue": ""
 								}
 							}
 						]

@@ -12,7 +12,8 @@
 					"start": 7,
 					"end": 12,
 					"class": "SimpleIdentifier",
-					"name": "todos"
+					"name": "todos",
+					"isAssignable": true
 				},
 				"children": [
 					{
@@ -29,7 +30,8 @@
 									"start": 37,
 									"end": 41,
 									"class": "SimpleIdentifier",
-									"name": "todo"
+									"name": "todo",
+									"isAssignable": true
 								}
 							}
 						]
@@ -39,7 +41,8 @@
 					"start": 16,
 					"end": 20,
 					"class": "SimpleIdentifier",
-					"name": "todo"
+					"name": "todo",
+					"isAssignable": true
 				},
 				"key": {
 					"start": 22,
@@ -49,15 +52,18 @@
 						"start": 27,
 						"end": 29,
 						"class": "SimpleIdentifier",
-						"name": "id"
+						"name": "id",
+						"isAssignable": true
 					},
 					"prefix": {
 						"start": 22,
 						"end": 26,
 						"class": "SimpleIdentifier",
-						"name": "todo"
+						"name": "todo",
+						"isAssignable": true
 					},
-					"name": "todo.id"
+					"name": "todo.id",
+					"isAssignable": true
 				}
 			}
 		]

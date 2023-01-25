@@ -16,7 +16,8 @@
 						"start": 5,
 						"end": 10,
 						"class": "SimpleIdentifier",
-						"name": "depth"
+						"name": "depth",
+						"isAssignable": true
 					},
 					"rightOperand": {
 						"start": 13,
@@ -50,7 +51,8 @@
 												"start": 38,
 												"end": 43,
 												"class": "SimpleIdentifier",
-												"name": "depth"
+												"name": "depth",
+												"isAssignable": true
 											},
 											"rightOperand": {
 												"start": 46,

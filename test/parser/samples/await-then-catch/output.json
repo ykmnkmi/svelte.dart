@@ -12,19 +12,22 @@
 					"start": 8,
 					"end": 18,
 					"class": "SimpleIdentifier",
-					"name": "thePromise"
+					"name": "thePromise",
+					"isAssignable": true
 				},
 				"value": {
 					"start": 46,
 					"end": 54,
 					"class": "SimpleIdentifier",
-					"name": "theValue"
+					"name": "theValue",
+					"isAssignable": true
 				},
 				"error": {
 					"start": 96,
 					"end": 104,
 					"class": "SimpleIdentifier",
-					"name": "theError"
+					"name": "theError",
+					"isAssignable": true
 				},
 				"pending": {
 					"start": 19,
@@ -95,7 +98,8 @@
 										"start": 74,
 										"end": 82,
 										"class": "SimpleIdentifier",
-										"name": "theValue"
+										"name": "theValue",
+										"isAssignable": true
 									}
 								}
 							]
@@ -146,15 +150,18 @@
 											"start": 127,
 											"end": 134,
 											"class": "SimpleIdentifier",
-											"name": "message"
+											"name": "message",
+											"isAssignable": true
 										},
 										"prefix": {
 											"start": 118,
 											"end": 126,
 											"class": "SimpleIdentifier",
-											"name": "theError"
+											"name": "theError",
+											"isAssignable": true
 										},
-										"name": "theError.message"
+										"name": "theError.message",
+										"isAssignable": true
 									}
 								}
 							]

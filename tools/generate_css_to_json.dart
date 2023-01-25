@@ -1,56 +1,38 @@
 import 'dart:io';
-import 'dart:isolate';
 
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
-import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 
+import 'shared/utils.dart';
+
+// TODO(css2json): serialize Font, ...
 Future<void> main() async {
-  var cssUri = Uri(scheme: 'package', path: 'csslib/visitor.dart');
-  var cssFileUri = await Isolate.resolvePackageUri(cssUri);
+  var cssRoot = await getRoot('csslib');
 
-  if (cssFileUri == null) {
-    throw Exception('ast uri is not resolved');
-  }
-
-  var cssFile = File.fromUri(cssFileUri);
-  cssFile = cssFile.absolute;
-
-  var includedPaths = <String>[cssFile.path];
+  var includedPaths = <String>[cssRoot.path];
   var collection = AnalysisContextCollection(includedPaths: includedPaths);
 
-  var context = collection.contextFor(cssFile.path);
+  var context = collection.contextFor(cssRoot.path);
   var session = context.currentSession;
-  var resolvedUnit = await session.getResolvedUnit(cssFile.path);
 
-  if (resolvedUnit is! ResolvedUnitResult) {
-    throw Exception('library is not resolved');
-  }
+  var visitorUri = Uri(path: 'lib/visitor.dart');
+  visitorUri = cssRoot.uri.resolveUri(visitorUri);
 
-  var library = resolvedUnit.libraryElement;
-  var treeNodeClass = library.getClass('TreeNode');
+  var library = await getLibrary(session, visitorUri);
+  var typeProvider = library.typeProvider;
+  var typeSystem = library.typeSystem;
 
-  if (treeNodeClass == null) {
-    throw Exception('TreeNode is not resolved');
-  }
-
-  var typeProvider = resolvedUnit.typeProvider;
-  var typeSystem = resolvedUnit.typeSystem;
+  var treeNodeClass = getClass(library, 'TreeNode');
+  var visitorBaseClass = getClass(library, 'VisitorBase');
 
   var treeNodeType = typeSystem.instantiateInterfaceToBounds(
     element: treeNodeClass,
     nullabilitySuffix: NullabilitySuffix.question,
   );
 
-  var treeNodeListType = typeProvider.listType(treeNodeType);
-
-  var visitorBaseClass = library.getClass('VisitorBase');
-
-  if (visitorBaseClass == null) {
-    throw Exception('Visitor is not resolved');
-  }
+  var treeNodeListType = typeProvider.listType(treeNodeClass.thisType);
 
   bool isBool(DartType type) {
     return type.isDartCoreBool;
@@ -61,7 +43,7 @@ Future<void> main() async {
   }
 
   bool isNum(DartType type) {
-    return type.isDartCoreNum;
+    return type.isDartCoreInt || type.isDartCoreDouble || type.isDartCoreNum;
   }
 
   bool isString(DartType type) {
@@ -82,7 +64,7 @@ Future<void> main() async {
 
   void writeFields(InterfaceElement interface, Set<String> writed) {
     for (var accessor in interface.accessors) {
-      if (accessor.hasDeprecated || accessor.isPrivate) {
+      if (accessor.hasDeprecated || accessor.isPrivate || accessor.isStatic) {
         continue;
       }
 
@@ -119,6 +101,8 @@ Future<void> main() async {
             ..write(
                 '\n          for (var item in node.$name) item.visit(this) as Map<String, Object?>,')
             ..write('\n        ],');
+        } else {
+          sink.write("\n     // '$name': $returnType");
         }
 
         writed.add(name);
@@ -126,11 +110,25 @@ Future<void> main() async {
     }
   }
 
+  void writeSuperFields(InterfaceType type, String parent, Set<String> writed) {
+    for (var interface in type.interfaces) {
+      var name = interface.getDisplayString(withNullability: false);
+
+      if (name == 'TreeNode' || name == 'Object') {
+        continue;
+      }
+
+      sink.write('\n      // $parent - $name');
+      writeFields(interface.element, writed);
+      writeSuperFields(interface, name, writed);
+    }
+  }
+
   for (var method in visitorBaseClass.methods) {
     if (method.name.startsWith('visit')) {
       var type = method.parameters.first.type as InterfaceType;
 
-      if (!typeSystem.isSubtypeOf(type, treeNodeType)) {
+      if (!isTreeNode(type)) {
         continue;
       }
 
@@ -142,30 +140,12 @@ Future<void> main() async {
         ..write('\n  Map<String, Object?> visit$name($name node) {')
         ..write('\n    return <String, Object?>{')
         ..write('\n      ...getLocation(node),')
-        ..write("\n      'type': '$name',");
+        ..write("\n      'class': '$name',");
 
-      var writed = <String>{
-        // null check on null
-        // 'isQualified',
-
-        // stack overflow
-        // 'nullShortingTermination',
-        // 'unlabeled',
-        // 'unParenthesized',
-      };
+      var writed = <String>{};
 
       writeFields(type.element, writed);
-
-      for (var interface in type.allSupertypes) {
-        var name = interface.getDisplayString(withNullability: false);
-
-        if (name == 'TreeNode') {
-          break;
-        }
-
-        sink.write('\n      // $name');
-        writeFields(interface.element, writed);
-      }
+      writeSuperFields(type, name, writed);
 
       sink
         ..write('\n    };')

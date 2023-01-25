@@ -27,7 +27,8 @@
 									"start": 28,
 									"end": 35,
 									"class": "SimpleIdentifier",
-									"name": "myColor"
+									"name": "myColor",
+									"isAssignable": true
 								}
 							}
 						]

@@ -16,7 +16,8 @@
 						"start": 5,
 						"end": 6,
 						"class": "SimpleIdentifier",
-						"name": "x"
+						"name": "x",
+						"isAssignable": true
 					},
 					"rightOperand": {
 						"start": 9,
@@ -59,7 +60,8 @@
 									"start": 52,
 									"end": 53,
 									"class": "SimpleIdentifier",
-									"name": "x"
+									"name": "x",
+									"isAssignable": true
 								},
 								"rightOperand": {
 									"start": 56,

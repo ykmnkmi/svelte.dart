@@ -26,7 +26,8 @@
 							"start": 49,
 							"end": 52,
 							"class": "SimpleIdentifier",
-							"name": "foo"
+							"name": "foo",
+							"isAssignable": true
 						}
 					}
 				]

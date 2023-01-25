@@ -28,7 +28,8 @@
 										"start": 17,
 										"end": 24,
 										"class": "SimpleIdentifier",
-										"name": "opacity"
+										"name": "opacity",
+										"isAssignable": true
 									},
 									"value": {
 										"start": 26,

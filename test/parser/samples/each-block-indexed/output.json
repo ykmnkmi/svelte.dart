@@ -12,7 +12,8 @@
 					"start": 7,
 					"end": 14,
 					"class": "SimpleIdentifier",
-					"name": "animals"
+					"name": "animals",
+					"isAssignable": true
 				},
 				"children": [
 					{
@@ -29,7 +30,8 @@
 									"start": 34,
 									"end": 35,
 									"class": "SimpleIdentifier",
-									"name": "i"
+									"name": "i",
+									"isAssignable": true
 								}
 							},
 							{
@@ -47,7 +49,8 @@
 									"start": 39,
 									"end": 45,
 									"class": "SimpleIdentifier",
-									"name": "animal"
+									"name": "animal",
+									"isAssignable": true
 								}
 							}
 						]
@@ -57,7 +60,8 @@
 					"start": 18,
 					"end": 24,
 					"class": "SimpleIdentifier",
-					"name": "animal"
+					"name": "animal",
+					"isAssignable": true
 				},
 				"index": "i"
 			}

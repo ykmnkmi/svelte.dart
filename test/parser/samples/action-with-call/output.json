@@ -23,7 +23,8 @@
 								"start": 21,
 								"end": 22,
 								"class": "SimpleIdentifier",
-								"name": "t"
+								"name": "t",
+								"isAssignable": true
 							},
 							"argumentList": {
 								"start": 22,
@@ -37,7 +38,8 @@
 										"value": "tooltip msg",
 										"contentsEnd": 35,
 										"contentsOffset": 24,
-										"isSingleQuoted": true
+										"isSingleQuoted": true,
+										"stringValue": "tooltip msg"
 									}
 								]
 							},
@@ -45,7 +47,8 @@
 								"start": 21,
 								"end": 22,
 								"class": "SimpleIdentifier",
-								"name": "t"
+								"name": "t",
+								"isAssignable": true
 							}
 						}
 					}

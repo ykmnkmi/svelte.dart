@@ -14,8 +14,8 @@
 						"start": 3,
 						"end": 4,
 						"type": "Text",
-						"raw": " ",
-						"data": " "
+						"data": " ",
+						"raw": " "
 					},
 					{
 						"start": 4,
@@ -25,15 +25,16 @@
 							"start": 11,
 							"end": 15,
 							"class": "SimpleIdentifier",
-							"name": "raw1"
+							"name": "raw1",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 16,
 						"end": 17,
 						"type": "Text",
-						"raw": " ",
-						"data": " "
+						"data": " ",
+						"raw": " "
 					},
 					{
 						"start": 17,
@@ -43,15 +44,16 @@
 							"start": 24,
 							"end": 28,
 							"class": "SimpleIdentifier",
-							"name": "raw2"
+							"name": "raw2",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 29,
 						"end": 30,
 						"type": "Text",
-						"raw": " ",
-						"data": " "
+						"data": " ",
+						"raw": " "
 					}
 				]
 			}

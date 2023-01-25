@@ -19,7 +19,8 @@
 							"start": 20,
 							"end": 27,
 							"class": "SimpleIdentifier",
-							"name": "message"
+							"name": "message",
+							"isAssignable": true
 						}
 					}
 				]

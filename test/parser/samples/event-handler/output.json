@@ -31,7 +31,8 @@
 										"start": 25,
 										"end": 32,
 										"class": "SimpleIdentifier",
-										"name": "visible"
+										"name": "visible",
+										"isAssignable": true
 									},
 									"rightHandSide": {
 										"start": 35,
@@ -41,7 +42,8 @@
 											"start": 36,
 											"end": 43,
 											"class": "SimpleIdentifier",
-											"name": "visible"
+											"name": "visible",
+											"isAssignable": true
 										}
 									}
 								},
@@ -80,7 +82,8 @@
 					"start": 68,
 					"end": 75,
 					"class": "SimpleIdentifier",
-					"name": "visible"
+					"name": "visible",
+					"isAssignable": true
 				},
 				"children": [
 					{
