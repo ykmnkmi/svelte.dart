@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:meta/meta.dart';
 
@@ -15,29 +14,13 @@ List<Component> dirtyComponents = <Component>[];
 bool updateScheduled = false;
 
 @protected
-void update(Component component) {
-  component.onChanges();
-
-  var changed = component.dirty;
-
-  component
-    ..beforeUpdate()
-    ..dirty = HashSet<String>()
-    ..fragment.update(changed);
-
-  addRenderCallback(component.afterUpdate);
-}
-
-@protected
 void flush() {
-  assert(updateScheduled);
-
   do {
     var components = dirtyComponents;
     dirtyComponents = <Component>[];
 
     for (var i = 0; i < components.length; i += 1) {
-      update(components[i]);
+      updateComponent(components[i]);
     }
 
     var callbacks = renderCallbacks;

@@ -1,12 +1,10 @@
-import 'dart:html';
+import 'dart:html' show Element, Node, document;
 
-import 'package:svelte/runtime.dart';
+import 'package:svelte/src/runtime/component.dart';
+import 'package:svelte/src/runtime/utilities.dart';
 
-void Function() runApp(Component component, {Element? target, Node? anchor}) {
+void runApp(Component component, {Element? target, Node? anchor}) {
   target ??= unsafeCast<Element>(document.body);
   createComponent(component);
   mountComponent(component, target, anchor);
-  return () {
-    destroyComponent(component, true);
-  };
 }

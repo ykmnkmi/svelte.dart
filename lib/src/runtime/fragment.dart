@@ -7,7 +7,7 @@ abstract class Fragment {
 
   void mount(Element target, Node? anchor) {}
 
-  void update(Set<String> dirty) {}
+  void update(List<int> dirty) {}
 
   void detach(bool detaching) {}
 }

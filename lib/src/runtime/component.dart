@@ -1,58 +1,78 @@
-import 'dart:collection';
-import 'dart:html';
+import 'dart:html' show Element, Node;
 
 import 'package:svelte/src/runtime/fragment.dart';
 import 'package:svelte/src/runtime/scheduler.dart';
 
 abstract class Component {
-  Fragment get fragment;
+  List<int> _dirty = <int>[-1];
 
-  // TODO(runtime): use bitmask
-  Set<String> dirty = HashSet<String>();
+  Fragment get _fragment;
 
-  void markDirty(String name) {
-    if (dirty.isEmpty) {
-      scheduleUpdateFor(this);
-    }
+  List<Object?> get _values;
 
-    dirty.add(name);
+  void _onChanges() {}
+
+  void _onMount() {}
+
+  void _beforeUpdate() {}
+
+  void _afterUpdate() {}
+
+  void _onDestroy() {}
+
+  void destroy() {
+    destroyComponent(this, true);
   }
-
-  // TODO(runtime): use bitmask
-  void invalidate(String name, Object? oldValue, Object? newValue) {
-    if (identical(oldValue, newValue)) {
-      return;
-    }
-
-    markDirty(name);
-  }
-
-  void onChanges() {}
-
-  void onMount() {}
-
-  void beforeUpdate() {}
-
-  void afterUpdate() {}
-
-  void onDestroy() {}
 }
 
 void createComponent(Component component) {
   component
-    ..onChanges()
-    ..beforeUpdate()
-    ..fragment.create();
+    .._onChanges()
+    .._beforeUpdate()
+    .._fragment.create();
 }
 
 void mountComponent(Component component, Element target, [Node? anchor]) {
-  component.fragment.mount(target, anchor);
-  addRenderCallback(component.onMount);
-  addRenderCallback(component.afterUpdate);
+  component._fragment.mount(target, anchor);
+  addRenderCallback(component._onMount);
+  addRenderCallback(component._afterUpdate);
+}
+
+void makeComponentDirty(Component component, int index) {
+  var dirty = component._dirty;
+
+  if (dirty[0] == -1) {
+    dirtyComponents.add(component);
+    scheduleUpdate();
+    dirty.fillRange(0, dirty.length, 0);
+  }
+}
+
+void invalidateComponent(Component component, int index, Object? value) {
+  var values = component._values;
+  if (identical(values[index], value)) {
+    return;
+  }
+
+  values[index] = value;
+  makeComponentDirty(component, index);
+}
+
+void updateComponent(Component component) {
+  component._onChanges();
+
+  var dirty = component._dirty;
+
+  component
+    .._beforeUpdate()
+    .._dirty = <int>[-1]
+    .._fragment.update(dirty);
+
+  addRenderCallback(component._afterUpdate);
 }
 
 void destroyComponent(Component component, bool detaching) {
   component
-    ..onDestroy()
-    ..fragment.detach(detaching);
+    .._onDestroy()
+    .._fragment.detach(detaching);
 }
