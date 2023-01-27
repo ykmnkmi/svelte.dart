@@ -1,7 +1,7 @@
-import 'package:svelte/svelte.dart';
+import 'dart:html';
 
-import 'nested.dart';
+import 'examples/hello_world/hello_world.dart';
 
 void main() {
-  runApp(Nested());
+  HelloWorld(target: document.body);
 }

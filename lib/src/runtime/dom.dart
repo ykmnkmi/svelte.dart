@@ -1,56 +1,50 @@
-import 'dart:html';
+import 'dart:async' show FutureOr;
+import 'dart:html' show Element, Event, EventListener, EventTarget, Node, Text;
 
-import 'package:meta/dart2js.dart';
 import 'package:svelte/src/runtime/utilities.dart';
 
-@noInline
 T element<T extends Element>(String tag) {
   return unsafeCast<T>(Element.tag(tag));
 }
 
-@noInline
 Text empty() {
   return text('');
 }
 
-@noInline
 Text space() {
   return text(' ');
 }
 
-@noInline
 Text text(String text) {
   return Text(text);
 }
 
-@noInline
 void setData(Text text, String? data) {
   text.data = data;
 }
 
-@noInline
 void updateData(Text text, String? data) {
   if (text.wholeText != data) {
     text.data = data;
   }
 }
 
-@noInline
+void setText(Node node, String? data) {
+  node.text = data;
+}
+
 String? getAttribute(Element element, String attribute) {
   return element.getAttribute(attribute);
 }
 
-@noInline
 void setAttribute(Element element, String attribute, Object value) {
   element.setAttribute(attribute, value);
 }
 
-@noInline
 void removeAttribute(Element element, String attribute) {
   element.removeAttribute(attribute);
 }
 
-@noInline
 void updateAttribute(Element element, String attribute, Object? value) {
   if (value == null) {
     removeAttribute(element, attribute);
@@ -59,34 +53,28 @@ void updateAttribute(Element element, String attribute, Object? value) {
   }
 }
 
-@noInline
 void insert(Node node, Node child, [Node? anchor]) {
   node.insertBefore(child, anchor);
 }
 
-@noInline
 void append(Node node, Node child) {
   node.append(child);
 }
 
-@noInline
-EventListener eventListener(void Function() function) {
+EventListener listener(FutureOr<void> Function() function) {
   return (Event event) {
     function();
   };
 }
 
-@noInline
 void listen(EventTarget target, String type, EventListener listener) {
   target.addEventListener(type, listener);
 }
 
-@noInline
 void cancel(EventTarget target, String type, EventListener listener) {
   target.removeEventListener(type, listener);
 }
 
-@noInline
 void remove(Node node) {
   node.remove();
 }
