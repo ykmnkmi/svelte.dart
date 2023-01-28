@@ -1,7 +1,9 @@
 import 'dart:html';
 
-import 'examples/hello_world/hello_world.dart';
+import 'package:svelte/svelte.dart';
+
+import 'examples/nested_components/app.dart';
 
 void main() {
-  HelloWorld(target: document.body);
+  App(Options(document.body));
 }

@@ -6,6 +6,6 @@ void noop() {
 
 @tryInline
 @pragma('dart2js:as:trust')
-T unsafeCast<T>(Object? object) {
+T unsafeCast<T extends Object?>(Object? object) {
   return object as T;
 }

@@ -5,7 +5,7 @@ Component? currentComponent;
 
 Component getCurrentComponent() {
   assert(currentComponent != null);
-  return unsafeCast<Component>(currentComponent);
+  return unsafeCast(currentComponent);
 }
 
 void setCurrentComponent(Component? component) {

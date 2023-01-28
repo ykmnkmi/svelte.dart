@@ -4,16 +4,16 @@ import 'package:svelte/runtime.dart';
 
 var name = 'world';
 
-Fragment createFragment(List<Object?> values) {
-  return HelloWorldFragment();
+Fragment createFragment(List<Object?>? values) {
+  return AppFragment();
 }
 
-class HelloWorldFragment extends Fragment {
+class AppFragment extends Fragment {
   late HeadingElement h1;
 
   @override
   void create() {
-    h1 = element<HeadingElement>('h1');
+    h1 = element('h1');
     setText(h1, 'Hello $name!');
   }
 
@@ -30,8 +30,8 @@ class HelloWorldFragment extends Fragment {
   }
 }
 
-class HelloWorld extends Component {
-  HelloWorld({Element? target, Node? anchor}) {
-    init(this, target, anchor, null, createFragment);
+class App extends Component {
+  App(Options options) {
+    init(this, options, null, createFragment);
   }
 }

@@ -2,7 +2,6 @@ global_options:
   build_web_compilers|entrypoint:
     options:
       native_null_assertions: false
-      sound_null_safety: true
       dart2js_args:
         # - -O0
         # - --verbose

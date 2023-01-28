@@ -1,10 +1,13 @@
+@TestOn('vm')
+library;
+
 import 'dart:convert' show JsonEncoder, json;
 import 'dart:io' show Directory, File;
 
 import 'package:svelte/compiler.dart' show parse;
 import 'package:svelte/src/compiler/parser/errors.dart' show ParseError;
 import 'package:svelte/src/compiler/parser/parser.dart' show CssMode;
-import 'package:test/test.dart' show equals, expect, group, test;
+import 'package:test/test.dart' show TestOn, equals, expect, group, test;
 
 const JsonEncoder encoder = JsonEncoder.withIndent('\t');
 
