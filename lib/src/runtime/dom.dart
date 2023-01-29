@@ -41,6 +41,12 @@ void setText(Node node, String? text) {
 }
 
 @noInline
+void setInnerHtml(Element element, String? html) {
+  var jsElement = element as JSElement;
+  jsElement.innerHtml = html;
+}
+
+@noInline
 String? getAttribute(Element element, String attribute) {
   return element.getAttribute(attribute);
 }
@@ -77,8 +83,9 @@ void append(Node node, Node child) {
 @noInline
 void appendStyles(Node target, String styleSheetId, String styles) {
   var appendStylesTo = getRootForStyle(target);
+  var jsAppendStylesTo = appendStylesTo as JSDocumentOrShadowRoot;
 
-  if (appendStylesTo.getElementById(styleSheetId) == null) {
+  if (jsAppendStylesTo.getElementById(styleSheetId) == null) {
     var style = element<StyleElement>('style');
     style.id = styleSheetId;
     style.text = styles;
@@ -96,7 +103,7 @@ void appendStyleSheet(Node node, StyleElement style) {
 }
 
 @noInline
-DocumentOrShadowRoot getRootForStyle(Node node) {
+Node getRootForStyle(Node node) {
   var root = node.getRootNode();
 
   if (root is ShadowRoot && root.host != null) {
@@ -130,8 +137,17 @@ void remove(Node node) {
 
 @JS()
 @staticInterop
-abstract class DocumentOrShadowRoot {}
+abstract class JSDocumentOrShadowRoot {}
 
-extension on DocumentOrShadowRoot {
+extension on JSDocumentOrShadowRoot {
   external Element? getElementById(String elementId);
+}
+
+@JS()
+@staticInterop
+abstract class JSElement {}
+
+extension on JSElement {
+  @JS('innerHTML')
+  external set innerHtml(String? innerHtml);
 }

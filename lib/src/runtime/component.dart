@@ -1,27 +1,30 @@
 import 'dart:html';
 
 import 'package:meta/dart2js.dart' show noInline;
+import 'package:meta/meta.dart' show internal;
 import 'package:svelte/src/runtime/fragment.dart';
 import 'package:svelte/src/runtime/lifecycle.dart';
 import 'package:svelte/src/runtime/scheduler.dart';
 import 'package:svelte/src/runtime/state.dart';
 
 abstract class Component {
-  final State _state = State();
+  @internal
+  final State state = State();
 
-  bool _destroyed = false;
+  @internal
+  bool destroyed = false;
 
   bool get isDestroyed {
-    return _destroyed;
+    return destroyed;
   }
 
   void destroy() {
-    if (_destroyed) {
+    if (destroyed) {
       return;
     }
 
     destroyComponent(this, true);
-    _destroyed = true;
+    destroyed = true;
   }
 }
 
@@ -44,25 +47,29 @@ class Options {
 }
 
 @noInline
-void init(
-  Component component,
+void init<T extends Component>(
+  T component,
   Options options, [
-  Instance? instance,
+  InstanceFactory<T>? instance,
   FragmentFactory? createFragment,
   void Function(Element)? appendStyles,
 ]) {
   var parentComponent = currentComponent;
   setCurrentComponent(component);
 
-  var state = component._state
-    ..fragment = null
-    ..instance = <Object?>[]
-    ..root = options.target ?? parentComponent?._state.root;
+  var state = component.state
+    // ..fragment = null
+    // ..instance = <Object?>[]
+    ..root = options.target ?? parentComponent?.state.root;
 
   var target = options.target;
 
   if (target != null && appendStyles != null) {
     appendStyles(target);
+  }
+
+  if (instance != null) {
+    state.instance = instance(component);
   }
 
   if (createFragment != null) {
@@ -89,17 +96,17 @@ void init(
 
 @noInline
 void createComponent(Component component) {
-  component._state.fragment?.create();
+  component.state.fragment?.create();
 }
 
 @noInline
 void mountComponent(Component component, Element target, [Node? anchor]) {
-  component._state.fragment?.mount(target, anchor);
+  component.state.fragment?.mount(target, anchor);
 }
 
 @noInline
 void destroyComponent(Component component, bool detaching) {
-  component._state
+  component.state
     ..fragment?.detach(detaching)
     ..fragment = null
     ..instance = <Object?>[];

@@ -11,7 +11,7 @@ global_options:
         # - -O1
 
         # - -O2
-        - --minify
+        # - --minify
         - --lax-runtime-type-to-string
         - --omit-late-names
 

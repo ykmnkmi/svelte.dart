@@ -1,6 +1,8 @@
 import 'dart:html';
 
-typedef FragmentFactory = Fragment Function(List<Object?>? values);
+import 'package:svelte/src/runtime/state.dart';
+
+typedef FragmentFactory = Fragment Function(Instance instance);
 
 abstract class Fragment {
   void create() {}
