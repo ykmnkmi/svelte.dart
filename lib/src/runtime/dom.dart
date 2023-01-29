@@ -29,20 +29,13 @@ void setData(Text text, String data) {
 }
 
 @noInline
-void updateData(Text text, String data) {
-  if (text.wholeText != data) {
-    text.data = data;
-  }
-}
-
-@noInline
 void setText(Node node, String? text) {
   node.text = text;
 }
 
 @noInline
 void setInnerHtml(Element element, String? html) {
-  var jsElement = element as JSElement;
+  var jsElement = unsafeCast<JSElement>(element);
   jsElement.innerHtml = html;
 }
 
@@ -83,7 +76,7 @@ void append(Node node, Node child) {
 @noInline
 void appendStyles(Node target, String styleSheetId, String styles) {
   var appendStylesTo = getRootForStyle(target);
-  var jsAppendStylesTo = appendStylesTo as JSDocumentOrShadowRoot;
+  var jsAppendStylesTo = unsafeCast<JSDocumentOrShadowRoot>(appendStylesTo);
 
   if (jsAppendStylesTo.getElementById(styleSheetId) == null) {
     var style = element<StyleElement>('style');
@@ -107,10 +100,10 @@ Node getRootForStyle(Node node) {
   var root = node.getRootNode();
 
   if (root is ShadowRoot && root.host != null) {
-    return unsafeCast(root);
+    return root;
   }
 
-  return unsafeCast(node.ownerDocument);
+  return unsafeCast<Node>(node.ownerDocument);
 }
 
 @noInline
@@ -121,13 +114,12 @@ EventListener listener(FutureOr<void> Function() function) {
 }
 
 @noInline
-void listen(EventTarget target, String type, EventListener listener) {
+VoidCallback listen(EventTarget target, String type, EventListener listener) {
   target.addEventListener(type, listener);
-}
 
-@noInline
-void cancel(EventTarget target, String type, EventListener listener) {
-  target.removeEventListener(type, listener);
+  return () {
+    target.removeEventListener(type, listener);
+  };
 }
 
 @noInline

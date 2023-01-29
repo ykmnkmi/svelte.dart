@@ -32,13 +32,18 @@ class AppFragment extends Fragment {
   }
 }
 
-Instance createInstance(App component) {
+Instance createInstance(App component, Invalidate invalidate) {
   var string = "here's some <strong>HTML!!!</strong>";
   return <Object?>[string];
 }
 
 class App extends Component {
   App(Options options) {
-    init(this, options, createInstance, createFragment);
+    init<App>(
+      component: this,
+      options: options,
+      createInstance: createInstance,
+      createFragment: createFragment,
+    );
   }
 }

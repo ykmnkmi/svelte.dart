@@ -2,36 +2,42 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-var name = 'world';
+var src = '/tutorial/image.gif';
+var name = 'Rick Astley';
 
 Fragment createFragment(List<Object?>? values) {
   return AppFragment();
 }
 
 class AppFragment extends Fragment {
-  late HeadingElement h1;
+  late ImageElement img;
 
   @override
   void create() {
-    h1 = element('h1');
-    setText(h1, 'Hello $name!');
+    img = element('img');
+    setAttribute(img, 'src', src);
+    setAttribute(img, 'alt', '$name dancing');
   }
 
   @override
   void mount(target, anchor) {
-    insert(target, h1, anchor);
+    insert(target, img, anchor);
   }
 
   @override
   void detach(bool detaching) {
     if (detaching) {
-      remove(h1);
+      remove(img);
     }
   }
 }
 
 class App extends Component {
   App(Options options) {
-    init(this, options, null, createFragment);
+    init<App>(
+      component: this,
+      options: options,
+      createFragment: createFragment,
+    );
   }
 }

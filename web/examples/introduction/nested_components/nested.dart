@@ -32,6 +32,10 @@ class NestedFragment extends Fragment {
 
 class Nested extends Component {
   Nested(Options options) {
-    init(this, options, null, createFragment);
+    init<Nested>(
+      component: this,
+      options: options,
+      createFragment: createFragment,
+    );
   }
 }

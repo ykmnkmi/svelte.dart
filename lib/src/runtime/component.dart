@@ -5,7 +5,21 @@ import 'package:meta/meta.dart' show internal;
 import 'package:svelte/src/runtime/fragment.dart';
 import 'package:svelte/src/runtime/lifecycle.dart';
 import 'package:svelte/src/runtime/scheduler.dart';
-import 'package:svelte/src/runtime/state.dart';
+
+typedef Instance = List<Object?>;
+
+typedef Invalidate = void Function(int index, Object? value);
+
+// TODO(runtime): replace with records
+class State {
+  Fragment? fragment;
+
+  late Instance instance;
+
+  late int dirty;
+
+  Element? root;
+}
 
 abstract class Component {
   @internal
@@ -47,19 +61,21 @@ class Options {
 }
 
 @noInline
-void init<T extends Component>(
-  T component,
-  Options options, [
-  InstanceFactory<T>? instance,
-  FragmentFactory? createFragment,
-  void Function(Element)? appendStyles,
-]) {
+void init<T extends Component>({
+  required T component,
+  required Options options,
+  Instance Function(T component, Invalidate invalidate)? createInstance,
+  Fragment Function(Instance instance)? createFragment,
+  void Function(Element target)? appendStyles,
+  int dirty = -1,
+}) {
   var parentComponent = currentComponent;
   setCurrentComponent(component);
 
   var state = component.state
     // ..fragment = null
-    // ..instance = <Object?>[]
+    ..instance = <Object?>[]
+    ..dirty = dirty
     ..root = options.target ?? parentComponent?.state.root;
 
   var target = options.target;
@@ -68,9 +84,21 @@ void init<T extends Component>(
     appendStyles(target);
   }
 
-  if (instance != null) {
-    state.instance = instance(component);
+  var ready = false;
+
+  if (createInstance != null) {
+    void invalidate(int index, Object? value) {
+      if (state.instance[index] != (state.instance[index] = value)) {
+        if (ready) {
+          makeComponentDirty(component, index);
+        }
+      }
+    }
+
+    state.instance = createInstance(component, invalidate);
   }
+
+  ready = true;
 
   if (createFragment != null) {
     state.fragment = createFragment(state.instance);
@@ -102,6 +130,27 @@ void createComponent(Component component) {
 @noInline
 void mountComponent(Component component, Element target, [Node? anchor]) {
   component.state.fragment?.mount(target, anchor);
+}
+
+@noInline
+void makeComponentDirty(Component component, int index) {
+  if (component.state.dirty == -1) {
+    dirtyComponents.add(component);
+    scheduleUpdate();
+    component.state.dirty = 0;
+  }
+}
+
+@noInline
+void updateComponent(Component component) {
+  var state = component.state;
+  var fragment = state.fragment;
+
+  if (fragment != null) {
+    var dirty = state.dirty;
+    state.dirty = -1;
+    fragment.update(state.instance, dirty);
+  }
 }
 
 @noInline
