@@ -39,7 +39,8 @@ class AppFragment extends Fragment {
     append(button, t4);
 
     if (!mounted) {
-      dispose = listen(button, 'click', listener(unsafeCast(instance[1])));
+      var calback = unsafeCast<VoidCallback>(instance[1]);
+      dispose = listen(button, 'click', listener(calback));
       mounted = true;
     }
   }
@@ -47,7 +48,7 @@ class AppFragment extends Fragment {
   @override
   void update(Instance instance, int dirty) {
     if (dirty & 1 == 1) {
-      setData(t1, '${instance[0]}');
+      setData(t2, '${instance[0]}');
 
       if (t4value != (t4value = instance[0] == 1 ? 'time' : 'times')) {
         setData(t4, t4value);

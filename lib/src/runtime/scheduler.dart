@@ -27,6 +27,7 @@ var flushIndex = 0;
 void flush() {
   // TODO(runtime): check resolvedFuture and flushIndex
   if (flushIndex != 0) {
+    print(flushIndex);
     return;
   }
 

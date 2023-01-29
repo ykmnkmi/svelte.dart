@@ -139,6 +139,8 @@ void makeComponentDirty(Component component, int index) {
     scheduleUpdate();
     component.state.dirty = 0;
   }
+
+  component.state.dirty |= 1 << index;
 }
 
 @noInline
