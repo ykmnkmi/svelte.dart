@@ -1,33 +1,46 @@
+import 'dart:html';
+
 import 'package:svelte/src/runtime/component.dart';
 import 'package:svelte/src/runtime/lifecycle.dart';
 import 'package:svelte/src/runtime/utilities.dart';
 
 List<Component> dirtyComponents = <Component>[];
 
-Future<void> resolvedFuture = Future<void>(noop);
+List<VoidCallback> bindingCallbacks = <VoidCallback>[];
+List<VoidCallback> _renderCalbacks = <VoidCallback>[];
+List<VoidCallback> _flushCallbacks = <VoidCallback>[];
 
-bool updateScheduled = false;
+Future<void> _resolvedFuture = Future<void>(noop);
+bool _updateScheduled = false;
 
 void scheduleUpdate() {
-  if (updateScheduled) {
+  if (_updateScheduled) {
     return;
   }
 
-  updateScheduled = true;
-  resolvedFuture = Future<void>(flush);
+  _updateScheduled = true;
+  _resolvedFuture = Future<void>(flush);
 }
 
 Future<void> tick() {
   scheduleUpdate();
-  return resolvedFuture;
+  return _resolvedFuture;
 }
 
-var flushIndex = 0;
+void addRenderCallback(VoidCallback callback) {
+  _renderCalbacks.add(callback);
+}
+
+void addFlushCallback(VoidCallback callback) {
+  _flushCallbacks.add(callback);
+}
+
+Set<VoidCallback> _seenCallbacks = <VoidCallback>{};
+int _flushIndex = 0;
 
 void flush() {
   // TODO(runtime): check resolvedFuture and flushIndex
-  if (flushIndex != 0) {
-    print(flushIndex);
+  if (_flushIndex != 0) {
     return;
   }
 
@@ -35,22 +48,40 @@ void flush() {
 
   do {
     try {
-      while (flushIndex < dirtyComponents.length) {
-        var component = dirtyComponents[flushIndex++];
+      while (_flushIndex < dirtyComponents.length) {
+        var component = dirtyComponents[_flushIndex++];
         setCurrentComponent(component);
         updateComponent(component);
       }
     } catch (error) {
       dirtyComponents.clear();
-      flushIndex = 0;
+      _flushIndex = 0;
       rethrow;
     }
 
     setCurrentComponent(null);
     dirtyComponents.clear();
-    flushIndex = 0;
+    _flushIndex = 0;
+
+    while (bindingCallbacks.isNotEmpty) {
+      bindingCallbacks.removeLast()();
+    }
+
+    for (var i = 0; i < _renderCalbacks.length; i += 1) {
+      var callback = _renderCalbacks[i];
+
+      if (_seenCallbacks.add(callback)) {
+        callback();
+      }
+    }
+
+    _renderCalbacks.clear();
   } while (dirtyComponents.isNotEmpty);
 
-  updateScheduled = false;
+  while (_flushCallbacks.isNotEmpty) {
+    _flushCallbacks.removeLast()();
+  }
+
+  _updateScheduled = false;
   setCurrentComponent(savedComponent);
 }

@@ -54,13 +54,13 @@ class AppFragment extends Fragment {
       return;
     }
 
-    // transitionInComponent(nested, local);
+    transitionInComponent(nested, local);
     current = true;
   }
 
   @override
   void outro(bool local) {
-    // transitionOutComponent(nested, local);
+    transitionOutComponent(nested, local);
     current = false;
   }
 
