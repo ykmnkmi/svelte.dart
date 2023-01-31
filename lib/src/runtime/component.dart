@@ -24,7 +24,7 @@ class State {
 }
 
 abstract class Component {
-  final State _state = State();
+  final State state = State();
 
   bool _destroyed = false;
 
@@ -71,12 +71,12 @@ void init<T extends Component>({
   var parentComponent = currentComponent;
   setCurrentComponent(component);
 
-  var state = component._state
+  var state = component.state
     // ..fragment = null
     ..instance = <Object?>[]
     ..update = noop
     ..dirty = dirty
-    ..root = options.target ?? parentComponent?._state.root;
+    ..root = options.target ?? parentComponent?.state.root;
 
   var target = options.target;
 
@@ -124,25 +124,27 @@ void init<T extends Component>({
 }
 
 void createComponent(Component component) {
-  component._state.fragment?.create();
+  component.state.fragment?.create();
 }
 
 void mountComponent(Component component, Element target, [Node? anchor]) {
-  component._state.fragment?.mount(target, anchor);
+  component.state.fragment?.mount(target, anchor);
 }
 
 void makeComponentDirty(Component component, int index) {
-  if (component._state.dirty == -1) {
+  if (component.state.dirty == -1) {
     dirtyComponents.add(component);
     scheduleUpdate();
-    component._state.dirty = 0;
+    component.state.dirty = 0;
   }
 
-  component._state.dirty |= 1 << index;
+  component.state.dirty |= 1 << index;
 }
 
 void updateComponent(Component component) {
-  var state = component._state;
+  var state = component.state;
+  state.update();
+
   var fragment = state.fragment;
 
   if (fragment != null) {
@@ -153,7 +155,7 @@ void updateComponent(Component component) {
 }
 
 void transitionInComponent(Component component, bool local) {
-  var fragment = component._state.fragment;
+  var fragment = component.state.fragment;
   transitionIn(fragment, local);
 }
 
@@ -166,7 +168,7 @@ void transitionOutComponent(
 }
 
 void destroyComponent(Component component, bool detaching) {
-  component._state
+  component.state
     ..fragment?.detach(detaching)
     ..fragment = null
     ..instance = <Object?>[];
