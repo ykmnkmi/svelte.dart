@@ -101,25 +101,24 @@ class AppFragment extends Fragment {
 
 Instance createInstance(App component, Invalidate invalidate) {
   var count = 1;
-  var doubled;
-  var quadrupled;
+  late int doubled;
+  late int quadrupled;
 
   void handleClick() {
     invalidate(0, count += 1);
   }
 
-  component.state.update = () {
-    if (component.state.dirty & 1 != 0) {
-      // the `$:` means 're-run whenever these values change'
-      $:
-      invalidate(1, doubled = count * 2);
-    }
+  setComponentUpdate(component, (check) {
+    return () {
+      if (check(1)) {
+        invalidate(1, doubled = count * 2);
+      }
 
-    if (component.state.dirty & 2 != 0) {
-      $:
-      invalidate(2, quadrupled = doubled * 2);
-    }
-  };
+      if (check(2)) {
+        invalidate(2, quadrupled = doubled * 2);
+      }
+    };
+  });
 
   return <Object?>[count, doubled, quadrupled, handleClick];
 }
