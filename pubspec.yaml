@@ -1,6 +1,6 @@
 name: svelte
 description: Web applications framework for Dart based on Svelte.
-version: 3.55.1-dev.164
+version: 3.55.1-dev.165
 # homepage: https://nutty.ykmnkmi.dev
 
 environment:
@@ -10,7 +10,7 @@ dependencies:
   analyzer: ^5.4.0
   csslib: ^0.17.2
   js: ^0.6.7
-  meta: ^1.8.0
+  meta: ^1.9.0
   source_span: ^1.9.1
 
 dev_dependencies:
