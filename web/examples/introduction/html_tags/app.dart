@@ -2,26 +2,26 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-Fragment createFragment(Instance instance) {
+Fragment createFragment(List<Object?> instance) {
   return AppFragment(instance);
 }
 
 class AppFragment extends Fragment {
   AppFragment(this.instance);
 
-  final Instance instance;
+  final List<Object?> instance;
 
   late ParagraphElement p;
 
   @override
   void create() {
-    p = element('p');
+    p = element<ParagraphElement>('p');
   }
 
   @override
   void mount(target, anchor) {
     insert(target, p, anchor);
-    setInnerHtml(p, unsafeCast(instance[0]));
+    setInnerHtml(p, instance[0] as String);
   }
 
   @override
@@ -32,7 +32,7 @@ class AppFragment extends Fragment {
   }
 }
 
-Instance createInstance(App component, Invalidate invalidate) {
+List<Object?> createInstance(App component, Invalidate invalidate) {
   var string = "here's some <strong>HTML!!!</strong>";
   return <Object?>[string];
 }

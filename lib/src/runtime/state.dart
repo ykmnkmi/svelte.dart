@@ -1,17 +1,16 @@
-// TODO(runtime): replace with records
 import 'dart:html';
 
-import 'package:svelte/src/runtime/component.dart';
 import 'package:svelte/src/runtime/fragment.dart';
 
+// TODO(runtime): replace with records
 class State {
   Fragment? fragment;
 
-  late Instance instance;
+  late List<Object?> instance;
 
-  late VoidCallback update;
+  late void Function() update;
 
-  late int dirty;
+  late List<int> dirty;
 
   Element? root;
 }

@@ -14,7 +14,7 @@ class AppFragment extends Fragment {
 
   @override
   void create() {
-    img = element('img');
+    img = element<ImageElement>('img');
     setAttribute(img, 'src', src);
     setAttribute(img, 'alt', '$name dancing');
   }

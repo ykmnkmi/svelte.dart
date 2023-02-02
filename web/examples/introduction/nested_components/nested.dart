@@ -2,8 +2,6 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-var name = 'world';
-
 Fragment createFragment(List<Object?>? values) {
   return NestedFragment();
 }
@@ -13,7 +11,7 @@ class NestedFragment extends Fragment {
 
   @override
   void create() {
-    p = element('p');
+    p = element<ParagraphElement>('p');
     setText(p, "...don't affect this element");
   }
 

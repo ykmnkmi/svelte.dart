@@ -8,8 +8,6 @@ import 'package:svelte/src/runtime/state.dart';
 import 'package:svelte/src/runtime/transition.dart';
 import 'package:svelte/src/runtime/utilities.dart';
 
-typedef Instance = List<Object?>;
-
 typedef Invalidate = void Function(int index, Object? value);
 
 abstract class Component {
@@ -31,32 +29,28 @@ abstract class Component {
   }
 }
 
-typedef UpdateFactory = VoidCallback Function(bool Function(int dirty) check);
+typedef UpdateFactory = void Function() Function(List<int> dirty);
 
 void setComponentUpdate(Component component, UpdateFactory callback) {
-  bool check(int dirty) {
-    return component._state.dirty & dirty != 0;
-  }
-
-  component._state.update = callback(check);
+  component._state.update = callback(component._state.dirty);
 }
 
 void init<T extends Component>({
   required T component,
   required Options options,
-  Instance Function(T component, Invalidate invalidate)? createInstance,
-  Fragment Function(Instance instance)? createFragment,
+  List<Object?> Function(T component, Invalidate invalidate)? createInstance,
+  Fragment Function(List<Object?> instance)? createFragment,
   void Function(Element target)? appendStyles,
-  int dirty = -1,
+  List<int>? dirty,
 }) {
   var parentComponent = currentComponent;
   setCurrentComponent(component);
 
   var state = component._state
-    // ..fragment = null
+    ..fragment = null
     ..instance = <Object?>[]
     ..update = noop
-    ..dirty = dirty
+    ..dirty = dirty ?? <int>[-1]
     ..root = options.target ?? parentComponent?._state.root;
 
   var target = options.target;
@@ -113,13 +107,15 @@ void mountComponent(Component component, Element target, [Node? anchor]) {
 }
 
 void makeComponentDirty(Component component, int index) {
-  if (component._state.dirty == -1) {
+  var dirty = component._state.dirty;
+
+  if (dirty[0] == -1) {
     dirtyComponents.add(component);
     scheduleUpdate();
-    component._state.dirty = 0;
+    dirty.fillRange(0, dirty.length, 0);
   }
 
-  component._state.dirty |= 1 << index;
+  dirty[(index ~/ 31)] |= 1 << index % 31;
 }
 
 void updateComponent(Component component) {
@@ -130,22 +126,21 @@ void updateComponent(Component component) {
 
   if (fragment != null) {
     var dirty = state.dirty;
-    state.dirty = -1;
+    state.dirty[0] = -1;
     fragment.update(state.instance, dirty);
   }
 }
 
 void transitionInComponent(Component component, bool local) {
-  var fragment = component._state.fragment;
-  transitionIn(fragment, local);
+  transitionIn(component._state.fragment, local);
 }
 
 void transitionOutComponent(
   Component component,
   bool local, [
-  VoidCallback? callback,
+  void Function()? callback,
 ]) {
-  transitionOutComponent(component, local, callback);
+  transitionOut(component._state.fragment, local, callback);
 }
 
 void destroyComponent(Component component, bool detaching) {

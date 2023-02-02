@@ -33,7 +33,7 @@ class AppFragment extends Fragment {
 
   @override
   void create() {
-    p = element('p');
+    p = element<ParagraphElement>('p');
     setText(p, 'These styles...');
     t1 = space();
     createComponent(nested);

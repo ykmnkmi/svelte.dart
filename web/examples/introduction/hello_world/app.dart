@@ -13,7 +13,7 @@ class AppFragment extends Fragment {
 
   @override
   void create() {
-    h1 = element('h1');
+    h1 = element<HeadingElement>('h1');
     setText(h1, 'Hello $name!');
   }
 

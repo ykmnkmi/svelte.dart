@@ -2,14 +2,14 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-Fragment createFragment(Instance instance) {
+Fragment createFragment(List<Object?> instance) {
   return AppFragment(instance);
 }
 
 class AppFragment extends Fragment {
   AppFragment(this.instance);
 
-  final Instance instance;
+  final List<Object?> instance;
 
   late ButtonElement button;
 
@@ -19,11 +19,11 @@ class AppFragment extends Fragment {
 
   bool mounted = false;
 
-  late VoidCallback dispose;
+  late void Function() dispose;
 
   @override
   void create() {
-    button = element('button');
+    button = element<ButtonElement>('button');
     t1 = text('Clicked ');
     t2 = text('${instance[0]}');
     t3 = space();
@@ -39,15 +39,15 @@ class AppFragment extends Fragment {
     append(button, t4);
 
     if (!mounted) {
-      var calback = unsafeCast<VoidCallback>(instance[1]);
+      var calback = instance[1] as void Function();
       dispose = listen(button, 'click', listener(calback));
       mounted = true;
     }
   }
 
   @override
-  void update(Instance instance, int dirty) {
-    if (dirty & 1 == 1) {
+  void update(List<Object?> instance, List<int> dirty) {
+    if (dirty[0] & 1 == 1) {
       setData(t2, '${instance[0]}');
 
       if (t4value != (t4value = instance[0] == 1 ? 'time' : 'times')) {
@@ -67,7 +67,7 @@ class AppFragment extends Fragment {
   }
 }
 
-Instance createInstance(App component, Invalidate invalidate) {
+List<Object?> createInstance(App component, Invalidate invalidate) {
   var count = 0;
 
   void handleClick() {

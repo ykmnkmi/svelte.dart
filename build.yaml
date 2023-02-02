@@ -13,7 +13,7 @@ global_options:
         # - -O2
         # - --minify
         - --lax-runtime-type-to-string
-        - --omit-late-names
+        # - --omit-late-names
 
         # - -O3
         - --omit-implicit-checks

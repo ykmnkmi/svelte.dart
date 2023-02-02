@@ -1,14 +1,12 @@
-import 'dart:html';
-
 import 'package:svelte/src/runtime/component.dart';
 import 'package:svelte/src/runtime/lifecycle.dart';
 import 'package:svelte/src/runtime/utilities.dart';
 
 List<Component> dirtyComponents = <Component>[];
 
-List<VoidCallback> bindingCallbacks = <VoidCallback>[];
-List<VoidCallback> _renderCalbacks = <VoidCallback>[];
-List<VoidCallback> _flushCallbacks = <VoidCallback>[];
+List<void Function()> bindingCallbacks = <void Function()>[];
+List<void Function()> _renderCalbacks = <void Function()>[];
+List<void Function()> _flushCallbacks = <void Function()>[];
 
 Future<void> _resolvedFuture = Future<void>(noop);
 bool _updateScheduled = false;
@@ -27,15 +25,15 @@ Future<void> tick() {
   return _resolvedFuture;
 }
 
-void addRenderCallback(VoidCallback callback) {
+void addRenderCallback(void Function() callback) {
   _renderCalbacks.add(callback);
 }
 
-void addFlushCallback(VoidCallback callback) {
+void addFlushCallback(void Function() callback) {
   _flushCallbacks.add(callback);
 }
 
-Set<VoidCallback> _seenCallbacks = <VoidCallback>{};
+Set<void Function()> _seenCallbacks = <void Function()>{};
 int _flushIndex = 0;
 
 void flush() {

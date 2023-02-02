@@ -1,19 +1,20 @@
 import 'dart:async';
-import 'dart:html' hide DocumentOrShadowRoot;
+import 'dart:html';
+import 'dart:js_util';
 
-import 'package:js/js.dart' show JS, staticInterop;
-import 'package:meta/dart2js.dart' show noInline;
-import 'package:svelte/src/runtime/utilities.dart';
+import 'package:meta/dart2js.dart';
 
 @noInline
 T element<T extends Element>(String tag) {
-  return unsafeCast(Element.tag(tag));
+  return document.createElement(tag) as T;
 }
 
+@noInline
 Text empty() {
   return text('');
 }
 
+@noInline
 Text space() {
   return text(' ');
 }
@@ -29,14 +30,13 @@ void setData(Text text, String data) {
 }
 
 @noInline
-void setText(Node node, String? text) {
-  node.text = text;
+void setText(Node node, String? content) {
+  node.text = content;
 }
 
 @noInline
-void setInnerHtml(Element element, String? html) {
-  var jsElement = unsafeCast<JSElement>(element);
-  jsElement.innerHtml = html;
+void setInnerHtml(Element element, String html) {
+  element.innerHtml = html;
 }
 
 @noInline
@@ -45,7 +45,7 @@ String? getAttribute(Element element, String attribute) {
 }
 
 @noInline
-void setAttribute(Element element, String attribute, Object value) {
+void setAttribute(Element element, String attribute, String value) {
   element.setAttribute(attribute, value);
 }
 
@@ -55,7 +55,7 @@ void removeAttribute(Element element, String attribute) {
 }
 
 @noInline
-void updateAttribute(Element element, String attribute, Object? value) {
+void updateAttribute(Element element, String attribute, String? value) {
   if (value == null) {
     removeAttribute(element, attribute);
   } else if (value != getAttribute(element, attribute)) {
@@ -76,13 +76,13 @@ void append(Node node, Node child) {
 @noInline
 void appendStyles(Node target, String styleSheetId, String styles) {
   var appendStylesTo = getRootForStyle(target);
-  var jsAppendStylesTo = unsafeCast<JSDocumentOrShadowRoot>(appendStylesTo);
+  var args = <Object?>[styleSheetId];
 
-  if (jsAppendStylesTo.getElementById(styleSheetId) == null) {
+  if (callMethod<bool>(appendStylesTo, 'getElementById', args)) {
     var style = element<StyleElement>('style');
     style.id = styleSheetId;
     style.text = styles;
-    appendStyleSheet(unsafeCast(appendStylesTo), style);
+    appendStyleSheet(appendStylesTo, style);
   }
 }
 
@@ -103,7 +103,7 @@ Node getRootForStyle(Node node) {
     return root;
   }
 
-  return unsafeCast<Node>(node.ownerDocument);
+  return node.ownerDocument as Document;
 }
 
 @noInline
@@ -114,7 +114,11 @@ EventListener listener(FutureOr<void> Function() function) {
 }
 
 @noInline
-VoidCallback listen(EventTarget target, String type, EventListener listener) {
+void Function() listen(
+  EventTarget target,
+  String type,
+  EventListener? listener,
+) {
   target.addEventListener(type, listener);
 
   return () {
@@ -125,21 +129,4 @@ VoidCallback listen(EventTarget target, String type, EventListener listener) {
 @noInline
 void remove(Node node) {
   node.remove();
-}
-
-@JS()
-@staticInterop
-abstract class JSDocumentOrShadowRoot {}
-
-extension on JSDocumentOrShadowRoot {
-  external Element? getElementById(String elementId);
-}
-
-@JS()
-@staticInterop
-abstract class JSElement {}
-
-extension on JSElement {
-  @JS('innerHTML')
-  external set innerHtml(String? innerHtml);
 }

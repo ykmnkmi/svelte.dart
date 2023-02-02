@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:svelte/src/runtime/fragment.dart';
 
 Set<Fragment> _outroing = <Fragment>{};
@@ -11,7 +9,11 @@ void transitionIn(Fragment? fragment, bool local) {
   }
 }
 
-void transitionOut(Fragment? fragment, bool local, [VoidCallback? callback]) {
+void transitionOut(
+  Fragment? fragment,
+  bool local, [
+  void Function()? callback,
+]) {
   if (fragment != null) {
     if (_outroing.add(fragment)) {
       fragment.outro(local);

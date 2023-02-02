@@ -21,7 +21,7 @@ class AppFragment extends Fragment {
 
   @override
   void create() {
-    p = element('p');
+    p = element<ParagraphElement>('p');
     setText(p, 'Styled!');
     setAttribute(p, 'class', 'svelte-urs9w7');
   }

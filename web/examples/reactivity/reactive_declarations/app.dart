@@ -2,14 +2,14 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-Fragment createFragment(Instance instance) {
+Fragment createFragment(List<Object?> instance) {
   return AppFragment(instance);
 }
 
 class AppFragment extends Fragment {
   AppFragment(this.instance);
 
-  final Instance instance;
+  final List<Object?> instance;
 
   late ButtonElement button;
 
@@ -25,7 +25,7 @@ class AppFragment extends Fragment {
 
   bool mounted = false;
 
-  late VoidCallback dispose;
+  late void Function() dispose;
 
   @override
   void create() {
@@ -38,7 +38,7 @@ class AppFragment extends Fragment {
     t4 = text(' * 2 = ');
     t5 = text('${instance[1]}');
     t6 = space();
-    p1 = element('p');
+    p1 = element<ParagraphElement>('p');
     t7 = text('${instance[1]}');
     t8 = text(' * 2 = ');
     t9 = text('${instance[2]}');
@@ -61,25 +61,25 @@ class AppFragment extends Fragment {
     append(p1, t9);
 
     if (!mounted) {
-      var calback = unsafeCast<VoidCallback>(instance[3]);
+      var calback = instance[3] as void Function();
       dispose = listen(button, 'click', listener(calback));
       mounted = true;
     }
   }
 
   @override
-  void update(Instance instance, int dirty) {
-    if (dirty & 1 != 0) {
+  void update(List<Object?> instance, List<int> dirty) {
+    if (dirty[0] & 1 != 0) {
       setData(t1, '${instance[0]}');
       setData(t3, '${instance[0]}');
     }
 
-    if (dirty & 2 != 0) {
+    if (dirty[0] & 2 != 0) {
       setData(t5, '${instance[1]}');
       setData(t7, '${instance[1]}');
     }
 
-    if (dirty & 4 != 0) {
+    if (dirty[0] & 4 != 0) {
       setData(t9, '${instance[2]}');
     }
   }
@@ -99,8 +99,8 @@ class AppFragment extends Fragment {
   }
 }
 
-Instance createInstance(App component, Invalidate invalidate) {
-  var count = 1;
+List<Object?> createInstance(App component, Invalidate invalidate) {
+  int count = 1;
   late int doubled;
   late int quadrupled;
 
@@ -108,19 +108,19 @@ Instance createInstance(App component, Invalidate invalidate) {
     invalidate(0, count += 1);
   }
 
-  setComponentUpdate(component, (check) {
+  setComponentUpdate(component, (dirty) {
     return () {
-      if (check(1)) {
+      if (dirty[0] & 1 != 0) {
         invalidate(1, doubled = count * 2);
       }
 
-      if (check(2)) {
+      if (dirty[0] & 2 != 0) {
         invalidate(2, quadrupled = doubled * 2);
       }
     };
   });
 
-  return <Object?>[count, doubled, quadrupled, handleClick];
+  return <Object?>[count, null, null, handleClick];
 }
 
 class App extends Component {
