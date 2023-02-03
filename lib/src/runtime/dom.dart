@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:html';
-import 'dart:js_util';
 
 import 'package:meta/dart2js.dart';
 
@@ -35,7 +34,9 @@ void setText(Node node, String? content) {
 }
 
 @noInline
-void setInnerHtml(Element element, String html) {
+void setInnerHtml(Element element, String? html) {
+  // TODO(runtime): can be replaced with js_util version
+  // setProperty<String>(element, 'innerHtml', html);
   element.innerHtml = html;
 }
 
@@ -45,7 +46,7 @@ String? getAttribute(Element element, String attribute) {
 }
 
 @noInline
-void setAttribute(Element element, String attribute, String value) {
+void setAttribute(Element element, String attribute, Object value) {
   element.setAttribute(attribute, value);
 }
 
@@ -55,10 +56,10 @@ void removeAttribute(Element element, String attribute) {
 }
 
 @noInline
-void updateAttribute(Element element, String attribute, String? value) {
+void updateAttribute(Element element, String attribute, Object? value) {
   if (value == null) {
     removeAttribute(element, attribute);
-  } else if (value != getAttribute(element, attribute)) {
+  } else if (getAttribute(element, attribute) != value) {
     setAttribute(element, attribute, value);
   }
 }
@@ -74,11 +75,11 @@ void append(Node node, Node child) {
 }
 
 @noInline
-void appendStyles(Node target, String styleSheetId, String styles) {
+void appendStyles(Node? target, String styleSheetId, String styles) {
   var appendStylesTo = getRootForStyle(target);
-  var args = <Object?>[styleSheetId];
+  var appendStylesToNode = appendStylesTo as NonElementParentNode;
 
-  if (callMethod<bool>(appendStylesTo, 'getElementById', args)) {
+  if (appendStylesToNode.getElementById(styleSheetId) == null) {
     var style = element<StyleElement>('style');
     style.id = styleSheetId;
     style.text = styles;
@@ -88,22 +89,26 @@ void appendStyles(Node target, String styleSheetId, String styles) {
 
 @noInline
 void appendStyleSheet(Node node, StyleElement style) {
-  if (node is HtmlDocument) {
-    append(node.head ?? node, style);
-  } else {
-    append(node, style);
-  }
+  // TODO(runtime): can be replaced with js_util version
+  // append(getProperty<HeadElement?>(node, 'head') ?? node, style);
+  append(node is HtmlDocument ? node.head ?? node : node, style);
 }
 
 @noInline
-Node getRootForStyle(Node node) {
+Node getRootForStyle(Node? node) {
+  if (node == null) {
+    return document;
+  }
+
   var root = node.getRootNode();
 
+  // TODO(runtime): can be replaced with js_util version
+  // if (getProperty<Node?>(root, 'host') != null) {
   if (root is ShadowRoot && root.host != null) {
     return root;
   }
 
-  return node.ownerDocument as Document;
+  return node.ownerDocument as Node;
 }
 
 @noInline

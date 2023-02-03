@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-var name = 'world';
+String name = 'world';
 
 Fragment createFragment(List<Object?>? values) {
   return AppFragment();

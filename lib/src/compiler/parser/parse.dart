@@ -4,7 +4,7 @@ import 'package:svelte/src/compiler/parser/parser.dart';
 Ast parse(String source, {Object? sourceUrl, CssMode? cssMode}) {
   var parser = Parser(source, sourceUrl: sourceUrl, cssMode: cssMode);
 
-  Script? instance, module;
+  Script? instance, library;
 
   for (var node in parser.scripts) {
     if (node.context == 'default') {
@@ -13,12 +13,12 @@ Ast parse(String source, {Object? sourceUrl, CssMode? cssMode}) {
       }
 
       instance = node;
-    } else if (node.context == 'module') {
-      if (module != null) {
-        parser.invalidScriptModule(module.start);
+    } else if (node.context == 'library') {
+      if (library != null) {
+        parser.invalidScriptModule(library.start);
       }
 
-      module = node;
+      library = node;
     }
   }
 
@@ -35,7 +35,7 @@ Ast parse(String source, {Object? sourceUrl, CssMode? cssMode}) {
   return Ast(
     html: parser.html,
     instance: instance,
-    module: module,
+    library: library,
     style: style,
   );
 }
@@ -44,7 +44,7 @@ class Ast {
   Ast({
     required this.html,
     this.instance,
-    this.module,
+    this.library,
     this.style,
   });
 
@@ -52,7 +52,7 @@ class Ast {
 
   final Script? instance;
 
-  final Script? module;
+  final Script? library;
 
   final Style? style;
 
@@ -60,7 +60,7 @@ class Ast {
     return <String, Object?>{
       'html': html.toJson(),
       if (instance != null) 'instance': instance!.toJson(),
-      if (module != null) 'module': module!.toJson(),
+      if (library != null) 'library': library!.toJson(),
       if (style != null) 'style': style!.toJson(),
     };
   }

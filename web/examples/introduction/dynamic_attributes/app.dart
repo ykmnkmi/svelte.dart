@@ -2,8 +2,8 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-var src = '/tutorial/image.gif';
-var name = 'Rick Astley';
+String src = '/tutorial/image.gif';
+String name = 'Rick Astley';
 
 Fragment createFragment(List<Object?>? values) {
   return AppFragment();

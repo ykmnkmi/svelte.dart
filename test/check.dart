@@ -6,13 +6,15 @@ import 'package:svelte/compiler.dart';
 const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String content = '''
-<style>
-	this is not css
-</style>
+<script>
+  @prop
+  int count = 0;
+</script>
 ''';
 
 void main() {
   try {
+    @pragma('hello')
     var ast = parse(content);
     print(encoder.convert(ast.toJson()));
   } on ParseError catch (error, stackTrace) {

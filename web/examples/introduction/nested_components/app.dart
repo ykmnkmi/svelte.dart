@@ -4,7 +4,7 @@ import 'package:svelte/runtime.dart';
 
 import 'nested.dart';
 
-void addCss(Element target) {
+void addCss(Element? target) {
   appendStyles(target, 'svelte-urs9w7', '''
 p.svelte-urs9w7 {
   color: purple;

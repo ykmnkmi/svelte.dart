@@ -1,5 +1,6 @@
 import 'dart:html';
 
+import 'package:meta/dart2js.dart';
 import 'package:svelte/src/runtime/fragment.dart';
 import 'package:svelte/src/runtime/lifecycle.dart';
 import 'package:svelte/src/runtime/options.dart';
@@ -8,7 +9,7 @@ import 'package:svelte/src/runtime/state.dart';
 import 'package:svelte/src/runtime/transition.dart';
 import 'package:svelte/src/runtime/utilities.dart';
 
-typedef Invalidate = void Function(int index, Object? value);
+typedef Invalidate = void Function(int i, Object? value);
 
 abstract class Component {
   final State _state = State();
@@ -31,41 +32,43 @@ abstract class Component {
 
 typedef UpdateFactory = void Function() Function(List<int> dirty);
 
-void setComponentUpdate(Component component, UpdateFactory callback) {
-  component._state.update = callback(component._state.dirty);
+@noInline
+void setComponentUpdate(Component component, UpdateFactory updateFactory) {
+  component._state.update = updateFactory(component._state.dirty);
 }
 
+@noInline
 void init<T extends Component>({
   required T component,
   required Options options,
   List<Object?> Function(T component, Invalidate invalidate)? createInstance,
   Fragment Function(List<Object?> instance)? createFragment,
-  void Function(Element target)? appendStyles,
+  void Function(Element? target)? appendStyles,
   List<int>? dirty,
 }) {
   var parentComponent = currentComponent;
   setCurrentComponent(component);
+
+  var target = options.target;
 
   var state = component._state
     ..fragment = null
     ..instance = <Object?>[]
     ..update = noop
     ..dirty = dirty ?? <int>[-1]
-    ..root = options.target ?? parentComponent?._state.root;
+    ..root = target ?? parentComponent?._state.root;
 
-  var target = options.target;
-
-  if (target != null && appendStyles != null) {
+  if (appendStyles != null) {
     appendStyles(target);
   }
 
   var ready = false;
 
   if (createInstance != null) {
-    void invalidate(int index, Object? value) {
-      if (state.instance[index] != (state.instance[index] = value)) {
+    void invalidate(int i, Object? value) {
+      if (state.instance[i] != (state.instance[i] = value)) {
         if (ready) {
-          makeComponentDirty(component, index);
+          makeComponentDirty(component, i);
         }
       }
     }
@@ -98,15 +101,18 @@ void init<T extends Component>({
   setCurrentComponent(parentComponent);
 }
 
+@noInline
 void createComponent(Component component) {
   component._state.fragment?.create();
 }
 
+@noInline
 void mountComponent(Component component, Element target, [Node? anchor]) {
   component._state.fragment?.mount(target, anchor);
 }
 
-void makeComponentDirty(Component component, int index) {
+@noInline
+void makeComponentDirty(Component component, int i) {
   var dirty = component._state.dirty;
 
   if (dirty[0] == -1) {
@@ -115,9 +121,10 @@ void makeComponentDirty(Component component, int index) {
     dirty.fillRange(0, dirty.length, 0);
   }
 
-  dirty[(index ~/ 31)] |= 1 << index % 31;
+  dirty[(i ~/ 31)] |= 1 << i % 31;
 }
 
+@noInline
 void updateComponent(Component component) {
   var state = component._state;
   state.update();
@@ -131,10 +138,12 @@ void updateComponent(Component component) {
   }
 }
 
+@noInline
 void transitionInComponent(Component component, bool local) {
   transitionIn(component._state.fragment, local);
 }
 
+@noInline
 void transitionOutComponent(
   Component component,
   bool local, [
@@ -143,6 +152,7 @@ void transitionOutComponent(
   transitionOut(component._state.fragment, local, callback);
 }
 
+@noInline
 void destroyComponent(Component component, bool detaching) {
   component._state
     ..fragment?.detach(detaching)

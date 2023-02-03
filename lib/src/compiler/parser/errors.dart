@@ -287,7 +287,7 @@ extension ParserErrors on Parser {
       code: 'invalid-script',
       message: ''
           'A component can only have one '
-          '<script context="module"> element',
+          '<script context="library"> element',
       position: position,
     );
   }
@@ -305,7 +305,7 @@ extension ParserErrors on Parser {
       code: 'invalid-script',
       message: ''
           'If the context attribute is supplied, '
-          'it\'s value must be "module"',
+          'it\'s value must be "library"',
       position: position,
     );
   }

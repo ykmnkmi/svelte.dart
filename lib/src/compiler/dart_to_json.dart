@@ -60,7 +60,6 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       // 'element': dynamic
       // 'elementAnnotation': dynamic
       'name': node.name.accept(this),
-      'parent': node.parent.accept(this),
       // 'period': dynamic
       if (node.typeArguments != null)
         'typeArguments': node.typeArguments!.accept(this),

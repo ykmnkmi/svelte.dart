@@ -149,6 +149,7 @@ Future<void> main() async {
 
         // stack overflow
         'nullShortingTermination',
+        'parent',
         'unlabeled',
         'unParenthesized',
 

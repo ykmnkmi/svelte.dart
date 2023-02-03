@@ -31,4 +31,7 @@ targets:
     builders:
       build_web_compilers:entrypoint:
         generate_for:
+          - lib/runtime.dart
+          - lib/runtime/**.dart
+          - lib/svelte.dart
           - web/**.dart

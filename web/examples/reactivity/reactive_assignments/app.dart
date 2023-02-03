@@ -68,7 +68,7 @@ class AppFragment extends Fragment {
 }
 
 List<Object?> createInstance(App component, Invalidate invalidate) {
-  var count = 0;
+  int count = 0;
 
   void handleClick() {
     invalidate(0, count += 1);

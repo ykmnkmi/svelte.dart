@@ -76,8 +76,8 @@ extension ScriptParser on Parser {
       invalidScriptContextAttribute(context.start);
     }
 
-    if (children.first.data == 'module') {
-      return 'module';
+    if (children.first.data == 'library') {
+      return 'library';
     }
 
     invalidScriptContextValue(context.start);

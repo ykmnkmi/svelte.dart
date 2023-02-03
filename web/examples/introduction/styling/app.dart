@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-void addCss(Element target) {
+void addCss(Element? target) {
   appendStyles(target, 'svelte-urs9w7', '''
 p.svelte-urs9w7 {
   color: purple;
