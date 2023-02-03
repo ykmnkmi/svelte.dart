@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-Fragment createFragment(List<Object?>? values) {
+Fragment createFragment(List<Object?> instance) {
   return NestedFragment();
 }
 
@@ -16,7 +16,7 @@ class NestedFragment extends Fragment {
   }
 
   @override
-  void mount(target, anchor) {
+  void mount(Element target, Node? anchor) {
     insert(target, p, anchor);
   }
 
@@ -34,6 +34,7 @@ class Nested extends Component {
       component: this,
       options: options,
       createFragment: createFragment,
+      props: <String, int>{},
     );
   }
 }

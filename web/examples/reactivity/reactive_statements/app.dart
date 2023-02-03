@@ -13,15 +13,9 @@ class AppFragment extends Fragment {
 
   late ButtonElement button;
 
-  late Text t0, t1, t2;
+  late Text t0, t1, t2, t3;
 
-  late ParagraphElement p0;
-
-  late Text t3, t4, t5, t6;
-
-  late ParagraphElement p1;
-
-  late Text t7, t8, t9;
+  late String t3value;
 
   bool mounted = false;
 
@@ -30,18 +24,10 @@ class AppFragment extends Fragment {
   @override
   void create() {
     button = element<ButtonElement>('button');
-    t0 = text('Count: ');
+    t0 = text('Clicked ');
     t1 = text('${instance[0]}');
     t2 = space();
-    p0 = element<ParagraphElement>('p');
-    t3 = text('${instance[0]}');
-    t4 = text(' * 2 = ');
-    t5 = text('${instance[1]}');
-    t6 = space();
-    p1 = element<ParagraphElement>('p');
-    t7 = text('${instance[1]}');
-    t8 = text(' * 2 = ');
-    t9 = text('${instance[2]}');
+    t3 = text(t3value = instance[0] == 1 ? 'time' : 'times');
   }
 
   @override
@@ -49,19 +35,11 @@ class AppFragment extends Fragment {
     insert(target, button, anchor);
     append(button, t0);
     append(button, t1);
-    insert(target, t2, anchor);
-    insert(target, p0, anchor);
-    append(p0, t3);
-    append(p0, t4);
-    append(p0, t5);
-    insert(target, t6, anchor);
-    insert(target, p1, anchor);
-    append(p1, t7);
-    append(p1, t8);
-    append(p1, t9);
+    append(button, t2);
+    append(button, t3);
 
     if (!mounted) {
-      var calback = instance[3] as void Function();
+      var calback = instance[1] as void Function();
       dispose = listen(button, 'click', listener(calback));
       mounted = true;
     }
@@ -71,16 +49,10 @@ class AppFragment extends Fragment {
   void update(List<Object?> instance, List<int> dirty) {
     if (dirty[0] & 1 != 0) {
       setData(t1, '${instance[0]}');
-      setData(t3, '${instance[0]}');
-    }
 
-    if (dirty[0] & 2 != 0) {
-      setData(t5, '${instance[1]}');
-      setData(t7, '${instance[1]}');
-    }
-
-    if (dirty[0] & 4 != 0) {
-      setData(t9, '${instance[2]}');
+      if (t3value != (t3value = instance[0] == 1 ? 'time' : 'times')) {
+        setData(t3, t3value);
+      }
     }
   }
 
@@ -88,10 +60,6 @@ class AppFragment extends Fragment {
   void detach(bool detaching) {
     if (detaching) {
       remove(button);
-      remove(t2);
-      remove(p0);
-      remove(t6);
-      remove(p1);
     }
 
     mounted = false;
@@ -104,9 +72,7 @@ List<Object?> createInstance(
   Map<String, Object?> props,
   Invalidate invalidate,
 ) {
-  int count = 1;
-  late int doubled;
-  late int quadrupled;
+  int count = 0;
 
   void handleClick() {
     invalidate(0, count += 1);
@@ -115,16 +81,16 @@ List<Object?> createInstance(
   setComponentUpdate(component, (List<int> dirty) {
     return () {
       if (dirty[0] & 1 != 0) {
-        invalidate(1, doubled = count * 2);
-      }
-
-      if (dirty[0] & 2 != 0) {
-        invalidate(2, quadrupled = doubled * 2);
+        $:
+        if (count >= 10) {
+          window.alert('count is dangerously high!');
+          invalidate(0, count = 9);
+        }
       }
     };
   });
 
-  return <Object?>[count, null, null, handleClick];
+  return <Object?>[count, handleClick];
 }
 
 class App extends Component {

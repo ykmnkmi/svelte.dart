@@ -12,7 +12,7 @@ p.svelte-urs9w7 {
 ''');
 }
 
-Fragment createFragment(List<Object?>? values) {
+Fragment createFragment(List<Object?> instance) {
   return AppFragment();
 }
 
@@ -27,7 +27,7 @@ class AppFragment extends Fragment {
   }
 
   @override
-  void mount(target, anchor) {
+  void mount(Element target, Node? anchor) {
     insert(target, p, anchor);
   }
 
@@ -45,6 +45,7 @@ class App extends Component {
       component: this,
       options: options,
       createFragment: createFragment,
+      props: <String, int>{},
       appendStyles: addCss,
     );
   }

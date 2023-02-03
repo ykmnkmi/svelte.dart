@@ -31,7 +31,7 @@ class AppFragment extends Fragment {
   }
 
   @override
-  void mount(target, anchor) {
+  void mount(Element target, Node? anchor) {
     insert(target, button, anchor);
     append(button, t1);
     append(button, t2);
@@ -47,7 +47,7 @@ class AppFragment extends Fragment {
 
   @override
   void update(List<Object?> instance, List<int> dirty) {
-    if (dirty[0] & 1 == 1) {
+    if (dirty[0] & 1 != 0) {
       setData(t2, '${instance[0]}');
 
       if (t4value != (t4value = instance[0] == 1 ? 'time' : 'times')) {
@@ -67,7 +67,11 @@ class AppFragment extends Fragment {
   }
 }
 
-List<Object?> createInstance(App component, Invalidate invalidate) {
+List<Object?> createInstance(
+  App component,
+  Map<String, Object?> props,
+  Invalidate invalidate,
+) {
   int count = 0;
 
   void handleClick() {
@@ -84,6 +88,7 @@ class App extends Component {
       options: options,
       createInstance: createInstance,
       createFragment: createFragment,
+      props: <String, int>{},
     );
   }
 }

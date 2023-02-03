@@ -5,7 +5,7 @@ import 'package:svelte/runtime.dart';
 String src = '/tutorial/image.gif';
 String name = 'Rick Astley';
 
-Fragment createFragment(List<Object?>? values) {
+Fragment createFragment(List<Object?> instance) {
   return AppFragment();
 }
 
@@ -20,7 +20,7 @@ class AppFragment extends Fragment {
   }
 
   @override
-  void mount(target, anchor) {
+  void mount(Element target, Node? anchor) {
     insert(target, img, anchor);
   }
 
@@ -38,6 +38,7 @@ class App extends Component {
       component: this,
       options: options,
       createFragment: createFragment,
+      props: <String, int>{},
     );
   }
 }

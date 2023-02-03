@@ -8,6 +8,8 @@ class State {
 
   late List<Object?> instance;
 
+  late Map<String, int> props;
+
   late void Function() update;
 
   late List<int> dirty;

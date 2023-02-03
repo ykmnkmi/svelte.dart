@@ -19,7 +19,7 @@ class AppFragment extends Fragment {
   }
 
   @override
-  void mount(target, anchor) {
+  void mount(Element target, Node? anchor) {
     insert(target, p, anchor);
     setInnerHtml(p, instance[0] as String);
   }
@@ -32,7 +32,11 @@ class AppFragment extends Fragment {
   }
 }
 
-List<Object?> createInstance(App component, Invalidate invalidate) {
+List<Object?> createInstance(
+  App component,
+  Map<String, Object?> props,
+  Invalidate invalidate,
+) {
   var string = "here's some <strong>HTML!!!</strong>";
   return <Object?>[string];
 }
@@ -44,6 +48,7 @@ class App extends Component {
       options: options,
       createInstance: createInstance,
       createFragment: createFragment,
+      props: <String, int>{},
     );
   }
 }

@@ -11,8 +11,25 @@ import 'package:svelte/src/runtime/utilities.dart';
 
 typedef Invalidate = void Function(int i, Object? value);
 
+typedef InstanceFactory<T> = List<Object?> Function(
+  T component,
+  Map<String, Object?> props,
+  Invalidate invalidate,
+);
+
 abstract class Component {
   final State _state = State();
+
+  // TODO(runtime): replace with recoreds
+  void Function(Map<String, Object?> props)? _set;
+
+  void set([Map<String, Object?>? props]) {
+    var set = _set;
+
+    if (set != null && props != null && props.isNotEmpty) {
+      set(props);
+    }
+  }
 
   bool _destroyed = false;
 
@@ -30,19 +47,27 @@ abstract class Component {
   }
 }
 
-typedef UpdateFactory = void Function() Function(List<int> dirty);
-
-@noInline
-void setComponentUpdate(Component component, UpdateFactory updateFactory) {
+void setComponentUpdate(
+  Component component,
+  void Function() Function(List<int> dirty) updateFactory,
+) {
   component._state.update = updateFactory(component._state.dirty);
+}
+
+void setComponentSet(
+  Component component,
+  void Function(Map<String, Object?> props) setter,
+) {
+  component._set = setter;
 }
 
 @noInline
 void init<T extends Component>({
   required T component,
   required Options options,
-  List<Object?> Function(T component, Invalidate invalidate)? createInstance,
+  InstanceFactory<T>? createInstance,
   Fragment Function(List<Object?> instance)? createFragment,
+  required Map<String, int> props,
   void Function(Element? target)? appendStyles,
   List<int>? dirty,
 }) {
@@ -54,6 +79,7 @@ void init<T extends Component>({
   var state = component._state
     ..fragment = null
     ..instance = <Object?>[]
+    ..props = props
     ..update = noop
     ..dirty = dirty ?? <int>[-1]
     ..root = target ?? parentComponent?._state.root;
@@ -73,7 +99,11 @@ void init<T extends Component>({
       }
     }
 
-    state.instance = createInstance(component, invalidate);
+    state.instance = createInstance(
+      component,
+      options.props ?? <String, Object?>{},
+      invalidate,
+    );
   }
 
   state.update();
