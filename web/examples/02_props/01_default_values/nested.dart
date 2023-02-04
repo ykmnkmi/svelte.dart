@@ -11,13 +11,13 @@ class NestedFragment extends Fragment {
 
   final List<Object?> instance;
 
-  late ParagraphElement p;
+  late Element p;
 
   late Text t0, t1;
 
   @override
   void create() {
-    p = element<ParagraphElement>('p');
+    p = element('p');
     t0 = text('The answer is ');
     t1 = text('${instance[0] ?? ''}');
   }

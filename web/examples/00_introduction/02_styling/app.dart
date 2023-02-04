@@ -17,11 +17,11 @@ Fragment createFragment(List<Object?> instance) {
 }
 
 class AppFragment extends Fragment {
-  late ParagraphElement p;
+  late Element p;
 
   @override
   void create() {
-    p = element<ParagraphElement>('p');
+    p = element('p');
     setText(p, 'Styled!');
     setAttribute(p, 'class', 'svelte-urs9w7');
   }

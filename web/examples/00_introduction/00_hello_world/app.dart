@@ -9,11 +9,11 @@ Fragment createFragment(List<Object?> instance) {
 }
 
 class AppFragment extends Fragment {
-  late HeadingElement h1;
+  late Element h1;
 
   @override
   void create() {
-    h1 = element<HeadingElement>('h1');
+    h1 = element('h1');
     setText(h1, 'Hello $name!');
   }
 

@@ -11,17 +11,17 @@ class AppFragment extends Fragment {
 
   final List<Object?> instance;
 
-  late ParagraphElement p;
+  late Element p;
 
   @override
   void create() {
-    p = element<ParagraphElement>('p');
+    p = element('p');
   }
 
   @override
   void mount(Element target, Node? anchor) {
     insert(target, p, anchor);
-    setInnerHtml(p, instance[0] as String);
+    setInnerHtml(p, unsafeCast(instance[0]));
   }
 
   @override

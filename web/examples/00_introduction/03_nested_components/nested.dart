@@ -7,11 +7,11 @@ Fragment createFragment(List<Object?> instance) {
 }
 
 class NestedFragment extends Fragment {
-  late ParagraphElement p;
+  late Element p;
 
   @override
   void create() {
-    p = element<ParagraphElement>('p');
+    p = element('p');
     setText(p, "...don't affect this element");
   }
 

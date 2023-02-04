@@ -4,8 +4,8 @@ import 'dart:html';
 import 'package:meta/dart2js.dart';
 
 @noInline
-T element<T extends Element>(String tag) {
-  return document.createElement(tag) as T;
+Element element(String tag) {
+  return document.createElement(tag);
 }
 
 @noInline
@@ -80,7 +80,7 @@ void appendStyles(Node? target, String styleSheetId, String styles) {
   var appendStylesToNode = appendStylesTo as NonElementParentNode;
 
   if (appendStylesToNode.getElementById(styleSheetId) == null) {
-    var style = element<StyleElement>('style');
+    var style = element('style');
     style.id = styleSheetId;
     style.text = styles;
     appendStyleSheet(appendStylesTo, style);
@@ -88,7 +88,7 @@ void appendStyles(Node? target, String styleSheetId, String styles) {
 }
 
 @noInline
-void appendStyleSheet(Node node, StyleElement style) {
+void appendStyleSheet(Node node, Element style) {
   // TODO(runtime): can be replaced with js_util version
   // append(getProperty<HeadElement?>(node, 'head') ?? node, style);
   append(node is HtmlDocument ? node.head ?? node : node, style);

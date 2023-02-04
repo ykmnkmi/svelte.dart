@@ -10,11 +10,11 @@ Fragment createFragment(List<Object?> instance) {
 }
 
 class AppFragment extends Fragment {
-  late ImageElement img;
+  late Element img;
 
   @override
   void create() {
-    img = element<ImageElement>('img');
+    img = element('img');
     setAttribute(img, 'src', src);
     setAttribute(img, 'alt', '$name dancing');
   }

@@ -23,9 +23,9 @@ class AppFragment extends Fragment {
     nested = Nested(Options());
   }
 
-  late ParagraphElement p;
+  late Element p;
 
-  late Text t1;
+  late Text t;
 
   late Nested nested;
 
@@ -33,9 +33,9 @@ class AppFragment extends Fragment {
 
   @override
   void create() {
-    p = element<ParagraphElement>('p');
+    p = element('p');
     setText(p, 'These styles...');
-    t1 = space();
+    t = space();
     createComponent(nested);
     setAttribute(p, 'class', 'svelte-urs9w7');
   }
@@ -43,7 +43,7 @@ class AppFragment extends Fragment {
   @override
   void mount(Element target, Node? anchor) {
     insert(target, p, anchor);
-    insert(target, t1, anchor);
+    insert(target, t, anchor);
     mountComponent(nested, target, anchor);
     current = true;
   }
@@ -68,7 +68,7 @@ class AppFragment extends Fragment {
   void detach(bool detaching) {
     if (detaching) {
       remove(p);
-      remove(t1);
+      remove(t);
     }
 
     destroyComponent(nested, detaching);

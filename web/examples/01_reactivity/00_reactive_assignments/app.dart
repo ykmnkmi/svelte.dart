@@ -11,11 +11,11 @@ class AppFragment extends Fragment {
 
   final List<Object?> instance;
 
-  late ButtonElement button;
+  late Element button;
 
   late Text t1, t2, t3, t4;
 
-  late String t4value;
+  late String t4_;
 
   bool mounted = false;
 
@@ -23,11 +23,11 @@ class AppFragment extends Fragment {
 
   @override
   void create() {
-    button = element<ButtonElement>('button');
+    button = element('button');
     t1 = text('Clicked ');
     t2 = text('${instance[0]}');
     t3 = space();
-    t4 = text(t4value = instance[0] == 1 ? 'time' : 'times');
+    t4 = text(t4_ = instance[0] == 1 ? 'time' : 'times');
   }
 
   @override
@@ -39,8 +39,7 @@ class AppFragment extends Fragment {
     append(button, t4);
 
     if (!mounted) {
-      var calback = instance[1] as void Function();
-      dispose = listen(button, 'click', listener(calback));
+      dispose = listen(button, 'click', listener(unsafeCast(instance[1])));
       mounted = true;
     }
   }
@@ -50,8 +49,8 @@ class AppFragment extends Fragment {
     if (dirty[0] & 1 != 0) {
       setData(t2, '${instance[0]}');
 
-      if (t4value != (t4value = instance[0] == 1 ? 'time' : 'times')) {
-        setData(t4, t4value);
+      if (t4_ != (t4_ = instance[0] == 1 ? 'time' : 'times')) {
+        setData(t4, t4_);
       }
     }
   }
