@@ -46,14 +46,14 @@ class NestedFragment extends Fragment {
 
 List<Object?> createInstance(
   Nested component,
-  Map<String, Object?> props,
+  Props props,
   Invalidate invalidate,
 ) {
-  int? answer = props['answer'] as int?;
+  Object? answer = props.containsKey('answer') ? props['answer'] : 'a mystery';
 
-  setComponentSet(component, (Map<String, Object?> props) {
+  setComponentSet(component, (Props props) {
     if (props.containsKey('answer')) {
-      invalidate(0, answer = props['answer'] as int?);
+      invalidate(0, answer = props['answer']);
     }
   });
 
@@ -67,7 +67,9 @@ class Nested extends Component {
       options: options,
       createInstance: createInstance,
       createFragment: createFragment,
-      props: <String, int>{'answer': 0},
+      props: <String, int>{
+        'answer': 0,
+      },
     );
   }
 }

@@ -1,6 +1,6 @@
 <script>
   @prop
-	int? answer;
+	var answer;
 </script>
 
 <p>The answer is {answer}</p>

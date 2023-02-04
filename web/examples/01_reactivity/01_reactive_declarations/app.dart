@@ -101,12 +101,12 @@ class AppFragment extends Fragment {
 
 List<Object?> createInstance(
   App component,
-  Map<String, Object?> props,
+  Props props,
   Invalidate invalidate,
 ) {
-  int count = 1;
-  late int doubled;
-  late int quadrupled;
+  var count = 1;
+  late var doubled;
+  late var quadrupled;
 
   void handleClick() {
     invalidate(0, count += 1);

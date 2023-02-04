@@ -2,32 +2,43 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-String name = 'world';
-
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment();
+  return AppFragment(instance);
 }
 
 class AppFragment extends Fragment {
-  late HeadingElement h1;
+  AppFragment(this.instance);
+
+  final List<Object?> instance;
+
+  late ParagraphElement p;
 
   @override
   void create() {
-    h1 = element<HeadingElement>('h1');
-    setText(h1, 'Hello $name!');
+    p = element<ParagraphElement>('p');
   }
 
   @override
   void mount(Element target, Node? anchor) {
-    insert(target, h1, anchor);
+    insert(target, p, anchor);
+    setInnerHtml(p, instance[0] as String);
   }
 
   @override
   void detach(bool detaching) {
     if (detaching) {
-      remove(h1);
+      remove(p);
     }
   }
+}
+
+List<Object?> createInstance(
+  App component,
+  Props props,
+  Invalidate invalidate,
+) {
+  var string = "here's some <strong>HTML!!!</strong>";
+  return <Object?>[string];
 }
 
 class App extends Component {
@@ -35,6 +46,7 @@ class App extends Component {
     init<App>(
       component: this,
       options: options,
+      createInstance: createInstance,
       createFragment: createFragment,
       props: <String, int>{},
     );

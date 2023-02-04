@@ -4,6 +4,7 @@ import 'package:meta/dart2js.dart';
 import 'package:svelte/src/runtime/fragment.dart';
 import 'package:svelte/src/runtime/lifecycle.dart';
 import 'package:svelte/src/runtime/options.dart';
+import 'package:svelte/src/runtime/props.dart';
 import 'package:svelte/src/runtime/scheduler.dart';
 import 'package:svelte/src/runtime/state.dart';
 import 'package:svelte/src/runtime/transition.dart';
@@ -13,7 +14,7 @@ typedef Invalidate = void Function(int i, Object? value);
 
 typedef InstanceFactory<T> = List<Object?> Function(
   T component,
-  Map<String, Object?> props,
+  Props props,
   Invalidate invalidate,
 );
 
@@ -21,9 +22,9 @@ abstract class Component {
   final State _state = State();
 
   // TODO(runtime): replace with recoreds
-  void Function(Map<String, Object?> props)? _set;
+  void Function(Props props)? _set;
 
-  void set([Map<String, Object?>? props]) {
+  void set([Props? props]) {
     var set = _set;
 
     if (set != null && props != null && props.isNotEmpty) {
@@ -47,6 +48,7 @@ abstract class Component {
   }
 }
 
+@tryInline
 void setComponentUpdate(
   Component component,
   void Function() Function(List<int> dirty) updateFactory,
@@ -54,9 +56,10 @@ void setComponentUpdate(
   component._state.update = updateFactory(component._state.dirty);
 }
 
+@tryInline
 void setComponentSet(
   Component component,
-  void Function(Map<String, Object?> props) setter,
+  void Function(Props props) setter,
 ) {
   component._set = setter;
 }
