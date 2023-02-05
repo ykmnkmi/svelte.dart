@@ -10,7 +10,7 @@ import 'package:svelte/src/runtime/state.dart';
 import 'package:svelte/src/runtime/transition.dart';
 import 'package:svelte/src/runtime/utilities.dart';
 
-typedef Invalidate = void Function(int i, Object? value);
+typedef Invalidate = void Function(int i, Object? value, [Object? expression]);
 
 typedef InstanceFactory<T> = List<Object?> Function(
   T component,
@@ -94,7 +94,7 @@ void init<T extends Component>({
   var ready = false;
 
   if (createInstance != null) {
-    void invalidate(int i, Object? value) {
+    void invalidate(int i, Object? value, [Object? expression]) {
       if (state.instance[i] != (state.instance[i] = value)) {
         if (ready) {
           makeComponentDirty(component, i);
