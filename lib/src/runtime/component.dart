@@ -3,8 +3,6 @@ import 'dart:html';
 import 'package:meta/dart2js.dart';
 import 'package:svelte/src/runtime/fragment.dart';
 import 'package:svelte/src/runtime/lifecycle.dart';
-import 'package:svelte/src/runtime/options.dart';
-import 'package:svelte/src/runtime/props.dart';
 import 'package:svelte/src/runtime/scheduler.dart';
 import 'package:svelte/src/runtime/state.dart';
 import 'package:svelte/src/runtime/transition.dart';
@@ -12,16 +10,38 @@ import 'package:svelte/src/runtime/utilities.dart';
 
 typedef Invalidate = void Function(int i, Object? value, [Object? expression]);
 
+typedef Props = Map<String, Object?>;
+
 typedef InstanceFactory<T> = List<Object?> Function(
   T component,
   Props props,
   Invalidate invalidate,
 );
 
+// TODO(runtime): replace with records
+class Options {
+  const Options({
+    this.target,
+    this.anchor,
+    this.props,
+    this.hydrate = false,
+    this.intro = false,
+  });
+
+  final Element? target;
+
+  final Node? anchor;
+
+  final Props? props;
+
+  final bool hydrate;
+
+  final bool intro;
+}
+
 abstract class Component {
   final State _state = State();
 
-  // TODO(runtime): replace with recoreds
   void Function(Props props)? _set;
 
   void set([Props? props]) {
@@ -167,16 +187,16 @@ void updateComponent(Component component) {
   if (fragment != null) {
     var dirty = state.dirty;
     state.dirty[0] = -1;
-    fragment.update(state.instance, dirty);
+    fragment.update(dirty);
   }
 }
 
-@noInline
+@tryInline
 void transitionInComponent(Component component, bool local) {
   transitionIn(component._state.fragment, local);
 }
 
-@noInline
+@tryInline
 void transitionOutComponent(
   Component component,
   bool local, [

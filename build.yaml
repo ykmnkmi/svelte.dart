@@ -3,17 +3,18 @@ global_options:
     options:
       native_null_assertions: false
       dart2js_args:
+
         # - -O0
-        # - --verbose
         # - --disable-inlining
-        # - --no-source-maps
+        # - --disable-type-inference
+        # - --disable-rti-optimizations
 
         # - -O1
 
         # - -O2
-        # - --minify
+        - --minify
         - --lax-runtime-type-to-string
-        # - --omit-late-names
+        - --omit-late-names
 
         # - -O3
         - --omit-implicit-checks
@@ -21,10 +22,12 @@ global_options:
         # - -O4
         - --trust-primitives
 
-        # - --omit-as-casts
-        # - --enable-asserts
-        # - --server-mode
         # - --csp
+        # - --enable-asserts
+        # - --no-source-maps
+        # - --omit-as-casts
+        # - --server-mode
+        # - --verbose
 
 targets:
   $default:

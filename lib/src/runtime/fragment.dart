@@ -5,7 +5,7 @@ abstract class Fragment {
 
   void mount(Element target, Node? anchor) {}
 
-  void update(List<Object?> instance, List<int> dirty) {}
+  void update(List<int> dirty) {}
 
   void intro(bool local) {}
 

@@ -2,24 +2,16 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-Fragment createIfBlock0(List<Object?> instance) {
-  return IfBlock0(instance);
-}
-
 class IfBlock0 extends Fragment {
   IfBlock0(this.instance);
 
-  final List<Object?> instance;
+  final AppInstance instance;
 
   late Element button;
 
   bool mounted = false;
 
   late void Function() dispose;
-
-  void Function() _toggle(List<Object?> instance) {
-    return unsafeCast(instance[1]);
-  }
 
   @override
   void create() {
@@ -32,7 +24,7 @@ class IfBlock0 extends Fragment {
     insert(target, button, anchor);
 
     if (!mounted) {
-      dispose = listen(button, 'click', listener(_toggle(instance)));
+      dispose = listen(button, 'click', listener(instance.toggle));
       mounted = true;
     }
   }
@@ -48,24 +40,16 @@ class IfBlock0 extends Fragment {
   }
 }
 
-Fragment createIfBlock1(List<Object?> instance) {
-  return IfBlock1(instance);
-}
-
 class IfBlock1 extends Fragment {
   IfBlock1(this.instance);
 
-  final List<Object?> instance;
+  final AppInstance instance;
 
   late Element button;
 
   bool mounted = false;
 
   late void Function() dispose;
-
-  void Function() _toggle(List<Object?> instance) {
-    return unsafeCast(instance[1]);
-  }
 
   @override
   void create() {
@@ -78,7 +62,7 @@ class IfBlock1 extends Fragment {
     insert(target, button, anchor);
 
     if (!mounted) {
-      dispose = listen(button, 'click', listener(_toggle(instance)));
+      dispose = listen(button, 'click', listener(instance.toggle));
       mounted = true;
     }
   }
@@ -95,21 +79,21 @@ class IfBlock1 extends Fragment {
 }
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment(instance);
+  return AppFragment(AppInstance(instance));
 }
 
 class AppFragment extends Fragment {
   AppFragment(this.instance) {
-    if (_user(instance)['loggedIn']!) {
-      ifBlock0 = createIfBlock0(instance);
+    if (instance.user['loggedIn']!) {
+      ifBlock0 = IfBlock0(instance);
     }
 
-    if (!_user(instance)['loggedIn']!) {
-      ifBlock1 = createIfBlock1(instance);
+    if (!instance.user['loggedIn']!) {
+      ifBlock1 = IfBlock1(instance);
     }
   }
 
-  final List<Object?> instance;
+  final AppInstance instance;
 
   late Text t;
 
@@ -118,10 +102,6 @@ class AppFragment extends Fragment {
   Fragment? ifBlock0;
 
   Fragment? ifBlock1;
-
-  Map<String, bool> _user(List<Object?> instance) {
-    return unsafeCast(instance[0]);
-  }
 
   @override
   void create() {
@@ -140,12 +120,12 @@ class AppFragment extends Fragment {
   }
 
   @override
-  void update(List<Object?> instance, List<int> dirty) {
-    if (_user(instance)['loggedIn']!) {
+  void update(List<int> dirty) {
+    if (instance.user['loggedIn']!) {
       if (ifBlock0 != null) {
-        ifBlock0!.update(instance, dirty);
+        ifBlock0!.update(dirty);
       } else {
-        ifBlock0 = createIfBlock0(instance);
+        ifBlock0 = IfBlock0(instance);
         ifBlock0!.create();
         ifBlock0!.mount(unsafeCast(t.parentNode), t);
       }
@@ -154,11 +134,11 @@ class AppFragment extends Fragment {
       ifBlock0 = null;
     }
 
-    if (!_user(instance)['loggedIn']!) {
+    if (!instance.user['loggedIn']!) {
       if (ifBlock1 != null) {
-        ifBlock1!.update(instance, dirty);
+        ifBlock1!.update(dirty);
       } else {
-        ifBlock1 = createIfBlock1(instance);
+        ifBlock1 = IfBlock1(instance);
         ifBlock1!.create();
         ifBlock1!.mount(unsafeCast(ifBlock1Anchor.parentNode), ifBlock1Anchor);
       }
@@ -196,6 +176,20 @@ List<Object?> createInstance(
   }
 
   return <Object?>[user, toggle];
+}
+
+class AppInstance {
+  AppInstance(List<Object?> instance) : _instance = instance;
+
+  final List<Object?> _instance;
+
+  Map<String, bool> get user {
+    return unsafeCast(_instance[0]);
+  }
+
+  void Function() get toggle {
+    return unsafeCast(_instance[1]);
+  }
 }
 
 class App extends Component {

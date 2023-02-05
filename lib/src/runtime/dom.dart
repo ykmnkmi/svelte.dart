@@ -1,3 +1,6 @@
+// TODO(runtime): move to js package
+library;
+
 import 'dart:async';
 import 'dart:html';
 
@@ -8,12 +11,10 @@ Element element(String tag) {
   return document.createElement(tag);
 }
 
-@noInline
 Text empty() {
   return text('');
 }
 
-@noInline
 Text space() {
   return text(' ');
 }

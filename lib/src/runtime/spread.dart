@@ -1,6 +1,6 @@
-import 'package:svelte/src/runtime/props.dart';
+import 'package:svelte/src/runtime/component.dart';
 
-const String spreadKey = r'$$spread';
+const String spreadKey = '__spread';
 
 Props getSpreadUpdate(List<Props> levels, List<Props?> updates) {
   var update = <String, Object?>{};
@@ -36,8 +36,8 @@ Props getSpreadUpdate(List<Props> levels, List<Props?> updates) {
 
   // TODO(runtime): not ported part
   // for (const key in to_null_out) {
-	// 	 if (!(key in update)) update[key] = undefined;
-	// }
+  // 	 if (!(key in update)) update[key] = undefined;
+  // }
 
   return update;
 }

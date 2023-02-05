@@ -67,7 +67,7 @@ class AppFragment extends Fragment {
   }
 
   @override
-  void update(List<Object?> instance, List<int> dirty) {
+  void update(List<int> dirty) {
     if (dirty[0] & 1 != 0) {
       setData(t1, '${instance[0]}');
       setData(t3, '${instance[0]}');

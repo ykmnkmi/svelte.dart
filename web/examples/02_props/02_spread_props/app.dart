@@ -42,7 +42,7 @@ class AppFragment extends Fragment {
   }
 
   @override
-  void update(List<Object?> instance, List<int> dirty) {
+  void update(List<int> dirty) {
     Props infoChanges;
 
     if (dirty[0] & 1 != 0) {

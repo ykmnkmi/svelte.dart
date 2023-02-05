@@ -3,13 +3,13 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment(instance);
+  return AppFragment(AppInstance(instance));
 }
 
 class AppFragment extends Fragment {
   AppFragment(this.instance);
 
-  final List<Object?> instance;
+  final AppInstance instance;
 
   late Element p;
 
@@ -21,7 +21,7 @@ class AppFragment extends Fragment {
   @override
   void mount(Element target, Node? anchor) {
     insert(target, p, anchor);
-    setInnerHtml(p, unsafeCast(instance[0]));
+    setInnerHtml(p, instance.string);
   }
 
   @override
@@ -39,6 +39,16 @@ List<Object?> createInstance(
 ) {
   var string = "here's some <strong>HTML!!!</strong>";
   return <Object?>[string];
+}
+
+class AppInstance {
+  AppInstance(List<Object?> instance) : _instance = instance;
+
+  final List<Object?> _instance;
+
+  String get string {
+    return unsafeCast(_instance[0]);
+  }
 }
 
 class App extends Component {
