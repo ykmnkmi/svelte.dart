@@ -3,13 +3,13 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment(instance);
+  return AppFragment(AppInstance(instance));
 }
 
 class AppFragment extends Fragment {
   AppFragment(this.instance);
 
-  final List<Object?> instance;
+  final AppInstance instance;
 
   late Element button;
 
@@ -25,9 +25,9 @@ class AppFragment extends Fragment {
   void create() {
     button = element('button');
     t0 = text('Clicked ');
-    t1 = text('${instance[0]}');
+    t1 = text('${instance.count}');
     t2 = space();
-    t3 = text(t3_ = instance[0] == 1 ? 'time' : 'times');
+    t3 = text(t3_ = instance.count == 1 ? 'time' : 'times');
   }
 
   @override
@@ -39,7 +39,7 @@ class AppFragment extends Fragment {
     append(button, t3);
 
     if (!mounted) {
-      dispose = listen(button, 'click', listener(unsafeCast(instance[1])));
+      dispose = listen(button, 'click', listener(instance.handleClick));
       mounted = true;
     }
   }
@@ -47,9 +47,9 @@ class AppFragment extends Fragment {
   @override
   void update(List<int> dirty) {
     if (dirty[0] & 1 != 0) {
-      setData(t1, '${instance[0]}');
+      setData(t1, '${instance.count}');
 
-      if (t3_ != (t3_ = instance[0] == 1 ? 'time' : 'times')) {
+      if (t3_ != (t3_ = instance.count == 1 ? 'time' : 'times')) {
         setData(t3, t3_);
       }
     }
@@ -90,6 +90,20 @@ List<Object?> createInstance(
   });
 
   return <Object?>[count, handleClick];
+}
+
+class AppInstance {
+  AppInstance(List<Object?> instance) : _instance = instance;
+
+  final List<Object?> _instance;
+
+  int get count {
+    return unsafeCast(_instance[0]);
+  }
+
+  void Function() get handleClick {
+    return unsafeCast(_instance[1]);
+  }
 }
 
 class App extends Component {

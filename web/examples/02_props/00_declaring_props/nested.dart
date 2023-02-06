@@ -3,13 +3,13 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  return NestedFragment(instance);
+  return NestedFragment(NestedInstance(instance));
 }
 
 class NestedFragment extends Fragment {
   NestedFragment(this.instance);
 
-  final List<Object?> instance;
+  final NestedInstance instance;
 
   late Element p;
 
@@ -19,7 +19,7 @@ class NestedFragment extends Fragment {
   void create() {
     p = element('p');
     t0 = text('The answer is ');
-    t1 = text('${instance[0]}');
+    t1 = text('${instance.answer}');
   }
 
   @override
@@ -32,7 +32,7 @@ class NestedFragment extends Fragment {
   @override
   void update(List<int> dirty) {
     if (dirty[0] & 1 != 0) {
-      setData(t1, '${instance[0]}');
+      setData(t1, '${instance.answer}');
     }
   }
 
@@ -58,6 +58,16 @@ List<Object?> createInstance(
   });
 
   return <Object?>[answer];
+}
+
+class NestedInstance {
+  NestedInstance(List<Object?> instance) : _instance = instance;
+
+  final List<Object?> _instance;
+
+  Object? get answer {
+    return _instance[0];
+  }
 }
 
 class Nested extends Component {
