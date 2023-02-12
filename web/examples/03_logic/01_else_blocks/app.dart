@@ -2,8 +2,8 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-class IfBlock0 extends Fragment {
-  IfBlock0(this.instance);
+class IfBlock extends Fragment {
+  IfBlock(this.instance);
 
   final AppInstance instance;
 
@@ -40,8 +40,8 @@ class IfBlock0 extends Fragment {
   }
 }
 
-class IfBlock1 extends Fragment {
-  IfBlock1(this.instance);
+class ElseBlock extends Fragment {
+  ElseBlock(this.instance);
 
   final AppInstance instance;
 
@@ -83,83 +83,57 @@ Fragment createFragment(List<Object?> instance) {
 }
 
 class AppFragment extends Fragment {
-  AppFragment(this.instance) {
-    if (instance.user['loggedIn']!) {
-      ifBlock0 = IfBlock0(instance);
-    }
-
-    if (!instance.user['loggedIn']!) {
-      ifBlock1 = IfBlock1(instance);
-    }
-  }
+  AppFragment(this.instance);
 
   final AppInstance instance;
 
-  late Text t;
+  late Node ifBlockAnchor;
 
-  late Node ifBlock1Anchor;
+  late Fragment Function(AppInstance instance) currentBlockFactory =
+      selectCurrentBlock(instance, <int>[-1]);
 
-  Fragment? ifBlock0;
+  late Fragment ifBlock = currentBlockFactory(instance);
 
-  Fragment? ifBlock1;
+  Fragment Function(AppInstance instance) selectCurrentBlock(
+      AppInstance instance, List<int> dirty) {
+    if (instance.user['loggedIn']!) {
+      return IfBlock.new;
+    }
+
+    return ElseBlock.new;
+  }
 
   @override
   void create() {
-    ifBlock0?.create();
-    t = space();
-    ifBlock1?.create();
-    ifBlock1Anchor = empty();
+    ifBlock.create();
+    ifBlockAnchor = empty();
   }
 
   @override
   void mount(Element target, Node? anchor) {
-    ifBlock0?.mount(target, anchor);
-    insert(target, t, anchor);
-    ifBlock1?.mount(target, anchor);
-    insert(target, ifBlock1Anchor, anchor);
+    ifBlock.mount(target, anchor);
+    insert(target, ifBlockAnchor, anchor);
   }
 
   @override
   void update(List<int> dirty) {
-    if (instance.user['loggedIn']!) {
-      if (ifBlock0 != null) {
-        ifBlock0!.update(dirty);
-      } else {
-        ifBlock0 = IfBlock0(instance);
-        ifBlock0!.create();
-        ifBlock0!.mount(unsafeCast(t.parentNode), t);
-      }
-    } else if (ifBlock0 != null) {
-      ifBlock0!.detach(true);
-      ifBlock0 = null;
-    }
-
-    if (!instance.user['loggedIn']!) {
-      if (ifBlock1 != null) {
-        ifBlock1!.update(dirty);
-      } else {
-        ifBlock1 = IfBlock1(instance);
-        ifBlock1!.create();
-        ifBlock1!.mount(unsafeCast(ifBlock1Anchor.parentNode), ifBlock1Anchor);
-      }
-    } else if (ifBlock1 != null) {
-      ifBlock1!.detach(true);
-      ifBlock1 = null;
+    if (currentBlockFactory ==
+        (currentBlockFactory = selectCurrentBlock(instance, dirty))) {
+      ifBlock.update(dirty);
+    } else {
+      ifBlock.detach(true);
+      ifBlock = currentBlockFactory(instance);
+      ifBlock.create();
+      ifBlock.mount(unsafeCast(ifBlockAnchor.parentNode), ifBlockAnchor);
     }
   }
 
   @override
   void detach(bool detaching) {
-    ifBlock0?.detach(detaching);
+    ifBlock.detach(detaching);
 
     if (detaching) {
-      remove(t);
-    }
-
-    ifBlock1?.detach(detaching);
-
-    if (detaching) {
-      remove(ifBlock1Anchor);
+      remove(ifBlockAnchor);
     }
   }
 }

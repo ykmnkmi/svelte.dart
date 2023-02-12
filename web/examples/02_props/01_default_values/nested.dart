@@ -19,7 +19,7 @@ class NestedFragment extends Fragment {
   void create() {
     p = element('p');
     t0 = text('The answer is ');
-    t1 = text(instance.answer);
+    t1 = text('${instance.answer}');
   }
 
   @override
@@ -32,7 +32,7 @@ class NestedFragment extends Fragment {
   @override
   void update(List<int> dirty) {
     if (dirty[0] & 1 != 0) {
-      setData(t1, instance.answer);
+      setData(t1, '${instance.answer}');
     }
   }
 
@@ -49,17 +49,11 @@ List<Object?> createInstance(
   Props props,
   Invalidate invalidate,
 ) {
-  String answer;
-
-  if (props.containsKey('answer')) {
-    answer = props['answer'] as String;
-  } else {
-    answer = 'a mystery';
-  }
+  var answer = props.containsKey('props') ? props['answer'] : 'a mystery';
 
   setComponentSet(component, (Props props) {
     if (props.containsKey('answer')) {
-      invalidate(0, answer = props['answer'] as String);
+      invalidate(0, answer = props['answer']);
     }
   });
 
@@ -71,8 +65,8 @@ class NestedInstance {
 
   final List<Object?> _instance;
 
-  String get answer {
-    return unsafeCast(_instance[0]);
+  Object? get answer {
+    return _instance[0];
   }
 }
 

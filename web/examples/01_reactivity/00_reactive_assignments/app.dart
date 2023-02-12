@@ -15,7 +15,7 @@ class AppFragment extends Fragment {
 
   late Text t1, t2, t3, t4;
 
-  late String t4_;
+  late String t4value;
 
   bool mounted = false;
 
@@ -27,7 +27,7 @@ class AppFragment extends Fragment {
     t1 = text('Clicked ');
     t2 = text('${instance.count}');
     t3 = space();
-    t4 = text(t4_ = instance.count == 1 ? 'time' : 'times');
+    t4 = text(t4value = instance.count == 1 ? 'time' : 'times');
   }
 
   @override
@@ -49,8 +49,8 @@ class AppFragment extends Fragment {
     if (dirty[0] & 1 != 0) {
       setData(t2, '${instance.count}');
 
-      if (t4_ != (t4_ = instance.count == 1 ? 'time' : 'times')) {
-        setData(t4, t4_);
+      if (t4value != (t4value = instance.count == 1 ? 'time' : 'times')) {
+        setData(t4, t4value);
       }
     }
   }

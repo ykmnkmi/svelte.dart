@@ -3,13 +3,13 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  return InfoFragment(instance);
+  return InfoFragment(InfoInstance(instance));
 }
 
 class InfoFragment extends Fragment {
   InfoFragment(this.instance);
 
-  final List<Object?> instance;
+  final InfoInstance instance;
 
   late Element p0;
 
@@ -19,7 +19,7 @@ class InfoFragment extends Fragment {
 
   late Text t1, t2, t3, t4, t5, t6;
 
-  late String a0href_;
+  late String a0href;
 
   late Element a0;
 
@@ -34,20 +34,20 @@ class InfoFragment extends Fragment {
     p0 = element('p');
     t0 = text('The ');
     code0 = element('code');
-    t1 = text('${instance[0]}');
+    t1 = text('${instance.name}');
     t2 = text(' package is ');
-    t3 = text('${instance[2]}');
+    t3 = text('${instance.speed}');
     t4 = text(' fast.\n\tDownload version ');
-    t5 = text('${instance[1]}');
+    t5 = text('${instance.version}');
     t6 = text(' from ');
     a0 = element('a');
-    t7 = text('npm');
+    t7 = text('pub');
     t8 = text('\n\tand ');
     a1 = element('a');
     t9 = text('learn more here');
     setAttribute(
-        a0, 'href', a0href_ = 'https://www.npmjs.com/package/${instance[0]}');
-    setAttribute(a1, 'href', '${instance[3]}');
+        a0, 'href', a0href = 'https://pub.dev/package/${instance.name}');
+    setAttribute(a1, 'href', '${instance.website}');
   }
 
   @override
@@ -71,24 +71,24 @@ class InfoFragment extends Fragment {
   @override
   void update(List<int> dirty) {
     if (dirty[0] & 1 != 0) {
-      setData(t1, '${instance[0]}');
+      setData(t1, '${instance.name}');
     }
 
     if (dirty[0] & 4 != 0) {
-      setData(t3, '${instance[2]}');
+      setData(t3, '${instance.speed}');
     }
 
     if (dirty[0] & 2 != 0) {
-      setData(t5, '${instance[1]}');
+      setData(t5, '${instance.version}');
     }
 
     if (dirty[0] & 1 != 0 &&
-        a0href_ != (a0href_ = 'https://www.npmjs.com/package/${instance[0]}')) {
-      setAttribute(a0, 'href', a0href_);
+        a0href != (a0href = 'https://www.npmjs.com/package/${instance.name}')) {
+      setAttribute(a0, 'href', a0href);
     }
 
     if (dirty[0] & 8 != 0) {
-      setAttribute(a1, 'href', '${instance[3]}');
+      setAttribute(a1, 'href', '${instance.website}');
     }
   }
 
@@ -129,6 +129,28 @@ List<Object?> createInstance(
   });
 
   return <Object?>[name, version, speed, website];
+}
+
+class InfoInstance {
+  InfoInstance(List<Object?> instance) : _instance = instance;
+
+  final List<Object?> _instance;
+
+  Object? get name {
+    return _instance[0];
+  }
+
+  Object? get version {
+    return _instance[1];
+  }
+
+  Object? get speed {
+    return _instance[2];
+  }
+
+  Object? get website {
+    return _instance[3];
+  }
 }
 
 class Info extends Component {

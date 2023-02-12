@@ -1,8 +1,15 @@
 <script>
-	@prop var name;
-	@prop var version;
-	@prop var speed;
-	@prop var website;
+	@prop
+	var name;
+
+	@prop
+	var version;
+
+	@prop
+	var speed;
+
+	@prop
+	var website;
 </script>
 
 <p>

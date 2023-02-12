@@ -5,12 +5,12 @@ import 'package:svelte/runtime.dart';
 import 'info.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment(instance);
+  return AppFragment(AppInstance(instance));
 }
 
 class AppFragment extends Fragment {
   AppFragment(this.instance) {
-    infoSpreadLevels = <Props>[instance[0] as Props];
+    infoSpreadLevels = <Map<String, Object?>>[instance.pkg];
     infoProps = <String, Object?>{};
 
     for (var i = 0; i < infoSpreadLevels.length; i += 1) {
@@ -20,15 +20,15 @@ class AppFragment extends Fragment {
     info = Info(Options(props: infoProps));
   }
 
-  final List<Object?> instance;
+  final AppInstance instance;
 
   late Info info;
 
   bool current = false;
 
-  late List<Props> infoSpreadLevels;
+  late List<Map<String, Object?>> infoSpreadLevels;
 
-  late Props infoProps;
+  late Map<String, Object?> infoProps;
 
   @override
   void create() {
@@ -46,7 +46,7 @@ class AppFragment extends Fragment {
     Props infoChanges;
 
     if (dirty[0] & 1 != 0) {
-      var list = <Props>[getSpreadProps(instance[0])];
+      var list = <Map<String, Object?>>[getSpreadProps(instance.pkg)];
       infoChanges = getSpreadUpdate(infoSpreadLevels, list);
     } else {
       infoChanges = <String, Object?>{};
@@ -90,6 +90,16 @@ List<Object?> createInstance(
   };
 
   return <Object?>[pkg];
+}
+
+class AppInstance {
+  AppInstance(List<Object?> instance) : _instance = instance;
+
+  final List<Object?> _instance;
+
+  Map<String, Object?> get pkg {
+    return unsafeCast(_instance[0]);
+  }
 }
 
 class App extends Component {
