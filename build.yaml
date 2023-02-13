@@ -1,34 +1,3 @@
-global_options:
-  build_web_compilers|entrypoint:
-    options:
-      native_null_assertions: false
-      dart2js_args:
-
-        # - -O0
-        # - --disable-inlining
-        # - --disable-type-inference
-        # - --disable-rti-optimizations
-
-        # - -O1
-
-        # - -O2
-        - --minify
-        - --lax-runtime-type-to-string
-        - --omit-late-names
-
-        # - -O3
-        - --omit-implicit-checks
-
-        # - -O4
-        - --trust-primitives
-
-        # - --csp
-        # - --enable-asserts
-        # - --no-source-maps
-        # - --omit-as-casts
-        # - --server-mode
-        # - --verbose
-
 targets:
   $default:
     builders:
@@ -38,3 +7,31 @@ targets:
           - lib/runtime/**.dart
           - lib/svelte.dart
           - web/**.dart
+        options:
+          native_null_assertions: false
+          dart2js_args:
+
+            # - -O0
+            # - --disable-inlining
+            # - --disable-type-inference
+            # - --disable-rti-optimizations
+
+            # - -O1
+
+            # - -O2
+            - --minify
+            - --lax-runtime-type-to-string
+            # - --omit-late-names
+
+            # - -O3
+            - --omit-implicit-checks
+
+            # - -O4
+            - --trust-primitives
+
+            # - --csp
+            # - --enable-asserts
+            # - --no-source-maps
+            # - --omit-as-casts
+            # - --server-mode
+            # - --verbose

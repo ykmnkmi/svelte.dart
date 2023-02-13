@@ -1,6 +1,6 @@
 name: svelte
 description: Svelte web framework, ported to Dart.
-version: 3.55.1-dev.175
+version: 3.55.1-dev.176
 
 environment:
   sdk: ">=2.19.0 <3.0.0"
@@ -20,4 +20,4 @@ dev_dependencies:
   glob: ^2.1.1
   lints: ^2.0.1
   stack_trace: ^1.11.0
-  test: ^1.22.2
+  test: ^1.23.1
