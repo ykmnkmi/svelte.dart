@@ -1,3 +1,14 @@
+builders:
+  svelte:
+    import: "package:svelte/builders.dart"
+    builder_factories:
+      - svelteBuilder
+    auto_apply: dependents
+    build_to: cache
+    build_extensions:
+      ".svelte":
+        - ".svelte.dart"
+
 targets:
   $default:
     builders:
@@ -10,7 +21,6 @@ targets:
         options:
           native_null_assertions: false
           dart2js_args:
-
             # - -O0
             # - --disable-inlining
             # - --disable-type-inference
@@ -35,3 +45,6 @@ targets:
             # - --omit-as-casts
             # - --server-mode
             # - --verbose
+
+      svelte:svelte:
+        enabled: true

@@ -39,29 +39,3 @@ Ast parse(String source, {Object? sourceUrl, CssMode? cssMode}) {
     style: style,
   );
 }
-
-class Ast {
-  Ast({
-    required this.html,
-    this.instance,
-    this.library,
-    this.style,
-  });
-
-  final Fragment html;
-
-  final Script? instance;
-
-  final Script? library;
-
-  final Style? style;
-
-  Map<String, Object?> toJson() {
-    return <String, Object?>{
-      'html': html.toJson(),
-      if (instance != null) 'instance': instance!.toJson(),
-      if (library != null) 'library': library!.toJson(),
-      if (style != null) 'style': style!.toJson(),
-    };
-  }
-}
