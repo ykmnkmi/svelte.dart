@@ -138,8 +138,10 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'AssignedVariablePattern',
       // 'element': dynamic
+      // AssignedVariablePattern - VariablePattern
       // 'name': dynamic
-      // AssignedVariablePattern - DartPattern
+      // VariablePattern - DartPattern
+      // 'matchedValueType': dynamic
       // 'precedence': dynamic
       // DartPattern - ListPatternElement
     };
@@ -240,20 +242,6 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       // 'staticElement': dynamic
       // MethodReferenceExpression - Expression
       // Expression - CollectionElement
-    };
-  }
-
-  @override
-  Map<String, Object?>? visitBinaryPattern(BinaryPattern node) {
-    return <String, Object?>{
-      ...getLocation(node),
-      'class': 'BinaryPattern',
-      'leftOperand': node.leftOperand.accept(this),
-      // 'operator': dynamic
-      'rightOperand': node.rightOperand.accept(this),
-      // BinaryPattern - DartPattern
-      // 'precedence': dynamic
-      // DartPattern - ListPatternElement
     };
   }
 
@@ -361,6 +349,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       'pattern': node.pattern.accept(this),
       'type': node.type.accept(this),
       // CastPattern - DartPattern
+      // 'matchedValueType': dynamic
       // 'precedence': dynamic
       // DartPattern - ListPatternElement
     };
@@ -416,9 +405,13 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
         'typeParameters': node.typeParameters!.accept(this),
       // ClassDeclaration - ClassOrAugmentationDeclaration
       // 'abstractKeyword': dynamic
+      // 'baseKeyword': dynamic
       // 'classKeyword': dynamic
       if (node.extendsClause != null)
         'extendsClause': node.extendsClause!.accept(this),
+      // 'finalKeyword': dynamic
+      // 'interfaceKeyword': dynamic
+      // 'mixinKeyword': dynamic
       // 'sealedKeyword': dynamic
       if (node.withClause != null) 'withClause': node.withClause!.accept(this),
       // ClassOrAugmentationDeclaration - NamedCompilationUnitMember
@@ -446,10 +439,14 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       ...getLocation(node),
       'class': 'ClassTypeAlias',
       // 'abstractKeyword': dynamic
+      // 'baseKeyword': dynamic
       // 'declaredElement': dynamic
       // 'equals': dynamic
+      // 'finalKeyword': dynamic
       if (node.implementsClause != null)
         'implementsClause': node.implementsClause!.accept(this),
+      // 'interfaceKeyword': dynamic
+      // 'mixinKeyword': dynamic
       // 'sealedKeyword': dynamic
       'superclass': node.superclass.accept(this),
       if (node.typeParameters != null)
@@ -568,6 +565,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       // 'constKeyword': dynamic
       'expression': node.expression.accept(this),
       // ConstantPattern - DartPattern
+      // 'matchedValueType': dynamic
       // 'precedence': dynamic
       // DartPattern - ListPatternElement
     };
@@ -717,9 +715,11 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       'class': 'DeclaredVariablePattern',
       // 'declaredElement': dynamic
       // 'keyword': dynamic
-      // 'name': dynamic
       if (node.type != null) 'type': node.type!.accept(this),
-      // DeclaredVariablePattern - DartPattern
+      // DeclaredVariablePattern - VariablePattern
+      // 'name': dynamic
+      // VariablePattern - DartPattern
+      // 'matchedValueType': dynamic
       // 'precedence': dynamic
       // DartPattern - ListPatternElement
     };
@@ -1887,16 +1887,47 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       'class': 'ListPattern',
-      // 'requiredType': dynamic
       if (node.elements.isNotEmpty)
         'elements': <Map<String, Object?>?>[
           for (var item in node.elements) item.accept(this),
         ],
       // 'leftBracket': dynamic
+      // 'requiredType': dynamic
       // 'rightBracket': dynamic
       if (node.typeArguments != null)
         'typeArguments': node.typeArguments!.accept(this),
       // ListPattern - DartPattern
+      // 'matchedValueType': dynamic
+      // 'precedence': dynamic
+      // DartPattern - ListPatternElement
+    };
+  }
+
+  @override
+  Map<String, Object?>? visitLogicalAndPattern(LogicalAndPattern node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      'class': 'LogicalAndPattern',
+      'leftOperand': node.leftOperand.accept(this),
+      // 'operator': dynamic
+      'rightOperand': node.rightOperand.accept(this),
+      // LogicalAndPattern - DartPattern
+      // 'matchedValueType': dynamic
+      // 'precedence': dynamic
+      // DartPattern - ListPatternElement
+    };
+  }
+
+  @override
+  Map<String, Object?>? visitLogicalOrPattern(LogicalOrPattern node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      'class': 'LogicalOrPattern',
+      'leftOperand': node.leftOperand.accept(this),
+      // 'operator': dynamic
+      'rightOperand': node.rightOperand.accept(this),
+      // LogicalOrPattern - DartPattern
+      // 'matchedValueType': dynamic
       // 'precedence': dynamic
       // DartPattern - ListPatternElement
     };
@@ -1919,16 +1950,17 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       'class': 'MapPattern',
-      // 'requiredType': dynamic
       if (node.elements.isNotEmpty)
         'elements': <Map<String, Object?>?>[
           for (var item in node.elements) item.accept(this),
         ],
       // 'leftBracket': dynamic
+      // 'requiredType': dynamic
       // 'rightBracket': dynamic
       if (node.typeArguments != null)
         'typeArguments': node.typeArguments!.accept(this),
       // MapPattern - DartPattern
+      // 'matchedValueType': dynamic
       // 'precedence': dynamic
       // DartPattern - ListPatternElement
     };
@@ -2032,6 +2064,9 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       if (node.typeParameters != null)
         'typeParameters': node.typeParameters!.accept(this),
       // MixinDeclaration - MixinOrAugmentationDeclaration
+      // 'baseKeyword': dynamic
+      // 'finalKeyword': dynamic
+      // 'interfaceKeyword': dynamic
       // 'mixinKeyword': dynamic
       if (node.onClause != null) 'onClause': node.onClause!.accept(this),
       // 'sealedKeyword': dynamic
@@ -2116,6 +2151,34 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   }
 
   @override
+  Map<String, Object?>? visitNullAssertPattern(NullAssertPattern node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      'class': 'NullAssertPattern',
+      // 'operator': dynamic
+      'pattern': node.pattern.accept(this),
+      // NullAssertPattern - DartPattern
+      // 'matchedValueType': dynamic
+      // 'precedence': dynamic
+      // DartPattern - ListPatternElement
+    };
+  }
+
+  @override
+  Map<String, Object?>? visitNullCheckPattern(NullCheckPattern node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      'class': 'NullCheckPattern',
+      // 'operator': dynamic
+      'pattern': node.pattern.accept(this),
+      // NullCheckPattern - DartPattern
+      // 'matchedValueType': dynamic
+      // 'precedence': dynamic
+      // DartPattern - ListPatternElement
+    };
+  }
+
+  @override
   Map<String, Object?>? visitNullLiteral(NullLiteral node) {
     return <String, Object?>{
       ...getLocation(node),
@@ -2145,6 +2208,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       // 'rightParenthesis': dynamic
       'type': node.type.accept(this),
       // ObjectPattern - DartPattern
+      // 'matchedValueType': dynamic
       // 'precedence': dynamic
       // DartPattern - ListPatternElement
     };
@@ -2191,6 +2255,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       'pattern': node.pattern.accept(this),
       // 'rightParenthesis': dynamic
       // ParenthesizedPattern - DartPattern
+      // 'matchedValueType': dynamic
       // 'precedence': dynamic
       // DartPattern - ListPatternElement
     };
@@ -2269,6 +2334,27 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   }
 
   @override
+  Map<String, Object?>? visitPatternField(PatternField node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      'class': 'PatternField',
+      // 'element': dynamic
+      if (node.name != null) 'name': node.name!.accept(this),
+      'pattern': node.pattern.accept(this),
+    };
+  }
+
+  @override
+  Map<String, Object?>? visitPatternFieldName(PatternFieldName node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      'class': 'PatternFieldName',
+      // 'colon': dynamic
+      // 'name': dynamic
+    };
+  }
+
+  @override
   Map<String, Object?>? visitPatternVariableDeclaration(
       PatternVariableDeclaration node) {
     return <String, Object?>{
@@ -2333,19 +2419,6 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       // 'writeType': dynamic
       // CompoundAssignmentExpression - Expression
       // Expression - CollectionElement
-    };
-  }
-
-  @override
-  Map<String, Object?>? visitPostfixPattern(PostfixPattern node) {
-    return <String, Object?>{
-      ...getLocation(node),
-      'class': 'PostfixPattern',
-      'operand': node.operand.accept(this),
-      // 'operator': dynamic
-      // PostfixPattern - DartPattern
-      // 'precedence': dynamic
-      // DartPattern - ListPatternElement
     };
   }
 
@@ -2466,30 +2539,9 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       // 'leftParenthesis': dynamic
       // 'rightParenthesis': dynamic
       // RecordPattern - DartPattern
+      // 'matchedValueType': dynamic
       // 'precedence': dynamic
       // DartPattern - ListPatternElement
-    };
-  }
-
-  @override
-  Map<String, Object?>? visitRecordPatternField(RecordPatternField node) {
-    return <String, Object?>{
-      ...getLocation(node),
-      'class': 'RecordPatternField',
-      // 'fieldElement': dynamic
-      if (node.fieldName != null) 'fieldName': node.fieldName!.accept(this),
-      'pattern': node.pattern.accept(this),
-    };
-  }
-
-  @override
-  Map<String, Object?>? visitRecordPatternFieldName(
-      RecordPatternFieldName node) {
-    return <String, Object?>{
-      ...getLocation(node),
-      'class': 'RecordPatternFieldName',
-      // 'colon': dynamic
-      // 'name': dynamic
     };
   }
 
@@ -2585,6 +2637,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       'operand': node.operand.accept(this),
       // 'operator': dynamic
       // RelationalPattern - DartPattern
+      // 'matchedValueType': dynamic
       // 'precedence': dynamic
       // DartPattern - ListPatternElement
     };
@@ -3265,6 +3318,21 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       // 'rightParenthesis': dynamic
       // 'whileKeyword': dynamic
       // WhileStatement - Statement
+    };
+  }
+
+  @override
+  Map<String, Object?>? visitWildcardPattern(WildcardPattern node) {
+    return <String, Object?>{
+      ...getLocation(node),
+      'class': 'WildcardPattern',
+      // 'keyword': dynamic
+      // 'name': dynamic
+      if (node.type != null) 'type': node.type!.accept(this),
+      // WildcardPattern - DartPattern
+      // 'matchedValueType': dynamic
+      // 'precedence': dynamic
+      // DartPattern - ListPatternElement
     };
   }
 
