@@ -29,7 +29,9 @@ Why? ... :
         count += 1;
       });
 
-      return timer.cancel;
+      return () {
+        timer.cancel();
+      };
     });
   </script>
 
@@ -43,14 +45,15 @@ Why? ... :
 
 - React\Solid way.
 
-  Functional сomponent and Svelte ыyntax. Original Svelte API, hard (it takes a lot of time to experiment with the API) to extend the parser of the Dart language.
+  Functional сomponent and Svelte syntax.
+  Original Svelte API, hard to extend the parser of the Dart language.
 
   ```dart
   // app.dartx
 
   import 'package:svelte/svelte.dart' show onMount, onDestroy;
 
-  Fragment app() {
+  Fragment app( /* props, slots */ ) {
     var count = 0;
 
     $: doubled = count * 2;
@@ -60,7 +63,6 @@ Why? ... :
       count += 1;
     }
 
-    // another way
     late Timer timer;
 
     onMount(() {
@@ -86,13 +88,13 @@ Why? ... :
 
 - NgComponent way.
 
-  Angular Component API, Svelte template syntax and reactivity. It's easy to implement, same as NgDart.
+  Angular Component API, Svelte template syntax and reactivity. Easy to implement, same as NgDart.
 
   ```dart
-  import 'package:svelte/svelte.dart' show OnChanges, OnMount, OnDestroy;
+  import 'package:svelte/svelte.dart' show update, OnMount, OnDestroy;
 
   @Component(
-    selector: 'app',
+    tag: 'app',
     template: r'''
   <button on:click={handleClick}>
     Clicked {count} {count == 1 ? 'time' : 'times'}
@@ -102,20 +104,17 @@ Why? ... :
   <p>{doubled} * 2 = {quadrupled}</p>
   ''',
   )
-  class App implements OnChanges, OnMount, OnDestroy {
+  class App implements OnMount, OnDestroy {
     int count = 0;
 
+    @update
     late int doubled = count * 2;
+
+    @update
     late int quadrupled = doubled * 2;
 
     void handleClick() {
       count += 1;
-    }
-
-    @override
-    void onChanges() {
-      doubled = count * 2;
-      quadrupled = doubled * 2;
     }
 
     late Timer timer;
