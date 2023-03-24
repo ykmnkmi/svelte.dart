@@ -8,7 +8,7 @@ import 'package:svelte/src/runtime/state.dart';
 import 'package:svelte/src/runtime/transition.dart';
 import 'package:svelte/src/runtime/utilities.dart';
 
-typedef Invalidate = void Function(int i, Object? value, [Object? expression]);
+typedef Invalidate = void Function(int i, Object? value);
 
 typedef Props = Map<String, Object?>;
 
@@ -114,7 +114,7 @@ void init<T extends Component>({
   var ready = false;
 
   if (createInstance != null) {
-    void invalidate(int i, Object? value, [Object? expression]) {
+    void invalidate(int i, Object? value) {
       if (state.instance[i] != (state.instance[i] = value)) {
         if (ready) {
           makeComponentDirty(component, i);
@@ -167,14 +167,15 @@ void mountComponent(Component component, Element target, [Node? anchor]) {
 @noInline
 void makeComponentDirty(Component component, int i) {
   var dirty = component._state.dirty;
+  var index = i ~/ 31;
 
   if (dirty[0] == -1) {
     dirtyComponents.add(component);
     scheduleUpdate();
-    dirty.fillRange(0, dirty.length, 0);
+    dirty.fillRange(0, index + 1, 0);
   }
 
-  dirty[(i ~/ 31)] |= 1 << i % 31;
+  dirty[index] |= 1 << i % 31;
 }
 
 @noInline

@@ -393,6 +393,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       // 'declaredElement': dynamic
       if (node.implementsClause != null)
         'implementsClause': node.implementsClause!.accept(this),
+      // 'inlineKeyword': dynamic
       // 'leftBracket': dynamic
       if (node.members.isNotEmpty)
         'members': <Map<String, Object?>?>[
@@ -852,9 +853,9 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       'class': 'EnumConstantDeclaration',
       if (node.arguments != null) 'arguments': node.arguments!.accept(this),
       // 'constructorElement': dynamic
+      // 'declaredElement': dynamic
       // 'name': dynamic
       // EnumConstantDeclaration - Declaration
-      // 'declaredElement': dynamic
       // Declaration - AnnotatedNode
       if (node.documentationComment != null)
         'documentationComment': node.documentationComment!.accept(this),
@@ -2338,6 +2339,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
     return <String, Object?>{
       ...getLocation(node),
       'class': 'PatternField',
+      if (node.effectiveName != null) 'effectiveName': node.effectiveName!,
       // 'element': dynamic
       if (node.name != null) 'name': node.name!.accept(this),
       'pattern': node.pattern.accept(this),
