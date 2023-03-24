@@ -2,144 +2,121 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-class IfBlock extends Fragment {
-  IfBlock(this.instance);
-
-  final AppInstance instance;
-
+Fragment createIfBLock(AppContext context) {
   late Element button;
 
-  bool mounted = false;
+  var mounted = false;
 
   late void Function() dispose;
 
-  @override
-  void create() {
-    button = element('button');
-    setText(button, 'Log out');
-  }
+  return Fragment(
+    create: () {
+      button = element('button');
+      setText(button, 'Log out');
+    },
+    mount: (target, anchor) {
+      insert(target, button, anchor);
 
-  @override
-  void mount(Element target, Node? anchor) {
-    insert(target, button, anchor);
+      if (!mounted) {
+        dispose = listen(button, 'click', listener(context.toggle));
+        mounted = true;
+      }
+    },
+    detach: (detaching) {
+      if (detaching) {
+        remove(button);
+      }
 
-    if (!mounted) {
-      dispose = listen(button, 'click', listener(instance.toggle));
-      mounted = true;
-    }
-  }
-
-  @override
-  void detach(bool detaching) {
-    if (detaching) {
-      remove(button);
-    }
-
-    mounted = false;
-    dispose();
-  }
+      mounted = false;
+      dispose();
+    },
+  );
 }
 
-class ElseBlock extends Fragment {
-  ElseBlock(this.instance);
-
-  final AppInstance instance;
-
+Fragment createElseBlock(AppContext context) {
   late Element button;
 
-  bool mounted = false;
+  var mounted = false;
 
   late void Function() dispose;
 
-  @override
-  void create() {
-    button = element('button');
-    setText(button, 'Log in');
-  }
+  return Fragment(
+    create: () {
+      button = element('button');
+      setText(button, 'Log in');
+    },
+    mount: (target, anchor) {
+      insert(target, button, anchor);
 
-  @override
-  void mount(Element target, Node? anchor) {
-    insert(target, button, anchor);
+      if (!mounted) {
+        dispose = listen(button, 'click', listener(context.toggle));
+        mounted = true;
+      }
+    },
+    detach: (bool detaching) {
+      if (detaching) {
+        remove(button);
+      }
 
-    if (!mounted) {
-      dispose = listen(button, 'click', listener(instance.toggle));
-      mounted = true;
-    }
-  }
-
-  @override
-  void detach(bool detaching) {
-    if (detaching) {
-      remove(button);
-    }
-
-    mounted = false;
-    dispose();
-  }
+      mounted = false;
+      dispose();
+    },
+  );
 }
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment(AppInstance(instance));
-}
-
-class AppFragment extends Fragment {
-  AppFragment(this.instance);
-
-  final AppInstance instance;
+  var context = AppContext(instance);
 
   late Node ifBlockAnchor;
 
-  late Fragment Function(AppInstance instance) currentBlockFactory =
-      selectCurrentBlock(instance, <int>[-1]);
-
-  late Fragment ifBlock = currentBlockFactory(instance);
-
-  Fragment Function(AppInstance instance) selectCurrentBlock(
-      AppInstance instance, List<int> dirty) {
-    if (instance.user['loggedIn']!) {
-      return IfBlock.new;
+  Fragment Function(AppContext) selectCurrentBlock(
+    AppContext context,
+    List<int> dirty,
+  ) {
+    if (context.user['loggedIn']!) {
+      return createIfBLock;
     }
 
-    return ElseBlock.new;
+    return createElseBlock;
   }
 
-  @override
-  void create() {
-    ifBlock.create();
-    ifBlockAnchor = empty();
-  }
+  var currentBlockFactory = selectCurrentBlock(context, <int>[-1]);
+  var ifBlock = currentBlockFactory(context);
 
-  @override
-  void mount(Element target, Node? anchor) {
-    ifBlock.mount(target, anchor);
-    insert(target, ifBlockAnchor, anchor);
-  }
-
-  @override
-  void update(List<int> dirty) {
-    if (currentBlockFactory ==
-        (currentBlockFactory = selectCurrentBlock(instance, dirty))) {
-      ifBlock.update(dirty);
-    } else {
-      ifBlock.detach(true);
-      ifBlock = currentBlockFactory(instance);
+  return Fragment(
+    create: () {
       ifBlock.create();
-      ifBlock.mount(unsafeCast(ifBlockAnchor.parentNode), ifBlockAnchor);
-    }
-  }
+      ifBlockAnchor = empty();
+    },
+    mount: (target, anchor) {
+      ifBlock.mount(target, anchor);
+      insert(target, ifBlockAnchor, anchor);
+    },
+    update: (dirty) {
+      var newBlockFactory = selectCurrentBlock(context, dirty);
 
-  @override
-  void detach(bool detaching) {
-    ifBlock.detach(detaching);
+      if (currentBlockFactory == newBlockFactory) {
+        ifBlock.update(dirty);
+      } else {
+        ifBlock.detach(true);
 
-    if (detaching) {
-      remove(ifBlockAnchor);
-    }
-  }
+        ifBlock = currentBlockFactory(context)
+          ..create()
+          ..mount(unsafeCast(ifBlockAnchor.parentNode), ifBlockAnchor);
+      }
+    },
+    detach: (detaching) {
+      ifBlock.detach(detaching);
+
+      if (detaching) {
+        remove(ifBlockAnchor);
+      }
+    },
+  );
 }
 
 List<Object?> createInstance(
-  App self,
+  Component self,
   Props props,
   Invalidate invalidate,
 ) {
@@ -152,8 +129,8 @@ List<Object?> createInstance(
   return <Object?>[user, toggle];
 }
 
-class AppInstance {
-  AppInstance(List<Object?> instance) : _instance = instance;
+class AppContext {
+  AppContext(List<Object?> instance) : _instance = instance;
 
   final List<Object?> _instance;
 
@@ -168,7 +145,7 @@ class AppInstance {
 
 class App extends Component {
   App(Options options) {
-    init<App>(
+    init(
       component: this,
       options: options,
       createInstance: createInstance,

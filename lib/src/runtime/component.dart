@@ -12,8 +12,8 @@ typedef Invalidate = void Function(int i, Object? value);
 
 typedef Props = Map<String, Object?>;
 
-typedef InstanceFactory<T> = List<Object?> Function(
-  T component,
+typedef InstanceFactory = List<Object?> Function(
+  Component component,
   Props props,
   Invalidate invalidate,
 );
@@ -85,10 +85,10 @@ void setComponentSet(
 }
 
 @noInline
-void init<T extends Component>({
-  required T component,
+void init({
+  required Component component,
   required Options options,
-  InstanceFactory<T>? createInstance,
+  InstanceFactory? createInstance,
   Fragment Function(List<Object?> instance)? createFragment,
   required Map<String, int> props,
   void Function(Element? target)? appendStyles,

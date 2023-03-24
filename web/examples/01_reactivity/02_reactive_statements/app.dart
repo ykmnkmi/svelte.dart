@@ -3,71 +3,59 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment(AppInstance(instance));
-}
-
-class AppFragment extends Fragment {
-  AppFragment(this.instance);
-
-  final AppInstance instance;
+  var context = AppContext(instance);
 
   late Element button;
-
   late Text t0, t1, t2, t3;
 
   late String t3_;
 
-  bool mounted = false;
+  var mounted = false;
 
   late void Function() dispose;
 
-  @override
-  void create() {
-    button = element('button');
-    t0 = text('Clicked ');
-    t1 = text('${instance.count}');
-    t2 = space();
-    t3 = text(t3_ = instance.count == 1 ? 'time' : 'times');
-  }
+  return Fragment(
+    create: () {
+      button = element('button');
+      t0 = text('Clicked ');
+      t1 = text('${context.count}');
+      t2 = space();
+      t3 = text(t3_ = context.count == 1 ? 'time' : 'times');
+    },
+    mount: (target, anchor) {
+      insert(target, button, anchor);
+      append(button, t0);
+      append(button, t1);
+      append(button, t2);
+      append(button, t3);
 
-  @override
-  void mount(Element target, Node? anchor) {
-    insert(target, button, anchor);
-    append(button, t0);
-    append(button, t1);
-    append(button, t2);
-    append(button, t3);
-
-    if (!mounted) {
-      dispose = listen(button, 'click', listener(instance.handleClick));
-      mounted = true;
-    }
-  }
-
-  @override
-  void update(List<int> dirty) {
-    if (dirty[0] & 1 != 0) {
-      setData(t1, '${instance.count}');
-
-      if (t3_ != (t3_ = instance.count == 1 ? 'time' : 'times')) {
-        setData(t3, t3_);
+      if (!mounted) {
+        dispose = listen(button, 'click', listener(context.handleClick));
+        mounted = true;
       }
-    }
-  }
+    },
+    update: (List<int> dirty) {
+      if (dirty[0] & 1 != 0) {
+        setData(t1, '${context.count}');
 
-  @override
-  void detach(bool detaching) {
-    if (detaching) {
-      remove(button);
-    }
+        if (t3_ != (t3_ = context.count == 1 ? 'time' : 'times')) {
+          setData(t3, t3_);
+        }
+      }
+    },
+    detach: (detaching) {
+      if (detaching) {
+        remove(button);
+      }
 
-    mounted = false;
-    dispose();
-  }
+      mounted = false;
+      dispose();
+    },
+  );
 }
 
 List<Object?> createInstance(
-  App component,
+  Component self,
   Props props,
   Invalidate invalidate,
 ) {
@@ -77,7 +65,7 @@ List<Object?> createInstance(
     invalidate(0, count += 1);
   }
 
-  setComponentUpdate(component, (List<int> dirty) {
+  setComponentUpdate(self, (dirty) {
     return () {
       if (dirty[0] & 1 != 0) {
         $:
@@ -92,8 +80,8 @@ List<Object?> createInstance(
   return <Object?>[count, handleClick];
 }
 
-class AppInstance {
-  AppInstance(List<Object?> instance) : _instance = instance;
+class AppContext {
+  AppContext(List<Object?> instance) : _instance = instance;
 
   final List<Object?> _instance;
 
@@ -108,7 +96,7 @@ class AppInstance {
 
 class App extends Component {
   App(Options options) {
-    init<App>(
+    init(
       component: this,
       options: options,
       createInstance: createInstance,

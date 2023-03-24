@@ -1,15 +1,28 @@
 import 'dart:html';
 
-abstract class Fragment {
-  void create() {}
+void defaultUpdate(List<int> dirty) {}
 
-  void mount(Element target, Node? anchor) {}
+void defaultTransition(bool local) {}
 
-  void update(List<int> dirty) {}
+class Fragment {
+  const Fragment({
+    required this.create,
+    required this.mount,
+    this.update = defaultUpdate,
+    this.intro = defaultTransition,
+    this.outro = defaultTransition,
+    required this.detach,
+  });
 
-  void intro(bool local) {}
+  final void Function() create;
 
-  void outro(bool local) {}
+  final void Function(Element target, Node? anchor) mount;
 
-  void detach(bool detaching) {}
+  final void Function(List<int> dirty) update;
+
+  final void Function(bool local) intro;
+
+  final void Function(bool local) outro;
+
+  final void Function(bool detaching) detach;
 }

@@ -3,55 +3,43 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  return NestedFragment(NestedInstance(instance));
-}
-
-class NestedFragment extends Fragment {
-  NestedFragment(this.instance);
-
-  final NestedInstance instance;
+  var context = NestedContext(instance);
 
   late Element p;
-
   late Text t0, t1;
 
-  @override
-  void create() {
-    p = element('p');
-    t0 = text('The answer is ');
-    t1 = text('${instance.answer}');
-  }
-
-  @override
-  void mount(Element target, Node? anchor) {
-    insert(target, p, anchor);
-    append(p, t0);
-    append(p, t1);
-  }
-
-  @override
-  void update(List<int> dirty) {
-    if (dirty[0] & 1 != 0) {
-      setData(t1, '${instance.answer}');
-    }
-  }
-
-  @override
-  void detach(bool detaching) {
-    if (detaching) {
-      remove(p);
-    }
-  }
+  return Fragment(
+    create: () {
+      p = element('p');
+      t0 = text('The answer is ');
+      t1 = text('${context.answer}');
+    },
+    mount: (target, anchor) {
+      insert(target, p, anchor);
+      append(p, t0);
+      append(p, t1);
+    },
+    update: (dirty) {
+      if (dirty[0] & 1 != 0) {
+        setData(t1, '${context.answer}');
+      }
+    },
+    detach: (detaching) {
+      if (detaching) {
+        remove(p);
+      }
+    },
+  );
 }
 
 List<Object?> createInstance(
-  Nested component,
+  Component self,
   Props props,
   Invalidate invalidate,
 ) {
   var answer = props['answer'];
 
-  setComponentSet(component, (Props props) {
+  setComponentSet(self, (props) {
     if (props.containsKey('answer')) {
       invalidate(0, answer = props['answer']);
     }
@@ -60,8 +48,8 @@ List<Object?> createInstance(
   return <Object?>[answer];
 }
 
-class NestedInstance {
-  NestedInstance(List<Object?> instance) : _instance = instance;
+class NestedContext {
+  NestedContext(List<Object?> instance) : _instance = instance;
 
   final List<Object?> _instance;
 
@@ -72,14 +60,12 @@ class NestedInstance {
 
 class Nested extends Component {
   Nested(Options options) {
-    init<Nested>(
+    init(
       component: this,
       options: options,
       createInstance: createInstance,
       createFragment: createFragment,
-      props: <String, int>{
-        'answer': 0,
-      },
+      props: <String, int>{'answer': 0},
     );
   }
 }

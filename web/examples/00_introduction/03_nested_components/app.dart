@@ -10,74 +10,56 @@ p.svelte-urs9w7 {
   color: purple;
   font-family: 'Comic Sans MS', cursive;
   font-size: 2em;
-}
-''');
+}''');
 }
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment();
-}
-
-class AppFragment extends Fragment {
-  AppFragment() {
-    nested = Nested(Options());
-  }
-
   late Element p;
+  late Text t1;
+  Nested nested;
+  var current = false;
+  nested = Nested(Options());
 
-  late Text t;
+  return Fragment(
+    create: () {
+      p = element('p');
+      setText(p, 'These styles...');
+      t1 = space();
+      createComponent(nested);
+      setAttribute(p, 'class', 'svelte-urs9w7');
+    },
+    mount: (target, anchor) {
+      insert(target, p, anchor);
+      insert(target, t1, anchor);
+      mountComponent(nested, target, anchor);
+      current = true;
+    },
+    intro: (local) {
+      if (current) {
+        return;
+      }
 
-  late Nested nested;
+      transitionInComponent(nested, local);
+      current = true;
+    },
+    outro: (local) {
+      transitionOutComponent(nested, local);
+      current = false;
+    },
+    detach: (detaching) {
+      if (detaching) {
+        remove(p);
+        remove(t1);
+      }
 
-  late bool current;
-
-  @override
-  void create() {
-    p = element('p');
-    setText(p, 'These styles...');
-    t = space();
-    createComponent(nested);
-    setAttribute(p, 'class', 'svelte-urs9w7');
-  }
-
-  @override
-  void mount(Element target, Node? anchor) {
-    insert(target, p, anchor);
-    insert(target, t, anchor);
-    mountComponent(nested, target, anchor);
-    current = true;
-  }
-
-  @override
-  void intro(bool local) {
-    if (current) {
-      return;
-    }
-
-    transitionInComponent(nested, local);
-    current = true;
-  }
-
-  @override
-  void outro(bool local) {
-    transitionOutComponent(nested, local);
-    current = false;
-  }
-
-  @override
-  void detach(bool detaching) {
-    if (detaching) {
-      remove(p);
-      remove(t);
-    }
-
-    destroyComponent(nested, detaching);
-  }
+      destroyComponent(nested, detaching);
+    },
+  );
 }
 
 class App extends Component {
   App(Options options) {
-    init<App>(
+    init(
       component: this,
       options: options,
       createFragment: createFragment,

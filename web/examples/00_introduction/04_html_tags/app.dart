@@ -3,37 +3,28 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment(AppInstance(instance));
-}
-
-class AppFragment extends Fragment {
-  AppFragment(this.instance);
-
-  final AppInstance instance;
+  var context = AppContext(instance);
 
   late Element p;
 
-  @override
-  void create() {
-    p = element('p');
-  }
-
-  @override
-  void mount(Element target, Node? anchor) {
-    insert(target, p, anchor);
-    setInnerHtml(p, instance.string);
-  }
-
-  @override
-  void detach(bool detaching) {
-    if (detaching) {
-      remove(p);
-    }
-  }
+  return Fragment(
+    create: () {
+      p = element('p');
+    },
+    mount: (target, anchor) {
+      insert(target, p, anchor);
+      setInnerHtml(p, context.string);
+    },
+    detach: (detaching) {
+      if (detaching) {
+        remove(p);
+      }
+    },
+  );
 }
 
 List<Object?> createInstance(
-  App component,
+  Component self,
   Props props,
   Invalidate invalidate,
 ) {
@@ -41,8 +32,8 @@ List<Object?> createInstance(
   return <Object?>[string];
 }
 
-class AppInstance {
-  AppInstance(List<Object?> instance) : _instance = instance;
+class AppContext {
+  AppContext(List<Object?> instance) : _instance = instance;
 
   final List<Object?> _instance;
 
@@ -53,7 +44,7 @@ class AppInstance {
 
 class App extends Component {
   App(Options options) {
-    init<App>(
+    init(
       component: this,
       options: options,
       createInstance: createInstance,

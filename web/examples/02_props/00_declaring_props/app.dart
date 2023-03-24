@@ -1,58 +1,43 @@
-import 'dart:html';
-
 import 'package:svelte/runtime.dart';
 
 import 'nested.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment();
-}
+  Nested nested;
 
-class AppFragment extends Fragment {
-  AppFragment() {
-    nested = Nested(Options(props: <String, Object?>{'answer': 42}));
-  }
+  var current = false;
 
-  late Nested nested;
+  nested = Nested(Options(props: <String, Object?>{'answer': 42}));
 
-  bool current = false;
+  return Fragment(
+    create: () {
+      createComponent(nested);
+    },
+    mount: (target, anchor) {
+      mountComponent(nested, target, anchor);
+      current = true;
+    },
+    intro: (local) {
+      if (current) {
+        return;
+      }
 
-  @override
-  void create() {
-    createComponent(nested);
-  }
-
-  @override
-  void mount(Element target, Node? anchor) {
-    mountComponent(nested, target, anchor);
-    current = true;
-  }
-
-  @override
-  void intro(bool local) {
-    if (current) {
-      return;
-    }
-
-    transitionInComponent(nested, local);
-    current = true;
-  }
-
-  @override
-  void outro(bool local) {
-    transitionOutComponent(nested, local);
-    current = false;
-  }
-
-  @override
-  void detach(bool detaching) {
-    destroyComponent(nested, detaching);
-  }
+      transitionInComponent(nested, local);
+      current = true;
+    },
+    outro: (local) {
+      transitionOutComponent(nested, local);
+      current = false;
+    },
+    detach: (detaching) {
+      destroyComponent(nested, detaching);
+    },
+  );
 }
 
 class App extends Component {
   App(Options options) {
-    init<App>(
+    init(
       component: this,
       options: options,
       createFragment: createFragment,

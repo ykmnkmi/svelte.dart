@@ -2,170 +2,143 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-class IfBlock0 extends Fragment {
-  IfBlock0(this.instance);
-
-  final AppInstance instance;
-
+Fragment createIfBlock0(AppContext context) {
   late Element button;
 
-  bool mounted = false;
+  var mounted = false;
 
   late void Function() dispose;
 
-  @override
-  void create() {
-    button = element('button');
-    setText(button, 'Log out');
-  }
+  return Fragment(
+    create: () {
+      button = element('button');
+      setText(button, 'Log out');
+    },
+    mount: (target, anchor) {
+      insert(target, button, anchor);
 
-  @override
-  void mount(Element target, Node? anchor) {
-    insert(target, button, anchor);
+      if (!mounted) {
+        dispose = listen(button, 'click', listener(context.toggle));
+        mounted = true;
+      }
+    },
+    detach: (detaching) {
+      if (detaching) {
+        remove(button);
+      }
 
-    if (!mounted) {
-      dispose = listen(button, 'click', listener(instance.toggle));
-      mounted = true;
-    }
-  }
-
-  @override
-  void detach(bool detaching) {
-    if (detaching) {
-      remove(button);
-    }
-
-    mounted = false;
-    dispose();
-  }
+      mounted = false;
+      dispose();
+    },
+  );
 }
 
-class IfBlock1 extends Fragment {
-  IfBlock1(this.instance);
-
-  final AppInstance instance;
-
+Fragment createIfBlock1(AppContext context) {
   late Element button;
 
-  bool mounted = false;
+  var mounted = false;
 
   late void Function() dispose;
 
-  @override
-  void create() {
-    button = element('button');
-    setText(button, 'Log in');
-  }
+  return Fragment(
+    create: () {
+      button = element('button');
+      setText(button, 'Log in');
+    },
+    mount: (target, anchor) {
+      insert(target, button, anchor);
 
-  @override
-  void mount(Element target, Node? anchor) {
-    insert(target, button, anchor);
+      if (!mounted) {
+        dispose = listen(button, 'click', listener(context.toggle));
+        mounted = true;
+      }
+    },
+    detach: (detaching) {
+      if (detaching) {
+        remove(button);
+      }
 
-    if (!mounted) {
-      dispose = listen(button, 'click', listener(instance.toggle));
-      mounted = true;
-    }
-  }
-
-  @override
-  void detach(bool detaching) {
-    if (detaching) {
-      remove(button);
-    }
-
-    mounted = false;
-    dispose();
-  }
+      mounted = false;
+      dispose();
+    },
+  );
 }
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment(AppInstance(instance));
-}
-
-class AppFragment extends Fragment {
-  AppFragment(this.instance) {
-    if (instance.user['loggedIn']!) {
-      ifBlock0 = IfBlock0(instance);
-    }
-
-    if (!instance.user['loggedIn']!) {
-      ifBlock1 = IfBlock1(instance);
-    }
-  }
-
-  final AppInstance instance;
+  var context = AppContext(instance);
 
   late Text t;
-
   late Node ifBlock1Anchor;
 
   Fragment? ifBlock0;
-
   Fragment? ifBlock1;
 
-  @override
-  void create() {
-    ifBlock0?.create();
-    t = space();
-    ifBlock1?.create();
-    ifBlock1Anchor = empty();
+  if (context.user['loggedIn']!) {
+    ifBlock0 = createIfBlock0(context);
   }
 
-  @override
-  void mount(Element target, Node? anchor) {
-    ifBlock0?.mount(target, anchor);
-    insert(target, t, anchor);
-    ifBlock1?.mount(target, anchor);
-    insert(target, ifBlock1Anchor, anchor);
+  if (!context.user['loggedIn']!) {
+    ifBlock1 = createIfBlock0(context);
   }
 
-  @override
-  void update(List<int> dirty) {
-    if (instance.user['loggedIn']!) {
-      if (ifBlock0 != null) {
-        ifBlock0!.update(dirty);
-      } else {
-        ifBlock0 = IfBlock0(instance);
-        ifBlock0!.create();
-        ifBlock0!.mount(unsafeCast(t.parentNode), t);
+  return Fragment(
+    create: () {
+      ifBlock0?.create();
+      t = space();
+      ifBlock1?.create();
+      ifBlock1Anchor = empty();
+    },
+    mount: (target, anchor) {
+      ifBlock0?.mount(target, anchor);
+      insert(target, t, anchor);
+      ifBlock1?.mount(target, anchor);
+      insert(target, ifBlock1Anchor, anchor);
+    },
+    update: (dirty) {
+      if (context.user['loggedIn']!) {
+        if (ifBlock0 != null) {
+          ifBlock0!.update(dirty);
+        } else {
+          ifBlock0 = createIfBlock0(context)
+            ..create()
+            ..mount(unsafeCast(t.parentNode), t);
+        }
+      } else if (ifBlock0 != null) {
+        ifBlock0!.detach(true);
+        ifBlock0 = null;
       }
-    } else if (ifBlock0 != null) {
-      ifBlock0!.detach(true);
-      ifBlock0 = null;
-    }
 
-    if (!instance.user['loggedIn']!) {
-      if (ifBlock1 != null) {
-        ifBlock1!.update(dirty);
-      } else {
-        ifBlock1 = IfBlock1(instance);
-        ifBlock1!.create();
-        ifBlock1!.mount(unsafeCast(ifBlock1Anchor.parentNode), ifBlock1Anchor);
+      if (!context.user['loggedIn']!) {
+        if (ifBlock1 != null) {
+          ifBlock1!.update(dirty);
+        } else {
+          ifBlock1 = createIfBlock1(context)
+            ..create()
+            ..mount(unsafeCast(ifBlock1Anchor.parentNode), ifBlock1Anchor);
+        }
+      } else if (ifBlock1 != null) {
+        ifBlock1!.detach(true);
+        ifBlock1 = null;
       }
-    } else if (ifBlock1 != null) {
-      ifBlock1!.detach(true);
-      ifBlock1 = null;
-    }
-  }
+    },
+    detach: (detaching) {
+      ifBlock0?.detach(detaching);
 
-  @override
-  void detach(bool detaching) {
-    ifBlock0?.detach(detaching);
+      if (detaching) {
+        remove(t);
+      }
 
-    if (detaching) {
-      remove(t);
-    }
+      ifBlock1?.detach(detaching);
 
-    ifBlock1?.detach(detaching);
-
-    if (detaching) {
-      remove(ifBlock1Anchor);
-    }
-  }
+      if (detaching) {
+        remove(ifBlock1Anchor);
+      }
+    },
+  );
 }
 
 List<Object?> createInstance(
-  App self,
+  Component self,
   Props props,
   Invalidate invalidate,
 ) {
@@ -178,8 +151,8 @@ List<Object?> createInstance(
   return <Object?>[user, toggle];
 }
 
-class AppInstance {
-  AppInstance(List<Object?> instance) : _instance = instance;
+class AppContext {
+  AppContext(List<Object?> instance) : _instance = instance;
 
   final List<Object?> _instance;
 
@@ -194,7 +167,7 @@ class AppInstance {
 
 class App extends Component {
   App(Options options) {
-    init<App>(
+    init(
       component: this,
       options: options,
       createInstance: createInstance,

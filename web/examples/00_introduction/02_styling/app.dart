@@ -13,35 +13,28 @@ p.svelte-urs9w7 {
 }
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment();
-}
-
-class AppFragment extends Fragment {
   late Element p;
 
-  @override
-  void create() {
-    p = element('p');
-    setText(p, 'Styled!');
-    setAttribute(p, 'class', 'svelte-urs9w7');
-  }
-
-  @override
-  void mount(Element target, Node? anchor) {
-    insert(target, p, anchor);
-  }
-
-  @override
-  void detach(bool detaching) {
-    if (detaching) {
-      remove(p);
-    }
-  }
+  return Fragment(
+    create: () {
+      p = element('p');
+      setText(p, 'Styled!');
+      setAttribute(p, 'class', 'svelte-urs9w7');
+    },
+    mount: (target, anchor) {
+      insert(target, p, anchor);
+    },
+    detach: (detaching) {
+      if (detaching) {
+        remove(p);
+      }
+    },
+  );
 }
 
 class App extends Component {
   App(Options options) {
-    init<App>(
+    init(
       component: this,
       options: options,
       createFragment: createFragment,

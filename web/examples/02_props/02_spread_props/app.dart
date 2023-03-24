@@ -1,84 +1,61 @@
-import 'dart:html';
-
 import 'package:svelte/runtime.dart';
 
 import 'info.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  return AppFragment(AppInstance(instance));
-}
+  var context = AppContext(instance);
 
-class AppFragment extends Fragment {
-  AppFragment(this.instance) {
-    infoSpreadLevels = <Map<String, Object?>>[instance.pkg];
-    infoProps = <String, Object?>{};
+  Info info;
+  var current = false;
+  var infoSpreadLevels = <Map<String, Object?>>[context.pkg];
+  var infoProps = <String, Object?>{};
 
-    for (var i = 0; i < infoSpreadLevels.length; i += 1) {
-      infoProps.addAll(infoSpreadLevels[i]);
-    }
-
-    info = Info(Options(props: infoProps));
+  for (var i = 0; i < infoSpreadLevels.length; i += 1) {
+    infoProps.addAll(infoSpreadLevels[i]);
   }
 
-  final AppInstance instance;
+  info = Info(Options(props: infoProps));
 
-  late Info info;
+  return Fragment(
+    create: () {
+      createComponent(info);
+    },
+    mount: (target, anchor) {
+      mountComponent(info, target, anchor);
+      current = true;
+    },
+    update: (dirty) {
+      Props infoChanges;
 
-  bool current = false;
+      if (dirty[0] & 1 != 0) {
+        var list = <Map<String, Object?>>[getSpreadProps(context.pkg)];
+        infoChanges = getSpreadUpdate(infoSpreadLevels, list);
+      } else {
+        infoChanges = <String, Object?>{};
+      }
 
-  late List<Map<String, Object?>> infoSpreadLevels;
+      info.set(infoChanges);
+    },
+    intro: (local) {
+      if (current) {
+        return;
+      }
 
-  late Map<String, Object?> infoProps;
-
-  @override
-  void create() {
-    createComponent(info);
-  }
-
-  @override
-  void mount(Element target, Node? anchor) {
-    mountComponent(info, target, anchor);
-    current = true;
-  }
-
-  @override
-  void update(List<int> dirty) {
-    Props infoChanges;
-
-    if (dirty[0] & 1 != 0) {
-      var list = <Map<String, Object?>>[getSpreadProps(instance.pkg)];
-      infoChanges = getSpreadUpdate(infoSpreadLevels, list);
-    } else {
-      infoChanges = <String, Object?>{};
-    }
-
-    info.set(infoChanges);
-  }
-
-  @override
-  void intro(bool local) {
-    if (current) {
-      return;
-    }
-
-    transitionInComponent(info, local);
-    current = true;
-  }
-
-  @override
-  void outro(bool local) {
-    transitionOutComponent(info, local);
-    current = false;
-  }
-
-  @override
-  void detach(bool detaching) {
-    destroyComponent(info, detaching);
-  }
+      transitionInComponent(info, local);
+      current = true;
+    },
+    outro: (local) {
+      transitionOutComponent(info, local);
+      current = false;
+    },
+    detach: (detaching) {
+      destroyComponent(info, detaching);
+    },
+  );
 }
 
 List<Object?> createInstance(
-  App component,
+  Component self,
   Props props,
   void Function(int i, Object? value) invalidate,
 ) {
@@ -92,8 +69,8 @@ List<Object?> createInstance(
   return <Object?>[pkg];
 }
 
-class AppInstance {
-  AppInstance(List<Object?> instance) : _instance = instance;
+class AppContext {
+  const AppContext(List<Object?> instance) : _instance = instance;
 
   final List<Object?> _instance;
 
@@ -104,7 +81,7 @@ class AppInstance {
 
 class App extends Component {
   App(Options options) {
-    init<App>(
+    init(
       component: this,
       options: options,
       createInstance: createInstance,
