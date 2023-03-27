@@ -4,6 +4,7 @@ void defaultUpdate(List<int> dirty) {}
 
 void defaultTransition(bool local) {}
 
+// TODO(runtime): replace with records
 class Fragment {
   const Fragment({
     required this.create,

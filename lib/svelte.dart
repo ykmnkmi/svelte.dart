@@ -1,1 +1,1 @@
-export 'package:svelte/src/runtime/component.dart' show Component, Options;
+export 'package:svelte/runtime.dart' show Component, Options;

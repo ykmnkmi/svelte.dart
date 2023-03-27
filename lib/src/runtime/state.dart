@@ -2,7 +2,6 @@ import 'dart:html';
 
 import 'package:svelte/src/runtime/fragment.dart';
 
-// TODO(runtime): replace with records
 class State {
   Fragment? fragment;
 

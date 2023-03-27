@@ -138,13 +138,13 @@ void init({
 
   if (target != null) {
     if (options.hydrate) {
-      // ...
+      throw UnimplementedError();
     } else {
       state.fragment?.create();
     }
 
     if (options.intro) {
-      // ...
+      transitionIn(state.fragment, false);
     }
 
     mountComponent(component, target, options.anchor);
