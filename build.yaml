@@ -47,4 +47,4 @@ targets:
             # - --verbose
 
       svelte:svelte:
-        enabled: true
+        enabled: false

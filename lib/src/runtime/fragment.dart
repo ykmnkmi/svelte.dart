@@ -1,17 +1,16 @@
 import 'dart:html';
 
-void defaultUpdate(List<int> dirty) {}
+void _update(List<int> dirty) {}
 
-void defaultTransition(bool local) {}
+void _transition(bool local) {}
 
-// TODO(runtime): replace with records
 class Fragment {
   const Fragment({
     required this.create,
     required this.mount,
-    this.update = defaultUpdate,
-    this.intro = defaultTransition,
-    this.outro = defaultTransition,
+    this.update = _update,
+    this.intro = _transition,
+    this.outro = _transition,
     required this.detach,
   });
 

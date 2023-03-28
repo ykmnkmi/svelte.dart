@@ -18,7 +18,6 @@ typedef InstanceFactory = List<Object?> Function(
   Invalidate invalidate,
 );
 
-// TODO(runtime): replace with records
 class Options {
   const Options({
     this.target,

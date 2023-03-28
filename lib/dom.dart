@@ -1,4 +1,4 @@
-// TODO(runtime): move to js package
+// TODO(runtime): move to web package
 library;
 
 import 'dart:async';
@@ -25,7 +25,7 @@ Text text(String text) {
 }
 
 @noInline
-void setData(Text text, String data) {
+void setData(Text text, String? data) {
   text.data = data;
 }
 

@@ -73,7 +73,7 @@ Fragment createFragment(List<Object?> instance) {
     AppContext context,
     List<int> dirty,
   ) {
-    if (context.user['loggedIn']!) {
+    if (context.user.loggedIn) {
       return createIfBLock;
     }
 
@@ -100,9 +100,11 @@ Fragment createFragment(List<Object?> instance) {
       } else {
         ifBlock.detach(true);
 
-        ifBlock = currentBlockFactory(context)
+        ifBlock = newBlockFactory(context)
           ..create()
           ..mount(unsafeCast(ifBlockAnchor.parentNode), ifBlockAnchor);
+
+        currentBlockFactory = newBlockFactory;
       }
     },
     detach: (detaching) {
@@ -120,10 +122,10 @@ List<Object?> createInstance(
   Props props,
   Invalidate invalidate,
 ) {
-  var user = {'loggedIn': false};
+  var user = (loggedIn: false);
 
   void toggle() {
-    invalidate(0, user = {'loggedIn': !user['loggedIn']!});
+    invalidate(0, user = (loggedIn: !user.loggedIn));
   }
 
   return <Object?>[user, toggle];
@@ -134,7 +136,7 @@ class AppContext {
 
   final List<Object?> _instance;
 
-  Map<String, bool> get user {
+  ({bool loggedIn}) get user {
     return unsafeCast(_instance[0]);
   }
 
