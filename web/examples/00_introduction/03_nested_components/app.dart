@@ -17,7 +17,9 @@ Fragment createFragment(List<Object?> instance) {
   late Element p;
   late Text t1;
   Nested nested;
+
   var current = false;
+
   nested = Nested(Options());
 
   return Fragment(

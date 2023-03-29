@@ -1,8 +1,9 @@
-import 'package:svelte/src/runtime/component.dart';
-
 const String spreadKey = '__spread';
 
-Props getSpreadUpdate(List<Props> levels, List<Props?> updates) {
+Map<String, Object?> getSpreadUpdate(
+  List<Map<String, Object?>> levels,
+  List<Map<String, Object?>?> updates,
+) {
   var update = <String, Object?>{};
 
   var toNullOut = <String>{};
@@ -42,7 +43,7 @@ Props getSpreadUpdate(List<Props> levels, List<Props?> updates) {
   return update;
 }
 
-Props getSpreadProps(Object? props) {
+Map<String, Object?> getSpreadProps(Object? props) {
   if (props == null || props is! Map<String, Object?>) {
     return const <String, Object?>{};
   }

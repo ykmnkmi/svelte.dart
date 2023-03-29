@@ -6,7 +6,9 @@ Fragment createFragment(List<Object?> instance) {
   var context = AppContext(instance);
 
   Info info;
+
   var current = false;
+
   var infoSpreadLevels = <Map<String, Object?>>[context.pkg];
   var infoProps = <String, Object?>{};
 
@@ -25,7 +27,7 @@ Fragment createFragment(List<Object?> instance) {
       current = true;
     },
     update: (dirty) {
-      Props infoChanges;
+      Map<String, Object?> infoChanges;
 
       if (dirty[0] & 1 != 0) {
         var list = <Map<String, Object?>>[getSpreadProps(context.pkg)];
@@ -56,7 +58,7 @@ Fragment createFragment(List<Object?> instance) {
 
 List<Object?> createInstance(
   Component self,
-  Props props,
+  Map<String, Object?> props,
   void Function(int i, Object? value) invalidate,
 ) {
   final pkg = {

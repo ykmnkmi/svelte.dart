@@ -1,8 +1,10 @@
 <script>
-	var user = {'loggedIn': false};
+	import 'user.dart';
+
+	var user = User(loggedIn: false);
 
 	void toggle() {
-		user = {'loggedIn': !user['loggedIn']!};
+		user.loggedIn = !user.loggedIn;
 	}
 </script>
 

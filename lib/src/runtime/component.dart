@@ -8,13 +8,11 @@ import 'package:svelte/src/runtime/state.dart';
 import 'package:svelte/src/runtime/transition.dart';
 import 'package:svelte/src/runtime/utilities.dart';
 
-typedef Invalidate = void Function(int i, Object? value);
-
-typedef Props = Map<String, Object?>;
+typedef Invalidate = void Function(int i, Object? value, [Object? expression]);
 
 typedef InstanceFactory = List<Object?> Function(
   Component component,
-  Props props,
+  Map<String, Object?> props,
   Invalidate invalidate,
 );
 
@@ -31,7 +29,7 @@ class Options {
 
   final Node? anchor;
 
-  final Props? props;
+  final Map<String, Object?>? props;
 
   final bool hydrate;
 
@@ -41,9 +39,9 @@ class Options {
 abstract class Component {
   final State _state = State();
 
-  void Function(Props props)? _set;
+  void Function(Map<String, Object?> props)? _set;
 
-  void set([Props? props]) {
+  void set([Map<String, Object?>? props]) {
     var set = _set;
 
     if (set != null && props != null && props.isNotEmpty) {
@@ -78,7 +76,7 @@ void setComponentUpdate(
 @tryInline
 void setComponentSet(
   Component component,
-  void Function(Props props) setter,
+  void Function(Map<String, Object?> props) setter,
 ) {
   component._set = setter;
 }
@@ -113,7 +111,7 @@ void init({
   var ready = false;
 
   if (createInstance != null) {
-    void invalidate(int i, Object? value) {
+    void invalidate(int i, Object? value, [Object? expression]) {
       if (state.instance[i] != (state.instance[i] = value)) {
         if (ready) {
           makeComponentDirty(component, i);

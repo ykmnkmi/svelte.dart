@@ -1,7 +1,5 @@
 import 'dart:html';
 
-import 'package:svelte/svelte.dart';
-
 // import 'examples/00_introduction/00_hello_world/app.dart';
 // import 'examples/00_introduction/01_dynamic_attributes/app.dart';
 // import 'examples/00_introduction/02_styling/app.dart';
@@ -17,5 +15,5 @@ import 'package:svelte/svelte.dart';
 import 'examples/03_logic/01_else_blocks/app.dart';
 
 void main() {
-  App(Options(target: document.body));
+  App(target: document.body);
 }

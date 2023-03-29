@@ -8,7 +8,7 @@ Fragment createFragment(List<Object?> instance) {
   late Element button;
   late Text t1, t2, t3, t4;
 
-  late String t4_;
+  late String t4value;
 
   var mounted = false;
 
@@ -20,7 +20,7 @@ Fragment createFragment(List<Object?> instance) {
       t1 = text('Clicked ');
       t2 = text('${context.count}');
       t3 = space();
-      t4 = text(t4_ = context.count == 1 ? 'time' : 'times');
+      t4 = text(t4value = context.count == 1 ? 'time' : 'times');
     },
     mount: (target, anchor) {
       insert(target, button, anchor);
@@ -38,8 +38,8 @@ Fragment createFragment(List<Object?> instance) {
       if (dirty[0] & 1 != 0) {
         setData(t2, '${context.count}');
 
-        if (t4_ != (t4_ = context.count == 1 ? 'time' : 'times')) {
-          setData(t4, t4_);
+        if (t4value != (t4value = context.count == 1 ? 'time' : 'times')) {
+          setData(t4, t4value);
         }
       }
     },
@@ -56,7 +56,7 @@ Fragment createFragment(List<Object?> instance) {
 
 List<Object?> createInstance(
   Component self,
-  Props props,
+  Map<String, Object?> props,
   Invalidate invalidate,
 ) {
   var count = 0;

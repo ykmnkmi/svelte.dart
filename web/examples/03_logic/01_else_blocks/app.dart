@@ -2,6 +2,8 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
+import 'user.dart';
+
 Fragment createIfBLock(AppContext context) {
   late Element button;
 
@@ -102,7 +104,7 @@ Fragment createFragment(List<Object?> instance) {
 
         ifBlock = newBlockFactory(context)
           ..create()
-          ..mount(unsafeCast(ifBlockAnchor.parentNode), ifBlockAnchor);
+          ..mount(unsafeCast<Element>(ifBlockAnchor.parent), ifBlockAnchor);
 
         currentBlockFactory = newBlockFactory;
       }
@@ -119,13 +121,13 @@ Fragment createFragment(List<Object?> instance) {
 
 List<Object?> createInstance(
   Component self,
-  Props props,
+  Map<String, Object?> props,
   Invalidate invalidate,
 ) {
-  var user = (loggedIn: false);
+  var user = User(loggedIn: false);
 
   void toggle() {
-    invalidate(0, user = (loggedIn: !user.loggedIn));
+    invalidate(0, user, user.loggedIn = !user.loggedIn);
   }
 
   return <Object?>[user, toggle];
@@ -136,20 +138,32 @@ class AppContext {
 
   final List<Object?> _instance;
 
-  ({bool loggedIn}) get user {
-    return unsafeCast(_instance[0]);
+  User get user {
+    return unsafeCast<User>(_instance[0]);
   }
 
   void Function() get toggle {
-    return unsafeCast(_instance[1]);
+    return unsafeCast<void Function()>(_instance[1]);
   }
 }
 
 class App extends Component {
-  App(Options options) {
+  App({
+    Element? target,
+    Node? anchor,
+    Map<String, Object?>? props,
+    bool hydrate = false,
+    bool intro = false,
+  }) {
     init(
       component: this,
-      options: options,
+      options: Options(
+        target: target,
+        anchor: anchor,
+        props: props,
+        hydrate: hydrate,
+        intro: intro,
+      ),
       createInstance: createInstance,
       createFragment: createFragment,
       props: <String, int>{},

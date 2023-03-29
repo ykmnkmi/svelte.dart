@@ -2,6 +2,8 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
+import 'user.dart';
+
 Fragment createIfBlock0(AppContext context) {
   late Element button;
 
@@ -101,7 +103,7 @@ Fragment createFragment(List<Object?> instance) {
         } else {
           ifBlock0 = createIfBlock0(context)
             ..create()
-            ..mount(unsafeCast(t.parentNode), t);
+            ..mount(unsafeCast<Element>(t.parent), t);
         }
       } else if (ifBlock0 != null) {
         ifBlock0!.detach(true);
@@ -114,7 +116,7 @@ Fragment createFragment(List<Object?> instance) {
         } else {
           ifBlock1 = createIfBlock1(context)
             ..create()
-            ..mount(unsafeCast(ifBlock1Anchor.parentNode), ifBlock1Anchor);
+            ..mount(unsafeCast<Element>(ifBlock1Anchor.parent), ifBlock1Anchor);
         }
       } else if (ifBlock1 != null) {
         ifBlock1!.detach(true);
@@ -139,13 +141,13 @@ Fragment createFragment(List<Object?> instance) {
 
 List<Object?> createInstance(
   Component self,
-  Props props,
+  Map<String, Object?> props,
   Invalidate invalidate,
 ) {
-  var user = (loggedIn: false);
+  var user = User(loggedIn: false);
 
   void toggle() {
-    invalidate(0, user = (loggedIn: !user.loggedIn));
+    invalidate(0, user, user.loggedIn = !user.loggedIn);
   }
 
   return <Object?>[user, toggle];
@@ -156,12 +158,12 @@ class AppContext {
 
   final List<Object?> _instance;
 
-  ({bool loggedIn}) get user {
-    return unsafeCast(_instance[0]);
+  User get user {
+    return unsafeCast<User>(_instance[0]);
   }
 
   void Function() get toggle {
-    return unsafeCast(_instance[1]);
+    return unsafeCast<void Function()>(_instance[1]);
   }
 }
 

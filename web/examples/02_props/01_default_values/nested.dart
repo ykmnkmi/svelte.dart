@@ -34,7 +34,7 @@ Fragment createFragment(List<Object?> instance) {
 
 List<Object?> createInstance(
   Component self,
-  Props props,
+  Map<String, Object?> props,
   Invalidate invalidate,
 ) {
   var answer = props.containsKey('props') ? props['answer'] : 'a mystery';

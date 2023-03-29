@@ -25,30 +25,30 @@ Text text(String text) {
 }
 
 @noInline
-void setData(Text text, String? data) {
-  text.data = data;
+void setData(Text target, String? data) {
+  target.data = data;
 }
 
 @noInline
-void setText(Node node, String? content) {
-  node.text = content;
+void setText(Node target, String? content) {
+  target.text = content;
 }
 
 @noInline
-void setInnerHtml(Element element, String? html) {
+void setInnerHtml(Element target, String? html) {
   // TODO(runtime): can be replaced with js_util version
   // setProperty<String>(element, 'innerHtml', html);
-  element.innerHtml = html;
+  target.innerHtml = html;
 }
 
 @noInline
-String? getAttribute(Element element, String attribute) {
-  return element.getAttribute(attribute);
+String? getAttribute(Element target, String attribute) {
+  return target.getAttribute(attribute);
 }
 
 @noInline
-void setAttribute(Element element, String attribute, Object value) {
-  element.setAttribute(attribute, value);
+void setAttribute(Element target, String attribute, Object value) {
+  target.setAttribute(attribute, value);
 }
 
 @noInline
@@ -57,22 +57,22 @@ void removeAttribute(Element element, String attribute) {
 }
 
 @noInline
-void updateAttribute(Element element, String attribute, Object? value) {
+void updateAttribute(Element target, String attribute, Object? value) {
   if (value == null) {
-    removeAttribute(element, attribute);
-  } else if (getAttribute(element, attribute) != value) {
-    setAttribute(element, attribute, value);
+    removeAttribute(target, attribute);
+  } else if (getAttribute(target, attribute) != value) {
+    setAttribute(target, attribute, value);
   }
 }
 
 @noInline
-void insert(Node node, Node child, [Node? anchor]) {
-  node.insertBefore(child, anchor);
+void insert(Element target, Node child, [Node? anchor]) {
+  target.insertBefore(child, anchor);
 }
 
 @noInline
-void append(Node node, Node child) {
-  node.append(child);
+void append(Node target, Node child) {
+  target.append(child);
 }
 
 @noInline
@@ -89,10 +89,15 @@ void appendStyles(Node? target, String styleSheetId, String styles) {
 }
 
 @noInline
-void appendStyleSheet(Node node, Element style) {
+void appendStyleSheet(Node target, Element style) {
   // TODO(runtime): can be replaced with js_util version
   // append(getProperty<HeadElement?>(node, 'head') ?? node, style);
-  append(node is HtmlDocument ? node.head ?? node : node, style);
+  append(target is HtmlDocument ? target.head ?? target : target, style);
+}
+
+@noInline
+void appendText(Element target, String text) {
+  target.appendText(text);
 }
 
 @noInline
