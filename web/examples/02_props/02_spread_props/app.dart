@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:svelte/runtime.dart';
 
 import 'info.dart';
@@ -16,7 +18,7 @@ Fragment createFragment(List<Object?> instance) {
     infoProps.addAll(infoSpreadLevels[i]);
   }
 
-  info = Info(Options(props: infoProps));
+  info = Info(props: infoProps);
 
   return Fragment(
     create: () {
@@ -61,7 +63,7 @@ List<Object?> createInstance(
   Map<String, Object?> props,
   void Function(int i, Object? value) invalidate,
 ) {
-  final pkg = {
+  final pkg = <String, Object>{
     'name': 'svelte',
     'version': 3,
     'speed': 'blazing',
@@ -82,10 +84,22 @@ class AppContext {
 }
 
 class App extends Component {
-  App(Options options) {
+  App({
+    Element? target,
+    Node? anchor,
+    Map<String, Object?>? props,
+    bool hydrate = false,
+    bool intro = false,
+  }) {
     init(
       component: this,
-      options: options,
+      options: Options(
+        target: target,
+        anchor: anchor,
+        props: props,
+        hydrate: hydrate,
+        intro: intro,
+      ),
       createInstance: createInstance,
       createFragment: createFragment,
       props: <String, int>{},

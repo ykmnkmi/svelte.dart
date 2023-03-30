@@ -22,10 +22,22 @@ Fragment createFragment(List<Object?> instance) {
 }
 
 class Nested extends Component {
-  Nested(Options options) {
+  Nested({
+    Element? target,
+    Node? anchor,
+    Map<String, Object?>? props,
+    bool hydrate = false,
+    bool intro = false,
+  }) {
     init(
       component: this,
-      options: options,
+      options: Options(
+        target: target,
+        anchor: anchor,
+        props: props,
+        hydrate: hydrate,
+        intro: intro,
+      ),
       createFragment: createFragment,
       props: <String, int>{},
     );

@@ -24,10 +24,22 @@ Fragment createFragment(List<Object?> instance) {
 }
 
 class App extends Component {
-  App(Options options) {
+  App({
+    Element? target,
+    Node? anchor,
+    Map<String, Object?>? props,
+    bool hydrate = false,
+    bool intro = false,
+  }) {
     init(
       component: this,
-      options: options,
+      options: Options(
+        target: target,
+        anchor: anchor,
+        props: props,
+        hydrate: hydrate,
+        intro: intro,
+      ),
       createFragment: createFragment,
       props: <String, int>{},
     );

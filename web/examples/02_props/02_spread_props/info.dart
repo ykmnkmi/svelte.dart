@@ -136,10 +136,22 @@ class InfoContext {
 }
 
 class Info extends Component {
-  Info(Options options) {
+  Info({
+    Element? target,
+    Node? anchor,
+    Map<String, Object?>? props,
+    bool hydrate = false,
+    bool intro = false,
+  }) {
     init(
       component: this,
-      options: options,
+      options: Options(
+        target: target,
+        anchor: anchor,
+        props: props,
+        hydrate: hydrate,
+        intro: intro,
+      ),
       createInstance: createInstance,
       createFragment: createFragment,
       props: <String, int>{

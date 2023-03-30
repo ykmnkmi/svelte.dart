@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:svelte/runtime.dart';
 
 import 'nested.dart';
@@ -7,7 +9,7 @@ Fragment createFragment(List<Object?> instance) {
 
   var current = false;
 
-  nested = Nested(Options(props: <String, Object?>{'answer': 42}));
+  nested = Nested(props: <String, Object?>{'answer': 42});
 
   return Fragment(
     create: () {
@@ -36,10 +38,22 @@ Fragment createFragment(List<Object?> instance) {
 }
 
 class App extends Component {
-  App(Options options) {
+  App({
+    Element? target,
+    Node? anchor,
+    Map<String, Object?>? props,
+    bool hydrate = false,
+    bool intro = false,
+  }) {
     init(
       component: this,
-      options: options,
+      options: Options(
+        target: target,
+        anchor: anchor,
+        props: props,
+        hydrate: hydrate,
+        intro: intro,
+      ),
       createFragment: createFragment,
       props: <String, int>{},
     );

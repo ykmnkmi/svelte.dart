@@ -9,8 +9,8 @@ Fragment createFragment(List<Object?> instance) {
   late Text t;
   Nested nested1;
 
-  nested0 = Nested(Options(props: <String, Object?>{'answer': 42}));
-  nested1 = Nested(Options());
+  nested0 = Nested(props: <String, Object?>{'answer': 42});
+  nested1 = Nested();
 
   var current = false;
 
@@ -53,10 +53,22 @@ Fragment createFragment(List<Object?> instance) {
 }
 
 class App extends Component {
-  App(Options options) {
+  App({
+    Element? target,
+    Node? anchor,
+    Map<String, Object?>? props,
+    bool hydrate = false,
+    bool intro = false,
+  }) {
     init(
       component: this,
-      options: options,
+      options: Options(
+        target: target,
+        anchor: anchor,
+        props: props,
+        hydrate: hydrate,
+        intro: intro,
+      ),
       createFragment: createFragment,
       props: <String, int>{},
     );

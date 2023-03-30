@@ -2,66 +2,59 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-import 'user.dart';
-
-Fragment createIfBlock(AppContext context) {
-  late Element button;
-
-  var mounted = false;
-
-  late void Function() dispose;
+Fragment createIfBlock1(AppContext context) {
+  late Element p;
 
   return Fragment(
     create: () {
-      button = element('button');
-      setText(button, 'Log out');
+      p = element('p');
+      setText(p, '$x is greater than 10');
     },
     mount: (target, anchor) {
-      insert(target, button, anchor);
-
-      if (!mounted) {
-        dispose = listen(button, 'click', listener(context.toggle));
-        mounted = true;
-      }
+      insert(target, p, anchor);
     },
     detach: (detaching) {
       if (detaching) {
-        remove(button);
+        remove(p);
       }
+    },
+  );
+}
 
-      mounted = false;
-      dispose();
+Fragment createIfBlock2(AppContext context) {
+  late Element p;
+
+  return Fragment(
+    create: () {
+      p = element('p');
+      setText(p, '$x is less than 5');
+    },
+    mount: (target, anchor) {
+      insert(target, p, anchor);
+    },
+    detach: (detaching) {
+      if (detaching) {
+        remove(p);
+      }
     },
   );
 }
 
 Fragment createElseBlock(AppContext context) {
-  late Element button;
-
-  var mounted = false;
-
-  late void Function() dispose;
+  late Element p;
 
   return Fragment(
     create: () {
-      button = element('button');
-      setText(button, 'Log in');
+      p = element('p');
+      setText(p, '$x is between 5 and 10');
     },
     mount: (target, anchor) {
-      insert(target, button, anchor);
-
-      if (!mounted) {
-        dispose = listen(button, 'click', listener(context.toggle));
-        mounted = true;
-      }
+      insert(target, p, anchor);
     },
     detach: (detaching) {
       if (detaching) {
-        remove(button);
+        remove(p);
       }
-
-      mounted = false;
-      dispose();
     },
   );
 }
@@ -75,8 +68,12 @@ Fragment createFragment(List<Object?> instance) {
     AppContext context,
     List<int> dirty,
   ) {
-    if (context.user.loggedIn) {
-      return createIfBlock;
+    if (x > 10) {
+      return createIfBlock1;
+    }
+
+    if (5 > x) {
+      return createIfBlock2;
     }
 
     return createElseBlock;
@@ -119,32 +116,12 @@ Fragment createFragment(List<Object?> instance) {
   );
 }
 
-List<Object?> createInstance(
-  Component self,
-  Map<String, Object?> props,
-  Invalidate invalidate,
-) {
-  var user = User(loggedIn: false);
-
-  void toggle() {
-    invalidate(0, user, user.loggedIn = !user.loggedIn);
-  }
-
-  return <Object?>[user, toggle];
-}
+var x = 7;
 
 class AppContext {
-  AppContext(List<Object?> instance) : _instance = instance;
+  const AppContext(this._instance);
 
   final List<Object?> _instance;
-
-  User get user {
-    return unsafeCast<User>(_instance[0]);
-  }
-
-  void Function() get toggle {
-    return unsafeCast<void Function()>(_instance[1]);
-  }
 }
 
 class App extends Component {
@@ -164,7 +141,6 @@ class App extends Component {
         hydrate: hydrate,
         intro: intro,
       ),
-      createInstance: createInstance,
       createFragment: createFragment,
       props: <String, int>{},
     );
