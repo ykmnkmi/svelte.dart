@@ -14,7 +14,6 @@ const String content = '''
 
 void main() {
   try {
-    @pragma('hello')
     var ast = parse(content);
     print(encoder.convert(ast.toJson()));
   } on ParseError catch (error, stackTrace) {

@@ -5,7 +5,6 @@ import 'package:analyzer/dart/ast/ast.dart' show SimpleIdentifier;
 import 'package:analyzer/dart/ast/token.dart' show TokenType;
 import 'package:analyzer/src/dart/ast/ast_factory.dart' show astFactory;
 import 'package:svelte/compiler.dart';
-import 'package:svelte/src/compiler/parser/parser.dart';
 
 extension ContextParser on Parser {
   SimpleIdentifier readContext() {

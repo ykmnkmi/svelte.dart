@@ -41,7 +41,6 @@ int _flushIndex = 0;
 
 @noInline
 void flush() {
-  // TODO(runtime): check resolvedFuture and flushIndex
   if (_flushIndex != 0) {
     return;
   }

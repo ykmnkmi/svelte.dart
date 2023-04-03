@@ -19,8 +19,6 @@ List<Object?> getEachContext(
 }
 
 Fragment createEachBlock(List<Object?> instance) {
-  print(instance.getRange(1, 5));
-
   return Fragment(
     create: () {},
     mount: (target, anchor) {},
