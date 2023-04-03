@@ -4,10 +4,7 @@ svelte.dart
 [Svelte](https://svelte.dev/) ([v3.55.1](https://github.com/sveltejs/svelte/tree/v3.55.1))
 web framework, (not yet) ported to [Dart](https://dart.dev).
 
-Why? ... :
-- _Original_ implementation.
-
-  _WIP_
+- Original implementation.
 
   ```html
   <!-- app.svelte -->
@@ -91,7 +88,7 @@ Why? ... :
   Angular Component API, Svelte template syntax and reactivity. Easy to implement, same as NgDart.
 
   ```dart
-  import 'package:svelte/svelte.dart' show update, OnMount, OnDestroy;
+  import 'package:svelte/svelte.dart' show Component, OnMount, OnDestroy;
 
   @Component(
     tag: 'app',
@@ -107,10 +104,8 @@ Why? ... :
   class App implements OnMount, OnDestroy {
     int count = 0;
 
-    @update
     late int doubled = count * 2;
 
-    @update
     late int quadrupled = doubled * 2;
 
     void handleClick() {
@@ -133,7 +128,7 @@ Why? ... :
   }
   ```
 
-Status (Original):
+Status (original implementation):
 - [x] Parser
   - [ ] Style
 - [ ] Runtime
@@ -143,10 +138,11 @@ Status (Original):
     - [ ] lifecycle 🔥
     - [ ] dom `dart:html` 🔥
       - [ ] `package:js`
+      - [ ] `package:web`
     - [ ] transition
   - [ ] ...
 - [ ] Compiler
-  - [ ] Builder
+  - [ ] Builder 🔥
 - [ ] Tests
   - [x] Parser
   - [ ] Runtime
@@ -158,4 +154,6 @@ Status (Original):
   - [ ] logic 🔥
   - [ ] ...
 - [ ] ...
-- [ ] SSR (shelf first)
+- [ ] SSR
+  - shelf
+  - ...

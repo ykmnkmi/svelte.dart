@@ -1,6 +1,5 @@
 <script>
-  @prop
-	var answer;
+  Object? answer;
 </script>
 
 <p>The answer is {answer}</p>

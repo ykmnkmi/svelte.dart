@@ -3,8 +3,6 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  var context = InfoContext(instance);
-
   late Element p0;
   late Text t0;
   late Element code0;
@@ -20,11 +18,11 @@ Fragment createFragment(List<Object?> instance) {
       p0 = element('p');
       t0 = text('The ');
       code0 = element('code');
-      t1 = text('${context.name}');
+      t1 = text('${instance._name}');
       t2 = text(' package is ');
-      t3 = text('${context.speed}');
+      t3 = text('${instance._speed}');
       t4 = text(' fast.\n\tDownload version ');
-      t5 = text('${context.version}');
+      t5 = text('${instance._version}');
       t6 = text(' from ');
       a0 = element('a');
       t7 = text('pub');
@@ -32,8 +30,8 @@ Fragment createFragment(List<Object?> instance) {
       a1 = element('a');
       t9 = text('learn more here');
       setAttribute(
-          a0, 'href', a0href = 'https://pub.dev/package/${context.name}');
-      setAttribute(a1, 'href', '${context.website}');
+          a0, 'href', a0href = 'https://pub.dev/package/${instance._name}');
+      setAttribute(a1, 'href', '${instance._website}');
     },
     mount: (target, anchor) {
       insert(target, p0, anchor);
@@ -51,32 +49,32 @@ Fragment createFragment(List<Object?> instance) {
       append(p0, a1);
       append(a1, t9);
     },
-    update: (dirty) {
+    update: (context, dirty) {
       if (dirty[0] & 1 != 0) {
-        setData(t1, '${context.name}');
+        setData(t1, '${context._name}');
       }
 
       if (dirty[0] & 4 != 0) {
-        setData(t3, '${context.speed}');
+        setData(t3, '${context._speed}');
       }
 
       if (dirty[0] & 2 != 0) {
-        setData(t5, '${context.version}');
+        setData(t5, '${context._version}');
       }
 
       if (dirty[0] & 1 != 0 &&
           a0href !=
-              (a0href = 'https://www.npmjs.com/package/${context.name}')) {
+              (a0href = 'https://www.npmjs.com/package/${context._name}')) {
         setAttribute(a0, 'href', a0href);
       }
 
       if (dirty[0] & 8 != 0) {
-        setAttribute(a1, 'href', '${context.website}');
+        setAttribute(a1, 'href', '${context._website}');
       }
     },
     detach: (detaching) {
       if (detaching) {
-        remove(p0);
+        detach(p0);
       }
     },
   );
@@ -113,25 +111,21 @@ List<Object?> createInstance(
   return <Object?>[name, version, speed, website];
 }
 
-class InfoContext {
-  const InfoContext(List<Object?> instance) : _instance = instance;
-
-  final List<Object?> _instance;
-
-  Object? get name {
-    return _instance[0];
+extension on List<Object?> {
+  Object? get _name {
+    return this[0];
   }
 
-  Object? get version {
-    return _instance[1];
+  Object? get _version {
+    return this[1];
   }
 
-  Object? get speed {
-    return _instance[2];
+  Object? get _speed {
+    return this[2];
   }
 
-  Object? get website {
-    return _instance[3];
+  Object? get _website {
+    return this[3];
   }
 }
 

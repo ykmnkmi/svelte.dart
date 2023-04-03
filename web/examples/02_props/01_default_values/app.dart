@@ -44,7 +44,7 @@ Fragment createFragment(List<Object?> instance) {
       destroyComponent(nested0, detaching);
 
       if (detaching) {
-        remove(t);
+        detach(t);
       }
 
       destroyComponent(nested1, detaching);

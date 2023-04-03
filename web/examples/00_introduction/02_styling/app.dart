@@ -26,7 +26,7 @@ Fragment createFragment(List<Object?> instance) {
     },
     detach: (detaching) {
       if (detaching) {
-        remove(p);
+        detach(p);
       }
     },
   );

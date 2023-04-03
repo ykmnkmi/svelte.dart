@@ -1,3 +1,4 @@
+import 'package:meta/dart2js.dart';
 import 'package:svelte/src/runtime/component.dart';
 import 'package:svelte/src/runtime/lifecycle.dart';
 import 'package:svelte/src/runtime/utilities.dart';
@@ -11,6 +12,7 @@ List<void Function()> _flushCallbacks = <void Function()>[];
 Future<void> _resolvedFuture = Future<void>(noop);
 bool _updateScheduled = false;
 
+@noInline
 void scheduleUpdate() {
   if (_updateScheduled) {
     return;
@@ -20,6 +22,7 @@ void scheduleUpdate() {
   _resolvedFuture = Future<void>(flush);
 }
 
+@noInline
 Future<void> tick() {
   scheduleUpdate();
   return _resolvedFuture;
@@ -36,6 +39,7 @@ void addFlushCallback(void Function() callback) {
 Set<void Function()> _seenCallbacks = <void Function()>{};
 int _flushIndex = 0;
 
+@noInline
 void flush() {
   // TODO(runtime): check resolvedFuture and flushIndex
   if (_flushIndex != 0) {
@@ -52,13 +56,13 @@ void flush() {
         updateComponent(component);
       }
     } catch (error) {
-      dirtyComponents.clear();
+      dirtyComponents = <Component>[];
       _flushIndex = 0;
       rethrow;
     }
 
     setCurrentComponent(null);
-    dirtyComponents.clear();
+    dirtyComponents = <Component>[];
     _flushIndex = 0;
 
     while (bindingCallbacks.isNotEmpty) {

@@ -50,8 +50,8 @@ Fragment createFragment(List<Object?> instance) {
     },
     detach: (detaching) {
       if (detaching) {
-        remove(p);
-        remove(t1);
+        detach(p);
+        detach(t1);
       }
 
       destroyComponent(nested, detaching);

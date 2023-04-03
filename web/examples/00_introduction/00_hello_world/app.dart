@@ -2,8 +2,6 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-var name = 'world';
-
 Fragment createFragment(List<Object?> instance) {
   late Element h1;
 
@@ -17,11 +15,13 @@ Fragment createFragment(List<Object?> instance) {
     },
     detach: (detaching) {
       if (detaching) {
-        remove(h1);
+        detach(h1);
       }
     },
   );
 }
+
+var name = 'world';
 
 class App extends Component {
   App({

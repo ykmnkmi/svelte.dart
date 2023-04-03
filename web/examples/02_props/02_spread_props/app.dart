@@ -5,13 +5,11 @@ import 'package:svelte/runtime.dart';
 import 'info.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  var context = AppContext(instance);
-
   Info info;
 
   var current = false;
 
-  var infoSpreadLevels = <Map<String, Object?>>[context.pkg];
+  var infoSpreadLevels = <Map<String, Object?>>[instance._pkg];
   var infoProps = <String, Object?>{};
 
   for (var i = 0; i < infoSpreadLevels.length; i += 1) {
@@ -28,11 +26,11 @@ Fragment createFragment(List<Object?> instance) {
       mountComponent(info, target, anchor);
       current = true;
     },
-    update: (dirty) {
+    update: (context, dirty) {
       Map<String, Object?> infoChanges;
 
       if (dirty[0] & 1 != 0) {
-        var list = <Map<String, Object?>>[getSpreadProps(context.pkg)];
+        var list = <Map<String, Object?>>[getSpreadProps(context._pkg)];
         infoChanges = getSpreadUpdate(infoSpreadLevels, list);
       } else {
         infoChanges = <String, Object?>{};
@@ -63,7 +61,7 @@ List<Object?> createInstance(
   Map<String, Object?> props,
   void Function(int i, Object? value) invalidate,
 ) {
-  final pkg = <String, Object>{
+  var pkg = <String, Object>{
     'name': 'svelte',
     'version': 3,
     'speed': 'blazing',
@@ -73,13 +71,9 @@ List<Object?> createInstance(
   return <Object?>[pkg];
 }
 
-class AppContext {
-  const AppContext(List<Object?> instance) : _instance = instance;
-
-  final List<Object?> _instance;
-
-  Map<String, Object?> get pkg {
-    return unsafeCast(_instance[0]);
+extension on List<Object?> {
+  Map<String, Object?> get _pkg {
+    return unsafeCast<Map<String, Object?>>(this[0]);
   }
 }
 

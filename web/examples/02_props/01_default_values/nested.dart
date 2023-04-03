@@ -3,8 +3,6 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  var context = NestedContext(instance);
-
   late Element p;
   late Text t0, t1;
 
@@ -12,21 +10,21 @@ Fragment createFragment(List<Object?> instance) {
     create: () {
       p = element('p');
       t0 = text('The answer is ');
-      t1 = text('${context.answer}');
+      t1 = text('${instance._answer}');
     },
     mount: (target, anchor) {
       insert(target, p, anchor);
       append(p, t0);
       append(p, t1);
     },
-    update: (dirty) {
+    update: (context, dirty) {
       if (dirty[0] & 1 != 0) {
-        setData(t1, '${context.answer}');
+        setData(t1, '${context._answer}');
       }
     },
     detach: (detaching) {
       if (detaching) {
-        remove(p);
+        detach(p);
       }
     },
   );
@@ -48,13 +46,9 @@ List<Object?> createInstance(
   return <Object?>[answer];
 }
 
-class NestedContext {
-  const NestedContext(List<Object?> instance) : _instance = instance;
-
-  final List<Object?> _instance;
-
-  Object? get answer {
-    return _instance[0];
+extension on List<Object?> {
+  Object? get _answer {
+    return this[0];
   }
 }
 

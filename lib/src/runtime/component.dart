@@ -185,7 +185,7 @@ void updateComponent(Component component) {
   if (fragment != null) {
     var dirty = state.dirty;
     state.dirty[0] = -1;
-    fragment.update(dirty);
+    fragment.update(state.instance, dirty);
   }
 }
 

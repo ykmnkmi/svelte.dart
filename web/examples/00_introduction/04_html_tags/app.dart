@@ -3,8 +3,6 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  var context = AppContext(instance);
-
   late Element p;
 
   return Fragment(
@@ -13,11 +11,11 @@ Fragment createFragment(List<Object?> instance) {
     },
     mount: (target, anchor) {
       insert(target, p, anchor);
-      setInnerHtml(p, context.string);
+      setInnerHtml(p, instance._string);
     },
     detach: (detaching) {
       if (detaching) {
-        remove(p);
+        detach(p);
       }
     },
   );
@@ -32,13 +30,9 @@ List<Object?> createInstance(
   return <Object?>[string];
 }
 
-class AppContext {
-  AppContext(List<Object?> instance) : _instance = instance;
-
-  final List<Object?> _instance;
-
-  String get string {
-    return unsafeCast(_instance[0]);
+extension on List<Object?> {
+  String get _string {
+    return unsafeCast<String>(this[0]);
   }
 }
 

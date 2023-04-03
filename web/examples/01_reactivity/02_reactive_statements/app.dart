@@ -3,8 +3,6 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  var context = AppContext(instance);
-
   late Element button;
   late Text t0, t1, t2, t3;
 
@@ -18,9 +16,9 @@ Fragment createFragment(List<Object?> instance) {
     create: () {
       button = element('button');
       t0 = text('Clicked ');
-      t1 = text('${context.count}');
+      t1 = text('${instance._count}');
       t2 = space();
-      t3 = text(t3value = context.count == 1 ? 'time' : 'times');
+      t3 = text(t3value = instance._count == 1 ? 'time' : 'times');
     },
     mount: (target, anchor) {
       insert(target, button, anchor);
@@ -30,22 +28,22 @@ Fragment createFragment(List<Object?> instance) {
       append(button, t3);
 
       if (!mounted) {
-        dispose = listen(button, 'click', listener(context.handleClick));
+        dispose = listen(button, 'click', listener(instance._handleClick));
         mounted = true;
       }
     },
-    update: (List<int> dirty) {
+    update: (context, dirty) {
       if (dirty[0] & 1 != 0) {
-        setData(t1, '${context.count}');
+        setData(t1, '${context._count}');
 
-        if (t3value != (t3value = context.count == 1 ? 'time' : 'times')) {
+        if (t3value != (t3value = context._count == 1 ? 'time' : 'times')) {
           setData(t3, t3value);
         }
       }
     },
     detach: (detaching) {
       if (detaching) {
-        remove(button);
+        detach(button);
       }
 
       mounted = false;
@@ -80,17 +78,13 @@ List<Object?> createInstance(
   return <Object?>[count, handleClick];
 }
 
-class AppContext {
-  AppContext(List<Object?> instance) : _instance = instance;
-
-  final List<Object?> _instance;
-
-  int get count {
-    return unsafeCast(_instance[0]);
+extension on List<Object?> {
+  int get _count {
+    return unsafeCast<int>(this[0]);
   }
 
-  void Function() get handleClick {
-    return unsafeCast(_instance[1]);
+  void Function() get _handleClick {
+    return unsafeCast<void Function()>(this[1]);
   }
 }
 

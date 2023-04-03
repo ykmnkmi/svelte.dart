@@ -4,7 +4,7 @@ import 'package:svelte/runtime.dart';
 
 import 'user.dart';
 
-Fragment createIfBlock0(AppContext context) {
+Fragment createIfBlock0(List<Object?> instance) {
   late Element button;
 
   var mounted = false;
@@ -20,13 +20,13 @@ Fragment createIfBlock0(AppContext context) {
       insert(target, button, anchor);
 
       if (!mounted) {
-        dispose = listen(button, 'click', listener(context.toggle));
+        dispose = listen(button, 'click', listener(instance._toggle));
         mounted = true;
       }
     },
     detach: (detaching) {
       if (detaching) {
-        remove(button);
+        detach(button);
       }
 
       mounted = false;
@@ -35,7 +35,7 @@ Fragment createIfBlock0(AppContext context) {
   );
 }
 
-Fragment createIfBlock1(AppContext context) {
+Fragment createIfBlock1(List<Object?> instance) {
   late Element button;
 
   var mounted = false;
@@ -51,13 +51,13 @@ Fragment createIfBlock1(AppContext context) {
       insert(target, button, anchor);
 
       if (!mounted) {
-        dispose = listen(button, 'click', listener(context.toggle));
+        dispose = listen(button, 'click', listener(instance._toggle));
         mounted = true;
       }
     },
     detach: (detaching) {
       if (detaching) {
-        remove(button);
+        detach(button);
       }
 
       mounted = false;
@@ -67,20 +67,18 @@ Fragment createIfBlock1(AppContext context) {
 }
 
 Fragment createFragment(List<Object?> instance) {
-  var context = AppContext(instance);
-
   late Text t;
   late Node ifBlock1Anchor;
 
   Fragment? ifBlock0;
   Fragment? ifBlock1;
 
-  if (context.user.loggedIn) {
-    ifBlock0 = createIfBlock0(context);
+  if (instance._user.loggedIn) {
+    ifBlock0 = createIfBlock0(instance);
   }
 
-  if (!context.user.loggedIn) {
-    ifBlock1 = createIfBlock0(context);
+  if (!instance._user.loggedIn) {
+    ifBlock1 = createIfBlock0(instance);
   }
 
   return Fragment(
@@ -96,10 +94,10 @@ Fragment createFragment(List<Object?> instance) {
       ifBlock1?.mount(target, anchor);
       insert(target, ifBlock1Anchor, anchor);
     },
-    update: (dirty) {
-      if (context.user.loggedIn) {
+    update: (context, dirty) {
+      if (context._user.loggedIn) {
         if (ifBlock0 != null) {
-          ifBlock0!.update(dirty);
+          ifBlock0!.update(context, dirty);
         } else {
           ifBlock0 = createIfBlock0(context)
             ..create()
@@ -110,9 +108,9 @@ Fragment createFragment(List<Object?> instance) {
         ifBlock0 = null;
       }
 
-      if (!context.user.loggedIn) {
+      if (!context._user.loggedIn) {
         if (ifBlock1 != null) {
-          ifBlock1!.update(dirty);
+          ifBlock1!.update(context, dirty);
         } else {
           ifBlock1 = createIfBlock1(context)
             ..create()
@@ -127,13 +125,13 @@ Fragment createFragment(List<Object?> instance) {
       ifBlock0?.detach(detaching);
 
       if (detaching) {
-        remove(t);
+        detach(t);
       }
 
       ifBlock1?.detach(detaching);
 
       if (detaching) {
-        remove(ifBlock1Anchor);
+        detach(ifBlock1Anchor);
       }
     },
   );
@@ -153,17 +151,13 @@ List<Object?> createInstance(
   return <Object?>[user, toggle];
 }
 
-class AppContext {
-  const AppContext(List<Object?> instance) : _instance = instance;
-
-  final List<Object?> _instance;
-
-  User get user {
-    return unsafeCast<User>(_instance[0]);
+extension on List<Object?> {
+  User get _user {
+    return unsafeCast<User>(this[0]);
   }
 
-  void Function() get toggle {
-    return unsafeCast<void Function()>(_instance[1]);
+  void Function() get _toggle {
+    return unsafeCast<void Function()>(this[1]);
   }
 }
 

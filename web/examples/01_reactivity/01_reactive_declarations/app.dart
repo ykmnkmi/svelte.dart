@@ -3,8 +3,6 @@ import 'dart:html';
 import 'package:svelte/runtime.dart';
 
 Fragment createFragment(List<Object?> instance) {
-  var context = AppContext(instance);
-
   late Element button;
   late Text t0, t1, t2;
   late Element p0;
@@ -20,17 +18,17 @@ Fragment createFragment(List<Object?> instance) {
     create: () {
       button = element('button');
       t0 = text('Count: ');
-      t1 = text('${context.count}');
+      t1 = text('${instance._count}');
       t2 = space();
       p0 = element('p');
-      t3 = text('${context.count}');
+      t3 = text('${instance._count}');
       t4 = text(' * 2 = ');
-      t5 = text('${context.doubled}');
+      t5 = text('${instance._doubled}');
       t6 = space();
       p1 = element('p');
-      t7 = text('${context.doubled}');
+      t7 = text('${instance._doubled}');
       t8 = text(' * 2 = ');
-      t9 = text('${context.quadrupled}');
+      t9 = text('${instance._quadrupled}');
     },
     mount: (target, anchor) {
       insert(target, button, anchor);
@@ -48,32 +46,32 @@ Fragment createFragment(List<Object?> instance) {
       append(p1, t9);
 
       if (!mounted) {
-        dispose = listen(button, 'click', listener(context.handleClick));
+        dispose = listen(button, 'click', listener(instance._handleClick));
         mounted = true;
       }
     },
-    update: (dirty) {
+    update: (context, dirty) {
       if (dirty[0] & 1 != 0) {
-        setData(t1, '${context.count}');
-        setData(t3, '${context.count}');
+        setData(t1, '${context._count}');
+        setData(t3, '${context._count}');
       }
 
       if (dirty[0] & 2 != 0) {
-        setData(t5, '${context.doubled}');
-        setData(t7, '${context.doubled}');
+        setData(t5, '${context._doubled}');
+        setData(t7, '${context._doubled}');
       }
 
       if (dirty[0] & 4 != 0) {
-        setData(t9, '${context.quadrupled}');
+        setData(t9, '${context._quadrupled}');
       }
     },
     detach: (detaching) {
       if (detaching) {
-        remove(button);
-        remove(t2);
-        remove(p0);
-        remove(t6);
-        remove(p1);
+        detach(button);
+        detach(t2);
+        detach(p0);
+        detach(t6);
+        detach(p1);
       }
 
       mounted = false;
@@ -110,25 +108,21 @@ List<Object?> createInstance(
   return <Object?>[count, null, null, handleClick];
 }
 
-class AppContext {
-  AppContext(List<Object?> instance) : _instance = instance;
-
-  final List<Object?> _instance;
-
-  int get count {
-    return unsafeCast(_instance[0]);
+extension on List<Object?> {
+  int get _count {
+    return unsafeCast<int>(this[0]);
   }
 
-  int get doubled {
-    return unsafeCast(_instance[1]);
+  int get _doubled {
+    return unsafeCast<int>(this[1]);
   }
 
-  int get quadrupled {
-    return unsafeCast(_instance[2]);
+  int get _quadrupled {
+    return unsafeCast<int>(this[2]);
   }
 
-  void Function() get handleClick {
-    return unsafeCast(_instance[3]);
+  void Function() get _handleClick {
+    return unsafeCast<void Function()>(this[3]);
   }
 }
 

@@ -2,9 +2,6 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-var src = '/tutorial/image.gif';
-var name = 'Rick Astley';
-
 Fragment createFragment(List<Object?> instance) {
   late Element img;
 
@@ -19,11 +16,14 @@ Fragment createFragment(List<Object?> instance) {
     },
     detach: (detaching) {
       if (detaching) {
-        remove(img);
+        detach(img);
       }
     },
   );
 }
+
+var src = '/tutorial/image.gif';
+var name = 'Rick Astley';
 
 class App extends Component {
   App({

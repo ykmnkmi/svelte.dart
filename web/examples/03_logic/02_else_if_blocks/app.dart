@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:svelte/runtime.dart';
 
-Fragment createIfBlock1(AppContext context) {
+Fragment createIfBlock1(List<Object?> instance) {
   late Element p;
 
   return Fragment(
@@ -15,13 +15,13 @@ Fragment createIfBlock1(AppContext context) {
     },
     detach: (detaching) {
       if (detaching) {
-        remove(p);
+        detach(p);
       }
     },
   );
 }
 
-Fragment createIfBlock2(AppContext context) {
+Fragment createIfBlock2(List<Object?> instance) {
   late Element p;
 
   return Fragment(
@@ -34,13 +34,13 @@ Fragment createIfBlock2(AppContext context) {
     },
     detach: (detaching) {
       if (detaching) {
-        remove(p);
+        detach(p);
       }
     },
   );
 }
 
-Fragment createElseBlock(AppContext context) {
+Fragment createElseBlock(List<Object?> instance) {
   late Element p;
 
   return Fragment(
@@ -53,19 +53,17 @@ Fragment createElseBlock(AppContext context) {
     },
     detach: (detaching) {
       if (detaching) {
-        remove(p);
+        detach(p);
       }
     },
   );
 }
 
 Fragment createFragment(List<Object?> instance) {
-  var context = AppContext(instance);
-
   late Node ifBlockAnchor;
 
-  Fragment Function(AppContext) selectCurrentBlock(
-    AppContext context,
+  Fragment Function(List<Object?>) selectCurrentBlock(
+    List<Object?> context,
     List<int> dirty,
   ) {
     if (x > 10) {
@@ -79,8 +77,8 @@ Fragment createFragment(List<Object?> instance) {
     return createElseBlock;
   }
 
-  var currentBlockFactory = selectCurrentBlock(context, <int>[-1]);
-  var ifBlock = currentBlockFactory(context);
+  var currentBlockFactory = selectCurrentBlock(instance, <int>[-1]);
+  var ifBlock = currentBlockFactory(instance);
 
   return Fragment(
     create: () {
@@ -91,11 +89,11 @@ Fragment createFragment(List<Object?> instance) {
       ifBlock.mount(target, anchor);
       insert(target, ifBlockAnchor, anchor);
     },
-    update: (dirty) {
+    update: (context, dirty) {
       var newBlockFactory = selectCurrentBlock(context, dirty);
 
       if (currentBlockFactory == newBlockFactory) {
-        ifBlock.update(dirty);
+        ifBlock.update(context, dirty);
       } else {
         ifBlock.detach(true);
 
@@ -110,19 +108,13 @@ Fragment createFragment(List<Object?> instance) {
       ifBlock.detach(detaching);
 
       if (detaching) {
-        remove(ifBlockAnchor);
+        detach(ifBlockAnchor);
       }
     },
   );
 }
 
 var x = 7;
-
-class AppContext {
-  const AppContext(this._instance);
-
-  final List<Object?> _instance;
-}
 
 class App extends Component {
   App({

@@ -1,15 +1,11 @@
 <script>
-	@prop
-	var name;
+	Object? name;
 
-	@prop
-	var version;
+	Object? version;
 
-	@prop
-	var speed;
+	Object? speed;
 
-	@prop
-	var website;
+	Object? website;
 </script>
 
 <p>

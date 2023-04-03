@@ -1,6 +1,3 @@
-// TODO(runtime): move to web package
-library;
-
 import 'dart:async';
 import 'dart:html';
 
@@ -138,6 +135,6 @@ void Function() listen(
 }
 
 @noInline
-void remove(Node node) {
+void detach(Node node) {
   node.remove();
 }

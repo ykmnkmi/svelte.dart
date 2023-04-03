@@ -1,7 +1,7 @@
 <script>
 	import 'info.dart';
 
-	final pkg = <String, Object>{
+	var pkg = <String, Object>{
 		'name': 'svelte',
 		'version': 3,
 		'speed': 'blazing',
@@ -9,4 +9,4 @@
 	};
 </script>
 
-<Info {...pkg}/>
+<Info {...pkg} />
