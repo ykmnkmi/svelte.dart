@@ -34,6 +34,7 @@ targets:
             # - --omit-late-names
 
             # - -O3
+            - --no-native-null-assertions
             - --omit-implicit-checks
 
             # - -O4

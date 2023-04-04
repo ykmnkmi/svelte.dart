@@ -26,9 +26,15 @@ class SvelteBuilder implements Builder {
 
     var ast = parse(source, sourceUrl: input.uri);
 
-    var baseName = basenameWithoutExtension(input.pathSegments.last);
-    var name = getNameFromFileName(baseName);
-    var component = Component(ast, source, name);
+    var name = basenameWithoutExtension(input.pathSegments.last);
+
+    var component = Component(
+      name: name,
+      source: source,
+      ast: ast,
+    );
+
     // TODO(compiler): *
+    await buildStep.writeAsString(output, '// ${input.uri}');
   }
 }

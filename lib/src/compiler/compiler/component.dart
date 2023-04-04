@@ -1,11 +1,19 @@
 import 'package:svelte/src/compiler/interface.dart';
 
 class Component {
-  Component(this.ast, this.source, this.name);
+  Component({
+    required this.name,
+    required this.source,
+    required this.ast,
+  }) {
+    build();
+  }
 
-  final Ast ast;
+  final String name;
 
   final String source;
 
-  final String name;
+  final Ast ast;
+
+  void build() {}
 }
