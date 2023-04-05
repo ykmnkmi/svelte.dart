@@ -13,8 +13,8 @@ import 'dart:html';
 // import 'examples/02_props/02_spread_props/app.dart';
 // import 'examples/03_logic/00_if_blocks/app.dart';
 // import 'examples/03_logic/01_else_blocks/app.dart';
-// import 'examples/03_logic/02_else_if_blocks/app.dart';
-import 'examples/03_logic/03_each_blocks/app.dart';
+import 'examples/03_logic/02_else_if_blocks/app.dart';
+// import 'examples/03_logic/03_each_blocks/app.dart';
 
 void main() {
   App(target: document.body);

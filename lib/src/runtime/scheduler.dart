@@ -76,7 +76,7 @@ void flush() {
       }
     }
 
-    _renderCalbacks.clear();
+    _renderCalbacks = <void Function()>[];
   } while (dirtyComponents.isNotEmpty);
 
   while (_flushCallbacks.isNotEmpty) {
