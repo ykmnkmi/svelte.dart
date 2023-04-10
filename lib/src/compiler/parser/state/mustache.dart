@@ -91,7 +91,7 @@ extension MustacheParser on Parser {
       } else if (block.type == 'KeyBlock') {
         expected = 'key';
       } else {
-        unexpectedBlockClose();
+        error(unexpectedBlockClose);
       }
 
       expect(expected);
@@ -117,7 +117,7 @@ extension MustacheParser on Parser {
       stack.removeLast();
     } else if (scan(':else')) {
       if (scan('if')) {
-        invalidElseIf();
+        error(invalidElseIf);
       }
 
       allowSpace();
@@ -128,11 +128,11 @@ extension MustacheParser on Parser {
         if (block.type != 'IfBlock') {
           for (var node in stack) {
             if (node.type == 'IfBlock') {
-              invalidElseIfPlacementUnclosedBlock(block.toString());
+              error(invalidElseifPlacementUnclosedBlock(block.name));
             }
           }
 
-          invalidElseIfPlacementOutsideIf();
+          error(invalidElseIfPlacementOutsideIf);
         }
 
         allowSpace(required: true);
@@ -162,11 +162,11 @@ extension MustacheParser on Parser {
         if (block.type != 'IfBlock' && block.type != 'EachBlock') {
           for (var node in stack) {
             if (node.type == 'IfBlock' || node.type == 'EachBlock') {
-              invalidElsePlacementUnclosedBlock(block.toString());
+              error(invalidElsePlacementUnclosedBlock(block.name));
             }
           }
 
-          invalidElsePlacementOutsideIf();
+          error(invalidElsePlacementOutsideIf);
         }
 
         allowSpace();
@@ -193,7 +193,7 @@ extension MustacheParser on Parser {
             }
           }
 
-          invalidThenPlacementWithoutAwait();
+          error(invalidThenPlacementWithoutAwait);
         }
       } else {
         if (block.type != 'ThenBlock' && block.type != 'PendingBlock') {
@@ -203,7 +203,7 @@ extension MustacheParser on Parser {
             }
           }
 
-          invalidCatchPlacementWithoutAwait();
+          error(invalidCatchPlacementWithoutAwait);
         }
       }
 
@@ -250,7 +250,7 @@ extension MustacheParser on Parser {
       } else if (scan('key')) {
         type = 'KeyBlock';
       } else {
-        expectedBlockType();
+        error(expectedBlockType);
       }
 
       allowSpace(required: true);
@@ -283,7 +283,7 @@ extension MustacheParser on Parser {
           var index = readIdentifier();
 
           if (index == null) {
-            expectedName();
+            error(expectedName);
           }
 
           block.eachIndex = index;
@@ -373,7 +373,7 @@ extension MustacheParser on Parser {
           var expression = readExpression();
 
           if (expression is! SimpleIdentifier) {
-            invalidDebugArgs(start);
+            error(invalidDebugArgs, start);
           }
 
           identifiers.add(expression);
@@ -396,11 +396,12 @@ extension MustacheParser on Parser {
 
       if (expression is! AssignmentExpression ||
           expression.operator.lexeme != '=') {
-        error(
+        var error = (
           code: 'invalid-const-args',
           message: '{@const ...} must be an assignment',
-          position: start,
         );
+
+        this.error(error, start);
       }
 
       allowSpace();

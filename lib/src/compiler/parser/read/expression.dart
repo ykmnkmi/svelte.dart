@@ -21,9 +21,8 @@ extension ExpressionParser on Parser {
     for (var analysisError in errors) {
       if (position + analysisError.offset <= result.end) {
         error(
-          code: 'parse-error',
-          message: analysisError.message,
-          position: analysisError.offset,
+          (code: 'parse-error', message: analysisError.message),
+          analysisError.offset,
         );
       }
     }
@@ -72,9 +71,8 @@ class Synthetic extends UnifyingAstVisitor<void> {
   void visitNode(AstNode node) {
     if (node.isSynthetic) {
       parser.error(
-        code: 'parse-error',
-        message: 'Synthetic expression',
-        position: node.offset,
+        (code: 'parse-error', message: 'Synthetic expression'),
+        node.offset,
       );
     }
 

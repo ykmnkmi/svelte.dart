@@ -17,6 +17,6 @@ extension ContextParser on Parser {
     }
 
     // TODO(parser): implement destructuring
-    unexpectedTokenDestructure();
+    error(unexpectedTokenDestructure);
   }
 }

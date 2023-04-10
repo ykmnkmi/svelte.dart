@@ -22,7 +22,11 @@ extension StyleParser on Parser {
 
     if (errors.isNotEmpty) {
       var error = errors.first;
-      cssSyntaxError(error.message, error.span?.start.offset);
+
+      this.error(
+        cssSyntaxError(error.message),
+        error.span?.start.offset,
+      );
     }
 
     // TODO(parser): css validation

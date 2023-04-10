@@ -73,14 +73,14 @@ extension ScriptParser on Parser {
     if (children == null ||
         children.length != 1 ||
         children.first.type != 'Text') {
-      invalidScriptContextAttribute(context.start);
+      error(invalidScriptContextAttribute, context.start);
     }
 
     if (children.first.data == 'library') {
       return 'library';
     }
 
-    invalidScriptContextValue(context.start);
+    error(invalidScriptContextValue, context.start);
   }
 
   void script(int offset, List<TemplateNode> attributes) {
@@ -115,9 +115,8 @@ extension ScriptParser on Parser {
       var analysisError = errorListener.errors.first;
 
       error(
-        code: 'parse-error',
-        message: analysisError.message,
-        position: analysisError.offset,
+        (code: 'parse-error', message: analysisError.message),
+        analysisError.offset,
       );
     }
 

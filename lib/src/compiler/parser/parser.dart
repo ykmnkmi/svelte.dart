@@ -61,9 +61,9 @@ class Parser {
       }
 
       error(
-          code: 'unclosed-$slug',
-          message: '$type was left open',
-          position: current.start);
+        (code: 'unclosed-$slug', message: '$type was left open'),
+        current.start,
+      );
     }
 
     var children = html.children;
@@ -124,7 +124,7 @@ class Parser {
 
     if (match == null) {
       if (required) {
-        error(code: 'missing-whitespace', message: 'Expected whitespace');
+        error((code: 'missing-whitespace', message: 'Expected whitespace'));
       }
 
       return;
@@ -149,7 +149,7 @@ class Parser {
     return false;
   }
 
-  void expect(Pattern pattern, [Never Function()? onError]) {
+  void expect(Pattern pattern, [({String code, String message})? error]) {
     var match = pattern.matchAsPrefix(template, position);
 
     if (match != null) {
@@ -157,15 +157,15 @@ class Parser {
       return;
     }
 
-    if (onError == null) {
+    if (error == null) {
       if (isNotDone) {
-        unexpectedToken(pattern, position);
+        this.error(unexpectedToken(pattern), position);
       }
 
-      unexpectedEofToken(pattern);
+      this.error(unexpectedEOFToken(pattern));
     }
 
-    onError();
+    this.error(error, position);
   }
 
   String? read(Pattern pattern) {
@@ -187,22 +187,22 @@ class Parser {
       return null;
     }
 
-    var identifier = match[0]!;
+    var word = match[0]!;
 
-    if (!allowReserved && reserved.contains(identifier)) {
-      error(
+    if (!allowReserved && reserved.contains(word)) {
+      var error = (
         code: 'unexpected-reserved-word',
-        message:
-            "'$identifier' is a reserved word in Dart and cannot be used here",
-        position: start,
+        message: "'$word' is a reserved word in Dart and cannot be used here",
       );
+
+      this.error(error, start);
     }
 
     position = match.end;
-    return identifier;
+    return word;
   }
 
-  String readUntil(Pattern pattern, [Never Function()? onError]) {
+  String readUntil(Pattern pattern, [({String code, String message})? error]) {
     var found = template.indexOf(pattern, position);
 
     if (found != -1) {
@@ -213,15 +213,15 @@ class Parser {
       return template.substring(position, position = template.length);
     }
 
-    if (onError == null) {
-      unexpectedEof();
+    if (error == null) {
+      this.error(unexpectedEOF);
     }
 
-    onError();
+    this.error(error);
   }
 
-  Never error({required String code, required String message, int? position}) {
+  Never error(({String code, String message}) error, [int? position]) {
     var span = sourceFile.span(position ?? this.position);
-    throw ParseError(code, message, span);
+    throw ParseError(error.code, error.message, span);
   }
 }

@@ -10,13 +10,13 @@ Ast parse(String source, {Object? sourceUrl, CssMode? cssMode}) {
   for (var node in parser.scripts) {
     if (node.context == 'default') {
       if (instance != null) {
-        parser.invalidScriptInstance(node.start);
+        parser.error(invalidScriptInstance, node.start);
       }
 
       instance = node;
     } else if (node.context == 'library') {
       if (library != null) {
-        parser.invalidScriptModule(library.start);
+        parser.error(invalidScriptModule, library.start);
       }
 
       library = node;
@@ -27,7 +27,7 @@ Ast parse(String source, {Object? sourceUrl, CssMode? cssMode}) {
 
   for (var node in parser.styles) {
     if (style != null) {
-      parser.duplicateStyle(node.start);
+      parser.error(duplicateStyle, node.start);
     }
 
     style = node;
@@ -36,7 +36,7 @@ Ast parse(String source, {Object? sourceUrl, CssMode? cssMode}) {
   return Ast(
     html: parser.html,
     instance: instance,
-    library: library,
+    module: library,
     style: style,
   );
 }

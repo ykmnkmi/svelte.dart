@@ -130,7 +130,7 @@ extension TagParser on Parser {
         }
       }
 
-      invalidSelfPlacement(start);
+      error(invalidSelfPlacement, start);
     }
 
     if (scan(svelteComponentRe)) {
@@ -152,14 +152,14 @@ extension TagParser on Parser {
     }
 
     if (name.startsWith('svelte:')) {
-      invalidTagNameSvelteElement(validMetaTags, start);
+      error(invalidTagNameSvelteElement(validMetaTags), start);
     }
 
     if (tagNameRe.hasMatch(name)) {
       return name;
     }
 
-    invalidTagName(start);
+    error(invalidTagName, start);
   }
 
   bool readAttributeTo(List<Node> attributes, Set<String> uniqueNames) {
@@ -167,7 +167,7 @@ extension TagParser on Parser {
 
     void checkUnique(String name) {
       if (uniqueNames.contains(name)) {
-        duplicateAttribute(start);
+        error(duplicateAttribute, start);
       }
 
       uniqueNames.add(name);
@@ -197,7 +197,7 @@ extension TagParser on Parser {
       expect('}');
 
       if (name == null) {
-        emptyAttributeShorthand(start);
+        error(emptyAttributeShorthand, start);
       }
 
       checkUnique(name);
@@ -247,7 +247,7 @@ extension TagParser on Parser {
       value = readAttributeValue();
       end = position;
     } else if (match(quoteRe)) {
-      unexpectedToken('=', position);
+      error(unexpectedToken('='), position);
     }
 
     if (type != null) {
@@ -256,7 +256,7 @@ extension TagParser on Parser {
       var modifiers = parts.sublist(1);
 
       if (directiveName == '') {
-        emptyDirectiveName(type, start + colonIndex + 1);
+        error(emptyDirectiveName(type), start + colonIndex + 1);
       }
 
       if (type == 'Binding' && directiveName != 'this') {
@@ -266,7 +266,7 @@ extension TagParser on Parser {
       }
 
       if (type == 'Ref') {
-        invalidRefDirective(directiveName, start);
+        error(invalidRefDirective(directiveName), start);
       }
 
       if (type == 'StyleDirective') {
@@ -289,7 +289,7 @@ extension TagParser on Parser {
         firstValue = value.first;
 
         if (value.length > 1 || firstValue.type == 'Text') {
-          invalidDirectiveValue(firstValue.start);
+          error(invalidDirectiveValue, firstValue.start);
         } else {
           expression = firstValue.expression;
         }
@@ -372,7 +372,7 @@ extension TagParser on Parser {
     }
 
     if (value.isEmpty && quoteMark == null) {
-      missingAttributeValue();
+      error(missingAttributeValue);
     }
 
     if (quoteMark != null) {
@@ -413,13 +413,13 @@ extension TagParser on Parser {
         if (scan('#')) {
           var index = position - 2;
           var name = readUntil(controlNameEnd);
-          invalidLogicBlockPlacement(location, name, index);
+          error(invalidLogicBlockPlacement(location, name), index);
         }
 
         if (scan('@')) {
           var index = position - 2;
           var name = readUntil(controlNameEnd);
-          invalidTagPlacement(location, name, index);
+          error(invalidTagPlacement(location, name), index);
         }
 
         flush(start);
@@ -479,15 +479,15 @@ extension TagParser on Parser {
         if ((name == 'svelte:window' || name == 'svelte:body') &&
             children != null &&
             children.isNotEmpty) {
-          invalidElementContent(slug, name, children.first.start);
+          error(invalidElementContent(slug, name), children.first.start);
         }
       } else {
         if (this.metaTags.contains(name)) {
-          duplicateElement(slug, name, start);
+          error(duplicateElement(slug, name), start);
         }
 
         if (stack.length > 1) {
-          invalidElementPlacement(slug, name, start);
+          error(invalidElementPlacement(slug, name), start);
         }
 
         this.metaTags.add(name);
@@ -517,7 +517,7 @@ extension TagParser on Parser {
 
     if (isClosingTag) {
       if (isVoid(name)) {
-        invalidVoidContent(name, start);
+        error(invalidVoidContent(name), start);
       }
 
       expect('>');
@@ -527,9 +527,12 @@ extension TagParser on Parser {
       while (parent.name != name) {
         if (parent.type != 'Element') {
           if (lastAutoCloseTag != null && lastAutoCloseTag.tag == name) {
-            invalidClosingTagAutoClosed(name, lastAutoCloseTag.reason, start);
+            error(
+              invalidClosingTagAutoClosed(name, lastAutoCloseTag.reason),
+              start,
+            );
           } else {
-            invalidClosingTagUnopened(name, start);
+            error(invalidClosingTagUnopened(name), start);
           }
         }
 
@@ -566,14 +569,14 @@ extension TagParser on Parser {
       var index = attributes.indexWhere(nodeIsThisAttribute);
 
       if (index == -1) {
-        missingComponentDefinition(start);
+        error(missingComponentDefinition, start);
       }
 
       var definition = attributes.removeAt(index);
       var value = definition.value;
 
       if (value == null || value.length != 1 || value.first.type == 'Text') {
-        invalidComponentDefinition(definition.start);
+        error(invalidComponentDefinition, definition.start);
       }
 
       element.expression = value.first.expression;
@@ -583,14 +586,14 @@ extension TagParser on Parser {
       var index = attributes.indexWhere(nodeIsThisAttribute);
 
       if (index == -1) {
-        missingElementDefinition(start);
+        error(missingElementDefinition, start);
       }
 
       var definition = attributes.removeAt(index);
       var value = definition.value;
 
       if (value == null || value.isEmpty) {
-        invalidElementDefinition(definition.start);
+        error(invalidElementDefinition, definition.start);
       }
 
       element.tag = value.first.data ?? value.first.expression;

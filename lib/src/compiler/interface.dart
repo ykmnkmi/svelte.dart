@@ -356,7 +356,7 @@ class Ast {
   Ast({
     required this.html,
     this.instance,
-    this.library,
+    this.module,
     this.style,
   });
 
@@ -364,7 +364,7 @@ class Ast {
 
   final Script? instance;
 
-  final Script? library;
+  final Script? module;
 
   final Style? style;
 
@@ -372,7 +372,7 @@ class Ast {
     return <String, Object?>{
       'html': html.toJson(),
       if (instance != null) 'instance': instance!.toJson(),
-      if (library != null) 'library': library!.toJson(),
+      if (module != null) 'module': module!.toJson(),
       if (style != null) 'style': style!.toJson(),
     };
   }
