@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte/runtime.dart';
+import 'package:web/web.dart';
 
 import 'nested.dart';
 

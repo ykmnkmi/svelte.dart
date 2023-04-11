@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte/src/runtime/fragment.dart';
+import 'package:web/web.dart';
 
 class State {
   Fragment? fragment;
@@ -11,7 +10,7 @@ class State {
 
   late void Function() update;
 
-  late List<int> dirty;
+  late int dirty;
 
   Element? root;
 }

@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte/runtime.dart';
+import 'package:web/web.dart';
 
 Fragment createFragment(List<Object?> instance) {
   late Element p0;
@@ -50,25 +49,25 @@ Fragment createFragment(List<Object?> instance) {
       append(a1, t9);
     },
     update: (context, dirty) {
-      if (dirty[0] & 1 != 0) {
+      if (dirty & 1 != 0) {
         setData(t1, '${context._name}');
       }
 
-      if (dirty[0] & 4 != 0) {
+      if (dirty & 4 != 0) {
         setData(t3, '${context._speed}');
       }
 
-      if (dirty[0] & 2 != 0) {
+      if (dirty & 2 != 0) {
         setData(t5, '${context._version}');
       }
 
-      if (dirty[0] & 1 != 0 &&
+      if (dirty & 1 != 0 &&
           a0href !=
               (a0href = 'https://www.npmjs.com/package/${context._name}')) {
         setAttribute(a0, 'href', a0href);
       }
 
-      if (dirty[0] & 8 != 0) {
+      if (dirty & 8 != 0) {
         setAttribute(a1, 'href', '${context._website}');
       }
     },

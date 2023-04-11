@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:html';
 
+import 'package:js/js_util.dart';
 import 'package:meta/dart2js.dart';
+import 'package:web/web.dart';
 
 @noInline
 Element element(String tag) {
@@ -22,20 +23,18 @@ Text text(String text) {
 }
 
 @noInline
-void setData(Text target, String? data) {
+void setData(Text target, String data) {
   target.data = data;
 }
 
 @noInline
 void setText(Node target, String? content) {
-  target.text = content;
+  target.textContent = content;
 }
 
 @noInline
-void setInnerHtml(Element target, String? html) {
-  // TODO(runtime): can be replaced with js_util version
-  // setProperty<String>(element, 'innerHtml', html);
-  target.innerHtml = html;
+void setInnerHtml(Element target, String html) {
+  target.innerHTML = html;
 }
 
 @noInline
@@ -44,7 +43,7 @@ String? getAttribute(Element target, String attribute) {
 }
 
 @noInline
-void setAttribute(Element target, String attribute, Object value) {
+void setAttribute(Element target, String attribute, String value) {
   target.setAttribute(attribute, value);
 }
 
@@ -54,7 +53,7 @@ void removeAttribute(Element element, String attribute) {
 }
 
 @noInline
-void updateAttribute(Element target, String attribute, Object? value) {
+void updateAttribute(Element target, String attribute, String? value) {
   if (value == null) {
     removeAttribute(target, attribute);
   } else if (getAttribute(target, attribute) != value) {
@@ -69,7 +68,7 @@ void insert(Element target, Node child, [Node? anchor]) {
 
 @noInline
 void append(Node target, Node child) {
-  target.append(child);
+  target.appendChild(child);
 }
 
 @noInline
@@ -80,21 +79,19 @@ void appendStyles(Node? target, String styleSheetId, String styles) {
   if (appendStylesToNode.getElementById(styleSheetId) == null) {
     var style = element('style');
     style.id = styleSheetId;
-    style.text = styles;
+    style.textContent = styles;
     appendStyleSheet(appendStylesTo, style);
   }
 }
 
 @noInline
 void appendStyleSheet(Node target, Element style) {
-  // TODO(runtime): can be replaced with js_util version
-  // append(getProperty<HeadElement?>(node, 'head') ?? node, style);
-  append(target is HtmlDocument ? target.head ?? target : target, style);
+  append(target is Document ? target.head ?? target : target, style);
 }
 
 @noInline
 void appendText(Element target, String text) {
-  target.appendText(text);
+  target.append(text);
 }
 
 @noInline
@@ -105,9 +102,7 @@ Node getRootForStyle(Node? node) {
 
   var root = node.getRootNode();
 
-  // TODO(runtime): can be replaced with js_util version
-  // if (getProperty<Node?>(root, 'host') != null) {
-  if (root is ShadowRoot && root.host != null) {
+  if (root is ShadowRoot) {
     return root;
   }
 
@@ -125,16 +120,23 @@ EventListener listener(FutureOr<void> Function() function) {
 void Function() listen(
   EventTarget target,
   String type,
-  EventListener? listener,
+  EventListener listener,
 ) {
-  target.addEventListener(type, listener);
+  var fn = allowInterop(listener);
+  target.addEventListener(type, fn);
 
   return () {
-    target.removeEventListener(type, listener);
+    target.removeEventListener(type, fn);
   };
 }
 
 @noInline
 void detach(Node node) {
-  node.remove();
+  unsafeCast<Node>(node.parentNode).removeChild(node);
+}
+
+@tryInline
+@pragma('dart2js:as:trust')
+T unsafeCast<T>(Object? value) {
+  return value as T;
 }

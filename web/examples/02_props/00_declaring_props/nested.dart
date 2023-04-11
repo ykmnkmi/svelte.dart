@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte/runtime.dart';
+import 'package:web/web.dart';
 
 Fragment createFragment(List<Object?> instance) {
   late Element p;
@@ -18,7 +17,7 @@ Fragment createFragment(List<Object?> instance) {
       append(p, t1);
     },
     update: (context, dirty) {
-      if (dirty[0] & 1 != 0) {
+      if (dirty & 1 != 0) {
         setData(t1, '${context._answer}');
       }
     },

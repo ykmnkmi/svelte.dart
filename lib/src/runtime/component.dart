@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:meta/dart2js.dart';
 import 'package:svelte/src/runtime/fragment.dart';
 import 'package:svelte/src/runtime/lifecycle.dart';
@@ -7,6 +5,7 @@ import 'package:svelte/src/runtime/scheduler.dart';
 import 'package:svelte/src/runtime/state.dart';
 import 'package:svelte/src/runtime/transition.dart';
 import 'package:svelte/src/runtime/utilities.dart';
+import 'package:web/web.dart';
 
 typedef Invalidate = void Function(int i, Object? value, [Object? expression]);
 
@@ -56,7 +55,7 @@ abstract class Component {
 @tryInline
 void setComponentUpdate(
   Component component,
-  void Function() Function(List<int> dirty) updateFactory,
+  void Function() Function(int dirty) updateFactory,
 ) {
   component._state.update = updateFactory(component._state.dirty);
 }
@@ -77,7 +76,7 @@ void init({
   Fragment Function(List<Object?> instance)? createFragment,
   Map<String, int> props = const <String, int>{},
   void Function(Element? target)? appendStyles,
-  List<int> dirty = const <int>[-1],
+  int dirty = -1,
 }) {
   var parentComponent = currentComponent;
   setCurrentComponent(component);
@@ -100,7 +99,8 @@ void init({
 
   if (createInstance != null) {
     void invalidate(int i, Object? value, [Object? expression]) {
-      if (state.instance[i] != (state.instance[i] = value)) {
+      if (state.instance[i] != (state.instance[i] = value) ||
+          expression != null) {
         if (ready) {
           makeComponentDirty(component, i);
         }
@@ -151,16 +151,13 @@ void mountComponent(Component component, Element target, [Node? anchor]) {
 
 @noInline
 void makeComponentDirty(Component component, int i) {
-  var dirty = component._state.dirty;
-  var index = i ~/ 31;
-
-  if (dirty[0] == -1) {
+  if (component._state.dirty == -1) {
     dirtyComponents.add(component);
     scheduleUpdate();
-    dirty.fillRange(0, index + 1, 0);
+    component._state.dirty = 0;
   }
 
-  dirty[index] |= 1 << i % 31;
+  component._state.dirty |= 1 << i % 31;
 }
 
 @noInline
@@ -172,7 +169,7 @@ void updateComponent(Component component) {
 
   if (fragment != null) {
     var dirty = state.dirty;
-    state.dirty[0] = -1;
+    state.dirty = -1;
     fragment.update(state.instance, dirty);
   }
 }

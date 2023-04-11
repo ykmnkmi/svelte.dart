@@ -1,7 +1,7 @@
-import 'dart:html';
 import 'dart:math' show min;
 
 import 'package:svelte/runtime.dart';
+import 'package:web/web.dart';
 
 import 'cat.dart';
 
@@ -61,7 +61,7 @@ Fragment createFragment(List<Object?> instance) {
       }
     },
     update: (context, dirty) {
-      if (dirty[0] & 1 != 0) {
+      if (dirty & 1 != 0) {
         eachValue = context.cats;
 
         var length = min(eachBlocks.length, eachValue.length);

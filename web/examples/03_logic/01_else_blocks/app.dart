@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte/runtime.dart';
+import 'package:web/web.dart';
 
 import 'user.dart';
 
@@ -71,7 +70,7 @@ Fragment createFragment(List<Object?> instance) {
 
   Fragment Function(List<Object?>) selectCurrentBlock(
     List<Object?> context,
-    List<int> dirty,
+    int dirty,
   ) {
     if (context._user.loggedIn) {
       return createIfBlock;
@@ -80,7 +79,7 @@ Fragment createFragment(List<Object?> instance) {
     return createElseBlock;
   }
 
-  var currentBlockFactory = selectCurrentBlock(instance, <int>[-1]);
+  var currentBlockFactory = selectCurrentBlock(instance, -1);
   var ifBlock = currentBlockFactory(instance);
 
   return Fragment(
@@ -102,7 +101,8 @@ Fragment createFragment(List<Object?> instance) {
 
         ifBlock = newBlockFactory(context)
           ..create()
-          ..mount(unsafeCast<Element>(ifBlockAnchor.parent), ifBlockAnchor);
+          ..mount(
+              unsafeCast<Element>(ifBlockAnchor.parentElement), ifBlockAnchor);
 
         currentBlockFactory = newBlockFactory;
       }

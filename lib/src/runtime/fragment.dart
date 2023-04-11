@@ -1,6 +1,6 @@
-import 'dart:html';
+import 'package:web/web.dart';
 
-void _update(List<Object?> context, List<int> dirty) {}
+void _update(List<Object?> context, int dirty) {}
 
 void _transition(bool local) {}
 
@@ -18,7 +18,7 @@ class Fragment {
 
   final void Function(Element target, Node? anchor) mount;
 
-  final void Function(List<Object?> context, List<int> dirty) update;
+  final void Function(List<Object?> context, int dirty) update;
 
   final void Function(bool local) intro;
 
