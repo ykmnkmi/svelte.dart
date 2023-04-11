@@ -16,25 +16,13 @@ typedef InstanceFactory = List<Object?> Function(
   Invalidate invalidate,
 );
 
-class Options {
-  const Options({
-    this.target,
-    this.anchor,
-    this.props,
-    this.hydrate = false,
-    this.intro = false,
-  });
-
-  final Element? target;
-
-  final Node? anchor;
-
-  final Map<String, Object?>? props;
-
-  final bool hydrate;
-
-  final bool intro;
-}
+typedef Options = ({
+  Element? target,
+  Node? anchor,
+  Map<String, Object?>? props,
+  bool hydrate,
+  bool intro,
+});
 
 abstract class Component {
   final State _state = State();
@@ -87,9 +75,9 @@ void init({
   required Options options,
   InstanceFactory? createInstance,
   Fragment Function(List<Object?> instance)? createFragment,
-  required Map<String, int> props,
+  Map<String, int> props = const <String, int>{},
   void Function(Element? target)? appendStyles,
-  List<int>? dirty,
+  List<int> dirty = const <int>[-1],
 }) {
   var parentComponent = currentComponent;
   setCurrentComponent(component);
@@ -101,7 +89,7 @@ void init({
     ..instance = <Object?>[]
     ..props = props
     ..update = noop
-    ..dirty = dirty ?? <int>[-1]
+    ..dirty = dirty
     ..root = target ?? parentComponent?._state.root;
 
   if (appendStyles != null) {

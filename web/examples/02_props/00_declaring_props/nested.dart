@@ -62,7 +62,7 @@ class Nested extends Component {
   }) {
     init(
       component: this,
-      options: Options(
+      options: (
         target: target,
         anchor: anchor,
         props: props,

@@ -31,7 +31,7 @@ class Nested extends Component {
   }) {
     init(
       component: this,
-      options: Options(
+      options: (
         target: target,
         anchor: anchor,
         props: props,
@@ -39,7 +39,6 @@ class Nested extends Component {
         intro: intro,
       ),
       createFragment: createFragment,
-      props: <String, int>{},
     );
   }
 }

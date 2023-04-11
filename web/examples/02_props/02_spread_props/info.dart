@@ -139,7 +139,7 @@ class Info extends Component {
   }) {
     init(
       component: this,
-      options: Options(
+      options: (
         target: target,
         anchor: anchor,
         props: props,
@@ -148,7 +148,7 @@ class Info extends Component {
       ),
       createInstance: createInstance,
       createFragment: createFragment,
-      props: <String, int>{
+      props: const <String, int>{
         'answer': 0,
         'version': 1,
         'speed': 2,

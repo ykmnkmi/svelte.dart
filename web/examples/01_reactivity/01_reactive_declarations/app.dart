@@ -136,7 +136,7 @@ class App extends Component {
   }) {
     init(
       component: this,
-      options: Options(
+      options: (
         target: target,
         anchor: anchor,
         props: props,
@@ -145,7 +145,6 @@ class App extends Component {
       ),
       createInstance: createInstance,
       createFragment: createFragment,
-      props: <String, int>{},
     );
   }
 }
