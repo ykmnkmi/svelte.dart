@@ -7,7 +7,7 @@ builders:
     build_to: cache
     build_extensions:
       ".svelte":
-        - ".svelte.dart"
+        - ".dart"
 
 targets:
   $default:
@@ -30,21 +30,21 @@ targets:
 
             # - -O2
             # - --minify
-            - --lax-runtime-type-to-string
+            # - --lax-runtime-type-to-string
             # - --omit-late-names
 
             # - -O3
-            - --no-native-null-assertions
-            - --omit-implicit-checks
+            # - --no-native-null-assertions
+            # - --omit-implicit-checks
 
             # - -O4
-            - --trust-primitives
+            # - --trust-primitives
 
             # - --csp
             # - --enable-asserts
             # - --no-source-maps
             # - --omit-as-casts
-            # - --server-mode
+            - --server-mode
             # - --verbose
 
       svelte:svelte:

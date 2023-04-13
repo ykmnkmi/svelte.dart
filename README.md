@@ -136,9 +136,8 @@ Status (original implementation):
     - [ ] component 🔥
     - [x] scheduler
     - [ ] lifecycle 🔥
-    - [ ] dom `dart:html` 🔥
-      - [ ] `package:js`
-      - [ ] `package:web`
+    - [*] dom `dart:html` 🔥
+      - [*] `package:web`
     - [ ] transition
   - [ ] ...
 - [ ] Compiler
