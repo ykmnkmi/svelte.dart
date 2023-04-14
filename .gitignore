@@ -1,4 +1,10 @@
 .dart_tool/
 build/
+node_modules/
+*.js
+*.js.deps
+*.js.map
 _*.json
 pubspec.lock
+package.json
+package-lock.json

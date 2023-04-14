@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:build_test/build_test.dart';
 import 'package:svelte/builders.dart';
 
@@ -21,8 +23,9 @@ Future<void> main() async {
   );
 
   writer.assets.forEach((key, value) {
-    print(key);
-    print(String.fromCharCodes(value));
-    print('');
+    stdout
+      ..writeln(key)
+      ..add(value)
+      ..writeln();
   });
 }
