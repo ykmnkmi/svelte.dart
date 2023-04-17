@@ -31,7 +31,7 @@ abstract class Component {
   void set([Map<String, Object?>? props]) {
     var set = _set;
 
-    if (set != null && props != null && props.isNotEmpty) {
+    if (set != null && props != null) {
       set(props);
     }
   }

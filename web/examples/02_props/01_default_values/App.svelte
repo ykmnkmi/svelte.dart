@@ -1,5 +1,5 @@
 <script>
-  import 'nested.dart';
+  import 'nested.svelte';
 </script>
 
 <Nested answer={42}/>

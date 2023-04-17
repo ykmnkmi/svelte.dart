@@ -1,27 +1,45 @@
-import 'dart:convert';
-
+import 'package:analyzer/dart/analysis/features.dart' show FeatureSet;
+import 'package:analyzer/error/listener.dart' show RecordingErrorListener;
+import 'package:analyzer/source/line_info.dart' show LineInfo;
+import 'package:analyzer/src/dart/scanner/scanner.dart' show Scanner;
+import 'package:analyzer/src/generated/parser.dart' as analyzer show Parser;
+import 'package:analyzer/src/string_source.dart' show StringSource;
 import 'package:stack_trace/stack_trace.dart';
-import 'package:svelte/compiler.dart';
-
-const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 const String content = '''
-<script>
-  @prop
-  int count = 0;
-</script>
+onMount(() {
+  print(StackTrace.current);
+});
 ''';
 
 void main() {
   try {
-    var ast = parse(content);
-    print(encoder.convert(ast.toJson()));
-  } on ParseError catch (error, stackTrace) {
-    print(error);
-    print(Trace.format(stackTrace));
-    print(encoder.convert(error.toJson()));
-    print('');
-    print(error.span.highlight());
+    var featureSet = FeatureSet.latestLanguageVersion();
+    var source = StringSource(content, null);
+
+    var errorListener = RecordingErrorListener();
+    var scanner = Scanner.fasta(source, errorListener);
+
+    scanner.configureFeatures(
+      featureSetForOverriding: featureSet,
+      featureSet: featureSet,
+    );
+
+    var token = scanner.tokenize();
+    var lineInfo = LineInfo(scanner.lineStarts);
+
+    var parser = analyzer.Parser(
+      source,
+      errorListener,
+      featureSet: scanner.featureSet,
+      lineInfo: lineInfo,
+    );
+
+    var result = parser.parseCompilationUnit(token);
+
+    for (var childEntity in result.childEntities) {
+      print(childEntity.runtimeType);
+    }
   } catch (error, stackTrace) {
     print(error);
     print(Trace.format(stackTrace));
