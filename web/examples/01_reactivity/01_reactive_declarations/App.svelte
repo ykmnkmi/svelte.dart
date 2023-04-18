@@ -14,3 +14,6 @@
 <button on:click={handleClick}>
 	Clicked {count} {count === 1 ? 'time' : 'times'}
 </button>
+
+<p>{count} * 2 = {doubled}</p>
+<p>{doubled} * 2 = {quadrupled}</p>
