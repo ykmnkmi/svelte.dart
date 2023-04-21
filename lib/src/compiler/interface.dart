@@ -285,12 +285,12 @@ class Script extends Node {
     super.start,
     super.end,
     required this.context,
-    required this.content,
+    required this.unit,
   }) : super(type: 'Script');
 
   final String context;
 
-  final CompilationUnit content;
+  final CompilationUnit unit;
 
   @override
   Map<String, Object?> toJson() {
@@ -299,7 +299,7 @@ class Script extends Node {
       'end': end,
       'type': type,
       'context': context,
-      'content': content.accept(dartToJson),
+      'unit': unit.accept(dartToJson),
     };
   }
 }

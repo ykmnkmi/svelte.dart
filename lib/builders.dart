@@ -4,7 +4,6 @@ import 'package:build/build.dart' show BuildStep, Builder, BuilderOptions;
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart' show DartFormatter;
 import 'package:path/path.dart' show basenameWithoutExtension;
-import 'package:svelte/compiler.dart';
 
 Builder svelteBuilder(BuilderOptions options) {
   return const SvelteBuilder();
@@ -24,11 +23,8 @@ class SvelteBuilder implements Builder {
   FutureOr<void> build(BuildStep buildStep) async {
     var input = buildStep.inputId;
     var output = input.changeExtension('.dart');
-    var source = await buildStep.readAsString(input);
 
     var name = basenameWithoutExtension(input.path);
-    var ast = parse(source, sourceUrl: input.uri);
-    var template = ast.html;
 
     var library = Library((library) {
       library.body.add(Class((klass) {

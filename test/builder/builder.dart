@@ -9,13 +9,11 @@ const Map<String, Object> assets = <String, Object>{
 ''',
 };
 
-const SvelteBuilder svelteBuilder = SvelteBuilder();
-
 Future<void> main() async {
   var writer = InMemoryAssetWriter();
 
   await testBuilder(
-    svelteBuilder,
+    const SvelteBuilder(),
     assets,
     reader: PackageAssetReader.forPackageRoot('.', 'svelte'),
     writer: writer,

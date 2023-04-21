@@ -18,4 +18,10 @@ import 'examples/03_logic/02_else_if_blocks/app.dart';
 
 void main() {
   App(target: document.body);
+
+  var text = ' ';
+
+  if (text.trim() case '') {
+    print('is empty');
+  }
 }

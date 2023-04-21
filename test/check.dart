@@ -23,14 +23,20 @@ final class Input {
   final String? name;
 }
 
+abstract interface class OnMount {
+  void onMount();
+}
+
+abstract interface class OnDestroy {
+  void onDestroy();
+}
+
 abstract class Component<T extends Object> {
   T get context;
 
   List<Object?> get instance;
 
   Fragment? get fragment;
-
-  bool ready = false;
 
   int dirty = -1;
 
@@ -45,14 +51,16 @@ abstract class Component<T extends Object> {
   }
 
   void invalidate(int index, Object? value, [Object? expression]) {
-    assert(ready);
-
     if (instance[index] != (instance[index] = value) || expression != null) {
-      if (ready) {
-        makeDirty(index);
-      }
+      makeDirty(index);
     }
   }
+}
+
+void runApp<T extends Object>(Component<T> Function() componentFactory) {
+  var component = componentFactory();
+  var fragment = component.fragment;
+  fragment?.create();
 }
 
 List<Component> dirtyComponents = <Component>[];
@@ -60,14 +68,6 @@ List<Component> dirtyComponents = <Component>[];
 void scheduleUpdate() {}
 
 // USER CODE
-
-abstract class OnMount {
-  void onMount();
-}
-
-abstract class OnDestroy {
-  void onDestroy();
-}
 
 class App implements OnMount, OnDestroy {
   int count = 0;
@@ -97,7 +97,7 @@ class App implements OnMount, OnDestroy {
 
 void main() {
   try {
-    // ...
+    runApp<App>(appFactory);
   } catch (error, stackTrace) {
     print(error);
     print(Trace.format(stackTrace));
@@ -236,4 +236,8 @@ class AppComponent extends Component<App> {
 
   @override
   late final Fragment fragment = createFragment(instance);
+}
+
+Component<App> appFactory() {
+  return AppComponent();
 }

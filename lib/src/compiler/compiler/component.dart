@@ -47,7 +47,7 @@ class Component {
       return;
     }
 
-    module.content.accept(LabeledModule(this));
+    module.unit.accept(LabeledModule(this));
   }
 }
 
