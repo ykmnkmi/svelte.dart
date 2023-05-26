@@ -5,6 +5,8 @@ import 'package:svelte_ast/src/state/body.dart';
 
 final RegExp spaceRe = RegExp('[ \t\r\n]');
 
+final RegExp closeCurlRe = RegExp('\\s*}');
+
 class Parser {
   Parser(this.template, {Object? url})
       : sourceFile = SourceFile.fromString(template, url: url);

@@ -25,6 +25,16 @@ class ParseError extends Error {
 
 typedef ErrorCode = ({String code, String message});
 
+const ErrorCode expectedBlockType = (
+  code: 'expected-block-type',
+  message: 'Expected if, each or await',
+);
+
+const ErrorCode invalidDebugArgs = (
+  code: 'invalid-debug-args',
+  message: '{@debug ...} arguments must be identifiers',
+);
+
 const ErrorCode invalidConstArgs = (
   code: 'invalid-const-args',
   message: '{@const ...} must be an assignment',

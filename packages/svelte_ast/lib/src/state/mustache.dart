@@ -1,8 +1,11 @@
-import 'package:analyzer/dart/ast/ast.dart' show AssignmentExpression;
+import 'package:analyzer/dart/ast/ast.dart'
+    show AssignmentExpression, SimpleIdentifier;
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/read.dart';
+
+final RegExp comma = RegExp('\\s*,\\s*');
 
 extension MustacheParser on Parser {
   Node mustache() {
@@ -10,25 +13,85 @@ extension MustacheParser on Parser {
     expect('{');
     allowSpace();
 
+    if (scan('#')) {
+      return statement(start);
+    }
+
+    if (scan('@debug')) {
+      return debugTag(start);
+    }
+
     if (scan('@const')) {
+      return constTag(start);
+    }
+
+    return expression(start);
+  }
+
+  Statement statement(int start) {
+    if (scan('if')) {
+      return ifStatement(start);
+    }
+
+    error(expectedBlockType);
+  }
+
+  Statement ifStatement(int start) {
+    allowSpace(required: true);
+    readExpression();
+    allowSpace();
+    expect('}');
+
+    throw UnimplementedError();
+  }
+
+  DebugTag debugTag(int start) {
+    var identifiers = <SimpleIdentifier>[];
+
+    if (!scan(closeCurlRe)) {
       allowSpace(required: true);
 
-      var expression = readExpression();
+      do {
+        var expression = readExpression();
 
-      if (expression is! AssignmentExpression) {
-        error(invalidConstArgs, start);
-      }
+        if (expression is! SimpleIdentifier) {
+          error(invalidDebugArgs, start);
+        }
+
+        identifiers.add(expression);
+      } while (scan(comma));
 
       allowSpace();
       expect('}');
-
-      return ConstTag(
-        start: start,
-        end: position,
-        expression: expression,
-      );
     }
 
+    return DebugTag(
+      start: start,
+      end: position,
+      identifiers: identifiers,
+    );
+  }
+
+  ConstTag constTag(int start) {
+    allowSpace(required: true);
+
+    var expression = readExpression();
+
+    if (expression is! AssignmentExpression) {
+      error(invalidConstArgs, start);
+    }
+
+    allowSpace();
+    expect('}');
+
+    return ConstTag(
+      start: start,
+      end: position,
+      expression: expression,
+    );
+  }
+
+  MustacheTag expression(int start) {
     var expression = readExpression();
     allowSpace();
     expect('}');

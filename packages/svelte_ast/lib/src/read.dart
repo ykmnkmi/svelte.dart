@@ -8,9 +8,10 @@ import 'package:analyzer/dart/ast/ast.dart'
         AssignmentExpression,
         BinaryExpression,
         Expression,
+        PrefixedIdentifier,
         SimpleIdentifier,
         SimpleStringLiteral;
-import 'package:analyzer/dart/ast/visitor.dart' show SimpleAstVisitor;
+import 'package:analyzer/dart/ast/visitor.dart' show ThrowingAstVisitor;
 import 'package:analyzer/error/listener.dart'
     show AnalysisErrorListener, ErrorReporter, RecordingErrorListener;
 import 'package:analyzer/source/line_info.dart' show LineInfo;
@@ -86,11 +87,11 @@ extension ExpressionParser on Parser {
   }
 }
 
-class NonSyntetic extends SimpleAstVisitor<Expression> {
+class NonSyntetic extends ThrowingAstVisitor<Expression> {
   const NonSyntetic();
 
   @override
-  AssignmentExpression? visitAssignmentExpression(AssignmentExpression node) {
+  Expression? visitAssignmentExpression(AssignmentExpression node) {
     if (node.isSynthetic) {
       return null;
     }
@@ -112,7 +113,7 @@ class NonSyntetic extends SimpleAstVisitor<Expression> {
   }
 
   @override
-  SimpleIdentifier? visitSimpleIdentifier(SimpleIdentifier node) {
+  Expression? visitPrefixedIdentifier(PrefixedIdentifier node) {
     if (node.isSynthetic) {
       return null;
     }
@@ -121,7 +122,16 @@ class NonSyntetic extends SimpleAstVisitor<Expression> {
   }
 
   @override
-  SimpleStringLiteral? visitSimpleStringLiteral(SimpleStringLiteral node) {
+  Expression? visitSimpleIdentifier(SimpleIdentifier node) {
+    if (node.isSynthetic) {
+      return null;
+    }
+
+    return node;
+  }
+
+  @override
+  Expression? visitSimpleStringLiteral(SimpleStringLiteral node) {
     if (node.isSynthetic) {
       return null;
     }

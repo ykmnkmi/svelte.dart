@@ -10,6 +10,10 @@ abstract final class Node {
   R accept<C, R>(Visitor<C, R> visitor, C context);
 }
 
+abstract final class Statement extends Node {
+  Statement({required super.start, required super.end});
+}
+
 final class Text extends Node {
   const Text({
     required super.start,

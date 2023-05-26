@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/ast/ast.dart' as dart_ast;
+import 'package:analyzer/dart/ast/ast.dart' show Expression, SimpleIdentifier;
 
 part 'ast/interface.dart';
 part 'ast/tags.dart';

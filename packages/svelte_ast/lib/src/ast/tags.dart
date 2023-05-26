@@ -7,7 +7,7 @@ final class MustacheTag extends Node {
     required this.expression,
   });
 
-  final dart_ast.Expression expression;
+  final Expression expression;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -22,10 +22,25 @@ final class ConstTag extends Node {
     required this.expression,
   });
 
-  final dart_ast.Expression expression;
+  final Expression expression;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
     return visitor.visitConstTag(this, context);
+  }
+}
+
+final class DebugTag extends Node {
+  const DebugTag({
+    required super.start,
+    required super.end,
+    this.identifiers = const <SimpleIdentifier>[],
+  });
+
+  final List<SimpleIdentifier> identifiers;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitDebugTag(this, context);
   }
 }
