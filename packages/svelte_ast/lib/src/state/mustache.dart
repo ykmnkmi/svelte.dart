@@ -120,7 +120,7 @@ extension MustacheParser on Parser {
       start: start,
       end: position,
       context: context,
-      value: value,
+      iterable: value,
       body: body,
       index: index,
       key: key,

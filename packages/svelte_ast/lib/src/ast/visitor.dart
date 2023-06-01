@@ -13,5 +13,7 @@ abstract class Visitor<C, R> {
 
   R visitMustacheTag(MustacheTag node, C context);
 
+  R visitRawMustacheTag(RawMustacheTag node, C context);
+
   R visitText(Text node, C context);
 }

@@ -1,6 +1,6 @@
 name: svelte_ast
 description: A starting point for Dart libraries or applications.
-version: 1.0.0-dev.2
+version: 1.0.0-dev.3
 repository: https://github.com/ykmnkmi/svelte.dart
 
 environment:
