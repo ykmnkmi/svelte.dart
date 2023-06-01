@@ -8,10 +8,8 @@ abstract final class Node {
   final int end;
 
   R accept<C, R>(Visitor<C, R> visitor, C context);
-}
 
-abstract final class Statement extends Node {
-  Statement({required super.start, required super.end});
+  Map<String, Object?> toJson();
 }
 
 final class Text extends Node {
@@ -42,6 +40,17 @@ final class Text extends Node {
   R accept<C, R>(Visitor<C, R> visitor, C context) {
     return visitor.visitText(this, context);
   }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'Text',
+      'raw': raw,
+      'data': data,
+    };
+  }
 }
 
 final class Fragment extends Node {
@@ -56,5 +65,15 @@ final class Fragment extends Node {
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
     return visitor.visitFragment(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'Fragment',
+      'nodes': <Map<String, Object?>>[for (var node in nodes) node.toJson()],
+    };
   }
 }

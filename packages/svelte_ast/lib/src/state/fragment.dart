@@ -3,9 +3,11 @@ import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/state/mustache.dart';
 import 'package:svelte_ast/src/state/text.dart';
 
-extension FragmentParser on Parser {
+final RegExp textEndRe = RegExp('[<{]');
+
+extension FramentParser on Parser {
   Node? fragment() {
-    if (match('{')) {
+    if (match(openCurlRe)) {
       return mustache();
     }
 

@@ -5,7 +5,11 @@ abstract class Visitor<C, R> {
 
   R visitDebugTag(DebugTag node, C context);
 
+  R visitEachBlock(EachBlock node, C context);
+
   R visitFragment(Fragment node, C context);
+
+  R visitIfBlock(IfBlock node, C context);
 
   R visitMustacheTag(MustacheTag node, C context);
 

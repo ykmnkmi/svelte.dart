@@ -2,7 +2,7 @@ import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/html.dart';
 import 'package:svelte_ast/src/parser.dart';
 
-final RegExp textEndRe = RegExp('[<{]');
+final RegExp textEndRe = RegExp('[{]');
 
 extension TextParser on Parser {
   Text? text() {

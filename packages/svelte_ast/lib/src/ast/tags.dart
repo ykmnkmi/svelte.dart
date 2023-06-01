@@ -4,14 +4,24 @@ final class MustacheTag extends Node {
   const MustacheTag({
     required super.start,
     required super.end,
-    required this.expression,
+    required this.value,
   });
 
-  final Expression expression;
+  final Expression value;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
     return visitor.visitMustacheTag(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'MustacheTag',
+      'value': value.accept(dart2Json),
+    };
   }
 }
 
@@ -19,14 +29,24 @@ final class ConstTag extends Node {
   const ConstTag({
     required super.start,
     required super.end,
-    required this.expression,
+    required this.assign,
   });
 
-  final Expression expression;
+  final Expression assign;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
     return visitor.visitConstTag(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'ConstTag',
+      'assign': assign.accept(dart2Json),
+    };
   }
 }
 
@@ -42,5 +62,17 @@ final class DebugTag extends Node {
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
     return visitor.visitDebugTag(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'DebugTag',
+      'identifiers': <Map<String, Object?>?>[
+        for (var identifier in identifiers) identifier.accept(dart2Json)
+      ],
+    };
   }
 }

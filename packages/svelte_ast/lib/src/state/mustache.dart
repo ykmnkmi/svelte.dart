@@ -1,68 +1,195 @@
 import 'package:analyzer/dart/ast/ast.dart'
-    show AssignmentExpression, SimpleIdentifier;
+    show AssignmentExpression, Expression, SimpleIdentifier;
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/read.dart';
+import 'package:svelte_ast/src/state/text.dart';
 
-final RegExp comma = RegExp('\\s*,\\s*');
+final RegExp _comma = RegExp('\\s*,\\s*');
+
+final RegExp _eachIn = RegExp('\\s*in\\s*');
+
+void trimWhitespace(Block) {}
 
 extension MustacheParser on Parser {
   Node mustache() {
     var start = position;
-    expect('{');
-    allowSpace();
+    expect(openCurlRe);
+
+    Node node;
 
     if (scan('#')) {
-      return statement(start);
+      node = _parseBlock(start);
+    } else if (scan('@debug')) {
+      node = _parseDebugTag(start);
+    } else if (scan('@const')) {
+      node = _parseConstTag(start);
+    } else {
+      node = _parseExpression(start);
     }
 
-    if (scan('@debug')) {
-      return debugTag(start);
-    }
-
-    if (scan('@const')) {
-      return constTag(start);
-    }
-
-    return expression(start);
+    return node;
   }
 
-  Statement statement(int start) {
-    if (scan('if')) {
-      return ifStatement(start);
+  Node _parseBlock(int start) {
+    Node node;
+
+    if (match('if')) {
+      node = _parseIfBlock(start);
+    } else if (match('each')) {
+      node = _parseEachBlock(start);
+    } else if (match('await')) {
+      node = _parseAwaitBlock(start);
+    } else {
+      error(expectedBlockType);
     }
 
-    error(expectedBlockType);
+    return node;
   }
 
-  Statement ifStatement(int start) {
+  IfBlock _parseIfBlock(int start) {
+    const elseEndIf = <String>[':else', '/if'];
+    const endIf = <String>['/if'];
+
+    expect('if');
     allowSpace(required: true);
-    readExpression();
-    allowSpace();
-    expect('}');
 
-    throw UnimplementedError();
+    var test = expression();
+    var body = blockBody(elseEndIf);
+    var orElse = const <Node>[];
+
+    if (scan(':else')) {
+      if (match(closeCurlRe)) {
+        orElse = blockBody(endIf);
+      } else {
+        allowSpace(required: true);
+        orElse = <Node>[_parseIfBlock(position)];
+      }
+    } else {
+      expect('/if');
+      expect(closeCurlRe);
+    }
+
+    return IfBlock(
+      start: start,
+      end: position,
+      test: test,
+      body: body,
+      orElse: orElse,
+    );
   }
 
-  DebugTag debugTag(int start) {
+  EachBlock _parseEachBlock(int start) {
+    const elseEndEach = <String>[':else', '/each'];
+    const endEach = <String>['/each'];
+
+    expect('each');
+    allowSpace(required: true);
+
+    var context = pattern();
+    expect(_eachIn);
+
+    var value = expression();
+
+    String? index;
+
+    if (scan(_comma)) {
+      index = identifier();
+    }
+
+    allowSpace();
+
+    Expression? key;
+
+    if (match('(')) {
+      key = expression();
+    }
+
+    var body = blockBody(elseEndEach);
+    var orElse = const <Node>[];
+
+    if (scan(':else')) {
+      orElse = blockBody(endEach);
+    }
+
+    expect('/each');
+    expect(closeCurlRe);
+
+    return EachBlock(
+      start: start,
+      end: position,
+      context: context,
+      value: value,
+      body: body,
+      index: index,
+      key: key,
+      orElse: orElse,
+    );
+  }
+
+  IfBlock _parseAwaitBlock(int start) {
+    // const elseEndAwait = <String>[':catch', '/await'];
+    // const endAwait = <String>['/await'];
+
+    expect('await');
+    allowSpace(required: true);
+
+    var future = expression();
+    throw UnimplementedError('$future');
+  }
+
+  List<Node> blockBody(List<String> endTags) {
+    expect(closeCurlRe);
+
+    var nodes = <Node>[];
+    endTagsStack.add(endTags);
+
+    outer:
+    while (isNotDone) {
+      if (match(openCurlRe)) {
+        var lastMatchEnd = lastMatch!.end;
+
+        for (var tag in endTags) {
+          if (matchFrom(tag, lastMatchEnd)) {
+            position = lastMatchEnd;
+            break outer;
+          }
+        }
+
+        nodes.add(mustache());
+      } else if (text() case var node?) {
+        nodes.add(node);
+      }
+    }
+
+    endTagsStack.removeLast();
+
+    if (isDone) {
+      // TODO(mustache): replace with error
+      throw StateError(endTags.join(', '));
+    }
+
+    return nodes;
+  }
+
+  DebugTag _parseDebugTag(int start) {
     var identifiers = <SimpleIdentifier>[];
 
     if (!scan(closeCurlRe)) {
       allowSpace(required: true);
 
       do {
-        var expression = readExpression();
+        var identifier = expression();
 
-        if (expression is! SimpleIdentifier) {
+        if (identifier is! SimpleIdentifier) {
           error(invalidDebugArgs, start);
         }
 
-        identifiers.add(expression);
-      } while (scan(comma));
+        identifiers.add(identifier);
+      } while (scan(_comma));
 
-      allowSpace();
-      expect('}');
+      expect(closeCurlRe);
     }
 
     return DebugTag(
@@ -72,34 +199,31 @@ extension MustacheParser on Parser {
     );
   }
 
-  ConstTag constTag(int start) {
+  ConstTag _parseConstTag(int start) {
     allowSpace(required: true);
 
-    var expression = readExpression();
+    var assign = expression();
 
-    if (expression is! AssignmentExpression) {
+    if (assign is! AssignmentExpression) {
       error(invalidConstArgs, start);
     }
 
-    allowSpace();
-    expect('}');
-
+    expect(closeCurlRe);
     return ConstTag(
       start: start,
       end: position,
-      expression: expression,
+      assign: assign,
     );
   }
 
-  MustacheTag expression(int start) {
-    var expression = readExpression();
-    allowSpace();
-    expect('}');
+  MustacheTag _parseExpression(int start) {
+    var value = expression();
+    expect(closeCurlRe);
 
     return MustacheTag(
       start: start,
       end: position,
-      expression: expression,
+      value: value,
     );
   }
 }

@@ -1,9 +1,11 @@
 import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
-import 'package:svelte_ast/src/state/body.dart';
+import 'package:svelte_ast/src/state/fragment.dart';
 
 final RegExp spaceRe = RegExp('[ \t\r\n]');
+
+final RegExp openCurlRe = RegExp('{\\s*');
 
 final RegExp closeCurlRe = RegExp('\\s*}');
 
@@ -17,6 +19,14 @@ class Parser {
 
   int position = 0;
 
+  List<List<String>> endTagsStack = <List<String>>[];
+
+  Match? lastMatch;
+
+  String get rest {
+    return template.substring(position);
+  }
+
   bool get isNotDone {
     return position < template.length;
   }
@@ -26,28 +36,29 @@ class Parser {
   }
 
   void allowSpace({bool required = false}) {
-    var match = spaceRe.matchAsPrefix(template, position);
+    lastMatch = spaceRe.matchAsPrefix(template, position);
 
-    if (match == null) {
-      if (required) {
-        error((code: 'missing-whitespace', message: 'Expected whitespace'));
-      }
-
-      return;
+    if (lastMatch case var match?) {
+      position = match.end;
+    } else if (required) {
+      error((code: 'missing-whitespace', message: 'Expected whitespace'));
     }
-
-    position = match.end;
   }
 
   bool match(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template, position);
-    return match != null;
+    lastMatch = pattern.matchAsPrefix(template, position);
+    return lastMatch != null;
+  }
+
+  bool matchFrom(Pattern pattern, int offset) {
+    lastMatch = pattern.matchAsPrefix(template, offset);
+    return lastMatch != null;
   }
 
   bool scan(Pattern pattern) {
-    var match = pattern.matchAsPrefix(template, position);
+    lastMatch = pattern.matchAsPrefix(template, position);
 
-    if (match != null) {
+    if (lastMatch case var match?) {
       position = match.end;
       return true;
     }
@@ -56,30 +67,35 @@ class Parser {
   }
 
   void expect(Pattern pattern, [ErrorCode? errorCode]) {
-    var match = pattern.matchAsPrefix(template, position);
+    lastMatch = pattern.matchAsPrefix(template, position);
 
-    if (match != null) {
+    if (lastMatch case var match?) {
       position = match.end;
-      return;
-    }
-
-    if (errorCode == null) {
+    } else if (errorCode == null) {
       if (isNotDone) {
         error(unexpectedToken(pattern), position);
       }
 
       error(unexpectedEOFToken(pattern));
+    } else {
+      error(errorCode, position);
     }
-
-    error(errorCode, position);
   }
 
   Never error(ErrorCode errorCode, [int? position]) {
-    var span = sourceFile.span(position ?? this.position);
+    var span = sourceFile.span(position ?? this.position, position);
     throw ParseError(errorCode, span);
   }
 
   Node parse() {
-    return body();
+    var nodes = <Node>[];
+
+    while (isNotDone) {
+      if (fragment() case var node?) {
+        nodes.add(node);
+      }
+    }
+
+    return Fragment(start: 0, end: template.length, nodes: nodes);
   }
 }
