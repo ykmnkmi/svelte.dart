@@ -1,7 +1,7 @@
 part of '../ast.dart';
 
 final class RawMustacheTag extends Node {
-  const RawMustacheTag({
+  RawMustacheTag({
     required super.start,
     required super.end,
     required this.value,
@@ -26,7 +26,7 @@ final class RawMustacheTag extends Node {
 }
 
 final class ConstTag extends Node {
-  const ConstTag({
+  ConstTag({
     required super.start,
     required super.end,
     required this.assign,
@@ -51,13 +51,13 @@ final class ConstTag extends Node {
 }
 
 final class DebugTag extends Node {
-  const DebugTag({
+  DebugTag({
     required super.start,
     required super.end,
-    this.identifiers = const <SimpleIdentifier>[],
+    this.identifiers,
   });
 
-  final List<SimpleIdentifier> identifiers;
+  final List<SimpleIdentifier>? identifiers;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -70,15 +70,17 @@ final class DebugTag extends Node {
       'start': start,
       'end': end,
       '_': 'DebugTag',
-      'identifiers': <Map<String, Object?>?>[
-        for (var identifier in identifiers) identifier.accept(dart2Json)
-      ],
+      if (identifiers case List<SimpleIdentifier> identifiers?
+          when identifiers.isNotEmpty)
+        'identifiers': <Map<String, Object?>?>[
+          for (var identifier in identifiers) identifier.accept(dart2Json),
+        ],
     };
   }
 }
 
 final class MustacheTag extends Node {
-  const MustacheTag({
+  MustacheTag({
     required super.start,
     required super.end,
     required this.value,

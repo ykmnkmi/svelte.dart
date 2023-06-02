@@ -1,7 +1,7 @@
 part of '../ast.dart';
 
 abstract final class Node {
-  const Node({required this.start, required this.end});
+  Node({required this.start, required this.end});
 
   final int start;
 
@@ -13,16 +13,16 @@ abstract final class Node {
 }
 
 final class Text extends Node {
-  const Text({
+  Text({
     required super.start,
     required super.end,
     this.raw = '',
     this.data = '',
   });
 
-  final String raw;
+  String raw;
 
-  final String data;
+  String data;
 
   bool get isLeaf {
     return trimmed.isEmpty;
@@ -54,10 +54,10 @@ final class Text extends Node {
 }
 
 final class Fragment extends Node {
-  const Fragment({
+  Fragment({
     required super.start,
     required super.end,
-    this.nodes = const <Node>[],
+    required this.nodes,
   });
 
   final List<Node> nodes;
@@ -73,7 +73,10 @@ final class Fragment extends Node {
       'start': start,
       'end': end,
       '_': 'Fragment',
-      'nodes': <Map<String, Object?>>[for (var node in nodes) node.toJson()],
+      if (nodes.isNotEmpty)
+        'nodes': <Map<String, Object?>>[
+          for (var node in nodes) node.toJson(),
+        ],
     };
   }
 }

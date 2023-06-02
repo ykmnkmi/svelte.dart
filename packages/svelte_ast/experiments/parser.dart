@@ -56,18 +56,24 @@ class Parser {
 
   Token token;
 
-  void skipToken([int n = 1]) {
+  bool skipToken([int n = 1]) {
     for (int i = 0; i < n; i += 1) {
-      nextToken();
+      if (token.next case Token next when next.type != TokenType.EOF) {
+        token = next;
+      } else {
+        return false;
+      }
     }
+
+    return true;
   }
 
-  bool skipTokenIf(TokenType type, [String? value]) {
+  bool skipNextTokenIf(TokenType type, [String? value]) {
     return nextTokenIf(type, value) != null;
   }
 
-  bool matchToken(TokenType type) {
-    return token.type == type;
+  bool matchToken(TokenType type, [String? value]) {
+    return token.type == type && (value == null || token.lexeme == value);
   }
 
   Token nextToken() {

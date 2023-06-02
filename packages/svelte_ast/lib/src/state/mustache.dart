@@ -10,8 +10,6 @@ final RegExp _comma = RegExp('\\s*,\\s*');
 
 final RegExp _eachIn = RegExp('\\s*in\\s*');
 
-void trimWhitespace(Block) {}
-
 extension MustacheParser on Parser {
   Node mustache() {
     var start = position;
