@@ -9,9 +9,7 @@ import 'package:svelte_ast/src/ast.dart';
 import 'parser.dart';
 
 const String source = '''
-{#await future catch error}
-  {error}
-{/await}''';
+<h1>hello {name}!</h1>''';
 
 void main() {
   try {

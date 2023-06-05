@@ -8,18 +8,38 @@ import 'package:analyzer/dart/analysis/features.dart' show FeatureSet;
 import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
 
 enum ScannerState {
+  tag,
   dart,
   data,
 }
 
-class SvelteToken extends StringToken {
-  static const TokenType DATA =
-      TokenType(152, 'data', 'DATA', NO_PRECEDENCE, STRING_TOKEN);
+bool _isTagNameStartChar(int char) {
+  return $A <= char && char <= $Z || $a <= char && char <= $z;
+}
 
-  SvelteToken(this.type, String value, int offset) : super(type, value, offset);
+bool _isTagNameChar(int char) {
+  return $A <= char && char <= $Z ||
+      $a <= char && char <= $z ||
+      $0 <= char && char <= $9 ||
+      identical(char, $MINUS) ||
+      identical(char, $COLON);
+}
+
+class SvelteToken extends SimpleToken {
+  static const TokenType OPEN_TAG_START =
+      TokenType(152, '<', 'OPEN_TAG_START', NO_PRECEDENCE, STRING_TOKEN);
+  static const TokenType CLOSE_TAG_START =
+      TokenType(153, '</', 'CLOSE_TAG_START', NO_PRECEDENCE, STRING_TOKEN);
+  static const TokenType TAG_END =
+      TokenType(154, '>', 'TAG_END', NO_PRECEDENCE, STRING_TOKEN);
+  static const TokenType DATA =
+      TokenType(155, 'data', 'DATA', NO_PRECEDENCE, STRING_TOKEN);
+
+  SvelteToken(super.type, super.offset, [String? string])
+      : lexeme = string ?? type.lexeme;
 
   @override
-  final TokenType type;
+  final String lexeme;
 }
 
 class SvelteStringScanner extends StringScanner {
@@ -35,8 +55,34 @@ class SvelteStringScanner extends StringScanner {
 
   ScannerState state;
 
+  int tag(int next) {
+    int start = scanOffset;
+
+    if (identical(peek(), $SLASH)) {
+      appendToken(SvelteToken(SvelteToken.CLOSE_TAG_START, start));
+      next = advance();
+    } else {
+      appendToken(SvelteToken(SvelteToken.OPEN_TAG_START, start));
+    }
+
+    next = advance();
+
+    if (_isTagNameStartChar(next)) {
+      int tagNameStart = scanOffset;
+
+      do {
+        next = advance();
+      } while (_isTagNameChar(next));
+
+      int tagNameEnd = scanOffset;
+      throw UnimplementedError(string.substring(tagNameStart, tagNameEnd));
+    }
+
+    throw UnimplementedError(string.substring(scanOffset));
+  }
+
   @override
-  int bigSwitch(int next) {
+  int bigSwitch(int next, [ScannerState nextState = ScannerState.data]) {
     beginToken();
     if (identical(next, $SPACE) ||
         identical(next, $TAB) ||
@@ -96,7 +142,7 @@ class SvelteStringScanner extends StringScanner {
           TokenType.CLOSE_CURLY_BRACKET, OPEN_CURLY_BRACKET_TOKEN);
 
       if (groupingStack.isEmpty) {
-        state = ScannerState.data;
+        state = nextState;
       }
 
       return next;
@@ -226,13 +272,20 @@ class SvelteStringScanner extends StringScanner {
     int start = scanOffset;
 
     while (!identical(next, $EOF)) {
-      if (state == ScannerState.dart) {
+      if (state == ScannerState.tag) {
+        next = tag(next);
+        start = scanOffset;
+      } else if (state == ScannerState.dart) {
         next = bigSwitch(next);
         start = scanOffset;
       } else {
-        if (identical(next, $OPEN_CURLY_BRACKET)) {
+        if (identical(next, $LT)) {
           String value = string.substring(start, scanOffset);
-          appendToken(SvelteToken(SvelteToken.DATA, value, start));
+          appendToken(SvelteToken(SvelteToken.DATA, start, value));
+          state = ScannerState.tag;
+        } else if (identical(next, $OPEN_CURLY_BRACKET)) {
+          String value = string.substring(start, scanOffset);
+          appendToken(SvelteToken(SvelteToken.DATA, start, value));
           state = ScannerState.dart;
         } else {
           next = advance();
@@ -242,7 +295,7 @@ class SvelteStringScanner extends StringScanner {
 
     if (start < scanOffset) {
       String value = string.substring(start, scanOffset);
-      appendToken(SvelteToken(SvelteToken.DATA, value, start));
+      appendToken(SvelteToken(SvelteToken.DATA, start, value));
       state = ScannerState.dart;
     }
 
