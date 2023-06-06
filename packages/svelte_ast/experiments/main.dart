@@ -9,7 +9,7 @@ import 'package:svelte_ast/src/ast.dart';
 import 'parser.dart';
 
 const String source = '''
-<h1>hello {name}!</h1>''';
+<h1 >hello {name}!</h1>''';
 
 void main() {
   try {
