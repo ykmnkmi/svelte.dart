@@ -1,4 +1,4 @@
-import 'package:svelte/src/runtime/component.dart';
+import 'package:svelte_web_runtime/src/component.dart';
 
 Component? currentComponent;
 

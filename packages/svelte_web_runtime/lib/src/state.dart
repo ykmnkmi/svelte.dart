@@ -1,5 +1,6 @@
-import 'package:svelte/src/runtime/fragment.dart';
-import 'package:web/web.dart';
+import 'dart:html';
+
+import 'package:svelte_web_runtime/src/fragment.dart';
 
 class State {
   Fragment? fragment;

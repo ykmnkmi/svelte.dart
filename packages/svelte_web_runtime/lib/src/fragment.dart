@@ -1,4 +1,4 @@
-import 'package:web/web.dart';
+import 'dart:html';
 
 void _update(List<Object?> context, int dirty) {}
 

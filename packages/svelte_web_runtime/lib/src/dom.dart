@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:js/js_util.dart';
 import 'package:meta/dart2js.dart';
-import 'package:web/web.dart';
 
 @noInline
 Element element(String tag) {
@@ -28,13 +28,13 @@ void setData(Text target, String data) {
 }
 
 @noInline
-void setText(Node target, String? content) {
-  target.textContent = content;
+void setText(Node target, String? text) {
+  target.text = text;
 }
 
 @noInline
 void setInnerHtml(Element target, String html) {
-  target.innerHTML = html;
+  setProperty(target, 'innerHTML', html);
 }
 
 @noInline
@@ -68,7 +68,7 @@ void insert(Element target, Node child, [Node? anchor]) {
 
 @noInline
 void append(Node target, Node child) {
-  target.appendChild(child);
+  target.append(child);
 }
 
 @noInline
@@ -79,19 +79,23 @@ void appendStyles(Node? target, String styleSheetId, String styles) {
   if (appendStylesToNode.getElementById(styleSheetId) == null) {
     var style = element('style');
     style.id = styleSheetId;
-    style.textContent = styles;
+    style.text = styles;
     appendStyleSheet(appendStylesTo, style);
   }
 }
 
 @noInline
 void appendStyleSheet(Node target, Element style) {
-  append(target is Document ? target.head ?? target : target, style);
+  if (target case HtmlDocument document) {
+    append(document.head ?? document, style);
+  } else {
+    append(target, style);
+  }
 }
 
 @noInline
 void appendText(Element target, String text) {
-  target.append(text);
+  target.appendText(text);
 }
 
 @noInline
@@ -132,11 +136,5 @@ void Function() listen(
 
 @noInline
 void detach(Node node) {
-  unsafeCast<Node>(node.parentNode).removeChild(node);
-}
-
-@tryInline
-@pragma('dart2js:as:trust')
-T unsafeCast<T>(Object? value) {
-  return value as T;
+  node.remove();
 }

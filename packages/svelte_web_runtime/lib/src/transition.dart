@@ -1,12 +1,14 @@
 import 'package:meta/dart2js.dart';
-import 'package:svelte/src/runtime/fragment.dart';
+import 'package:meta/meta.dart';
+import 'package:svelte_web_runtime/src/fragment.dart';
 
-Set<Fragment> _outroing = <Fragment>{};
+@internal
+Set<Fragment> outroing = <Fragment>{};
 
 @noInline
 void transitionIn(Fragment? fragment, bool local) {
   if (fragment != null) {
-    _outroing.remove(fragment);
+    outroing.remove(fragment);
     fragment.intro(local);
   }
 }
@@ -18,7 +20,7 @@ void transitionOut(
   void Function()? callback,
 ]) {
   if (fragment != null) {
-    if (_outroing.add(fragment)) {
+    if (outroing.add(fragment)) {
       fragment.outro(local);
     }
   } else if (callback != null) {

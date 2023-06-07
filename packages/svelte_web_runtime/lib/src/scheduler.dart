@@ -1,11 +1,11 @@
 import 'package:meta/dart2js.dart';
-import 'package:svelte/src/runtime/component.dart';
-import 'package:svelte/src/runtime/lifecycle.dart';
-import 'package:svelte/src/runtime/utilities.dart';
+import 'package:svelte_web_runtime/src/component.dart';
+import 'package:svelte_web_runtime/src/lifecycle.dart';
+import 'package:svelte_web_runtime/src/utilities.dart';
 
 List<Component> dirtyComponents = <Component>[];
 
-List<void Function()> bindingCallbacks = <void Function()>[];
+List<void Function()> _bindingCallbacks = <void Function()>[];
 List<void Function()> _renderCalbacks = <void Function()>[];
 List<void Function()> _flushCallbacks = <void Function()>[];
 
@@ -64,8 +64,8 @@ void flush() {
     dirtyComponents = <Component>[];
     _flushIndex = 0;
 
-    while (bindingCallbacks.isNotEmpty) {
-      bindingCallbacks.removeLast()();
+    while (_bindingCallbacks.isNotEmpty) {
+      _bindingCallbacks.removeLast()();
     }
 
     for (var i = 0; i < _renderCalbacks.length; i += 1) {

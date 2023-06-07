@@ -1,11 +1,12 @@
+import 'dart:html';
+
 import 'package:meta/dart2js.dart';
-import 'package:svelte/src/runtime/fragment.dart';
-import 'package:svelte/src/runtime/lifecycle.dart';
-import 'package:svelte/src/runtime/scheduler.dart';
-import 'package:svelte/src/runtime/state.dart';
-import 'package:svelte/src/runtime/transition.dart';
-import 'package:svelte/src/runtime/utilities.dart';
-import 'package:web/web.dart';
+import 'package:svelte_web_runtime/src/fragment.dart';
+import 'package:svelte_web_runtime/src/lifecycle.dart';
+import 'package:svelte_web_runtime/src/scheduler.dart';
+import 'package:svelte_web_runtime/src/state.dart';
+import 'package:svelte_web_runtime/src/transition.dart';
+import 'package:svelte_web_runtime/src/utilities.dart';
 
 typedef Invalidate = void Function(int i, Object? value, [Object? expression]);
 

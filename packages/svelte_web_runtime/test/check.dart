@@ -1,7 +1,11 @@
+// NgSvelte
+// ignore_for_file: avoid_print
+
 import 'dart:async';
+import 'dart:html' show Element, Text;
 
 import 'package:stack_trace/stack_trace.dart' show Trace;
-import 'package:svelte/dom.dart'
+import 'package:svelte_web_runtime/src/dom.dart'
     show
         append,
         detach,
@@ -12,8 +16,7 @@ import 'package:svelte/dom.dart'
         setData,
         space,
         text;
-import 'package:svelte/src/runtime/fragment.dart' show Fragment;
-import 'package:web/web.dart' show Element, Text;
+import 'package:svelte_web_runtime/src/fragment.dart' show Fragment;
 
 // API
 
@@ -104,7 +107,7 @@ void main() {
   }
 }
 
-// WILL BE GENERATED
+// GENERATED
 
 Fragment createFragment(List<Object?> instance) {
   late Element button;
@@ -203,26 +206,26 @@ extension AppInstance on List<Object?> {
 }
 
 class AppContext extends App {
-  AppContext(this.$);
+  AppContext(this._component);
 
-  final AppComponent $;
+  final AppComponent _component;
 
   @override
   set count(int count) {
-    $.invalidate(0, super.count = count);
+    _component.invalidate(0, super.count = count);
   }
 
   @override
   set doubled(int doubled) {
-    $.invalidate(1, super.doubled = doubled);
+    _component.invalidate(1, super.doubled = doubled);
   }
 
   @override
   set quadrupled(int quadrupled) {
-    $.invalidate(2, super.quadrupled = quadrupled);
+    _component.invalidate(2, super.quadrupled = quadrupled);
   }
 
-  List<Object?> get instance {
+  List<Object?> get _instance {
     return <Object?>[count, doubled, quadrupled, handleClick];
   }
 }
@@ -232,7 +235,7 @@ class AppComponent extends Component<App> {
   late final AppContext context = AppContext(this);
 
   @override
-  late final List<Object?> instance = context.instance;
+  late final List<Object?> instance = context._instance;
 
   @override
   late final Fragment fragment = createFragment(instance);
