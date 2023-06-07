@@ -12,46 +12,21 @@ const List<int> windows1252 = <int>[
 ];
 
 int validateCode(int code) {
-  if (code == 10) {
-    return 32;
-  }
-
-  if (code < 128) {
-    return code;
-  }
-
-  if (code <= 159) {
-    return windows1252[code - 128];
-  }
-
-  // basic multilingual plane
-  if (code < 55296) {
-    return code;
-  }
-
-  if (code <= 57343) {
-    return 0;
-  }
-
-  if (code <= 65535) {
-    return code;
-  }
-
-  if (code >= 65536 && code <= 131071) {
-    return code;
-  }
-
-  if (code >= 131072 && code <= 196607) {
-    return code;
-  }
-
-  return 0;
+  return switch (code) {
+    10 => 32,
+    < 128 => code,
+    <= 159 => windows1252[code - 128],
+    < 55296 => code,
+    <= 57343 => 0,
+    <= 65535 => code,
+    >= 65536 && <= 131071 => code,
+    _ => 0,
+  };
 }
 
 String decodeCharacterReferences(String string) {
   return string.replaceAllMapped(entityRe, (match) {
-    var entity = match[1]!;
-
+    String entity = match[1]!;
     int? code;
 
     // Handle named entities
@@ -121,11 +96,9 @@ bool closingTagOmitted(String? current, [String? next]) {
     return false;
   }
 
-  var disallowed = disallowedContents[current];
-
-  if (disallowed == null) {
-    return false;
+  if (disallowedContents[current] case Set<String> disallowed?) {
+    return next == null || disallowed.contains(next);
   }
 
-  return next == null || disallowed.contains(next);
+  return false;
 }

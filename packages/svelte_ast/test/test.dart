@@ -3,18 +3,10 @@
 import 'dart:convert';
 
 import 'package:stack_trace/stack_trace.dart';
-import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String template = '''
-{#await promise}
-	...waiting
-{:then number}
-	{number}
-{:catch error}
-	{error.message}
-{/await}
-''';
+<h1>hello {name}!</h1>''';
 
 void main() {
   try {
@@ -24,6 +16,9 @@ void main() {
   } on ParseError catch (error, stackTrace) {
     print(error);
     print(error.span.highlight());
+    print(Trace.format(stackTrace));
+  } catch (error, stackTrace) {
+    print(error);
     print(Trace.format(stackTrace));
   }
 }

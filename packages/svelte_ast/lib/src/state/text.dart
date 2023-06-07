@@ -1,32 +1,14 @@
-import 'package:svelte_ast/src/ast.dart';
-import 'package:svelte_ast/src/html.dart';
-import 'package:svelte_ast/src/parser.dart';
+// ignore_for_file: depend_on_referenced_packages, implementation_imports
 
-final RegExp textEndRe = RegExp('[{]');
+import 'package:_fe_analyzer_shared/src/scanner/token.dart' show Token;
+import 'package:svelte_ast/src/ast.dart';
+import 'package:svelte_ast/src/parser.dart';
+import 'package:svelte_ast/src/scanner.dart';
 
 extension TextParser on Parser {
-  Text? text() {
-    var found = template.indexOf(textEndRe, position);
-
-    if (found == -1) {
-      if (isDone) {
-        return null;
-      }
-
-      found = template.length;
-    }
-
-    var raw = template.substring(position, found);
-    var data = decodeCharacterReferences(raw);
-
-    var node = Text(
-      start: position,
-      end: found,
-      raw: raw,
-      data: data,
-    );
-
-    position = found;
-    return node;
+  Text text() {
+    Token token = expectToken(SvelteToken.DATA);
+    String value = token.lexeme;
+    return Text(start: token.offset, end: token.end, raw: value, data: value);
   }
 }

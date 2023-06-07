@@ -1,34 +1,34 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, implementation_imports
 
 import 'package:_fe_analyzer_shared/src/scanner/token.dart'
     show Token, TokenType;
 import 'package:svelte_ast/src/ast.dart';
-
-import '../parser.dart';
-import '../scanner.dart';
-import 'mustache.dart';
-import 'text.dart';
+import 'package:svelte_ast/src/parser.dart';
+import 'package:svelte_ast/src/scanner.dart';
+import 'package:svelte_ast/src/state/mustache.dart';
+import 'package:svelte_ast/src/state/text.dart';
 
 extension TagParser on Parser {
   Node? tag() {
-    Token open = expectToken(SvelteToken.OPEN_TAG_START);
-    Token tagNameToken = expectToken(SvelteToken.TAG_NAME);
+    Token open = expectToken(TokenType.LT);
+    Token tagNameToken = expectToken(SvelteToken.TAG_IDENTIFIER);
     String tagName = tagNameToken.lexeme;
 
     skipNextTokenIf(SvelteToken.TAG_SPACE);
 
     List<Node> body = _body(tagName, (token) {
-      return token.type == SvelteToken.TAG_NAME && token.lexeme == tagName;
+      return token.type == SvelteToken.TAG_IDENTIFIER &&
+          token.lexeme == tagName;
     });
 
     skipNextTokenIf(SvelteToken.TAG_SPACE);
-    Token close = expectToken(SvelteToken.TAG_END);
+    Token close = expectToken(TokenType.GT);
     return Element(
         start: open.offset, end: close.end, name: tagName, body: body);
   }
 
   List<Node> _body(String tag, bool Function(Token token) end) {
-    expectToken(SvelteToken.TAG_END);
+    expectToken(TokenType.GT);
 
     List<Node> nodes = <Node>[];
     String endTag = '$tag-${token.offset}';
@@ -36,7 +36,7 @@ extension TagParser on Parser {
 
     outer:
     while (token.type != TokenType.EOF) {
-      if (token.type == SvelteToken.CLOSE_TAG_START) {
+      if (token.type == SvelteToken.LT_SLASH) {
         Token next = token.next!;
 
         if (end(next)) {
@@ -45,8 +45,10 @@ extension TagParser on Parser {
         }
       } else if (token.type == TokenType.OPEN_CURLY_BRACKET) {
         nodes.add(mustache());
-      } else if (text() case var node?) {
-        nodes.add(node);
+      } else if (token.type == SvelteToken.DATA) {
+        nodes.add(text());
+      } else {
+        throw UnimplementedError(token.lexeme);
       }
     }
 

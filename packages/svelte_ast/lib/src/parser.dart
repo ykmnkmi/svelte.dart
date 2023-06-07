@@ -1,101 +1,117 @@
-import 'package:source_span/source_span.dart';
+// ignore_for_file: depend_on_referenced_packages, implementation_imports
+
+import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe
+    show Parser;
+import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
+    show ScannerConfiguration, Token;
+import 'package:_fe_analyzer_shared/src/scanner/token.dart'
+    show Token, TokenType;
+import 'package:analyzer/dart/analysis/features.dart' show Feature, FeatureSet;
+import 'package:analyzer/error/listener.dart'
+    show ErrorReporter, RecordingErrorListener;
+import 'package:analyzer/source/line_info.dart' show LineInfo;
+import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
+import 'package:analyzer/src/fasta/ast_builder.dart' show AstBuilder;
+import 'package:analyzer/src/string_source.dart' show StringSource;
+import 'package:source_span/source_span.dart' show SourceFile, SourceSpan;
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
-import 'package:svelte_ast/src/state/fragment.dart';
 
-final RegExp spaceRe = RegExp('[ \t\r\n]');
-
-final RegExp openCurlRe = RegExp('{\\s*');
-
-final RegExp closeCurlRe = RegExp('\\s*}');
+import 'scanner.dart';
+import 'state/fragment.dart';
 
 class Parser {
-  Parser(this.template, {Object? url})
-      : sourceFile = SourceFile.fromString(template, url: url);
+  factory Parser(String string, {String? fullName, Uri? uri}) {
+    SourceFile sourceFile = SourceFile.fromString(string, url: uri);
+    FeatureSet featureSet = FeatureSet.latestLanguageVersion();
+    ScannerConfiguration configuration = dart.Scanner.buildConfig(featureSet);
+    SvelteStringScanner scanner =
+        SvelteStringScanner(string, configuration: configuration);
+    Token token = scanner.tokenize();
+    LineInfo lineInfo = LineInfo(scanner.lineStarts);
+    StringSource source = StringSource(string, fullName, uri: uri);
+    RecordingErrorListener errorListener = RecordingErrorListener();
+    ErrorReporter reporter = ErrorReporter(errorListener, source,
+        isNonNullableByDefault: featureSet.isEnabled(Feature.non_nullable));
+    AstBuilder astBuilder =
+        AstBuilder(reporter, source.uri, true, featureSet, lineInfo);
+    fe.Parser parser = fe.Parser(astBuilder,
+        allowPatterns: featureSet.isEnabled(Feature.patterns));
+    return Parser.from(sourceFile, astBuilder, parser, token);
+  }
 
-  final String template;
+  Parser.from(this.sourceFile, this.astBuilder, this.parser, this.token);
 
   final SourceFile sourceFile;
 
-  int position = 0;
+  final AstBuilder astBuilder;
 
-  List<List<String>> endTagsStack = <List<String>>[];
+  final fe.Parser parser;
 
-  Match? lastMatch;
+  final List<String> endTagsStack = <String>[];
 
-  String get rest {
-    return template.substring(position);
-  }
+  Token token;
 
-  bool get isNotDone {
-    return position < template.length;
-  }
-
-  bool get isDone {
-    return position == template.length;
-  }
-
-  void allowSpace({bool required = false}) {
-    lastMatch = spaceRe.matchAsPrefix(template, position);
-
-    if (lastMatch case var match?) {
-      position = match.end;
-    } else if (required) {
-      error((code: 'missing-whitespace', message: 'Expected whitespace'));
-    }
-  }
-
-  bool match(Pattern pattern) {
-    lastMatch = pattern.matchAsPrefix(template, position);
-    return lastMatch != null;
-  }
-
-  bool matchFrom(Pattern pattern, int offset) {
-    lastMatch = pattern.matchAsPrefix(template, offset);
-    return lastMatch != null;
-  }
-
-  bool scan(Pattern pattern) {
-    lastMatch = pattern.matchAsPrefix(template, position);
-
-    if (lastMatch case var match?) {
-      position = match.end;
-      return true;
-    }
-
-    return false;
-  }
-
-  void expect(Pattern pattern, [ErrorCode? errorCode]) {
-    lastMatch = pattern.matchAsPrefix(template, position);
-
-    if (lastMatch case var match?) {
-      position = match.end;
-    } else if (errorCode == null) {
-      if (isNotDone) {
-        error(unexpectedToken(pattern), position);
+  bool skipToken([int n = 1]) {
+    for (int i = 0; i < n; i += 1) {
+      if (token.next case Token next when next.type != TokenType.EOF) {
+        token = next;
+      } else {
+        return false;
       }
-
-      error(unexpectedEOFToken(pattern));
-    } else {
-      error(errorCode, position);
     }
+
+    return true;
+  }
+
+  bool skipNextTokenIf(TokenType type, [String? value]) {
+    return nextTokenIf(type, value) != null;
+  }
+
+  bool matchToken(TokenType type, [String? value]) {
+    return token.type == type && (value == null || token.lexeme == value);
+  }
+
+  Token nextToken() {
+    Token result = token;
+    token = token.next!;
+    return result;
+  }
+
+  Token? nextTokenIf(TokenType type, [String? value]) {
+    if (token.type == type && (value == null || token.lexeme == value)) {
+      return nextToken();
+    }
+
+    return null;
+  }
+
+  Token expectToken(TokenType type, [String? value]) {
+    if (nextTokenIf(type, value) case Token token) {
+      return token;
+    }
+
+    if (token.isEof) {
+      throw StateError('Expected $type.');
+    }
+
+    throw StateError('Expected token type ${type.name}, got "$token".');
   }
 
   Never error(ErrorCode errorCode, [int? position]) {
-    var span = sourceFile.span(position ?? this.position, position);
+    SourceSpan span = sourceFile.span(position ?? token.offset, position);
     throw ParseError(errorCode, span);
   }
 
   Node parse() {
-    var nodes = <Node>[];
+    List<Node> nodes = <Node>[];
 
-    while (isNotDone) {
-      if (fragment() case var node?) {
+    while (token.type != TokenType.EOF) {
+      if (fragment() case Node node) {
         nodes.add(node);
       }
     }
 
-    return Fragment(start: 0, end: template.length, nodes: nodes);
+    return Fragment(start: 0, end: token.end, nodes: nodes);
   }
 }

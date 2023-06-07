@@ -1,227 +1,385 @@
+// ignore_for_file: depend_on_referenced_packages, directives_ordering, implementation_imports
+
+import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart'
+    show PatternContext;
+import 'package:_fe_analyzer_shared/src/scanner/token.dart'
+    show Token, TokenType, Keyword;
 import 'package:analyzer/dart/ast/ast.dart'
-    show AssignmentExpression, Expression, SimpleIdentifier;
+    show AssignmentExpression, DartPattern, Expression, SimpleIdentifier;
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/parser.dart';
-import 'package:svelte_ast/src/read.dart';
+import 'package:svelte_ast/src/scanner.dart';
 import 'package:svelte_ast/src/state/text.dart';
 
-final RegExp _comma = RegExp('\\s*,\\s*');
+bool _isElse(Token token) {
+  return token.type == TokenType.COLON && token.next!.type == Keyword.ELSE;
+}
 
-final RegExp _eachIn = RegExp('\\s*in\\s*');
+bool _isEndIf(Token token) {
+  return token.type == TokenType.SLASH && token.next!.type == Keyword.IF;
+}
+
+bool _isEndEach(Token token) {
+  return token.type == TokenType.SLASH &&
+      token.next!.type == TokenType.IDENTIFIER &&
+      token.next!.lexeme == 'each';
+}
+
+bool _isThen(Token token) {
+  return token.type == TokenType.COLON &&
+      token.next!.type == TokenType.IDENTIFIER &&
+      token.next!.lexeme == 'then';
+}
+
+bool _isCatch(Token token) {
+  return token.type == TokenType.COLON && token.next!.type == Keyword.CATCH;
+}
+
+bool _isEndAwait(Token token) {
+  return token.type == TokenType.SLASH && token.next!.type == Keyword.AWAIT;
+}
+
+bool _isEndKey(Token token) {
+  return token.type == TokenType.SLASH &&
+      token.next!.type == TokenType.IDENTIFIER &&
+      token.next!.lexeme == 'key';
+}
+
+List<Node> _trimNodes(List<Node> nodes, bool before, bool after) {
+  if (nodes.isEmpty) {
+    return nodes;
+  }
+
+  nodes = List<Node>.of(nodes);
+
+  if (nodes.first case Text text when before) {
+    String data = text.data.trimLeft();
+
+    if (data.isEmpty) {
+      nodes.removeAt(0);
+    } else {
+      text.data = data.trimLeft();
+    }
+  }
+
+  if (nodes.isNotEmpty) {
+    if (nodes.last case Text text when before) {
+      String data = text.data.trimLeft();
+
+      if (data.isEmpty) {
+        nodes.removeLast();
+      } else {
+        text.data = data.trimRight();
+      }
+    }
+  }
+
+  return nodes;
+}
 
 extension MustacheParser on Parser {
   Node mustache() {
-    var start = position;
-    expect(openCurlRe);
-
-    Node node;
-
-    if (scan('#')) {
-      node = _parseBlock(start);
-    } else if (scan('@debug')) {
-      node = _parseDebugTag(start);
-    } else if (scan('@const')) {
-      node = _parseConstTag(start);
-    } else {
-      node = _parseExpression(start);
-    }
-
-    return node;
+    Token open = expectToken(TokenType.OPEN_CURLY_BRACKET);
+    return switch (token.type) {
+      TokenType.HASH => _block(open),
+      TokenType.AT => _at(open),
+      _ => _expression(open),
+    };
   }
 
-  Node _parseBlock(int start) {
-    Node node;
-
-    if (match('if')) {
-      node = _parseIfBlock(start);
-    } else if (match('each')) {
-      node = _parseEachBlock(start);
-    } else if (match('await')) {
-      node = _parseAwaitBlock(start);
-    } else {
-      error(expectedBlockType);
-    }
-
-    return node;
+  Node _block(Token start) {
+    expectToken(TokenType.HASH);
+    return switch (token.type) {
+      Keyword.IF => _ifBlock(start),
+      TokenType.IDENTIFIER when token.lexeme == 'each' => _eachBlock(start),
+      Keyword.AWAIT => _awaitBlock(start),
+      TokenType.IDENTIFIER when token.lexeme == 'key' => _keyBlock(start),
+      _ => throw StateError(token.type.name),
+    };
   }
 
-  IfBlock _parseIfBlock(int start) {
-    const elseEndIf = <String>[':else', '/if'];
-    const endIf = <String>['/if'];
+  IfBlock _ifBlock(Token open) {
+    expectToken(Keyword.IF);
 
-    expect('if');
-    allowSpace(required: true);
+    token = parser.syntheticPreviousToken(token);
+    token = parser.parseExpression(token);
+    Expression test = astBuilder.pop() as Expression;
+    nextToken();
 
-    var test = expression();
-    var body = blockBody(elseEndIf);
-    var orElse = const <Node>[];
+    DartPattern? case_;
 
-    if (scan(':else')) {
-      if (match(closeCurlRe)) {
-        orElse = blockBody(endIf);
+    if (skipNextTokenIf(Keyword.CASE)) {
+      token = parser.syntheticPreviousToken(token);
+      token = parser.parsePattern(token, PatternContext.matching);
+      case_ = astBuilder.pop() as DartPattern;
+      nextToken();
+    }
+
+    Expression? when;
+
+    if (skipNextTokenIf(Keyword.WHEN)) {
+      token = parser.syntheticPreviousToken(token);
+      token = parser.parseExpression(token);
+      when = astBuilder.pop() as Expression;
+      nextToken();
+    }
+
+    List<Node> body = _body('if', (token) {
+      return _isElse(token) || _isEndIf(token);
+    });
+
+    List<Node>? orElse;
+
+    if (skipNextTokenIf(TokenType.COLON)) {
+      expectToken(Keyword.ELSE);
+
+      if (matchToken(TokenType.CLOSE_CURLY_BRACKET)) {
+        orElse = _body('ifElse', _isEndIf);
+        expectToken(TokenType.SLASH);
+        expectToken(Keyword.IF);
+        expectToken(TokenType.CLOSE_CURLY_BRACKET);
       } else {
-        allowSpace(required: true);
-        orElse = <Node>[_parseIfBlock(position)];
+        orElse = <Node>[_ifBlock(token.next!)];
       }
     } else {
-      expect('/if');
-      expect(closeCurlRe);
+      expectToken(TokenType.SLASH);
+      expectToken(Keyword.IF);
+      expectToken(TokenType.CLOSE_CURLY_BRACKET);
     }
 
     return IfBlock(
-      start: start,
-      end: position,
-      test: test,
-      body: body,
-      orElse: orElse,
-    );
+        start: open.offset,
+        end: token.end,
+        test: test,
+        case_: case_,
+        when_: when,
+        body: body,
+        orElse: orElse);
   }
 
-  EachBlock _parseEachBlock(int start) {
-    const elseEndEach = <String>[':else', '/each'];
-    const endEach = <String>['/each'];
+  EachBlock _eachBlock(Token open) {
+    expectToken(TokenType.IDENTIFIER, 'each');
 
-    expect('each');
-    allowSpace(required: true);
+    token = parser.syntheticPreviousToken(token);
+    token = parser.parsePattern(token, PatternContext.assignment);
+    DartPattern context = astBuilder.pop() as DartPattern;
+    nextToken();
 
-    var context = pattern();
-    expect(_eachIn);
+    expectToken(Keyword.IN);
 
-    var value = expression();
+    token = parser.syntheticPreviousToken(token);
+    token = parser.parseExpression(token);
+    Expression iterable = astBuilder.pop() as Expression;
+    nextToken();
 
     String? index;
 
-    if (scan(_comma)) {
-      index = identifier();
+    if (skipNextTokenIf(TokenType.COMMA)) {
+      Token identifierToken = expectToken(TokenType.IDENTIFIER);
+      index = identifierToken.lexeme;
     }
-
-    allowSpace();
 
     Expression? key;
 
-    if (match('(')) {
-      key = expression();
+    if (skipNextTokenIf(TokenType.OPEN_PAREN)) {
+      token = parser.syntheticPreviousToken(token);
+      token = parser.parseExpression(token);
+      key = astBuilder.pop() as Expression;
+      nextToken();
+      expectToken(TokenType.CLOSE_PAREN);
     }
 
-    var body = blockBody(elseEndEach);
-    var orElse = const <Node>[];
+    List<Node> body = _body('each', (token) {
+      return _isElse(token) || _isEndEach(token);
+    });
 
-    if (scan(':else')) {
-      orElse = blockBody(endEach);
+    List<Node>? orElse;
+
+    if (skipNextTokenIf(TokenType.COLON)) {
+      expectToken(Keyword.ELSE);
+      orElse = _body('eachElse', _isEndEach);
     }
 
-    expect('/each');
-    expect(closeCurlRe);
-
+    expectToken(TokenType.SLASH);
+    expectToken(TokenType.IDENTIFIER, 'each');
+    expectToken(TokenType.CLOSE_CURLY_BRACKET);
     return EachBlock(
-      start: start,
-      end: position,
-      context: context,
-      iterable: value,
-      body: body,
-      index: index,
-      key: key,
-      orElse: orElse,
-    );
+        start: open.offset,
+        end: token.end,
+        context: context,
+        iterable: iterable,
+        index: index,
+        key: key,
+        body: body,
+        orElse: orElse);
   }
 
-  IfBlock _parseAwaitBlock(int start) {
-    // const elseEndAwait = <String>[':catch', '/await'];
-    // const endAwait = <String>['/await'];
+  AwaitBlock _awaitBlock(Token open) {
+    token = parser.syntheticPreviousToken(token);
+    token = parser.parseExpression(token);
+    Expression future = astBuilder.pop() as Expression;
+    nextToken();
 
-    expect('await');
-    allowSpace(required: true);
+    List<Node>? futureBody;
 
-    var future = expression();
-    throw UnimplementedError('$future');
+    if (token.type == TokenType.CLOSE_CURLY_BRACKET) {
+      futureBody = _body('awaitFuture', (token) {
+        return _isThen(token) || _isCatch(token) || _isEndAwait(token);
+      });
+    }
+
+    String? then_;
+    List<Node>? thenBody;
+
+    if (skipNextTokenIf(TokenType.IDENTIFIER, 'then') ||
+        _isThen(token) && skipToken(2)) {
+      Token identifierToken = expectToken(TokenType.IDENTIFIER);
+      then_ = identifierToken.lexeme;
+    }
+
+    if (then_ != null) {
+      thenBody = _body('awaitThen', (token) {
+        return _isCatch(token) || _isEndAwait(token);
+      });
+    }
+
+    String? catch_;
+    List<Node>? catchBody;
+
+    if (skipNextTokenIf(Keyword.CATCH) || _isCatch(token) && skipToken(2)) {
+      Token identifierToken = expectToken(TokenType.IDENTIFIER);
+      catch_ = identifierToken.lexeme;
+    }
+
+    if (catch_ != null) {
+      catchBody = _body('awaitCatch', _isEndAwait);
+    }
+
+    expectToken(TokenType.SLASH);
+    expectToken(Keyword.AWAIT);
+    expectToken(TokenType.CLOSE_CURLY_BRACKET);
+    return AwaitBlock(
+        start: open.offset,
+        end: token.end,
+        future: future,
+        futureBody: futureBody,
+        then_: then_,
+        thenBody: thenBody,
+        catch_: catch_,
+        catchBody: catchBody);
   }
 
-  List<Node> blockBody(List<String> endTags) {
-    expect(closeCurlRe);
+  KeyBlock _keyBlock(Token open) {
+    expectToken(TokenType.IDENTIFIER, 'key');
 
-    var nodes = <Node>[];
-    endTagsStack.add(endTags);
+    token = parser.syntheticPreviousToken(token);
+    token = parser.parsePattern(token, PatternContext.assignment);
+    Expression key = astBuilder.pop() as Expression;
+    nextToken();
+
+    List<Node> body = _body('key', _isEndKey);
+    expectToken(TokenType.SLASH);
+    expectToken(TokenType.IDENTIFIER, 'key');
+    expectToken(TokenType.CLOSE_CURLY_BRACKET);
+    return KeyBlock(start: open.offset, end: token.end, key: key, body: body);
+  }
+
+  List<Node> _body(String tag, bool Function(Token token) end) {
+    expectToken(TokenType.CLOSE_CURLY_BRACKET);
+
+    List<Node> nodes = <Node>[];
+    String endTag = '$tag-${token.offset}';
+    endTagsStack.add(endTag);
 
     outer:
-    while (isNotDone) {
-      if (match(openCurlRe)) {
-        var lastMatchEnd = lastMatch!.end;
+    while (token.type != TokenType.EOF) {
+      if (token.type == TokenType.OPEN_CURLY_BRACKET) {
+        Token next = token.next!;
 
-        for (var tag in endTags) {
-          if (matchFrom(tag, lastMatchEnd)) {
-            position = lastMatchEnd;
-            break outer;
-          }
+        if (end(next)) {
+          token = next;
+          break outer;
         }
 
         nodes.add(mustache());
-      } else if (text() case var node?) {
-        nodes.add(node);
+      } else if (token.type == SvelteToken.DATA) {
+        nodes.add(text());
       }
     }
 
-    endTagsStack.removeLast();
+    if (endTagsStack.isEmpty || endTagsStack.removeLast() != endTag) {
+      throw StateError('Expected token type $tag, got $token.');
+    }
 
-    if (isDone) {
-      // TODO(mustache): replace with error
-      throw StateError(endTags.join(', '));
+    if (token.type == TokenType.EOF) {
+      throw StateError('EOF');
     }
 
     return nodes;
   }
 
-  DebugTag _parseDebugTag(int start) {
-    var identifiers = <SimpleIdentifier>[];
-
-    if (!scan(closeCurlRe)) {
-      allowSpace(required: true);
-
-      do {
-        var identifier = expression();
-
-        if (identifier is! SimpleIdentifier) {
-          error(invalidDebugArgs, start);
-        }
-
-        identifiers.add(identifier);
-      } while (scan(_comma));
-
-      expect(closeCurlRe);
-    }
-
-    return DebugTag(
-      start: start,
-      end: position,
-      identifiers: identifiers,
-    );
+  Node _at(Token open) {
+    expectToken(TokenType.AT);
+    return switch (token.type) {
+      TokenType.IDENTIFIER when token.lexeme == 'html' => _html(open),
+      TokenType.IDENTIFIER when token.lexeme == 'debug' => _debug(open),
+      Keyword.CONST => _const(open),
+      _ => throw StateError(token.type.name),
+    };
   }
 
-  ConstTag _parseConstTag(int start) {
-    allowSpace(required: true);
+  RawMustacheTag _html(Token open) {
+    expectToken(TokenType.IDENTIFIER, 'html');
+    token = parser.syntheticPreviousToken(token);
+    token = parser.parseExpression(token);
+    nextToken();
 
-    var assign = expression();
+    Expression value = astBuilder.pop() as Expression;
+    Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
+    return RawMustacheTag(start: open.offset, end: close.end, value: value);
+  }
+
+  DebugTag _debug(Token open) {
+    expectToken(TokenType.IDENTIFIER, 'debug');
+
+    List<SimpleIdentifier>? identifiers;
+
+    if (!skipNextTokenIf(TokenType.CLOSE_CURLY_BRACKET)) {
+      token = parser.syntheticPreviousToken(token);
+      token = parser.parseIdentifierList(token);
+      nextToken();
+      identifiers = astBuilder.pop() as List<SimpleIdentifier>;
+    }
+
+    Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
+    return DebugTag(
+        start: open.offset, end: close.end, identifiers: identifiers);
+  }
+
+  ConstTag _const(Token open) {
+    expectToken(Keyword.CONST);
+    token = parser.syntheticPreviousToken(token);
+    token = parser.parseExpression(token);
+    nextToken();
+
+    Object? assign = astBuilder.pop();
 
     if (assign is! AssignmentExpression) {
-      error(invalidConstArgs, start);
+      error(invalidConstArgs, open.offset);
     }
 
-    expect(closeCurlRe);
-    return ConstTag(
-      start: start,
-      end: position,
-      assign: assign,
-    );
+    Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
+    return ConstTag(start: open.offset, end: close.end, assign: assign);
   }
 
-  MustacheTag _parseExpression(int start) {
-    var value = expression();
-    expect(closeCurlRe);
+  MustacheTag _expression(Token open) {
+    token = parser.syntheticPreviousToken(token);
+    token = parser.parseExpression(token);
+    nextToken();
 
-    return MustacheTag(
-      start: start,
-      end: position,
-      value: value,
-    );
+    Expression value = astBuilder.pop() as Expression;
+    Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
+    return MustacheTag(start: open.offset, end: close.end, value: value);
   }
 }

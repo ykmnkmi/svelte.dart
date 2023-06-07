@@ -2,15 +2,16 @@
 library;
 
 import 'dart:convert' show JsonEncoder, json;
-import 'dart:io' show Directory, File;
+import 'dart:io' show Directory, File, FileSystemEntity;
 
-import 'package:svelte/compiler.dart' show CssMode, ParseError, parse;
+import 'package:svelte_ast/svelte_ast.dart'
+    show /* CssMode, */ Node, ParseError, parse;
 import 'package:test/test.dart' show TestOn, equals, expect, group, test;
 
 const JsonEncoder encoder = JsonEncoder.withIndent('\t');
 
 Map<String, Object?>? parseFile(Uri uri) {
-  var file = File.fromUri(uri);
+  File file = File.fromUri(uri);
 
   if (file.existsSync()) {
     return json.decode(file.readAsStringSync()) as Map<String, Object?>;
@@ -21,10 +22,10 @@ Map<String, Object?>? parseFile(Uri uri) {
 
 void main() {
   group('Parser', () {
-    var uri = Uri(path: 'test/parser/samples');
-    var directory = Directory.fromUri(uri);
+    Uri uri = Uri(path: 'test/parser/samples');
+    Directory directory = Directory.fromUri(uri);
 
-    for (var sample in directory.listSync()) {
+    for (FileSystemEntity sample in directory.listSync()) {
       Map<String, Object?>? options, actual, expected;
       String? skip;
 
@@ -33,18 +34,18 @@ void main() {
       }
 
       try {
-        CssMode? cssMode;
+        // CssMode? cssMode;
         options = parseFile(sample.uri.resolve('options.json'));
 
         if (options != null) {
           if (options['css'] is String) {
-            cssMode = CssMode.values.byName(options['css'] as String);
+            // cssMode = CssMode.values.byName(options['css'] as String);
           }
         }
 
-        var input = File.fromUri(sample.uri.resolve('input.svelte'));
-        var content = input.readAsStringSync();
-        var ast = parse(content, sourceUrl: input.path, cssMode: cssMode);
+        File input = File.fromUri(sample.uri.resolve('input.svelte'));
+        String content = input.readAsStringSync();
+        Node ast = parse(content, uri: input.uri /*, cssMode: cssMode */);
         actual = ast.toJson();
         expected = parseFile(sample.uri.resolve('output.json'));
 
