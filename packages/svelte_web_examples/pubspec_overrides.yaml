@@ -1,0 +1,3 @@
+dependency_overrides:
+  svelte_web_runtime:
+    path: ../svelte_web_runtime
