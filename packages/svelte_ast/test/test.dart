@@ -6,7 +6,7 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String template = '''
-<h1>hello {name}!</h1>''';
+<p>...</p>''';
 
 void main() {
   try {

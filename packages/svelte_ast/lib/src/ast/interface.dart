@@ -53,6 +53,35 @@ final class Text extends Node {
   }
 }
 
+final class CommentTag extends Node {
+  CommentTag({
+    required super.start,
+    required super.end,
+    this.data,
+    this.ignores = const <String>[],
+  });
+
+  final String? data;
+
+  final List<String> ignores;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitCommentTag(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'CommentTag',
+      if (data case String data?) 'data': data,
+      if (ignores.isNotEmpty) 'ignores': ignores,
+    };
+  }
+}
+
 final class RawMustacheTag extends Node {
   RawMustacheTag({
     required super.start,

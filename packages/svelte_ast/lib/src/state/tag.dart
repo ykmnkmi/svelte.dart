@@ -3,6 +3,7 @@
 import 'package:_fe_analyzer_shared/src/scanner/token.dart'
     show Token, TokenType;
 import 'package:svelte_ast/src/ast.dart';
+import 'package:svelte_ast/src/extract_svelte_ignore.dart';
 import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/scanner.dart';
 import 'package:svelte_ast/src/state/mustache.dart';
@@ -11,8 +12,23 @@ import 'package:svelte_ast/src/state/text.dart';
 extension TagParser on Parser {
   Node? tag() {
     Token open = expectToken(TokenType.LT);
+
+    if (skipNextTokenIf(SvelteToken.COMMENT_START)) {
+      Token data = expectToken(SvelteToken.COMMENT);
+      Token close = expectToken(SvelteToken.COMMENT_END);
+      return CommentTag(
+          start: open.offset,
+          end: close.end,
+          data: data.lexeme,
+          ignores: extractSvelteIgnore(data.lexeme));
+    }
+
     Token tagNameToken = expectToken(SvelteToken.TAG_IDENTIFIER);
     String tagName = tagNameToken.lexeme;
+
+    List<Attribute> attributes = <Attribute>[];
+    // Set<String> uniqueNames = <String>{};
+    // Attribute? attribute;
 
     skipNextTokenIf(SvelteToken.TAG_SPACE);
 
@@ -24,7 +40,11 @@ extension TagParser on Parser {
     skipNextTokenIf(SvelteToken.TAG_SPACE);
     Token close = expectToken(TokenType.GT);
     return Element(
-        start: open.offset, end: close.end, name: tagName, body: body);
+        start: open.offset,
+        end: close.end,
+        name: tagName,
+        attributes: attributes,
+        body: body);
   }
 
   List<Node> _body(String tag, bool Function(Token token) end) {

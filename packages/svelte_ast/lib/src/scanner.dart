@@ -6,19 +6,26 @@ import 'package:_fe_analyzer_shared/src/scanner/token.dart';
 import 'package:_fe_analyzer_shared/src/scanner/token_constants.dart';
 import 'package:analyzer/dart/analysis/features.dart' show FeatureSet;
 import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
+import 'package:source_span/source_span.dart' show SourceFile, SourceSpan;
+import 'package:svelte_ast/src/errors.dart';
 
 enum ScannerState {
   tagStart,
   tag,
+  tagAttributeValue,
   mustache,
   data,
 }
 
-bool _isTagNameStartChar(int char) {
+final RegExp tokenEnding = RegExp('[\\s=\\/>"\']');
+
+final RegExp startsWithQuoteCharacters = RegExp('^["\']');
+
+bool _isTagIdentifierStartChar(int char) {
   return $A <= char && char <= $Z || $a <= char && char <= $z;
 }
 
-bool _isTagNameChar(int char) {
+bool _isTagIdentifierChar(int char) {
   return $A <= char && char <= $Z ||
       $a <= char && char <= $z ||
       $0 <= char && char <= $9 ||
@@ -33,14 +40,20 @@ bool _isTagSpace(int char) {
 class SvelteToken extends SimpleToken {
   static const TokenType DATA =
       TokenType(200, '', 'DATA', NO_PRECEDENCE, STRING_TOKEN);
+  static const TokenType COMMENT_START =
+      TokenType(201, '<!--', 'COMMENT_START', NO_PRECEDENCE, STRING_TOKEN);
+  static const TokenType COMMENT =
+      TokenType(202, '-->', 'COMMENT', NO_PRECEDENCE, STRING_TOKEN);
+  static const TokenType COMMENT_END =
+      TokenType(203, '-->', 'COMMENT_END', NO_PRECEDENCE, STRING_TOKEN);
   static const TokenType LT_SLASH =
-      TokenType(201, '</', 'LT_SLASH', NO_PRECEDENCE, STRING_TOKEN);
+      TokenType(204, '</', 'LT_SLASH', NO_PRECEDENCE, STRING_TOKEN);
   static const TokenType SLASH_GT =
-      TokenType(202, '/>', 'SLASH_GT', NO_PRECEDENCE, STRING_TOKEN);
+      TokenType(205, '/>', 'SLASH_GT', NO_PRECEDENCE, STRING_TOKEN);
   static const TokenType TAG_SPACE =
-      TokenType(203, ' ', 'TAG_SPACE', NO_PRECEDENCE, STRING_TOKEN);
+      TokenType(206, ' ', 'TAG_SPACE', NO_PRECEDENCE, STRING_TOKEN);
   static const TokenType TAG_IDENTIFIER =
-      TokenType(204, '', 'TAG_IDENTIFIER', NO_PRECEDENCE, STRING_TOKEN);
+      TokenType(207, '', 'TAG_IDENTIFIER', NO_PRECEDENCE, STRING_TOKEN);
 
   SvelteToken(this.type, int offset, [String? string])
       : lexeme = string ?? type.lexeme,
@@ -56,6 +69,10 @@ class SvelteToken extends SimpleToken {
 class SvelteStringToken extends StringTokenImpl {
   factory SvelteStringToken.data(String data, int start, int end) {
     return SvelteStringToken(SvelteToken.DATA, data, start, end);
+  }
+
+  factory SvelteStringToken.comment(String data, int start, int end) {
+    return SvelteStringToken(SvelteToken.COMMENT, data, start, end);
   }
 
   factory SvelteStringToken.space(String data, int start, int end) {
@@ -82,10 +99,24 @@ class SvelteStringScanner extends StringScanner {
 
   ScannerState state;
 
+  int peekAt(int offset) {
+    int index = scanOffset + offset;
+
+    if (index >= string.length) {
+      return -1;
+    }
+
+    return string.codeUnitAt(index);
+  }
+
   void appendDataToken() {
     if (tokenStart < scanOffset) {
       appendToken(SvelteStringToken.data(string, tokenStart, scanOffset));
     }
+  }
+
+  void appendCommentToken() {
+    appendToken(SvelteStringToken.comment(string, tokenStart, scanOffset));
   }
 
   int appendSpaceToken() {
@@ -304,38 +335,50 @@ class SvelteStringScanner extends StringScanner {
         return tokenizeTag(next);
       }
 
-      if (next < 0x1f) {
-        return unexpected(next);
-      }
-
-      next = currentAsUnicode(next);
-      return unexpected(next);
+      throw AssertionError('unreachable');
     }
 
     if (state == ScannerState.tagStart) {
-      if (identical(peek(), $SLASH)) {
+      if (string.startsWith('</', scanOffset)) {
         appendToken(SvelteToken(SvelteToken.LT_SLASH, tokenStart));
-        next = advance();
+        advance();
       } else {
         appendPrecedenceToken(TokenType.LT);
       }
 
       next = advance();
 
-      if (_isTagNameStartChar(next)) {
+      if (_isTagIdentifierStartChar(next)) {
         beginToken();
         next = advance();
 
-        while (_isTagNameChar(next)) {
+        while (_isTagIdentifierChar(next)) {
           next = advance();
         }
 
         String value = string.substring(tokenStart, scanOffset);
         appendToken(SvelteToken(SvelteToken.TAG_IDENTIFIER, tokenStart, value));
         state = ScannerState.tag;
+        return next;
       }
 
-      return next;
+      if (string.startsWith('!--', scanOffset)) {
+        appendToken(SvelteToken(SvelteToken.COMMENT_START, tokenStart));
+        tokenStart = scanOffset += 3;
+
+        int commentEnd = string.indexOf('-->', scanOffset);
+        scanOffset = commentEnd == -1 ? string.length : commentEnd;
+        appendCommentToken();
+
+        if (string.startsWith('-->', scanOffset)) {
+          appendToken(SvelteToken(SvelteToken.COMMENT_END, tokenStart));
+          scanOffset += 2;
+        }
+
+        return advance();
+      }
+
+      throw AssertionError('unreachable');
     }
 
     if (state == ScannerState.tag) {
@@ -356,7 +399,47 @@ class SvelteStringScanner extends StringScanner {
         return advance();
       }
 
-      throw UnimplementedError('tag');
+      if (string.indexOf(tokenEnding, scanOffset) case int tokenEnd
+          when tokenEnd != 1) {
+        String value = string.substring(tokenStart, tokenEnd);
+        appendToken(SvelteToken(SvelteToken.TAG_IDENTIFIER, tokenStart, value));
+        scanOffset = tokenEnd;
+        state = ScannerState.tagAttributeValue;
+        return string.codeUnitAt(tokenEnd);
+      }
+
+      throw AssertionError('unreachable');
+    }
+
+    if (state == ScannerState.tagAttributeValue) {
+      if (_isTagSpace(next)) {
+        next = appendSpaceToken();
+      }
+
+      if (identical(next, $EQ)) {
+        appendPrecedenceToken(TokenType.EQ);
+        next = advance();
+      } else if (identical(next, $DQ) || identical(next, $SQ)) {
+        error(unexpectedToken('='));
+      } else {
+        state = ScannerState.tag;
+        return advance();
+      }
+
+      if (_isTagSpace(next)) {
+        next = appendSpaceToken();
+      }
+
+      int nameEnd = string.indexOf(tokenEnding, scanOffset);
+
+      if (nameEnd != -1) {
+        String value = string.substring(tokenStart, nameEnd);
+        appendToken(SvelteToken(SvelteToken.TAG_IDENTIFIER, tokenStart, value));
+        state = ScannerState.tagAttributeValue;
+        return advance();
+      }
+
+      return next;
     }
 
     throw UnimplementedError('switch');
@@ -379,5 +462,11 @@ class SvelteStringScanner extends StringScanner {
     // Always pretend that there's a line at the end of the file.
     // lineStarts.add(stringOffset + 1);
     return firstToken();
+  }
+
+  Never error(ErrorCode errorCode, [int? position]) {
+    SourceFile sourceFile = SourceFile.fromString(string);
+    SourceSpan span = sourceFile.span(scanOffset, position ?? scanOffset);
+    throw ParseError(errorCode, span);
   }
 }

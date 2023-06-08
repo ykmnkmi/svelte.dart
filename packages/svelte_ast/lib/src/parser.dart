@@ -22,12 +22,10 @@ import 'state/fragment.dart';
 
 class Parser {
   factory Parser(String string, {String? fullName, Uri? uri}) {
-    SourceFile sourceFile = SourceFile.fromString(string, url: uri);
     FeatureSet featureSet = FeatureSet.latestLanguageVersion();
     ScannerConfiguration configuration = dart.Scanner.buildConfig(featureSet);
     SvelteStringScanner scanner =
         SvelteStringScanner(string, configuration: configuration);
-    Token token = scanner.tokenize();
     LineInfo lineInfo = LineInfo(scanner.lineStarts);
     StringSource source = StringSource(string, fullName, uri: uri);
     RecordingErrorListener errorListener = RecordingErrorListener();
@@ -37,12 +35,13 @@ class Parser {
         AstBuilder(reporter, source.uri, true, featureSet, lineInfo);
     fe.Parser parser = fe.Parser(astBuilder,
         allowPatterns: featureSet.isEnabled(Feature.patterns));
-    return Parser.from(sourceFile, astBuilder, parser, token);
+    Token token = scanner.tokenize();
+    return Parser.from(string, astBuilder, parser, token);
   }
 
-  Parser.from(this.sourceFile, this.astBuilder, this.parser, this.token);
+  Parser.from(this.string, this.astBuilder, this.parser, this.token);
 
-  final SourceFile sourceFile;
+  final String string;
 
   final AstBuilder astBuilder;
 
@@ -92,13 +91,14 @@ class Parser {
     }
 
     if (token.isEof) {
-      throw StateError('Expected $type.');
+      error(unexpectedEOFToken(type.name));
     }
 
-    throw StateError('Expected token type ${type.name}, got "$token".');
+    error(unexpectedToken(type.name));
   }
 
   Never error(ErrorCode errorCode, [int? position]) {
+    SourceFile sourceFile = SourceFile.fromString(string);
     SourceSpan span = sourceFile.span(position ?? token.offset, position);
     throw ParseError(errorCode, span);
   }
