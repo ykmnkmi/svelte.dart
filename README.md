@@ -1,7 +1,7 @@
 svelte.dart
 ===========
 
-[Svelte](https://svelte.dev/) ([v3.55.1](https://github.com/sveltejs/svelte/tree/v3.55.1))
+[Svelte](https://svelte.dev/) ([v3.59.1](https://github.com/sveltejs/svelte/tree/v3.59.1))
 web framework, (not yet) ported to [Dart](https://dart.dev).
 
 ```html
@@ -20,7 +20,7 @@ web framework, (not yet) ported to [Dart](https://dart.dev).
   }
 
   onMount(() {
-    var timer = Timer.periodic(Duration(seconds: 2), (_) {
+    var timer = Timer.periodic(Duration(seconds: 1), (_) {
       count += 1;
     });
 
