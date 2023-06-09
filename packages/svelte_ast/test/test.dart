@@ -6,12 +6,12 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String template = '''
-<p>...</p>''';
+<p id="title">...</p>''';
 
 void main() {
   try {
-    var ast = parse(template);
-    var json = ast.toJson();
+    Node ast = parse(template);
+    Map<String, Object?> json = ast.toJson();
     print(const JsonEncoder.withIndent('  ').convert(json));
   } on ParseError catch (error, stackTrace) {
     print(error);

@@ -10,28 +10,19 @@ import 'package:source_span/source_span.dart' show SourceFile, SourceSpan;
 import 'package:svelte_ast/src/errors.dart';
 
 enum ScannerState {
+  data,
   tagStart,
   tag,
   tagAttributeValue,
+  comment,
   mustache,
-  data,
 }
+
+final RegExp spaceOrSlashOrClosingTag = RegExp('(\\s|\\/|>)');
 
 final RegExp tokenEnding = RegExp('[\\s=\\/>"\']');
 
 final RegExp startsWithQuoteCharacters = RegExp('^["\']');
-
-bool _isTagIdentifierStartChar(int char) {
-  return $A <= char && char <= $Z || $a <= char && char <= $z;
-}
-
-bool _isTagIdentifierChar(int char) {
-  return $A <= char && char <= $Z ||
-      $a <= char && char <= $z ||
-      $0 <= char && char <= $9 ||
-      char == $MINUS ||
-      char == $COLON;
-}
 
 bool _isTagSpace(int char) {
   return char == $SPACE || char == $TAB || char == $LF || char == $CR;
@@ -99,14 +90,16 @@ class SvelteStringScanner extends StringScanner {
 
   ScannerState state;
 
-  int peekAt(int offset) {
+  @override
+  int advance([int offset = 1]) {
+    scanOffset += offset;
+    return scanOffset >= string.length ? $EOF : string.codeUnitAt(scanOffset);
+  }
+
+  @override
+  int peek([int offset = 1]) {
     int index = scanOffset + offset;
-
-    if (index >= string.length) {
-      return -1;
-    }
-
-    return string.codeUnitAt(index);
+    return index >= string.length ? $EOF : string.codeUnitAt(index);
   }
 
   void appendDataToken() {
@@ -339,32 +332,22 @@ class SvelteStringScanner extends StringScanner {
     }
 
     if (state == ScannerState.tagStart) {
-      if (string.startsWith('</', scanOffset)) {
-        appendToken(SvelteToken(SvelteToken.LT_SLASH, tokenStart));
-        advance();
-      } else {
-        appendPrecedenceToken(TokenType.LT);
-      }
-
-      next = advance();
-
-      if (_isTagIdentifierStartChar(next)) {
-        beginToken();
-        next = advance();
-
-        while (_isTagIdentifierChar(next)) {
-          next = advance();
+      if (identical(next, $LT)) {
+        if (identical(peek(), $SLASH)) {
+          appendToken(SvelteToken(SvelteToken.LT_SLASH, tokenStart));
+          return advance(2);
+        } else {
+          appendPrecedenceToken(TokenType.LT);
+          return advance();
         }
-
-        String value = string.substring(tokenStart, scanOffset);
-        appendToken(SvelteToken(SvelteToken.TAG_IDENTIFIER, tokenStart, value));
-        state = ScannerState.tag;
-        return next;
       }
 
-      if (string.startsWith('!--', scanOffset)) {
+      if (identical(next, $BANG) &&
+          identical(peek(), $MINUS) &&
+          identical(peek(2), $MINUS)) {
         appendToken(SvelteToken(SvelteToken.COMMENT_START, tokenStart));
-        tokenStart = scanOffset += 3;
+        next = advance(3);
+        beginToken();
 
         int commentEnd = string.indexOf('-->', scanOffset);
         scanOffset = commentEnd == -1 ? string.length : commentEnd;
@@ -378,7 +361,16 @@ class SvelteStringScanner extends StringScanner {
         return advance();
       }
 
-      throw AssertionError('unreachable');
+      int found = string.indexOf(spaceOrSlashOrClosingTag, scanOffset);
+
+      if (found > 0) {
+        String value = string.substring(tokenStart, scanOffset = found);
+        appendToken(SvelteToken(SvelteToken.TAG_IDENTIFIER, tokenStart, value));
+        state = ScannerState.tag;
+        return string.codeUnitAt(scanOffset);
+      }
+
+      throw AssertionError('tagName');
     }
 
     if (state == ScannerState.tag) {

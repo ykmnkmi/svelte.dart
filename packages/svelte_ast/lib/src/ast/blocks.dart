@@ -1,6 +1,10 @@
 part of '../ast.dart';
 
-final class IfBlock extends Node {
+abstract final class HasElse implements Node {
+  List<Node>? get orElse;
+}
+
+final class IfBlock extends Node implements HasElse {
   IfBlock({
     required super.start,
     required super.end,
@@ -19,6 +23,7 @@ final class IfBlock extends Node {
 
   final List<Node> body;
 
+  @override
   final List<Node>? orElse;
 
   @override
@@ -48,7 +53,7 @@ final class IfBlock extends Node {
   }
 }
 
-final class EachBlock extends Node {
+final class EachBlock extends Node implements HasElse {
   EachBlock({
     required super.start,
     required super.end,
@@ -70,6 +75,7 @@ final class EachBlock extends Node {
 
   final Expression? key;
 
+  @override
   final List<Node>? orElse;
 
   @override
