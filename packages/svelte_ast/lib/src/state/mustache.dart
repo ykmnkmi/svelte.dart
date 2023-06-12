@@ -282,7 +282,12 @@ extension MustacheParser on Parser {
     expectToken(TokenType.SLASH);
     expectToken(TokenType.IDENTIFIER, 'key');
     expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    return KeyBlock(start: open.offset, end: token.end, key: key, body: body);
+    return KeyBlock(
+      start: open.offset,
+      end: token.end,
+      key: key,
+      children: body,
+    );
   }
 
   List<Node> _body(String tag, bool Function(Token token) end) {
@@ -337,7 +342,8 @@ extension MustacheParser on Parser {
 
     Expression value = astBuilder.pop() as Expression;
     Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    return RawMustacheTag(start: open.offset, end: close.end, value: value);
+    return RawMustacheTag(
+        start: open.offset, end: close.end, expression: value);
   }
 
   DebugTag _debug(Token open) {
@@ -380,6 +386,6 @@ extension MustacheParser on Parser {
 
     Expression value = astBuilder.pop() as Expression;
     Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    return MustacheTag(start: open.offset, end: close.end, value: value);
+    return MustacheTag(start: open.offset, end: close.end, expression: value);
   }
 }

@@ -104,14 +104,14 @@ class Parser {
   }
 
   Node parse() {
-    List<Node> nodes = <Node>[];
+    List<Node> children = <Node>[];
 
     while (token.type != TokenType.EOF) {
       if (fragment() case Node node) {
-        nodes.add(node);
+        children.add(node);
       }
     }
 
-    return Fragment(start: 0, end: token.end, nodes: nodes);
+    return Fragment(start: 0, end: token.end, children: children);
   }
 }

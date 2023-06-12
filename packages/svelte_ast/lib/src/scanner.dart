@@ -6,8 +6,6 @@ import 'package:_fe_analyzer_shared/src/scanner/token.dart';
 import 'package:_fe_analyzer_shared/src/scanner/token_constants.dart';
 import 'package:analyzer/dart/analysis/features.dart' show FeatureSet;
 import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
-import 'package:source_span/source_span.dart' show SourceFile, SourceSpan;
-import 'package:svelte_ast/src/errors.dart';
 
 enum ScannerState {
   data,
@@ -411,8 +409,10 @@ class SvelteStringScanner extends StringScanner {
       if (identical(next, $EQ)) {
         appendPrecedenceToken(TokenType.EQ);
         next = advance();
-      } else if (identical(next, $DQ) || identical(next, $SQ)) {
-        error(unexpectedToken('='));
+      } else if (identical(next, $DQ)) {
+        throw UnimplementedError('DQ');
+      } else if (identical(next, $SQ)) {
+        throw UnimplementedError('SQ');
       } else {
         state = ScannerState.tag;
         return advance();
@@ -454,11 +454,5 @@ class SvelteStringScanner extends StringScanner {
     // Always pretend that there's a line at the end of the file.
     // lineStarts.add(stringOffset + 1);
     return firstToken();
-  }
-
-  Never error(ErrorCode errorCode, [int? position]) {
-    SourceFile sourceFile = SourceFile.fromString(string);
-    SourceSpan span = sourceFile.span(scanOffset, position ?? scanOffset);
-    throw ParseError(errorCode, span);
   }
 }

@@ -9,11 +9,17 @@ part 'ast/visitor.dart';
 const DartToJsonVisitor dart2Json = DartToJsonVisitor();
 
 abstract final class Node {
-  Node({required this.start, required this.end});
+  Node({
+    this.start = -1,
+    this.end = -1,
+    this.children = const <Node>[],
+  });
 
-  final int start;
+  int start;
 
-  final int end;
+  int end;
+
+  final List<Node> children;
 
   R accept<C, R>(Visitor<C, R> visitor, C context);
 
@@ -22,13 +28,13 @@ abstract final class Node {
 
 final class Text extends Node {
   Text({
-    required super.start,
-    required super.end,
+    super.start,
+    super.end,
     this.raw = '',
     this.data = '',
   });
 
-  String raw;
+  final String raw;
 
   String data;
 
@@ -63,8 +69,8 @@ final class Text extends Node {
 
 final class CommentTag extends Node {
   CommentTag({
-    required super.start,
-    required super.end,
+    super.start,
+    super.end,
     this.data,
     this.ignores = const <String>[],
   });
@@ -92,12 +98,12 @@ final class CommentTag extends Node {
 
 final class RawMustacheTag extends Node {
   RawMustacheTag({
-    required super.start,
-    required super.end,
-    required this.value,
+    super.start,
+    super.end,
+    required this.expression,
   });
 
-  final Expression value;
+  final Expression expression;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -110,15 +116,15 @@ final class RawMustacheTag extends Node {
       'start': start,
       'end': end,
       '_': 'RawMustacheTag',
-      'value': value.accept(dart2Json),
+      'expression': expression.accept(dart2Json),
     };
   }
 }
 
 final class ConstTag extends Node {
   ConstTag({
-    required super.start,
-    required super.end,
+    super.start,
+    super.end,
     required this.assign,
   });
 
@@ -142,8 +148,8 @@ final class ConstTag extends Node {
 
 final class DebugTag extends Node {
   DebugTag({
-    required super.start,
-    required super.end,
+    super.start,
+    super.end,
     this.identifiers,
   });
 
@@ -171,12 +177,12 @@ final class DebugTag extends Node {
 
 final class MustacheTag extends Node {
   MustacheTag({
-    required super.start,
-    required super.end,
-    required this.value,
+    super.start,
+    super.end,
+    required this.expression,
   });
 
-  final Expression value;
+  final Expression expression;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -189,19 +195,17 @@ final class MustacheTag extends Node {
       'start': start,
       'end': end,
       '_': 'MustacheTag',
-      'value': value.accept(dart2Json),
+      'expression': expression.accept(dart2Json),
     };
   }
 }
 
 final class Fragment extends Node {
   Fragment({
-    required super.start,
-    required super.end,
-    required this.nodes,
+    super.start,
+    super.end,
+    super.children,
   });
-
-  final List<Node> nodes;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -214,9 +218,9 @@ final class Fragment extends Node {
       'start': start,
       'end': end,
       '_': 'Fragment',
-      if (nodes.isNotEmpty)
-        'nodes': <Map<String, Object?>>[
-          for (var node in nodes) node.toJson(),
+      if (children.isNotEmpty)
+        'children': <Map<String, Object?>>[
+          for (var node in children) node.toJson(),
         ],
     };
   }

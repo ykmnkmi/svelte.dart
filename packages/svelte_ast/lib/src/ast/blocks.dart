@@ -161,15 +161,13 @@ final class AwaitBlock extends Node {
 
 final class KeyBlock extends Node {
   KeyBlock({
-    required super.start,
-    required super.end,
+    super.start,
+    super.end,
     required this.key,
-    required this.body,
+    super.children,
   });
 
   final Expression key;
-
-  final List<Node> body;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -183,7 +181,11 @@ final class KeyBlock extends Node {
       'end': end,
       '_': 'KeyBlock',
       'key': key.accept(dart2Json),
-      'body': <Map<String, Object?>>[for (Node node in body) node.toJson()],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson()
+      ],
     };
   }
 }
+
+abstract final class InlineComponent implements Node {}
