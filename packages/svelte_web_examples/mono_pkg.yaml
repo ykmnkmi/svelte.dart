@@ -1,0 +1,7 @@
+sdk:
+  - pubspec
+
+stages:
+  - analyze:
+      - analyze
+      - format
