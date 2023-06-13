@@ -1,100 +1,68 @@
 {
   "start": 0,
-  "end": 90,
+  "end": 58,
   "_": "Fragment",
   "children": [
     {
       "start": 0,
-      "end": 90,
-      "_": "EachBlock",
+      "end": 58,
+      "_": "IfBlock",
       "expression": {
-        "start": 7,
-        "end": 12,
-        "class": "SimpleIdentifier",
-        "name": "users",
-        "isAssignable": true
-      },
-      "context": "user",
-      "index": "index",
-      "key": {
-        "start": 29,
-        "end": 36,
-        "class": "PrefixedIdentifier",
-        "identifier": {
-          "start": 34,
-          "end": 36,
-          "class": "SimpleIdentifier",
-          "name": "id",
-          "isAssignable": true
-        },
-        "prefix": {
-          "start": 29,
-          "end": 33,
-          "class": "SimpleIdentifier",
-          "name": "user",
-          "isAssignable": true
-        },
-        "name": "user.id",
-        "isAssignable": true
+        "start": 5,
+        "end": 9,
+        "class": "BooleanLiteral",
+        "value": true
       },
       "children": [
         {
-          "start": 41,
-          "end": 48,
-          "_": "MustacheTag",
-          "expression": {
-            "start": 42,
-            "end": 47,
-            "class": "SimpleIdentifier",
-            "name": "index",
-            "isAssignable": true
-          }
-        },
-        {
-          "start": 48,
-          "end": 50,
+          "start": 10,
+          "end": 19,
           "_": "Text",
-          "raw": ": ",
-          "data": ": "
+          "raw": "\n  then: ",
+          "data": "then: "
         },
         {
-          "start": 50,
-          "end": 61,
+          "start": 19,
+          "end": 27,
           "_": "MustacheTag",
           "expression": {
-            "start": 51,
-            "end": 60,
-            "class": "PrefixedIdentifier",
-            "identifier": {
-              "start": 56,
-              "end": 60,
-              "class": "SimpleIdentifier",
-              "name": "name",
-              "isAssignable": true
-            },
-            "prefix": {
-              "start": 51,
-              "end": 55,
-              "class": "SimpleIdentifier",
-              "name": "user",
-              "isAssignable": true
-            },
-            "name": "user.name",
-            "isAssignable": true
+            "start": 20,
+            "end": 26,
+            "class": "SimpleStringLiteral",
+            "value": "then",
+            "contentsEnd": 25,
+            "contentsOffset": 21,
+            "isSingleQuoted": true,
+            "stringValue": "then"
           }
         }
       ],
       "elseBlock": {
-        "start": 69,
-        "end": 83,
+        "start": 35,
+        "end": 53,
         "_": "ElseBlock",
         "children": [
           {
-            "start": 69,
-            "end": 83,
+            "start": 35,
+            "end": 44,
             "_": "Text",
-            "raw": "\n  empty list\n",
-            "data": "empty list"
+            "raw": "\n  else: ",
+            "data": "else: "
+          },
+          {
+            "start": 44,
+            "end": 52,
+            "_": "MustacheTag",
+            "expression": {
+              "start": 45,
+              "end": 51,
+              "class": "SimpleStringLiteral",
+              "value": "else",
+              "contentsEnd": 50,
+              "contentsOffset": 46,
+              "isSingleQuoted": true,
+              "stringValue": "else"
+            }
           }
         ]
       }

@@ -11,6 +11,7 @@ import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/scanner.dart';
 import 'package:svelte_ast/src/state/text.dart';
+import 'package:svelte_ast/src/trim.dart';
 
 bool _isElse(Token token) {
   return token.type == TokenType.COLON && token.next!.type == Keyword.ELSE;
@@ -46,36 +47,40 @@ bool _isEndKey(Token token) {
       token.next!.lexeme == 'key';
 }
 
-List<Node> _trimNodes(List<Node> nodes, bool before, bool after) {
-  if (nodes.isEmpty) {
-    return nodes;
+void _trimBlock(Node? block, bool before, bool after) {
+  if (block == null || block.children.isEmpty) {
+    return;
   }
 
-  nodes = List<Node>.of(nodes);
+  Node first = block.children.first;
 
-  if (nodes.first case Text text when before) {
-    String data = text.data.trimLeft();
+  if (first is Text && before) {
+    String data = trimStart(first.data);
 
     if (data.isEmpty) {
-      nodes.removeAt(0);
+      block.children.removeAt(0);
     } else {
-      text.data = data.trimLeft();
+      first.data = data;
     }
   }
 
-  if (nodes.isNotEmpty) {
-    if (nodes.last case Text text when before) {
-      String data = text.data.trimLeft();
+  Node last = block.children.last;
 
-      if (data.isEmpty) {
-        nodes.removeLast();
-      } else {
-        text.data = data.trimRight();
-      }
+  if (last is Text && after) {
+    last.data = trimEnd(last.data);
+
+    if (last.data.isEmpty) {
+      block.children.removeLast();
     }
   }
 
-  return nodes;
+  if (block is HasElse) {
+    _trimBlock(block.elseBlock, before, after);
+  }
+
+  if (first is IfBlock && first.elseIf) {
+    _trimBlock(first, before, after);
+  }
 }
 
 extension MustacheParser on Parser {
@@ -99,50 +104,65 @@ extension MustacheParser on Parser {
     };
   }
 
-  IfBlock _ifBlock(Token open) {
+  IfBlock _ifBlock(Token open, [bool elseIf = false]) {
     expectToken(Keyword.IF);
 
     token = parser.syntheticPreviousToken(token);
     token = parser.parseExpression(token);
-    Expression test = astBuilder.pop() as Expression;
+    Expression expression = astBuilder.pop() as Expression;
     nextToken();
 
-    DartPattern? case_;
+    DartPattern? casePattern;
 
     if (skipNextTokenIf(Keyword.CASE)) {
       token = parser.syntheticPreviousToken(token);
       token = parser.parsePattern(token, PatternContext.matching);
-      case_ = astBuilder.pop() as DartPattern;
+      casePattern = astBuilder.pop() as DartPattern;
       nextToken();
     }
 
-    Expression? when;
+    Expression? whenExpression;
 
     if (skipNextTokenIf(Keyword.WHEN)) {
       token = parser.syntheticPreviousToken(token);
       token = parser.parseExpression(token);
-      when = astBuilder.pop() as Expression;
+      whenExpression = astBuilder.pop() as Expression;
       nextToken();
     }
 
-    List<Node> children = _body('if', (token) {
-      return _isElse(token) || _isEndIf(token);
-    });
+    IfBlock ifBlock = IfBlock(
+      start: open.offset,
+      expression: expression,
+      casePattern: casePattern,
+      whenExpression: whenExpression,
+      children: _body('if', (token) {
+        return _isElse(token) || _isEndIf(token);
+      }),
+      elseIf: elseIf,
+    );
 
-    ElseBlock? elseBlock;
+    open = token.previous!;
 
     if (skipNextTokenIf(TokenType.COLON)) {
       expectToken(Keyword.ELSE);
 
       if (matchToken(TokenType.CLOSE_CURLY_BRACKET)) {
-        elseBlock = ElseBlock(
-          children: _body('ifElse', _isEndIf),
-        );
+        List<Node> children = _body('ifElse', _isEndIf);
         expectToken(TokenType.SLASH);
         expectToken(Keyword.IF);
         expectToken(TokenType.CLOSE_CURLY_BRACKET);
+        ifBlock.elseBlock = ElseBlock(
+          start: open.offset,
+          end: token.end,
+          children: children,
+        );
       } else {
-        orElse = <Node>[_ifBlock(token.next!)];
+        IfBlock elseIfBlock = _ifBlock(token, true);
+        ifBlock.elseBlock = ElseBlock(
+          start: open.offset,
+          end: token.end,
+          children: <Node>[elseIfBlock],
+        );
       }
     } else {
       expectToken(TokenType.SLASH);
@@ -150,16 +170,8 @@ extension MustacheParser on Parser {
       expectToken(TokenType.CLOSE_CURLY_BRACKET);
     }
 
-    return IfBlock(
-        start: open.offset,
-        end: token.end,
-        expression: test,
-        casePattern: case_,
-        whenExpression: when,
-        children: children,
-        elseBlock: ElseBlock(
-          children:
-        ));
+    ifBlock.end = token.end;
+    return ifBlock;
   }
 
   EachBlock _eachBlock(Token open) {
@@ -174,7 +186,7 @@ extension MustacheParser on Parser {
 
     token = parser.syntheticPreviousToken(token);
     token = parser.parseExpression(token);
-    Expression iterable = astBuilder.pop() as Expression;
+    Expression expression = astBuilder.pop() as Expression;
     nextToken();
 
     String? index;
@@ -194,29 +206,32 @@ extension MustacheParser on Parser {
       expectToken(TokenType.CLOSE_PAREN);
     }
 
-    List<Node> body = _body('each', (token) {
-      return _isElse(token) || _isEndEach(token);
-    });
-
-    List<Node>? orElse;
+    EachBlock eachBlock = EachBlock(
+      start: open.offset,
+      expression: expression,
+      context: context,
+      index: index,
+      key: key,
+      children: _body('each', (token) {
+        return _isElse(token) || _isEndEach(token);
+      }),
+    );
 
     if (skipNextTokenIf(TokenType.COLON)) {
-      expectToken(Keyword.ELSE);
-      orElse = _body('eachElse', _isEndEach);
+      Token elseToken = expectToken(Keyword.ELSE);
+      List<Node> children = _body('eachElse', _isEndEach);
+      eachBlock.elseBlock = ElseBlock(
+        start: elseToken.offset,
+        end: token.end,
+        children: children,
+      );
     }
 
     expectToken(TokenType.SLASH);
     expectToken(TokenType.IDENTIFIER, 'each');
     expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    return EachBlock(
-        start: open.offset,
-        end: token.end,
-        context: context,
-        expression: iterable,
-        index: index,
-        key: key,
-        body: body,
-        orElse: orElse);
+    eachBlock.end = token.end;
+    return eachBlock;
   }
 
   AwaitBlock _awaitBlock(Token open) {

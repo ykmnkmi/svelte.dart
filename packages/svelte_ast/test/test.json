@@ -1,0 +1,97 @@
+{
+  "start": 0,
+  "end": 67,
+  "_": "Fragment",
+  "children": [
+    {
+      "start": 0,
+      "end": 67,
+      "_": "IfBlock",
+      "expression": {
+        "start": 5,
+        "end": 9,
+        "class": "BooleanLiteral",
+        "value": true
+      },
+      "children": [
+        {
+          "start": 10,
+          "end": 19,
+          "_": "Text",
+          "raw": "\n  then: ",
+          "data": "\n  then: "
+        },
+        {
+          "start": 19,
+          "end": 27,
+          "_": "MustacheTag",
+          "expression": {
+            "start": 20,
+            "end": 26,
+            "class": "SimpleStringLiteral",
+            "value": "then",
+            "contentsEnd": 25,
+            "contentsOffset": 21,
+            "isSingleQuoted": true,
+            "stringValue": "then"
+          }
+        },
+        {
+          "start": 27,
+          "end": 28,
+          "_": "Text",
+          "raw": "\n",
+          "data": "\n"
+        }
+      ],
+      "elseBlock": {
+        "start": 28,
+        "end": 67,
+        "_": "ElseBlock",
+        "children": [
+          {
+            "start": 35,
+            "end": 67,
+            "_": "IfBlock",
+            "expression": {
+              "start": 38,
+              "end": 43,
+              "class": "BooleanLiteral"
+            },
+            "children": [
+              {
+                "start": 44,
+                "end": 53,
+                "_": "Text",
+                "raw": "\n  else: ",
+                "data": "\n  else: "
+              },
+              {
+                "start": 53,
+                "end": 61,
+                "_": "MustacheTag",
+                "expression": {
+                  "start": 54,
+                  "end": 60,
+                  "class": "SimpleStringLiteral",
+                  "value": "else",
+                  "contentsEnd": 59,
+                  "contentsOffset": 55,
+                  "isSingleQuoted": true,
+                  "stringValue": "else"
+                }
+              },
+              {
+                "start": 61,
+                "end": 62,
+                "_": "Text",
+                "raw": "\n",
+                "data": "\n"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
