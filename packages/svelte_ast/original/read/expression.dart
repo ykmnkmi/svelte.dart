@@ -1,12 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages, unnecessary_import
 
 import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe
-    show Parser;
+    show Parser, PatternContext;
 import 'package:_fe_analyzer_shared/src/scanner/characters.dart' show $EOF;
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
     show ScannerConfiguration, StringScanner, Token;
 import 'package:analyzer/dart/analysis/features.dart' show Feature, FeatureSet;
-import 'package:analyzer/dart/ast/ast.dart' show Expression;
+import 'package:analyzer/dart/ast/ast.dart' show DartPattern, Expression;
 import 'package:analyzer/error/listener.dart'
     show ErrorReporter, RecordingErrorListener;
 import 'package:analyzer/source/line_info.dart' show LineInfo;
@@ -16,9 +16,32 @@ import 'package:analyzer/src/string_source.dart' show StringSource;
 
 import '../parser.dart';
 
+typedef DartParserCallback = Token Function(fe.Parser parser, Token token);
+
+final RegExp _identifierRe = RegExp('[_\$A-Za-z][_\$A-Za-z0-9]*');
+
 extension ExpressionParser on Parser {
-  T withExpressionParser<T>(
-      Pattern end, Token Function(fe.Parser parser, Token token) callback) {
+  String? readIdentifier() {
+    return read(_identifierRe);
+  }
+
+  DartPattern readAssignmentPattern(Pattern end) {
+    return readPattern(end, fe.PatternContext.assignment);
+  }
+
+  DartPattern readPattern(Pattern end, fe.PatternContext context) {
+    return withDartParser<DartPattern>(end, (parser, token) {
+      return parser.parsePattern(token, context);
+    });
+  }
+
+  Expression readExpression(Pattern end) {
+    return withDartParser<Expression>(end, (parser, token) {
+      return parser.parseExpression(token);
+    });
+  }
+
+  T withDartParser<T>(Pattern end, DartParserCallback callback) {
     FeatureSet featureSet = FeatureSet.latestLanguageVersion();
     ScannerConfiguration configuration = dart.Scanner.buildConfig(featureSet);
     ExpressionScanner scanner = ExpressionScanner(string, position - 1, end,
@@ -40,12 +63,6 @@ extension ExpressionParser on Parser {
     position = token.end;
     return astBuilder.pop() as T;
   }
-
-  Expression readExpression(Pattern end) {
-    return withExpressionParser(end, (parser, token) {
-      return parser.parseExpression(token);
-    });
-  }
 }
 
 class ExpressionScanner extends StringScanner {
@@ -61,8 +78,7 @@ class ExpressionScanner extends StringScanner {
     int next = advance();
 
     while (true) {
-      if (groupingStack.isEmpty &&
-          end.matchAsPrefix(string, scanOffset) != null) {
+      if (groupingStack.isEmpty && string.startsWith(end, scanOffset)) {
         break;
       }
 

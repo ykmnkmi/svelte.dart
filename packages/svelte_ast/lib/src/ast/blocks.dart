@@ -1,30 +1,37 @@
 part of '../ast.dart';
 
 abstract final class HasElse implements Node {
-  List<Node>? get orElse;
+  abstract ElseBlock? elseBlock;
 }
+
+typedef IfRest = (
+  Expression expression,
+  DartPattern? casePattern,
+  Expression? whenExpression,
+);
 
 final class IfBlock extends Node implements HasElse {
   IfBlock({
-    required super.start,
-    required super.end,
-    required this.test,
-    this.case_,
-    this.when_,
-    required this.body,
-    this.orElse,
+    super.start,
+    super.end,
+    required this.expression,
+    this.casePattern,
+    this.whenExpression,
+    required super.children,
+    this.elseIf = false,
+    this.elseBlock,
   });
 
-  final Expression test;
+  final Expression expression;
 
-  final DartPattern? case_;
+  final DartPattern? casePattern;
 
-  final Expression? when_;
+  final Expression? whenExpression;
 
-  final List<Node> body;
+  final bool elseIf;
 
   @override
-  final List<Node>? orElse;
+  ElseBlock? elseBlock;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -37,46 +44,43 @@ final class IfBlock extends Node implements HasElse {
       'start': start,
       'end': end,
       '_': 'IfBlock',
-      'test': test.accept(dart2Json),
-      if (case_ case DartPattern pattern?) 'case': pattern.toString(),
-      if (when_ case Expression expression?)
-        'when': expression.accept(dart2Json),
-      if (body.isNotEmpty)
-        'body': <Map<String, Object?>>[
-          for (Node node in body) node.toJson(),
+      'expression': expression.accept(dart2Json),
+      if (casePattern case DartPattern casePattern?)
+        'casePattern': casePattern.toString(),
+      if (whenExpression case Expression whenExpression?)
+        'whenExpression': whenExpression.accept(dart2Json),
+      if (children.isNotEmpty)
+        'children': <Map<String, Object?>>[
+          for (Node node in children) node.toJson(),
         ],
-      if (orElse case List<Node> orElse? when orElse.isNotEmpty)
-        'orElse': <Map<String, Object?>>[
-          for (Node node in orElse) node.toJson(),
-        ],
+      if (elseIf) 'elseIf': elseIf,
+      if (elseBlock case ElseBlock elseBlock?) 'elseBlock': elseBlock.toJson(),
     };
   }
 }
 
 final class EachBlock extends Node implements HasElse {
   EachBlock({
-    required super.start,
-    required super.end,
+    super.start,
+    super.end,
+    required this.expression,
     required this.context,
-    required this.iterable,
     this.index,
     this.key,
-    required this.body,
-    this.orElse,
+    required super.children,
+    this.elseBlock,
   });
 
+  final Expression expression;
+
   final DartPattern context;
-
-  final Expression iterable;
-
-  final List<Node> body;
 
   String? index;
 
   final Expression? key;
 
   @override
-  final List<Node>? orElse;
+  ElseBlock? elseBlock;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -89,17 +93,40 @@ final class EachBlock extends Node implements HasElse {
       'start': start,
       'end': end,
       '_': 'EachBlock',
+      'expression': expression.accept(dart2Json),
       'context': context.toSource(),
-      'iterable': iterable.accept(dart2Json),
       if (index case String string?) 'index': string,
       if (key case Expression expression?) 'key': expression.accept(dart2Json),
-      if (body.isNotEmpty)
-        'body': <Map<String, Object?>>[
-          for (Node node in body) node.toJson(),
+      if (children.isNotEmpty)
+        'children': <Map<String, Object?>>[
+          for (Node node in children) node.toJson(),
         ],
-      if (orElse case List<Node> orElse? when orElse.isNotEmpty)
-        'orElse': <Map<String, Object?>>[
-          for (Node node in orElse) node.toJson(),
+      if (elseBlock case ElseBlock elseBlock?) 'elseBlock': elseBlock.toJson(),
+    };
+  }
+}
+
+final class ElseBlock extends Node {
+  ElseBlock({
+    super.start,
+    super.end,
+    super.children,
+  });
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitElseBlock(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'ElseBlock',
+      if (children.isNotEmpty)
+        'children': <Map<String, Object?>>[
+          for (var node in children) node.toJson(),
         ],
     };
   }
@@ -163,11 +190,11 @@ final class KeyBlock extends Node {
   KeyBlock({
     super.start,
     super.end,
-    required this.key,
+    required this.expression,
     super.children,
   });
 
-  final Expression key;
+  final Expression expression;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -180,7 +207,7 @@ final class KeyBlock extends Node {
       'start': start,
       'end': end,
       '_': 'KeyBlock',
-      'key': key.accept(dart2Json),
+      'expression': expression.accept(dart2Json),
       'children': <Map<String, Object?>>[
         for (Node node in children) node.toJson()
       ],

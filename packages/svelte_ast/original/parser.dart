@@ -53,6 +53,10 @@ final class Parser {
     return position < length;
   }
 
+  String get rest {
+    return string.substring(position);
+  }
+
   void allowSpace({bool required = false}) {
     if (_spaceRe.matchAsPrefix(string, position) case Match match?) {
       position = match.end;

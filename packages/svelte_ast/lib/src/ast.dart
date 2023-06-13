@@ -125,10 +125,10 @@ final class ConstTag extends Node {
   ConstTag({
     super.start,
     super.end,
-    required this.assign,
+    required this.expression,
   });
 
-  final Expression assign;
+  final Expression expression;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -141,7 +141,7 @@ final class ConstTag extends Node {
       'start': start,
       'end': end,
       '_': 'ConstTag',
-      'assign': assign.accept(dart2Json),
+      'expression': expression.accept(dart2Json),
     };
   }
 }

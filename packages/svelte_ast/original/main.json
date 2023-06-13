@@ -1,0 +1,103 @@
+{
+  "start": 0,
+  "end": 90,
+  "_": "Fragment",
+  "children": [
+    {
+      "start": 0,
+      "end": 90,
+      "_": "EachBlock",
+      "expression": {
+        "start": 7,
+        "end": 12,
+        "class": "SimpleIdentifier",
+        "name": "users",
+        "isAssignable": true
+      },
+      "context": "user",
+      "index": "index",
+      "key": {
+        "start": 29,
+        "end": 36,
+        "class": "PrefixedIdentifier",
+        "identifier": {
+          "start": 34,
+          "end": 36,
+          "class": "SimpleIdentifier",
+          "name": "id",
+          "isAssignable": true
+        },
+        "prefix": {
+          "start": 29,
+          "end": 33,
+          "class": "SimpleIdentifier",
+          "name": "user",
+          "isAssignable": true
+        },
+        "name": "user.id",
+        "isAssignable": true
+      },
+      "children": [
+        {
+          "start": 41,
+          "end": 48,
+          "_": "MustacheTag",
+          "expression": {
+            "start": 42,
+            "end": 47,
+            "class": "SimpleIdentifier",
+            "name": "index",
+            "isAssignable": true
+          }
+        },
+        {
+          "start": 48,
+          "end": 50,
+          "_": "Text",
+          "raw": ": ",
+          "data": ": "
+        },
+        {
+          "start": 50,
+          "end": 61,
+          "_": "MustacheTag",
+          "expression": {
+            "start": 51,
+            "end": 60,
+            "class": "PrefixedIdentifier",
+            "identifier": {
+              "start": 56,
+              "end": 60,
+              "class": "SimpleIdentifier",
+              "name": "name",
+              "isAssignable": true
+            },
+            "prefix": {
+              "start": 51,
+              "end": 55,
+              "class": "SimpleIdentifier",
+              "name": "user",
+              "isAssignable": true
+            },
+            "name": "user.name",
+            "isAssignable": true
+          }
+        }
+      ],
+      "elseBlock": {
+        "start": 69,
+        "end": 83,
+        "_": "ElseBlock",
+        "children": [
+          {
+            "start": 69,
+            "end": 83,
+            "_": "Text",
+            "raw": "\n  empty list\n",
+            "data": "empty list"
+          }
+        ]
+      }
+    }
+  ]
+}

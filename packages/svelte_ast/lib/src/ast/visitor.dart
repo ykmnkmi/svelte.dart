@@ -15,6 +15,8 @@ abstract interface class Visitor<C, R> {
 
   R visitElement(Element node, C context);
 
+  R visitElseBlock(ElseBlock node, C context);
+
   R visitFragment(Fragment node, C context);
 
   R visitIfBlock(IfBlock node, C context);
