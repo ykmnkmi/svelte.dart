@@ -87,7 +87,7 @@ List<Object?> createInstance(
 ) {
   var count = 1;
   late int doubled;
-  late int quadrupled;
+  late int quadrupled; // ignore: unused_local_variable
 
   void handleClick() {
     invalidate(0, count += 1);
