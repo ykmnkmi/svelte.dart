@@ -9,7 +9,7 @@ import 'package:svelte_ast/src/errors.dart';
 import 'parser.dart';
 
 const String string = '''
-<p>hello {name}!</p>''';
+<textarea>hello {name}!</textarea>''';
 
 void main() {
   try {

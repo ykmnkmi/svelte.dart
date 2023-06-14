@@ -17,10 +17,11 @@ extension TagParser on Parser {
       Token data = expectToken(SvelteToken.COMMENT);
       Token close = expectToken(SvelteToken.COMMENT_END);
       return CommentTag(
-          start: open.offset,
-          end: close.end,
-          data: data.lexeme,
-          ignores: extractSvelteIgnore(data.lexeme));
+        start: open.offset,
+        end: close.end,
+        data: data.lexeme,
+        ignores: extractSvelteIgnore(data.lexeme),
+      );
     }
 
     Token tagNameToken = expectToken(SvelteToken.TAG_IDENTIFIER);
@@ -39,12 +40,14 @@ extension TagParser on Parser {
 
     skipNextTokenIf(SvelteToken.TAG_SPACE);
     Token close = expectToken(TokenType.GT);
+
     return Element(
-        start: open.offset,
-        end: close.end,
-        name: tagName,
-        attributes: attributes,
-        children: children);
+      start: open.offset,
+      end: close.end,
+      name: tagName,
+      attributes: attributes,
+      children: children,
+    );
   }
 
   List<Node> _body(String tag, bool Function(Token token) end) {

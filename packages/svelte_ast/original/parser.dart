@@ -71,6 +71,12 @@ final class Parser {
     }
   }
 
+  void skip(Pattern pattern) {
+    if (pattern.matchAsPrefix(string, position) case Match match?) {
+      position = match.end;
+    }
+  }
+
   bool match(Pattern pattern) {
     return pattern.matchAsPrefix(string, position) != null;
   }

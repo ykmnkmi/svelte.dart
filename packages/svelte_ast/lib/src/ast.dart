@@ -19,7 +19,7 @@ abstract final class Node {
 
   int end;
 
-  final List<Node> children;
+  List<Node> children;
 
   R accept<C, R>(Visitor<C, R> visitor, C context);
 

@@ -11,21 +11,52 @@ const List<int> windows1252 = <int>[
   0x0153, 0x009D, 0x017E, 0x0178
 ];
 
+String _regExpEntity(String entityName, bool isAttributeValue) {
+  // https://html.spec.whatwg.org/multipage/parsing.html#named-character-reference-state
+  // doesn't decode the html entity which not ends with ; and next character is =, number or alphabet in attribute value.
+  if (isAttributeValue && !entityName.endsWith(';')) {
+    return '$entityName\\b(?!=)';
+  }
+
+  return entityName;
+}
+
+RegExp _getEntityPattern(bool isAttributeValue) {
+  Iterable<String> regExpEntities = entities.keys
+      .map<String>((entityName) => _regExpEntity(entityName, isAttributeValue));
+  return RegExp('#(?:x[a-fA-F\\d]+|\\d+)(?:;)?${regExpEntities.join('|')}');
+}
+
+final RegExp _content = _getEntityPattern(false);
+
+final RegExp _attributeValue = _getEntityPattern(true);
+
 int validateCode(int code) {
   return switch (code) {
+    // line feed becomes generic whitespace
     10 => 32,
+    // ASCII range. (Why someone would use HTML entities for ASCII characters I don't know, but...)
     < 128 => code,
+    // code points 128-159 are dealt with leniently by browsers, but they're incorrect. We need
+    // to correct the mistake or we'll end up with missing € signs and so on
     <= 159 => windows1252[code - 128],
+    // basic multilingual plane
     < 55296 => code,
+    // UTF-16 surrogate halves
     <= 57343 => 0,
+    // rest of the basic multilingual plane
     <= 65535 => code,
+    // supplementary multilingual plane 0x10000 - 0x1ffff
     >= 65536 && <= 131071 => code,
+    // supplementary ideographic plane 0x20000 - 0x2ffff
+    >= 131072 && <= 196607 => code,
     _ => 0,
   };
 }
 
-String decodeCharacterReferences(String string) {
-  return string.replaceAllMapped(entityRe, (match) {
+String decodeCharacterReferences(String string, bool isAttributeValue) {
+  RegExp entityPattern = isAttributeValue ? _attributeValue : _content;
+  return string.replaceAllMapped(entityPattern, (match) {
     String entity = match[1]!;
     int? code;
 
@@ -33,9 +64,9 @@ String decodeCharacterReferences(String string) {
     if (entity[0] != '#') {
       code = entities[entity];
     } else if (entity[1] == 'x') {
-      code = int.parse(entity.substring(2), radix: 16);
+      code = int.tryParse(entity.substring(2), radix: 16);
     } else {
-      code = int.parse(entity.substring(1), radix: 10);
+      code = int.tryParse(entity.substring(1), radix: 10);
     }
 
     if (code == null) {
@@ -46,7 +77,7 @@ String decodeCharacterReferences(String string) {
   });
 }
 
-const Map<String, Set<String>> disallowedContents = <String, Set<String>>{
+const Map<String, Set<String>> _disallowedContents = <String, Set<String>>{
   'li': <String>{'li'},
   'dt': <String>{'dt', 'dd'},
   'dd': <String>{'dt', 'dd'},
@@ -96,7 +127,7 @@ bool closingTagOmitted(String? current, [String? next]) {
     return false;
   }
 
-  if (disallowedContents[current] case Set<String> disallowed?) {
+  if (_disallowedContents[current] case Set<String> disallowed?) {
     return next == null || disallowed.contains(next);
   }
 

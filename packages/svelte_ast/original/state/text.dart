@@ -18,7 +18,7 @@ extension TextParser on Parser {
     }
 
     String raw = string.substring(position, found);
-    String data = decodeCharacterReferences(raw);
+    String data = decodeCharacterReferences(raw, false);
 
     current.children.add(Text(
       start: position,

@@ -1,10 +1,13 @@
+import 'package:analyzer/dart/ast/ast.dart' show Expression;
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/extract_svelte_ignore.dart';
 import 'package:svelte_ast/src/html.dart';
 import 'package:svelte_ast/src/names.dart';
+import 'package:svelte_ast/src/patterns.dart';
 
 import '../parser.dart';
+import '../read/expression.dart';
 
 final RegExp _self = RegExp('^svelte:self(?=[\\s/>])');
 
@@ -20,11 +23,10 @@ final RegExp _tagNameEndRe = RegExp('(\\s|\\/|>)');
 
 final RegExp _capitalLetter = RegExp('^[A-Z]');
 
-final RegExp _attributeNameEndRe = RegExp('[\\s=\\/>"\']');
+final RegExp _nonCharRe = RegExp('[^A-Za-z]');
 
-final RegExp _quoteRe = RegExp('["\']');
-
-final RegExp _attributeValueEndRe = RegExp('(\\/>|[\\s"\'=<>`])');
+final RegExp _closingTextAreaTag =
+    RegExp('<\\/textarea(\\s[^>]*)?>', caseSensitive: false);
 
 const Map<String, String> _metaTags = <String, String>{
   'svelte:head': 'Head',
@@ -92,6 +94,69 @@ extension TagParser on Parser {
     }
 
     error(invalidTagName, start);
+  }
+
+  List<Node> readSequence(Pattern end, String location) {
+    int start = position;
+    List<Node> chunks = <Node>[];
+
+    void flush(int end) {
+      if (start < end) {
+        String raw = string.substring(start, end);
+        String data = decodeCharacterReferences(raw, true);
+
+        chunks.add(Text(
+          start: start,
+          end: end,
+          raw: raw,
+          data: data,
+        ));
+
+        start = end;
+      }
+    }
+
+    while (isNotDone) {
+      if (match(end)) {
+        flush(position);
+        return chunks;
+      }
+
+      if (scan('{')) {
+        if (match('#')) {
+          int start = position - 1;
+          skip('#');
+
+          String name = readUntil(_nonCharRe);
+          error(invalidLogicBlockPlacement(location, name), start);
+        } else if (match('@')) {
+          int start = position - 1;
+          skip('#');
+
+          String name = readUntil(_nonCharRe);
+          error(invalidTagPlacement(location, name), start);
+        }
+
+        flush(position - 1);
+        allowSpace();
+
+        Expression expression = readExpression(closingCurlyBrace);
+        allowSpace();
+        expect('}');
+
+        chunks.add(MustacheTag(
+          start: start,
+          end: position,
+          expression: expression,
+        ));
+
+        start = position;
+      } else {
+        position += 1;
+      }
+    }
+
+    error(unexpectedEOF);
   }
 
   void tag() {
@@ -210,6 +275,8 @@ extension TagParser on Parser {
       throw UnimplementedError('svelte:element');
     }
 
+    // script/style
+
     current.children.add(element);
 
     bool selfClosing = scan('/') || isVoid(name);
@@ -218,7 +285,9 @@ extension TagParser on Parser {
     if (selfClosing) {
       element.end = position;
     } else if (name == 'textarea') {
-      throw UnimplementedError('textarea');
+      element.children = readSequence(_closingTextAreaTag, 'inside <textarea>');
+      expect(_closingTextAreaTag);
+      element.end = position;
     } else if (name == 'script' || name == 'style') {
       throw UnimplementedError('script/style');
     } else {
