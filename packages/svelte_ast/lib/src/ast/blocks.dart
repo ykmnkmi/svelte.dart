@@ -28,7 +28,7 @@ final class IfBlock extends Node implements HasElse {
 
   final Expression? whenExpression;
 
-  final bool elseIf;
+  bool elseIf;
 
   @override
   ElseBlock? elseBlock;
@@ -110,7 +110,7 @@ final class ElseBlock extends Node {
   ElseBlock({
     super.start,
     super.end,
-    super.children,
+    required super.children,
   });
 
   @override
@@ -134,27 +134,27 @@ final class ElseBlock extends Node {
 
 final class AwaitBlock extends Node {
   AwaitBlock({
-    required super.start,
-    required super.end,
-    required this.future,
-    this.futureBody,
-    this.then_,
-    this.thenBody,
-    this.catch_,
-    this.catchBody,
+    super.start,
+    super.end,
+    required this.expession,
+    this.value,
+    this.error,
+    this.pendingBlock,
+    this.thenBlock,
+    this.catchBlock,
   });
 
-  final Expression future;
+  final Expression expession;
 
-  final List<Node>? futureBody;
+  DartPattern? value;
 
-  final String? then_;
+  DartPattern? error;
 
-  final List<Node>? thenBody;
+  PendingBlock? pendingBlock;
 
-  final String? catch_;
+  ThenBlock? thenBlock;
 
-  final List<Node>? catchBody;
+  CatchBlock? catchBlock;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -167,20 +167,94 @@ final class AwaitBlock extends Node {
       'start': start,
       'end': end,
       '_': 'AwaitBlock',
-      'future': future.accept(dart2Json),
-      if (futureBody case List<Node> nodes?)
-        'futureBody': <Map<String, Object?>>[
-          for (Node node in nodes) node.toJson(),
+      'expession': expession.accept(dart2Json),
+      if (value case DartPattern value?) 'value': value.toString(),
+      if (error case DartPattern error?) 'error': error.toString(),
+      if (pendingBlock case PendingBlock pendingBlock?)
+        'pendingBlock': pendingBlock.toJson(),
+      if (thenBlock case ThenBlock thenBlock?) 'thenBlock': thenBlock.toJson(),
+      if (catchBlock case CatchBlock catchBlock?)
+        'catchBlock': catchBlock.toJson(),
+    };
+  }
+}
+
+final class PendingBlock extends Node {
+  PendingBlock({
+    super.start,
+    super.end,
+    required super.children,
+    this.skip = false,
+  });
+
+  bool skip;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitPendingBlock(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'PendingBlock',
+      if (children.isNotEmpty)
+        'children': <Map<String, Object?>>[
+          for (var node in children) node.toJson(),
         ],
-      if (then_ case String string?) 'then': string,
-      if (thenBody case List<Node> nodes?)
-        'thenBody': <Map<String, Object?>>[
-          for (Node node in nodes) node.toJson(),
+    };
+  }
+}
+
+final class ThenBlock extends Node {
+  ThenBlock({
+    super.start,
+    super.end,
+    required super.children,
+  });
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitThenBlock(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'ThenBlock',
+      if (children.isNotEmpty)
+        'children': <Map<String, Object?>>[
+          for (var node in children) node.toJson(),
         ],
-      if (catch_ case String string?) 'catch': string,
-      if (catchBody case List<Node> nodes?)
-        'catchBody': <Map<String, Object?>>[
-          for (Node node in nodes) node.toJson(),
+    };
+  }
+}
+
+final class CatchBlock extends Node {
+  CatchBlock({
+    super.start,
+    super.end,
+    required super.children,
+  });
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitCatchBlock(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'CatchBlock',
+      if (children.isNotEmpty)
+        'children': <Map<String, Object?>>[
+          for (var node in children) node.toJson(),
         ],
     };
   }

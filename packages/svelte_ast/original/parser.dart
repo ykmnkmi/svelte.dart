@@ -66,8 +66,7 @@ final class Parser {
   }
 
   bool match(Pattern pattern) {
-    Match? match = pattern.matchAsPrefix(string, position);
-    return match != null;
+    return pattern.matchAsPrefix(string, position) != null;
   }
 
   bool scan(Pattern pattern) {

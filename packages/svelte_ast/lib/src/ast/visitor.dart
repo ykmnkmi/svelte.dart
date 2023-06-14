@@ -5,6 +5,8 @@ abstract interface class Visitor<C, R> {
 
   R visitAwaitBlock(AwaitBlock node, C context);
 
+  R visitCatchBlock(CatchBlock node, C context);
+
   R visitCommentTag(CommentTag commentTag, C context);
 
   R visitConstTag(ConstTag node, C context);
@@ -25,7 +27,11 @@ abstract interface class Visitor<C, R> {
 
   R visitMustacheTag(MustacheTag node, C context);
 
+  R visitPendingBlock(PendingBlock node, C context);
+
   R visitRawMustacheTag(RawMustacheTag node, C context);
 
   R visitText(Text node, C context);
+
+  R visitThenBlock(ThenBlock node, C context);
 }

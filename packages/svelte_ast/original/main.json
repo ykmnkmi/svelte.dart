@@ -1,68 +1,40 @@
 {
   "start": 0,
-  "end": 58,
+  "end": 50,
   "_": "Fragment",
   "children": [
     {
       "start": 0,
-      "end": 58,
-      "_": "IfBlock",
+      "end": 50,
+      "_": "EachBlock",
       "expression": {
-        "start": 5,
-        "end": 9,
-        "class": "BooleanLiteral",
-        "value": true
+        "start": 7,
+        "end": 12,
+        "class": "SimpleIdentifier",
+        "name": "users",
+        "isAssignable": true
       },
+      "context": "user",
       "children": [
         {
-          "start": 10,
-          "end": 19,
+          "start": 21,
+          "end": 29,
           "_": "Text",
-          "raw": "\n  then: ",
-          "data": "then: "
-        },
-        {
-          "start": 19,
-          "end": 27,
-          "_": "MustacheTag",
-          "expression": {
-            "start": 20,
-            "end": 26,
-            "class": "SimpleStringLiteral",
-            "value": "then",
-            "contentsEnd": 25,
-            "contentsOffset": 21,
-            "isSingleQuoted": true,
-            "stringValue": "then"
-          }
+          "raw": "\n  user\n",
+          "data": "user"
         }
       ],
       "elseBlock": {
-        "start": 35,
-        "end": 53,
+        "start": 29,
+        "end": 43,
         "_": "ElseBlock",
         "children": [
           {
-            "start": 35,
-            "end": 44,
+            "start": 36,
+            "end": 43,
             "_": "Text",
-            "raw": "\n  else: ",
-            "data": "else: "
-          },
-          {
-            "start": 44,
-            "end": 52,
-            "_": "MustacheTag",
-            "expression": {
-              "start": 45,
-              "end": 51,
-              "class": "SimpleStringLiteral",
-              "value": "else",
-              "contentsEnd": 50,
-              "contentsOffset": 46,
-              "isSingleQuoted": true,
-              "stringValue": "else"
-            }
+            "raw": "\n  ...\n",
+            "data": "..."
           }
         ]
       }

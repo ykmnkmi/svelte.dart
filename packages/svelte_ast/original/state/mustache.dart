@@ -25,9 +25,11 @@ final RegExp _ifWhen = RegExp('(\\s+when|\\s*})');
 
 final RegExp _eachAs = RegExp('\\s+as');
 
-final RegExp _eachIndexOrKey = RegExp('(\\s*,|\\s*\\(|\\s*})');
+final RegExp _eachIndexOrKeyStart = RegExp('(\\s*,|\\s*\\(|\\s*})');
 
-final RegExp _eachKey = RegExp('\\s*\\)');
+final RegExp _awaitThen = RegExp('(\\s+then|\\s+catch|\\s*})');
+
+final RegExp _awaitCatch = RegExp('(\\s+catch|\\s*})');
 
 void trimBlock(Node? block, bool before, bool after) {
   if (block == null || block.children.isEmpty) {
@@ -72,141 +74,222 @@ extension MustacheParser on Parser {
     allowSpace();
 
     if (scan('/')) {
-      Node block = current;
-      String expected;
-
-      if (block is Element && closingTagOmitted(block.name)) {
-        block.end = start;
-        stack.removeLast();
-        block = current;
-      }
-
-      if (block is ElseBlock) {
-        block.end = start;
-        stack.removeLast();
-        block = current;
-      }
-
-      if (block is IfBlock) {
-        expected = 'if';
-      } else if (block is EachBlock) {
-        expected = 'each';
-      } else if (block is KeyBlock) {
-        expected = 'key';
-      } else {
-        error(unexpectedBlockClose);
-      }
-
-      expect(expected);
-      allowSpace();
-      expect('}');
-
-      while (block is IfBlock && block.elseIf) {
-        block.end = position;
-        stack.removeLast();
-        block = current;
-
-        if (block case HasElse(elseBlock: ElseBlock elseBlock?)) {
-          elseBlock.end = start;
-        }
-      }
-
-      bool before =
-          block.start == 0 || spaceRe.hasMatch(string[block.start - 1]);
-      bool after = isDone || spaceRe.hasMatch(string[position]);
-      trimBlock(block, before, after);
-
-      block.end = position;
-      stack.removeLast();
-      block = current;
+      _close(start);
     } else if (scan(':else')) {
-      if (scan('if')) {
-        error(invalidElseIf);
-      }
-
-      allowSpace();
-
-      if (scan('if')) {
-        Node block = current;
-
-        if (block is! IfBlock) {
-          for (Node node in stack) {
-            if (node is IfBlock) {
-              error(invalidElsePlacementUnclosedBlock(nodeToString(block)));
-            }
-          }
-
-          error(invalidElseIfPlacementOutsideIf);
-        }
-
-        allowSpace(required: true);
-
-        var (
-          expression,
-          casePattern,
-          whenExpression,
-        ) = _ifRest();
-
-        allowSpace();
-        expect('}');
-
-        IfBlock ifBlock = IfBlock(
-          start: start,
-          expression: expression,
-          casePattern: casePattern,
-          whenExpression: whenExpression,
-          children: <Node>[],
-          elseIf: true,
-        );
-
-        block.elseBlock = ElseBlock(
-          start: position,
-          children: <Node>[ifBlock],
-        );
-
-        stack.add(ifBlock);
-      } else {
-        Node block = current;
-
-        if (block is! HasElse) {
-          for (Node node in stack) {
-            if (node is HasElse) {
-              error(invalidElsePlacementUnclosedBlock(nodeToString(block)));
-            }
-          }
-
-          error(invalidElseIfPlacementOutsideIf);
-        }
-
-        allowSpace();
-        expect('}');
-
-        ElseBlock elseBlock = ElseBlock(
-          start: position,
-          children: <Node>[],
-        );
-
-        block.elseBlock = elseBlock;
-        stack.add(elseBlock);
-      }
+      _else(start);
+    } else if (match(':then') || match(':catch')) {
+      _thenElse(start);
     } else if (scan('#')) {
-      if (match('if')) {
-        _ifBlock(start);
-      } else if (match('each')) {
-        _eachBlock(start);
-      } else if (match('key')) {
-        _keyBlock(start);
-      } else {
-        error(expectedBlockType);
-      }
-    } else if (match('@html')) {
+      _open(start);
+    } else if (scan('@html')) {
       _html(start);
-    } else if (match('@debug')) {
+    } else if (scan('@debug')) {
       _debug(start);
-    } else if (match('@const')) {
+    } else if (scan('@const')) {
       _const(start);
     } else {
       _expression(start);
+    }
+  }
+
+  void _close(int start) {
+    Node block = current;
+    String expected;
+
+    if (block is Element && closingTagOmitted(block.name)) {
+      block.end = start;
+      stack.removeLast();
+      block = current;
+    }
+
+    if (block is ElseBlock ||
+        block is PendingBlock ||
+        block is ThenBlock ||
+        block is CatchBlock) {
+      block.end = start;
+      stack.removeLast();
+      block = current;
+    }
+
+    if (block is IfBlock) {
+      expected = 'if';
+    } else if (block is EachBlock) {
+      expected = 'each';
+    } else if (block is AwaitBlock) {
+      expected = 'await';
+    } else if (block is KeyBlock) {
+      expected = 'key';
+    } else {
+      error(unexpectedBlockClose);
+    }
+
+    expect(expected);
+    allowSpace();
+    expect('}');
+
+    while (block is IfBlock && block.elseIf) {
+      block.end = start;
+      stack.removeLast();
+      block = current;
+
+      if (block case HasElse(elseBlock: ElseBlock elseBlock?)) {
+        elseBlock.end = start;
+      }
+    }
+
+    bool before = block.start == 0 || spaceRe.hasMatch(string[block.start - 1]);
+    bool after = isDone || spaceRe.hasMatch(string[position]);
+    trimBlock(block, before, after);
+
+    block.end = position;
+    stack.removeLast();
+    block = current;
+  }
+
+  void _else(int start) {
+    if (scan('if')) {
+      error(invalidElseIf);
+    }
+
+    allowSpace(required: true);
+
+    if (scan('if')) {
+      Node block = current;
+
+      if (block is! IfBlock) {
+        for (Node node in stack) {
+          if (node is IfBlock) {
+            error(invalidElsePlacementUnclosedBlock(nodeToString(block)));
+          }
+        }
+
+        error(invalidElseIfPlacementOutsideIf);
+      }
+
+      allowSpace(required: true);
+
+      var (
+        expression,
+        casePattern,
+        whenExpression,
+      ) = _ifRest();
+
+      allowSpace();
+      expect('}');
+
+      IfBlock ifBlock = IfBlock(
+        start: start,
+        expression: expression,
+        casePattern: casePattern,
+        whenExpression: whenExpression,
+        children: <Node>[],
+        elseIf: true,
+      );
+
+      block.elseBlock = ElseBlock(
+        start: start,
+        children: <Node>[ifBlock],
+      );
+
+      stack.add(ifBlock);
+    } else {
+      Node block = current;
+
+      if (block is! HasElse) {
+        for (Node node in stack) {
+          if (node is HasElse) {
+            error(invalidElsePlacementUnclosedBlock(nodeToString(block)));
+          }
+        }
+
+        error(invalidElseIfPlacementOutsideIf);
+      }
+
+      allowSpace();
+      expect('}');
+
+      ElseBlock elseBlock = ElseBlock(
+        start: start,
+        children: <Node>[],
+      );
+
+      block.elseBlock = elseBlock;
+      stack.add(elseBlock);
+    }
+  }
+
+  void _thenElse(int start) {
+    Node block = current;
+    bool isThen = scan(':then') || !scan(':catch');
+
+    if (isThen) {
+      if (block is! PendingBlock) {
+        for (Node node in stack) {
+          if (node is PendingBlock) {
+            error(invalidThenPlacementUnclosedBlock(nodeToString(block)));
+          }
+        }
+
+        error(invalidThenPlacementWithoutAwait);
+      }
+    } else {
+      if (block is! ThenBlock && block is! PendingBlock) {
+        for (Node node in stack) {
+          if (node is ThenBlock || node is PendingBlock) {
+            error(invalidCatchPlacementUnclosedBlock(nodeToString(block)));
+          }
+        }
+
+        error(invalidCatchPlacementWithoutAwait);
+      }
+    }
+
+    block.end = start;
+    stack.removeLast();
+
+    AwaitBlock awaitBlock = current as AwaitBlock;
+
+    if (!scan(closingCurlyBrace)) {
+      allowSpace(required: true);
+
+      if (isThen) {
+        awaitBlock.value = readAssignmentPattern(_awaitCatch);
+      } else {
+        awaitBlock.error = readAssignmentPattern(closingCurlyBrace);
+      }
+
+      allowSpace();
+      expect('}');
+    }
+
+    Node childBlock;
+
+    if (isThen) {
+      childBlock = awaitBlock.thenBlock = ThenBlock(
+        start: start,
+        children: <Node>[],
+      );
+    } else {
+      childBlock = awaitBlock.catchBlock = CatchBlock(
+        start: start,
+        children: <Node>[],
+      );
+    }
+
+    stack.add(childBlock);
+  }
+
+  void _open(int start) {
+    if (scan('if')) {
+      _ifBlock(start);
+    } else if (scan('each')) {
+      _eachBlock(start);
+    } else if (scan('await')) {
+      _awaitBlock(start);
+    } else if (scan('key')) {
+      _keyBlock(start);
+    } else {
+      error(expectedBlockType);
     }
   }
 
@@ -217,9 +300,7 @@ extension MustacheParser on Parser {
     DartPattern? casePattern;
 
     if (scan('case')) {
-      casePattern = withDartParser<DartPattern>(_ifWhen, (parser, token) {
-        return parser.parsePattern(token, PatternContext.matching);
-      });
+      casePattern = readAssignmentPattern(_ifWhen);
     }
 
     allowSpace();
@@ -227,16 +308,13 @@ extension MustacheParser on Parser {
     Expression? whenExpression;
 
     if (scan('when')) {
-      whenExpression = withDartParser<Expression>(_ifWhen, (parser, token) {
-        return parser.parseExpression(token);
-      });
+      whenExpression = readExpression(closingCurlyBrace);
     }
 
     return (expression, casePattern, whenExpression);
   }
 
   void _ifBlock(int start) {
-    expect('if');
     allowSpace(required: true);
 
     var (
@@ -261,7 +339,6 @@ extension MustacheParser on Parser {
   }
 
   void _eachBlock(int start) {
-    expect('each');
     allowSpace(required: true);
 
     Expression expression = readExpression(_eachAs);
@@ -269,7 +346,7 @@ extension MustacheParser on Parser {
     expect('as');
     allowSpace(required: true);
 
-    DartPattern context = readAssignmentPattern(_eachIndexOrKey);
+    DartPattern context = readAssignmentPattern(_eachIndexOrKeyStart);
     allowSpace();
 
     String? index;
@@ -287,9 +364,8 @@ extension MustacheParser on Parser {
 
     Expression? key;
 
-    if (scan('(')) {
-      allowSpace();
-      key = readExpression(_eachKey);
+    if (scan(openingParen)) {
+      key = readExpression(closingParen);
       allowSpace();
       expect(')');
     }
@@ -310,11 +386,67 @@ extension MustacheParser on Parser {
     stack.add(eachBlock);
   }
 
-  void _keyBlock(int start) {
-    expect('key');
+  void _awaitBlock(int start) {
     allowSpace(required: true);
 
-    Expression expression = readExpression('}');
+    Expression expression = readExpression(_awaitThen);
+
+    AwaitBlock awaitBlock = AwaitBlock(
+      start: start,
+      expession: expression,
+    );
+
+    allowSpace();
+
+    bool awaitBlockThenShorthand = scan('then');
+
+    if (awaitBlockThenShorthand) {
+      if (!scan(closingCurlyBrace)) {
+        allowSpace(required: true);
+        awaitBlock.value = readAssignmentPattern(_awaitCatch);
+        allowSpace();
+      }
+    }
+
+    bool awaitBlockCatchShorthand = !awaitBlockThenShorthand && scan('catch');
+
+    if (awaitBlockCatchShorthand) {
+      if (!scan(closingCurlyBrace)) {
+        allowSpace(required: true);
+        awaitBlock.error = readAssignmentPattern(closingCurlyBrace);
+        allowSpace();
+      }
+    }
+
+    expect('}');
+
+    current.children.add(awaitBlock);
+    stack.add(awaitBlock);
+
+    Node childBlock;
+
+    if (awaitBlockThenShorthand) {
+      childBlock = awaitBlock.thenBlock = ThenBlock(
+        children: <Node>[],
+      );
+    } else if (awaitBlockCatchShorthand) {
+      childBlock = awaitBlock.catchBlock = CatchBlock(
+        children: <Node>[],
+      );
+    } else {
+      childBlock = awaitBlock.pendingBlock = PendingBlock(
+        children: <Node>[],
+      );
+    }
+
+    childBlock.start = start;
+    stack.add(childBlock);
+  }
+
+  void _keyBlock(int start) {
+    allowSpace(required: true);
+
+    Expression expression = readExpression(closingCurlyBrace);
     allowSpace();
     expect('}');
 
@@ -329,10 +461,9 @@ extension MustacheParser on Parser {
   }
 
   void _html(int start) {
-    expect('@html');
     allowSpace(required: true);
 
-    Expression expression = readExpression('}');
+    Expression expression = readExpression(closingCurlyBrace);
     allowSpace();
     expect('}');
 
@@ -344,15 +475,14 @@ extension MustacheParser on Parser {
   }
 
   void _debug(int start) {
-    expect('@debug');
-    allowSpace(required: true);
-
     List<SimpleIdentifier> identifiers;
 
-    if (scan('}')) {
+    if (scan(closingCurlyBrace)) {
       identifiers = const <SimpleIdentifier>[];
     } else {
-      identifiers = withDartParser('}', (parser, token) {
+      allowSpace();
+
+      identifiers = withDartParser(closingCurlyBrace, (parser, token) {
         return parser.parseIdentifierList(token);
       });
     }
@@ -368,10 +498,9 @@ extension MustacheParser on Parser {
   }
 
   void _const(int start) {
-    expect('@const');
     allowSpace(required: true);
 
-    Expression expression = readExpression('}');
+    Expression expression = readExpression(closingCurlyBrace);
 
     if (!(expression is AssignmentExpression ||
         expression is PatternAssignment)) {
@@ -389,7 +518,7 @@ extension MustacheParser on Parser {
   }
 
   void _expression(int start) {
-    Expression expression = readExpression('}');
+    Expression expression = readExpression(closingCurlyBrace);
     allowSpace();
     expect('}');
 

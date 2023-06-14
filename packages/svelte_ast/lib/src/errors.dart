@@ -73,7 +73,7 @@ const ErrorCode emptyGlobalSelector = (
 
 const ErrorCode expectedBlockType = (
   code: 'expected-block-type',
-  message: 'Expected if, each or await',
+  message: 'Expected if, each await or key',
 );
 
 const ErrorCode expectedName = (

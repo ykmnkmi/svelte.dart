@@ -51,6 +51,14 @@ class Parser {
 
   Token token;
 
+  int get position {
+    return token.offset;
+  }
+
+  bool get isDone {
+    return token.isEof;
+  }
+
   bool skipToken([int n = 1]) {
     for (int i = 0; i < n; i += 1) {
       if (token.next case Token next when next.type != TokenType.EOF) {
@@ -90,7 +98,7 @@ class Parser {
       return token;
     }
 
-    if (token.isEof) {
+    if (isDone) {
       error(unexpectedEOFToken(type.name));
     }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -7,11 +9,11 @@ import 'package:svelte_ast/src/errors.dart';
 import 'parser.dart';
 
 const String string = '''
-{#if true}
-  then: {'then'}
+{#each users as user}
+  user
 {:else}
-  else: {'else'}
-{/if}''';
+  ...
+{/each}''';
 
 void main() {
   try {

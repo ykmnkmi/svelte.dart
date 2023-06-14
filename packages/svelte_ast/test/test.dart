@@ -7,11 +7,11 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String template = '''
-{#if true}
-  then: {'then'}
-{:else if false}
-  else: {'else'}
-{/if}''';
+{#each user in users}
+  user
+{:else}
+  ...
+{/each}''';
 
 void main() {
   try {
