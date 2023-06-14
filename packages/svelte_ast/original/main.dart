@@ -9,15 +9,11 @@ import 'package:svelte_ast/src/errors.dart';
 import 'parser.dart';
 
 const String string = '''
-{#each users as user}
-  user
-{:else}
-  ...
-{/each}''';
+<p>hello {name}!</p>''';
 
 void main() {
   try {
-    Parser parser = Parser(string, uri: Uri.file('main.dart'));
+    Parser parser = Parser(string: string, uri: Uri.file('main.dart'));
     Map<String, Object?> json = parser.html.toJson();
     String output = const JsonEncoder.withIndent('  ').convert(json);
     File('original/main.json').writeAsStringSync(output);

@@ -1,7 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart'
-    show PatternContext;
 import 'package:analyzer/dart/ast/ast.dart'
     show
         AssignmentExpression,

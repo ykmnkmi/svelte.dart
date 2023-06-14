@@ -33,20 +33,22 @@ final class Attribute extends Node {
   }
 }
 
-final class Element extends Node {
+abstract final interface class HasName implements Node {
+  String get name;
+}
+
+final class Element extends Node implements HasName {
   Element({
-    required super.start,
-    required super.end,
+    super.start,
+    super.end,
     required this.name,
-    this.attributes = const <Attribute>[],
-    required this.body,
+    required this.attributes,
+    required super.children,
   });
 
   final String name;
 
   final List<Attribute> attributes;
-
-  final List<Node> body;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -62,11 +64,11 @@ final class Element extends Node {
       'name': name,
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
-          for (var attribute in attributes) attribute.toJson(),
+          for (Attribute attribute in attributes) attribute.toJson(),
         ],
-      if (body.isNotEmpty)
-        'body': <Map<String, Object?>>[
-          for (var node in body) node.toJson(),
+      if (children.isNotEmpty)
+        'children': <Map<String, Object?>>[
+          for (Node node in children) node.toJson(),
         ],
     };
   }

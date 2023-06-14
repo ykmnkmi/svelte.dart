@@ -1,6 +1,6 @@
 part of '../ast.dart';
 
-abstract final class HasElse implements Node {
+abstract final interface class HasElse implements Node {
   abstract ElseBlock? elseBlock;
 }
 
@@ -288,5 +288,7 @@ final class KeyBlock extends Node {
     };
   }
 }
+
+abstract final class Head extends Node {}
 
 abstract final class InlineComponent implements Node {}

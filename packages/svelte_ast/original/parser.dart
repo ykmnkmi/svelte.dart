@@ -9,8 +9,12 @@ typedef AutoCloseTag = ({String? tag, String reason, int depth});
 final RegExp _spaceRe = RegExp('[ \t\r\n]*');
 
 final class Parser {
-  Parser(this.string, {this.fileName, this.uri})
-      : length = string.length,
+  Parser({
+    required this.string,
+    this.fileName,
+    this.uri,
+    this.customElement = false,
+  })  : length = string.length,
         sourceFile = SourceFile.fromString(string, url: uri) {
     while (isNotDone) {
       fragment();
@@ -22,6 +26,8 @@ final class Parser {
   final String? fileName;
 
   final Uri? uri;
+
+  final bool customElement;
 
   final int length;
 

@@ -1,6 +1,8 @@
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/extract_svelte_ignore.dart';
+import 'package:svelte_ast/src/html.dart';
+import 'package:svelte_ast/src/names.dart';
 
 import '../parser.dart';
 
@@ -16,7 +18,7 @@ final RegExp _validTagNameRe = RegExp('^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*');
 
 final RegExp _tagNameEndRe = RegExp('(\\s|\\/|>)');
 
-final RegExp _capitalLetter = RegExp('[A-Z]');
+final RegExp _capitalLetter = RegExp('^[A-Z]');
 
 final RegExp _attributeNameEndRe = RegExp('[\\s=\\/>"\']');
 
@@ -32,8 +34,22 @@ const Map<String, String> _metaTags = <String, String>{
   'svelte:body': 'Body',
 };
 
+bool _parentIsHead(List<Node> stack) {
+  for (Node node in stack.reversed) {
+    if (node is Head) {
+      return true;
+    }
+
+    if (node is Element || node is InlineComponent) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 extension TagParser on Parser {
-  String readTagName() {
+  String _readTagName() {
     int start = position;
 
     if (scan(_self)) {
@@ -98,7 +114,7 @@ extension TagParser on Parser {
 
     Node parent = current;
     bool isClosingTag = scan('/');
-    String name = readTagName();
+    String name = _readTagName();
 
     if (_metaTags[name] case String metaTag?) {
       String slug = metaTag.toLowerCase();
@@ -121,6 +137,92 @@ extension TagParser on Parser {
       }
     }
 
-    throw UnimplementedError();
+    Node element;
+
+    if (_capitalLetter.hasMatch(name) ||
+        name == 'svelte:self' ||
+        name == 'svelte:component') {
+      throw UnimplementedError('InlineComponent');
+    } else if (name == 'svelte:fragment') {
+      throw UnimplementedError('SlotTemplate');
+    } else if (name == 'title' && _parentIsHead(stack)) {
+      throw UnimplementedError('Title');
+    } else if (name == 'slot' && !customElement) {
+      throw UnimplementedError('Slot');
+    } else {
+      element = Element(
+        start: start,
+        name: name,
+        attributes: <Attribute>[],
+        children: <Node>[],
+      );
+    }
+
+    allowSpace();
+
+    if (isClosingTag) {
+      if (isVoid(name)) {
+        error(invalidVoidContent(name), start);
+      }
+
+      expect('>');
+
+      while (parent is! HasName || parent.name != name) {
+        if (parent is! Element) {
+          if (lastAutoCloseTag case AutoCloseTag tag? when tag.tag == name) {
+            error(invalidClosingTagAutoClosed(name, tag.reason), start);
+          } else {
+            error(invalidClosingTagUnopened(name), start);
+          }
+        }
+
+        parent.end = start;
+        stack.removeLast();
+        parent = current;
+      }
+
+      parent.end = position;
+      stack.removeLast();
+
+      if (lastAutoCloseTag case AutoCloseTag tag?
+          when stack.length < tag.depth) {
+        lastAutoCloseTag = null;
+      }
+
+      return;
+    }
+
+    if (closingTagOmitted(parent is HasName ? parent.name : null, name)) {
+      parent.end = start;
+      stack.removeLast();
+      lastAutoCloseTag = (
+        tag: parent is HasName ? parent.name : null,
+        reason: name,
+        depth: stack.length,
+      );
+    }
+
+    if (name == 'svelte:component') {
+      throw UnimplementedError('svelte:component');
+    }
+
+    if (name == 'svelte:element') {
+      throw UnimplementedError('svelte:element');
+    }
+
+    current.children.add(element);
+
+    bool selfClosing = scan('/') || isVoid(name);
+    expect('>');
+
+    if (selfClosing) {
+      element.end = position;
+    } else if (name == 'textarea') {
+      throw UnimplementedError('textarea');
+    } else if (name == 'script' || name == 'style') {
+      throw UnimplementedError('script/style');
+    } else {
+      stack.add(element);
+    }
   }
 }

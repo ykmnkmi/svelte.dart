@@ -1,43 +1,41 @@
 {
   "start": 0,
-  "end": 50,
+  "end": 20,
   "_": "Fragment",
   "children": [
     {
       "start": 0,
-      "end": 50,
-      "_": "EachBlock",
-      "expression": {
-        "start": 7,
-        "end": 12,
-        "class": "SimpleIdentifier",
-        "name": "users",
-        "isAssignable": true
-      },
-      "context": "user",
+      "end": 20,
+      "_": "Element",
+      "name": "p",
       "children": [
         {
-          "start": 21,
-          "end": 29,
+          "start": 3,
+          "end": 9,
           "_": "Text",
-          "raw": "\n  user\n",
-          "data": "user"
-        }
-      ],
-      "elseBlock": {
-        "start": 29,
-        "end": 43,
-        "_": "ElseBlock",
-        "children": [
-          {
-            "start": 36,
-            "end": 43,
-            "_": "Text",
-            "raw": "\n  ...\n",
-            "data": "..."
+          "raw": "hello ",
+          "data": "hello "
+        },
+        {
+          "start": 9,
+          "end": 15,
+          "_": "MustacheTag",
+          "expression": {
+            "start": 10,
+            "end": 14,
+            "class": "SimpleIdentifier",
+            "name": "name",
+            "isAssignable": true
           }
-        ]
-      }
+        },
+        {
+          "start": 15,
+          "end": 16,
+          "_": "Text",
+          "raw": "!",
+          "data": "!"
+        }
+      ]
     }
   ]
 }

@@ -32,7 +32,7 @@ extension TagParser on Parser {
 
     skipNextTokenIf(SvelteToken.TAG_SPACE);
 
-    List<Node> body = _body(tagName, (token) {
+    List<Node> children = _body(tagName, (token) {
       return token.type == SvelteToken.TAG_IDENTIFIER &&
           token.lexeme == tagName;
     });
@@ -44,7 +44,7 @@ extension TagParser on Parser {
         end: close.end,
         name: tagName,
         attributes: attributes,
-        body: body);
+        children: children);
   }
 
   List<Node> _body(String tag, bool Function(Token token) end) {
