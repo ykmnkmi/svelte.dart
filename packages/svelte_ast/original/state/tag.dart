@@ -21,6 +21,10 @@ final RegExp _validTagNameRe = RegExp('^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*');
 
 final RegExp _tagNameEndRe = RegExp('(\\s|\\/|>)');
 
+final RegExp _tokenEndingCharacter = RegExp('[\\s=\\/>"\']');
+
+final RegExp _startsWithQuoteCharacters = RegExp('["\']');
+
 final RegExp _capitalLetter = RegExp('^[A-Z]');
 
 final RegExp _nonCharRe = RegExp('[^A-Za-z]');
@@ -35,6 +39,21 @@ const Map<String, String> _metaTags = <String, String>{
   'svelte:document': 'Document',
   'svelte:body': 'Body',
 };
+
+DirectiveType? _getDirectiveType(String name) {
+  return switch (name) {
+    'use' => DirectiveType.action,
+    'animate' => DirectiveType.animation,
+    'bind' => DirectiveType.binding,
+    'class' => DirectiveType.classDirective,
+    'style' => DirectiveType.styleDirective,
+    'on' => DirectiveType.eventHandler,
+    'let' => DirectiveType.let,
+    'ref' => DirectiveType.ref,
+    'in' || 'out' || 'transition' => DirectiveType.transition,
+    _ => null,
+  };
+}
 
 bool _parentIsHead(List<Node> stack) {
   for (Node node in stack.reversed) {
@@ -96,7 +115,80 @@ extension TagParser on Parser {
     error(invalidTagName, start);
   }
 
-  List<Node> readSequence(Pattern end, String location) {
+  Attribute? _readAttribute(Set<String> uniqueNames) {
+    int start = position;
+
+    void checkUnique(String name) {
+      if (uniqueNames.contains(name)) {
+        error(duplicateAttribute, start);
+      }
+
+      uniqueNames.add(name);
+    }
+
+    if (scan('{')) {
+      throw UnimplementedError();
+    }
+
+    String name = readUntil(_tokenEndingCharacter);
+
+    if (name.isEmpty) {
+      return null;
+    }
+
+    int end = position;
+    allowSpace();
+
+    int colonIndex = name.indexOf(':');
+    DirectiveType? type;
+
+    if (colonIndex != -1) {
+      type = _getDirectiveType(name.substring(0, colonIndex));
+    }
+
+    Object? value = true;
+
+    if (scan('=')) {
+      allowSpace();
+      value = _readAttributeValue();
+      end = position;
+    } else if (match(_startsWithQuoteCharacters)) {
+      error(unexpectedToken('='), position);
+    }
+
+    if (type case DirectiveType type?) {
+      var <String>[
+        String directive,
+        ...List<String> modifiers,
+      ] = name.substring(colonIndex + 1).split('|');
+
+      if (directive.isEmpty) {
+        error(emptyDirectiveName(type.name), start + colonIndex + 1);
+      }
+
+      if (type == DirectiveType.binding && directive != 'this') {
+        checkUnique(directive);
+      } else if (type != DirectiveType.eventHandler &&
+          type != DirectiveType.action) {
+        checkUnique(name);
+      }
+
+      if (type == DirectiveType.ref) {
+        error(invalidRefDirective(name), start);
+      }
+
+      throw UnimplementedError('directove: ${type.name}');
+    }
+
+    checkUnique(name);
+    return Attribute(start: start, end: end, name: name, value: value);
+  }
+
+  Object? _readAttributeValue() {
+    throw UnimplementedError('attribute value');
+  }
+
+  List<Node> _readSequence(Pattern end, String location) {
     int start = position;
     List<Node> chunks = <Node>[];
 
@@ -159,10 +251,7 @@ extension TagParser on Parser {
     error(unexpectedEOF);
   }
 
-  void tag() {
-    int start = position;
-    expect('<');
-
+  void tag(int start) {
     if (scan('!--')) {
       String? data = readUntil('-->');
       expect('-->', unclosedComment);
@@ -202,18 +291,34 @@ extension TagParser on Parser {
       }
     }
 
-    Node element;
+    Tag element;
 
     if (_capitalLetter.hasMatch(name) ||
         name == 'svelte:self' ||
         name == 'svelte:component') {
-      throw UnimplementedError('InlineComponent');
+      element = InlineComponent(
+        start: start,
+        attributes: <Attribute>[],
+        children: <Node>[],
+      );
     } else if (name == 'svelte:fragment') {
-      throw UnimplementedError('SlotTemplate');
+      element = SlotTemplate(
+        start: start,
+        attributes: <Attribute>[],
+        children: <Node>[],
+      );
     } else if (name == 'title' && _parentIsHead(stack)) {
-      throw UnimplementedError('Title');
+      element = Title(
+        start: start,
+        attributes: <Attribute>[],
+        children: <Node>[],
+      );
     } else if (name == 'slot' && !customElement) {
-      throw UnimplementedError('Slot');
+      element = Slot(
+        start: start,
+        attributes: <Attribute>[],
+        children: <Node>[],
+      );
     } else {
       element = Element(
         start: start,
@@ -267,6 +372,17 @@ extension TagParser on Parser {
       );
     }
 
+    Set<String> uniqueNames = <String>{};
+
+    while (true) {
+      if (_readAttribute(uniqueNames) case Attribute attribute?) {
+        element.attributes.add(attribute);
+        allowSpace();
+      } else {
+        break;
+      }
+    }
+
     if (name == 'svelte:component') {
       throw UnimplementedError('svelte:component');
     }
@@ -285,7 +401,8 @@ extension TagParser on Parser {
     if (selfClosing) {
       element.end = position;
     } else if (name == 'textarea') {
-      element.children = readSequence(_closingTextAreaTag, 'inside <textarea>');
+      element.children =
+          _readSequence(_closingTextAreaTag, 'inside <textarea>');
       expect(_closingTextAreaTag);
       element.end = position;
     } else if (name == 'script' || name == 'style') {

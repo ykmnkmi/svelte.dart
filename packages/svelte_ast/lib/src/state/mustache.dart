@@ -48,42 +48,6 @@ bool _isEndKey(Token token) {
       token.next!.lexeme == 'key';
 }
 
-void _trimBlock(Node? block, bool before, bool after) {
-  if (block == null || block.children.isEmpty) {
-    return;
-  }
-
-  Node first = block.children.first;
-
-  if (first is Text && before) {
-    String data = trimStart(first.data);
-
-    if (data.isEmpty) {
-      block.children.removeAt(0);
-    } else {
-      first.data = data;
-    }
-  }
-
-  Node last = block.children.last;
-
-  if (last is Text && after) {
-    last.data = trimEnd(last.data);
-
-    if (last.data.isEmpty) {
-      block.children.removeLast();
-    }
-  }
-
-  if (block is HasElse) {
-    _trimBlock(block.elseBlock, before, after);
-  }
-
-  if (first is IfBlock && first.elseIf) {
-    _trimBlock(first, before, after);
-  }
-}
-
 extension MustacheParser on Parser {
   Node mustache() {
     Token open = expectToken(TokenType.OPEN_CURLY_BRACKET);
@@ -107,7 +71,7 @@ extension MustacheParser on Parser {
 
     bool before = block.start == 0 || spaceRe.hasMatch(string[block.start - 1]);
     bool after = isDone || spaceRe.hasMatch(string[position]);
-    _trimBlock(block, before, after);
+    trimBlock(block, before, after);
     return block;
   }
 

@@ -8,7 +8,7 @@ part 'ast/visitor.dart';
 
 const DartToJsonVisitor dart2Json = DartToJsonVisitor();
 
-abstract final class Node {
+abstract class Node {
   Node({
     this.start = -1,
     this.end = -1,

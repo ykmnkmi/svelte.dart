@@ -6,8 +6,8 @@ import '../parser.dart';
 final RegExp _textEndRe = RegExp('[<{]');
 
 extension TextParser on Parser {
-  void text() {
-    int found = string.indexOf(_textEndRe, position);
+  void text(int start) {
+    int found = string.indexOf(_textEndRe, start);
 
     if (found == -1) {
       if (isDone) {
@@ -17,14 +17,16 @@ extension TextParser on Parser {
       found = length;
     }
 
-    String raw = string.substring(position, found);
+    String raw = string.substring(start, found);
     String data = decodeCharacterReferences(raw, false);
 
     current.children.add(Text(
-      start: position,
-      end: position = found,
+      start: start,
+      end: found,
       raw: raw,
       data: data,
     ));
+
+    position = found;
   }
 }

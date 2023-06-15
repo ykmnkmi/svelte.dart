@@ -1,6 +1,7 @@
 import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
+import 'package:svelte_ast/src/patterns.dart';
 
 import 'state/fragment.dart';
 
@@ -16,8 +17,45 @@ final class Parser {
     this.customElement = false,
   })  : length = string.length,
         sourceFile = SourceFile.fromString(string, url: uri) {
+    stack.add(html);
+
     while (isNotDone) {
       fragment();
+    }
+
+    if (stack.length > 1) {
+      Node current = this.current;
+      String type, slug;
+
+      if (current is Element) {
+        type = '<${current.name}>';
+        slug = 'element';
+      } else {
+        type = 'Block';
+        slug = 'block';
+      }
+
+      error((
+        code: 'unclosed-$slug',
+        message: '$type was left open',
+      ), current.start);
+    }
+
+    if (html.children.isNotEmpty) {
+      int start = html.children.first.start;
+
+      while (spaceRe.hasMatch(string[start])) {
+        start += 1;
+      }
+
+      int end = html.children.last.end;
+
+      while (spaceRe.hasMatch(string[end - 1])) {
+        end -= 1;
+      }
+
+      html.start = start;
+      html.end = end;
     }
   }
 
@@ -33,15 +71,11 @@ final class Parser {
 
   final SourceFile sourceFile;
 
+  final Fragment html = Fragment(children: <Node>[]);
+
+  final List<Node> stack = <Node>[];
+
   final Set<String> metaTags = <String>{};
-
-  late final List<Node> stack = <Node>[html];
-
-  late final Fragment html = Fragment(
-    start: 0,
-    end: length,
-    children: <Node>[],
-  );
 
   int position = 0;
 

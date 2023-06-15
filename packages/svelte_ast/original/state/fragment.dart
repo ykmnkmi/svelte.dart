@@ -5,12 +5,14 @@ import 'text.dart';
 
 extension FragmentParser on Parser {
   void fragment() {
-    if (match('<')) {
-      tag();
-    } else if (match('{')) {
-      mustache();
+    int start = position;
+
+    if (scan('<')) {
+      tag(start);
+    } else if (scan('{')) {
+      mustache(start);
     } else {
-      text();
+      text(start);
     }
   }
 }

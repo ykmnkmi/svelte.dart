@@ -29,46 +29,8 @@ final RegExp _awaitThen = RegExp('(\\s+then|\\s+catch|\\s*})');
 
 final RegExp _awaitCatch = RegExp('(\\s+catch|\\s*})');
 
-void trimBlock(Node? block, bool before, bool after) {
-  if (block == null || block.children.isEmpty) {
-    return;
-  }
-
-  Node first = block.children.first;
-
-  if (first is Text && before) {
-    String data = trimStart(first.data);
-
-    if (data.isEmpty) {
-      block.children.removeAt(0);
-    } else {
-      first.data = data;
-    }
-  }
-
-  Node last = block.children.last;
-
-  if (last is Text && after) {
-    last.data = trimEnd(last.data);
-
-    if (last.data.isEmpty) {
-      block.children.removeLast();
-    }
-  }
-
-  if (block is HasElse) {
-    trimBlock(block.elseBlock, before, after);
-  }
-
-  if (first is IfBlock && first.elseIf) {
-    trimBlock(first, before, after);
-  }
-}
-
 extension MustacheParser on Parser {
-  void mustache() {
-    int start = position;
-    expect('{');
+  void mustache(int start) {
     allowSpace();
 
     if (scan('/')) {
@@ -167,9 +129,9 @@ extension MustacheParser on Parser {
       allowSpace(required: true);
 
       var (
-        expression,
-        casePattern,
-        whenExpression,
+        Expression expression,
+        DartPattern? casePattern,
+        Expression? whenExpression,
       ) = _ifRest();
 
       allowSpace();
@@ -316,9 +278,9 @@ extension MustacheParser on Parser {
     allowSpace(required: true);
 
     var (
-      expression,
-      casePattern,
-      whenExpression,
+      Expression expression,
+      DartPattern? casePattern,
+      Expression? whenExpression,
     ) = _ifRest();
 
     allowSpace();
