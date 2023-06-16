@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:stack_trace/stack_trace.dart';
+import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 
 import 'parser.dart';
@@ -13,10 +14,10 @@ const String string = '''
 
 void main() {
   try {
-    Parser parser = Parser(string: string, uri: Uri.file('main.dart'));
-    Map<String, Object?> json = parser.html.toJson();
+    Node node = parse(string, uri: Uri.file('main.dart'));
+    Map<String, Object?> json = node.toJson();
     String output = const JsonEncoder.withIndent('  ').convert(json);
-    File('original/main.json').writeAsStringSync(output);
+    File('dart_token_parser/main.json').writeAsStringSync(output);
   } on ParseError catch (error, stackTrace) {
     print(error);
     print(error.span.highlight());
@@ -25,4 +26,8 @@ void main() {
     print(error);
     print(Trace.format(stackTrace));
   }
+}
+
+Node parse(String source, {String? fullName, Uri? uri}) {
+  return Parser(source, fullName: fullName, uri: uri).parse();
 }

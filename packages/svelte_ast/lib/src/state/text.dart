@@ -1,14 +1,32 @@
-// ignore_for_file: depend_on_referenced_packages, implementation_imports
-
-import 'package:_fe_analyzer_shared/src/scanner/token.dart' show Token;
 import 'package:svelte_ast/src/ast.dart';
-import 'package:svelte_ast/src/parser.dart';
-import 'package:svelte_ast/src/scanner.dart';
+import 'package:svelte_ast/src/html.dart';
+
+import '../parser.dart';
+
+final RegExp _textEndRe = RegExp('[<{]');
 
 extension TextParser on Parser {
-  Text text() {
-    Token token = expectToken(SvelteToken.DATA);
-    String value = token.lexeme;
-    return Text(start: token.offset, end: token.end, raw: value, data: value);
+  void text(int start) {
+    int found = string.indexOf(_textEndRe, start);
+
+    if (found == -1) {
+      if (isDone) {
+        return;
+      }
+
+      found = length;
+    }
+
+    String raw = string.substring(start, found);
+    String data = decodeCharacterReferences(raw, false);
+
+    current.children.add(Text(
+      start: start,
+      end: found,
+      raw: raw,
+      data: data,
+    ));
+
+    position = found;
   }
 }

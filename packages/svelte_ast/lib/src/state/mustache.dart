@@ -1,443 +1,491 @@
-// ignore_for_file: depend_on_referenced_packages, directives_ordering, implementation_imports
+// ignore_for_file: depend_on_referenced_packages
 
-import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart'
-    show PatternContext;
-import 'package:_fe_analyzer_shared/src/scanner/token.dart'
-    show Token, TokenType, Keyword;
 import 'package:analyzer/dart/ast/ast.dart'
-    show AssignmentExpression, DartPattern, Expression, SimpleIdentifier;
+    show
+        AssignmentExpression,
+        DartPattern,
+        Expression,
+        PatternAssignment,
+        SimpleIdentifier;
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
-import 'package:svelte_ast/src/parser.dart';
+import 'package:svelte_ast/src/html.dart';
+import 'package:svelte_ast/src/node.dart';
 import 'package:svelte_ast/src/patterns.dart';
-import 'package:svelte_ast/src/scanner.dart';
-import 'package:svelte_ast/src/state/text.dart';
 import 'package:svelte_ast/src/trim.dart';
 
-bool _isElse(Token token) {
-  return token.type == TokenType.COLON && token.next!.type == Keyword.ELSE;
-}
+import '../parser.dart';
+import '../read/expression.dart';
 
-bool _isEndIf(Token token) {
-  return token.type == TokenType.SLASH && token.next!.type == Keyword.IF;
-}
+final RegExp _ifCase = RegExp('(\\s+case|\\s*})');
 
-bool _isEndEach(Token token) {
-  return token.type == TokenType.SLASH &&
-      token.next!.type == TokenType.IDENTIFIER &&
-      token.next!.lexeme == 'each';
-}
+final RegExp _ifWhen = RegExp('(\\s+when|\\s*})');
 
-bool _isThen(Token token) {
-  return token.type == TokenType.COLON &&
-      token.next!.type == TokenType.IDENTIFIER &&
-      token.next!.lexeme == 'then';
-}
+final RegExp _eachAs = RegExp('\\s+as');
 
-bool _isCatch(Token token) {
-  return token.type == TokenType.COLON && token.next!.type == Keyword.CATCH;
-}
+final RegExp _eachIndexOrKeyStart = RegExp('(\\s*,|\\s*\\(|\\s*})');
 
-bool _isEndAwait(Token token) {
-  return token.type == TokenType.SLASH && token.next!.type == Keyword.AWAIT;
-}
+final RegExp _awaitThen = RegExp('(\\s+then|\\s+catch|\\s*})');
 
-bool _isEndKey(Token token) {
-  return token.type == TokenType.SLASH &&
-      token.next!.type == TokenType.IDENTIFIER &&
-      token.next!.lexeme == 'key';
-}
+final RegExp _awaitCatch = RegExp('(\\s+catch|\\s*})');
 
 extension MustacheParser on Parser {
-  Node mustache() {
-    Token open = expectToken(TokenType.OPEN_CURLY_BRACKET);
-    return switch (token.type) {
-      TokenType.HASH => _block(open),
-      TokenType.AT => _at(open),
-      _ => _expression(open),
-    };
+  void mustache(int start) {
+    allowSpace();
+
+    if (scan('/')) {
+      _close(start);
+    } else if (scan(':else')) {
+      _else(start);
+    } else if (match(':then') || match(':catch')) {
+      _thenElse(start);
+    } else if (scan('#')) {
+      _open(start);
+    } else if (scan('@html')) {
+      _html(start);
+    } else if (scan('@debug')) {
+      _debug(start);
+    } else if (scan('@const')) {
+      _const(start);
+    } else {
+      _expression(start);
+    }
   }
 
-  Node _block(Token start) {
-    expectToken(TokenType.HASH);
+  void _close(int start) {
+    Node block = current;
+    String expected;
 
-    Node block = switch (token.type) {
-      Keyword.IF => _ifBlock(start),
-      TokenType.IDENTIFIER when token.lexeme == 'each' => _eachBlock(start),
-      Keyword.AWAIT => _awaitBlock(start),
-      TokenType.IDENTIFIER when token.lexeme == 'key' => _keyBlock(start),
-      _ => throw StateError(token.type.name),
-    };
+    if (block is Element && closingTagOmitted(block.name)) {
+      block.end = start;
+      stack.removeLast();
+      block = current;
+    }
+
+    if (block is ElseBlock ||
+        block is PendingBlock ||
+        block is ThenBlock ||
+        block is CatchBlock) {
+      block.end = start;
+      stack.removeLast();
+      block = current;
+    }
+
+    if (block is IfBlock) {
+      expected = 'if';
+    } else if (block is EachBlock) {
+      expected = 'each';
+    } else if (block is AwaitBlock) {
+      expected = 'await';
+    } else if (block is KeyBlock) {
+      expected = 'key';
+    } else {
+      error(unexpectedBlockClose);
+    }
+
+    expect(expected);
+    allowSpace();
+    expect('}');
+
+    while (block is IfBlock && block.elseIf) {
+      block.end = start;
+      stack.removeLast();
+      block = current;
+
+      if (block case HasElse(elseBlock: ElseBlock elseBlock?)) {
+        elseBlock.end = start;
+      }
+    }
 
     bool before = block.start == 0 || spaceRe.hasMatch(string[block.start - 1]);
     bool after = isDone || spaceRe.hasMatch(string[position]);
     trimBlock(block, before, after);
-    return block;
+
+    block.end = position;
+    stack.removeLast();
+    block = current;
+  }
+
+  void _else(int start) {
+    if (scan('if')) {
+      error(invalidElseIf);
+    }
+
+    allowSpace(required: true);
+
+    if (scan('if')) {
+      Node block = current;
+
+      if (block is! IfBlock) {
+        for (Node node in stack) {
+          if (node is IfBlock) {
+            error(invalidElsePlacementUnclosedBlock(nodeToString(block)));
+          }
+        }
+
+        error(invalidElseIfPlacementOutsideIf);
+      }
+
+      allowSpace(required: true);
+
+      var (
+        Expression expression,
+        DartPattern? casePattern,
+        Expression? whenExpression,
+      ) = _ifRest();
+
+      allowSpace();
+      expect('}');
+
+      IfBlock ifBlock = IfBlock(
+        start: start,
+        expression: expression,
+        casePattern: casePattern,
+        whenExpression: whenExpression,
+        children: <Node>[],
+        elseIf: true,
+      );
+
+      block.elseBlock = ElseBlock(
+        start: start,
+        children: <Node>[ifBlock],
+      );
+
+      stack.add(ifBlock);
+    } else {
+      Node block = current;
+
+      if (block is! HasElse) {
+        for (Node node in stack) {
+          if (node is HasElse) {
+            error(invalidElsePlacementUnclosedBlock(nodeToString(block)));
+          }
+        }
+
+        error(invalidElseIfPlacementOutsideIf);
+      }
+
+      allowSpace();
+      expect('}');
+
+      ElseBlock elseBlock = ElseBlock(
+        start: start,
+        children: <Node>[],
+      );
+
+      block.elseBlock = elseBlock;
+      stack.add(elseBlock);
+    }
+  }
+
+  void _thenElse(int start) {
+    Node block = current;
+    bool isThen = scan(':then') || !scan(':catch');
+
+    if (isThen) {
+      if (block is! PendingBlock) {
+        for (Node node in stack) {
+          if (node is PendingBlock) {
+            error(invalidThenPlacementUnclosedBlock(nodeToString(block)));
+          }
+        }
+
+        error(invalidThenPlacementWithoutAwait);
+      }
+    } else {
+      if (block is! ThenBlock && block is! PendingBlock) {
+        for (Node node in stack) {
+          if (node is ThenBlock || node is PendingBlock) {
+            error(invalidCatchPlacementUnclosedBlock(nodeToString(block)));
+          }
+        }
+
+        error(invalidCatchPlacementWithoutAwait);
+      }
+    }
+
+    block.end = start;
+    stack.removeLast();
+
+    AwaitBlock awaitBlock = current as AwaitBlock;
+
+    if (!scan(closingCurlyBrace)) {
+      allowSpace(required: true);
+
+      if (isThen) {
+        awaitBlock.value = readAssignmentPattern(_awaitCatch);
+      } else {
+        awaitBlock.error = readAssignmentPattern(closingCurlyBrace);
+      }
+
+      allowSpace();
+      expect('}');
+    }
+
+    Node childBlock;
+
+    if (isThen) {
+      childBlock = awaitBlock.thenBlock = ThenBlock(
+        start: start,
+        children: <Node>[],
+      );
+    } else {
+      childBlock = awaitBlock.catchBlock = CatchBlock(
+        start: start,
+        children: <Node>[],
+      );
+    }
+
+    stack.add(childBlock);
+  }
+
+  void _open(int start) {
+    if (scan('if')) {
+      _ifBlock(start);
+    } else if (scan('each')) {
+      _eachBlock(start);
+    } else if (scan('await')) {
+      _awaitBlock(start);
+    } else if (scan('key')) {
+      _keyBlock(start);
+    } else {
+      error(expectedBlockType);
+    }
   }
 
   IfRest _ifRest() {
-    token = parser.syntheticPreviousToken(token);
-    token = parser.parseExpression(token);
-    Expression expression = astBuilder.pop() as Expression;
-    nextToken();
+    Expression expression = readExpression(_ifCase);
+    allowSpace();
 
     DartPattern? casePattern;
 
-    if (skipNextTokenIf(Keyword.CASE)) {
-      token = parser.syntheticPreviousToken(token);
-      token = parser.parsePattern(token, PatternContext.matching);
-      casePattern = astBuilder.pop() as DartPattern;
-      nextToken();
+    if (scan('case')) {
+      casePattern = readAssignmentPattern(_ifWhen);
     }
+
+    allowSpace();
 
     Expression? whenExpression;
 
-    if (skipNextTokenIf(Keyword.WHEN)) {
-      token = parser.syntheticPreviousToken(token);
-      token = parser.parseExpression(token);
-      whenExpression = astBuilder.pop() as Expression;
-      nextToken();
+    if (scan('when')) {
+      whenExpression = readExpression(closingCurlyBrace);
     }
 
     return (expression, casePattern, whenExpression);
   }
 
-  IfBlock _ifBlock(Token open) {
-    expectToken(Keyword.IF);
+  void _ifBlock(int start) {
+    allowSpace(required: true);
 
     var (
-      expression,
-      casePattern,
-      whenExpression,
+      Expression expression,
+      DartPattern? casePattern,
+      Expression? whenExpression,
     ) = _ifRest();
 
+    allowSpace();
+    expect('}');
+
     IfBlock ifBlock = IfBlock(
-      start: open.offset,
+      start: start,
       expression: expression,
       casePattern: casePattern,
       whenExpression: whenExpression,
-      children: _body('if', (token) {
-        return _isElse(token) || _isEndIf(token);
-      }),
+      children: <Node>[],
     );
 
-    open = nextToken();
-
-    IfBlock currentIfBlock = ifBlock;
-    List<Node> blocks = <Node>[];
-
-    while (skipNextTokenIf(TokenType.COLON)) {
-      expectToken(Keyword.ELSE);
-
-      if (matchToken(TokenType.CLOSE_CURLY_BRACKET)) {
-        List<Node> children = _body('ifElse', _isEndIf);
-
-        ElseBlock elseBlock = ElseBlock(
-          start: open.offset,
-          children: children,
-        );
-
-        blocks.add(elseBlock);
-        currentIfBlock.elseBlock = elseBlock;
-        open = nextToken();
-        break;
-      }
-
-      expectToken(Keyword.IF);
-
-      var (
-        expression,
-        casePattern,
-        whenExpression,
-      ) = _ifRest();
-
-      List<Node> children = _body('if', (token) {
-        return _isElse(token) || _isEndIf(token);
-      });
-
-      IfBlock elseIfBlock = IfBlock(
-        start: open.offset,
-        expression: expression,
-        casePattern: casePattern,
-        whenExpression: whenExpression,
-        children: children,
-        elseIf: true,
-      );
-
-      ElseBlock elseBlock = ElseBlock(
-        start: open.offset,
-        children: <Node>[elseIfBlock],
-      );
-
-      blocks.add(elseBlock);
-      blocks.add(elseIfBlock);
-      currentIfBlock.elseBlock = elseBlock;
-      currentIfBlock = elseIfBlock;
-      open = nextToken();
-    }
-
-    for (Node block in blocks) {
-      block.end = open.offset;
-    }
-
-    expectToken(TokenType.SLASH);
-    expectToken(Keyword.IF);
-    expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    ifBlock.end = token.end;
-    return ifBlock;
+    current.children.add(ifBlock);
+    stack.add(ifBlock);
   }
 
-  EachBlock _eachBlock(Token open) {
-    expectToken(TokenType.IDENTIFIER, 'each');
+  void _eachBlock(int start) {
+    allowSpace(required: true);
 
-    token = parser.syntheticPreviousToken(token);
-    token = parser.parsePattern(token, PatternContext.assignment);
-    DartPattern context = astBuilder.pop() as DartPattern;
-    nextToken();
+    Expression expression = readExpression(_eachAs);
+    allowSpace(required: true);
+    expect('as');
+    allowSpace(required: true);
 
-    expectToken(Keyword.IN);
-
-    token = parser.syntheticPreviousToken(token);
-    token = parser.parseExpression(token);
-    Expression expression = astBuilder.pop() as Expression;
-    nextToken();
+    DartPattern context = readAssignmentPattern(_eachIndexOrKeyStart);
+    allowSpace();
 
     String? index;
 
-    if (skipNextTokenIf(TokenType.COMMA)) {
-      Token identifierToken = expectToken(TokenType.IDENTIFIER);
-      index = identifierToken.lexeme;
+    if (scan(',')) {
+      allowSpace();
+      index = readIdentifier();
+
+      if (index == null || index.isEmpty) {
+        error(expectedName);
+      }
+
+      allowSpace();
     }
 
     Expression? key;
 
-    if (skipNextTokenIf(TokenType.OPEN_PAREN)) {
-      token = parser.syntheticPreviousToken(token);
-      token = parser.parseExpression(token);
-      key = astBuilder.pop() as Expression;
-      nextToken();
-      expectToken(TokenType.CLOSE_PAREN);
+    if (scan(openingParen)) {
+      key = readExpression(closingParen);
+      allowSpace();
+      expect(')');
     }
 
+    allowSpace();
+    expect('}');
+
     EachBlock eachBlock = EachBlock(
-      start: open.offset,
+      start: start,
       expression: expression,
       context: context,
       index: index,
       key: key,
-      children: _body('each', (token) {
-        return _isElse(token) || _isEndEach(token);
-      }),
+      children: <Node>[],
     );
 
-    open = nextToken();
-
-    if (skipNextTokenIf(TokenType.COLON)) {
-      expectToken(Keyword.ELSE);
-
-      List<Node> children = _body('eachElse', _isEndEach);
-      Token close = nextToken();
-      eachBlock.elseBlock = ElseBlock(
-        start: open.offset,
-        end: close.offset,
-        children: children,
-      );
-    }
-
-    expectToken(TokenType.SLASH);
-    expectToken(TokenType.IDENTIFIER, 'each');
-    expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    eachBlock.end = token.end;
-    return eachBlock;
+    current.children.add(eachBlock);
+    stack.add(eachBlock);
   }
 
-  AwaitBlock _awaitBlock(Token open) {
-    token = parser.syntheticPreviousToken(token);
-    token = parser.parseExpression(token);
-    Expression expression = astBuilder.pop() as Expression;
-    nextToken();
+  void _awaitBlock(int start) {
+    allowSpace(required: true);
+
+    Expression expression = readExpression(_awaitThen);
 
     AwaitBlock awaitBlock = AwaitBlock(
-      start: open.offset,
+      start: start,
       expession: expression,
     );
 
-    if (token.type == TokenType.CLOSE_CURLY_BRACKET) {
-      List<Node> children = _body('awaitFuture', (token) {
-        return _isThen(token) || _isCatch(token) || _isEndAwait(token);
-      });
+    allowSpace();
 
-      awaitBlock.pendingBlock = PendingBlock(
-        start: open.offset,
-        end: token.offset,
-        children: children,
-      );
+    bool awaitBlockThenShorthand = scan('then');
 
-      open = nextToken();
-    }
-
-    if (skipNextTokenIf(TokenType.IDENTIFIER, 'then') ||
-        _isThen(token) && skipToken(2)) {
-      token = parser.syntheticPreviousToken(token);
-      token = parser.parsePattern(token, PatternContext.assignment);
-      awaitBlock.value = astBuilder.pop() as DartPattern;
-      nextToken();
-    }
-
-    if (awaitBlock.value != null) {
-      List<Node> children = _body('awaitThen', (token) {
-        return _isCatch(token) || _isEndAwait(token);
-      });
-
-      awaitBlock.thenBlock = ThenBlock(
-        start: open.offset,
-        end: token.offset,
-        children: children,
-      );
-
-      open = nextToken();
-    }
-
-    if (skipNextTokenIf(Keyword.CATCH) || _isCatch(token) && skipToken(2)) {
-      token = parser.syntheticPreviousToken(token);
-      token = parser.parsePattern(token, PatternContext.assignment);
-      awaitBlock.error = astBuilder.pop() as DartPattern;
-      nextToken();
-    }
-
-    if (awaitBlock.error != null) {
-      List<Node> children = _body('awaitCatch', _isEndAwait);
-
-      awaitBlock.catchBlock = CatchBlock(
-        start: open.offset,
-        end: token.offset,
-        children: children,
-      );
-
-      nextToken();
-    }
-
-    expectToken(TokenType.SLASH);
-    expectToken(Keyword.AWAIT);
-    expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    awaitBlock.end = token.offset;
-    return awaitBlock;
-  }
-
-  KeyBlock _keyBlock(Token open) {
-    expectToken(TokenType.IDENTIFIER, 'key');
-
-    token = parser.syntheticPreviousToken(token);
-    token = parser.parseExpression(token);
-    Expression key = astBuilder.pop() as Expression;
-    nextToken();
-
-    List<Node> children = _body('key', _isEndKey);
-    nextToken();
-    expectToken(TokenType.SLASH);
-    expectToken(TokenType.IDENTIFIER, 'key');
-    expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    return KeyBlock(
-      start: open.offset,
-      end: token.end,
-      expression: key,
-      children: children,
-    );
-  }
-
-  List<Node> _body(String tag, bool Function(Token token) end) {
-    expectToken(TokenType.CLOSE_CURLY_BRACKET);
-
-    List<Node> nodes = <Node>[];
-    String endTag = '$tag-${token.offset}';
-    endTagsStack.add(endTag);
-
-    outer:
-    while (token.type != TokenType.EOF) {
-      if (token.type == TokenType.OPEN_CURLY_BRACKET) {
-        if (token.next case Token next? when end(next)) {
-          break outer;
-        }
-
-        nodes.add(mustache());
-      } else if (token.type == SvelteToken.DATA) {
-        nodes.add(text());
+    if (awaitBlockThenShorthand) {
+      if (!scan(closingCurlyBrace)) {
+        allowSpace(required: true);
+        awaitBlock.value = readAssignmentPattern(_awaitCatch);
+        allowSpace();
       }
     }
 
-    if (endTagsStack.isEmpty || endTagsStack.removeLast() != endTag) {
-      throw StateError('Expected token type $tag, got $token.');
+    bool awaitBlockCatchShorthand = !awaitBlockThenShorthand && scan('catch');
+
+    if (awaitBlockCatchShorthand) {
+      if (!scan(closingCurlyBrace)) {
+        allowSpace(required: true);
+        awaitBlock.error = readAssignmentPattern(closingCurlyBrace);
+        allowSpace();
+      }
     }
 
-    if (token.type == TokenType.EOF) {
-      throw StateError('EOF');
+    expect('}');
+
+    current.children.add(awaitBlock);
+    stack.add(awaitBlock);
+
+    Node childBlock;
+
+    if (awaitBlockThenShorthand) {
+      childBlock = awaitBlock.thenBlock = ThenBlock(
+        children: <Node>[],
+      );
+    } else if (awaitBlockCatchShorthand) {
+      childBlock = awaitBlock.catchBlock = CatchBlock(
+        children: <Node>[],
+      );
+    } else {
+      childBlock = awaitBlock.pendingBlock = PendingBlock(
+        children: <Node>[],
+      );
     }
 
-    return nodes;
+    childBlock.start = start;
+    stack.add(childBlock);
   }
 
-  Node _at(Token open) {
-    expectToken(TokenType.AT);
-    return switch (token.type) {
-      TokenType.IDENTIFIER when token.lexeme == 'html' => _html(open),
-      TokenType.IDENTIFIER when token.lexeme == 'debug' => _debug(open),
-      Keyword.CONST => _const(open),
-      _ => throw StateError(token.type.name),
-    };
+  void _keyBlock(int start) {
+    allowSpace(required: true);
+
+    Expression expression = readExpression(closingCurlyBrace);
+    allowSpace();
+    expect('}');
+
+    KeyBlock keyBlock = KeyBlock(
+      start: start,
+      expression: expression,
+      children: <Node>[],
+    );
+
+    current.children.add(keyBlock);
+    stack.add(keyBlock);
   }
 
-  RawMustacheTag _html(Token open) {
-    expectToken(TokenType.IDENTIFIER, 'html');
-    token = parser.syntheticPreviousToken(token);
-    token = parser.parseExpression(token);
-    nextToken();
+  void _html(int start) {
+    allowSpace(required: true);
 
-    Expression value = astBuilder.pop() as Expression;
-    Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    return RawMustacheTag(
-        start: open.offset, end: close.end, expression: value);
+    Expression expression = readExpression(closingCurlyBrace);
+    allowSpace();
+    expect('}');
+
+    current.children.add(RawMustacheTag(
+      start: start,
+      end: position,
+      expression: expression,
+    ));
   }
 
-  DebugTag _debug(Token open) {
-    expectToken(TokenType.IDENTIFIER, 'debug');
+  void _debug(int start) {
+    List<SimpleIdentifier> identifiers;
 
-    List<SimpleIdentifier>? identifiers;
+    if (scan(closingCurlyBrace)) {
+      identifiers = const <SimpleIdentifier>[];
+    } else {
+      allowSpace();
 
-    if (!skipNextTokenIf(TokenType.CLOSE_CURLY_BRACKET)) {
-      token = parser.syntheticPreviousToken(token);
-      token = parser.parseIdentifierList(token);
-      nextToken();
-      identifiers = astBuilder.pop() as List<SimpleIdentifier>;
+      identifiers = withDartParser(closingCurlyBrace, (parser, token) {
+        return parser.parseIdentifierList(token);
+      });
     }
 
-    Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    return DebugTag(
-        start: open.offset, end: close.end, identifiers: identifiers);
+    allowSpace();
+    expect('}');
+
+    current.children.add(DebugTag(
+      start: start,
+      end: position,
+      identifiers: identifiers,
+    ));
   }
 
-  ConstTag _const(Token open) {
-    expectToken(Keyword.CONST);
-    token = parser.syntheticPreviousToken(token);
-    token = parser.parseExpression(token);
-    nextToken();
+  void _const(int start) {
+    allowSpace(required: true);
 
-    Object? assign = astBuilder.pop();
+    Expression expression = readExpression(closingCurlyBrace);
 
-    if (assign is! AssignmentExpression) {
-      error(invalidConstArgs, open.offset);
+    if (!(expression is AssignmentExpression ||
+        expression is PatternAssignment)) {
+      error(invalidConstArgs, start);
     }
 
-    Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    return ConstTag(start: open.offset, end: close.end, expression: assign);
+    allowSpace();
+    expect('}');
+
+    current.children.add(ConstTag(
+      start: start,
+      end: position,
+      expression: expression,
+    ));
   }
 
-  MustacheTag _expression(Token open) {
-    token = parser.syntheticPreviousToken(token);
-    token = parser.parseExpression(token);
-    nextToken();
+  void _expression(int start) {
+    Expression expression = readExpression(closingCurlyBrace);
+    allowSpace();
+    expect('}');
 
-    Expression value = astBuilder.pop() as Expression;
-    Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
-    return MustacheTag(start: open.offset, end: close.end, expression: value);
+    current.children.add(MustacheTag(
+      start: start,
+      end: position,
+      expression: expression,
+    ));
   }
 }

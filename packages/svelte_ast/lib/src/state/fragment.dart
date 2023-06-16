@@ -1,20 +1,18 @@
-// ignore_for_file: depend_on_referenced_packages, implementation_imports
-
-import 'package:_fe_analyzer_shared/src/scanner/token.dart' show TokenType;
-import 'package:svelte_ast/src/ast.dart';
-import 'package:svelte_ast/src/parser.dart';
-import 'package:svelte_ast/src/scanner.dart';
-import 'package:svelte_ast/src/state/mustache.dart';
-import 'package:svelte_ast/src/state/tag.dart';
-import 'package:svelte_ast/src/state/text.dart';
+import '../parser.dart';
+import 'mustache.dart';
+import 'tag.dart';
+import 'text.dart';
 
 extension FragmentParser on Parser {
-  Node? fragment() {
-    return switch (token.type) {
-      TokenType.LT => tag(),
-      TokenType.OPEN_CURLY_BRACKET => mustache(),
-      SvelteToken.DATA => text(),
-      TokenType type => throw StateError(type.name),
-    };
+  void fragment() {
+    int start = position;
+
+    if (scan('<')) {
+      tag(start);
+    } else if (scan('{')) {
+      mustache(start);
+    } else {
+      text(start);
+    }
   }
 }

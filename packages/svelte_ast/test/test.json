@@ -1,43 +1,58 @@
 {
   "start": 0,
-  "end": 50,
+  "end": 32,
   "_": "Fragment",
   "children": [
     {
       "start": 0,
-      "end": 50,
-      "_": "EachBlock",
-      "expression": {
-        "start": 15,
-        "end": 20,
-        "class": "SimpleIdentifier",
-        "name": "users",
-        "isAssignable": true
-      },
-      "context": "user",
-      "children": [
+      "end": 32,
+      "_": "Element",
+      "name": "p",
+      "attributes": [
         {
-          "start": 21,
-          "end": 29,
-          "_": "Text",
-          "raw": "\n  user\n",
-          "data": "user"
+          "start": 3,
+          "end": 14,
+          "_": "Directive",
+          "type": "classDirective",
+          "name": "isRed",
+          "modifiers": [],
+          "expression": {
+            "start": 9,
+            "end": 14,
+            "class": "SimpleIdentifier",
+            "name": "isRed",
+            "isAssignable": true
+          }
         }
       ],
-      "elseBlock": {
-        "start": 29,
-        "end": 43,
-        "_": "ElseBlock",
-        "children": [
-          {
-            "start": 36,
-            "end": 43,
-            "_": "Text",
-            "raw": "\n  ...\n",
-            "data": "..."
+      "children": [
+        {
+          "start": 15,
+          "end": 21,
+          "_": "Text",
+          "raw": "hello ",
+          "data": "hello "
+        },
+        {
+          "start": 21,
+          "end": 27,
+          "_": "MustacheTag",
+          "expression": {
+            "start": 22,
+            "end": 26,
+            "class": "SimpleIdentifier",
+            "name": "name",
+            "isAssignable": true
           }
-        ]
-      }
+        },
+        {
+          "start": 27,
+          "end": 28,
+          "_": "Text",
+          "raw": "!",
+          "data": "!"
+        }
+      ]
     }
   ]
 }

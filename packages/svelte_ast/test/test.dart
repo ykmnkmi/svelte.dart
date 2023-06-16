@@ -6,17 +6,13 @@ import 'dart:io';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
-const String template = '''
-{#each user in users}
-  user
-{:else}
-  ...
-{/each}''';
+const String string = '''
+<p class:isRed>hello {name}!</p>''';
 
 void main() {
   try {
-    Node ast = parse(template, uri: Uri.file('main.dart'));
-    Map<String, Object?> json = ast.toJson();
+    Node node = parse(string, uri: Uri.file('test.dart'));
+    Map<String, Object?> json = node.toJson();
     String output = const JsonEncoder.withIndent('  ').convert(json);
     File('test/test.json').writeAsStringSync(output);
   } on ParseError catch (error, stackTrace) {
