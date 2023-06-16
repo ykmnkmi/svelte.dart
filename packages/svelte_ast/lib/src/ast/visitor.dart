@@ -3,6 +3,8 @@ part of '../ast.dart';
 abstract interface class Visitor<C, R> {
   R visitAttribute(Attribute node, C context);
 
+  R visitAttributeShorthand(AttributeShorthand node, C context);
+
   R visitAwaitBlock(AwaitBlock node, C context);
 
   R visitBody(Body node, C context);
@@ -14,6 +16,8 @@ abstract interface class Visitor<C, R> {
   R visitConstTag(ConstTag node, C context);
 
   R visitDebugTag(DebugTag node, C context);
+
+  R visitDirective(Directive node, C context);
 
   R visitDocument(Document node, C context);
 
@@ -45,11 +49,17 @@ abstract interface class Visitor<C, R> {
 
   R visitSlotTemplate(SlotTemplate node, C context);
 
+  R visitSpread(Spread node, C context);
+
+  R visitStyleDirective(StyleDirective node, C context);
+
   R visitText(Text node, C context);
 
   R visitThenBlock(ThenBlock node, C context);
 
   R visitTitle(Title node, C context);
+
+  R visitTransitionDirective(TransitionDirective node, C context);
 
   R visitWindow(Window node, C context);
 }

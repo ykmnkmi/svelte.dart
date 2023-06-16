@@ -9,9 +9,7 @@ import 'package:svelte_ast/src/errors.dart';
 import 'parser.dart';
 
 const String string = '''
-{#if ok}
-  <textarea>hello {name}!</textarea>
-{/if}''';
+<p class:isRed={true}>hello {name}!</p>''';
 
 void main() {
   try {

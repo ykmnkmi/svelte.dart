@@ -1,4 +1,7 @@
-import 'package:analyzer/dart/ast/ast.dart' show Expression;
+// ignore_for_file: unused_import
+
+import 'package:analyzer/dart/ast/ast.dart' show Expression, SimpleIdentifier;
+import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/extract_svelte_ignore.dart';
@@ -24,6 +27,8 @@ final RegExp _tagNameEndRe = RegExp('(\\s|\\/|>)');
 final RegExp _tokenEndingCharacter = RegExp('[\\s=\\/>"\']');
 
 final RegExp _startsWithQuoteCharacters = RegExp('["\']');
+
+final RegExp _startsWithInvalidAttributeValue = RegExp('(\\/>|[\\s"\'=<>`])');
 
 final RegExp _capitalLetter = RegExp('^[A-Z]');
 
@@ -115,7 +120,7 @@ extension TagParser on Parser {
     error(invalidTagName, start);
   }
 
-  Attribute? _readAttribute(Set<String> uniqueNames) {
+  Node? _readAttribute(Set<String> uniqueNames) {
     int start = position;
 
     void checkUnique(String name) {
@@ -126,8 +131,43 @@ extension TagParser on Parser {
       uniqueNames.add(name);
     }
 
-    if (scan('{')) {
-      throw UnimplementedError();
+    if (scan(openingCurlyBrace)) {
+      if (scan('...')) {
+        Expression expression = readExpression(closingCurlyBrace);
+        allowSpace();
+        expect('}');
+        return Spread(
+          start: start,
+          end: position,
+          expression: expression,
+        );
+      } else {
+        int valueStart = position;
+        Expression expression = readExpression(closingCurlyBrace);
+
+        String name = switch (expression) {
+          SimpleIdentifier identifier => identifier.name,
+          _ => error(emptyAttributeShorthand, start),
+        };
+
+        checkUnique(name);
+
+        allowSpace();
+        expect('}');
+
+        return Attribute(
+          start: start,
+          end: position,
+          name: name,
+          value: <Node>[
+            AttributeShorthand(
+              start: valueStart,
+              end: valueStart + name.length,
+              expression: expression,
+            ),
+          ],
+        );
+      }
     }
 
     String name = readUntil(_tokenEndingCharacter);
@@ -158,16 +198,16 @@ extension TagParser on Parser {
 
     if (type case DirectiveType type?) {
       var <String>[
-        String directive,
+        String directiveName,
         ...List<String> modifiers,
       ] = name.substring(colonIndex + 1).split('|');
 
-      if (directive.isEmpty) {
+      if (directiveName.isEmpty) {
         error(emptyDirectiveName(type.name), start + colonIndex + 1);
       }
 
-      if (type == DirectiveType.binding && directive != 'this') {
-        checkUnique(directive);
+      if (type == DirectiveType.binding && directiveName != 'this') {
+        checkUnique(directiveName);
       } else if (type != DirectiveType.eventHandler &&
           type != DirectiveType.action) {
         checkUnique(name);
@@ -177,15 +217,106 @@ extension TagParser on Parser {
         error(invalidRefDirective(name), start);
       }
 
-      throw UnimplementedError('directove: ${type.name}');
+      if (type == DirectiveType.styleDirective) {
+        return StyleDirective(
+          start: start,
+          end: end,
+          name: name,
+          modifiers: modifiers,
+          value: value,
+        );
+      }
+
+      Expression? expression;
+
+      if (value case <Node>[Node firstValue, ...]) {
+        if (value.length > 1 || firstValue is Text) {
+          error(invalidDirectiveValue, firstValue.start);
+        }
+
+        if (firstValue is MustacheTag) {
+          expression = firstValue.expression;
+        } else {
+          throw ArgumentError.value(value);
+        }
+      }
+
+      if (type == DirectiveType.transition) {
+        String direction = name.substring(0, colonIndex);
+        return TransitionDirective(
+          start: start,
+          end: end,
+          name: directiveName,
+          intro: direction == 'in' || direction == 'transition',
+          outro: direction == 'out' || direction == 'transition',
+          modifiers: modifiers,
+          expression: expression,
+        );
+      }
+
+      if (expression == null &&
+          (type == DirectiveType.binding ||
+              type == DirectiveType.classDirective)) {
+        return Directive(
+          start: start,
+          end: end,
+          type: type,
+          name: directiveName,
+          modifiers: modifiers,
+          expression: simpleIdentifier(start + colonIndex + 1, directiveName),
+        );
+      }
+
+      return Directive(
+        start: start,
+        end: end,
+        type: type,
+        name: directiveName,
+        modifiers: modifiers,
+        expression: expression,
+      );
     }
 
     checkUnique(name);
     return Attribute(start: start, end: end, name: name, value: value);
   }
 
-  Object? _readAttributeValue() {
-    throw UnimplementedError('attribute value');
+  List<Node> _readAttributeValue() {
+    String? quoteMark = read('"') ?? read("'");
+
+    if (quoteMark case String mark when scan(mark)) {
+      return <Node>[Text(start: position - 1, end: position - 1)];
+    }
+
+    List<Node>? value;
+
+    try {
+      Pattern end = quoteMark ?? _startsWithInvalidAttributeValue;
+      value = _readSequence(end, 'in attribute value');
+    } on ParseError catch (parserError) {
+      if (parserError.errorCode.code == 'parse-error') {
+        var SourceSpan(
+          start: SourceLocation(offset: start),
+          end: SourceLocation(offset: end),
+        ) = parserError.span;
+
+        if (string.substring(start, end) == '/>') {
+          error(unclosedAttributeValue(quoteMark ?? '}'));
+        }
+      }
+
+      rethrow;
+    }
+
+    if (value.isEmpty && quoteMark == null) {
+      error(missingAttributeValue);
+    }
+
+    if (quoteMark != null) {
+      expect(quoteMark);
+    }
+
+    return value;
   }
 
   List<Node> _readSequence(Pattern end, String location) {
@@ -298,32 +429,32 @@ extension TagParser on Parser {
         name == 'svelte:component') {
       element = InlineComponent(
         start: start,
-        attributes: <Attribute>[],
+        attributes: <Node>[],
         children: <Node>[],
       );
     } else if (name == 'svelte:fragment') {
       element = SlotTemplate(
         start: start,
-        attributes: <Attribute>[],
+        attributes: <Node>[],
         children: <Node>[],
       );
     } else if (name == 'title' && _parentIsHead(stack)) {
       element = Title(
         start: start,
-        attributes: <Attribute>[],
+        attributes: <Node>[],
         children: <Node>[],
       );
     } else if (name == 'slot' && !customElement) {
       element = Slot(
         start: start,
-        attributes: <Attribute>[],
+        attributes: <Node>[],
         children: <Node>[],
       );
     } else {
       element = Element(
         start: start,
         name: name,
-        attributes: <Attribute>[],
+        attributes: <Node>[],
         children: <Node>[],
       );
     }
@@ -375,7 +506,7 @@ extension TagParser on Parser {
     Set<String> uniqueNames = <String>{};
 
     while (true) {
-      if (_readAttribute(uniqueNames) case Attribute attribute?) {
+      if (_readAttribute(uniqueNames) case Node attribute?) {
         element.attributes.add(attribute);
         allowSpace();
       } else {

@@ -5,11 +5,16 @@ import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe
 import 'package:_fe_analyzer_shared/src/scanner/characters.dart' show $EOF;
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
     show ScannerConfiguration, StringScanner, Token;
+import 'package:_fe_analyzer_shared/src/scanner/token_impl.dart'
+    show StringTokenImpl;
 import 'package:analyzer/dart/analysis/features.dart' show Feature, FeatureSet;
-import 'package:analyzer/dart/ast/ast.dart' show DartPattern, Expression;
+import 'package:analyzer/dart/ast/ast.dart'
+    show DartPattern, Expression, SimpleIdentifier;
+import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/error/listener.dart'
     show ErrorReporter, RecordingErrorListener;
 import 'package:analyzer/source/line_info.dart' show LineInfo;
+import 'package:analyzer/src/dart/ast/ast.dart' show SimpleIdentifierImpl;
 import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
 import 'package:analyzer/src/fasta/ast_builder.dart' show AstBuilder;
 import 'package:analyzer/src/string_source.dart' show StringSource;
@@ -62,6 +67,11 @@ extension ExpressionParser on Parser {
     token = callback(parser, token);
     position = token.end;
     return astBuilder.pop() as T;
+  }
+
+  SimpleIdentifier simpleIdentifier(int start, String name) {
+    Token token = StringTokenImpl.fromString(TokenType.IDENTIFIER, name, start);
+    return SimpleIdentifierImpl(token);
   }
 }
 

@@ -1,53 +1,55 @@
 {
   "start": 0,
-  "end": 51,
+  "end": 39,
   "_": "Fragment",
   "children": [
     {
       "start": 0,
-      "end": 51,
-      "_": "IfBlock",
-      "expression": {
-        "start": 5,
-        "end": 7,
-        "class": "SimpleIdentifier",
-        "name": "ok",
-        "isAssignable": true
-      },
+      "end": 39,
+      "_": "Element",
+      "name": "p",
+      "attributes": [
+        {
+          "start": 3,
+          "end": 21,
+          "_": "Directive",
+          "type": "classDirective",
+          "name": "isRed",
+          "modifiers": [],
+          "expression": {
+            "start": 16,
+            "end": 20,
+            "class": "BooleanLiteral",
+            "value": true
+          }
+        }
+      ],
       "children": [
         {
-          "start": 11,
-          "end": 45,
-          "_": "Element",
-          "name": "textarea",
-          "children": [
-            {
-              "start": 21,
-              "end": 27,
-              "_": "Text",
-              "raw": "hello ",
-              "data": "hello "
-            },
-            {
-              "start": 27,
-              "end": 33,
-              "_": "MustacheTag",
-              "expression": {
-                "start": 28,
-                "end": 32,
-                "class": "SimpleIdentifier",
-                "name": "name",
-                "isAssignable": true
-              }
-            },
-            {
-              "start": 33,
-              "end": 34,
-              "_": "Text",
-              "raw": "!",
-              "data": "!"
-            }
-          ]
+          "start": 22,
+          "end": 28,
+          "_": "Text",
+          "raw": "hello ",
+          "data": "hello "
+        },
+        {
+          "start": 28,
+          "end": 34,
+          "_": "MustacheTag",
+          "expression": {
+            "start": 29,
+            "end": 33,
+            "class": "SimpleIdentifier",
+            "name": "name",
+            "isAssignable": true
+          }
+        },
+        {
+          "start": 34,
+          "end": 35,
+          "_": "Text",
+          "raw": "!",
+          "data": "!"
         }
       ]
     }
