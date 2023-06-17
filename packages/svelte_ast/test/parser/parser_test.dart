@@ -5,7 +5,7 @@ import 'dart:convert' show JsonEncoder, json;
 import 'dart:io' show Directory, File, FileSystemEntity;
 
 import 'package:svelte_ast/svelte_ast.dart'
-    show /* CssMode, */ Node, ParseError, parse;
+    show CssMode, ParseError, SvelteAst, parse;
 import 'package:test/test.dart' show TestOn, equals, expect, group, test;
 
 const JsonEncoder encoder = JsonEncoder.withIndent('\t');
@@ -34,18 +34,18 @@ void main() {
       }
 
       try {
-        // CssMode? cssMode;
+        CssMode? cssMode;
         options = parseFile(sample.uri.resolve('options.json'));
 
         if (options != null) {
           if (options['css'] is String) {
-            // cssMode = CssMode.values.byName(options['css'] as String);
+            cssMode = CssMode.values.byName(options['css'] as String);
           }
         }
 
         File input = File.fromUri(sample.uri.resolve('input.svelte'));
         String content = input.readAsStringSync();
-        Node ast = parse(content, uri: input.uri /*, cssMode: cssMode */);
+        SvelteAst ast = parse(content, uri: input.uri, cssMode: cssMode);
         actual = ast.toJson();
         expected = parseFile(sample.uri.resolve('output.json'));
 

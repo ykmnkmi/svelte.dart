@@ -24,12 +24,12 @@ String _regExpEntity(String entityName, bool isAttributeValue) {
 RegExp _getEntityPattern(bool isAttributeValue) {
   Iterable<String> regExpEntities = entities.keys
       .map<String>((entityName) => _regExpEntity(entityName, isAttributeValue));
-  return RegExp('#(?:x[a-fA-F\\d]+|\\d+)(?:;)?${regExpEntities.join('|')}');
+  return RegExp('&(#(?:x[a-fA-F\\d]+|\\d+)(?:;)?|${regExpEntities.join('|')})');
 }
 
-final RegExp _content = _getEntityPattern(false);
-
 final RegExp _attributeValue = _getEntityPattern(true);
+
+final RegExp _content = _getEntityPattern(false);
 
 int validateCode(int code) {
   return switch (code) {

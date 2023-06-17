@@ -1,58 +1,36 @@
 {
   "start": 0,
-  "end": 32,
+  "end": 129,
   "_": "Fragment",
   "children": [
     {
       "start": 0,
-      "end": 32,
+      "end": 27,
       "_": "Element",
       "name": "p",
-      "attributes": [
-        {
-          "start": 3,
-          "end": 14,
-          "_": "Directive",
-          "type": "classDirective",
-          "name": "isRed",
-          "modifiers": [],
-          "expression": {
-            "start": 9,
-            "end": 14,
-            "class": "SimpleIdentifier",
-            "name": "isRed",
-            "isAssignable": true
-          }
-        }
-      ],
       "children": [
         {
-          "start": 15,
-          "end": 21,
+          "start": 3,
+          "end": 23,
           "_": "Text",
-          "raw": "hello ",
-          "data": "hello "
-        },
-        {
-          "start": 21,
-          "end": 27,
-          "_": "MustacheTag",
-          "expression": {
-            "start": 22,
-            "end": 26,
-            "class": "SimpleIdentifier",
-            "name": "name",
-            "isAssignable": true
-          }
-        },
-        {
-          "start": 27,
-          "end": 28,
-          "_": "Text",
-          "raw": "!",
-          "data": "!"
+          "raw": "This is a paragraph.",
+          "data": "This is a paragraph."
         }
       ]
+    },
+    {
+      "start": 27,
+      "end": 29,
+      "_": "Text",
+      "raw": "\n\n",
+      "data": "\n\n"
+    },
+    {
+      "start": 129,
+      "end": 130,
+      "_": "Text",
+      "raw": "\n",
+      "data": "\n"
     }
   ]
 }

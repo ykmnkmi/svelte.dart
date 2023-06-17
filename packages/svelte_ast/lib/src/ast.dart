@@ -1,5 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart'
     show DartPattern, Expression, SimpleIdentifier;
+import 'package:csslib/visitor.dart' show TreeNode;
+import 'package:svelte_ast/src/css_to_json.dart';
 import 'package:svelte_ast/src/dart_to_json.dart';
 
 part 'ast/blocks.dart';
@@ -7,6 +9,8 @@ part 'ast/tags.dart';
 part 'ast/visitor.dart';
 
 const DartToJsonVisitor dart2Json = DartToJsonVisitor();
+
+const CssToJsonVisitor css2Json = CssToJsonVisitor();
 
 abstract class Node {
   Node({
@@ -222,6 +226,50 @@ final class Fragment extends Node {
         'children': <Map<String, Object?>>[
           for (var node in children) node.toJson(),
         ],
+    };
+  }
+}
+
+final class Style extends Node {
+  Style({
+    super.start,
+    super.end,
+    this.attributes = const <Node>[],
+    required this.topLevels,
+    required this.content,
+  });
+
+  final List<Node> attributes;
+
+  final List<TreeNode> topLevels;
+
+  final ({int start, int end, String content}) content;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitStyle(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      '_': 'Style',
+      if (attributes.isNotEmpty)
+        'raw': <Map<String, Object?>>[
+          for (Node node in attributes) node.toJson(),
+        ],
+      if (topLevels.isNotEmpty)
+        'raw': <Map<String, Object?>>[
+          for (TreeNode node in topLevels)
+            node.visit(css2Json) as Map<String, Object?>,
+        ],
+      'content': <String, Object>{
+        'start': content.start,
+        'end': content.end,
+        'content': content.content,
+      },
     };
   }
 }

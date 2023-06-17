@@ -7,12 +7,21 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
-<p class:isRed>hello {name}!</p>''';
+<p>This is a paragraph.</p>
+
+<style>
+	p {
+		color: purple;
+		font-family: 'Comic Sans MS', cursive;
+		font-size: 2em;
+	}
+</style>
+''';
 
 void main() {
   try {
-    Node node = parse(string, uri: Uri.file('test.dart'));
-    Map<String, Object?> json = node.toJson();
+    SvelteAst ast = parse(string, uri: Uri.file('test.dart'));
+    Map<String, Object?> json = ast.toJson();
     String output = const JsonEncoder.withIndent('  ').convert(json);
     File('test/test.json').writeAsStringSync(output);
   } on ParseError catch (error, stackTrace) {

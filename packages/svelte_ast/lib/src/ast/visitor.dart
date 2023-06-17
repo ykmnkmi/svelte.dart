@@ -51,6 +51,8 @@ abstract interface class Visitor<C, R> {
 
   R visitSpread(Spread node, C context);
 
+  R visitStyle(Style node, C context);
+
   R visitStyleDirective(StyleDirective node, C context);
 
   R visitText(Text node, C context);

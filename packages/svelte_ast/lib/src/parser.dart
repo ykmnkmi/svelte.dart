@@ -7,6 +7,10 @@ import 'state/fragment.dart';
 
 typedef AutoCloseTag = ({String? tag, String reason, int depth});
 
+enum CssMode {
+  none,
+}
+
 final RegExp _spaceRe = RegExp('[ \t\r\n]*');
 
 final class Parser {
@@ -14,6 +18,7 @@ final class Parser {
     required this.string,
     this.fileName,
     this.uri,
+    this.cssMode,
     this.customElement = false,
   })  : length = string.length,
         sourceFile = SourceFile.fromString(string, url: uri) {
@@ -65,6 +70,8 @@ final class Parser {
 
   final Uri? uri;
 
+  final CssMode? cssMode;
+
   final bool customElement;
 
   final int length;
@@ -72,6 +79,8 @@ final class Parser {
   final SourceFile sourceFile;
 
   final Fragment html = Fragment(children: <Node>[]);
+
+  final List<Style> styles = <Style>[];
 
   final List<Node> stack = <Node>[];
 

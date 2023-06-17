@@ -8,6 +8,8 @@ import 'package:svelte_ast/src/extract_svelte_ignore.dart';
 import 'package:svelte_ast/src/html.dart';
 import 'package:svelte_ast/src/names.dart';
 import 'package:svelte_ast/src/patterns.dart';
+import 'package:svelte_ast/src/read/script.dart';
+import 'package:svelte_ast/src/read/style.dart';
 
 import '../parser.dart';
 import '../read/expression.dart';
@@ -34,7 +36,7 @@ final RegExp _capitalLetter = RegExp('^[A-Z]');
 
 final RegExp _nonCharRe = RegExp('[^A-Za-z]');
 
-final RegExp _closingTextAreaTag =
+final RegExp _textareaCloseTag =
     RegExp('<\\/textarea(\\s[^>]*)?>', caseSensitive: false);
 
 const Map<String, String> _metaTags = <String, String>{
@@ -522,7 +524,17 @@ extension TagParser on Parser {
       throw UnimplementedError('svelte:element');
     }
 
-    // script/style
+    if (stack.length == 1) {
+      if (name == 'script') {
+        readScript(start, element.attributes);
+        return;
+      }
+
+      if (name == 'style') {
+        readStyle(start, element.attributes);
+        return;
+      }
+    }
 
     current.children.add(element);
 
@@ -532,12 +544,16 @@ extension TagParser on Parser {
     if (selfClosing) {
       element.end = position;
     } else if (name == 'textarea') {
-      element.children =
-          _readSequence(_closingTextAreaTag, 'inside <textarea>');
-      expect(_closingTextAreaTag);
+      element.children = _readSequence(_textareaCloseTag, 'inside <textarea>');
+      expect(_textareaCloseTag);
       element.end = position;
     } else if (name == 'script' || name == 'style') {
-      throw UnimplementedError('script/style');
+      int start = position;
+      String closeTag = '</$name>';
+      String data = readUntil(closeTag);
+      element.children.add(Text(start: start, end: position, data: data));
+      expect(closeTag);
+      element.end = position;
     } else {
       stack.add(element);
     }

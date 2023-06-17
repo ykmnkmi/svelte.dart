@@ -5,7 +5,7 @@ import 'dart:io' show Directory, File, FileSystemEntity;
 
 import 'package:collection/collection.dart' show DeepCollectionEquality;
 import 'package:svelte_ast/svelte_ast.dart'
-    show /* CssMode, */ Node, ParseError, parse;
+    show CssMode, ParseError, SvelteAst, parse;
 
 const DeepCollectionEquality equality = DeepCollectionEquality.unordered();
 
@@ -20,12 +20,12 @@ void main() {
     String content;
 
     Map<String, Object?>? options;
-    Node ast;
+    SvelteAst ast;
 
     Object? actual, expected;
 
     try {
-      // CssMode? cssMode;
+      CssMode? cssMode;
       file = File.fromUri(sample.uri.resolve('options.json'));
 
       if (file.existsSync()) {
@@ -34,14 +34,14 @@ void main() {
 
         if (options != null) {
           if (options['css'] is String) {
-            // cssMode = CssMode.values.byName(options['css'] as String);
+            cssMode = CssMode.values.byName(options['css'] as String);
           }
         }
       }
 
       file = File.fromUri(sample.uri.resolve('input.svelte'));
       content = file.readAsStringSync();
-      ast = parse(content, uri: file.uri /*, cssMode: cssMode */);
+      ast = parse(content, uri: file.uri, cssMode: cssMode);
       actual = ast.toJson();
 
       file = File.fromUri(sample.uri.resolve('output.json'));
