@@ -7,14 +7,16 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
-<p>This is a paragraph.</p>
+<div class='foo bar'></div>
 
 <style>
-	p {
-		color: purple;
-		font-family: 'Comic Sans MS', cursive;
-		font-size: 2em;
-	}
+  .foo {
+    color: ;
+  }
+  .bar {
+    font: ;
+    color: blue;
+  }
 </style>
 ''';
 

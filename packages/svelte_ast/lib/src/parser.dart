@@ -49,13 +49,13 @@ final class Parser {
     if (html.children.isNotEmpty) {
       int start = html.children.first.start;
 
-      while (spaceRe.hasMatch(string[start])) {
+      while (start < length && spaceRe.hasMatch(string[start])) {
         start += 1;
       }
 
       int end = html.children.last.end;
 
-      while (spaceRe.hasMatch(string[end - 1])) {
+      while (end > 0 && spaceRe.hasMatch(string[end - 1])) {
         end -= 1;
       }
 
