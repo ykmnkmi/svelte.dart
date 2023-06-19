@@ -64,7 +64,7 @@ final class Text extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'Text',
+      'type': 'Text',
       'raw': raw,
       'data': data,
     };
@@ -93,7 +93,7 @@ final class CommentTag extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'CommentTag',
+      'type': 'CommentTag',
       if (data case String data?) 'data': data,
       if (ignores.isNotEmpty) 'ignores': ignores,
     };
@@ -119,7 +119,7 @@ final class RawMustacheTag extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'RawMustacheTag',
+      'type': 'RawMustacheTag',
       'expression': expression.accept(dart2Json),
     };
   }
@@ -144,7 +144,7 @@ final class ConstTag extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'ConstTag',
+      'type': 'ConstTag',
       'expression': expression.accept(dart2Json),
     };
   }
@@ -169,7 +169,7 @@ final class DebugTag extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'DebugTag',
+      'type': 'DebugTag',
       if (identifiers case List<SimpleIdentifier> identifiers?
           when identifiers.isNotEmpty)
         'identifiers': <Map<String, Object?>?>[
@@ -198,7 +198,7 @@ final class MustacheTag extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'MustacheTag',
+      'type': 'MustacheTag',
       'expression': expression.accept(dart2Json),
     };
   }
@@ -221,7 +221,7 @@ final class Fragment extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'Fragment',
+      'type': 'Fragment',
       if (children.isNotEmpty)
         'children': <Map<String, Object?>>[
           for (var node in children) node.toJson(),
@@ -255,7 +255,7 @@ final class Style extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'Style',
+      'type': 'Style',
       if (attributes.isNotEmpty)
         'raw': <Map<String, Object?>>[
           for (Node node in attributes) node.toJson(),

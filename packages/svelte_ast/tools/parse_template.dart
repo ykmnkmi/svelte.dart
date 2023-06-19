@@ -13,13 +13,13 @@ void main(List<String> arguments) {
     exit(1);
   }
 
-  var file = File(arguments.first);
+  File file = File(arguments.first);
 
   if (file.existsSync()) {
     try {
-      var content = file.readAsStringSync();
-      var ast = parse(content);
-      var json = ast.toJson();
+      String content = file.readAsStringSync();
+      SvelteAst ast = parse(content);
+      Map<String, Object?> json = ast.toJson();
       print(encoder.convert(json));
     } on ParseError catch (error, stackTrace) {
       print(error.errorCode.message);

@@ -223,7 +223,7 @@ extension TagParser on Parser {
         return StyleDirective(
           start: start,
           end: end,
-          name: name,
+          name: directiveName,
           modifiers: modifiers,
           value: value,
         );
@@ -238,45 +238,90 @@ extension TagParser on Parser {
 
         if (firstValue is MustacheTag) {
           expression = firstValue.expression;
-        } else {
-          throw ArgumentError.value(value);
         }
       }
 
-      if (type == DirectiveType.transition) {
-        String direction = name.substring(0, colonIndex);
-        return TransitionDirective(
-          start: start,
-          end: end,
-          name: directiveName,
-          intro: direction == 'in' || direction == 'transition',
-          outro: direction == 'out' || direction == 'transition',
-          modifiers: modifiers,
-          expression: expression,
-        );
-      }
+      switch (type) {
+        case DirectiveType.action:
+          return Action(
+            start: start,
+            end: end,
+            name: directiveName,
+            modifiers: modifiers,
+            expression: expression,
+          );
 
-      if (expression == null &&
-          (type == DirectiveType.binding ||
-              type == DirectiveType.classDirective)) {
-        return Directive(
-          start: start,
-          end: end,
-          type: type,
-          name: directiveName,
-          modifiers: modifiers,
-          expression: simpleIdentifier(start + colonIndex + 1, directiveName),
-        );
-      }
+        case DirectiveType.animation:
+          return Animation(
+            start: start,
+            end: end,
+            name: directiveName,
+            modifiers: modifiers,
+            expression: expression,
+          );
 
-      return Directive(
-        start: start,
-        end: end,
-        type: type,
-        name: directiveName,
-        modifiers: modifiers,
-        expression: expression,
-      );
+        case DirectiveType.binding:
+          return Binding(
+            start: start,
+            end: end,
+            name: directiveName,
+            modifiers: modifiers,
+            expression: expression ??
+                simpleIdentifier(start + colonIndex + 1, directiveName),
+          );
+
+        case DirectiveType.classDirective:
+          return ClassDirective(
+            start: start,
+            end: end,
+            name: directiveName,
+            modifiers: modifiers,
+            expression: expression ??
+                simpleIdentifier(start + colonIndex + 1, directiveName),
+          );
+
+        case DirectiveType.eventHandler:
+          return EventHandler(
+            start: start,
+            end: end,
+            name: directiveName,
+            modifiers: modifiers,
+            expression: expression,
+          );
+
+        case DirectiveType.let:
+          return Let(
+            start: start,
+            end: end,
+            name: directiveName,
+            modifiers: modifiers,
+            expression: expression,
+          );
+
+        case DirectiveType.ref:
+          return Ref(
+            start: start,
+            end: end,
+            name: directiveName,
+            modifiers: modifiers,
+            expression: expression,
+          );
+
+        case DirectiveType.transition:
+          String direction = name.substring(0, colonIndex);
+          return TransitionDirective(
+            start: start,
+            end: end,
+            name: directiveName,
+            modifiers: modifiers,
+            intro: direction == 'in' || direction == 'transition',
+            outro: direction == 'out' || direction == 'transition',
+            expression: expression,
+          );
+
+        default:
+          throw UnimplementedError(type.name);
+      }
     }
 
     checkUnique(name);

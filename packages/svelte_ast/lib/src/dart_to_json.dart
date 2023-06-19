@@ -30,7 +30,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitAdjacentStrings(AdjacentStrings node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'AdjacentStrings',
+      'type': 'AdjacentStrings',
       if (node.strings.isNotEmpty)
         'strings': <Map<String, Object?>?>[
           for (var item in node.strings) item.accept(this),
@@ -52,7 +52,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitAnnotation(Annotation node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'Annotation',
+      'type': 'Annotation',
       if (node.arguments case var arguments?)
         'arguments': arguments.accept(this),
       // 'atSign': InvalidType
@@ -71,7 +71,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitArgumentList(ArgumentList node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ArgumentList',
+      'type': 'ArgumentList',
       if (node.arguments.isNotEmpty)
         'arguments': <Map<String, Object?>?>[
           for (var item in node.arguments) item.accept(this),
@@ -84,10 +84,8 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitAsExpression(AsExpression node) {
     return <String, Object?>{
-      ...getLocation(node),
-      'class': 'AsExpression', // 'asOperator': InvalidType
+      ...getLocation(node), 'type': 'AsExpression', // 'asOperator': InvalidType
       'expression': node.expression.accept(this),
-      'type': node.type.accept(this),
       // AsExpression - Expression
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
@@ -102,7 +100,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitAssertInitializer(AssertInitializer node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'AssertInitializer', // AssertInitializer - Assertion
+      'type': 'AssertInitializer', // AssertInitializer - Assertion
       // 'assertKeyword': InvalidType
       // 'comma': InvalidType
       'condition': node.condition.accept(this),
@@ -117,7 +115,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitAssertStatement(AssertStatement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'AssertStatement', // 'semicolon': InvalidType
+      'type': 'AssertStatement', // 'semicolon': InvalidType
       // AssertStatement - Assertion
       // 'assertKeyword': InvalidType
       // 'comma': InvalidType
@@ -134,7 +132,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       AssignedVariablePattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'AssignedVariablePattern', // 'element': InvalidType
+      'type': 'AssignedVariablePattern', // 'element': InvalidType
       // AssignedVariablePattern - VariablePattern
       // 'name': InvalidType
       // VariablePattern - DartPattern
@@ -147,7 +145,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitAssignmentExpression(AssignmentExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'AssignmentExpression',
+      ...getLocation(node), 'type': 'AssignmentExpression',
       'leftHandSide': node.leftHandSide.accept(this),
       // 'operator': InvalidType
       'rightHandSide': node.rightHandSide.accept(this),
@@ -178,7 +176,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       AugmentationImportDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'AugmentationImportDirective', // 'augmentKeyword': InvalidType
+      'type': 'AugmentationImportDirective', // 'augmentKeyword': InvalidType
       // 'element': InvalidType
       // 'importKeyword': InvalidType
       // 'semicolon': InvalidType
@@ -204,7 +202,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitAwaitExpression(AwaitExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'AwaitExpression', // 'awaitKeyword': InvalidType
+      'type': 'AwaitExpression', // 'awaitKeyword': InvalidType
       'expression': node.expression.accept(this),
       // AwaitExpression - Expression
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
@@ -219,7 +217,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitBinaryExpression(BinaryExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'BinaryExpression',
+      ...getLocation(node), 'type': 'BinaryExpression',
       'leftOperand': node.leftOperand.accept(this),
       // 'operator': InvalidType
       'rightOperand': node.rightOperand.accept(this),
@@ -241,7 +239,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitBlock(Block node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'Block', // 'leftBracket': InvalidType
+      ...getLocation(node), 'type': 'Block', // 'leftBracket': InvalidType
       // 'rightBracket': InvalidType
       if (node.statements.isNotEmpty)
         'statements': <Map<String, Object?>?>[
@@ -254,7 +252,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitBlockFunctionBody(BlockFunctionBody node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'BlockFunctionBody',
+      ...getLocation(node), 'type': 'BlockFunctionBody',
       'block': node.block.accept(this),
       // BlockFunctionBody - FunctionBody
       if (node.isAsynchronous) 'isAsynchronous': node.isAsynchronous,
@@ -268,7 +266,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitBooleanLiteral(BooleanLiteral node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'BooleanLiteral', // 'literal': InvalidType
+      ...getLocation(node), 'type': 'BooleanLiteral', // 'literal': InvalidType
       if (node.value) 'value': node.value,
       // BooleanLiteral - Literal
       // Literal - Expression
@@ -285,7 +283,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitBreakStatement(BreakStatement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'BreakStatement', // 'breakKeyword': InvalidType
+      'type': 'BreakStatement', // 'breakKeyword': InvalidType
       if (node.label case var label?) 'label': label.accept(this),
       // 'semicolon': InvalidType
       if (node.target case var target?) 'target': target.accept(this),
@@ -297,7 +295,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitCascadeExpression(CascadeExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'CascadeExpression',
+      'type': 'CascadeExpression',
       if (node.cascadeSections.isNotEmpty)
         'cascadeSections': <Map<String, Object?>?>[
           for (var item in node.cascadeSections) item.accept(this),
@@ -320,7 +318,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitCaseClause(CaseClause node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'CaseClause', // 'caseKeyword': InvalidType
+      ...getLocation(node), 'type': 'CaseClause', // 'caseKeyword': InvalidType
       'guardedPattern': node.guardedPattern.accept(this),
     };
   }
@@ -328,9 +326,8 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitCastPattern(CastPattern node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'CastPattern', // 'asToken': InvalidType
+      ...getLocation(node), 'type': 'CastPattern', // 'asToken': InvalidType
       'pattern': node.pattern.accept(this),
-      'type': node.type.accept(this),
       // CastPattern - DartPattern
       // 'matchedValueType': InvalidType
       // 'precedence': InvalidType
@@ -341,7 +338,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitCatchClause(CatchClause node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'CatchClause',
+      ...getLocation(node), 'type': 'CatchClause',
       'body': node.body.accept(this),
       // 'catchKeyword': InvalidType
       // 'comma': InvalidType
@@ -361,7 +358,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitCatchClauseParameter(CatchClauseParameter node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'CatchClauseParameter', // 'declaredElement': InvalidType
+      'type': 'CatchClauseParameter', // 'declaredElement': InvalidType
       // 'name': InvalidType
     };
   }
@@ -370,7 +367,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitClassDeclaration(ClassDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ClassDeclaration', // 'declaredElement': InvalidType
+      'type': 'ClassDeclaration', // 'declaredElement': InvalidType
       if (node.implementsClause case var implementsClause?)
         'implementsClause': implementsClause.accept(this),
       // 'inlineKeyword': InvalidType
@@ -419,7 +416,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitClassTypeAlias(ClassTypeAlias node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ClassTypeAlias', // 'abstractKeyword': InvalidType
+      'type': 'ClassTypeAlias', // 'abstractKeyword': InvalidType
       // 'baseKeyword': InvalidType
       // 'declaredElement': InvalidType
       // 'equals': InvalidType
@@ -458,7 +455,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitComment(Comment node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'Comment',
+      ...getLocation(node), 'type': 'Comment',
       if (node.isBlock) 'isBlock': node.isBlock,
       if (node.isDocumentation) 'isDocumentation': node.isDocumentation,
       if (node.isEndOfLine) 'isEndOfLine': node.isEndOfLine,
@@ -473,7 +470,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitCommentReference(CommentReference node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'CommentReference',
+      ...getLocation(node), 'type': 'CommentReference',
       'expression': node.expression.accept(this),
       // 'newKeyword': InvalidType
     };
@@ -483,7 +480,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitCompilationUnit(CompilationUnit node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'CompilationUnit',
+      'type': 'CompilationUnit',
       if (node.declarations.isNotEmpty)
         'declarations': <Map<String, Object?>?>[
           for (var item in node.declarations) item.accept(this),
@@ -505,7 +502,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitConditionalExpression(ConditionalExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ConditionalExpression', // 'colon': InvalidType
+      'type': 'ConditionalExpression', // 'colon': InvalidType
       'condition': node.condition.accept(this),
       'elseExpression': node.elseExpression.accept(this),
       // 'question': InvalidType
@@ -524,7 +521,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitConfiguration(Configuration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'Configuration', // 'equalToken': InvalidType
+      'type': 'Configuration', // 'equalToken': InvalidType
       // 'ifKeyword': InvalidType
       // 'leftParenthesis': InvalidType
       'name': node.name.accept(this),
@@ -539,7 +536,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitConstantPattern(ConstantPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ConstantPattern', // 'constKeyword': InvalidType
+      'type': 'ConstantPattern', // 'constKeyword': InvalidType
       'expression': node.expression.accept(this),
       // ConstantPattern - DartPattern
       // 'matchedValueType': InvalidType
@@ -552,7 +549,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitConstructorDeclaration(
       ConstructorDeclaration node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ConstructorDeclaration',
+      ...getLocation(node), 'type': 'ConstructorDeclaration',
       'body': node.body.accept(this),
       // 'constKeyword': InvalidType
       // 'declaredElement': InvalidType
@@ -591,7 +588,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       ConstructorFieldInitializer node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ConstructorFieldInitializer', // 'equals': InvalidType
+      'type': 'ConstructorFieldInitializer', // 'equals': InvalidType
       'expression': node.expression.accept(this),
       'fieldName': node.fieldName.accept(this),
       // 'period': InvalidType
@@ -603,10 +600,9 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitConstructorName(ConstructorName node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ConstructorName',
+      ...getLocation(node), 'type': 'ConstructorName',
       if (node.name case var name?) 'name': name.accept(this),
       // 'period': InvalidType
-      'type': node.type.accept(this),
       // ConstructorName - ConstructorReferenceNode
       // 'staticElement': InvalidType
     };
@@ -615,7 +611,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitConstructorReference(ConstructorReference node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ConstructorReference',
+      ...getLocation(node), 'type': 'ConstructorReference',
       'constructorName': node.constructorName.accept(this),
       // ConstructorReference - Expression
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
@@ -633,7 +629,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitConstructorSelector(ConstructorSelector node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ConstructorSelector',
+      ...getLocation(node), 'type': 'ConstructorSelector',
       'name': node.name.accept(this),
       // 'period': InvalidType
     };
@@ -643,7 +639,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitContinueStatement(ContinueStatement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ContinueStatement', // 'continueKeyword': InvalidType
+      'type': 'ContinueStatement', // 'continueKeyword': InvalidType
       if (node.label case var label?) 'label': label.accept(this),
       // 'semicolon': InvalidType
       if (node.target case var target?) 'target': target.accept(this),
@@ -655,12 +651,11 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitDeclaredIdentifier(DeclaredIdentifier node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'DeclaredIdentifier', // 'declaredElement': InvalidType
+      'type': 'DeclaredIdentifier', // 'declaredElement': InvalidType
       if (node.isConst) 'isConst': node.isConst,
       if (node.isFinal) 'isFinal': node.isFinal,
       // 'keyword': InvalidType
       // 'name': InvalidType
-      if (node.type case var type?) 'type': type.accept(this),
       // DeclaredIdentifier - Declaration
       // Declaration - AnnotatedNode
       if (node.documentationComment case var documentationComment?)
@@ -682,9 +677,8 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       DeclaredVariablePattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'DeclaredVariablePattern', // 'declaredElement': InvalidType
+      'type': 'DeclaredVariablePattern', // 'declaredElement': InvalidType
       // 'keyword': InvalidType
-      if (node.type case var type?) 'type': type.accept(this),
       // DeclaredVariablePattern - VariablePattern
       // 'name': InvalidType
       // VariablePattern - DartPattern
@@ -699,7 +693,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       DefaultFormalParameter node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'DefaultFormalParameter',
+      'type': 'DefaultFormalParameter',
       if (node.defaultValue case var defaultValue?)
         'defaultValue': defaultValue.accept(this),
       'parameter': node.parameter.accept(this),
@@ -732,7 +726,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitDoStatement(DoStatement node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'DoStatement',
+      ...getLocation(node), 'type': 'DoStatement',
       'body': node.body.accept(this),
       'condition': node.condition.accept(this),
       // 'doKeyword': InvalidType
@@ -748,7 +742,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitDottedName(DottedName node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'DottedName',
+      'type': 'DottedName',
       if (node.components.isNotEmpty)
         'components': <Map<String, Object?>?>[
           for (var item in node.components) item.accept(this),
@@ -759,7 +753,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitDoubleLiteral(DoubleLiteral node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'DoubleLiteral', // 'literal': InvalidType
+      ...getLocation(node), 'type': 'DoubleLiteral', // 'literal': InvalidType
       'value': node.value,
       // DoubleLiteral - Literal
       // Literal - Expression
@@ -776,7 +770,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitEmptyFunctionBody(EmptyFunctionBody node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'EmptyFunctionBody', // 'semicolon': InvalidType
+      'type': 'EmptyFunctionBody', // 'semicolon': InvalidType
       // EmptyFunctionBody - FunctionBody
       if (node.isAsynchronous) 'isAsynchronous': node.isAsynchronous,
       if (node.isGenerator) 'isGenerator': node.isGenerator,
@@ -790,7 +784,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitEmptyStatement(EmptyStatement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'EmptyStatement', // 'semicolon': InvalidType
+      'type': 'EmptyStatement', // 'semicolon': InvalidType
       // EmptyStatement - Statement
     };
   }
@@ -799,7 +793,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitEnumConstantArguments(EnumConstantArguments node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'EnumConstantArguments',
+      'type': 'EnumConstantArguments',
       'argumentList': node.argumentList.accept(this),
       if (node.constructorSelector case var constructorSelector?)
         'constructorSelector': constructorSelector.accept(this),
@@ -813,7 +807,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       EnumConstantDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'EnumConstantDeclaration',
+      'type': 'EnumConstantDeclaration',
       if (node.arguments case var arguments?)
         'arguments': arguments.accept(this),
       // 'constructorElement': InvalidType
@@ -839,7 +833,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitEnumDeclaration(EnumDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'EnumDeclaration',
+      'type': 'EnumDeclaration',
       if (node.constants.isNotEmpty)
         'constants': <Map<String, Object?>?>[
           for (var item in node.constants) item.accept(this),
@@ -881,8 +875,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitExportDirective(ExportDirective node) {
     return <String, Object?>{
-      ...getLocation(node),
-      'class': 'ExportDirective', // 'element': InvalidType
+      ...getLocation(node), 'type': 'ExportDirective', // 'element': InvalidType
       // 'exportKeyword': InvalidType
       // ExportDirective - NamespaceDirective
       if (node.combinators.isNotEmpty)
@@ -916,7 +909,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitExpressionFunctionBody(
       ExpressionFunctionBody node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ExpressionFunctionBody',
+      ...getLocation(node), 'type': 'ExpressionFunctionBody',
       'expression': node.expression.accept(this),
       // 'functionDefinition': InvalidType
       // 'semicolon': InvalidType
@@ -932,7 +925,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitExpressionStatement(ExpressionStatement node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ExpressionStatement',
+      ...getLocation(node), 'type': 'ExpressionStatement',
       'expression': node.expression.accept(this),
       // 'semicolon': InvalidType
       // ExpressionStatement - Statement
@@ -943,7 +936,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitExtendsClause(ExtendsClause node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ExtendsClause', // 'extendsKeyword': InvalidType
+      'type': 'ExtendsClause', // 'extendsKeyword': InvalidType
       'superclass': node.superclass.accept(this),
     };
   }
@@ -952,7 +945,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitExtensionDeclaration(ExtensionDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ExtensionDeclaration', // 'declaredElement': InvalidType
+      'type': 'ExtensionDeclaration', // 'declaredElement': InvalidType
       'extendedType': node.extendedType.accept(this),
       // 'extensionKeyword': InvalidType
       // 'leftBracket': InvalidType
@@ -986,7 +979,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitExtensionOverride(ExtensionOverride node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ExtensionOverride',
+      ...getLocation(node), 'type': 'ExtensionOverride',
       'argumentList': node.argumentList.accept(this),
       // 'element': InvalidType
       // 'extendedType': InvalidType
@@ -1011,7 +1004,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitFieldDeclaration(FieldDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'FieldDeclaration', // 'abstractKeyword': InvalidType
+      'type': 'FieldDeclaration', // 'abstractKeyword': InvalidType
       // 'covariantKeyword': InvalidType
       // 'externalKeyword': InvalidType
       'fields': node.fields.accept(this),
@@ -1040,14 +1033,13 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitFieldFormalParameter(FieldFormalParameter node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'FieldFormalParameter', // 'keyword': InvalidType
+      'type': 'FieldFormalParameter', // 'keyword': InvalidType
       // 'name': InvalidType
       if (node.parameters case var parameters?)
         'parameters': parameters.accept(this),
       // 'period': InvalidType
       // 'question': InvalidType
       // 'thisKeyword': InvalidType
-      if (node.type case var type?) 'type': type.accept(this),
       if (node.typeParameters case var typeParameters?)
         'typeParameters': typeParameters.accept(this),
       // FieldFormalParameter - NormalFormalParameter
@@ -1085,7 +1077,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitForEachPartsWithDeclaration(
       ForEachPartsWithDeclaration node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ForEachPartsWithDeclaration',
+      ...getLocation(node), 'type': 'ForEachPartsWithDeclaration',
       'loopVariable': node.loopVariable.accept(this),
       // ForEachPartsWithDeclaration - ForEachParts
       // 'inKeyword': InvalidType
@@ -1098,7 +1090,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitForEachPartsWithIdentifier(
       ForEachPartsWithIdentifier node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ForEachPartsWithIdentifier',
+      ...getLocation(node), 'type': 'ForEachPartsWithIdentifier',
       'identifier': node.identifier.accept(this),
       // ForEachPartsWithIdentifier - ForEachParts
       // 'inKeyword': InvalidType
@@ -1112,7 +1104,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       ForEachPartsWithPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ForEachPartsWithPattern', // 'keyword': InvalidType
+      'type': 'ForEachPartsWithPattern', // 'keyword': InvalidType
       if (node.metadata.isNotEmpty)
         'metadata': <Map<String, Object?>?>[
           for (var item in node.metadata) item.accept(this),
@@ -1128,8 +1120,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitForElement(ForElement node) {
     return <String, Object?>{
-      ...getLocation(node),
-      'class': 'ForElement', // 'awaitKeyword': InvalidType
+      ...getLocation(node), 'type': 'ForElement', // 'awaitKeyword': InvalidType
       'body': node.body.accept(this),
       // 'forKeyword': InvalidType
       'forLoopParts': node.forLoopParts.accept(this),
@@ -1143,7 +1134,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitFormalParameterList(FormalParameterList node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'FormalParameterList', // 'leftDelimiter': InvalidType
+      'type': 'FormalParameterList', // 'leftDelimiter': InvalidType
       // 'leftParenthesis': InvalidType
       // 'parameterElements': List<InvalidType>
       if (node.parameters.isNotEmpty)
@@ -1159,7 +1150,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitForPartsWithDeclarations(
       ForPartsWithDeclarations node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ForPartsWithDeclarations',
+      ...getLocation(node), 'type': 'ForPartsWithDeclarations',
       'variables': node.variables.accept(this),
       // ForPartsWithDeclarations - ForParts
       if (node.condition case var condition?)
@@ -1179,7 +1170,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       ForPartsWithExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ForPartsWithExpression',
+      'type': 'ForPartsWithExpression',
       if (node.initialization case var initialization?)
         'initialization': initialization.accept(this),
       // ForPartsWithExpression - ForParts
@@ -1198,7 +1189,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitForPartsWithPattern(ForPartsWithPattern node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ForPartsWithPattern',
+      ...getLocation(node), 'type': 'ForPartsWithPattern',
       'variables': node.variables.accept(this),
       // ForPartsWithPattern - ForParts
       if (node.condition case var condition?)
@@ -1217,7 +1208,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitForStatement(ForStatement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ForStatement', // 'awaitKeyword': InvalidType
+      'type': 'ForStatement', // 'awaitKeyword': InvalidType
       'body': node.body.accept(this),
       // 'forKeyword': InvalidType
       'forLoopParts': node.forLoopParts.accept(this),
@@ -1231,7 +1222,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitFunctionDeclaration(FunctionDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'FunctionDeclaration', // 'declaredElement': InvalidType
+      'type': 'FunctionDeclaration', // 'declaredElement': InvalidType
       // 'externalKeyword': InvalidType
       'functionExpression': node.functionExpression.accept(this),
       if (node.isGetter) 'isGetter': node.isGetter,
@@ -1262,7 +1253,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitFunctionDeclarationStatement(
       FunctionDeclarationStatement node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'FunctionDeclarationStatement',
+      ...getLocation(node), 'type': 'FunctionDeclarationStatement',
       'functionDeclaration': node.functionDeclaration.accept(this),
       // FunctionDeclarationStatement - Statement
     };
@@ -1271,7 +1262,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitFunctionExpression(FunctionExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'FunctionExpression',
+      ...getLocation(node), 'type': 'FunctionExpression',
       'body': node.body.accept(this),
       // 'declaredElement': InvalidType
       if (node.parameters case var parameters?)
@@ -1292,7 +1283,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitFunctionExpressionInvocation(
       FunctionExpressionInvocation node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'FunctionExpressionInvocation',
+      ...getLocation(node), 'type': 'FunctionExpressionInvocation',
       'function': node.function.accept(this),
       // 'staticElement': InvalidType
       // FunctionExpressionInvocation - NullShortableExpression
@@ -1317,7 +1308,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitFunctionReference(FunctionReference node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'FunctionReference',
+      ...getLocation(node), 'type': 'FunctionReference',
       'function': node.function.accept(this),
       if (node.typeArguments case var typeArguments?)
         'typeArguments': typeArguments.accept(this),
@@ -1339,7 +1330,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitFunctionTypeAlias(FunctionTypeAlias node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'FunctionTypeAlias', // 'declaredElement': InvalidType
+      'type': 'FunctionTypeAlias', // 'declaredElement': InvalidType
       'parameters': node.parameters.accept(this),
       if (node.returnType case var returnType?)
         'returnType': returnType.accept(this),
@@ -1372,7 +1363,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       FunctionTypedFormalParameter node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'FunctionTypedFormalParameter', // 'name': InvalidType
+      'type': 'FunctionTypedFormalParameter', // 'name': InvalidType
       'parameters': node.parameters.accept(this),
       // 'question': InvalidType
       if (node.returnType case var returnType?)
@@ -1414,7 +1405,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitGenericFunctionType(GenericFunctionType node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'GenericFunctionType', // 'functionKeyword': InvalidType
+      'type': 'GenericFunctionType', // 'functionKeyword': InvalidType
       'parameters': node.parameters.accept(this),
       if (node.returnType case var returnType?)
         'returnType': returnType.accept(this),
@@ -1422,18 +1413,15 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
         'typeParameters': typeParameters.accept(this),
       // GenericFunctionType - TypeAnnotation
       // 'question': InvalidType
-      // 'type': InvalidType
     };
   }
 
   @override
   Map<String, Object?>? visitGenericTypeAlias(GenericTypeAlias node) {
     return <String, Object?>{
-      ...getLocation(node),
-      'class': 'GenericTypeAlias', // 'equals': InvalidType
+      ...getLocation(node), 'type': 'GenericTypeAlias', // 'equals': InvalidType
       if (node.functionType case var functionType?)
         'functionType': functionType.accept(this),
-      'type': node.type.accept(this),
       if (node.typeParameters case var typeParameters?)
         'typeParameters': typeParameters.accept(this),
       // GenericTypeAlias - TypeAlias
@@ -1463,7 +1451,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitGuardedPattern(GuardedPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'GuardedPattern',
+      'type': 'GuardedPattern',
       'pattern': node.pattern.accept(this),
       if (node.whenClause case var whenClause?)
         'whenClause': whenClause.accept(this),
@@ -1474,7 +1462,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitHideCombinator(HideCombinator node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'HideCombinator',
+      'type': 'HideCombinator',
       if (node.hiddenNames.isNotEmpty)
         'hiddenNames': <Map<String, Object?>?>[
           for (var item in node.hiddenNames) item.accept(this),
@@ -1488,7 +1476,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitIfElement(IfElement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'IfElement',
+      'type': 'IfElement',
       if (node.caseClause case var caseClause?)
         'caseClause': caseClause.accept(this),
       if (node.elseElement case var elseElement?)
@@ -1507,7 +1495,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitIfStatement(IfStatement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'IfStatement',
+      'type': 'IfStatement',
       if (node.caseClause case var caseClause?)
         'caseClause': caseClause.accept(this),
       // 'elseKeyword': InvalidType
@@ -1526,7 +1514,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitImplementsClause(ImplementsClause node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ImplementsClause', // 'implementsKeyword': InvalidType
+      'type': 'ImplementsClause', // 'implementsKeyword': InvalidType
       if (node.interfaces.isNotEmpty)
         'interfaces': <Map<String, Object?>?>[
           for (var item in node.interfaces) item.accept(this),
@@ -1537,7 +1525,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitImplicitCallReference(ImplicitCallReference node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ImplicitCallReference',
+      ...getLocation(node), 'type': 'ImplicitCallReference',
       'expression': node.expression.accept(this),
       // 'staticElement': InvalidType
       if (node.typeArguments case var typeArguments?)
@@ -1558,7 +1546,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitImportDirective(ImportDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ImportDirective', // 'asKeyword': InvalidType
+      'type': 'ImportDirective', // 'asKeyword': InvalidType
       // 'deferredKeyword': InvalidType
       // 'element': InvalidType
       // 'importKeyword': InvalidType
@@ -1595,7 +1583,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitImportPrefixReference(ImportPrefixReference node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ImportPrefixReference', // 'element': InvalidType
+      'type': 'ImportPrefixReference', // 'element': InvalidType
       // 'name': InvalidType
       // 'period': InvalidType
     };
@@ -1604,7 +1592,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitIndexExpression(IndexExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'IndexExpression',
+      ...getLocation(node), 'type': 'IndexExpression',
       'index': node.index.accept(this),
       if (node.isCascaded) 'isCascaded': node.isCascaded,
       if (node.isNullAware) 'isNullAware': node.isNullAware,
@@ -1633,7 +1621,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitInstanceCreationExpression(
       InstanceCreationExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'InstanceCreationExpression',
+      ...getLocation(node), 'type': 'InstanceCreationExpression',
       'argumentList': node.argumentList.accept(this),
       'constructorName': node.constructorName.accept(this),
       if (node.isConst) 'isConst': node.isConst,
@@ -1651,7 +1639,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitIntegerLiteral(IntegerLiteral node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'IntegerLiteral', // 'literal': InvalidType
+      ...getLocation(node), 'type': 'IntegerLiteral', // 'literal': InvalidType
       if (node.value case var value?) 'value': value,
       // IntegerLiteral - Literal
       // Literal - Expression
@@ -1668,7 +1656,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitInterpolationExpression(
       InterpolationExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'InterpolationExpression',
+      ...getLocation(node), 'type': 'InterpolationExpression',
       'expression': node.expression.accept(this),
       // 'leftBracket': InvalidType
       // 'rightBracket': InvalidType
@@ -1680,7 +1668,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitInterpolationString(InterpolationString node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'InterpolationString', // 'contents': InvalidType
+      'type': 'InterpolationString', // 'contents': InvalidType
       'contentsEnd': node.contentsEnd,
       'contentsOffset': node.contentsOffset,
       'value': node.value,
@@ -1691,11 +1679,10 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitIsExpression(IsExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'IsExpression',
+      ...getLocation(node), 'type': 'IsExpression',
       'expression': node.expression.accept(this),
       // 'isOperator': InvalidType
       // 'notOperator': InvalidType
-      'type': node.type.accept(this),
       // IsExpression - Expression
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
@@ -1709,7 +1696,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitLabel(Label node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'Label', // 'colon': InvalidType
+      ...getLocation(node), 'type': 'Label', // 'colon': InvalidType
       'label': node.label.accept(this),
     };
   }
@@ -1718,7 +1705,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitLabeledStatement(LabeledStatement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'LabeledStatement',
+      'type': 'LabeledStatement',
       if (node.labels.isNotEmpty)
         'labels': <Map<String, Object?>?>[
           for (var item in node.labels) item.accept(this),
@@ -1733,7 +1720,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       LibraryAugmentationDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'LibraryAugmentationDirective', // 'augmentKeyword': InvalidType
+      'type': 'LibraryAugmentationDirective', // 'augmentKeyword': InvalidType
       // 'libraryKeyword': InvalidType
       // 'semicolon': InvalidType
       // LibraryAugmentationDirective - UriBasedDirective
@@ -1759,7 +1746,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitLibraryDirective(LibraryDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'LibraryDirective', // 'libraryKeyword': InvalidType
+      'type': 'LibraryDirective', // 'libraryKeyword': InvalidType
       if (node.name2 case var name2?) 'name2': name2.accept(this),
       // 'semicolon': InvalidType
       // LibraryDirective - Directive
@@ -1783,7 +1770,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitLibraryIdentifier(LibraryIdentifier node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'LibraryIdentifier',
+      'type': 'LibraryIdentifier',
       if (node.components.isNotEmpty)
         'components': <Map<String, Object?>?>[
           for (var item in node.components) item.accept(this),
@@ -1808,7 +1795,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitListLiteral(ListLiteral node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ListLiteral',
+      'type': 'ListLiteral',
       if (node.elements.isNotEmpty)
         'elements': <Map<String, Object?>?>[
           for (var item in node.elements) item.accept(this),
@@ -1835,7 +1822,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitListPattern(ListPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ListPattern',
+      'type': 'ListPattern',
       if (node.elements.isNotEmpty)
         'elements': <Map<String, Object?>?>[
           for (var item in node.elements) item.accept(this),
@@ -1855,7 +1842,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitLogicalAndPattern(LogicalAndPattern node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'LogicalAndPattern',
+      ...getLocation(node), 'type': 'LogicalAndPattern',
       'leftOperand': node.leftOperand.accept(this),
       // 'operator': InvalidType
       'rightOperand': node.rightOperand.accept(this),
@@ -1869,7 +1856,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitLogicalOrPattern(LogicalOrPattern node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'LogicalOrPattern',
+      ...getLocation(node), 'type': 'LogicalOrPattern',
       'leftOperand': node.leftOperand.accept(this),
       // 'operator': InvalidType
       'rightOperand': node.rightOperand.accept(this),
@@ -1883,7 +1870,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitMapLiteralEntry(MapLiteralEntry node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'MapLiteralEntry',
+      ...getLocation(node), 'type': 'MapLiteralEntry',
       'key': node.key.accept(this),
       // 'separator': InvalidType
       'value': node.value.accept(this),
@@ -1895,7 +1882,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitMapPattern(MapPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'MapPattern',
+      'type': 'MapPattern',
       if (node.elements.isNotEmpty)
         'elements': <Map<String, Object?>?>[
           for (var item in node.elements) item.accept(this),
@@ -1915,7 +1902,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitMapPatternEntry(MapPatternEntry node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'MapPatternEntry',
+      ...getLocation(node), 'type': 'MapPatternEntry',
       'key': node.key.accept(this),
       // 'separator': InvalidType
       'value': node.value.accept(this),
@@ -1926,7 +1913,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitMethodDeclaration(MethodDeclaration node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'MethodDeclaration',
+      ...getLocation(node), 'type': 'MethodDeclaration',
       'body': node.body.accept(this),
       // 'declaredElement': InvalidType
       // 'externalKeyword': InvalidType
@@ -1965,7 +1952,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitMethodInvocation(MethodInvocation node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'MethodInvocation',
+      ...getLocation(node), 'type': 'MethodInvocation',
       if (node.isCascaded) 'isCascaded': node.isCascaded,
       if (node.isNullAware) 'isNullAware': node.isNullAware,
       'methodName': node.methodName.accept(this),
@@ -1997,7 +1984,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitMixinDeclaration(MixinDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'MixinDeclaration', // 'declaredElement': InvalidType
+      'type': 'MixinDeclaration', // 'declaredElement': InvalidType
       if (node.implementsClause case var implementsClause?)
         'implementsClause': implementsClause.accept(this),
       // 'leftBracket': InvalidType
@@ -2034,8 +2021,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitNamedExpression(NamedExpression node) {
     return <String, Object?>{
-      ...getLocation(node),
-      'class': 'NamedExpression', // 'element': InvalidType
+      ...getLocation(node), 'type': 'NamedExpression', // 'element': InvalidType
       'expression': node.expression.accept(this),
       'name': node.name.accept(this),
       // NamedExpression - Expression
@@ -2051,7 +2037,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitNamedType(NamedType node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'NamedType', // 'element': InvalidType
+      ...getLocation(node), 'type': 'NamedType', // 'element': InvalidType
       if (node.importPrefix case var importPrefix?)
         'importPrefix': importPrefix.accept(this),
       if (node.isDeferred) 'isDeferred': node.isDeferred,
@@ -2060,14 +2046,13 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
         'typeArguments': typeArguments.accept(this),
       // NamedType - TypeAnnotation
       // 'question': InvalidType
-      // 'type': InvalidType
     };
   }
 
   @override
   Map<String, Object?>? visitNativeClause(NativeClause node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'NativeClause',
+      ...getLocation(node), 'type': 'NativeClause',
       if (node.name case var name?) 'name': name.accept(this),
       // 'nativeKeyword': InvalidType
     };
@@ -2077,7 +2062,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitNativeFunctionBody(NativeFunctionBody node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'NativeFunctionBody', // 'nativeKeyword': InvalidType
+      'type': 'NativeFunctionBody', // 'nativeKeyword': InvalidType
       // 'semicolon': InvalidType
       if (node.stringLiteral case var stringLiteral?)
         'stringLiteral': stringLiteral.accept(this),
@@ -2094,7 +2079,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitNullAssertPattern(NullAssertPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'NullAssertPattern', // 'operator': InvalidType
+      'type': 'NullAssertPattern', // 'operator': InvalidType
       'pattern': node.pattern.accept(this),
       // NullAssertPattern - DartPattern
       // 'matchedValueType': InvalidType
@@ -2107,7 +2092,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitNullCheckPattern(NullCheckPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'NullCheckPattern', // 'operator': InvalidType
+      'type': 'NullCheckPattern', // 'operator': InvalidType
       'pattern': node.pattern.accept(this),
       // NullCheckPattern - DartPattern
       // 'matchedValueType': InvalidType
@@ -2119,7 +2104,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitNullLiteral(NullLiteral node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'NullLiteral', // 'literal': InvalidType
+      ...getLocation(node), 'type': 'NullLiteral', // 'literal': InvalidType
       // NullLiteral - Literal
       // Literal - Expression
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
@@ -2135,14 +2120,13 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitObjectPattern(ObjectPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ObjectPattern',
+      'type': 'ObjectPattern',
       if (node.fields.isNotEmpty)
         'fields': <Map<String, Object?>?>[
           for (var item in node.fields) item.accept(this),
         ],
       // 'leftParenthesis': InvalidType
       // 'rightParenthesis': InvalidType
-      'type': node.type.accept(this),
       // ObjectPattern - DartPattern
       // 'matchedValueType': InvalidType
       // 'precedence': InvalidType
@@ -2153,7 +2137,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitOnClause(OnClause node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'OnClause', // 'onKeyword': InvalidType
+      ...getLocation(node), 'type': 'OnClause', // 'onKeyword': InvalidType
       if (node.superclassConstraints.isNotEmpty)
         'superclassConstraints': <Map<String, Object?>?>[
           for (var item in node.superclassConstraints) item.accept(this),
@@ -2165,7 +2149,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitParenthesizedExpression(
       ParenthesizedExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ParenthesizedExpression',
+      ...getLocation(node), 'type': 'ParenthesizedExpression',
       'expression': node.expression.accept(this),
       // 'leftParenthesis': InvalidType
       // 'rightParenthesis': InvalidType
@@ -2183,7 +2167,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitParenthesizedPattern(ParenthesizedPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ParenthesizedPattern', // 'leftParenthesis': InvalidType
+      'type': 'ParenthesizedPattern', // 'leftParenthesis': InvalidType
       'pattern': node.pattern.accept(this),
       // 'rightParenthesis': InvalidType
       // ParenthesizedPattern - DartPattern
@@ -2196,7 +2180,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitPartDirective(PartDirective node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'PartDirective', // 'element': InvalidType
+      ...getLocation(node), 'type': 'PartDirective', // 'element': InvalidType
       // 'partKeyword': InvalidType
       // 'semicolon': InvalidType
       // PartDirective - UriBasedDirective
@@ -2221,7 +2205,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitPartOfDirective(PartOfDirective node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'PartOfDirective',
+      'type': 'PartOfDirective',
       if (node.libraryName case var libraryName?)
         'libraryName': libraryName.accept(this),
       // 'ofKeyword': InvalidType
@@ -2249,7 +2233,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitPatternAssignment(PatternAssignment node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'PatternAssignment', // 'equals': InvalidType
+      'type': 'PatternAssignment', // 'equals': InvalidType
       'expression': node.expression.accept(this),
       'pattern': node.pattern.accept(this),
       // PatternAssignment - Expression
@@ -2266,7 +2250,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitPatternField(PatternField node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'PatternField',
+      'type': 'PatternField',
       if (node.effectiveName case var effectiveName?)
         'effectiveName': effectiveName,
       // 'element': InvalidType
@@ -2278,7 +2262,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitPatternFieldName(PatternFieldName node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'PatternFieldName', // 'colon': InvalidType
+      ...getLocation(node), 'type': 'PatternFieldName', // 'colon': InvalidType
       // 'name': InvalidType
     };
   }
@@ -2288,7 +2272,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       PatternVariableDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'PatternVariableDeclaration', // 'equals': InvalidType
+      'type': 'PatternVariableDeclaration', // 'equals': InvalidType
       'expression': node.expression.accept(this),
       // 'keyword': InvalidType
       'pattern': node.pattern.accept(this),
@@ -2311,7 +2295,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitPatternVariableDeclarationStatement(
       PatternVariableDeclarationStatement node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'PatternVariableDeclarationStatement',
+      ...getLocation(node), 'type': 'PatternVariableDeclarationStatement',
       'declaration': node.declaration.accept(this),
       // 'semicolon': InvalidType
       // PatternVariableDeclarationStatement - Statement
@@ -2321,7 +2305,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitPostfixExpression(PostfixExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'PostfixExpression',
+      ...getLocation(node), 'type': 'PostfixExpression',
       'operand': node.operand.accept(this),
       // 'operator': InvalidType
       // PostfixExpression - Expression
@@ -2351,7 +2335,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitPrefixedIdentifier(PrefixedIdentifier node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'PrefixedIdentifier',
+      ...getLocation(node), 'type': 'PrefixedIdentifier',
       'identifier': node.identifier.accept(this),
       if (node.isDeferred) 'isDeferred': node.isDeferred,
       // 'period': InvalidType
@@ -2375,7 +2359,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitPrefixExpression(PrefixExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'PrefixExpression',
+      ...getLocation(node), 'type': 'PrefixExpression',
       'operand': node.operand.accept(this),
       // 'operator': InvalidType
       // PrefixExpression - Expression
@@ -2405,7 +2389,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitPropertyAccess(PropertyAccess node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'PropertyAccess',
+      ...getLocation(node), 'type': 'PropertyAccess',
       if (node.isCascaded) 'isCascaded': node.isCascaded,
       if (node.isNullAware) 'isNullAware': node.isNullAware,
       // 'operator': InvalidType
@@ -2430,7 +2414,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitRecordLiteral(RecordLiteral node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'RecordLiteral', // 'constKeyword': InvalidType
+      'type': 'RecordLiteral', // 'constKeyword': InvalidType
       if (node.fields.isNotEmpty)
         'fields': <Map<String, Object?>?>[
           for (var item in node.fields) item.accept(this),
@@ -2453,7 +2437,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitRecordPattern(RecordPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'RecordPattern',
+      'type': 'RecordPattern',
       if (node.fields.isNotEmpty)
         'fields': <Map<String, Object?>?>[
           for (var item in node.fields) item.accept(this),
@@ -2471,7 +2455,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitRecordTypeAnnotation(RecordTypeAnnotation node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'RecordTypeAnnotation', // 'leftParenthesis': InvalidType
+      'type': 'RecordTypeAnnotation', // 'leftParenthesis': InvalidType
       if (node.namedFields case var namedFields?)
         'namedFields': namedFields.accept(this),
       if (node.positionalFields.isNotEmpty)
@@ -2481,7 +2465,6 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       // 'rightParenthesis': InvalidType
       // RecordTypeAnnotation - TypeAnnotation
       // 'question': InvalidType
-      // 'type': InvalidType
     };
   }
 
@@ -2490,13 +2473,12 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       RecordTypeAnnotationNamedField node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'RecordTypeAnnotationNamedField', // 'name': InvalidType
+      'type': 'RecordTypeAnnotationNamedField', // 'name': InvalidType
       // RecordTypeAnnotationNamedField - RecordTypeAnnotationField
       if (node.metadata.isNotEmpty)
         'metadata': <Map<String, Object?>?>[
           for (var item in node.metadata) item.accept(this),
         ],
-      'type': node.type.accept(this),
     };
   }
 
@@ -2505,7 +2487,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       RecordTypeAnnotationNamedFields node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'RecordTypeAnnotationNamedFields',
+      'type': 'RecordTypeAnnotationNamedFields',
       if (node.fields.isNotEmpty)
         'fields': <Map<String, Object?>?>[
           for (var item in node.fields) item.accept(this),
@@ -2520,14 +2502,13 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       RecordTypeAnnotationPositionalField node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class':
+      'type':
           'RecordTypeAnnotationPositionalField', // RecordTypeAnnotationPositionalField - RecordTypeAnnotationField
       if (node.metadata.isNotEmpty)
         'metadata': <Map<String, Object?>?>[
           for (var item in node.metadata) item.accept(this),
         ],
       // 'name': InvalidType
-      'type': node.type.accept(this),
     };
   }
 
@@ -2535,7 +2516,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitRedirectingConstructorInvocation(
       RedirectingConstructorInvocation node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'RedirectingConstructorInvocation',
+      ...getLocation(node), 'type': 'RedirectingConstructorInvocation',
       'argumentList': node.argumentList.accept(this),
       if (node.constructorName case var constructorName?)
         'constructorName': constructorName.accept(this),
@@ -2551,7 +2532,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitRelationalPattern(RelationalPattern node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'RelationalPattern', // 'element': InvalidType
+      'type': 'RelationalPattern', // 'element': InvalidType
       'operand': node.operand.accept(this),
       // 'operator': InvalidType
       // RelationalPattern - DartPattern
@@ -2565,7 +2546,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitRestPatternElement(RestPatternElement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'RestPatternElement', // 'operator': InvalidType
+      'type': 'RestPatternElement', // 'operator': InvalidType
       if (node.pattern case var pattern?) 'pattern': pattern.accept(this),
       // RestPatternElement - ListPatternElement
       // RestPatternElement - MapPatternElement
@@ -2576,7 +2557,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitRethrowExpression(RethrowExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'RethrowExpression', // 'rethrowKeyword': InvalidType
+      'type': 'RethrowExpression', // 'rethrowKeyword': InvalidType
       // RethrowExpression - Expression
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
@@ -2591,7 +2572,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitReturnStatement(ReturnStatement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ReturnStatement',
+      'type': 'ReturnStatement',
       if (node.expression case var expression?)
         'expression': expression.accept(this),
       // 'returnKeyword': InvalidType
@@ -2603,7 +2584,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitScriptTag(ScriptTag node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ScriptTag', // 'scriptTag': InvalidType
+      ...getLocation(node), 'type': 'ScriptTag', // 'scriptTag': InvalidType
     };
   }
 
@@ -2611,7 +2592,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSetOrMapLiteral(SetOrMapLiteral node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'SetOrMapLiteral',
+      'type': 'SetOrMapLiteral',
       if (node.elements.isNotEmpty)
         'elements': <Map<String, Object?>?>[
           for (var item in node.elements) item.accept(this),
@@ -2640,7 +2621,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitShowCombinator(ShowCombinator node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ShowCombinator',
+      'type': 'ShowCombinator',
       if (node.shownNames.isNotEmpty)
         'shownNames': <Map<String, Object?>?>[
           for (var item in node.shownNames) item.accept(this),
@@ -2654,8 +2635,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSimpleFormalParameter(SimpleFormalParameter node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'SimpleFormalParameter', // 'keyword': InvalidType
-      if (node.type case var type?) 'type': type.accept(this),
+      'type': 'SimpleFormalParameter', // 'keyword': InvalidType
       // SimpleFormalParameter - NormalFormalParameter
       if (node.documentationComment case var documentationComment?)
         'documentationComment': documentationComment.accept(this),
@@ -2692,7 +2672,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSimpleIdentifier(SimpleIdentifier node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class':
+      'type':
           'SimpleIdentifier', // 'tearOffTypeArgumentTypes': List<InvalidType>?
       // 'token': InvalidType
       // SimpleIdentifier - Identifier
@@ -2715,7 +2695,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSimpleStringLiteral(SimpleStringLiteral node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'SimpleStringLiteral', // 'literal': InvalidType
+      'type': 'SimpleStringLiteral', // 'literal': InvalidType
       'value': node.value,
       // SimpleStringLiteral - SingleStringLiteral
       'contentsEnd': node.contentsEnd,
@@ -2739,7 +2719,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitSpreadElement(SpreadElement node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'SpreadElement',
+      ...getLocation(node), 'type': 'SpreadElement',
       'expression': node.expression.accept(this),
       if (node.isNullAware) 'isNullAware': node.isNullAware,
       // 'spreadOperator': InvalidType
@@ -2751,7 +2731,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitStringInterpolation(StringInterpolation node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'StringInterpolation',
+      'type': 'StringInterpolation',
       if (node.elements.isNotEmpty)
         'elements': <Map<String, Object?>?>[
           for (var item in node.elements) item.accept(this),
@@ -2781,7 +2761,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSuperConstructorInvocation(
       SuperConstructorInvocation node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'SuperConstructorInvocation',
+      ...getLocation(node), 'type': 'SuperConstructorInvocation',
       'argumentList': node.argumentList.accept(this),
       if (node.constructorName case var constructorName?)
         'constructorName': constructorName.accept(this),
@@ -2797,7 +2777,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSuperExpression(SuperExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'SuperExpression', // 'superKeyword': InvalidType
+      'type': 'SuperExpression', // 'superKeyword': InvalidType
       // SuperExpression - Expression
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
@@ -2812,14 +2792,13 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSuperFormalParameter(SuperFormalParameter node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'SuperFormalParameter', // 'keyword': InvalidType
+      'type': 'SuperFormalParameter', // 'keyword': InvalidType
       // 'name': InvalidType
       if (node.parameters case var parameters?)
         'parameters': parameters.accept(this),
       // 'period': InvalidType
       // 'question': InvalidType
       // 'superKeyword': InvalidType
-      if (node.type case var type?) 'type': type.accept(this),
       if (node.typeParameters case var typeParameters?)
         'typeParameters': typeParameters.accept(this),
       // SuperFormalParameter - NormalFormalParameter
@@ -2856,7 +2835,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitSwitchCase(SwitchCase node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'SwitchCase',
+      ...getLocation(node), 'type': 'SwitchCase',
       'expression': node.expression.accept(this),
       // SwitchCase - SwitchMember
       // 'colon': InvalidType
@@ -2876,7 +2855,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSwitchDefault(SwitchDefault node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'SwitchDefault', // SwitchDefault - SwitchMember
+      'type': 'SwitchDefault', // SwitchDefault - SwitchMember
       // 'colon': InvalidType
       // 'keyword': InvalidType
       if (node.labels.isNotEmpty)
@@ -2894,7 +2873,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSwitchExpression(SwitchExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'SwitchExpression',
+      'type': 'SwitchExpression',
       if (node.cases.isNotEmpty)
         'cases': <Map<String, Object?>?>[
           for (var item in node.cases) item.accept(this),
@@ -2919,7 +2898,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSwitchExpressionCase(SwitchExpressionCase node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'SwitchExpressionCase', // 'arrow': InvalidType
+      'type': 'SwitchExpressionCase', // 'arrow': InvalidType
       'expression': node.expression.accept(this),
       'guardedPattern': node.guardedPattern.accept(this),
     };
@@ -2928,7 +2907,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitSwitchPatternCase(SwitchPatternCase node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'SwitchPatternCase',
+      ...getLocation(node), 'type': 'SwitchPatternCase',
       'guardedPattern': node.guardedPattern.accept(this),
       // SwitchPatternCase - SwitchMember
       // 'colon': InvalidType
@@ -2947,7 +2926,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitSwitchStatement(SwitchStatement node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'SwitchStatement',
+      ...getLocation(node), 'type': 'SwitchStatement',
       'expression': node.expression.accept(this),
       // 'leftBracket': InvalidType
       // 'leftParenthesis': InvalidType
@@ -2966,7 +2945,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitSymbolLiteral(SymbolLiteral node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'SymbolLiteral', // 'components': List<InvalidType>
+      'type': 'SymbolLiteral', // 'components': List<InvalidType>
       // 'poundSign': InvalidType
       // SymbolLiteral - Literal
       // Literal - Expression
@@ -2983,7 +2962,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitThisExpression(ThisExpression node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'ThisExpression', // 'thisKeyword': InvalidType
+      'type': 'ThisExpression', // 'thisKeyword': InvalidType
       // ThisExpression - Expression
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
@@ -2997,7 +2976,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitThrowExpression(ThrowExpression node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'ThrowExpression',
+      ...getLocation(node), 'type': 'ThrowExpression',
       'expression': node.expression.accept(this),
       // 'throwKeyword': InvalidType
       // ThrowExpression - Expression
@@ -3015,7 +2994,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       TopLevelVariableDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'TopLevelVariableDeclaration', // 'externalKeyword': InvalidType
+      'type': 'TopLevelVariableDeclaration', // 'externalKeyword': InvalidType
       // 'semicolon': InvalidType
       'variables': node.variables.accept(this),
       // TopLevelVariableDeclaration - CompilationUnitMember
@@ -3039,7 +3018,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitTryStatement(TryStatement node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'TryStatement',
+      ...getLocation(node), 'type': 'TryStatement',
       'body': node.body.accept(this),
       if (node.catchClauses.isNotEmpty)
         'catchClauses': <Map<String, Object?>?>[
@@ -3057,7 +3036,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitTypeArgumentList(TypeArgumentList node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'TypeArgumentList',
+      'type': 'TypeArgumentList',
       if (node.arguments.isNotEmpty)
         'arguments': <Map<String, Object?>?>[
           for (var item in node.arguments) item.accept(this),
@@ -3070,9 +3049,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitTypeLiteral(TypeLiteral node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'TypeLiteral',
-      'type': node.type.accept(this),
-      // TypeLiteral - Expression
+      ...getLocation(node), 'type': 'TypeLiteral', // TypeLiteral - Expression
       if (node.inConstantContext) 'inConstantContext': node.inConstantContext,
       if (node.isAssignable) 'isAssignable': node.isAssignable,
       // 'precedence': InvalidType
@@ -3088,7 +3065,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitTypeParameter(TypeParameter node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'TypeParameter',
+      ...getLocation(node), 'type': 'TypeParameter',
       if (node.bound case var bound?) 'bound': bound.accept(this),
       // 'declaredElement': InvalidType
       // 'extendsKeyword': InvalidType
@@ -3113,7 +3090,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitTypeParameterList(TypeParameterList node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'TypeParameterList', // 'leftBracket': InvalidType
+      'type': 'TypeParameterList', // 'leftBracket': InvalidType
       // 'rightBracket': InvalidType
       if (node.typeParameters.isNotEmpty)
         'typeParameters': <Map<String, Object?>?>[
@@ -3126,7 +3103,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitVariableDeclaration(VariableDeclaration node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'VariableDeclaration', // 'declaredElement': InvalidType
+      'type': 'VariableDeclaration', // 'declaredElement': InvalidType
       // 'equals': InvalidType
       if (node.initializer case var initializer?)
         'initializer': initializer.accept(this),
@@ -3154,13 +3131,12 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitVariableDeclarationList(
       VariableDeclarationList node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'VariableDeclarationList',
+      ...getLocation(node), 'type': 'VariableDeclarationList',
       if (node.isConst) 'isConst': node.isConst,
       if (node.isFinal) 'isFinal': node.isFinal,
       if (node.isLate) 'isLate': node.isLate,
       // 'keyword': InvalidType
       // 'lateKeyword': InvalidType
-      if (node.type case var type?) 'type': type.accept(this),
       if (node.variables.isNotEmpty)
         'variables': <Map<String, Object?>?>[
           for (var item in node.variables) item.accept(this),
@@ -3185,7 +3161,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
       VariableDeclarationStatement node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'VariableDeclarationStatement', // 'semicolon': InvalidType
+      'type': 'VariableDeclarationStatement', // 'semicolon': InvalidType
       'variables': node.variables.accept(this),
       // VariableDeclarationStatement - Statement
     };
@@ -3194,7 +3170,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitWhenClause(WhenClause node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'WhenClause',
+      ...getLocation(node), 'type': 'WhenClause',
       'expression': node.expression.accept(this),
       // 'whenKeyword': InvalidType
     };
@@ -3203,7 +3179,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitWhileStatement(WhileStatement node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'WhileStatement',
+      ...getLocation(node), 'type': 'WhileStatement',
       'body': node.body.accept(this),
       'condition': node.condition.accept(this),
       // 'leftParenthesis': InvalidType
@@ -3216,10 +3192,8 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitWildcardPattern(WildcardPattern node) {
     return <String, Object?>{
-      ...getLocation(node),
-      'class': 'WildcardPattern', // 'keyword': InvalidType
+      ...getLocation(node), 'type': 'WildcardPattern', // 'keyword': InvalidType
       // 'name': InvalidType
-      if (node.type case var type?) 'type': type.accept(this),
       // WildcardPattern - DartPattern
       // 'matchedValueType': InvalidType
       // 'precedence': InvalidType
@@ -3231,7 +3205,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   Map<String, Object?>? visitWithClause(WithClause node) {
     return <String, Object?>{
       ...getLocation(node),
-      'class': 'WithClause',
+      'type': 'WithClause',
       if (node.mixinTypes.isNotEmpty)
         'mixinTypes': <Map<String, Object?>?>[
           for (var item in node.mixinTypes) item.accept(this),
@@ -3243,7 +3217,7 @@ class DartToJsonVisitor implements AstVisitor<Map<String, Object?>> {
   @override
   Map<String, Object?>? visitYieldStatement(YieldStatement node) {
     return <String, Object?>{
-      ...getLocation(node), 'class': 'YieldStatement',
+      ...getLocation(node), 'type': 'YieldStatement',
       'expression': node.expression.accept(this),
       // 'semicolon': InvalidType
       // 'star': InvalidType

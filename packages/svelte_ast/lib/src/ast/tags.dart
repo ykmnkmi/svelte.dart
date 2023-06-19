@@ -22,7 +22,7 @@ final class Attribute extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'Attribute',
+      'type': 'Attribute',
       'name': name,
       if (value case bool value? when value) 'value': value,
       if (value case List<Node> values? when values.isNotEmpty)
@@ -52,7 +52,7 @@ final class AttributeShorthand extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'AttributeShorthand',
+      'type': 'AttributeShorthand',
       'expression': expression.accept(dart2Json),
     };
   }
@@ -77,32 +77,35 @@ final class Spread extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'Spread',
+      'type': 'Spread',
       'expression': expression.accept(dart2Json),
     };
   }
 }
 
 enum DirectiveType {
-  action,
-  animation,
-  binding,
-  classDirective,
-  styleDirective,
-  eventHandler,
-  let,
-  ref,
-  transition,
+  action('Action'),
+  animation('Animation'),
+  binding('Binding'),
+  classDirective('Class'),
+  styleDirective('StyleDirective'),
+  eventHandler('EventHandler'),
+  let('Let'),
+  ref('Ret'),
+  transition('Transition');
+
+  const DirectiveType(this.name);
+
+  final String name;
 }
 
-final class Directive extends Node {
+abstract base class Directive extends Node {
   Directive({
     required super.start,
     required super.end,
     required this.type,
     required this.name,
     this.modifiers = const <String>[],
-    this.expression,
   });
 
   final DirectiveType type;
@@ -110,8 +113,6 @@ final class Directive extends Node {
   final String name;
 
   final List<String> modifiers;
-
-  final Expression? expression;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -123,30 +124,145 @@ final class Directive extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'Directive',
       'type': type.name,
       'name': name,
       'modifiers': modifiers,
-      if (expression case Expression expression?)
-        'expression': expression.accept(dart2Json),
     };
   }
 }
 
-final class StyleDirective extends Node {
+final class Action extends Directive {
+  Action({
+    required super.start,
+    required super.end,
+    required super.name,
+    super.modifiers,
+    this.intro = false,
+    this.outro = false,
+    this.expression,
+  }) : super(type: DirectiveType.action);
+
+  final bool intro;
+
+  final bool outro;
+
+  final Expression? expression;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitAction(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      'expression': expression?.accept(dart2Json),
+    };
+  }
+}
+
+final class Animation extends Directive {
+  Animation({
+    required super.start,
+    required super.end,
+    required super.name,
+    super.modifiers,
+    this.intro = false,
+    this.outro = false,
+    this.expression,
+  }) : super(type: DirectiveType.animation);
+
+  final bool intro;
+
+  final bool outro;
+
+  final Expression? expression;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitAnimation(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      'expression': expression?.accept(dart2Json),
+    };
+  }
+}
+
+final class Binding extends Directive {
+  Binding({
+    required super.start,
+    required super.end,
+    required super.name,
+    super.modifiers,
+    this.intro = false,
+    this.outro = false,
+    this.expression,
+  }) : super(type: DirectiveType.binding);
+
+  final bool intro;
+
+  final bool outro;
+
+  final Expression? expression;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitBinding(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      'expression': expression?.accept(dart2Json),
+    };
+  }
+}
+
+final class ClassDirective extends Directive {
+  ClassDirective({
+    required super.start,
+    required super.end,
+    required super.name,
+    super.modifiers,
+    this.intro = false,
+    this.outro = false,
+    this.expression,
+  }) : super(type: DirectiveType.classDirective);
+
+  final bool intro;
+
+  final bool outro;
+
+  final Expression? expression;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitClassDirective(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      'expression': expression?.accept(dart2Json),
+    };
+  }
+}
+
+final class StyleDirective extends Directive {
   StyleDirective({
     required super.start,
     required super.end,
-    required this.name,
-    this.modifiers = const <String>[],
+    required super.name,
+    super.modifiers,
     this.value,
-  });
-
-  final DirectiveType type = DirectiveType.styleDirective;
-
-  final String name;
-
-  final List<String> modifiers;
+  }) : super(type: DirectiveType.styleDirective);
 
   final Object? value;
 
@@ -158,12 +274,7 @@ final class StyleDirective extends Node {
   @override
   Map<String, Object?> toJson() {
     return <String, Object?>{
-      'start': start,
-      'end': end,
-      '_': 'StyleDirective',
-      'type': type.name,
-      'name': name,
-      'modifiers': modifiers,
+      ...super.toJson(),
       if (value case bool value? when value)
         'value': value
       else if (value case List<Node> values? when values.isNotEmpty)
@@ -174,26 +285,113 @@ final class StyleDirective extends Node {
   }
 }
 
-final class TransitionDirective extends Node {
-  TransitionDirective({
+final class EventHandler extends Directive {
+  EventHandler({
     required super.start,
     required super.end,
-    required this.name,
-    this.modifiers = const <String>[],
+    required super.name,
+    super.modifiers,
     this.intro = false,
     this.outro = false,
     this.expression,
-  });
-
-  final DirectiveType type = DirectiveType.transition;
-
-  final String name;
+  }) : super(type: DirectiveType.eventHandler);
 
   final bool intro;
 
   final bool outro;
 
-  final List<String> modifiers;
+  final Expression? expression;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitEventHandler(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      'expression': expression?.accept(dart2Json),
+    };
+  }
+}
+
+final class Let extends Directive {
+  Let({
+    required super.start,
+    required super.end,
+    required super.name,
+    super.modifiers,
+    this.intro = false,
+    this.outro = false,
+    this.expression,
+  }) : super(type: DirectiveType.let);
+
+  final bool intro;
+
+  final bool outro;
+
+  final Expression? expression;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitLet(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      'expression': expression?.accept(dart2Json),
+    };
+  }
+}
+
+final class Ref extends Directive {
+  Ref({
+    required super.start,
+    required super.end,
+    required super.name,
+    super.modifiers,
+    this.intro = false,
+    this.outro = false,
+    this.expression,
+  }) : super(type: DirectiveType.ref);
+
+  final bool intro;
+
+  final bool outro;
+
+  final Expression? expression;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitRef(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      ...super.toJson(),
+      'expression': expression?.accept(dart2Json),
+    };
+  }
+}
+
+final class TransitionDirective extends Directive {
+  TransitionDirective({
+    required super.start,
+    required super.end,
+    required super.name,
+    super.modifiers,
+    this.intro = false,
+    this.outro = false,
+    this.expression,
+  }) : super(type: DirectiveType.transition);
+
+  final bool intro;
+
+  final bool outro;
 
   final Expression? expression;
 
@@ -205,16 +403,10 @@ final class TransitionDirective extends Node {
   @override
   Map<String, Object?> toJson() {
     return <String, Object?>{
-      'start': start,
-      'end': end,
-      '_': 'TransitionDirective',
-      'type': type.name,
-      'name': name,
+      ...super.toJson(),
       if (intro) 'intro': intro,
       if (outro) 'outro': outro,
-      'modifiers': modifiers,
-      if (expression case Expression expression?)
-        'expression': expression.accept(dart2Json),
+      'expression': expression?.accept(dart2Json),
     };
   }
 }
@@ -252,15 +444,14 @@ final class Head extends Tag {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'Head',
+      'type': 'Head',
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
         ],
-      if (children.isNotEmpty)
-        'children': <Map<String, Object?>>[
-          for (Node node in children) node.toJson(),
-        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
     };
   }
 }
@@ -291,15 +482,14 @@ final class InlineComponent extends Tag {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'InlineComponent',
+      'type': 'InlineComponent',
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
         ],
-      if (children.isNotEmpty)
-        'children': <Map<String, Object?>>[
-          for (Node node in children) node.toJson(),
-        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
     };
   }
 }
@@ -322,15 +512,14 @@ final class SlotTemplate extends Tag {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'SlotTemplate',
+      'type': 'SlotTemplate',
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
         ],
-      if (children.isNotEmpty)
-        'children': <Map<String, Object?>>[
-          for (Node node in children) node.toJson(),
-        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
     };
   }
 }
@@ -353,15 +542,14 @@ final class Title extends Tag {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'Title',
+      'type': 'Title',
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
         ],
-      if (children.isNotEmpty)
-        'children': <Map<String, Object?>>[
-          for (Node node in children) node.toJson(),
-        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
     };
   }
 }
@@ -384,15 +572,14 @@ final class Slot extends Tag {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'Slot',
+      'type': 'Slot',
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
         ],
-      if (children.isNotEmpty)
-        'children': <Map<String, Object?>>[
-          for (Node node in children) node.toJson(),
-        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
     };
   }
 }
@@ -419,16 +606,15 @@ final class Element extends Tag implements HasName {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'Element',
+      'type': 'Element',
       'name': name,
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
         ],
-      if (children.isNotEmpty)
-        'children': <Map<String, Object?>>[
-          for (Node node in children) node.toJson(),
-        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
     };
   }
 }

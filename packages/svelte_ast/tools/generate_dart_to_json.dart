@@ -1,34 +1,54 @@
 import 'dart:io';
 
+import 'package:analyzer/dart/analysis/analysis_context.dart';
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
+import 'package:analyzer/dart/analysis/session.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/element/type_system.dart';
 
 import 'shared/utils.dart';
 
 // TODO(dart2json): serialize Token, ...
 Future<void> main() async {
-  var analyzerRoot = await getRoot('analyzer');
+  Directory analyzerRoot = await getRoot('analyzer');
+  Directory feRoot = await getRoot('_fe_analyzer_shared');
 
-  var includedPaths = <String>[analyzerRoot.path];
-  var collection = AnalysisContextCollection(includedPaths: includedPaths);
+  List<String> includedPaths = <String>[analyzerRoot.path, feRoot.path];
+  AnalysisContextCollection collection =
+      AnalysisContextCollection(includedPaths: includedPaths);
 
-  var context = collection.contextFor(analyzerRoot.path);
-  var session = context.currentSession;
+  AnalysisContext astContext = collection.contextFor(analyzerRoot.path);
+  AnalysisSession astSession = astContext.currentSession;
 
-  var astUri = Uri(path: 'lib/dart/ast/ast.dart');
+  Uri astUri = Uri(path: 'lib/dart/ast/ast.dart');
   astUri = analyzerRoot.uri.resolveUri(astUri);
 
-  var astlibrary = await getLibrary(session, astUri);
+  LibraryElement astlibrary = await getLibrary(astSession, astUri);
+  TypeSystem astTypeSystem = astlibrary.typeSystem;
 
-  var typeSystem = astlibrary.typeSystem;
+  ClassElement astNodeClass = getClass(astlibrary, 'AstNode');
+  ClassElement astVisitorClass = getClass(astlibrary, 'AstVisitor');
 
-  var astNodeClass = getClass(astlibrary, 'AstNode');
-  var throwingAstVisitorClass = getClass(astlibrary, 'AstVisitor');
-
-  var astNodeType = typeSystem.instantiateInterfaceToBounds(
+  InterfaceType astNodeType = astTypeSystem.instantiateInterfaceToBounds(
     element: astNodeClass,
+    nullabilitySuffix: NullabilitySuffix.question,
+  );
+
+  AnalysisContext tokenContext = collection.contextFor(analyzerRoot.path);
+  AnalysisSession tokenSession = tokenContext.currentSession;
+
+  Uri tokenUri = Uri(path: 'lib/src/scanner/token.dart');
+  tokenUri = feRoot.uri.resolveUri(tokenUri);
+
+  LibraryElement tokenlibrary = await getLibrary(tokenSession, tokenUri);
+  TypeSystem tokenTypeSystem = tokenlibrary.typeSystem;
+
+  ClassElement tokenClass = getClass(tokenlibrary, 'Token');
+
+  InterfaceType tokenType = tokenTypeSystem.instantiateInterfaceToBounds(
+    element: tokenClass,
     nullabilitySuffix: NullabilitySuffix.question,
   );
 
@@ -49,7 +69,11 @@ Future<void> main() async {
   }
 
   bool isAstNode(DartType type) {
-    return type is! InvalidType && typeSystem.isSubtypeOf(type, astNodeType);
+    return type is! InvalidType && astTypeSystem.isSubtypeOf(type, astNodeType);
+  }
+
+  bool isToken(DartType type) {
+    return type is! InvalidType && tokenTypeSystem.isSubtypeOf(type, tokenType);
   }
 
   bool isNodeList(DartType type) {
@@ -58,31 +82,31 @@ Future<void> main() async {
         isAstNode(type.typeArguments.first);
   }
 
-  var file = File('lib/src/dart_to_json.dart');
-  var sink = file.openWrite();
+  File file = File('lib/src/dart_to_json.dart');
+  IOSink sink = file.openWrite();
   sink.write(header);
 
   void writeFields(InterfaceElement interface, Set<String> writed) {
-    for (var accessor in interface.accessors) {
+    for (PropertyAccessorElement accessor in interface.accessors) {
       if (accessor.hasDeprecated || accessor.isPrivate || accessor.isStatic) {
         continue;
       }
 
-      var name = accessor.name;
+      String name = accessor.name;
 
       if (writed.contains(accessor.name)) {
         continue;
       }
 
       if (accessor.isGetter) {
-        var returnType = accessor.returnType;
+        DartType returnType = accessor.returnType;
 
         if (isBool(returnType)) {
           sink.writeln("if (node.$name) '$name': node.$name,");
         } else if (isEnum(returnType)) {
           sink.writeln("'$name': node.$name.name,");
         } else if (isNum(returnType) || isString(returnType)) {
-          if (typeSystem.isNullable(returnType)) {
+          if (astTypeSystem.isNullable(returnType)) {
             sink.write("if (node.$name case var $name?) '$name': ");
           } else {
             sink.write("'$name': node.");
@@ -90,13 +114,21 @@ Future<void> main() async {
 
           sink.writeln('$name,');
         } else if (isAstNode(returnType)) {
-          if (typeSystem.isNullable(returnType)) {
+          if (astTypeSystem.isNullable(returnType)) {
             sink.write("if (node.$name case var $name?) '$name': ");
           } else {
             sink.write("'$name':  node.");
           }
 
           sink.writeln('$name.accept(this),');
+        } else if (isToken(returnType)) {
+          if (astTypeSystem.isNullable(returnType)) {
+            sink.write("if (node.$name case var $name?) '$name': ");
+          } else {
+            sink.write("'$name':  node.");
+          }
+
+          sink.writeln('getToken($name),');
         } else if (isNodeList(returnType)) {
           sink
             ..writeln('if (node.$name.isNotEmpty)')
@@ -113,8 +145,8 @@ Future<void> main() async {
   }
 
   void writeSuperFields(InterfaceType type, String parent, Set<String> writed) {
-    for (var interface in type.interfaces) {
-      var name = interface.getDisplayString(withNullability: false);
+    for (InterfaceType interface in type.interfaces) {
+      String name = interface.getDisplayString(withNullability: false);
 
       if (name == 'AstNode' || name == 'Object') {
         continue;
@@ -126,15 +158,15 @@ Future<void> main() async {
     }
   }
 
-  for (var method in throwingAstVisitorClass.methods) {
+  for (MethodElement method in astVisitorClass.methods) {
     if (method.name.startsWith('visit')) {
-      var type = method.parameters.first.type as InterfaceType;
+      InterfaceType type = method.parameters.first.type as InterfaceType;
 
       if (!isAstNode(type)) {
         continue;
       }
 
-      var name = type.getDisplayString(withNullability: false);
+      String name = type.getDisplayString(withNullability: false);
 
       sink
         ..write('\n')
@@ -142,9 +174,11 @@ Future<void> main() async {
         ..write('\n  Map<String, Object?>? visit$name($name node) {')
         ..write('\n    return <String, Object?>{')
         ..write('...getLocation(node),')
-        ..write("'class': '$name',");
+        ..write("'type': '$name',");
 
-      var writed = <String>{
+      Set<String> writed = <String>{
+        'type',
+
         // null check on null
         'isQualified',
 
@@ -170,7 +204,7 @@ Future<void> main() async {
   sink.write('\n}\n');
   await sink.close();
 
-  var result = Process.runSync('dart', <String>['format', file.path]);
+  ProcessResult result = Process.runSync('dart', <String>['format', file.path]);
   exitCode = result.exitCode;
 }
 

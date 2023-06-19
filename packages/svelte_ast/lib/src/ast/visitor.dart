@@ -1,15 +1,23 @@
 part of '../ast.dart';
 
 abstract interface class Visitor<C, R> {
+  R visitAction(Action node, C context);
+
+  R visitAnimation(Animation node, C context);
+
   R visitAttribute(Attribute node, C context);
 
   R visitAttributeShorthand(AttributeShorthand node, C context);
 
   R visitAwaitBlock(AwaitBlock node, C context);
 
+  R visitBinding(Binding node, C context);
+
   R visitBody(Body node, C context);
 
   R visitCatchBlock(CatchBlock node, C context);
+
+  R visitClassDirective(ClassDirective node, C context);
 
   R visitCommentTag(CommentTag commentTag, C context);
 
@@ -27,6 +35,8 @@ abstract interface class Visitor<C, R> {
 
   R visitElseBlock(ElseBlock node, C context);
 
+  R visitEventHandler(EventHandler node, C context);
+
   R visitFragment(Fragment node, C context);
 
   R visitHead(Head node, C context);
@@ -37,6 +47,8 @@ abstract interface class Visitor<C, R> {
 
   R visitKeyBlock(KeyBlock node, C context);
 
+  R visitLet(Let node, C context);
+
   R visitMustacheTag(MustacheTag node, C context);
 
   R visitOptions(Options node, C context);
@@ -44,6 +56,8 @@ abstract interface class Visitor<C, R> {
   R visitPendingBlock(PendingBlock node, C context);
 
   R visitRawMustacheTag(RawMustacheTag node, C context);
+
+  R visitRef(Ref node, C context);
 
   R visitSlot(Slot node, C context);
 

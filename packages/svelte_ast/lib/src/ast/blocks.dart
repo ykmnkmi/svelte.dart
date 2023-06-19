@@ -43,10 +43,10 @@ final class IfBlock extends Node implements HasElse {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'IfBlock',
+      'type': 'IfBlock',
       'expression': expression.accept(dart2Json),
       if (casePattern case DartPattern casePattern?)
-        'casePattern': casePattern.toString(),
+        'casePattern': casePattern.accept(dart2Json),
       if (whenExpression case Expression whenExpression?)
         'whenExpression': whenExpression.accept(dart2Json),
       if (children.isNotEmpty)
@@ -92,9 +92,9 @@ final class EachBlock extends Node implements HasElse {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'EachBlock',
+      'type': 'EachBlock',
       'expression': expression.accept(dart2Json),
-      'context': context.toSource(),
+      'context': context.accept(dart2Json),
       if (index case String string?) 'index': string,
       if (key case Expression expression?) 'key': expression.accept(dart2Json),
       if (children.isNotEmpty)
@@ -123,7 +123,7 @@ final class ElseBlock extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'ElseBlock',
+      'type': 'ElseBlock',
       if (children.isNotEmpty)
         'children': <Map<String, Object?>>[
           for (var node in children) node.toJson(),
@@ -166,10 +166,10 @@ final class AwaitBlock extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'AwaitBlock',
+      'type': 'AwaitBlock',
       'expession': expession.accept(dart2Json),
-      if (value case DartPattern value?) 'value': value.toString(),
-      if (error case DartPattern error?) 'error': error.toString(),
+      if (value case DartPattern value?) 'value': value.accept(dart2Json),
+      if (error case DartPattern error?) 'error': error.accept(dart2Json),
       if (pendingBlock case PendingBlock pendingBlock?)
         'pendingBlock': pendingBlock.toJson(),
       if (thenBlock case ThenBlock thenBlock?) 'thenBlock': thenBlock.toJson(),
@@ -199,7 +199,7 @@ final class PendingBlock extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'PendingBlock',
+      'type': 'PendingBlock',
       if (children.isNotEmpty)
         'children': <Map<String, Object?>>[
           for (var node in children) node.toJson(),
@@ -225,7 +225,7 @@ final class ThenBlock extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'ThenBlock',
+      'type': 'ThenBlock',
       if (children.isNotEmpty)
         'children': <Map<String, Object?>>[
           for (var node in children) node.toJson(),
@@ -251,7 +251,7 @@ final class CatchBlock extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'CatchBlock',
+      'type': 'CatchBlock',
       if (children.isNotEmpty)
         'children': <Map<String, Object?>>[
           for (var node in children) node.toJson(),
@@ -280,7 +280,7 @@ final class KeyBlock extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      '_': 'KeyBlock',
+      'type': 'KeyBlock',
       'expression': expression.accept(dart2Json),
       'children': <Map<String, Object?>>[
         for (Node node in children) node.toJson()
