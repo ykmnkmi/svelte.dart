@@ -8,5 +8,8 @@
       "*.build.yaml",
       "build.*.yaml"
     ]
+  },
+  "[html]": {
+    "files.trimTrailingWhitespace": false
   }
 }
