@@ -15,44 +15,90 @@
 						"end": 45,
 						"type": "EventHandler",
 						"name": "click",
+						"modifiers": [],
 						"expression": {
+							"type": "ArrowFunctionExpression",
 							"start": 19,
 							"end": 43,
-							"class": "FunctionExpression",
+							"loc": {
+								"start": {
+									"line": 1,
+									"column": 19
+								},
+								"end": {
+									"line": 1,
+									"column": 43
+								}
+							},
+							"id": null,
+							"expression": true,
+							"generator": false,
+							"async": false,
+							"params": [],
 							"body": {
-								"start": 22,
+								"type": "AssignmentExpression",
+								"start": 25,
 								"end": 43,
-								"class": "ExpressionFunctionBody",
-								"expression": {
-									"start": 25,
-									"end": 43,
-									"class": "AssignmentExpression",
-									"leftHandSide": {
-										"start": 25,
-										"end": 32,
-										"class": "SimpleIdentifier",
-										"name": "visible",
-										"isAssignable": true
+								"loc": {
+									"start": {
+										"line": 1,
+										"column": 25
 									},
-									"rightHandSide": {
-										"start": 35,
-										"end": 43,
-										"class": "PrefixExpression",
-										"operand": {
-											"start": 36,
-											"end": 43,
-											"class": "SimpleIdentifier",
-											"name": "visible",
-											"isAssignable": true
-										}
+									"end": {
+										"line": 1,
+										"column": 43
 									}
 								},
-								"isSynchronous": true
-							},
-							"parameters": {
-								"start": 19,
-								"end": 21,
-								"class": "FormalParameterList"
+								"operator": "=",
+								"left": {
+									"type": "Identifier",
+									"start": 25,
+									"end": 32,
+									"loc": {
+										"start": {
+											"line": 1,
+											"column": 25
+										},
+										"end": {
+											"line": 1,
+											"column": 32
+										}
+									},
+									"name": "visible"
+								},
+								"right": {
+									"type": "UnaryExpression",
+									"start": 35,
+									"end": 43,
+									"loc": {
+										"start": {
+											"line": 1,
+											"column": 35
+										},
+										"end": {
+											"line": 1,
+											"column": 43
+										}
+									},
+									"operator": "!",
+									"prefix": true,
+									"argument": {
+										"type": "Identifier",
+										"start": 36,
+										"end": 43,
+										"loc": {
+											"start": {
+												"line": 1,
+												"column": 36
+											},
+											"end": {
+												"line": 1,
+												"column": 43
+											}
+										},
+										"name": "visible"
+									}
+								}
 							}
 						}
 					}
@@ -62,8 +108,8 @@
 						"start": 46,
 						"end": 52,
 						"type": "Text",
-						"data": "toggle",
-						"raw": "toggle"
+						"raw": "toggle",
+						"data": "toggle"
 					}
 				]
 			},
@@ -71,19 +117,28 @@
 				"start": 61,
 				"end": 63,
 				"type": "Text",
-				"data": "\n\n",
-				"raw": "\n\n"
+				"raw": "\n\n",
+				"data": "\n\n"
 			},
 			{
 				"start": 63,
 				"end": 97,
 				"type": "IfBlock",
 				"expression": {
+					"type": "Identifier",
 					"start": 68,
 					"end": 75,
-					"class": "SimpleIdentifier",
-					"name": "visible",
-					"isAssignable": true
+					"loc": {
+						"start": {
+							"line": 3,
+							"column": 5
+						},
+						"end": {
+							"line": 3,
+							"column": 12
+						}
+					},
+					"name": "visible"
 				},
 				"children": [
 					{
@@ -91,13 +146,14 @@
 						"end": 91,
 						"type": "Element",
 						"name": "p",
+						"attributes": [],
 						"children": [
 							{
 								"start": 81,
 								"end": 87,
 								"type": "Text",
-								"data": "hello!",
-								"raw": "hello!"
+								"raw": "hello!",
+								"data": "hello!"
 							}
 						]
 					}

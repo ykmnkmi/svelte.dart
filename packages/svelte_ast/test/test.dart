@@ -7,17 +7,7 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
-<div class='foo bar'></div>
-
-<style>
-  .foo {
-    color: ;
-  }
-  .bar {
-    font: ;
-    color: blue;
-  }
-</style>
+<input use:autofocus>
 ''';
 
 void main() {

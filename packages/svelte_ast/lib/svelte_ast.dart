@@ -36,7 +36,7 @@ SvelteAst parse(
     :List<Style> styles,
     :Never Function(ErrorCode errorCode, [int? position]) error,
   ) = Parser(
-    string: string,
+    string: string.trimRight(),
     fileName: fileName,
     uri: uri,
     cssMode: cssMode,

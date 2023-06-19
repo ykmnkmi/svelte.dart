@@ -8,8 +8,8 @@
 				"start": 28,
 				"end": 30,
 				"type": "Text",
-				"data": "\n\n",
-				"raw": "\n\n"
+				"raw": "\n\n",
+				"data": "\n\n"
 			},
 			{
 				"start": 30,
@@ -22,46 +22,101 @@
 						"end": 53,
 						"type": "Binding",
 						"name": "this",
+						"modifiers": [],
 						"expression": {
+							"type": "Identifier",
 							"start": 49,
 							"end": 52,
-							"class": "SimpleIdentifier",
-							"name": "foo",
-							"isAssignable": true
+							"loc": {
+								"start": {
+									"line": 5,
+									"column": 19
+								},
+								"end": {
+									"line": 5,
+									"column": 22
+								}
+							},
+							"name": "foo"
 						}
 					}
-				]
+				],
+				"children": []
 			}
 		]
 	},
 	"instance": {
+		"type": "Script",
 		"start": 0,
 		"end": 28,
-		"type": "Script",
 		"context": "default",
 		"content": {
+			"type": "Program",
 			"start": 8,
 			"end": 19,
-			"class": "CompilationUnit",
-			"declarations": [
+			"loc": {
+				"start": {
+					"line": 1,
+					"column": 0
+				},
+				"end": {
+					"line": 3,
+					"column": 0
+				}
+			},
+			"body": [
 				{
+					"type": "VariableDeclaration",
 					"start": 10,
 					"end": 18,
-					"class": "TopLevelVariableDeclaration",
-					"variables": {
-						"start": 10,
-						"end": 17,
-						"class": "VariableDeclarationList",
-						"variables": [
-							{
+					"loc": {
+						"start": {
+							"line": 2,
+							"column": 1
+						},
+						"end": {
+							"line": 2,
+							"column": 9
+						}
+					},
+					"declarations": [
+						{
+							"type": "VariableDeclarator",
+							"start": 14,
+							"end": 17,
+							"loc": {
+								"start": {
+									"line": 2,
+									"column": 5
+								},
+								"end": {
+									"line": 2,
+									"column": 8
+								}
+							},
+							"id": {
+								"type": "Identifier",
 								"start": 14,
 								"end": 17,
-								"class": "VariableDeclaration"
-							}
-						]
-					}
+								"loc": {
+									"start": {
+										"line": 2,
+										"column": 5
+									},
+									"end": {
+										"line": 2,
+										"column": 8
+									}
+								},
+								"name": "foo"
+							},
+							"init": null
+						}
+					],
+					"kind": "let"
 				}
-			]
+			],
+			"sourceType": "module"
 		}
 	}
 }

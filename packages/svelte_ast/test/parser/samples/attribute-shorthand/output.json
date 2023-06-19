@@ -23,14 +23,14 @@
 								"expression": {
 									"start": 6,
 									"end": 8,
-									"class": "SimpleIdentifier",
-									"name": "id",
-									"isAssignable": true
+									"type": "Identifier",
+									"name": "id"
 								}
 							}
 						]
 					}
-				]
+				],
+				"children": []
 			}
 		]
 	}

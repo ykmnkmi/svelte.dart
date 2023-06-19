@@ -1,6 +1,6 @@
 <script>
 	var name = 'world';
-</script
+</script     
 
 
 

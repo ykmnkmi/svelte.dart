@@ -14,15 +14,20 @@
 						"start": 7,
 						"end": 20,
 						"type": "Action",
-						"name": "autofocus"
+						"name": "autofocus",
+						"modifiers": [],
+						"expression": null
 					},
 					{
 						"start": 21,
 						"end": 34,
 						"type": "Action",
-						"name": "autofocus"
+						"name": "autofocus",
+						"modifiers": [],
+						"expression": null
 					}
-				]
+				],
+				"children": []
 			}
 		]
 	}

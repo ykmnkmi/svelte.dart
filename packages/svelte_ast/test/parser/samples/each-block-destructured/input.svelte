@@ -1,8 +1,7 @@
 <script>
-	@export
-	List animals;
+	export List<List> animals;
 </script>
 
-{#each animals as [key, value, ...rest]}
-	<p>{key}: {value}</p>
+{#each animals as [key, value, ...]}
+<p>{key}: {value}</p>
 {/each}

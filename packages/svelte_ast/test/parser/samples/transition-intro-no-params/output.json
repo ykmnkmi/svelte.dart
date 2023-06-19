@@ -15,7 +15,10 @@
 						"end": 12,
 						"type": "Transition",
 						"name": "fade",
-						"intro": true
+						"modifiers": [],
+						"expression": null,
+						"intro": true,
+						"outro": false
 					}
 				],
 				"children": [
@@ -23,8 +26,8 @@
 						"start": 13,
 						"end": 21,
 						"type": "Text",
-						"data": "fades in",
-						"raw": "fades in"
+						"raw": "fades in",
+						"data": "fades in"
 					}
 				]
 			}

@@ -9,13 +9,14 @@
 				"end": 14,
 				"type": "Element",
 				"name": "div",
+				"attributes": [],
 				"children": [
 					{
 						"start": 5,
 						"end": 8,
 						"type": "Text",
-						"data": "foo",
-						"raw": "foo"
+						"raw": "foo",
+						"data": "foo"
 					}
 				]
 			},
@@ -23,8 +24,8 @@
 				"start": 14,
 				"end": 16,
 				"type": "Text",
-				"data": "\n\n",
-				"raw": "\n\n"
+				"raw": "\n\n",
+				"data": "\n\n"
 			}
 		]
 	}

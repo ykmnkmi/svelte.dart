@@ -14,9 +14,11 @@
 						"start": 10,
 						"end": 14,
 						"type": "Attribute",
-						"name": "html"
+						"name": "html",
+						"value": true
 					}
-				]
+				],
+				"children": []
 			}
 		]
 	}

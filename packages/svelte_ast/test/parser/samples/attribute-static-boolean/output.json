@@ -14,9 +14,11 @@
 						"start": 10,
 						"end": 18,
 						"type": "Attribute",
-						"name": "readonly"
+						"name": "readonly",
+						"value": true
 					}
-				]
+				],
+				"children": []
 			}
 		]
 	}

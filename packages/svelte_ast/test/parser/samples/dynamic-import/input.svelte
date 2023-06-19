@@ -1,9 +1,10 @@
 <script>
+	import 'package:svelte/svelte.dart' show onMount;
+
 	import 'foo.dart' deferred as foo;
 
-	void onMount() {
-		foo.loadLibrary().then((_) {
-			print(foo.main);
-		});
-	}
+	onMount(() async {
+		await foo.loadLibrary();
+		print(foo.main);
+	});
 </script>

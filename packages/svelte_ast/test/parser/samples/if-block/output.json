@@ -9,19 +9,28 @@
 				"end": 17,
 				"type": "IfBlock",
 				"expression": {
+					"type": "Identifier",
 					"start": 5,
 					"end": 8,
-					"class": "SimpleIdentifier",
-					"name": "foo",
-					"isAssignable": true
+					"loc": {
+						"start": {
+							"line": 1,
+							"column": 5
+						},
+						"end": {
+							"line": 1,
+							"column": 8
+						}
+					},
+					"name": "foo"
 				},
 				"children": [
 					{
 						"start": 9,
 						"end": 12,
 						"type": "Text",
-						"data": "bar",
-						"raw": "bar"
+						"raw": "bar",
+						"data": "bar"
 					}
 				]
 			}

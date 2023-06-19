@@ -14,9 +14,12 @@
 						"start": 5,
 						"end": 16,
 						"type": "StyleDirective",
-						"name": "color"
+						"name": "color",
+						"modifiers": [],
+						"value": true
 					}
-				]
+				],
+				"children": []
 			}
 		]
 	}

@@ -9,32 +9,42 @@
 				"end": 61,
 				"type": "Element",
 				"name": "textarea",
+				"attributes": [],
 				"children": [
 					{
 						"start": 10,
 						"end": 40,
 						"type": "Text",
-						"data": "\n\t<p>not actually an element. ",
-						"raw": "\n\t<p>not actually an element. "
+						"raw": "\n\t<p>not actually an element. ",
+						"data": "\n\t<p>not actually an element. "
 					},
 					{
 						"start": 40,
 						"end": 45,
 						"type": "MustacheTag",
 						"expression": {
+							"type": "Identifier",
 							"start": 41,
 							"end": 44,
-							"class": "SimpleIdentifier",
-							"name": "foo",
-							"isAssignable": true
+							"loc": {
+								"start": {
+									"line": 2,
+									"column": 30
+								},
+								"end": {
+									"line": 2,
+									"column": 33
+								}
+							},
+							"name": "foo"
 						}
 					},
 					{
 						"start": 45,
 						"end": 50,
 						"type": "Text",
-						"data": "</p>\n",
-						"raw": "</p>\n"
+						"raw": "</p>\n",
+						"data": "</p>\n"
 					}
 				]
 			}

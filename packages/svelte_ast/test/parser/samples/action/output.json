@@ -14,9 +14,12 @@
 						"start": 7,
 						"end": 20,
 						"type": "Action",
-						"name": "autofocus"
+						"name": "autofocus",
+						"modifiers": [],
+						"expression": null
 					}
-				]
+				],
+				"children": []
 			}
 		]
 	}

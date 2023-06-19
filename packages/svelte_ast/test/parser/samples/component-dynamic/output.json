@@ -9,30 +9,69 @@
 				"end": 62,
 				"type": "InlineComponent",
 				"name": "svelte:component",
+				"attributes": [],
+				"children": [],
 				"expression": {
+					"type": "ConditionalExpression",
 					"start": 25,
 					"end": 40,
-					"class": "ConditionalExpression",
-					"condition": {
+					"loc": {
+						"start": {
+							"line": 1,
+							"column": 25
+						},
+						"end": {
+							"line": 1,
+							"column": 40
+						}
+					},
+					"test": {
+						"type": "Identifier",
 						"start": 25,
 						"end": 28,
-						"class": "SimpleIdentifier",
-						"name": "foo",
-						"isAssignable": true
+						"loc": {
+							"start": {
+								"line": 1,
+								"column": 25
+							},
+							"end": {
+								"line": 1,
+								"column": 28
+							}
+						},
+						"name": "foo"
 					},
-					"elseExpression": {
-						"start": 37,
-						"end": 40,
-						"class": "SimpleIdentifier",
-						"name": "Bar",
-						"isAssignable": true
-					},
-					"thenExpression": {
+					"consequent": {
+						"type": "Identifier",
 						"start": 31,
 						"end": 34,
-						"class": "SimpleIdentifier",
-						"name": "Foo",
-						"isAssignable": true
+						"loc": {
+							"start": {
+								"line": 1,
+								"column": 31
+							},
+							"end": {
+								"line": 1,
+								"column": 34
+							}
+						},
+						"name": "Foo"
+					},
+					"alternate": {
+						"type": "Identifier",
+						"start": 37,
+						"end": 40,
+						"loc": {
+							"start": {
+								"line": 1,
+								"column": 37
+							},
+							"end": {
+								"line": 1,
+								"column": 40
+							}
+						},
+						"name": "Bar"
 					}
 				}
 			}

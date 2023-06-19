@@ -1,7 +1,10 @@
 {
 	"code": "invalid-closing-tag",
 	"message": "</p> attempted to close an element that was not open",
-	"line": 5,
-	"column": 0,
-	"offset": 38
+	"pos": 38,
+	"start": {
+		"character": 38,
+		"column": 0,
+		"line": 5
+	}
 }

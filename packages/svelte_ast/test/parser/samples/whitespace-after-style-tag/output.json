@@ -9,13 +9,14 @@
 				"end": 14,
 				"type": "Element",
 				"name": "div",
+				"attributes": [],
 				"children": [
 					{
 						"start": 5,
 						"end": 8,
 						"type": "Text",
-						"data": "foo",
-						"raw": "foo"
+						"raw": "foo",
+						"data": "foo"
 					}
 				]
 			},
@@ -23,79 +24,70 @@
 				"start": 14,
 				"end": 16,
 				"type": "Text",
-				"data": "\n\n",
-				"raw": "\n\n"
+				"raw": "\n\n",
+				"data": "\n\n"
 			}
 		]
 	},
-	"style": {
-		"start": 16,
-		"end": 61,
+	"css": {
 		"type": "Style",
-		"sheet": {
-			"start": 25,
-			"end": 48,
-			"class": "StyleSheet",
-			"topLevels": [
-				{
+		"start": 16,
+		"end": 66,
+		"attributes": [],
+		"children": [
+			{
+				"type": "Rule",
+				"prelude": {
+					"type": "SelectorList",
+					"children": [
+						{
+							"type": "Selector",
+							"children": [
+								{
+									"type": "TypeSelector",
+									"name": "div",
+									"start": 25,
+									"end": 28
+								}
+							],
+							"start": 25,
+							"end": 28
+						}
+					],
 					"start": 25,
-					"end": 28,
-					"class": "RuleSet",
-					"selectorGroup": {
-						"start": 25,
-						"end": 28,
-						"class": "SelectorGroup",
-						"selectors": [
-							{
-								"start": 25,
-								"end": 28,
-								"class": "Selector",
-								"simpleSelectorSequences": [
+					"end": 28
+				},
+				"block": {
+					"type": "Block",
+					"children": [
+						{
+							"type": "Declaration",
+							"important": false,
+							"property": "color",
+							"value": {
+								"type": "Value",
+								"children": [
 									{
-										"start": 25,
-										"end": 28,
-										"class": "SimpleSelectorSequence",
-										"combinator": 513,
-										"simpleSelector": {
-											"start": 25,
-											"end": 28,
-											"class": "ElementSelector"
-										},
-										"isCombinatorNone": true
+										"type": "Identifier",
+										"name": "red",
+										"start": 40,
+										"end": 43
 									}
 								],
-								"length": 1
-							}
-						]
-					},
-					"declarationGroup": {
-						"start": 29,
-						"end": 47,
-						"class": "DeclarationGroup",
-						"declarations": [
-							{
-								"start": 33,
-								"end": 43,
-								"class": "Declaration",
-								"expression": {
-									"start": 40,
-									"end": 43,
-									"class": "Expressions",
-									"expressions": [
-										{
-											"start": 40,
-											"end": 43,
-											"class": "HexColorTerm"
-										}
-									]
-								},
-								"property": "color"
-							}
-						]
-					}
-				}
-			]
-		},
+								"start": 40,
+								"end": 43
+							},
+							"start": 33,
+							"end": 43
+						}
+					],
+					"start": 29,
+					"end": 47
+				},
+				"start": 25,
+				"end": 47
+			}
+		],
 		"content": {
 			"start": 23,
 			"end": 48,

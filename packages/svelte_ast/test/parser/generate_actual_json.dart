@@ -49,7 +49,7 @@ void main() {
       if (file.existsSync()) {
         expected = json.decode(file.readAsStringSync());
       } else {
-        print('error expected ${sample.path}');
+        print('${sample.path}: error expected');
         continue;
       }
     } on ParseError catch (error) {
@@ -59,11 +59,12 @@ void main() {
       if (file.existsSync()) {
         expected = json.decode(file.readAsStringSync());
       } else {
-        print('output expected ${sample.path}');
+        print('${sample.path}: output expected');
         continue;
       }
     } catch (error) {
-      print(error);
+      print('${sample.path}: $error');
+
       continue;
     }
 

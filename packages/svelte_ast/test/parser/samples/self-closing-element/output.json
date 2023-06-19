@@ -8,7 +8,9 @@
 				"start": 0,
 				"end": 6,
 				"type": "Element",
-				"name": "div"
+				"name": "div",
+				"attributes": [],
+				"children": []
 			}
 		]
 	}

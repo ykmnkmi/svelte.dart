@@ -1,7 +1,10 @@
 {
 	"code": "invalid-void-content",
 	"message": "<input> is a void element and cannot have children, or a closing tag",
-	"line": 1,
-	"column": 23,
-	"offset": 23
+	"start": {
+		"line": 1,
+		"column": 23,
+		"character": 23
+	},
+	"pos": 23
 }

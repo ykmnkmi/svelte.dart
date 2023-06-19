@@ -1,36 +1,32 @@
 {
-  "start": 0,
-  "end": 129,
-  "_": "Fragment",
-  "children": [
-    {
-      "start": 0,
-      "end": 27,
-      "_": "Element",
-      "name": "p",
-      "children": [
-        {
-          "start": 3,
-          "end": 23,
-          "_": "Text",
-          "raw": "This is a paragraph.",
-          "data": "This is a paragraph."
-        }
-      ]
-    },
-    {
-      "start": 27,
-      "end": 29,
-      "_": "Text",
-      "raw": "\n\n",
-      "data": "\n\n"
-    },
-    {
-      "start": 129,
-      "end": 130,
-      "_": "Text",
-      "raw": "\n",
-      "data": "\n"
-    }
-  ]
+  "html": {
+    "start": 0,
+    "end": 21,
+    "_": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 21,
+        "_": "Element",
+        "name": "input",
+        "attributes": [
+          {
+            "start": 7,
+            "end": 20,
+            "_": "Directive",
+            "type": "action",
+            "name": "autofocus",
+            "modifiers": []
+          }
+        ]
+      },
+      {
+        "start": 21,
+        "end": 22,
+        "_": "Text",
+        "raw": "\n",
+        "data": "\n"
+      }
+    ]
+  }
 }

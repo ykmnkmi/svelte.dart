@@ -1,7 +1,10 @@
 {
 	"code": "invalid-window-content",
 	"message": "<svelte:window> cannot have children",
-	"line": 1,
-	"column": 15,
-	"offset": 15
+	"start": {
+		"line": 1,
+		"column": 15,
+		"character": 15
+	},
+	"pos": 15
 }
