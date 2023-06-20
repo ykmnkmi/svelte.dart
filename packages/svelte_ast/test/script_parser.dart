@@ -5,24 +5,18 @@ import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
     show StringScanner, Token;
 import 'package:analyzer/dart/analysis/features.dart' show Feature, FeatureSet;
-import 'package:analyzer/dart/ast/token.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' show AnalysisError;
 import 'package:analyzer/error/listener.dart'
     show AnalysisErrorListener, ErrorReporter;
 import 'package:analyzer/source/line_info.dart' show LineInfo;
 import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
 import 'package:analyzer/src/fasta/ast_builder.dart' show AstBuilder;
 import 'package:analyzer/src/string_source.dart' show StringSource;
+import 'package:stack_trace/stack_trace.dart' show Trace;
 
-const String string = r'''
-import 'package:svelte/svelte.dart';
-
-export String count = 0;
-
-$: doubled = count * 2;
-
-void increment([int value = 1]) {
-  count += value;
+const String string = '''
+void main() {
+  external int count = 0;
 }
 ''';
 
@@ -44,8 +38,13 @@ void main() {
   var parser = SvelteScriptParser(astBuilder,
       allowPatterns: featureSet.isEnabled(Feature.patterns));
 
-  var result = parser.parse(token);
-  print(result);
+  try {
+    var result = parser.parse(token);
+    print(result);
+  } catch (error, trace) {
+    print(error);
+    print(Trace.format(trace));
+  }
 }
 
 final class ThrowingErrorListener extends AnalysisErrorListener {
@@ -56,30 +55,14 @@ final class ThrowingErrorListener extends AnalysisErrorListener {
 }
 
 final class SvelteScriptParser extends fe.Parser {
-  SvelteScriptParser(AstBuilder astBuilder, {super.allowPatterns})
+  SvelteScriptParser(this.astBuilder, {super.allowPatterns})
       : super(astBuilder) {
     astBuilder.parser = this;
   }
 
-  @override
-  Token parseExport(Token exportKeyword) {
-    return switch (exportKeyword.next) {
-      Token(type: TokenType.STRING) => super.parseExport(exportKeyword),
-      Token next => parseTopLevelDeclaration(next),
-      _ => throw AssertionError('unreachable'),
-    };
-  }
-
-  @override
-  Token parseTopLevelDeclaration(Token token, [bool export = false]) {
-    if (export) {
-      print(token.next);
-    }
-
-    return super.parseTopLevelDeclaration(token);
-  }
+  final AstBuilder astBuilder;
 
   Object? parse(Token token) {
-    return parseUnit(token);
+    throw UnimplementedError();
   }
 }
