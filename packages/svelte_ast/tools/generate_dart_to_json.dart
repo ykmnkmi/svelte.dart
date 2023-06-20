@@ -174,11 +174,9 @@ Future<void> main() async {
         ..write('\n  Map<String, Object?>? visit$name($name node) {')
         ..write('\n    return <String, Object?>{')
         ..write('...getLocation(node),')
-        ..write("'type': '$name',");
+        ..write("'class': '$name',");
 
       Set<String> writed = <String>{
-        'type',
-
         // null check on null
         'isQualified',
 

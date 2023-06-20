@@ -22,7 +22,7 @@ final class Attribute extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      'type': 'Attribute',
+      'class': 'Attribute',
       'name': name,
       if (value case bool value? when value) 'value': value,
       if (value case List<Node> values? when values.isNotEmpty)
@@ -52,7 +52,7 @@ final class AttributeShorthand extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      'type': 'AttributeShorthand',
+      'class': 'AttributeShorthand',
       'expression': expression.accept(dart2Json),
     };
   }
@@ -77,7 +77,7 @@ final class Spread extends Node {
     return <String, Object?>{
       'start': start,
       'end': end,
-      'type': 'Spread',
+      'class': 'Spread',
       'expression': expression.accept(dart2Json),
     };
   }
@@ -415,13 +415,17 @@ abstract interface class HasName implements Node {
   String get name;
 }
 
-abstract base class Tag extends Node {
+abstract base class Tag extends Node implements HasName {
   Tag({
     super.start,
     super.end,
+    required this.name,
     this.attributes = const <Node>[],
     super.children,
   });
+
+  @override
+  final String name;
 
   final List<Node> attributes;
 }
@@ -430,6 +434,7 @@ final class Head extends Tag {
   Head({
     super.start,
     super.end,
+    required super.name,
     required super.attributes,
     required super.children,
   });
@@ -444,7 +449,8 @@ final class Head extends Tag {
     return <String, Object?>{
       'start': start,
       'end': end,
-      'type': 'Head',
+      'class': 'Head',
+      'name': name,
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
@@ -468,6 +474,7 @@ final class InlineComponent extends Tag {
   InlineComponent({
     super.start,
     super.end,
+    required super.name,
     required super.attributes,
     required super.children,
   });
@@ -482,7 +489,8 @@ final class InlineComponent extends Tag {
     return <String, Object?>{
       'start': start,
       'end': end,
-      'type': 'InlineComponent',
+      'class': 'InlineComponent',
+      'name': name,
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
@@ -498,6 +506,7 @@ final class SlotTemplate extends Tag {
   SlotTemplate({
     super.start,
     super.end,
+    required super.name,
     required super.attributes,
     required super.children,
   });
@@ -512,7 +521,8 @@ final class SlotTemplate extends Tag {
     return <String, Object?>{
       'start': start,
       'end': end,
-      'type': 'SlotTemplate',
+      'class': 'SlotTemplate',
+      'name': name,
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
@@ -528,6 +538,7 @@ final class Title extends Tag {
   Title({
     super.start,
     super.end,
+    required super.name,
     required super.attributes,
     required super.children,
   });
@@ -542,7 +553,8 @@ final class Title extends Tag {
     return <String, Object?>{
       'start': start,
       'end': end,
-      'type': 'Title',
+      'class': 'Title',
+      'name': name,
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
@@ -558,6 +570,7 @@ final class Slot extends Tag {
   Slot({
     super.start,
     super.end,
+    required super.name,
     required super.attributes,
     required super.children,
   });
@@ -572,7 +585,8 @@ final class Slot extends Tag {
     return <String, Object?>{
       'start': start,
       'end': end,
-      'type': 'Slot',
+      'class': 'Slot',
+      'name': name,
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
@@ -588,13 +602,10 @@ final class Element extends Tag implements HasName {
   Element({
     super.start,
     super.end,
-    required this.name,
+    required super.name,
     required super.attributes,
     required super.children,
   });
-
-  @override
-  final String name;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -606,7 +617,7 @@ final class Element extends Tag implements HasName {
     return <String, Object?>{
       'start': start,
       'end': end,
-      'type': 'Element',
+      'class': 'Element',
       'name': name,
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[

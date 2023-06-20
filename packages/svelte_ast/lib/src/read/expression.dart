@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, unnecessary_import
+// ignore_for_file: depend_on_referenced_packages, implementation_imports, unnecessary_import
 
 import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe
     show Parser, PatternContext;

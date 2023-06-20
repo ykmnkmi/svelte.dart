@@ -1,31 +1,39 @@
 {
   "html": {
     "start": 0,
-    "end": 21,
-    "_": "Fragment",
+    "end": 45,
+    "class": "Fragment",
     "children": [
       {
         "start": 0,
-        "end": 21,
-        "_": "Element",
-        "name": "input",
-        "attributes": [
+        "end": 45,
+        "class": "InlineComponent",
+        "children": [
           {
-            "start": 7,
-            "end": 20,
-            "_": "Directive",
-            "type": "action",
-            "name": "autofocus",
-            "modifiers": []
+            "start": 11,
+            "end": 33,
+            "class": "Element",
+            "name": "div",
+            "attributes": [
+              {
+                "start": 16,
+                "end": 26,
+                "class": "Attribute",
+                "name": "slot",
+                "value": [
+                  {
+                    "start": 22,
+                    "end": 25,
+                    "class": "Text",
+                    "raw": "foo",
+                    "data": "foo"
+                  }
+                ]
+              }
+            ],
+            "children": []
           }
         ]
-      },
-      {
-        "start": 21,
-        "end": 22,
-        "_": "Text",
-        "raw": "\n",
-        "data": "\n"
       }
     ]
   }

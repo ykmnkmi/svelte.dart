@@ -2,9 +2,10 @@
 // ignore_for_file: avoid_renaming_method_parameters, depend_on_referenced_packages
 
 import 'package:csslib/visitor.dart';
+import 'package:source_span/source_span.dart';
 
 Map<String, int> getLocation(TreeNode node) {
-  var span = node.span;
+  SourceSpan? span = node.span;
 
   if (span == null) {
     return const <String, int>{};
@@ -19,9 +20,9 @@ Map<String, int> getLocation(TreeNode node) {
 class CssToJsonVisitor implements VisitorBase {
   const CssToJsonVisitor();
 
-  List<Map<String, Object?>> visitAll(List<TreeNode> nodes) {
-    return <Map<String, Object?>>[
-      for (var node in nodes) node.visit(this) as Map<String, Object?>
+  List<Map<String, Object?>?> visitAll(List<TreeNode> nodes) {
+    return <Map<String, Object?>?>[
+      for (TreeNode node in nodes) node.visit(this) as Map<String, Object?>
     ];
   }
 

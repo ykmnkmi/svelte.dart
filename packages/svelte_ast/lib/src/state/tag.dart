@@ -476,24 +476,28 @@ extension TagParser on Parser {
         name == 'svelte:component') {
       element = InlineComponent(
         start: start,
+        name: name,
         attributes: <Node>[],
         children: <Node>[],
       );
     } else if (name == 'svelte:fragment') {
       element = SlotTemplate(
         start: start,
+        name: name,
         attributes: <Node>[],
         children: <Node>[],
       );
     } else if (name == 'title' && _parentIsHead(stack)) {
       element = Title(
         start: start,
+        name: name,
         attributes: <Node>[],
         children: <Node>[],
       );
     } else if (name == 'slot' && !customElement) {
       element = Slot(
         start: start,
+        name: name,
         attributes: <Node>[],
         children: <Node>[],
       );
@@ -515,7 +519,7 @@ extension TagParser on Parser {
 
       expect('>');
 
-      while (parent is! HasName || parent.name != name) {
+      while (parent is Tag && parent.name != name) {
         if (parent is! Element) {
           if (lastAutoCloseTag case AutoCloseTag tag? when tag.tag == name) {
             error(invalidClosingTagAutoClosed(name, tag.reason), start);

@@ -7,7 +7,7 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
-<input use:autofocus>
+<Component><div slot='foo'></div></Component>
 ''';
 
 void main() {

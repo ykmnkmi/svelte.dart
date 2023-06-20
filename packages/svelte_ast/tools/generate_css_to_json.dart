@@ -1,38 +1,43 @@
 import 'dart:io';
 
+import 'package:analyzer/dart/analysis/analysis_context.dart';
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/element/type_provider.dart';
+import 'package:analyzer/dart/element/type_system.dart';
 
 import 'shared/utils.dart';
 
 // TODO(css2json): serialize Font, ...
 Future<void> main() async {
-  var cssRoot = await getRoot('csslib');
+  Directory cssRoot = await getRoot('csslib');
 
-  var includedPaths = <String>[cssRoot.path];
-  var collection = AnalysisContextCollection(includedPaths: includedPaths);
+  List<String> includedPaths = <String>[cssRoot.path];
+  AnalysisContextCollection collection =
+      AnalysisContextCollection(includedPaths: includedPaths);
 
-  var context = collection.contextFor(cssRoot.path);
+  AnalysisContext context = collection.contextFor(cssRoot.path);
   var session = context.currentSession;
 
-  var visitorUri = Uri(path: 'lib/visitor.dart');
+  Uri visitorUri = Uri(path: 'lib/visitor.dart');
   visitorUri = cssRoot.uri.resolveUri(visitorUri);
 
-  var library = await getLibrary(session, visitorUri);
-  var typeProvider = library.typeProvider;
-  var typeSystem = library.typeSystem;
+  LibraryElement library = await getLibrary(session, visitorUri);
+  TypeProvider typeProvider = library.typeProvider;
+  TypeSystem typeSystem = library.typeSystem;
 
-  var treeNodeClass = getClass(library, 'TreeNode');
-  var visitorBaseClass = getClass(library, 'VisitorBase');
+  ClassElement treeNodeClass = getClass(library, 'TreeNode');
+  ClassElement visitorBaseClass = getClass(library, 'VisitorBase');
 
-  var treeNodeType = typeSystem.instantiateInterfaceToBounds(
+  InterfaceType treeNodeType = typeSystem.instantiateInterfaceToBounds(
     element: treeNodeClass,
     nullabilitySuffix: NullabilitySuffix.star,
   );
 
-  var treeNodeListType = typeProvider.listType(treeNodeClass.thisType);
+  InterfaceType treeNodeListType =
+      typeProvider.listType(treeNodeClass.thisType);
 
   bool isBool(DartType type) {
     return type.isDartCoreBool;
@@ -55,27 +60,28 @@ Future<void> main() async {
   }
 
   bool isTreeNodeList(DartType type) {
-    return type is! InvalidType && typeSystem.isSubtypeOf(type, treeNodeListType);
+    return type is! InvalidType &&
+        typeSystem.isSubtypeOf(type, treeNodeListType);
   }
 
-  var file = File('lib/src/css_to_json.dart');
-  var sink = file.openWrite();
+  File file = File('lib/src/css_to_json.dart');
+  IOSink sink = file.openWrite();
   sink.write(header);
 
   void writeFields(InterfaceElement interface, Set<String> writed) {
-    for (var accessor in interface.accessors) {
+    for (PropertyAccessorElement accessor in interface.accessors) {
       if (accessor.hasDeprecated || accessor.isPrivate || accessor.isStatic) {
         continue;
       }
 
-      var name = accessor.name;
+      String name = accessor.name;
 
       if (writed.contains(accessor.name)) {
         continue;
       }
 
       if (accessor.isGetter) {
-        var returnType = accessor.returnType;
+        DartType returnType = accessor.returnType;
         String prefix, check;
 
         if (typeSystem.isNullable(returnType)) {
@@ -111,8 +117,8 @@ Future<void> main() async {
   }
 
   void writeSuperFields(InterfaceType type, String parent, Set<String> writed) {
-    for (var interface in type.interfaces) {
-      var name = interface.getDisplayString(withNullability: false);
+    for (InterfaceType interface in type.interfaces) {
+      String name = interface.getDisplayString(withNullability: false);
 
       if (name == 'TreeNode' || name == 'Object') {
         continue;
@@ -124,15 +130,15 @@ Future<void> main() async {
     }
   }
 
-  for (var method in visitorBaseClass.methods) {
+  for (MethodElement method in visitorBaseClass.methods) {
     if (method.name.startsWith('visit')) {
-      var type = method.parameters.first.type as InterfaceType;
+      InterfaceType type = method.parameters.first.type as InterfaceType;
 
       if (!isTreeNode(type)) {
         continue;
       }
 
-      var name = type.getDisplayString(withNullability: false);
+      String name = type.getDisplayString(withNullability: false);
 
       sink
         ..write('\n')
@@ -142,7 +148,7 @@ Future<void> main() async {
         ..write('\n      ...getLocation(node),')
         ..write("\n      'class': '$name',");
 
-      var writed = <String>{};
+      Set<String> writed = <String>{};
 
       writeFields(type.element, writed);
       writeSuperFields(type, name, writed);
@@ -156,7 +162,7 @@ Future<void> main() async {
   sink.write('\n}\n');
   await sink.close();
 
-  var result = Process.runSync('dart', <String>['format', file.path]);
+  ProcessResult result = Process.runSync('dart', <String>['format', file.path]);
   exitCode = result.exitCode;
 }
 
@@ -165,9 +171,10 @@ const String header = '''
 // ignore_for_file: avoid_renaming_method_parameters, depend_on_referenced_packages
 
 import 'package:csslib/visitor.dart';
+import 'package:source_span/source_span.dart';
 
 Map<String, int> getLocation(TreeNode node) {
-  var span = node.span;
+  SourceSpan? span = node.span;
 
   if (span == null) {
     return const <String, int>{};
@@ -183,5 +190,7 @@ class CssToJsonVisitor implements VisitorBase {
   const CssToJsonVisitor();
 
   List<Map<String, Object?>?> visitAll(List<TreeNode> nodes) {
-    return <Map<String, Object?>?>[for (var node in nodes) node.visit(this)];
+    return <Map<String, Object?>?>[
+      for (TreeNode node in nodes) node.visit(this) as Map<String, Object?>
+    ];
   }''';
