@@ -15,8 +15,18 @@ import 'package:analyzer/src/string_source.dart' show StringSource;
 import 'package:stack_trace/stack_trace.dart' show Trace;
 
 const String string = '''
-void main() {
-  external int count = 0;
+external int count = 0;
+
+void onMount() {
+  print('mounted');
+
+  Future<void>.delayed(Duration(seconds: 2), () {
+    count += 1;
+  });
+}
+
+void onDestroy() {
+  print('destroyed');
 }
 ''';
 
@@ -63,6 +73,13 @@ final class SvelteScriptParser extends fe.Parser {
   final AstBuilder astBuilder;
 
   Object? parse(Token token) {
-    throw UnimplementedError();
+    token = parseUnit(token);
+    return astBuilder.pop();
+  }
+
+  @override
+  Token parseInvalidTopLevelDeclaration(Token token) {
+    print(token.type);
+    return super.parseInvalidTopLevelDeclaration(token);
   }
 }
