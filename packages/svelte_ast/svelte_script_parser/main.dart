@@ -1,40 +1,42 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: avoid_print, depend_on_referenced_packages
 
-import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe
-    show Parser;
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
-    show StringScanner, Token;
+    show StringScanner;
 import 'package:analyzer/dart/analysis/features.dart' show Feature, FeatureSet;
-import 'package:analyzer/error/error.dart' show AnalysisError;
-import 'package:analyzer/error/listener.dart'
-    show AnalysisErrorListener, ErrorReporter;
+import 'package:analyzer/error/listener.dart' show ErrorReporter;
 import 'package:analyzer/source/line_info.dart' show LineInfo;
 import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
 import 'package:analyzer/src/fasta/ast_builder.dart' show AstBuilder;
 import 'package:analyzer/src/string_source.dart' show StringSource;
 import 'package:stack_trace/stack_trace.dart' show Trace;
 
+import 'svelte_script_parser.dart';
+
 const String string = '''
+import 'package:svelte/svelte.dart';
+
 external int count = 0;
 
-void onMount() {
+var unused = null;
+
+onMount(() {
   print('mounted');
 
   Future<void>.delayed(Duration(seconds: 2), () {
     count += 1;
   });
-}
+});
 
-void onDestroy() {
+onDestroy(() {
   print('destroyed');
-}
+});
 ''';
 
 void main() {
   var featureSet = FeatureSet.latestLanguageVersion();
   var configuration = dart.Scanner.buildConfig(featureSet);
   var scanner = StringScanner(string, configuration: configuration);
-  // scanner.scanOffset = -1;
+  // scanner.scanOffset = parser.position;
 
   var token = scanner.tokenize();
 
@@ -49,37 +51,9 @@ void main() {
       allowPatterns: featureSet.isEnabled(Feature.patterns));
 
   try {
-    var result = parser.parse(token);
-    print(result);
+    print(parser.parse(token));
   } catch (error, trace) {
     print(error);
     print(Trace.format(trace));
-  }
-}
-
-final class ThrowingErrorListener extends AnalysisErrorListener {
-  @override
-  void onError(AnalysisError error) {
-    throw error;
-  }
-}
-
-final class SvelteScriptParser extends fe.Parser {
-  SvelteScriptParser(this.astBuilder, {super.allowPatterns})
-      : super(astBuilder) {
-    astBuilder.parser = this;
-  }
-
-  final AstBuilder astBuilder;
-
-  Object? parse(Token token) {
-    token = parseUnit(token);
-    return astBuilder.pop();
-  }
-
-  @override
-  Token parseInvalidTopLevelDeclaration(Token token) {
-    print(token.type);
-    return super.parseInvalidTopLevelDeclaration(token);
   }
 }

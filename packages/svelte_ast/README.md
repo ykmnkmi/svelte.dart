@@ -7,24 +7,21 @@ Parser and utilities for [SvelteDart][svelte_dart] templates.
 ## Usage
 
 ```dart
+import 'dart:convert';
+
 import 'package:svelte_ast/svelte_ast.dart';
+
+const String content = '''
+<script>
+  var count = 0;
+</script>
+<button on:click="{() => count++}">count: {count}</button>''';
 
 void main() {
   // Create an AST tree by parsing an SvelteDart template.
-  var tree = parse('<button title={someTitle}>Hello World!</button>');
+  SvelteAst ast = parse(content);
 
   // Print to console.
-  print(tree);
-
-  // Output:
-  // [
-  //    Element <button> {
-  //      properties=
-  //        Property {
-  //          title="Expression {someTitle}"}
-  //          childNodes=Text {Hello World!}
-  //      }
-  //    }
-  // ]
+  print(const JsonEncoder.withIndent('  ').convert(ast.toJson()));
 }
 ```
