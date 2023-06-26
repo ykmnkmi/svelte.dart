@@ -7,7 +7,7 @@ web framework, (not yet) ported to [Dart](https://dart.dev).
 ```html
 <!-- app.svelte -->
 <script>
-  // importы
+  // imports
   import 'package:svelte/svelte.dart';
 
   // properties
@@ -43,7 +43,10 @@ web framework, (not yet) ported to [Dart](https://dart.dev).
 ```
 
 Status (original implementation):
-- [ ] Parser 🔥
+- [x] Parser
+  - Tests
+    - [ ] css  🔥
+    - [x] parser
 - [ ] Runtime
   - [ ] internal
     - [ ] component
@@ -55,10 +58,6 @@ Status (original implementation):
   - [ ] ...
 - [ ] Compiler
   - [ ] Builder
-- [ ] Tests
-  - [ ] Parser 🔥
-  - [ ] Runtime
-  - [ ] ...
 - [ ] Examples (to test runtime, not generated)
   - [x] introduction
   - [x] reactivity
