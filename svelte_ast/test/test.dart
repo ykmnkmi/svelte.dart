@@ -7,9 +7,23 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
-{#each things as 𐊧}
-	<p>{𐊧}</p>
-{/each}
+<div>hello</div>
+
+<style>
+	@layer base, special;
+
+	@layer special {
+		div {
+			color: rebeccapurple;
+		}
+	}
+
+	@layer base {
+		div {
+			color: green;
+		}
+	}
+</style>
 ''';
 
 void main() {

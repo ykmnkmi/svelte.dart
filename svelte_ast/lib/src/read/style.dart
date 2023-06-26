@@ -13,6 +13,7 @@ import 'package:csslib/visitor.dart'
         SimpleSelectorSequence,
         StyleSheet,
         TreeNode;
+import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/parser.dart';
@@ -48,8 +49,15 @@ extension StyleParser on Parser {
     );
 
     if (errors.isNotEmpty) {
-      Message first = errors.first;
-      error(cssSyntaxError(first.message), first.span?.start.offset);
+      var Message(
+        message: message,
+        span: SourceSpan(
+          start: SourceLocation(offset: offset),
+          end: SourceLocation(offset: end),
+        )!,
+      ) = errors.first;
+
+      error(cssSyntaxError(message), dataStart + offset, dataStart + end);
     }
 
     ast.visit(StyleValidator(this, dataStart));

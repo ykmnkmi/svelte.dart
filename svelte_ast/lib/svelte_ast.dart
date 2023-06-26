@@ -40,10 +40,10 @@ SvelteAst parse(
   bool customElement = false,
 }) {
   var Parser(
-    :Node html,
-    :List<Script> scripts,
-    :List<Style> styles,
-    :Never Function(ErrorCode errorCode, [int? position]) error,
+    html: Node html,
+    scripts: List<Script> scripts,
+    styles: List<Style> styles,
+    error: Never Function(ErrorCode errorCode, [int? position]) error,
   ) = Parser(
     string: string.trimRight(),
     fileName: fileName,

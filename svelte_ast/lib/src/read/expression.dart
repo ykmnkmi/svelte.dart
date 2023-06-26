@@ -69,9 +69,9 @@ extension ExpressionParser on Parser {
       return parser.builder.pop() as T;
     } on AnalysisError catch (analysisError) {
       var AnalysisError(
-        :int offset,
-        :int length,
-        :String message,
+        offset: int offset,
+        length: int length,
+        message: String message,
       ) = analysisError;
       dartError(message, offset, length);
     } on ErrorToken catch (token) {
@@ -101,16 +101,16 @@ extension ExpressionParser on Parser {
       callback(parser, token);
     } on AnalysisError catch (analysisError) {
       var AnalysisError(
-        :int offset,
-        :int length,
-        :String message,
+        offset: int offset,
+        length: int length,
+        message: String message,
       ) = analysisError;
       dartError(message, offset, length);
     } on ErrorToken catch (token) {
       var ErrorToken(
-        :int offset,
-        :int length,
-        :Message assertionMessage,
+        offset: int offset,
+        length: int length,
+        assertionMessage: Message assertionMessage,
       ) = token;
       dartError(assertionMessage.problemMessage, offset, length);
     }
