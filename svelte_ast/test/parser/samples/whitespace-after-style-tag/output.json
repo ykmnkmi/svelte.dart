@@ -2,96 +2,99 @@
 	"html": {
 		"start": 0,
 		"end": 14,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 14,
-				"type": "Element",
+				"end": 13,
+				"class": "Element",
 				"name": "div",
-				"attributes": [],
 				"children": [
 					{
 						"start": 5,
 						"end": 8,
-						"type": "Text",
+						"class": "Text",
 						"raw": "foo",
 						"data": "foo"
 					}
 				]
 			},
 			{
-				"start": 14,
+				"start": 13,
 				"end": 16,
-				"type": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
+				"class": "Text",
+				"raw": ">\n\n",
+				"data": ">\n\n"
 			}
 		]
 	},
-	"css": {
-		"type": "Style",
+	"style": {
 		"start": 16,
 		"end": 66,
-		"attributes": [],
-		"children": [
-			{
-				"type": "Rule",
-				"prelude": {
-					"type": "SelectorList",
-					"children": [
-						{
-							"type": "Selector",
-							"children": [
-								{
-									"type": "TypeSelector",
-									"name": "div",
-									"start": 25,
-									"end": 28
-								}
-							],
-							"start": 25,
-							"end": 28
-						}
-					],
-					"start": 25,
-					"end": 28
-				},
-				"block": {
-					"type": "Block",
-					"children": [
-						{
-							"type": "Declaration",
-							"important": false,
-							"property": "color",
-							"value": {
-								"type": "Value",
-								"children": [
-									{
-										"type": "Identifier",
-										"name": "red",
-										"start": 40,
-										"end": 43
-									}
-								],
-								"start": 40,
-								"end": 43
-							},
-							"start": 33,
-							"end": 43
-						}
-					],
-					"start": 29,
-					"end": 47
-				},
-				"start": 25,
-				"end": 47
-			}
-		],
+		"class": "Style",
 		"content": {
 			"start": 23,
 			"end": 48,
-			"styles": "\n\tdiv {\n\t\tcolor: red;\n\t}\n"
-		}
+			"data": "\n\tdiv {\n\t\tcolor: red;\n\t}\n"
+		},
+		"raw": [
+			{
+				"start": 2,
+				"end": 5,
+				"class": "RuleSet",
+				"selectorGroup": {
+					"start": 2,
+					"end": 5,
+					"class": "SelectorGroup",
+					"selectors": [
+						{
+							"start": 2,
+							"end": 5,
+							"class": "Selector",
+							"simpleSelectorSequences": [
+								{
+									"start": 2,
+									"end": 5,
+									"class": "SimpleSelectorSequence",
+									"combinator": 513,
+									"simpleSelector": {
+										"start": 2,
+										"end": 5,
+										"class": "ElementSelector"
+									},
+									"isCombinatorNone": true
+								}
+							],
+							"length": 1
+						}
+					]
+				},
+				"declarationGroup": {
+					"start": 6,
+					"end": 24,
+					"class": "DeclarationGroup",
+					"declarations": [
+						{
+							"start": 10,
+							"end": 20,
+							"class": "Declaration",
+							"expression": {
+								"start": 17,
+								"end": 20,
+								"class": "Expressions",
+								"expressions": [
+									{
+										"start": 17,
+										"end": 20,
+										"class": "HexColorTerm"
+									}
+								]
+							},
+							"property": "color"
+						}
+					]
+				}
+			}
+		]
 	}
 }

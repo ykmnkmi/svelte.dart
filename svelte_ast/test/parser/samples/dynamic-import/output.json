@@ -1,482 +1,229 @@
 {
 	"html": {
-		"start": null,
-		"end": null,
-		"type": "Fragment",
-		"children": []
+		"start": -1,
+		"end": -1,
+		"class": "Fragment"
 	},
 	"instance": {
-		"type": "Script",
 		"start": 0,
-		"end": 146,
+		"end": 178,
+		"class": "Script",
 		"context": "default",
 		"content": {
-			"type": "Program",
 			"start": 8,
-			"end": 137,
-			"loc": {
-				"start": {
-					"line": 1,
-					"column": 0
-				},
-				"end": {
-					"line": 9,
-					"column": 0
+			"end": 169,
+			"data": "\n\timport 'package:svelte/svelte.dart' show onMount;\n\n\timport 'foo.dart' deferred as foo;\n\n\tonMount(() async {\n\t\tawait foo.loadLibrary();\n\t\tprint(foo.main);\n\t});\n"
+		},
+		"imports": [
+			{
+				"start": 10,
+				"end": 59,
+				"class": "ImportDirective",
+				"combinators": [
+					{
+						"start": 46,
+						"end": 58,
+						"class": "ShowCombinator",
+						"shownNames": [
+							{
+								"start": 51,
+								"end": 58,
+								"class": "SimpleIdentifier",
+								"name": "onMount",
+								"isAssignable": true
+							}
+						]
+					}
+				],
+				"uri": {
+					"start": 17,
+					"end": 45,
+					"class": "SimpleStringLiteral",
+					"value": "package:svelte/svelte.dart",
+					"contentsEnd": 44,
+					"contentsOffset": 18,
+					"isSingleQuoted": true,
+					"stringValue": "package:svelte/svelte.dart"
 				}
 			},
-			"body": [
-				{
-					"type": "ImportDeclaration",
-					"start": 10,
-					"end": 43,
-					"loc": {
-						"start": {
-							"line": 2,
-							"column": 1
-						},
-						"end": {
-							"line": 2,
-							"column": 34
-						}
-					},
-					"specifiers": [
-						{
-							"type": "ImportSpecifier",
-							"start": 19,
-							"end": 26,
-							"loc": {
-								"start": {
-									"line": 2,
-									"column": 10
-								},
-								"end": {
-									"line": 2,
-									"column": 17
-								}
-							},
-							"imported": {
-								"type": "Identifier",
-								"start": 19,
-								"end": 26,
-								"loc": {
-									"start": {
-										"line": 2,
-										"column": 10
-									},
-									"end": {
-										"line": 2,
-										"column": 17
-									}
-								},
-								"name": "onMount"
-							},
-							"local": {
-								"type": "Identifier",
-								"start": 19,
-								"end": 26,
-								"loc": {
-									"start": {
-										"line": 2,
-										"column": 10
-									},
-									"end": {
-										"line": 2,
-										"column": 17
-									}
-								},
-								"name": "onMount"
-							}
-						}
-					],
-					"source": {
-						"type": "Literal",
-						"start": 34,
-						"end": 42,
-						"loc": {
-							"start": {
-								"line": 2,
-								"column": 25
-							},
-							"end": {
-								"line": 2,
-								"column": 33
-							}
-						},
-						"value": "svelte",
-						"raw": "'svelte'"
-					}
+			{
+				"start": 62,
+				"end": 96,
+				"class": "ImportDirective",
+				"prefix": {
+					"start": 92,
+					"end": 95,
+					"class": "SimpleIdentifier",
+					"name": "foo",
+					"isAssignable": true
 				},
-				{
-					"type": "ExpressionStatement",
-					"start": 46,
-					"end": 136,
-					"loc": {
-						"start": {
-							"line": 4,
-							"column": 1
-						},
-						"end": {
-							"line": 8,
-							"column": 4
-						}
+				"uri": {
+					"start": 69,
+					"end": 79,
+					"class": "SimpleStringLiteral",
+					"value": "foo.dart",
+					"contentsEnd": 78,
+					"contentsOffset": 70,
+					"isSingleQuoted": true,
+					"stringValue": "foo.dart"
+				}
+			}
+		],
+		"statements": [
+			{
+				"start": 99,
+				"end": 168,
+				"class": "ExpressionStatement",
+				"expression": {
+					"start": 99,
+					"end": 167,
+					"class": "MethodInvocation",
+					"methodName": {
+						"start": 99,
+						"end": 106,
+						"class": "SimpleIdentifier",
+						"name": "onMount",
+						"isAssignable": true
 					},
-					"expression": {
-						"type": "CallExpression",
-						"start": 46,
-						"end": 135,
-						"loc": {
-							"start": {
-								"line": 4,
-								"column": 1
-							},
-							"end": {
-								"line": 8,
-								"column": 3
-							}
-						},
-						"callee": {
-							"type": "Identifier",
-							"start": 46,
-							"end": 53,
-							"loc": {
-								"start": {
-									"line": 4,
-									"column": 1
-								},
-								"end": {
-									"line": 4,
-									"column": 8
-								}
-							},
-							"name": "onMount"
-						},
+					"argumentList": {
+						"start": 106,
+						"end": 167,
+						"class": "ArgumentList",
 						"arguments": [
 							{
-								"type": "ArrowFunctionExpression",
-								"start": 54,
-								"end": 134,
-								"loc": {
-									"start": {
-										"line": 4,
-										"column": 9
-									},
-									"end": {
-										"line": 8,
-										"column": 2
-									}
-								},
-								"id": null,
-								"expression": false,
-								"generator": false,
-								"async": false,
-								"params": [],
+								"start": 107,
+								"end": 166,
+								"class": "FunctionExpression",
 								"body": {
-									"type": "BlockStatement",
-									"start": 60,
-									"end": 134,
-									"loc": {
-										"start": {
-											"line": 4,
-											"column": 15
-										},
-										"end": {
-											"line": 8,
-											"column": 2
-										}
-									},
-									"body": [
-										{
-											"type": "ExpressionStatement",
-											"start": 64,
-											"end": 131,
-											"loc": {
-												"start": {
-													"line": 5,
-													"column": 2
-												},
-												"end": {
-													"line": 7,
-													"column": 5
+									"start": 110,
+									"end": 166,
+									"class": "BlockFunctionBody",
+									"block": {
+										"start": 116,
+										"end": 166,
+										"class": "Block",
+										"statements": [
+											{
+												"start": 120,
+												"end": 144,
+												"class": "ExpressionStatement",
+												"expression": {
+													"start": 120,
+													"end": 143,
+													"class": "AwaitExpression",
+													"expression": {
+														"start": 126,
+														"end": 143,
+														"class": "MethodInvocation",
+														"methodName": {
+															"start": 130,
+															"end": 141,
+															"class": "SimpleIdentifier",
+															"name": "loadLibrary",
+															"isAssignable": true
+														},
+														"realTarget": {
+															"start": 126,
+															"end": 129,
+															"class": "SimpleIdentifier",
+															"name": "foo",
+															"isAssignable": true
+														},
+														"target": {
+															"start": 126,
+															"end": 129,
+															"class": "SimpleIdentifier",
+															"name": "foo",
+															"isAssignable": true
+														},
+														"argumentList": {
+															"start": 141,
+															"end": 143,
+															"class": "ArgumentList"
+														},
+														"function": {
+															"start": 130,
+															"end": 141,
+															"class": "SimpleIdentifier",
+															"name": "loadLibrary",
+															"isAssignable": true
+														}
+													}
 												}
 											},
-											"expression": {
-												"type": "CallExpression",
-												"start": 64,
-												"end": 130,
-												"loc": {
-													"start": {
-														"line": 5,
-														"column": 2
+											{
+												"start": 147,
+												"end": 163,
+												"class": "ExpressionStatement",
+												"expression": {
+													"start": 147,
+													"end": 162,
+													"class": "MethodInvocation",
+													"methodName": {
+														"start": 147,
+														"end": 152,
+														"class": "SimpleIdentifier",
+														"name": "print",
+														"isAssignable": true
 													},
-													"end": {
-														"line": 7,
-														"column": 4
-													}
-												},
-												"callee": {
-													"type": "MemberExpression",
-													"start": 64,
-													"end": 87,
-													"loc": {
-														"start": {
-															"line": 5,
-															"column": 2
-														},
-														"end": {
-															"line": 5,
-															"column": 25
-														}
-													},
-													"object": {
-														"type": "ImportExpression",
-														"start": 64,
-														"end": 82,
-														"loc": {
-															"start": {
-																"line": 5,
-																"column": 2
-															},
-															"end": {
-																"line": 5,
-																"column": 20
-															}
-														},
-														"source": {
-															"type": "Literal",
-															"start": 71,
-															"end": 81,
-															"loc": {
-																"start": {
-																	"line": 5,
-																	"column": 9
-																},
-																"end": {
-																	"line": 5,
-																	"column": 19
-																}
-															},
-															"value": "./foo.js",
-															"raw": "'./foo.js'"
-														}
-													},
-													"property": {
-														"type": "Identifier",
-														"start": 83,
-														"end": 87,
-														"loc": {
-															"start": {
-																"line": 5,
-																"column": 21
-															},
-															"end": {
-																"line": 5,
-																"column": 25
-															}
-														},
-														"name": "then"
-													},
-													"computed": false,
-													"optional": false
-												},
-												"arguments": [
-													{
-														"type": "ArrowFunctionExpression",
-														"start": 88,
-														"end": 129,
-														"loc": {
-															"start": {
-																"line": 5,
-																"column": 26
-															},
-															"end": {
-																"line": 7,
-																"column": 3
-															}
-														},
-														"id": null,
-														"expression": false,
-														"generator": false,
-														"async": false,
-														"params": [
+													"argumentList": {
+														"start": 152,
+														"end": 162,
+														"class": "ArgumentList",
+														"arguments": [
 															{
-																"type": "Identifier",
-																"start": 88,
-																"end": 91,
-																"loc": {
-																	"start": {
-																		"line": 5,
-																		"column": 26
-																	},
-																	"end": {
-																		"line": 5,
-																		"column": 29
-																	}
+																"start": 153,
+																"end": 161,
+																"class": "PrefixedIdentifier",
+																"identifier": {
+																	"start": 157,
+																	"end": 161,
+																	"class": "SimpleIdentifier",
+																	"name": "main",
+																	"isAssignable": true
 																},
-																"name": "foo"
+																"prefix": {
+																	"start": 153,
+																	"end": 156,
+																	"class": "SimpleIdentifier",
+																	"name": "foo",
+																	"isAssignable": true
+																},
+																"name": "foo.main",
+																"isAssignable": true
 															}
-														],
-														"body": {
-															"type": "BlockStatement",
-															"start": 95,
-															"end": 129,
-															"loc": {
-																"start": {
-																	"line": 5,
-																	"column": 33
-																},
-																"end": {
-																	"line": 7,
-																	"column": 3
-																}
-															},
-															"body": [
-																{
-																	"type": "ExpressionStatement",
-																	"start": 100,
-																	"end": 125,
-																	"loc": {
-																		"start": {
-																			"line": 6,
-																			"column": 3
-																		},
-																		"end": {
-																			"line": 6,
-																			"column": 28
-																		}
-																	},
-																	"expression": {
-																		"type": "CallExpression",
-																		"start": 100,
-																		"end": 124,
-																		"loc": {
-																			"start": {
-																				"line": 6,
-																				"column": 3
-																			},
-																			"end": {
-																				"line": 6,
-																				"column": 27
-																			}
-																		},
-																		"callee": {
-																			"type": "MemberExpression",
-																			"start": 100,
-																			"end": 111,
-																			"loc": {
-																				"start": {
-																					"line": 6,
-																					"column": 3
-																				},
-																				"end": {
-																					"line": 6,
-																					"column": 14
-																				}
-																			},
-																			"object": {
-																				"type": "Identifier",
-																				"start": 100,
-																				"end": 107,
-																				"loc": {
-																					"start": {
-																						"line": 6,
-																						"column": 3
-																					},
-																					"end": {
-																						"line": 6,
-																						"column": 10
-																					}
-																				},
-																				"name": "console"
-																			},
-																			"property": {
-																				"type": "Identifier",
-																				"start": 108,
-																				"end": 111,
-																				"loc": {
-																					"start": {
-																						"line": 6,
-																						"column": 11
-																					},
-																					"end": {
-																						"line": 6,
-																						"column": 14
-																					}
-																				},
-																				"name": "log"
-																			},
-																			"computed": false,
-																			"optional": false
-																		},
-																		"arguments": [
-																			{
-																				"type": "MemberExpression",
-																				"start": 112,
-																				"end": 123,
-																				"loc": {
-																					"start": {
-																						"line": 6,
-																						"column": 15
-																					},
-																					"end": {
-																						"line": 6,
-																						"column": 26
-																					}
-																				},
-																				"object": {
-																					"type": "Identifier",
-																					"start": 112,
-																					"end": 115,
-																					"loc": {
-																						"start": {
-																							"line": 6,
-																							"column": 15
-																						},
-																						"end": {
-																							"line": 6,
-																							"column": 18
-																						}
-																					},
-																					"name": "foo"
-																				},
-																				"property": {
-																					"type": "Identifier",
-																					"start": 116,
-																					"end": 123,
-																					"loc": {
-																						"start": {
-																							"line": 6,
-																							"column": 19
-																						},
-																						"end": {
-																							"line": 6,
-																							"column": 26
-																						}
-																					},
-																					"name": "default"
-																				},
-																				"computed": false,
-																				"optional": false
-																			}
-																		],
-																		"optional": false
-																	}
-																}
-															]
-														}
+														]
+													},
+													"function": {
+														"start": 147,
+														"end": 152,
+														"class": "SimpleIdentifier",
+														"name": "print",
+														"isAssignable": true
 													}
-												],
-												"optional": false
+												}
 											}
-										}
-									]
+										]
+									},
+									"isAsynchronous": true
+								},
+								"parameters": {
+									"start": 107,
+									"end": 109,
+									"class": "FormalParameterList"
 								}
 							}
-						],
-						"optional": false
+						]
+					},
+					"function": {
+						"start": 99,
+						"end": 106,
+						"class": "SimpleIdentifier",
+						"name": "onMount",
+						"isAssignable": true
 					}
 				}
-			],
-			"sourceType": "module"
-		}
+			}
+		]
 	}
 }

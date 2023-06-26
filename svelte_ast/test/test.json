@@ -1,117 +1,80 @@
 {
   "html": {
-    "start": 43,
-    "end": 111,
+    "start": 0,
+    "end": 77,
     "class": "Fragment",
     "children": [
       {
-        "start": 41,
-        "end": 43,
-        "class": "Text",
-        "raw": "\n\n",
-        "data": "\n\n"
-      },
-      {
-        "start": 43,
-        "end": 111,
+        "start": 0,
+        "end": 77,
         "class": "EachBlock",
         "expression": {
-          "start": 50,
-          "end": 57,
+          "start": 7,
+          "end": 14,
           "class": "SimpleIdentifier",
           "name": "animals",
           "isAssignable": true
         },
         "context": {
-          "start": 61,
-          "end": 78,
-          "class": "ListPattern",
-          "elements": [
-            {
-              "start": 62,
-              "end": 65,
-              "class": "AssignedVariablePattern"
-            },
-            {
-              "start": 67,
-              "end": 72,
-              "class": "AssignedVariablePattern"
-            },
-            {
-              "start": 74,
-              "end": 77,
-              "class": "RestPatternElement"
-            }
-          ]
+          "start": 18,
+          "end": 24,
+          "class": "AssignedVariablePattern"
         },
         "children": [
           {
-            "start": 82,
-            "end": 103,
+            "start": 27,
+            "end": 41,
             "class": "Element",
             "name": "p",
             "children": [
               {
-                "start": 85,
-                "end": 90,
+                "start": 30,
+                "end": 38,
                 "class": "MustacheTag",
                 "expression": {
-                  "start": 86,
-                  "end": 89,
+                  "start": 31,
+                  "end": 37,
                   "class": "SimpleIdentifier",
-                  "name": "key",
-                  "isAssignable": true
-                }
-              },
-              {
-                "start": 90,
-                "end": 92,
-                "class": "Text",
-                "raw": ": ",
-                "data": ": "
-              },
-              {
-                "start": 92,
-                "end": 99,
-                "class": "MustacheTag",
-                "expression": {
-                  "start": 93,
-                  "end": 98,
-                  "class": "SimpleIdentifier",
-                  "name": "value",
+                  "name": "animal",
                   "isAssignable": true
                 }
               }
             ]
+          },
+          {
+            "start": 41,
+            "end": 43,
+            "class": "Text",
+            "raw": ">\n",
+            "data": ">"
           }
-        ]
-      }
-    ]
-  },
-  "instance": {
-    "start": 0,
-    "end": 41,
-    "class": "Script",
-    "context": "default",
-    "content": {
-      "start": 8,
-      "end": 32,
-      "data": "\n\texternal var animals;\n"
-    },
-    "variables": [
-      {
-        "start": 10,
-        "end": 31,
-        "class": "TopLevelVariableDeclaration",
-        "variables": {
-          "start": 19,
-          "end": 30,
-          "class": "VariableDeclarationList",
-          "variables": [
+        ],
+        "elseBlock": {
+          "start": 43,
+          "end": 70,
+          "class": "ElseBlock",
+          "children": [
             {
-              "start": 23,
-              "end": 30,
-              "class": "VariableDeclaration"
+              "start": 52,
+              "end": 68,
+              "class": "Element",
+              "name": "p",
+              "children": [
+                {
+                  "start": 55,
+                  "end": 65,
+                  "class": "Text",
+                  "raw": "no animals",
+                  "data": "no animals"
+                }
+              ]
+            },
+            {
+              "start": 68,
+              "end": 70,
+              "class": "Text",
+              "raw": ">\n",
+              "data": ">"
             }
           ]
         }

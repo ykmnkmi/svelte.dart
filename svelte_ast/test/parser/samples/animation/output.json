@@ -2,33 +2,36 @@
 	"html": {
 		"start": 0,
 		"end": 70,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
 				"end": 70,
-				"type": "EachBlock",
+				"class": "EachBlock",
 				"expression": {
-					"type": "Identifier",
 					"start": 7,
 					"end": 13,
-					"loc": {
-						"start": {
-							"line": 1,
-							"column": 7
-						},
-						"end": {
-							"line": 1,
-							"column": 13
-						}
-					},
-					"name": "things"
+					"class": "SimpleIdentifier",
+					"name": "things",
+					"isAssignable": true
+				},
+				"context": {
+					"start": 17,
+					"end": 22,
+					"class": "AssignedVariablePattern"
+				},
+				"key": {
+					"start": 24,
+					"end": 29,
+					"class": "SimpleIdentifier",
+					"name": "thing",
+					"isAssignable": true
 				},
 				"children": [
 					{
 						"start": 33,
-						"end": 62,
-						"type": "Element",
+						"end": 61,
+						"class": "Element",
 						"name": "div",
 						"attributes": [
 							{
@@ -44,35 +47,20 @@
 							{
 								"start": 51,
 								"end": 56,
-								"type": "Text",
+								"class": "Text",
 								"raw": "flips",
 								"data": "flips"
 							}
 						]
-					}
-				],
-				"context": {
-					"type": "Identifier",
-					"name": "thing",
-					"start": 17,
-					"end": 22
-				},
-				"key": {
-					"type": "Identifier",
-					"start": 24,
-					"end": 29,
-					"loc": {
-						"start": {
-							"line": 1,
-							"column": 24
-						},
-						"end": {
-							"line": 1,
-							"column": 29
-						}
 					},
-					"name": "thing"
-				}
+					{
+						"start": 61,
+						"end": 63,
+						"class": "Text",
+						"raw": ">\n",
+						"data": ">"
+					}
+				]
 			}
 		]
 	}

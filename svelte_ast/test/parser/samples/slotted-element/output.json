@@ -2,31 +2,30 @@
 	"html": {
 		"start": 0,
 		"end": 45,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 45,
-				"type": "InlineComponent",
+				"end": 44,
+				"class": "InlineComponent",
 				"name": "Component",
-				"attributes": [],
 				"children": [
 					{
 						"start": 11,
-						"end": 33,
-						"type": "Element",
+						"end": 32,
+						"class": "Element",
 						"name": "div",
 						"attributes": [
 							{
 								"start": 16,
 								"end": 26,
-								"type": "Attribute",
+								"class": "Attribute",
 								"name": "slot",
 								"value": [
 									{
 										"start": 22,
 										"end": 25,
-										"type": "Text",
+										"class": "Text",
 										"raw": "foo",
 										"data": "foo"
 									}
@@ -34,8 +33,22 @@
 							}
 						],
 						"children": []
+					},
+					{
+						"start": 32,
+						"end": 33,
+						"class": "Text",
+						"raw": ">",
+						"data": ">"
 					}
 				]
+			},
+			{
+				"start": 44,
+				"end": 45,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}

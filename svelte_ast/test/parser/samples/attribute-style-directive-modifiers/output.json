@@ -2,12 +2,12 @@
 	"html": {
 		"start": 0,
 		"end": 43,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 43,
-				"type": "Element",
+				"end": 42,
+				"class": "Element",
 				"name": "div",
 				"attributes": [
 					{
@@ -22,28 +22,26 @@
 							{
 								"start": 27,
 								"end": 36,
-								"type": "MustacheTag",
+								"class": "MustacheTag",
 								"expression": {
-									"type": "Identifier",
 									"start": 28,
 									"end": 35,
-									"loc": {
-										"start": {
-											"line": 1,
-											"column": 28
-										},
-										"end": {
-											"line": 1,
-											"column": 35
-										}
-									},
-									"name": "myColor"
+									"class": "SimpleIdentifier",
+									"name": "myColor",
+									"isAssignable": true
 								}
 							}
 						]
 					}
 				],
 				"children": []
+			},
+			{
+				"start": 42,
+				"end": 43,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}

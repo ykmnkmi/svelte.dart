@@ -2,12 +2,12 @@
 	"html": {
 		"start": 0,
 		"end": 45,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 45,
-				"type": "Element",
+				"end": 44,
+				"class": "Element",
 				"name": "div",
 				"attributes": [
 					{
@@ -16,88 +16,50 @@
 						"type": "Transition",
 						"name": "style",
 						"modifiers": [],
+						"intro": true,
 						"expression": {
-							"type": "ObjectExpression",
 							"start": 16,
 							"end": 28,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 16
-								},
-								"end": {
-									"line": 1,
-									"column": 28
-								}
-							},
-							"properties": [
+							"class": "SetOrMapLiteral",
+							"elements": [
 								{
-									"type": "Property",
 									"start": 17,
 									"end": 27,
-									"loc": {
-										"start": {
-											"line": 1,
-											"column": 17
-										},
-										"end": {
-											"line": 1,
-											"column": 27
-										}
-									},
-									"method": false,
-									"shorthand": false,
-									"computed": false,
+									"class": "MapLiteralEntry",
 									"key": {
-										"type": "Identifier",
 										"start": 17,
 										"end": 24,
-										"loc": {
-											"start": {
-												"line": 1,
-												"column": 17
-											},
-											"end": {
-												"line": 1,
-												"column": 24
-											}
-										},
-										"name": "opacity"
+										"class": "SimpleIdentifier",
+										"name": "opacity",
+										"isAssignable": true
 									},
 									"value": {
-										"type": "Literal",
 										"start": 26,
 										"end": 27,
-										"loc": {
-											"start": {
-												"line": 1,
-												"column": 26
-											},
-											"end": {
-												"line": 1,
-												"column": 27
-											}
-										},
-										"value": 0,
-										"raw": "0"
-									},
-									"kind": "init"
+										"class": "IntegerLiteral",
+										"value": 0
+									}
 								}
 							]
-						},
-						"intro": true,
-						"outro": false
+						}
 					}
 				],
 				"children": [
 					{
 						"start": 31,
 						"end": 39,
-						"type": "Text",
+						"class": "Text",
 						"raw": "fades in",
 						"data": "fades in"
 					}
 				]
+			},
+			{
+				"start": 44,
+				"end": 45,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}

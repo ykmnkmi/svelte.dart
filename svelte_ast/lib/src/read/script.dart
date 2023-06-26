@@ -80,7 +80,7 @@ extension ScriptParser on Parser {
         imports.addAll(builder.directives.cast<ImportDirective>());
         variables
             .addAll(builder.declarations.cast<TopLevelVariableDeclaration>());
-        statements.addAll(builder.stack.values.skip(1).cast<AstNode>());
+        statements.addAll(builder.stack.values.whereType<AstNode>());
       });
 
       scripts.add(Script(

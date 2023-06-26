@@ -2,12 +2,12 @@
 	"html": {
 		"start": 0,
 		"end": 29,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 29,
-				"type": "Element",
+				"end": 28,
+				"class": "Element",
 				"name": "div",
 				"attributes": [
 					{
@@ -17,24 +17,22 @@
 						"name": "foo",
 						"modifiers": [],
 						"expression": {
-							"type": "Identifier",
 							"start": 16,
 							"end": 21,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 16
-								},
-								"end": {
-									"line": 1,
-									"column": 21
-								}
-							},
-							"name": "isFoo"
+							"class": "SimpleIdentifier",
+							"name": "isFoo",
+							"isAssignable": true
 						}
 					}
 				],
 				"children": []
+			},
+			{
+				"start": 28,
+				"end": 29,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}

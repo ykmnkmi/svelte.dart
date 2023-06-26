@@ -2,12 +2,12 @@
 	"html": {
 		"start": 0,
 		"end": 23,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 23,
-				"type": "Element",
+				"end": 22,
+				"class": "Element",
 				"name": "div",
 				"attributes": [
 					{
@@ -20,6 +20,13 @@
 					}
 				],
 				"children": []
+			},
+			{
+				"start": 22,
+				"end": 23,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}

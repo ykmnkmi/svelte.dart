@@ -1,8 +1,10 @@
 // ignore_for_file: depend_on_referenced_packages, implementation_imports, unnecessary_import
 
+import 'package:_fe_analyzer_shared/src/messages/codes.dart' show Message;
 import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart'
     show PatternContext;
-import 'package:_fe_analyzer_shared/src/scanner/scanner.dart' show Token;
+import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
+    show ErrorToken, Token;
 import 'package:_fe_analyzer_shared/src/scanner/token_impl.dart'
     show StringTokenImpl;
 import 'package:analyzer/dart/ast/ast.dart'
@@ -35,22 +37,13 @@ extension ExpressionParser on Parser {
   }
 
   Expression readExpression(Pattern end) {
-    try {
-      void callback(ScriptParser parser, Token token) {
-        token = parser.syntheticPreviousToken(token);
-        token = parser.parseExpression(token);
-        position = token.end;
-      }
-
-      return withScriptParser<Expression>(position, end, callback);
-    } on AnalysisError catch (analysisError) {
-      var AnalysisError(
-        :int offset,
-        :int length,
-        :String message,
-      ) = analysisError;
-      dartError(message, offset, length);
+    void callback(ScriptParser parser, Token token) {
+      token = parser.syntheticPreviousToken(token);
+      token = parser.parseExpression(token);
+      position = token.end;
     }
+
+    return withScriptParser<Expression>(position, end, callback);
   }
 
   SimpleIdentifier simpleIdentifier(int start, String name) {
@@ -70,9 +63,25 @@ extension ExpressionParser on Parser {
       uri: uri,
     );
 
-    Token token = parser.scanner.scan(end);
-    callback(parser, token);
-    return parser.builder.pop() as T;
+    try {
+      Token token = parser.scanner.scan(end);
+      callback(parser, token);
+      return parser.builder.pop() as T;
+    } on AnalysisError catch (analysisError) {
+      var AnalysisError(
+        :int offset,
+        :int length,
+        :String message,
+      ) = analysisError;
+      dartError(message, offset, length);
+    } on ErrorToken catch (token) {
+      var ErrorToken(
+        :int offset,
+        :int length,
+        :Message assertionMessage,
+      ) = token;
+      dartError(assertionMessage.problemMessage, offset, length);
+    }
   }
 
   void withScriptParserRun(

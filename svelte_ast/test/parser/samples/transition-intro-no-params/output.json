@@ -2,12 +2,12 @@
 	"html": {
 		"start": 0,
 		"end": 27,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 27,
-				"type": "Element",
+				"end": 26,
+				"class": "Element",
 				"name": "div",
 				"attributes": [
 					{
@@ -16,20 +16,26 @@
 						"type": "Transition",
 						"name": "fade",
 						"modifiers": [],
-						"expression": null,
 						"intro": true,
-						"outro": false
+						"expression": null
 					}
 				],
 				"children": [
 					{
 						"start": 13,
 						"end": 21,
-						"type": "Text",
+						"class": "Text",
 						"raw": "fades in",
 						"data": "fades in"
 					}
 				]
+			},
+			{
+				"start": 26,
+				"end": 27,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}

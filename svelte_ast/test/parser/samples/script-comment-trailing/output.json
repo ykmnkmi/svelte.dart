@@ -2,157 +2,96 @@
 	"html": {
 		"start": 68,
 		"end": 90,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 66,
 				"end": 68,
-				"type": "Text",
+				"class": "Text",
 				"raw": "\n\n",
 				"data": "\n\n"
 			},
 			{
 				"start": 68,
-				"end": 90,
-				"type": "Element",
+				"end": 89,
+				"class": "Element",
 				"name": "h1",
-				"attributes": [],
 				"children": [
 					{
 						"start": 72,
 						"end": 78,
-						"type": "Text",
+						"class": "Text",
 						"raw": "Hello ",
 						"data": "Hello "
 					},
 					{
 						"start": 78,
 						"end": 84,
-						"type": "MustacheTag",
+						"class": "MustacheTag",
 						"expression": {
-							"type": "Identifier",
 							"start": 79,
 							"end": 83,
-							"loc": {
-								"start": {
-									"line": 7,
-									"column": 11
-								},
-								"end": {
-									"line": 7,
-									"column": 15
-								}
-							},
-							"name": "name"
+							"class": "SimpleIdentifier",
+							"name": "name",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 84,
 						"end": 85,
-						"type": "Text",
+						"class": "Text",
 						"raw": "!",
 						"data": "!"
 					}
 				]
+			},
+			{
+				"start": 89,
+				"end": 90,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	},
 	"instance": {
-		"type": "Script",
 		"start": 0,
 		"end": 66,
+		"class": "Script",
 		"context": "default",
 		"content": {
-			"type": "Program",
 			"start": 8,
 			"end": 57,
-			"loc": {
-				"start": {
-					"line": 1,
-					"column": 0
-				},
-				"end": {
-					"line": 5,
-					"column": 0
-				}
-			},
-			"body": [
-				{
-					"type": "VariableDeclaration",
+			"data": "\n\tvar name = 'world';\n\n\t// trailing line comment\n"
+		},
+		"statements": [
+			{
+				"start": 10,
+				"end": 29,
+				"class": "VariableDeclarationStatement",
+				"variables": {
 					"start": 10,
-					"end": 29,
-					"loc": {
-						"start": {
-							"line": 2,
-							"column": 1
-						},
-						"end": {
-							"line": 2,
-							"column": 20
-						}
-					},
-					"declarations": [
+					"end": 28,
+					"class": "VariableDeclarationList",
+					"variables": [
 						{
-							"type": "VariableDeclarator",
 							"start": 14,
 							"end": 28,
-							"loc": {
-								"start": {
-									"line": 2,
-									"column": 5
-								},
-								"end": {
-									"line": 2,
-									"column": 19
-								}
-							},
-							"id": {
-								"type": "Identifier",
-								"start": 14,
-								"end": 18,
-								"loc": {
-									"start": {
-										"line": 2,
-										"column": 5
-									},
-									"end": {
-										"line": 2,
-										"column": 9
-									}
-								},
-								"name": "name"
-							},
-							"init": {
-								"type": "Literal",
+							"class": "VariableDeclaration",
+							"initializer": {
 								"start": 21,
 								"end": 28,
-								"loc": {
-									"start": {
-										"line": 2,
-										"column": 12
-									},
-									"end": {
-										"line": 2,
-										"column": 19
-									}
-								},
+								"class": "SimpleStringLiteral",
 								"value": "world",
-								"raw": "'world'"
+								"contentsEnd": 27,
+								"contentsOffset": 22,
+								"isSingleQuoted": true,
+								"stringValue": "world"
 							}
 						}
-					],
-					"kind": "let"
+					]
 				}
-			],
-			"sourceType": "module",
-			"trailingComments": [
-				{
-					"type": "Line",
-					"value": " trailing line comment",
-					"start": 32,
-					"end": 56
-				}
-			]
-		}
+			}
+		]
 	}
 }

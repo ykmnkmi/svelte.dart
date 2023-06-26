@@ -110,9 +110,13 @@ final class Parser {
   }
 
   void allowSpace({bool required = false}) {
+    int start = position;
+
     if (_spaceRe.matchAsPrefix(string, position) case Match match?) {
       position = match.end;
-    } else if (required) {
+    }
+
+    if (required && start == position) {
       error((code: 'missing-whitespace', message: 'Expected whitespace'));
     }
   }
@@ -188,6 +192,8 @@ final class Parser {
 
   Never error(ErrorCode errorCode, [int? position, int? end]) {
     position ??= this.position;
+    end ??= position;
+
     SourceSpan span = sourceFile.span(position, end);
     throw ParseError(errorCode, span);
   }

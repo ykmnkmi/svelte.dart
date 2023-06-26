@@ -2,7 +2,7 @@
 
 import 'package:_fe_analyzer_shared/src/scanner/characters.dart' show $EOF;
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
-    show StringScanner, Token;
+    show ErrorToken, StringScanner, Token;
 
 class ScriptScanner extends StringScanner {
   ScriptScanner({
@@ -11,6 +11,15 @@ class ScriptScanner extends StringScanner {
     super.configuration,
   }) : super(string, includeComments: true) {
     scanOffset = offset - 1;
+  }
+
+  @override
+  void appendToken(Token token) {
+    if (token is ErrorToken) {
+      throw token;
+    }
+
+    super.appendToken(token);
   }
 
   Token scan(Pattern end) {

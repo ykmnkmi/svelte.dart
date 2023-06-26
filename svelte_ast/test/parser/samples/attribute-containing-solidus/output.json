@@ -2,24 +2,24 @@
 	"html": {
 		"start": 0,
 		"end": 41,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 41,
-				"type": "Element",
+				"end": 40,
+				"class": "Element",
 				"name": "a",
 				"attributes": [
 					{
 						"start": 3,
 						"end": 30,
-						"type": "Attribute",
+						"class": "Attribute",
 						"name": "href",
 						"value": [
 							{
 								"start": 8,
 								"end": 30,
-								"type": "Text",
+								"class": "Text",
 								"raw": "https://www.google.com",
 								"data": "https://www.google.com"
 							}
@@ -30,11 +30,18 @@
 					{
 						"start": 31,
 						"end": 37,
-						"type": "Text",
+						"class": "Text",
 						"raw": "Google",
 						"data": "Google"
 					}
 				]
+			},
+			{
+				"start": 40,
+				"end": 41,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}

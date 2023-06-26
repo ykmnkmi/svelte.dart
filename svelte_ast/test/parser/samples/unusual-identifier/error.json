@@ -1,0 +1,7 @@
+{
+	"code": "parse-error",
+	"message": "The non-ASCII character '\ud800' (U+D800) can't be used in identifiers, only in strings and comments.",
+	"line": 1,
+	"column": 17,
+	"offset": 17
+}

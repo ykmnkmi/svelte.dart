@@ -2,14 +2,13 @@
 	"html": {
 		"start": 0,
 		"end": 18,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
 				"end": 18,
-				"type": "Comment",
-				"data": " a comment ",
-				"ignores": []
+				"class": "CommentTag",
+				"data": " a comment "
 			}
 		]
 	}

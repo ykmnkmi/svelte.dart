@@ -2,14 +2,13 @@
 	"html": {
 		"start": 0,
 		"end": 6,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
 				"end": 6,
-				"type": "Element",
+				"class": "Element",
 				"name": "div",
-				"attributes": [],
 				"children": []
 			}
 		]

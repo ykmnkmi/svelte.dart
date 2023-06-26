@@ -2,54 +2,40 @@
 	"html": {
 		"start": 45,
 		"end": 56,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 43,
 				"end": 45,
-				"type": "Text",
+				"class": "Text",
 				"raw": "\n\n",
 				"data": "\n\n"
 			},
 			{
 				"start": 45,
-				"end": 56,
-				"type": "Element",
+				"end": 55,
+				"class": "Element",
 				"name": "div",
-				"attributes": [],
 				"children": []
+			},
+			{
+				"start": 55,
+				"end": 56,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	},
 	"instance": {
-		"type": "Script",
 		"start": 0,
 		"end": 43,
+		"class": "Script",
 		"context": "default",
 		"content": {
-			"type": "Program",
 			"start": 8,
 			"end": 34,
-			"loc": {
-				"start": {
-					"line": 1,
-					"column": 0
-				},
-				"end": {
-					"line": 3,
-					"column": 0
-				}
-			},
-			"body": [],
-			"sourceType": "module",
-			"trailingComments": [
-				{
-					"type": "Line",
-					"value": " TODO write some code",
-					"start": 10,
-					"end": 33
-				}
-			]
+			"data": "\n\t// TODO write some code\n"
 		}
 	}
 }

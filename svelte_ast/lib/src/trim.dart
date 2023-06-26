@@ -16,7 +16,7 @@ void trimBlock(Node? block, bool before, bool after) {
 
   Node first = block.children.first;
 
-  if (first is Text && before) {
+  if (before && first is Text) {
     String data = trimStart(first.data);
 
     if (data.isEmpty) {
@@ -26,13 +26,15 @@ void trimBlock(Node? block, bool before, bool after) {
     }
   }
 
-  Node last = block.children.last;
+  if (after) {
+    if (block.children case <Node>[..., Text last]) {
+      String data = trimEnd(last.data);
 
-  if (last is Text && after) {
-    last.data = trimEnd(last.data);
-
-    if (last.data.isEmpty) {
-      block.children.removeLast();
+      if (data.isEmpty) {
+        block.children.removeLast();
+      } else {
+        last.data = data;
+      }
     }
   }
 

@@ -13,13 +13,13 @@ import 'package:svelte_ast/src/read/expression.dart';
 import 'package:svelte_ast/src/read/script.dart';
 import 'package:svelte_ast/src/read/style.dart';
 
-final RegExp _self = RegExp('^svelte:self(?=[\\s/>])');
+final RegExp _self = RegExp('svelte:self(?=[\\s/>])');
 
-final RegExp _component = RegExp('^svelte:component(?=[\\s/>])');
+final RegExp _component = RegExp('svelte:component(?=[\\s/>])');
 
-final RegExp _element = RegExp('^svelte:element(?=[\\s/>])');
+final RegExp _element = RegExp('svelte:element(?=[\\s/>])');
 
-final RegExp _slot = RegExp('^svelte:fragment(?=[\\s/>])');
+final RegExp _slot = RegExp('svelte:fragment(?=[\\s/>])');
 
 final RegExp _validTagNameRe = RegExp('^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*');
 
@@ -45,6 +45,18 @@ const Map<String, String> _metaTags = <String, String>{
   'svelte:document': 'Document',
   'svelte:body': 'Body',
 };
+
+const List<String> _validMetaTags = <String>[
+  'svelte:head',
+  'svelte:options',
+  'svelte:window',
+  'svelte:document',
+  'svelte:body',
+  'svelte:self',
+  'svelte:component',
+  'svelte:fragment',
+  'svelte:element'
+];
 
 DirectiveType? _getDirectiveType(String name) {
   return switch (name) {
@@ -112,6 +124,11 @@ extension TagParser on Parser {
 
     if (_metaTags.containsKey(name)) {
       return name;
+    }
+
+    if (name.startsWith('svelte:')) {
+      error(invalidTagNameSvelteElement(_validMetaTags), start,
+          start + name.length);
     }
 
     if (_validTagNameRe.hasMatch(name)) {
@@ -527,9 +544,7 @@ extension TagParser on Parser {
         error(invalidVoidContent(name), start);
       }
 
-      expect('>');
-
-      while (parent is Tag && parent.name != name) {
+      while (parent is! Tag || parent.name != name) {
         if (parent is! Element) {
           if (lastAutoCloseTag case AutoCloseTag tag? when tag.tag == name) {
             error(invalidClosingTagAutoClosed(name, tag.reason), start);

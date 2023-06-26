@@ -2,171 +2,121 @@
 	"html": {
 		"start": 0,
 		"end": 99,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
 				"end": 99,
-				"type": "AwaitBlock",
-				"expression": {
-					"type": "Identifier",
+				"class": "AwaitBlock",
+				"expession": {
 					"start": 8,
 					"end": 18,
-					"loc": {
-						"start": {
-							"line": 1,
-							"column": 8
-						},
-						"end": {
-							"line": 1,
-							"column": 18
-						}
-					},
-					"name": "thePromise"
+					"class": "SimpleIdentifier",
+					"name": "thePromise",
+					"isAssignable": true
 				},
-				"value": null,
 				"error": {
-					"type": "Identifier",
-					"name": "theError",
 					"start": 47,
-					"end": 55
+					"end": 55,
+					"class": "AssignedVariablePattern"
 				},
-				"pending": {
-					"start": 19,
+				"pendingBlock": {
+					"start": 0,
 					"end": 39,
-					"type": "PendingBlock",
+					"class": "PendingBlock",
 					"children": [
 						{
 							"start": 19,
 							"end": 21,
-							"type": "Text",
+							"class": "Text",
 							"raw": "\n\t",
 							"data": "\n\t"
 						},
 						{
 							"start": 21,
-							"end": 38,
-							"type": "Element",
+							"end": 37,
+							"class": "Element",
 							"name": "p",
-							"attributes": [],
 							"children": [
 								{
 									"start": 24,
 									"end": 34,
-									"type": "Text",
+									"class": "Text",
 									"raw": "loading...",
 									"data": "loading..."
 								}
 							]
 						},
 						{
-							"start": 38,
+							"start": 37,
 							"end": 39,
-							"type": "Text",
-							"raw": "\n",
-							"data": "\n"
+							"class": "Text",
+							"raw": ">\n",
+							"data": ">\n"
 						}
-					],
-					"skip": false
+					]
 				},
-				"then": {
-					"start": null,
-					"end": null,
-					"type": "ThenBlock",
-					"children": [],
-					"skip": true
-				},
-				"catch": {
+				"catchBlock": {
 					"start": 39,
 					"end": 91,
-					"type": "CatchBlock",
+					"class": "CatchBlock",
 					"children": [
 						{
 							"start": 56,
 							"end": 58,
-							"type": "Text",
+							"class": "Text",
 							"raw": "\n\t",
 							"data": "\n\t"
 						},
 						{
 							"start": 58,
-							"end": 90,
-							"type": "Element",
+							"end": 89,
+							"class": "Element",
 							"name": "p",
-							"attributes": [],
 							"children": [
 								{
 									"start": 61,
 									"end": 68,
-									"type": "Text",
+									"class": "Text",
 									"raw": "oh no! ",
 									"data": "oh no! "
 								},
 								{
 									"start": 68,
 									"end": 86,
-									"type": "MustacheTag",
+									"class": "MustacheTag",
 									"expression": {
-										"type": "MemberExpression",
 										"start": 69,
 										"end": 85,
-										"loc": {
-											"start": {
-												"line": 4,
-												"column": 12
-											},
-											"end": {
-												"line": 4,
-												"column": 28
-											}
-										},
-										"object": {
-											"type": "Identifier",
-											"start": 69,
-											"end": 77,
-											"loc": {
-												"start": {
-													"line": 4,
-													"column": 12
-												},
-												"end": {
-													"line": 4,
-													"column": 20
-												}
-											},
-											"name": "theError"
-										},
-										"property": {
-											"type": "Identifier",
+										"class": "PrefixedIdentifier",
+										"identifier": {
 											"start": 78,
 											"end": 85,
-											"loc": {
-												"start": {
-													"line": 4,
-													"column": 21
-												},
-												"end": {
-													"line": 4,
-													"column": 28
-												}
-											},
-											"name": "message"
+											"class": "SimpleIdentifier",
+											"name": "message",
+											"isAssignable": true
 										},
-										"computed": false,
-										"optional": false
+										"prefix": {
+											"start": 69,
+											"end": 77,
+											"class": "SimpleIdentifier",
+											"name": "theError",
+											"isAssignable": true
+										},
+										"name": "theError.message",
+										"isAssignable": true
 									}
 								}
 							]
 						},
 						{
-							"start": 90,
+							"start": 89,
 							"end": 91,
-							"type": "Text",
-							"raw": "\n",
-							"data": "\n"
+							"class": "Text",
+							"raw": ">\n",
+							"data": ">\n"
 						}
-					],
-					"skip": false
+					]
 				}
 			}
 		]

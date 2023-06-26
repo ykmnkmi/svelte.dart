@@ -2,24 +2,24 @@
 	"html": {
 		"start": 0,
 		"end": 23,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 23,
-				"type": "Element",
+				"end": 22,
+				"class": "Element",
 				"name": "div",
 				"attributes": [
 					{
 						"start": 5,
 						"end": 16,
-						"type": "Attribute",
+						"class": "Attribute",
 						"name": "class",
 						"value": [
 							{
 								"start": 12,
 								"end": 15,
-								"type": "Text",
+								"class": "Text",
 								"raw": "foo",
 								"data": "foo"
 							}
@@ -27,6 +27,13 @@
 					}
 				],
 				"children": []
+			},
+			{
+				"start": 22,
+				"end": 23,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}

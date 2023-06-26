@@ -1,10 +1,7 @@
 {
-	"code": "unclosed-attribute-value",
-	"message": "Expected to close the attribute value with }",
-	"pos": 25,
-	"start": {
-		"character": 25,
-		"column": 25,
-		"line": 1
-	}
+	"code": "parse-error",
+	"message": "Expected an identifier.",
+	"line": 1,
+	"column": 25,
+	"offset": 25
 }

@@ -2,14 +2,17 @@
 	"html": {
 		"start": 0,
 		"end": 30,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
 				"end": 30,
-				"type": "Comment",
+				"class": "CommentTag",
 				"data": " svelte-ignore foo bar ",
-				"ignores": ["foo", "bar"]
+				"ignores": [
+					"foo",
+					"bar"
+				]
 			}
 		]
 	}

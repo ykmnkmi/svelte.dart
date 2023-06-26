@@ -2,30 +2,36 @@
 	"html": {
 		"start": 6,
 		"end": 36,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
 				"end": 6,
-				"type": "Text",
+				"class": "Text",
 				"raw": "\n\n\t\t\t\t",
 				"data": "\n\n\t\t\t\t"
 			},
 			{
 				"start": 6,
-				"end": 36,
-				"type": "Element",
+				"end": 35,
+				"class": "Element",
 				"name": "p",
-				"attributes": [],
 				"children": [
 					{
 						"start": 9,
 						"end": 32,
-						"type": "Text",
+						"class": "Text",
 						"raw": "just chillin' over here",
 						"data": "just chillin' over here"
 					}
 				]
+			},
+			{
+				"start": 35,
+				"end": 36,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}

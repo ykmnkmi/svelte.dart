@@ -110,7 +110,7 @@ extension MustacheParser on Parser {
       error(invalidElseIf);
     }
 
-    allowSpace(required: true);
+    allowSpace();
 
     if (scan('if')) {
       Node block = current;

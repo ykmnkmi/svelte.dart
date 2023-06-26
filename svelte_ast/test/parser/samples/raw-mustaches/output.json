@@ -2,79 +2,67 @@
 	"html": {
 		"start": 0,
 		"end": 34,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 34,
-				"type": "Element",
+				"end": 33,
+				"class": "Element",
 				"name": "p",
-				"attributes": [],
 				"children": [
 					{
 						"start": 3,
 						"end": 4,
-						"type": "Text",
+						"class": "Text",
 						"raw": " ",
 						"data": " "
 					},
 					{
 						"start": 4,
 						"end": 16,
-						"type": "RawMustacheTag",
+						"class": "RawMustacheTag",
 						"expression": {
-							"type": "Identifier",
 							"start": 11,
 							"end": 15,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 11
-								},
-								"end": {
-									"line": 1,
-									"column": 15
-								}
-							},
-							"name": "raw1"
+							"class": "SimpleIdentifier",
+							"name": "raw1",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 16,
 						"end": 17,
-						"type": "Text",
+						"class": "Text",
 						"raw": " ",
 						"data": " "
 					},
 					{
 						"start": 17,
 						"end": 29,
-						"type": "RawMustacheTag",
+						"class": "RawMustacheTag",
 						"expression": {
-							"type": "Identifier",
 							"start": 24,
 							"end": 28,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 24
-								},
-								"end": {
-									"line": 1,
-									"column": 28
-								}
-							},
-							"name": "raw2"
+							"class": "SimpleIdentifier",
+							"name": "raw2",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 29,
 						"end": 30,
-						"type": "Text",
+						"class": "Text",
 						"raw": " ",
 						"data": " "
 					}
 				]
+			},
+			{
+				"start": 33,
+				"end": 34,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}

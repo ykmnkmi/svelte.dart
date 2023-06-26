@@ -2,86 +2,79 @@
 	"html": {
 		"start": 0,
 		"end": 77,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
 				"end": 77,
-				"type": "EachBlock",
+				"class": "EachBlock",
 				"expression": {
-					"type": "Identifier",
 					"start": 7,
 					"end": 14,
-					"loc": {
-						"start": {
-							"line": 1,
-							"column": 7
-						},
-						"end": {
-							"line": 1,
-							"column": 14
-						}
-					},
-					"name": "animals"
+					"class": "SimpleIdentifier",
+					"name": "animals",
+					"isAssignable": true
+				},
+				"context": {
+					"start": 18,
+					"end": 24,
+					"class": "AssignedVariablePattern"
 				},
 				"children": [
 					{
 						"start": 27,
-						"end": 42,
-						"type": "Element",
+						"end": 41,
+						"class": "Element",
 						"name": "p",
-						"attributes": [],
 						"children": [
 							{
 								"start": 30,
 								"end": 38,
-								"type": "MustacheTag",
+								"class": "MustacheTag",
 								"expression": {
-									"type": "Identifier",
 									"start": 31,
 									"end": 37,
-									"loc": {
-										"start": {
-											"line": 2,
-											"column": 5
-										},
-										"end": {
-											"line": 2,
-											"column": 11
-										}
-									},
-									"name": "animal"
+									"class": "SimpleIdentifier",
+									"name": "animal",
+									"isAssignable": true
 								}
 							}
 						]
+					},
+					{
+						"start": 41,
+						"end": 43,
+						"class": "Text",
+						"raw": ">\n",
+						"data": ">"
 					}
 				],
-				"context": {
-					"type": "Identifier",
-					"name": "animal",
-					"start": 18,
-					"end": 24
-				},
-				"else": {
-					"start": 50,
+				"elseBlock": {
+					"start": 43,
 					"end": 70,
-					"type": "ElseBlock",
+					"class": "ElseBlock",
 					"children": [
 						{
 							"start": 52,
-							"end": 69,
-							"type": "Element",
+							"end": 68,
+							"class": "Element",
 							"name": "p",
-							"attributes": [],
 							"children": [
 								{
 									"start": 55,
 									"end": 65,
-									"type": "Text",
+									"class": "Text",
 									"raw": "no animals",
 									"data": "no animals"
 								}
 							]
+						},
+						{
+							"start": 68,
+							"end": 70,
+							"class": "Text",
+							"raw": ">\n",
+							"data": ">"
 						}
 					]
 				}

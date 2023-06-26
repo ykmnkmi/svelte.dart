@@ -7,7 +7,9 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
-{42 = nope}
+{#each things as 𐊧}
+	<p>{𐊧}</p>
+{/each}
 ''';
 
 void main() {
@@ -25,6 +27,7 @@ void main() {
     print(error);
     print(error.span.highlight());
     print(Trace.format(stackTrace));
+    print(const JsonEncoder.withIndent('\t').convert(error.toJson()));
   } catch (error, stackTrace) {
     print(error);
     print(Trace.format(stackTrace));

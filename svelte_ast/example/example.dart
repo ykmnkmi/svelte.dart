@@ -13,5 +13,5 @@ void main() {
   SvelteAst ast = parse(content);
 
   // Print to console.
-  print(const JsonEncoder.withIndent('  ').convert(ast.toJson()));
+  print(const JsonEncoder.withIndent('\t').convert(ast.toJson()));
 }

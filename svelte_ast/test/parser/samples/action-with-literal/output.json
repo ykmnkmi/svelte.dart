@@ -2,12 +2,12 @@
 	"html": {
 		"start": 0,
 		"end": 37,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
 				"end": 37,
-				"type": "Element",
+				"class": "Element",
 				"name": "input",
 				"attributes": [
 					{
@@ -17,21 +17,14 @@
 						"name": "tooltip",
 						"modifiers": [],
 						"expression": {
-							"type": "Literal",
 							"start": 21,
 							"end": 34,
-							"loc": {
-								"start": {
-									"line": 1,
-									"column": 21
-								},
-								"end": {
-									"line": 1,
-									"column": 34
-								}
-							},
+							"class": "SimpleStringLiteral",
 							"value": "tooltip msg",
-							"raw": "'tooltip msg'"
+							"contentsEnd": 33,
+							"contentsOffset": 22,
+							"isSingleQuoted": true,
+							"stringValue": "tooltip msg"
 						}
 					}
 				],

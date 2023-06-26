@@ -2,29 +2,30 @@
 	"html": {
 		"start": 0,
 		"end": 11,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
 				"end": 11,
-				"type": "Element",
+				"class": "Element",
 				"name": "div",
 				"attributes": [
 					{
 						"start": 5,
 						"end": 9,
-						"type": "Attribute",
+						"class": "Attribute",
 						"name": "id",
 						"value": [
 							{
 								"start": 6,
 								"end": 8,
-								"type": "AttributeShorthand",
+								"class": "AttributeShorthand",
 								"expression": {
 									"start": 6,
 									"end": 8,
-									"type": "Identifier",
-									"name": "id"
+									"class": "SimpleIdentifier",
+									"name": "id",
+									"isAssignable": true
 								}
 							}
 						]

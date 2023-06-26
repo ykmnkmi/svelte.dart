@@ -2,47 +2,37 @@
 	"html": {
 		"start": 0,
 		"end": 61,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
 				"end": 61,
-				"type": "Element",
+				"class": "Element",
 				"name": "textarea",
-				"attributes": [],
 				"children": [
 					{
 						"start": 10,
 						"end": 40,
-						"type": "Text",
+						"class": "Text",
 						"raw": "\n\t<p>not actually an element. ",
 						"data": "\n\t<p>not actually an element. "
 					},
 					{
 						"start": 40,
 						"end": 45,
-						"type": "MustacheTag",
+						"class": "MustacheTag",
 						"expression": {
-							"type": "Identifier",
 							"start": 41,
 							"end": 44,
-							"loc": {
-								"start": {
-									"line": 2,
-									"column": 30
-								},
-								"end": {
-									"line": 2,
-									"column": 33
-								}
-							},
-							"name": "foo"
+							"class": "SimpleIdentifier",
+							"name": "foo",
+							"isAssignable": true
 						}
 					},
 					{
 						"start": 45,
 						"end": 50,
-						"type": "Text",
+						"class": "Text",
 						"raw": "</p>\n",
 						"data": "</p>\n"
 					}

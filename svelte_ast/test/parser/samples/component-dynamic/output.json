@@ -2,78 +2,47 @@
 	"html": {
 		"start": 0,
 		"end": 62,
-		"type": "Fragment",
+		"class": "Fragment",
 		"children": [
 			{
 				"start": 0,
-				"end": 62,
-				"type": "InlineComponent",
+				"end": 61,
+				"class": "InlineComponent",
 				"name": "svelte:component",
-				"attributes": [],
-				"children": [],
 				"expression": {
-					"type": "ConditionalExpression",
 					"start": 25,
 					"end": 40,
-					"loc": {
-						"start": {
-							"line": 1,
-							"column": 25
-						},
-						"end": {
-							"line": 1,
-							"column": 40
-						}
-					},
-					"test": {
-						"type": "Identifier",
+					"class": "ConditionalExpression",
+					"condition": {
 						"start": 25,
 						"end": 28,
-						"loc": {
-							"start": {
-								"line": 1,
-								"column": 25
-							},
-							"end": {
-								"line": 1,
-								"column": 28
-							}
-						},
-						"name": "foo"
+						"class": "SimpleIdentifier",
+						"name": "foo",
+						"isAssignable": true
 					},
-					"consequent": {
-						"type": "Identifier",
-						"start": 31,
-						"end": 34,
-						"loc": {
-							"start": {
-								"line": 1,
-								"column": 31
-							},
-							"end": {
-								"line": 1,
-								"column": 34
-							}
-						},
-						"name": "Foo"
-					},
-					"alternate": {
-						"type": "Identifier",
+					"elseExpression": {
 						"start": 37,
 						"end": 40,
-						"loc": {
-							"start": {
-								"line": 1,
-								"column": 37
-							},
-							"end": {
-								"line": 1,
-								"column": 40
-							}
-						},
-						"name": "Bar"
+						"class": "SimpleIdentifier",
+						"name": "Bar",
+						"isAssignable": true
+					},
+					"thenExpression": {
+						"start": 31,
+						"end": 34,
+						"class": "SimpleIdentifier",
+						"name": "Foo",
+						"isAssignable": true
 					}
-				}
+				},
+				"children": []
+			},
+			{
+				"start": 61,
+				"end": 62,
+				"class": "Text",
+				"raw": ">",
+				"data": ">"
 			}
 		]
 	}
