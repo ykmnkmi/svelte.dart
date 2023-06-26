@@ -7,12 +7,11 @@ import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/extract_svelte_ignore.dart';
 import 'package:svelte_ast/src/html.dart';
 import 'package:svelte_ast/src/names.dart';
+import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/patterns.dart';
+import 'package:svelte_ast/src/read/expression.dart';
 import 'package:svelte_ast/src/read/script.dart';
 import 'package:svelte_ast/src/read/style.dart';
-
-import '../parser.dart';
-import '../read/expression.dart';
 
 final RegExp _self = RegExp('^svelte:self(?=[\\s/>])');
 
@@ -133,9 +132,9 @@ extension TagParser on Parser {
       uniqueNames.add(name);
     }
 
-    if (scan(openingCurlyBrace)) {
+    if (scan(openingCurlyRe)) {
       if (scan('...')) {
-        Expression expression = readExpression(closingCurlyBrace);
+        Expression expression = readExpression(closingCurlyRe);
         allowSpace();
         expect('}');
         return Spread(
@@ -144,12 +143,16 @@ extension TagParser on Parser {
           expression: expression,
         );
       } else {
+        if (scan(closingCurlyRe)) {
+          error(emptyAttributeShorthand, start);
+        }
+
         int valueStart = position;
-        Expression expression = readExpression(closingCurlyBrace);
+        Expression expression = readExpression(closingCurlyRe);
 
         String name = switch (expression) {
-          SimpleIdentifier identifier => identifier.name,
-          _ => error(emptyAttributeShorthand, start),
+          SimpleIdentifier(:String name) => name,
+          _ => throw UnimplementedError(),
         };
 
         checkUnique(name);
@@ -410,7 +413,7 @@ extension TagParser on Parser {
         flush(position - 1);
         allowSpace();
 
-        Expression expression = readExpression(closingCurlyBrace);
+        Expression expression = readExpression(closingCurlyRe);
         allowSpace();
         expect('}');
 
@@ -475,6 +478,13 @@ extension TagParser on Parser {
         name == 'svelte:self' ||
         name == 'svelte:component') {
       element = InlineComponent(
+        start: start,
+        name: name,
+        attributes: <Node>[],
+        children: <Node>[],
+      );
+    } else if (name == 'svelte:element') {
+      element = InlineElement(
         start: start,
         name: name,
         attributes: <Node>[],
@@ -566,11 +576,54 @@ extension TagParser on Parser {
     }
 
     if (name == 'svelte:component') {
-      throw UnimplementedError('svelte:component');
+      List<Node> attributes = element.attributes;
+      int found = -1;
+
+      for (int index = 0; index < attributes.length; index += 1) {
+        if (attributes[index] case Attribute(name: 'this')) {
+          found = index;
+          break;
+        }
+      }
+
+      if (found == -1) {
+        error(missingComponentDefinition, start);
+      }
+
+      Attribute definition = attributes.removeAt(found) as Attribute;
+
+      Expression expression = switch (definition.value) {
+        <Node>[MustacheTag(:Expression expression)] => expression,
+        _ => error(invalidComponentDefinition, definition.start),
+      };
+
+      (element as InlineComponent).expression = expression;
     }
 
     if (name == 'svelte:element') {
-      throw UnimplementedError('svelte:element');
+      List<Node> attributes = element.attributes;
+      int found = -1;
+
+      for (int index = 0; index < attributes.length; index += 1) {
+        if (attributes[index] case Attribute(name: 'this')) {
+          found = index;
+          break;
+        }
+      }
+
+      if (found == -1) {
+        error(missingElementDefinition, start);
+      }
+
+      Attribute definition = attributes.removeAt(found) as Attribute;
+
+      Object tag = switch (definition.value) {
+        <Node>[Text(:String data)] => data,
+        <Node>[MustacheTag(:Expression expression)] => expression,
+        _ => error(invalidElementDefinition, definition.start),
+      };
+
+      (element as InlineElement).tag = tag;
     }
 
     if (stack.length == 1) {

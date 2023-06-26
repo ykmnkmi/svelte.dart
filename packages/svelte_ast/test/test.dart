@@ -7,12 +7,17 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
-<Component><div slot='foo'></div></Component>
+{42 = nope}
 ''';
 
 void main() {
   try {
-    SvelteAst ast = parse(string, uri: Uri.file('test.dart'));
+    SvelteAst ast = parse(
+      string,
+      fileName: 'test.dart',
+      uri: Uri.file('test.dart'),
+    );
+
     Map<String, Object?> json = ast.toJson();
     String output = const JsonEncoder.withIndent('  ').convert(json);
     File('test/test.json').writeAsStringSync(output);

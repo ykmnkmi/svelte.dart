@@ -1,7 +1,7 @@
-import '../parser.dart';
-import 'mustache.dart';
-import 'tag.dart';
-import 'text.dart';
+import 'package:svelte_ast/src/parser.dart';
+import 'package:svelte_ast/src/state/mustache.dart';
+import 'package:svelte_ast/src/state/tag.dart';
+import 'package:svelte_ast/src/state/text.dart';
 
 extension FragmentParser on Parser {
   void fragment() {

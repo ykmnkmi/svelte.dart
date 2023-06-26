@@ -1,7 +1,6 @@
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/html.dart';
-
-import '../parser.dart';
+import 'package:svelte_ast/src/parser.dart';
 
 final RegExp _textEndRe = RegExp('[<{]');
 
@@ -17,15 +16,17 @@ extension TextParser on Parser {
       found = length;
     }
 
-    String raw = string.substring(start, found);
-    String data = decodeCharacterReferences(raw, false);
+    if (start < found) {
+      String raw = string.substring(start, found);
+      String data = decodeCharacterReferences(raw, false);
 
-    current.children.add(Text(
-      start: start,
-      end: found,
-      raw: raw,
-      data: data,
-    ));
+      current.children.add(Text(
+        start: start,
+        end: found,
+        raw: raw,
+        data: data,
+      ));
+    }
 
     position = found;
   }

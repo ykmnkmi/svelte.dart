@@ -475,9 +475,12 @@ final class InlineComponent extends Tag {
     super.start,
     super.end,
     required super.name,
+    this.expression,
     required super.attributes,
     required super.children,
   });
+
+  Expression? expression;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -491,6 +494,47 @@ final class InlineComponent extends Tag {
       'end': end,
       'class': 'InlineComponent',
       'name': name,
+      if (expression case Expression expression?)
+        'expression': expression.accept(dart2Json),
+      if (attributes.isNotEmpty)
+        'attributes': <Map<String, Object?>>[
+          for (Node attribute in attributes) attribute.toJson(),
+        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
+    };
+  }
+}
+
+final class InlineElement extends Tag {
+  InlineElement({
+    super.start,
+    super.end,
+    required super.name,
+    this.tag,
+    required super.attributes,
+    required super.children,
+  });
+
+  Object? tag;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitInlineElement(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      'class': 'InlineElement',
+      'name': name,
+      if (tag case String tag)
+        'tag': tag
+      else if (tag case Expression tag?)
+        'tag': tag.accept(dart2Json),
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),

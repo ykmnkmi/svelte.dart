@@ -1,5 +1,5 @@
 <script>
-	export List<List> animals;
+	external var animals;
 </script>
 
 {#each animals as [key, value, ...]}

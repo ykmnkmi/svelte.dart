@@ -1,5 +1,11 @@
 import 'package:analyzer/dart/ast/ast.dart'
-    show DartPattern, Expression, SimpleIdentifier;
+    show
+        AstNode,
+        DartPattern,
+        Expression,
+        ImportDirective,
+        SimpleIdentifier,
+        TopLevelVariableDeclaration;
 import 'package:csslib/visitor.dart' show TreeNode;
 import 'package:svelte_ast/src/css_to_json.dart';
 import 'package:svelte_ast/src/dart_to_json.dart';
@@ -230,20 +236,77 @@ final class Fragment extends Node {
   }
 }
 
+final class Script extends Node {
+  Script({
+    super.start,
+    super.end,
+    this.context = 'default',
+    required this.content,
+    required this.imports,
+    required this.variables,
+    required this.statements,
+  });
+
+  final String context;
+
+  final ({int start, int end, String data}) content;
+
+  final List<ImportDirective> imports;
+
+  final List<TopLevelVariableDeclaration> variables;
+
+  final List<AstNode> statements;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitScript(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      'class': 'Script',
+      'context': context,
+      'content': <String, Object>{
+        'start': content.start,
+        'end': content.end,
+        'data': content.data,
+      },
+      if (imports.isNotEmpty)
+        'imports': <Map<String, Object?>>[
+          for (ImportDirective import in imports)
+            import.accept(dart2Json) as Map<String, Object?>,
+        ],
+      if (variables.isNotEmpty)
+        'variables': <Map<String, Object?>>[
+          for (TopLevelVariableDeclaration variable in variables)
+            variable.accept(dart2Json) as Map<String, Object?>,
+        ],
+      if (statements.isNotEmpty)
+        'statements': <Map<String, Object?>>[
+          for (AstNode statement in statements)
+            statement.accept(dart2Json) as Map<String, Object?>,
+        ],
+    };
+  }
+}
+
 final class Style extends Node {
   Style({
     super.start,
     super.end,
+    required this.content,
     this.attributes = const <Node>[],
     required this.topLevels,
-    required this.content,
   });
+
+  final ({int start, int end, String data}) content;
 
   final List<Node> attributes;
 
   final List<TreeNode> topLevels;
-
-  final ({int start, int end, String content}) content;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -256,6 +319,11 @@ final class Style extends Node {
       'start': start,
       'end': end,
       'class': 'Style',
+      'content': <String, Object>{
+        'start': content.start,
+        'end': content.end,
+        'data': content.data,
+      },
       if (attributes.isNotEmpty)
         'raw': <Map<String, Object?>>[
           for (Node node in attributes) node.toJson(),
@@ -265,11 +333,6 @@ final class Style extends Node {
           for (TreeNode node in topLevels)
             node.visit(css2Json) as Map<String, Object?>,
         ],
-      'content': <String, Object>{
-        'start': content.start,
-        'end': content.end,
-        'content': content.content,
-      },
     };
   }
 }

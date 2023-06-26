@@ -2,11 +2,11 @@ import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/patterns.dart';
 
 String trimStart(String string) {
-  return string.replaceFirst(startsWithSpaces, '');
+  return string.replaceFirst(startsWithSpacesRe, '');
 }
 
 String trimEnd(String string) {
-  return string.replaceFirst(endsWithSpaces, '');
+  return string.replaceFirst(endsWithSpacesRe, '');
 }
 
 void trimBlock(Node? block, bool before, bool after) {

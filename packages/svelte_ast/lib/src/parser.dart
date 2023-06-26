@@ -13,6 +13,7 @@ enum CssMode {
 
 final RegExp _spaceRe = RegExp('[ \t\r\n]*');
 
+// TODO(parser): switch to full template tokenizer
 final class Parser {
   Parser({
     required this.string,
@@ -79,6 +80,8 @@ final class Parser {
   final SourceFile sourceFile;
 
   final Fragment html = Fragment(children: <Node>[]);
+
+  final List<Script> scripts = <Script>[];
 
   final List<Style> styles = <Style>[];
 
@@ -175,9 +178,17 @@ final class Parser {
     error(unexpectedEOFToken(pattern));
   }
 
-  Never error(ErrorCode errorCode, [int? position]) {
+  Never dartError(String message, int offset, int length) {
+    error(
+      (code: 'parse-error', message: message),
+      offset,
+      offset + length,
+    );
+  }
+
+  Never error(ErrorCode errorCode, [int? position, int? end]) {
     position ??= this.position;
-    SourceSpan span = sourceFile.span(position, position);
+    SourceSpan span = sourceFile.span(position, end);
     throw ParseError(errorCode, span);
   }
 }

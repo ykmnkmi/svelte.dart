@@ -11,11 +11,10 @@ import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/html.dart';
 import 'package:svelte_ast/src/node.dart';
+import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/patterns.dart';
+import 'package:svelte_ast/src/read/expression.dart';
 import 'package:svelte_ast/src/trim.dart';
-
-import '../parser.dart';
-import '../read/expression.dart';
 
 final RegExp _ifCase = RegExp('(\\s+case|\\s*})');
 
@@ -209,13 +208,13 @@ extension MustacheParser on Parser {
 
     AwaitBlock awaitBlock = current as AwaitBlock;
 
-    if (!scan(closingCurlyBrace)) {
+    if (!scan(closingCurlyRe)) {
       allowSpace(required: true);
 
       if (isThen) {
         awaitBlock.value = readAssignmentPattern(_awaitCatch);
       } else {
-        awaitBlock.error = readAssignmentPattern(closingCurlyBrace);
+        awaitBlock.error = readAssignmentPattern(closingCurlyRe);
       }
 
       allowSpace();
@@ -268,7 +267,7 @@ extension MustacheParser on Parser {
     Expression? whenExpression;
 
     if (scan('when')) {
-      whenExpression = readExpression(closingCurlyBrace);
+      whenExpression = readExpression(closingCurlyRe);
     }
 
     return (expression, casePattern, whenExpression);
@@ -324,8 +323,8 @@ extension MustacheParser on Parser {
 
     Expression? key;
 
-    if (scan(openingParen)) {
-      key = readExpression(closingParen);
+    if (scan(openingParenRe)) {
+      key = readExpression(closingParenRe);
       allowSpace();
       expect(')');
     }
@@ -361,7 +360,7 @@ extension MustacheParser on Parser {
     bool awaitBlockThenShorthand = scan('then');
 
     if (awaitBlockThenShorthand) {
-      if (!scan(closingCurlyBrace)) {
+      if (!scan(closingCurlyRe)) {
         allowSpace(required: true);
         awaitBlock.value = readAssignmentPattern(_awaitCatch);
         allowSpace();
@@ -371,9 +370,9 @@ extension MustacheParser on Parser {
     bool awaitBlockCatchShorthand = !awaitBlockThenShorthand && scan('catch');
 
     if (awaitBlockCatchShorthand) {
-      if (!scan(closingCurlyBrace)) {
+      if (!scan(closingCurlyRe)) {
         allowSpace(required: true);
-        awaitBlock.error = readAssignmentPattern(closingCurlyBrace);
+        awaitBlock.error = readAssignmentPattern(closingCurlyRe);
         allowSpace();
       }
     }
@@ -406,7 +405,7 @@ extension MustacheParser on Parser {
   void _keyBlock(int start) {
     allowSpace(required: true);
 
-    Expression expression = readExpression(closingCurlyBrace);
+    Expression expression = readExpression(closingCurlyRe);
     allowSpace();
     expect('}');
 
@@ -423,7 +422,7 @@ extension MustacheParser on Parser {
   void _html(int start) {
     allowSpace(required: true);
 
-    Expression expression = readExpression(closingCurlyBrace);
+    Expression expression = readExpression(closingCurlyRe);
     allowSpace();
     expect('}');
 
@@ -437,13 +436,14 @@ extension MustacheParser on Parser {
   void _debug(int start) {
     List<SimpleIdentifier> identifiers;
 
-    if (scan(closingCurlyBrace)) {
+    if (scan(closingCurlyRe)) {
       identifiers = const <SimpleIdentifier>[];
     } else {
       allowSpace();
 
-      identifiers = withDartParser(closingCurlyBrace, (parser, token) {
-        return parser.parseIdentifierList(token);
+      identifiers = withScriptParser(position, closingCurlyRe, (parser, token) {
+        token = parser.syntheticPreviousToken(token);
+        parser.parseIdentifierList(token);
       });
     }
 
@@ -460,7 +460,7 @@ extension MustacheParser on Parser {
   void _const(int start) {
     allowSpace(required: true);
 
-    Expression expression = readExpression(closingCurlyBrace);
+    Expression expression = readExpression(closingCurlyRe);
 
     if (!(expression is AssignmentExpression ||
         expression is PatternAssignment)) {
@@ -478,7 +478,7 @@ extension MustacheParser on Parser {
   }
 
   void _expression(int start) {
-    Expression expression = readExpression(closingCurlyBrace);
+    Expression expression = readExpression(closingCurlyRe);
     allowSpace();
     expect('}');
 

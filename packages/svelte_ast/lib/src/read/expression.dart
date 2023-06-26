@@ -1,27 +1,17 @@
 // ignore_for_file: depend_on_referenced_packages, implementation_imports, unnecessary_import
 
-import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe
-    show Parser, PatternContext;
-import 'package:_fe_analyzer_shared/src/scanner/characters.dart' show $EOF;
-import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
-    show ScannerConfiguration, StringScanner, Token;
+import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart'
+    show PatternContext;
+import 'package:_fe_analyzer_shared/src/scanner/scanner.dart' show Token;
 import 'package:_fe_analyzer_shared/src/scanner/token_impl.dart'
     show StringTokenImpl;
-import 'package:analyzer/dart/analysis/features.dart' show Feature, FeatureSet;
 import 'package:analyzer/dart/ast/ast.dart'
     show DartPattern, Expression, SimpleIdentifier;
 import 'package:analyzer/dart/ast/token.dart';
-import 'package:analyzer/error/listener.dart'
-    show ErrorReporter, RecordingErrorListener;
-import 'package:analyzer/source/line_info.dart' show LineInfo;
+import 'package:analyzer/error/error.dart';
 import 'package:analyzer/src/dart/ast/ast.dart' show SimpleIdentifierImpl;
-import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
-import 'package:analyzer/src/fasta/ast_builder.dart' show AstBuilder;
-import 'package:analyzer/src/string_source.dart' show StringSource;
-
-import '../parser.dart';
-
-typedef DartParserCallback = Token Function(fe.Parser parser, Token token);
+import 'package:svelte_ast/src/parser.dart';
+import 'package:svelte_ast/src/read/script_parser.dart';
 
 final RegExp _identifierRe = RegExp('[_\$A-Za-z][_\$A-Za-z0-9]*');
 
@@ -31,75 +21,73 @@ extension ExpressionParser on Parser {
   }
 
   DartPattern readAssignmentPattern(Pattern end) {
-    return readPattern(end, fe.PatternContext.assignment);
+    return readPattern(end, PatternContext.assignment);
   }
 
-  DartPattern readPattern(Pattern end, fe.PatternContext context) {
-    return withDartParser<DartPattern>(end, (parser, token) {
-      return parser.parsePattern(token, context);
-    });
+  DartPattern readPattern(Pattern end, PatternContext context) {
+    void callback(ScriptParser parser, Token token) {
+      token = parser.syntheticPreviousToken(token);
+      token = parser.parsePattern(token, context);
+      position = token.end;
+    }
+
+    return withScriptParser<DartPattern>(position, end, callback);
   }
 
   Expression readExpression(Pattern end) {
-    return withDartParser<Expression>(end, (parser, token) {
-      return parser.parseExpression(token);
-    });
-  }
+    try {
+      void callback(ScriptParser parser, Token token) {
+        token = parser.syntheticPreviousToken(token);
+        token = parser.parseExpression(token);
+        position = token.end;
+      }
 
-  T withDartParser<T>(Pattern end, DartParserCallback callback) {
-    FeatureSet featureSet = FeatureSet.latestLanguageVersion();
-    ScannerConfiguration configuration = dart.Scanner.buildConfig(featureSet);
-    ExpressionScanner scanner = ExpressionScanner(string, position - 1, end,
-        configuration: configuration);
-    LineInfo lineInfo = LineInfo(scanner.lineStarts);
-    StringSource source = StringSource(string, fileName, uri: uri);
-    RecordingErrorListener errorListener = RecordingErrorListener();
-    ErrorReporter reporter = ErrorReporter(errorListener, source,
-        isNonNullableByDefault: featureSet.isEnabled(Feature.non_nullable));
-    AstBuilder astBuilder =
-        AstBuilder(reporter, source.uri, true, featureSet, lineInfo);
-    fe.Parser parser = fe.Parser(astBuilder,
-        allowPatterns: featureSet.isEnabled(Feature.patterns));
-    astBuilder.parser = parser;
-
-    Token token = scanner.tokenize();
-    token = parser.syntheticPreviousToken(token);
-    token = callback(parser, token);
-    position = token.end;
-    return astBuilder.pop() as T;
+      return withScriptParser<Expression>(position, end, callback);
+    } on AnalysisError catch (analysisError) {
+      var AnalysisError(
+        :int offset,
+        :int length,
+        :String message,
+      ) = analysisError;
+      dartError(message, offset, length);
+    }
   }
 
   SimpleIdentifier simpleIdentifier(int start, String name) {
     Token token = StringTokenImpl.fromString(TokenType.IDENTIFIER, name, start);
     return SimpleIdentifierImpl(token);
   }
-}
 
-class ExpressionScanner extends StringScanner {
-  ExpressionScanner(super.string, int offset, this.end, {super.configuration})
-      : super(includeComments: true) {
-    scanOffset = offset;
+  T withScriptParser<T>(
+    int offset,
+    Pattern end,
+    ScriptParserCallback callback,
+  ) {
+    ScriptParser parser = ScriptParser.fromString(
+      string: string,
+      offset: offset,
+      fileName: fileName,
+      uri: uri,
+    );
+
+    Token token = parser.scanner.scan(end);
+    callback(parser, token);
+    return parser.builder.pop() as T;
   }
 
-  final Pattern end;
+  void withScriptParserRun(
+    int offset,
+    Pattern end,
+    ScriptParserCallback callback,
+  ) {
+    ScriptParser parser = ScriptParser.fromString(
+      string: string,
+      offset: offset,
+      fileName: fileName,
+      uri: uri,
+    );
 
-  @override
-  Token tokenize() {
-    int next = advance();
-
-    while (true) {
-      if (groupingStack.isEmpty && string.startsWith(end, scanOffset)) {
-        break;
-      }
-
-      if (identical(next, $EOF)) {
-        break;
-      }
-
-      next = bigSwitch(next);
-    }
-
-    appendEofToken();
-    return firstToken();
+    Token token = parser.scanner.scan(end);
+    callback(parser, token);
   }
 }

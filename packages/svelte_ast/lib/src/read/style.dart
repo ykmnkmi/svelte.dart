@@ -23,24 +23,26 @@ extension StyleParser on Parser {
   void readStyle(int start, List<Node> attributes) {
     expect('>');
 
-    int contentStart = position;
-    String content = readUntil(_styleCloseTag, unclosedStyle);
+    int dataStart = position;
+    String data = readUntil(_styleCloseTag, unclosedStyle);
 
     if (isDone) {
       error(unclosedStyle);
     }
 
-    int contentEnd = position;
+    int dataEnd = position;
 
     if (cssMode == CssMode.none) {
       read(_styleCloseTag);
       return;
     }
 
+    expect(_styleCloseTag);
+
     List<Message> errors = <Message>[];
 
     StyleSheet ast = parse(
-      content,
+      data,
       errors: errors,
       options: PreprocessorOptions(),
     );
@@ -50,9 +52,7 @@ extension StyleParser on Parser {
       error(cssSyntaxError(first.message), first.span?.start.offset);
     }
 
-    ast.visit(StyleValidator(this, contentStart));
-
-    expect(_styleCloseTag);
+    ast.visit(StyleValidator(this, dataStart));
 
     styles.add(Style(
       start: start,
@@ -60,9 +60,9 @@ extension StyleParser on Parser {
       attributes: attributes,
       topLevels: ast.topLevels,
       content: (
-        start: contentStart,
-        end: contentEnd,
-        content: content,
+        start: dataStart,
+        end: dataEnd,
+        data: data,
       ),
     ));
   }

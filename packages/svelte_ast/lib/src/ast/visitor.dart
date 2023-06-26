@@ -45,6 +45,8 @@ abstract interface class Visitor<C, R> {
 
   R visitInlineComponent(InlineComponent node, C context);
 
+  R visitInlineElement(InlineElement node, C context);
+
   R visitKeyBlock(KeyBlock node, C context);
 
   R visitLet(Let node, C context);
@@ -58,6 +60,8 @@ abstract interface class Visitor<C, R> {
   R visitRawMustacheTag(RawMustacheTag node, C context);
 
   R visitRef(Ref node, C context);
+
+  R visitScript(Script node, C context);
 
   R visitSlot(Slot node, C context);
 

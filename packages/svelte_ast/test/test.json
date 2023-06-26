@@ -1,39 +1,120 @@
 {
   "html": {
-    "start": 0,
-    "end": 45,
+    "start": 43,
+    "end": 111,
     "class": "Fragment",
     "children": [
       {
-        "start": 0,
-        "end": 45,
-        "class": "InlineComponent",
+        "start": 41,
+        "end": 43,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 43,
+        "end": 111,
+        "class": "EachBlock",
+        "expression": {
+          "start": 50,
+          "end": 57,
+          "class": "SimpleIdentifier",
+          "name": "animals",
+          "isAssignable": true
+        },
+        "context": {
+          "start": 61,
+          "end": 78,
+          "class": "ListPattern",
+          "elements": [
+            {
+              "start": 62,
+              "end": 65,
+              "class": "AssignedVariablePattern"
+            },
+            {
+              "start": 67,
+              "end": 72,
+              "class": "AssignedVariablePattern"
+            },
+            {
+              "start": 74,
+              "end": 77,
+              "class": "RestPatternElement"
+            }
+          ]
+        },
         "children": [
           {
-            "start": 11,
-            "end": 33,
+            "start": 82,
+            "end": 103,
             "class": "Element",
-            "name": "div",
-            "attributes": [
+            "name": "p",
+            "children": [
               {
-                "start": 16,
-                "end": 26,
-                "class": "Attribute",
-                "name": "slot",
-                "value": [
-                  {
-                    "start": 22,
-                    "end": 25,
-                    "class": "Text",
-                    "raw": "foo",
-                    "data": "foo"
-                  }
-                ]
+                "start": 85,
+                "end": 90,
+                "class": "MustacheTag",
+                "expression": {
+                  "start": 86,
+                  "end": 89,
+                  "class": "SimpleIdentifier",
+                  "name": "key",
+                  "isAssignable": true
+                }
+              },
+              {
+                "start": 90,
+                "end": 92,
+                "class": "Text",
+                "raw": ": ",
+                "data": ": "
+              },
+              {
+                "start": 92,
+                "end": 99,
+                "class": "MustacheTag",
+                "expression": {
+                  "start": 93,
+                  "end": 98,
+                  "class": "SimpleIdentifier",
+                  "name": "value",
+                  "isAssignable": true
+                }
               }
-            ],
-            "children": []
+            ]
           }
         ]
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 41,
+    "class": "Script",
+    "context": "default",
+    "content": {
+      "start": 8,
+      "end": 32,
+      "data": "\n\texternal var animals;\n"
+    },
+    "variables": [
+      {
+        "start": 10,
+        "end": 31,
+        "class": "TopLevelVariableDeclaration",
+        "variables": {
+          "start": 19,
+          "end": 30,
+          "class": "VariableDeclarationList",
+          "variables": [
+            {
+              "start": 23,
+              "end": 30,
+              "class": "VariableDeclaration"
+            }
+          ]
+        }
       }
     ]
   }
