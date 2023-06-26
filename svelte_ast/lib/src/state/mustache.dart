@@ -37,7 +37,7 @@ extension MustacheParser on Parser {
     } else if (scan(':else')) {
       _else(start);
     } else if (match(':then') || match(':catch')) {
-      _thenElse(start);
+      _thenCatch(start);
     } else if (scan('#')) {
       _open(start);
     } else if (scan('@html')) {
@@ -177,7 +177,7 @@ extension MustacheParser on Parser {
     }
   }
 
-  void _thenElse(int start) {
+  void _thenCatch(int start) {
     Node block = current;
     bool isThen = scan(':then') || !scan(':catch');
 

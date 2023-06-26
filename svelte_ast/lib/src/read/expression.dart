@@ -96,7 +96,23 @@ extension ExpressionParser on Parser {
       uri: uri,
     );
 
-    Token token = parser.scanner.scan(end);
-    callback(parser, token);
+    try {
+      Token token = parser.scanner.scan(end);
+      callback(parser, token);
+    } on AnalysisError catch (analysisError) {
+      var AnalysisError(
+        :int offset,
+        :int length,
+        :String message,
+      ) = analysisError;
+      dartError(message, offset, length);
+    } on ErrorToken catch (token) {
+      var ErrorToken(
+        :int offset,
+        :int length,
+        :Message assertionMessage,
+      ) = token;
+      dartError(assertionMessage.problemMessage, offset, length);
+    }
   }
 }

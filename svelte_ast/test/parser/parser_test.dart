@@ -63,7 +63,7 @@ void main() {
         skip = '$error';
       }
 
-      test(sample.uri.pathSegments[3], callback, skip: skip);
+      test(sample.path, callback, skip: skip);
     }
   });
 }

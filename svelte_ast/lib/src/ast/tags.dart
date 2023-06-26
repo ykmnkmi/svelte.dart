@@ -462,13 +462,133 @@ final class Head extends Tag {
   }
 }
 
-abstract final class Options implements Tag {}
+final class Options extends Tag {
+  Options({
+    super.start,
+    super.end,
+    required super.name,
+    required super.attributes,
+    required super.children,
+  });
 
-abstract final class Window implements Tag {}
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitOptions(this, context);
+  }
 
-abstract final class Document implements Tag {}
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      'class': 'Options',
+      'name': name,
+      if (attributes.isNotEmpty)
+        'attributes': <Map<String, Object?>>[
+          for (Node attribute in attributes) attribute.toJson(),
+        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
+    };
+  }
+}
 
-abstract final class Body implements Tag {}
+final class Window extends Tag {
+  Window({
+    super.start,
+    super.end,
+    required super.name,
+    required super.attributes,
+    required super.children,
+  });
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitWindow(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      'class': 'Window',
+      'name': name,
+      if (attributes.isNotEmpty)
+        'attributes': <Map<String, Object?>>[
+          for (Node attribute in attributes) attribute.toJson(),
+        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
+    };
+  }
+}
+
+final class Document extends Tag {
+  Document({
+    super.start,
+    super.end,
+    required super.name,
+    required super.attributes,
+    required super.children,
+  });
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitDocument(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      'class': 'Document',
+      'name': name,
+      if (attributes.isNotEmpty)
+        'attributes': <Map<String, Object?>>[
+          for (Node attribute in attributes) attribute.toJson(),
+        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
+    };
+  }
+}
+
+final class Body extends Tag {
+  Body({
+    super.start,
+    super.end,
+    required super.name,
+    required super.attributes,
+    required super.children,
+  });
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitBody(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      'class': 'Body',
+      'name': name,
+      if (attributes.isNotEmpty)
+        'attributes': <Map<String, Object?>>[
+          for (Node attribute in attributes) attribute.toJson(),
+        ],
+      'children': <Map<String, Object?>>[
+        for (Node node in children) node.toJson(),
+      ],
+    };
+  }
+}
 
 final class InlineComponent extends Tag {
   InlineComponent({

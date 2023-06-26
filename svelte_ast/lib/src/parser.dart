@@ -13,7 +13,6 @@ enum CssMode {
 
 final RegExp _spaceRe = RegExp('[ \t\r\n]*');
 
-// TODO(parser): switch to full template tokenizer
 final class Parser {
   Parser({
     required this.string,

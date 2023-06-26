@@ -467,6 +467,7 @@ extension TagParser on Parser {
     Node parent = current;
     bool isClosingTag = scan('/');
     String name = _readTagName();
+    Tag element;
 
     if (_metaTags[name] case String metaTag?) {
       String slug = metaTag.toLowerCase();
@@ -487,11 +488,46 @@ extension TagParser on Parser {
 
         metaTags.add(name);
       }
-    }
 
-    Tag element;
-
-    if (_capitalLetter.hasMatch(name) ||
+      if (metaTag == 'Head') {
+        element = Head(
+          start: start,
+          name: name,
+          attributes: <Node>[],
+          children: <Node>[],
+        );
+      } else if (metaTag == 'Options') {
+        element = Options(
+          start: start,
+          name: name,
+          attributes: <Node>[],
+          children: <Node>[],
+        );
+      } else if (metaTag == 'Window') {
+        element = Window(
+          start: start,
+          name: name,
+          attributes: <Node>[],
+          children: <Node>[],
+        );
+      } else if (metaTag == 'Document') {
+        element = Document(
+          start: start,
+          name: name,
+          attributes: <Node>[],
+          children: <Node>[],
+        );
+      } else if (metaTag == 'Body') {
+        element = Body(
+          start: start,
+          name: name,
+          attributes: <Node>[],
+          children: <Node>[],
+        );
+      } else {
+        throw UnimplementedError(metaTag);
+      }
+    } else if (_capitalLetter.hasMatch(name) ||
         name == 'svelte:self' ||
         name == 'svelte:component') {
       element = InlineComponent(
@@ -562,7 +598,7 @@ extension TagParser on Parser {
       stack.removeLast();
 
       if (lastAutoCloseTag case AutoCloseTag tag?
-          when stack.length < tag.depth) {
+          when tag.depth > stack.length) {
         lastAutoCloseTag = null;
       }
 
@@ -572,6 +608,7 @@ extension TagParser on Parser {
     if (closingTagOmitted(parent is HasName ? parent.name : null, name)) {
       parent.end = start;
       stack.removeLast();
+
       lastAutoCloseTag = (
         tag: parent is HasName ? parent.name : null,
         reason: name,
@@ -591,6 +628,8 @@ extension TagParser on Parser {
     }
 
     if (name == 'svelte:component') {
+      element as InlineComponent;
+
       List<Node> attributes = element.attributes;
       int found = -1;
 
@@ -612,10 +651,12 @@ extension TagParser on Parser {
         _ => error(invalidComponentDefinition, definition.start),
       };
 
-      (element as InlineComponent).expression = expression;
+      element.expression = expression;
     }
 
     if (name == 'svelte:element') {
+      element as InlineElement;
+
       List<Node> attributes = element.attributes;
       int found = -1;
 
@@ -638,7 +679,7 @@ extension TagParser on Parser {
         _ => error(invalidElementDefinition, definition.start),
       };
 
-      (element as InlineElement).tag = tag;
+      element.tag = tag;
     }
 
     if (stack.length == 1) {

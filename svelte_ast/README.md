@@ -1,8 +1,6 @@
 # svelte_ast
 
-Parser and utilities for [SvelteDart][svelte_dart] templates.
-
-[svelte_dart]: https://github.com/ykmnkmi/svelte.dart
+Parser and utilities for [SvelteDart][svelte_dart] template compiler.
 
 ## Usage
 
@@ -25,3 +23,5 @@ void main() {
   print(const JsonEncoder.withIndent('\t').convert(ast.toJson()));
 }
 ```
+
+[svelte_dart]: https://github.com/ykmnkmi/svelte.dart
