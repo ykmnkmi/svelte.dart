@@ -6,12 +6,14 @@ web framework, (not yet) ported to [Dart](https://dart.dev).
 
 ```html
 <!-- app.svelte -->
-
 <script>
-  import 'package:svelte/svelte.dart' show onMount;
+  // importы
+  import 'package:svelte/svelte.dart';
 
-  var count = 0;
+  // properties
+  external int count = 0;
 
+  // body
   $: doubled = count * 2;
   $: quadrupled = doubled * 2;
 
@@ -19,8 +21,10 @@ web framework, (not yet) ported to [Dart](https://dart.dev).
     count += 1;
   }
 
+  const duration = Duration(seconds: 1);
+
   onMount(() {
-    var timer = Timer.periodic(Duration(seconds: 1), (_) {
+    var timer = Timer.periodic(duration, (_) {
       count += 1;
     });
 
@@ -39,21 +43,20 @@ web framework, (not yet) ported to [Dart](https://dart.dev).
 ```
 
 Status (original implementation):
-- [x] Parser
-  - [ ] Style
+- [ ] Parser 🔥
 - [ ] Runtime
   - [ ] internal
-    - [ ] component 🔥
-    - [x] scheduler
-    - [ ] lifecycle 🔥
-    - [*] dom `dart:html` 🔥
-      - [*] `package:web`
+    - [ ] component
+    - [ ] scheduler
+    - [ ] lifecycle
+    - [ ] dom `dart:html`
+      - [ ] `package:web`
     - [ ] transition
   - [ ] ...
 - [ ] Compiler
-  - [ ] Builder 🔥
+  - [ ] Builder
 - [ ] Tests
-  - [x] Parser
+  - [ ] Parser 🔥
   - [ ] Runtime
   - [ ] ...
 - [ ] Examples (to test runtime, not generated)
