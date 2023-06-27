@@ -30,13 +30,13 @@ void main() {
   try {
     SvelteAst ast = parse(
       string,
-      fileName: 'test.dart',
-      uri: Uri.file('test.dart'),
+      fileName: 'check.dart',
+      uri: Uri.file('check.dart'),
     );
 
     Map<String, Object?> json = ast.toJson();
-    String output = const JsonEncoder.withIndent('  ').convert(json);
-    File('test/test.json').writeAsStringSync(output);
+    String output = const JsonEncoder.withIndent('\t').convert(json);
+    File('test/check.json').writeAsStringSync(output);
   } on ParseError catch (error, stackTrace) {
     print(error);
     print(error.span.highlight());

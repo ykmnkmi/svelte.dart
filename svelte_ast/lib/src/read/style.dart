@@ -33,7 +33,7 @@ extension StyleParser on Parser {
 
     int dataEnd = position;
 
-    if (cssMode == CssMode.none) {
+    if (skipStyle) {
       read(_styleCloseTag);
       return;
     }

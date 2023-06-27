@@ -4,7 +4,6 @@ import 'package:svelte_ast/src/parser.dart';
 
 export 'package:svelte_ast/src/ast.dart';
 export 'package:svelte_ast/src/errors.dart' show ParseError;
-export 'package:svelte_ast/src/parser.dart' show CssMode;
 
 final class SvelteAst {
   SvelteAst({
@@ -36,7 +35,7 @@ SvelteAst parse(
   String string, {
   String? fileName,
   Uri? uri,
-  CssMode? cssMode,
+  bool skipStyle = false,
   bool customElement = false,
 }) {
   var Parser(
@@ -48,7 +47,7 @@ SvelteAst parse(
     string: string.trimRight(),
     fileName: fileName,
     uri: uri,
-    cssMode: cssMode,
+    skipStyle: skipStyle,
     customElement: customElement,
   );
 

@@ -4,8 +4,7 @@ import 'dart:convert' show JsonEncoder, json;
 import 'dart:io' show Directory, File, FileSystemEntity;
 
 import 'package:collection/collection.dart' show DeepCollectionEquality;
-import 'package:svelte_ast/svelte_ast.dart'
-    show CssMode, ParseError, SvelteAst, parse;
+import 'package:svelte_ast/svelte_ast.dart' show ParseError, SvelteAst, parse;
 
 const DeepCollectionEquality equality = DeepCollectionEquality.unordered();
 
@@ -25,7 +24,7 @@ void main() {
     Object? actual, expected;
 
     try {
-      CssMode? cssMode;
+      bool skipStyle = false;
       file = File.fromUri(sample.uri.resolve('options.json'));
 
       if (file.existsSync()) {
@@ -34,14 +33,14 @@ void main() {
 
         if (options != null) {
           if (options['css'] is String) {
-            cssMode = CssMode.values.byName(options['css'] as String);
+            skipStyle = options['css'] == 'none';
           }
         }
       }
 
       file = File.fromUri(sample.uri.resolve('input.svelte'));
       content = file.readAsStringSync();
-      ast = parse(content, uri: file.uri, cssMode: cssMode);
+      ast = parse(content, uri: file.uri, skipStyle: skipStyle);
       actual = ast.toJson();
 
       file = File.fromUri(sample.uri.resolve('output.json'));
