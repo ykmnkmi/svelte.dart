@@ -42,22 +42,19 @@ web framework, (not yet) ported to [Dart](https://dart.dev).
 <p>{doubled} * 2 = {quadrupled}</p>
 ```
 
-Status (original implementation):
+Status:
 - [x] Parser
-  - Tests
-    - [ ] css  🔥
-    - [x] parser
 - [ ] Runtime
   - [ ] internal
-    - [ ] component
-    - [ ] scheduler
-    - [ ] lifecycle
-    - [ ] dom `dart:html`
+    - [ ] component 🔥
+    - [x] scheduler
+    - [ ] lifecycle 🔥
+    - [ ] dom `dart:html` 🔥
       - [ ] `package:web`
-    - [ ] transition
+    - [ ] transition 🔥
   - [ ] ...
-- [ ] Compiler
-  - [ ] Builder
+- [ ] Compiler 🔥
+- [ ] Builder
 - [ ] Examples (to test runtime, not generated)
   - [x] introduction
   - [x] reactivity
