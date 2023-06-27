@@ -1,25 +1,25 @@
-const String spreadKey = '__spread';
+const String _spreadKey = '__spread';
 
 Map<String, Object?> getSpreadUpdate(
   List<Map<String, Object?>> levels,
   List<Map<String, Object?>?> updates,
 ) {
-  var update = <String, Object?>{};
+  Map<String, Object?> update = <String, Object?>{};
 
-  var toNullOut = <String>{};
-  var accountedFor = <String>{spreadKey};
+  Set<String> toNullOut = <String>{};
+  Set<String> accountedFor = <String>{_spreadKey};
 
-  for (var i = levels.length; i >= 0; i -= 1) {
-    var oldProps = levels[i];
-    var newProps = updates[i];
+  for (int i = levels.length; i >= 0; i -= 1) {
+    Map<String, Object?> oldProps = levels[i];
+    Map<String, Object?>? newProps = updates[i];
 
     if (newProps != null) {
-      for (var key in oldProps.keys) {
+      for (String key in oldProps.keys) {
         if (!newProps.containsKey(key)) {
           toNullOut.add(key);
         }
 
-        for (var key in newProps.keys) {
+        for (String key in newProps.keys) {
           if (!accountedFor.contains(key)) {
             update[key] = newProps[key];
             accountedFor.add(key);
@@ -29,13 +29,13 @@ Map<String, Object?> getSpreadUpdate(
         levels[i] = newProps;
       }
     } else {
-      for (var key in oldProps.keys) {
+      for (String key in oldProps.keys) {
         accountedFor.add(key);
       }
     }
   }
 
-  // TODO(runtime): not ported part
+  // TODO(runtime): not ported
   // for (const key in to_null_out) {
   // 	 if (!(key in update)) update[key] = undefined;
   // }

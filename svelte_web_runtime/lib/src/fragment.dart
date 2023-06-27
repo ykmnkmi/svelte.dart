@@ -1,6 +1,8 @@
 import 'dart:html';
 
-void _update(List<Object?> context, int dirty) {}
+typedef FragmentFactory = Fragment Function(List<Object?> instance);
+
+void _update(List<Object?> context, List<int> dirty) {}
 
 void _transition(bool local) {}
 
@@ -18,7 +20,7 @@ class Fragment {
 
   final void Function(Element target, Node? anchor) mount;
 
-  final void Function(List<Object?> context, int dirty) update;
+  final void Function(List<Object?> context, List<int> dirty) update;
 
   final void Function(bool local) intro;
 
@@ -27,7 +29,7 @@ class Fragment {
   final void Function(bool detaching) detach;
 
   static void detachAll(List<Fragment> fragments, bool detaching) {
-    for (var fragment in fragments) {
+    for (Fragment fragment in fragments) {
       fragment.detach(detaching);
     }
   }

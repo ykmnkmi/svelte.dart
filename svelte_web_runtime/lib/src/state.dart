@@ -9,9 +9,9 @@ class State {
 
   late Map<String, int> props;
 
-  late void Function() update;
+  late VoidCallback update;
 
-  late int dirty;
+  late List<int> dirty;
 
   Element? root;
 }

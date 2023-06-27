@@ -1,5 +1,7 @@
+import 'package:meta/meta.dart';
 import 'package:svelte_web_runtime/src/component.dart';
 
+@internal
 Component? currentComponent;
 
 Component getCurrentComponent() {

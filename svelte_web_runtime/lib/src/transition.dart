@@ -1,6 +1,7 @@
 import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
 import 'package:svelte_web_runtime/src/fragment.dart';
+import 'package:svelte_web_runtime/src/utilities.dart';
 
 @internal
 Set<Fragment> outroing = <Fragment>{};
@@ -17,7 +18,7 @@ void transitionIn(Fragment? fragment, bool local) {
 void transitionOut(
   Fragment? fragment,
   bool local, [
-  void Function()? callback,
+  VoidCallback? callback,
 ]) {
   if (fragment != null) {
     if (outroing.add(fragment)) {

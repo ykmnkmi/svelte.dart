@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:html' show Element, Node;
 
 import 'package:meta/dart2js.dart';
 import 'package:svelte_web_runtime/src/fragment.dart';
@@ -8,29 +8,29 @@ import 'package:svelte_web_runtime/src/state.dart';
 import 'package:svelte_web_runtime/src/transition.dart';
 import 'package:svelte_web_runtime/src/utilities.dart';
 
-typedef Invalidate = void Function(int i, Object? value, [Object? expression]);
-
 typedef InstanceFactory = List<Object?> Function(
   Component component,
   Map<String, Object?> props,
   Invalidate invalidate,
 );
 
-typedef Options = ({
-  Element? target,
-  Node? anchor,
-  Map<String, Object?>? props,
-  bool hydrate,
-  bool intro,
-});
+typedef Invalidate = void Function(
+  int index,
+  Object? value, [
+  Object? expression,
+]);
+
+typedef PropertiesSetter = void Function(Map<String, Object?> props);
+
+typedef UpdateFactory = void Function() Function(List<int> dirty);
 
 abstract class Component {
   final State _state = State();
 
-  void Function(Map<String, Object?> props)? _set;
+  PropertiesSetter? _set;
 
   void set([Map<String, Object?>? props]) {
-    var set = _set;
+    PropertiesSetter? set = _set;
 
     if (set != null && props != null) {
       set(props);
@@ -54,37 +54,39 @@ abstract class Component {
 }
 
 @tryInline
-void setComponentUpdate(
-  Component component,
-  void Function() Function(int dirty) updateFactory,
-) {
+void setComponentUpdate(Component component, UpdateFactory updateFactory) {
   component._state.update = updateFactory(component._state.dirty);
 }
 
 @tryInline
-void setComponentSet(
-  Component component,
-  void Function(Map<String, Object?> props) setter,
-) {
+void setComponentSet(Component component, PropertiesSetter setter) {
   component._set = setter;
 }
+
+typedef Options = ({
+  Element? target,
+  Node? anchor,
+  Map<String, Object?>? props,
+  bool hydrate,
+  bool intro,
+});
 
 @noInline
 void init({
   required Component component,
   required Options options,
   InstanceFactory? createInstance,
-  Fragment Function(List<Object?> instance)? createFragment,
+  FragmentFactory? createFragment,
   Map<String, int> props = const <String, int>{},
   void Function(Element? target)? appendStyles,
-  int dirty = -1,
+  List<int> dirty = const <int>[-1],
 }) {
-  var parentComponent = currentComponent;
+  Component? parentComponent = currentComponent;
   setCurrentComponent(component);
 
-  var target = options.target;
+  Element? target = options.target;
 
-  var state = component._state
+  State state = component._state
     ..fragment = null
     ..instance = <Object?>[]
     ..props = props
@@ -96,7 +98,7 @@ void init({
     appendStyles(target);
   }
 
-  var ready = false;
+  bool ready = false;
 
   if (createInstance != null) {
     void invalidate(int i, Object? value, [Object? expression]) {
@@ -151,26 +153,26 @@ void mountComponent(Component component, Element target, [Node? anchor]) {
 }
 
 @noInline
-void makeComponentDirty(Component component, int i) {
-  if (component._state.dirty == -1) {
+void makeComponentDirty(Component component, int index) {
+  int dirtyIndex = index ~/ 31;
+
+  if (component._state.dirty[0] == -1) {
     dirtyComponents.add(component);
     scheduleUpdate();
-    component._state.dirty = 0;
+    component._state.dirty = List<int>.filled(dirtyIndex + 1, 0);
   }
 
-  component._state.dirty |= 1 << i % 31;
+  component._state.dirty[dirtyIndex] |= 1 << index % 31;
 }
 
 @noInline
 void updateComponent(Component component) {
-  var state = component._state;
+  State state = component._state;
   state.update();
 
-  var fragment = state.fragment;
-
-  if (fragment != null) {
-    var dirty = state.dirty;
-    state.dirty = -1;
+  if (state.fragment case Fragment fragment?) {
+    List<int> dirty = state.dirty;
+    state.dirty = const <int>[-1];
     fragment.update(state.instance, dirty);
   }
 }

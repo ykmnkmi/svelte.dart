@@ -1,14 +1,17 @@
 import 'package:meta/dart2js.dart';
+import 'package:meta/meta.dart';
 import 'package:svelte_web_runtime/src/component.dart';
 import 'package:svelte_web_runtime/src/lifecycle.dart';
 import 'package:svelte_web_runtime/src/utilities.dart';
 
+@internal
 List<Component> dirtyComponents = <Component>[];
 
-List<void Function()> _bindingCallbacks = <void Function()>[];
-List<void Function()> _renderCalbacks = <void Function()>[];
-List<void Function()> _flushCallbacks = <void Function()>[];
+@internal
+List<VoidCallback> bindingCallbacks = <VoidCallback>[];
 
+List<VoidCallback> _renderCalbacks = <VoidCallback>[];
+List<VoidCallback> _flushCallbacks = <VoidCallback>[];
 Future<void> _resolvedFuture = Future<void>(noop);
 bool _updateScheduled = false;
 
@@ -19,7 +22,7 @@ void scheduleUpdate() {
   }
 
   _updateScheduled = true;
-  _resolvedFuture = Future<void>(flush);
+  _resolvedFuture = _resolvedFuture.then<void>(flush);
 }
 
 @noInline
@@ -28,29 +31,29 @@ Future<void> tick() {
   return _resolvedFuture;
 }
 
-void addRenderCallback(void Function() callback) {
+void addRenderCallback(VoidCallback callback) {
   _renderCalbacks.add(callback);
 }
 
-void addFlushCallback(void Function() callback) {
+void addFlushCallback(VoidCallback callback) {
   _flushCallbacks.add(callback);
 }
 
-Set<void Function()> _seenCallbacks = <void Function()>{};
+Set<void Function()> _seenCallbacks = <VoidCallback>{};
 int _flushIndex = 0;
 
 @noInline
-void flush() {
+void flush([void _]) {
   if (_flushIndex != 0) {
     return;
   }
 
-  var savedComponent = currentComponent;
+  Component? savedComponent = currentComponent;
 
   do {
     try {
       while (_flushIndex < dirtyComponents.length) {
-        var component = dirtyComponents[_flushIndex++];
+        Component component = dirtyComponents[_flushIndex++];
         setCurrentComponent(component);
         updateComponent(component);
       }
@@ -64,19 +67,19 @@ void flush() {
     dirtyComponents = <Component>[];
     _flushIndex = 0;
 
-    while (_bindingCallbacks.isNotEmpty) {
-      _bindingCallbacks.removeLast()();
+    while (bindingCallbacks.isNotEmpty) {
+      bindingCallbacks.removeLast()();
     }
 
-    for (var i = 0; i < _renderCalbacks.length; i += 1) {
-      var callback = _renderCalbacks[i];
+    for (int i = 0; i < _renderCalbacks.length; i += 1) {
+      VoidCallback callback = _renderCalbacks[i];
 
       if (_seenCallbacks.add(callback)) {
         callback();
       }
     }
 
-    _renderCalbacks = <void Function()>[];
+    _renderCalbacks = <VoidCallback>[];
   } while (dirtyComponents.isNotEmpty);
 
   while (_flushCallbacks.isNotEmpty) {

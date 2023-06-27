@@ -73,11 +73,12 @@ void append(Node target, Node child) {
 
 @noInline
 void appendStyles(Node? target, String styleSheetId, String styles) {
-  var appendStylesTo = getRootForStyle(target);
-  var appendStylesToNode = appendStylesTo as NonElementParentNode;
+  Node appendStylesTo = getRootForStyle(target);
+  NonElementParentNode appendStylesToNode =
+      appendStylesTo as NonElementParentNode;
 
   if (appendStylesToNode.getElementById(styleSheetId) == null) {
-    var style = element('style');
+    Element style = element('style');
     style.id = styleSheetId;
     style.text = styles;
     appendStyleSheet(appendStylesTo, style);
@@ -104,7 +105,7 @@ Node getRootForStyle(Node? node) {
     return document;
   }
 
-  var root = node.getRootNode();
+  Node root = node.getRootNode();
 
   if (root is ShadowRoot) {
     return root;
@@ -126,7 +127,7 @@ void Function() listen(
   String type,
   EventListener listener,
 ) {
-  var fn = allowInterop(listener);
+  EventListener fn = allowInterop(listener);
   target.addEventListener(type, fn);
 
   return () {
