@@ -71,7 +71,7 @@ Fragment createFragment(List<Object?> instance) {
 
   Fragment Function(List<Object?>) selectCurrentBlock(
     List<Object?> context,
-    int dirty,
+    List<int> dirty,
   ) {
     if (context._user.loggedIn) {
       return createIfBlock;
@@ -80,7 +80,7 @@ Fragment createFragment(List<Object?> instance) {
     return createElseBlock;
   }
 
-  var currentBlockFactory = selectCurrentBlock(instance, -1);
+  var currentBlockFactory = selectCurrentBlock(instance, const <int>[-1]);
   var ifBlock = currentBlockFactory(instance);
 
   return Fragment(

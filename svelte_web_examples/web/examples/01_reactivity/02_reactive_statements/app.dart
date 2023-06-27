@@ -33,7 +33,7 @@ Fragment createFragment(List<Object?> instance) {
       }
     },
     update: (context, dirty) {
-      if (dirty & 1 != 0) {
+      if (dirty[0] & 1 != 0) {
         setData(t1, '${context._count}');
 
         if (t3value != (t3value = context._count == 1 ? 'time' : 'times')) {
@@ -65,7 +65,7 @@ List<Object?> createInstance(
 
   setComponentUpdate(self, (dirty) {
     return () {
-      if (dirty & 1 != 0) {
+      if (dirty[0] & 1 != 0) {
         $:
         if (count >= 10) {
           window.alert('count is dangerously high!');

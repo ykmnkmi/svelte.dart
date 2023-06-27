@@ -61,7 +61,7 @@ Fragment createFragment(List<Object?> instance) {
       }
     },
     update: (context, dirty) {
-      if (dirty & 1 != 0) {
+      if (dirty[0] & 1 != 0) {
         eachValue = context.cats;
 
         var length = min(eachBlocks.length, eachValue.length);

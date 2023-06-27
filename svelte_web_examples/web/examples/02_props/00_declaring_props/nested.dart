@@ -18,7 +18,7 @@ Fragment createFragment(List<Object?> instance) {
       append(p, t1);
     },
     update: (context, dirty) {
-      if (dirty & 1 != 0) {
+      if (dirty[0] & 1 != 0) {
         setData(t1, '${context._answer}');
       }
     },

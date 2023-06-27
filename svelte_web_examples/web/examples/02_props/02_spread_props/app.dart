@@ -29,7 +29,7 @@ Fragment createFragment(List<Object?> instance) {
     update: (context, dirty) {
       Map<String, Object?> infoChanges;
 
-      if (dirty & 1 != 0) {
+      if (dirty[0] & 1 != 0) {
         var list = <Map<String, Object?>>[getSpreadProps(context._pkg)];
         infoChanges = getSpreadUpdate(infoSpreadLevels, list);
       } else {

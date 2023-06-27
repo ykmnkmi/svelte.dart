@@ -33,7 +33,7 @@ Fragment createFragment(List<Object?> instance) {
       }
     },
     update: (context, dirty) {
-      if (dirty & 1 != 0) {
+      if (dirty[0] & 1 != 0) {
         setData(t2, '${context._count}');
 
         if (t4value != (t4value = context._count == 1 ? 'time' : 'times')) {

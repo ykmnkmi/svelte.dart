@@ -51,17 +51,17 @@ Fragment createFragment(List<Object?> instance) {
       }
     },
     update: (context, dirty) {
-      if (dirty & 1 != 0) {
+      if (dirty[0] & 1 != 0) {
         setData(t1, '${context._count}');
         setData(t3, '${context._count}');
       }
 
-      if (dirty & 2 != 0) {
+      if (dirty[0] & 2 != 0) {
         setData(t5, '${context._doubled}');
         setData(t7, '${context._doubled}');
       }
 
-      if (dirty & 4 != 0) {
+      if (dirty[0] & 4 != 0) {
         setData(t9, '${context._quadrupled}');
       }
     },
@@ -95,11 +95,11 @@ List<Object?> createInstance(
 
   setComponentUpdate(self, (dirty) {
     return () {
-      if (dirty & 1 != 0) {
+      if (dirty[0] & 1 != 0) {
         invalidate(1, doubled = count * 2);
       }
 
-      if (dirty & 2 != 0) {
+      if (dirty[0] & 2 != 0) {
         invalidate(2, quadrupled = doubled * 2);
       }
     };
