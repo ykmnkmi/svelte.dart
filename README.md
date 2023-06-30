@@ -1,7 +1,7 @@
 svelte.dart
 ===========
 
-[Svelte](https://svelte.dev/) ([v3.59.1](https://github.com/sveltejs/svelte/tree/v3.59.1))
+[Svelte](https://svelte.dev/) ([v3.59.2](https://github.com/sveltejs/svelte/tree/v3.59.2))
 web framework, (not yet) ported to [Dart](https://dart.dev).
 
 ```html
