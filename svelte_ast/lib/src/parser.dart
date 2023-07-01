@@ -15,7 +15,6 @@ final class Parser {
     this.fileName,
     this.uri,
     this.skipStyle = false,
-    this.customElement = false,
   })  : length = string.length,
         sourceFile = SourceFile.fromString(string, url: uri) {
     stack.add(html);
@@ -67,8 +66,6 @@ final class Parser {
   final Uri? uri;
 
   final bool skipStyle;
-
-  final bool customElement;
 
   final int length;
 

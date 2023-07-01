@@ -557,7 +557,7 @@ extension TagParser on Parser {
         attributes: <Node>[],
         children: <Node>[],
       );
-    } else if (name == 'slot' && !customElement) {
+    } else if (name == 'slot') {
       element = Slot(
         start: start,
         name: name,

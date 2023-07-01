@@ -36,7 +36,6 @@ SvelteAst parse(
   String? fileName,
   Uri? uri,
   bool skipStyle = false,
-  bool customElement = false,
 }) {
   var Parser(
     html: Node html,
@@ -48,7 +47,6 @@ SvelteAst parse(
     fileName: fileName,
     uri: uri,
     skipStyle: skipStyle,
-    customElement: customElement,
   );
 
   Script? instance;
