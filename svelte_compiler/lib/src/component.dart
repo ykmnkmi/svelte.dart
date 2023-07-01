@@ -1,10 +1,17 @@
 import 'package:analyzer/dart/ast/ast.dart'
-    show BooleanLiteral, DoubleLiteral, IntegerLiteral, StringLiteral;
+    show
+        BooleanLiteral,
+        DoubleLiteral,
+        IntegerLiteral,
+        Label,
+        LabeledStatement,
+        StringLiteral;
+import 'package:analyzer/dart/ast/visitor.dart' show RecursiveAstVisitor;
 import 'package:source_span/source_span.dart' show SourceFile, SourceSpan;
 import 'package:svelte_ast/svelte_ast.dart';
-import 'package:svelte_compiler/src/compile_options.dart';
-import 'package:svelte_compiler/src/component_options.dart';
+import 'package:svelte_compiler/src/css/stylesheet.dart';
 import 'package:svelte_compiler/src/errors.dart';
+import 'package:svelte_compiler/src/interface.dart';
 import 'package:svelte_compiler/src/utils/namespaces.dart';
 
 class Component {
@@ -14,7 +21,12 @@ class Component {
     required this.name,
     required this.compileOptions,
     required this.warnings,
-  }) : sourceFile = SourceFile.fromString(source, url: compileOptions.uri);
+  }) : sourceFile = SourceFile.fromString(source, url: compileOptions.uri) {
+    stylesheet.validate(this);
+    componentOptions;
+
+    visitModuleScript();
+  }
 
   final SvelteAst ast;
 
@@ -29,6 +41,15 @@ class Component {
   final SourceFile sourceFile;
 
   late final ComponentOptions componentOptions = processComponentOptions();
+
+  late final Stylesheet stylesheet = Stylesheet.hash(
+    ast: ast,
+    source: source,
+    fileName: compileOptions.fileName,
+    componentName: name,
+    debug: compileOptions.debug,
+    getCssHash: compileOptions.cssHash,
+  );
 
   ComponentOptions processComponentOptions() {
     bool accessors = compileOptions.accessors;
@@ -137,10 +158,29 @@ class Component {
     );
   }
 
+  void visitModuleScript() {
+    Script? script = ast.module;
+
+    if (script == null) {
+      return;
+    }
+  }
+
   Never error(Node node, ErrorCode errorCode) {
     SourceSpan span = sourceFile.span(node.start, node.end);
     throw CompileError(errorCode, span);
   }
 }
 
-extension on Attribute {}
+class LabeledStatementValidator extends RecursiveAstVisitor<void> {
+  const LabeledStatementValidator();
+
+  @override
+  void visitLabeledStatement(LabeledStatement node) {
+    for (Label label in node.labels) {
+      if (label.label.name == '\$') {
+        // warn(moduleScriptReactiveDeclaration);
+      }
+    }
+  }
+}

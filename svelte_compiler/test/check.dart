@@ -1,22 +1,15 @@
+// ignore_for_file: avoid_print
+
 import 'package:stack_trace/stack_trace.dart';
-import 'package:svelte_compiler/src/compile_options.dart';
-import 'package:svelte_compiler/src/errors.dart';
 import 'package:svelte_compiler/svelte_compiler.dart';
 
-const String source = r'''
-<svelte:options immutable/>
-
-<script>
-	external var count = 0;
-	external var foo = (bar: 'baz');
-
-	$: if (foo) count += 1;
-</script>
-
-<div>
-	<h3>Called {count} times.</h3>
-</div>
-''';
+const String source = '''
+<style>
+	@keyframes -global-why {
+		0% { color: red; }
+		100% { color: blue; }
+	}
+</style>''';
 
 const CompileOptions compilerOptions = CompileOptions(
   fileName: 'app.svelte',
