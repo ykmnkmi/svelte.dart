@@ -1,10 +1,9 @@
 // ignore_for_file: implementation_imports
 
-import 'package:analyzer/dart/ast/ast.dart'
-    show AstNode, ImportDirective, TopLevelVariableDeclaration;
+import 'package:analyzer/dart/ast/ast.dart' show AstNode;
 import 'package:analyzer/dart/ast/token.dart' show Keyword, Token;
 import 'package:analyzer/src/fasta/ast_builder.dart' show AstBuilder;
-import 'package:svelte_ast/src/ast.dart' hide Directive;
+import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/read/expression.dart';
@@ -52,10 +51,7 @@ extension ScriptParser on Parser {
     expect(_scriptCloseTag);
 
     if (context == 'default') {
-      List<ImportDirective> imports = <ImportDirective>[];
-      List<TopLevelVariableDeclaration> variables =
-          <TopLevelVariableDeclaration>[];
-      List<AstNode> statements = <AstNode>[];
+      List<AstNode> body = <AstNode>[];
 
       withScriptParserRun(dataStart, _scriptCloseTag, (parser, token) {
         AstBuilder builder = parser.builder;
@@ -77,10 +73,9 @@ extension ScriptParser on Parser {
           }
         }
 
-        imports.addAll(builder.directives.cast<ImportDirective>());
-        variables
-            .addAll(builder.declarations.cast<TopLevelVariableDeclaration>());
-        statements.addAll(builder.stack.values.whereType<AstNode>());
+        body.addAll(builder.directives);
+        body.addAll(builder.declarations);
+        body.addAll(builder.stack.values.whereType<AstNode>());
       });
 
       scripts.add(Script(
@@ -92,12 +87,10 @@ extension ScriptParser on Parser {
           end: dataEnd,
           data: data,
         ),
-        imports: imports,
-        variables: variables,
-        statements: statements,
+        body: body,
       ));
     } else {
-      throw UnimplementedError(context);
+      throw UnimplementedError('module script');
     }
   }
 }

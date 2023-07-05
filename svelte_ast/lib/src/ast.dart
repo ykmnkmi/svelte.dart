@@ -1,11 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart'
-    show
-        AstNode,
-        DartPattern,
-        Expression,
-        ImportDirective,
-        SimpleIdentifier,
-        TopLevelVariableDeclaration;
+    show AstNode, DartPattern, Expression, SimpleIdentifier;
 import 'package:csslib/visitor.dart' show TreeNode;
 import 'package:svelte_ast/src/css_to_json.dart';
 import 'package:svelte_ast/src/dart_to_json.dart';
@@ -242,20 +236,14 @@ final class Script extends Node {
     super.end,
     this.context = 'default',
     required this.content,
-    required this.imports,
-    required this.variables,
-    required this.statements,
+    required this.body,
   });
 
   final String context;
 
   final ({int start, int end, String data}) content;
 
-  final List<ImportDirective> imports;
-
-  final List<TopLevelVariableDeclaration> variables;
-
-  final List<AstNode> statements;
+  final List<AstNode> body;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -274,20 +262,10 @@ final class Script extends Node {
         'end': content.end,
         'data': content.data,
       },
-      if (imports.isNotEmpty)
-        'imports': <Map<String, Object?>>[
-          for (ImportDirective import in imports)
-            import.accept(dart2Json) as Map<String, Object?>,
-        ],
-      if (variables.isNotEmpty)
-        'variables': <Map<String, Object?>>[
-          for (TopLevelVariableDeclaration variable in variables)
-            variable.accept(dart2Json) as Map<String, Object?>,
-        ],
-      if (statements.isNotEmpty)
-        'statements': <Map<String, Object?>>[
-          for (AstNode statement in statements)
-            statement.accept(dart2Json) as Map<String, Object?>,
+      if (body.isNotEmpty)
+        'body': <Map<String, Object?>>[
+          for (AstNode node in body)
+            node.accept(dart2Json) as Map<String, Object?>,
         ],
     };
   }
