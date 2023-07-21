@@ -4,12 +4,17 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_compiler/svelte_compiler.dart';
 
 const String source = '''
-<style>
-	@keyframes -global-why {
-		0% { color: red; }
-		100% { color: blue; }
-	}
-</style>''';
+<script context="module">
+	var foo;
+</script>
+
+<!-- svelte-ignore unused-export-let module-script-reactive-declaration -->
+<script>
+	external var unused;
+
+	\$: reactive = foo;
+</script>
+''';
 
 const CompileOptions compilerOptions = CompileOptions(
   fileName: 'app.svelte',

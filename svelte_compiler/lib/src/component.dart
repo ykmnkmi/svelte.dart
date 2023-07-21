@@ -1,11 +1,4 @@
-import 'package:analyzer/dart/ast/ast.dart'
-    show
-        BooleanLiteral,
-        DoubleLiteral,
-        IntegerLiteral,
-        Label,
-        LabeledStatement,
-        StringLiteral;
+import 'package:analyzer/dart/ast/ast.dart' as analyzer;
 import 'package:analyzer/dart/ast/visitor.dart' show RecursiveAstVisitor;
 import 'package:source_span/source_span.dart' show SourceFile, SourceSpan;
 import 'package:svelte_ast/svelte_ast.dart';
@@ -13,6 +6,7 @@ import 'package:svelte_compiler/src/css/stylesheet.dart';
 import 'package:svelte_compiler/src/errors.dart';
 import 'package:svelte_compiler/src/interface.dart';
 import 'package:svelte_compiler/src/utils/namespaces.dart';
+import 'package:svelte_compiler/src/warnings.dart';
 
 class Component {
   Component({
@@ -76,10 +70,10 @@ class Component {
 
         if (chunk is MustacheTag) {
           return switch (chunk.expression) {
-            BooleanLiteral literal => literal.value,
-            IntegerLiteral literal => literal.value,
-            DoubleLiteral literal => literal.value,
-            StringLiteral literal => literal.stringValue,
+            analyzer.BooleanLiteral literal => literal.value,
+            analyzer.IntegerLiteral literal => literal.value,
+            analyzer.DoubleLiteral literal => literal.value,
+            analyzer.StringLiteral literal => literal.stringValue,
             _ => error(attribute, errorCode),
           };
         }
@@ -164,6 +158,22 @@ class Component {
     if (script == null) {
       return;
     }
+
+    for (analyzer.AstNode node in script.body) {
+      node.accept(LabeledStatementValidator(this));
+    }
+  }
+
+  void warn(int start, int end, WarningCode warningCode) {
+    throw UnimplementedError();
+  }
+
+  void warnNode(Node node, WarningCode warningCode) {
+    warn(node.start, node.end, warningCode);
+  }
+
+  void warnDart(analyzer.AstNode node, WarningCode warningCode) {
+    warn(node.offset, node.end, warningCode);
   }
 
   Never error(Node node, ErrorCode errorCode) {
@@ -173,13 +183,15 @@ class Component {
 }
 
 class LabeledStatementValidator extends RecursiveAstVisitor<void> {
-  const LabeledStatementValidator();
+  LabeledStatementValidator(this.component);
+
+  final Component component;
 
   @override
-  void visitLabeledStatement(LabeledStatement node) {
-    for (Label label in node.labels) {
+  void visitLabeledStatement(analyzer.LabeledStatement node) {
+    for (analyzer.Label label in node.labels) {
       if (label.label.name == '\$') {
-        // warn(moduleScriptReactiveDeclaration);
+        component.warnDart(node, moduleScriptReactiveDeclaration);
       }
     }
   }
