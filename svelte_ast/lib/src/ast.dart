@@ -1,16 +1,12 @@
 import 'package:analyzer/dart/ast/ast.dart'
     show AstNode, DartPattern, Expression, SimpleIdentifier;
 import 'package:csslib/visitor.dart' show TreeNode;
-import 'package:svelte_ast/src/css_to_json.dart';
-import 'package:svelte_ast/src/dart_to_json.dart';
 
 part 'ast/blocks.dart';
 part 'ast/tags.dart';
 part 'ast/visitor.dart';
 
-const DartToJsonVisitor dart2Json = DartToJsonVisitor();
-
-const CssToJsonVisitor css2Json = CssToJsonVisitor();
+typedef JsonMapper = Map<String, Object?>? Function(Object object);
 
 abstract class Node {
   Node({
@@ -27,7 +23,7 @@ abstract class Node {
 
   R accept<C, R>(Visitor<C, R> visitor, C context);
 
-  Map<String, Object?> toJson();
+  Map<String, Object?> toJson([JsonMapper? mapper]);
 }
 
 final class Text extends Node {
@@ -60,7 +56,7 @@ final class Text extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -89,7 +85,7 @@ final class CommentTag extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -115,12 +111,12 @@ final class RawMustacheTag extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'RawMustacheTag',
-      'expression': expression.accept(dart2Json),
+      if (mapper != null) 'expression': mapper(expression),
     };
   }
 }
@@ -140,12 +136,12 @@ final class ConstTag extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'ConstTag',
-      'expression': expression.accept(dart2Json),
+      if (mapper != null) 'expression': mapper(expression),
     };
   }
 }
@@ -165,16 +161,17 @@ final class DebugTag extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'DebugTag',
-      if (identifiers case List<SimpleIdentifier> identifiers?
-          when identifiers.isNotEmpty)
-        'identifiers': <Map<String, Object?>?>[
-          for (var identifier in identifiers) identifier.accept(dart2Json),
-        ],
+      if (mapper != null)
+        if (identifiers case List<SimpleIdentifier> identifiers?
+            when identifiers.isNotEmpty)
+          'identifiers': <Map<String, Object?>?>[
+            for (var identifier in identifiers) mapper(identifier),
+          ],
     };
   }
 }
@@ -194,12 +191,12 @@ final class MustacheTag extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'MustacheTag',
-      'expression': expression.accept(dart2Json),
+      if (mapper != null) 'expression': mapper(expression),
     };
   }
 }
@@ -217,7 +214,7 @@ final class Fragment extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -251,7 +248,7 @@ final class Script extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -262,10 +259,9 @@ final class Script extends Node {
         'end': content.end,
         'data': content.data,
       },
-      if (body.isNotEmpty)
-        'body': <Map<String, Object?>>[
-          for (AstNode node in body)
-            node.accept(dart2Json) as Map<String, Object?>,
+      if (mapper != null && body.isNotEmpty)
+        'body': <Map<String, Object?>?>[
+          for (AstNode node in body) mapper(node),
         ],
     };
   }
@@ -292,7 +288,7 @@ final class Style extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -306,10 +302,9 @@ final class Style extends Node {
         'raw': <Map<String, Object?>>[
           for (Node node in attributes) node.toJson(),
         ],
-      if (topLevels.isNotEmpty)
-        'raw': <Map<String, Object?>>[
-          for (TreeNode node in topLevels)
-            node.visit(css2Json) as Map<String, Object?>,
+      if (mapper != null && topLevels.isNotEmpty)
+        'raw': <Map<String, Object?>?>[
+          for (TreeNode node in topLevels) mapper(node),
         ],
     };
   }

@@ -39,16 +39,18 @@ final class IfBlock extends Node implements HasElse {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'IfBlock',
-      'expression': expression.accept(dart2Json),
-      if (casePattern case DartPattern casePattern?)
-        'casePattern': casePattern.accept(dart2Json),
-      if (whenExpression case Expression whenExpression?)
-        'whenExpression': whenExpression.accept(dart2Json),
+      if (mapper != null) 'expression': mapper(expression),
+      if (mapper != null)
+        if (casePattern case DartPattern casePattern?)
+          'casePattern': mapper(casePattern),
+      if (mapper != null)
+        if (whenExpression case Expression whenExpression?)
+          'whenExpression': mapper(whenExpression),
       if (children.isNotEmpty)
         'children': <Map<String, Object?>>[
           for (Node node in children) node.toJson(),
@@ -88,15 +90,16 @@ final class EachBlock extends Node implements HasElse {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'EachBlock',
-      'expression': expression.accept(dart2Json),
-      'context': context.accept(dart2Json),
+      if (mapper != null) 'expression': mapper(expression),
+      if (mapper != null) 'context': mapper(context),
       if (index case String string?) 'index': string,
-      if (key case Expression expression?) 'key': expression.accept(dart2Json),
+      if (mapper != null)
+        if (key case Expression expression?) 'key': mapper(expression),
       if (children.isNotEmpty)
         'children': <Map<String, Object?>>[
           for (Node node in children) node.toJson(),
@@ -119,7 +122,7 @@ final class ElseBlock extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -162,14 +165,16 @@ final class AwaitBlock extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'AwaitBlock',
-      'expession': expession.accept(dart2Json),
-      if (value case DartPattern value?) 'value': value.accept(dart2Json),
-      if (error case DartPattern error?) 'error': error.accept(dart2Json),
+      if (mapper != null) 'expession': mapper(expession),
+      if (mapper != null)
+        if (value case DartPattern value?) 'value': mapper(value),
+      if (mapper != null)
+        if (error case DartPattern error?) 'error': mapper(error),
       if (pendingBlock case PendingBlock pendingBlock?)
         'pendingBlock': pendingBlock.toJson(),
       if (thenBlock case ThenBlock thenBlock?) 'thenBlock': thenBlock.toJson(),
@@ -195,7 +200,7 @@ final class PendingBlock extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -221,7 +226,7 @@ final class ThenBlock extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -247,7 +252,7 @@ final class CatchBlock extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -276,12 +281,12 @@ final class KeyBlock extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'KeyBlock',
-      'expression': expression.accept(dart2Json),
+      if (mapper != null) 'expression': mapper(expression),
       'children': <Map<String, Object?>>[
         for (Node node in children) node.toJson()
       ],

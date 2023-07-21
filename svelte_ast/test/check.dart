@@ -7,23 +7,11 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
-<div>hello</div>
+<script context="module">
+  import 'dart:math';
 
-<style>
-	@layer base, special;
-
-	@layer special {
-		div {
-			color: rebeccapurple;
-		}
-	}
-
-	@layer base {
-		div {
-			color: green;
-		}
-	}
-</style>
+	final name = 'Svelte \$pi';
+</script>
 ''';
 
 void main() {
@@ -36,7 +24,7 @@ void main() {
 
     Map<String, Object?> json = ast.toJson();
     String output = const JsonEncoder.withIndent('\t').convert(json);
-    File('test/check.json').writeAsStringSync(output);
+    File.fromUri(Uri(path: 'test/check.json')).writeAsStringSync(output);
   } on ParseError catch (error, stackTrace) {
     print(error);
     print(error.span.highlight());

@@ -1,6 +1,6 @@
 // ignore_for_file: implementation_imports
 
-import 'package:analyzer/dart/ast/ast.dart' show AstNode;
+import 'package:analyzer/dart/ast/ast.dart' show AstNode, CompilationUnit;
 import 'package:analyzer/dart/ast/token.dart' show Keyword, Token;
 import 'package:analyzer/src/fasta/ast_builder.dart' show AstBuilder;
 import 'package:svelte_ast/src/ast.dart';
@@ -50,12 +50,12 @@ extension ScriptParser on Parser {
     int dataEnd = position;
     expect(_scriptCloseTag);
 
-    if (context == 'default') {
-      List<AstNode> body = <AstNode>[];
+    List<AstNode> body = <AstNode>[];
 
-      withScriptParserRun(dataStart, _scriptCloseTag, (parser, token) {
-        AstBuilder builder = parser.builder;
+    withScriptParserRun(dataStart, _scriptCloseTag, (parser, token) {
+      AstBuilder builder = parser.builder;
 
+      if (context == 'default') {
         Token previousToken = parser.syntheticPreviousToken(token);
         Token next = previousToken.next!;
 
@@ -76,21 +76,24 @@ extension ScriptParser on Parser {
         body.addAll(builder.directives);
         body.addAll(builder.declarations);
         body.addAll(builder.stack.values.whereType<AstNode>());
-      });
+      } else {
+        parser.parseUnit(token);
 
-      scripts.add(Script(
-        start: start,
-        end: position,
-        context: context,
-        content: (
-          start: dataStart,
-          end: dataEnd,
-          data: data,
-        ),
-        body: body,
-      ));
-    } else {
-      throw UnimplementedError('module script');
-    }
+        CompilationUnit unit = builder.pop() as CompilationUnit;
+        body.addAll(unit.childEntities.whereType<AstNode>());
+      }
+    });
+
+    scripts.add(Script(
+      start: start,
+      end: position,
+      context: context,
+      content: (
+        start: dataStart,
+        end: dataEnd,
+        data: data,
+      ),
+      body: body,
+    ));
   }
 }

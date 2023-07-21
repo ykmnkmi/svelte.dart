@@ -1,176 +1,108 @@
 {
-  "html": {
-    "start": 39,
-    "end": 73,
-    "class": "Fragment",
-    "children": [
-      {
-        "start": 37,
-        "end": 39,
-        "class": "Text",
-        "raw": "\n\n",
-        "data": "\n\n"
-      },
-      {
-        "start": 39,
-        "end": 72,
-        "class": "Element",
-        "name": "details",
-        "attributes": [
-          {
-            "start": 48,
-            "end": 57,
-            "type": "Binding",
-            "name": "open",
-            "modifiers": [],
-            "expression": {
-              "start": 53,
-              "end": 57,
-              "class": "SimpleIdentifier",
-              "name": "open",
-              "isAssignable": true
-            }
-          }
-        ],
-        "children": [
-          {
-            "start": 58,
-            "end": 63,
-            "class": "Text",
-            "raw": "Hello",
-            "data": "Hello"
-          }
-        ]
-      },
-      {
-        "start": 72,
-        "end": 75,
-        "class": "Text",
-        "raw": ">\n\n",
-        "data": ">\n\n"
-      }
-    ]
-  },
-  "style": {
-    "start": 75,
-    "end": 125,
-    "class": "Style",
-    "content": {
-      "start": 82,
-      "end": 117,
-      "data": "\n\tdetails[open] {\n\t\tcolor: red;\n\t}\n"
-    },
-    "raw": [
-      {
-        "start": 2,
-        "end": 15,
-        "class": "RuleSet",
-        "selectorGroup": {
-          "start": 2,
-          "end": 15,
-          "class": "SelectorGroup",
-          "selectors": [
-            {
-              "start": 2,
-              "end": 15,
-              "class": "Selector",
-              "simpleSelectorSequences": [
-                {
-                  "start": 2,
-                  "end": 9,
-                  "class": "SimpleSelectorSequence",
-                  "combinator": 513,
-                  "simpleSelector": {
-                    "start": 2,
-                    "end": 9,
-                    "class": "ElementSelector"
-                  },
-                  "isCombinatorNone": true
-                },
-                {
-                  "start": 9,
-                  "end": 10,
-                  "class": "SimpleSelectorSequence",
-                  "combinator": 513,
-                  "simpleSelector": {
-                    "start": 9,
-                    "end": 15,
-                    "class": "AttributeSelector",
-                    "operatorKind": 535
-                  },
-                  "isCombinatorNone": true
-                }
-              ],
-              "length": 2
-            }
-          ]
-        },
-        "declarationGroup": {
-          "start": 16,
-          "end": 34,
-          "class": "DeclarationGroup",
-          "declarations": [
-            {
-              "start": 20,
-              "end": 30,
-              "class": "Declaration",
-              "expression": {
-                "start": 27,
-                "end": 30,
-                "class": "Expressions",
-                "expressions": [
-                  {
-                    "start": 27,
-                    "end": 30,
-                    "class": "HexColorTerm"
-                  }
-                ]
-              },
-              "property": "color"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  "instance": {
-    "start": 0,
-    "end": 37,
-    "class": "Script",
-    "context": "default",
-    "content": {
-      "start": 8,
-      "end": 28,
-      "data": "\n\tlet open = false;\n"
-    },
-    "statements": [
-      {
-        "start": 10,
-        "end": 27,
-        "class": "VariableDeclarationStatement",
-        "variables": {
-          "start": 10,
-          "end": 26,
-          "class": "VariableDeclarationList",
-          "type": {
-            "start": 10,
-            "end": 13,
-            "class": "NamedType"
-          },
-          "variables": [
-            {
-              "start": 14,
-              "end": 26,
-              "class": "VariableDeclaration",
-              "initializer": {
-                "start": 21,
-                "end": 26,
-                "class": "BooleanLiteral"
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
+	"html": {
+		"start": -1,
+		"end": -1,
+		"class": "Fragment"
+	},
+	"module": {
+		"start": 0,
+		"end": 86,
+		"class": "Script",
+		"context": "module",
+		"content": {
+			"start": 25,
+			"end": 77,
+			"data": "\n  import 'dart:math';\n\n\tfinal name = 'Svelte $pi';\n"
+		},
+		"body": [
+			{
+				"start": 28,
+				"end": 47,
+				"class": "ImportDirective",
+				"uri": {
+					"start": 35,
+					"end": 46,
+					"class": "SimpleStringLiteral",
+					"value": "dart:math",
+					"contentsEnd": 45,
+					"contentsOffset": 36,
+					"isSingleQuoted": true,
+					"stringValue": "dart:math"
+				}
+			},
+			{
+				"start": 50,
+				"end": 76,
+				"class": "TopLevelVariableDeclaration",
+				"variables": {
+					"start": 50,
+					"end": 75,
+					"class": "VariableDeclarationList",
+					"isFinal": true,
+					"variables": [
+						{
+							"start": 56,
+							"end": 75,
+							"class": "VariableDeclaration",
+							"initializer": {
+								"start": 63,
+								"end": 75,
+								"class": "StringInterpolation",
+								"elements": [
+									{
+										"start": 63,
+										"end": 71,
+										"class": "InterpolationString",
+										"contentsEnd": 71,
+										"contentsOffset": 64,
+										"value": "Svelte "
+									},
+									{
+										"start": 71,
+										"end": 74,
+										"class": "InterpolationExpression",
+										"expression": {
+											"start": 72,
+											"end": 74,
+											"class": "SimpleIdentifier",
+											"name": "pi",
+											"isAssignable": true
+										}
+									},
+									{
+										"start": 74,
+										"end": 75,
+										"class": "InterpolationString",
+										"contentsEnd": 74,
+										"contentsOffset": 74,
+										"value": ""
+									}
+								],
+								"firstString": {
+									"start": 63,
+									"end": 71,
+									"class": "InterpolationString",
+									"contentsEnd": 71,
+									"contentsOffset": 64,
+									"value": "Svelte "
+								},
+								"lastString": {
+									"start": 74,
+									"end": 75,
+									"class": "InterpolationString",
+									"contentsEnd": 74,
+									"contentsOffset": 74,
+									"value": ""
+								},
+								"contentsEnd": 74,
+								"contentsOffset": 64,
+								"isSingleQuoted": true
+							},
+							"isFinal": true
+						}
+					]
+				}
+			}
+		]
+	}
 }

@@ -18,7 +18,7 @@ final class Attribute extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -48,12 +48,12 @@ final class AttributeShorthand extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'AttributeShorthand',
-      'expression': expression.accept(dart2Json),
+      if (mapper != null) 'expression': mapper(expression),
     };
   }
 }
@@ -73,12 +73,12 @@ final class Spread extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Spread',
-      'expression': expression.accept(dart2Json),
+      if (mapper != null) 'expression': mapper(expression),
     };
   }
 }
@@ -120,7 +120,7 @@ abstract base class Directive extends Node {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -154,10 +154,12 @@ final class Action extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       ...super.toJson(),
-      'expression': expression?.accept(dart2Json),
+      if (mapper != null)
+        if (expression case Expression expression?)
+          'expression': mapper(expression),
     };
   }
 }
@@ -185,10 +187,12 @@ final class Animation extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       ...super.toJson(),
-      'expression': expression?.accept(dart2Json),
+      if (mapper != null)
+        if (expression case Expression expression?)
+          'expression': mapper(expression),
     };
   }
 }
@@ -216,10 +220,12 @@ final class Binding extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       ...super.toJson(),
-      'expression': expression?.accept(dart2Json),
+      if (mapper != null)
+        if (expression case Expression expression?)
+          'expression': mapper(expression),
     };
   }
 }
@@ -247,10 +253,12 @@ final class ClassDirective extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       ...super.toJson(),
-      'expression': expression?.accept(dart2Json),
+      if (mapper != null)
+        if (expression case Expression expression?)
+          'expression': mapper(expression),
     };
   }
 }
@@ -272,7 +280,7 @@ final class StyleDirective extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       ...super.toJson(),
       if (value case bool value? when value)
@@ -308,10 +316,12 @@ final class EventHandler extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       ...super.toJson(),
-      'expression': expression?.accept(dart2Json),
+      if (mapper != null)
+        if (expression case Expression expression?)
+          'expression': mapper(expression),
     };
   }
 }
@@ -339,10 +349,12 @@ final class Let extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       ...super.toJson(),
-      'expression': expression?.accept(dart2Json),
+      if (mapper != null)
+        if (expression case Expression expression?)
+          'expression': mapper(expression),
     };
   }
 }
@@ -370,10 +382,12 @@ final class Ref extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       ...super.toJson(),
-      'expression': expression?.accept(dart2Json),
+      if (mapper != null)
+        if (expression case Expression expression?)
+          'expression': mapper(expression),
     };
   }
 }
@@ -401,12 +415,14 @@ final class TransitionDirective extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       ...super.toJson(),
       if (intro) 'intro': intro,
       if (outro) 'outro': outro,
-      'expression': expression?.accept(dart2Json),
+      if (mapper != null)
+        if (expression case Expression expression?)
+          'expression': mapper(expression),
     };
   }
 }
@@ -445,7 +461,7 @@ final class Head extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -477,7 +493,7 @@ final class Options extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -509,7 +525,7 @@ final class Window extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -541,7 +557,7 @@ final class Document extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -573,7 +589,7 @@ final class Body extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -608,14 +624,14 @@ final class InlineComponent extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'InlineComponent',
       'name': name,
       if (expression case Expression expression?)
-        'expression': expression.accept(dart2Json),
+        if (mapper != null) 'expression': mapper(expression),
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
@@ -645,7 +661,7 @@ final class InlineElement extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -653,8 +669,8 @@ final class InlineElement extends Tag {
       'name': name,
       if (tag case String tag)
         'tag': tag
-      else if (tag case Expression tag?)
-        'tag': tag.accept(dart2Json),
+      else if (mapper != null)
+        if (tag case Expression tag?) 'tag': mapper(tag),
       if (attributes.isNotEmpty)
         'attributes': <Map<String, Object?>>[
           for (Node attribute in attributes) attribute.toJson(),
@@ -681,7 +697,7 @@ final class SlotTemplate extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -713,7 +729,7 @@ final class Title extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -745,7 +761,7 @@ final class Slot extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -777,7 +793,7 @@ final class Element extends Tag implements HasName {
   }
 
   @override
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper? mapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
