@@ -17,8 +17,6 @@ class Component {
     required this.warnings,
   }) : sourceFile = SourceFile.fromString(source, url: compileOptions.uri) {
     stylesheet.validate(this);
-    componentOptions;
-
     visitModuleScript();
   }
 

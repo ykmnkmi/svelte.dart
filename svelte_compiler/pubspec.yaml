@@ -1,17 +1,17 @@
 name: svelte_compiler
 description: SvelteDart compiler library.
-version: 1.0.0-dev.3
+version: 1.0.0-4.dev
 repository: https://github.com/ykmnkmi/svelte.dart
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  analyzer: ^6.0.0
+  analyzer: ">=6.0.0 <6.2.0"
   csslib: ^1.0.0
   meta: ^1.9.1
   source_span: ^1.10.0
-  svelte_ast: 1.0.0-beta.2
+  svelte_ast: 1.0.0-6.beta
 
 dev_dependencies:
   lints: ^2.1.1

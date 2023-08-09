@@ -16,13 +16,9 @@ const String source = '''
 </script>
 ''';
 
-const CompileOptions compilerOptions = CompileOptions(
-  fileName: 'app.svelte',
-);
-
 void main() {
   try {
-    compile(source, options: compilerOptions);
+    compile(source, options: CompileOptions(fileName: 'app.svelte'));
   } on CompileError catch (error, stackTrace) {
     print(error.message());
     print(Trace.format(stackTrace));
