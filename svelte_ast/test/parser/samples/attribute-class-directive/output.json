@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 28,
+				"end": 29,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -20,19 +20,16 @@
 							"start": 16,
 							"end": 21,
 							"class": "SimpleIdentifier",
-							"name": "isFoo",
-							"isAssignable": true
+							"token": {
+								"start": 16,
+								"end": 21,
+								"lexeme": "isFoo"
+							},
+							"name": "isFoo"
 						}
 					}
 				],
 				"children": []
-			},
-			{
-				"start": 28,
-				"end": 29,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

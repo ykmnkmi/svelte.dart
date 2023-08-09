@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 37,
+				"end": 38,
 				"class": "Element",
 				"name": "button",
 				"attributes": [
@@ -20,8 +20,12 @@
 							"start": 19,
 							"end": 22,
 							"class": "SimpleIdentifier",
-							"name": "foo",
-							"isAssignable": true
+							"token": {
+								"start": 19,
+								"end": 22,
+								"lexeme": "foo"
+							},
+							"name": "foo"
 						}
 					}
 				],
@@ -34,13 +38,6 @@
 						"data": "Click"
 					}
 				]
-			},
-			{
-				"start": 37,
-				"end": 38,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

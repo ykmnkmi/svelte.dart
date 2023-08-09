@@ -31,7 +31,11 @@
 									"start": 13,
 									"end": 14,
 									"class": "IntegerLiteral",
-									"value": 1
+									"literal": {
+										"start": 13,
+										"end": 14,
+										"lexeme": "1"
+									}
 								}
 							}
 						]

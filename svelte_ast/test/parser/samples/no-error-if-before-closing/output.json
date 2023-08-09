@@ -12,21 +12,31 @@
 					"start": 5,
 					"end": 9,
 					"class": "BooleanLiteral",
+					"literal": {
+						"start": 5,
+						"end": 9,
+						"lexeme": "true"
+					},
 					"value": true
 				},
+				"casePattern": null,
+				"whenExpression": null,
 				"children": [
 					{
 						"start": 12,
 						"end": 19,
 						"class": "Element",
 						"name": "input",
+						"attributes": [],
 						"children": []
 					}
 				],
+				"elseIf": false,
 				"elseBlock": {
 					"start": 20,
 					"end": 28,
-					"class": "ElseBlock"
+					"class": "ElseBlock",
+					"children": []
 				}
 			},
 			{
@@ -44,21 +54,31 @@
 					"start": 40,
 					"end": 44,
 					"class": "BooleanLiteral",
+					"literal": {
+						"start": 40,
+						"end": 44,
+						"lexeme": "true"
+					},
 					"value": true
 				},
+				"casePattern": null,
+				"whenExpression": null,
 				"children": [
 					{
 						"start": 47,
 						"end": 51,
 						"class": "Element",
 						"name": "br",
+						"attributes": [],
 						"children": []
 					}
 				],
+				"elseIf": false,
 				"elseBlock": {
 					"start": 52,
 					"end": 60,
-					"class": "ElseBlock"
+					"class": "ElseBlock",
+					"children": []
 				}
 			},
 			{
@@ -76,13 +96,24 @@
 					"start": 75,
 					"end": 79,
 					"class": "BooleanLiteral",
+					"literal": {
+						"start": 75,
+						"end": 79,
+						"lexeme": "true"
+					},
 					"value": true
 				},
 				"value": {
 					"start": 97,
 					"end": 98,
-					"class": "AssignedVariablePattern"
+					"class": "AssignedVariablePattern",
+					"name": {
+						"start": 97,
+						"end": 98,
+						"lexeme": "f"
+					}
 				},
+				"error": null,
 				"pendingBlock": {
 					"start": 67,
 					"end": 90,
@@ -100,6 +131,7 @@
 							"end": 89,
 							"class": "Element",
 							"name": "input",
+							"attributes": [],
 							"children": []
 						},
 						{
@@ -124,7 +156,8 @@
 							"data": "\n"
 						}
 					]
-				}
+				},
+				"catchBlock": null
 			},
 			{
 				"start": 108,
@@ -141,13 +174,24 @@
 					"start": 118,
 					"end": 122,
 					"class": "BooleanLiteral",
+					"literal": {
+						"start": 118,
+						"end": 122,
+						"lexeme": "true"
+					},
 					"value": true
 				},
 				"value": {
 					"start": 137,
 					"end": 138,
-					"class": "AssignedVariablePattern"
+					"class": "AssignedVariablePattern",
+					"name": {
+						"start": 137,
+						"end": 138,
+						"lexeme": "f"
+					}
 				},
+				"error": null,
 				"pendingBlock": {
 					"start": 110,
 					"end": 130,
@@ -165,6 +209,7 @@
 							"end": 129,
 							"class": "Element",
 							"name": "br",
+							"attributes": [],
 							"children": []
 						},
 						{
@@ -189,7 +234,8 @@
 							"data": "\n"
 						}
 					]
-				}
+				},
+				"catchBlock": null
 			}
 		]
 	}

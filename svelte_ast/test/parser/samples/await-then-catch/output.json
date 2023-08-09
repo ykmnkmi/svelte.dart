@@ -12,18 +12,32 @@
 					"start": 8,
 					"end": 18,
 					"class": "SimpleIdentifier",
-					"name": "thePromise",
-					"isAssignable": true
+					"token": {
+						"start": 8,
+						"end": 18,
+						"lexeme": "thePromise"
+					},
+					"name": "thePromise"
 				},
 				"value": {
 					"start": 46,
 					"end": 54,
-					"class": "AssignedVariablePattern"
+					"class": "AssignedVariablePattern",
+					"name": {
+						"start": 46,
+						"end": 54,
+						"lexeme": "theValue"
+					}
 				},
 				"error": {
 					"start": 96,
 					"end": 104,
-					"class": "AssignedVariablePattern"
+					"class": "AssignedVariablePattern",
+					"name": {
+						"start": 96,
+						"end": 104,
+						"lexeme": "theError"
+					}
 				},
 				"pendingBlock": {
 					"start": 0,
@@ -39,9 +53,10 @@
 						},
 						{
 							"start": 21,
-							"end": 37,
+							"end": 38,
 							"class": "Element",
 							"name": "p",
+							"attributes": [],
 							"children": [
 								{
 									"start": 24,
@@ -53,11 +68,11 @@
 							]
 						},
 						{
-							"start": 37,
+							"start": 38,
 							"end": 39,
 							"class": "Text",
-							"raw": ">\n",
-							"data": ">\n"
+							"raw": "\n",
+							"data": "\n"
 						}
 					]
 				},
@@ -75,9 +90,10 @@
 						},
 						{
 							"start": 57,
-							"end": 86,
+							"end": 87,
 							"class": "Element",
 							"name": "p",
+							"attributes": [],
 							"children": [
 								{
 									"start": 60,
@@ -94,18 +110,22 @@
 										"start": 74,
 										"end": 82,
 										"class": "SimpleIdentifier",
-										"name": "theValue",
-										"isAssignable": true
+										"token": {
+											"start": 74,
+											"end": 82,
+											"lexeme": "theValue"
+										},
+										"name": "theValue"
 									}
 								}
 							]
 						},
 						{
-							"start": 86,
+							"start": 87,
 							"end": 88,
 							"class": "Text",
-							"raw": ">\n",
-							"data": ">\n"
+							"raw": "\n",
+							"data": "\n"
 						}
 					]
 				},
@@ -123,9 +143,10 @@
 						},
 						{
 							"start": 107,
-							"end": 138,
+							"end": 139,
 							"class": "Element",
 							"name": "p",
+							"attributes": [],
 							"children": [
 								{
 									"start": 110,
@@ -146,28 +167,41 @@
 											"start": 127,
 											"end": 134,
 											"class": "SimpleIdentifier",
-											"name": "message",
-											"isAssignable": true
+											"token": {
+												"start": 127,
+												"end": 134,
+												"lexeme": "message"
+											},
+											"name": "message"
+										},
+										"isDeferred": false,
+										"period": {
+											"start": 126,
+											"end": 127,
+											"lexeme": "."
 										},
 										"prefix": {
 											"start": 118,
 											"end": 126,
 											"class": "SimpleIdentifier",
-											"name": "theError",
-											"isAssignable": true
+											"token": {
+												"start": 118,
+												"end": 126,
+												"lexeme": "theError"
+											},
+											"name": "theError"
 										},
-										"name": "theError.message",
-										"isAssignable": true
+										"name": "theError.message"
 									}
 								}
 							]
 						},
 						{
-							"start": 138,
+							"start": 139,
 							"end": 140,
 							"class": "Text",
-							"raw": ">\n",
-							"data": ">\n"
+							"raw": "\n",
+							"data": "\n"
 						}
 					]
 				}

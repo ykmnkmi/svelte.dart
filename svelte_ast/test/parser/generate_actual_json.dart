@@ -2,8 +2,10 @@
 
 import 'dart:convert' show JsonEncoder, json;
 import 'dart:io' show Directory, File, FileSystemEntity;
+import 'dart:isolate' show Isolate;
 
 import 'package:collection/collection.dart' show DeepCollectionEquality;
+import 'package:svelte_ast/mirror_mapper.dart' show mapper;
 import 'package:svelte_ast/svelte_ast.dart' show ParseError, SvelteAst, parse;
 
 const DeepCollectionEquality equality = DeepCollectionEquality.unordered();
@@ -15,62 +17,69 @@ void main() {
   Directory directory = Directory.fromUri(uri);
 
   for (FileSystemEntity sample in directory.listSync()) {
-    File file;
-    String content;
+    Isolate.run<void>(() {
+      doIt(sample);
+    });
+  }
+}
 
-    Map<String, Object?>? options;
-    SvelteAst ast;
+void doIt(FileSystemEntity sample) {
+  File file;
+  String content;
 
-    Object? actual, expected;
+  Map<String, Object?>? options;
+  SvelteAst ast;
 
-    try {
-      bool skipStyle = false;
-      file = File.fromUri(sample.uri.resolve('options.json'));
+  Object? actual, expected;
 
-      if (file.existsSync()) {
-        content = file.readAsStringSync();
-        options = json.decode(content) as Map<String, Object?>?;
+  try {
+    bool skipStyle = false;
+    file = File.fromUri(sample.uri.resolve('options.json'));
 
-        if (options != null) {
-          if (options['css'] is String) {
-            skipStyle = options['css'] == 'none';
-          }
+    if (file.existsSync()) {
+      content = file.readAsStringSync();
+      options = json.decode(content) as Map<String, Object?>?;
+
+      if (options != null) {
+        if (options['css'] is String) {
+          skipStyle = options['css'] == 'none';
         }
       }
-
-      file = File.fromUri(sample.uri.resolve('input.svelte'));
-      content = file.readAsStringSync();
-      ast = parse(content, uri: file.uri, skipStyle: skipStyle);
-      actual = ast.toJson();
-
-      file = File.fromUri(sample.uri.resolve('output.json'));
-
-      if (file.existsSync()) {
-        expected = json.decode(file.readAsStringSync());
-      } else {
-        print('${sample.path}: error expected');
-        continue;
-      }
-    } on ParseError catch (error) {
-      actual = error.toJson();
-      file = File.fromUri(sample.uri.resolve('error.json'));
-
-      if (file.existsSync()) {
-        expected = json.decode(file.readAsStringSync());
-      } else {
-        print('${sample.path}: output expected');
-        continue;
-      }
-    } catch (error) {
-      print('${sample.path}: $error');
-
-      continue;
     }
 
-    if (equality.equals(actual, expected)) {
-      continue;
-    }
+    file = File.fromUri(sample.uri.resolve('input.svelte'));
+    content = file.readAsStringSync();
+    ast = parse(content, uri: file.uri, skipStyle: skipStyle);
+    actual = ast.toJson(mapper);
 
-    file.writeAsStringSync(encoder.convert(actual));
+    file = File.fromUri(sample.uri.resolve('output.json'));
+
+    if (file.existsSync()) {
+      expected = json.decode(file.readAsStringSync());
+    } else {
+      print('${sample.path}: error expected');
+      return;
+    }
+  } on ParseError catch (error) {
+    actual = error.toJson();
+    file = File.fromUri(sample.uri.resolve('error.json'));
+
+    if (file.existsSync()) {
+      expected = json.decode(file.readAsStringSync());
+    } else {
+      print('${sample.path}: output expected');
+      return;
+    }
+  } catch (error) {
+    print('${sample.path}: $error');
+    return;
   }
+
+  if (equality.equals(actual, expected)) {
+    print('${sample.path}: not modified');
+    return;
+  }
+
+  file.writeAsStringSync(encoder.convert(actual));
+  print('${sample.path}: done');
 }

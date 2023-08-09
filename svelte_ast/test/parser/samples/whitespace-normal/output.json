@@ -6,9 +6,10 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 64,
+				"end": 65,
 				"class": "Element",
 				"name": "h1",
+				"attributes": [],
 				"children": [
 					{
 						"start": 4,
@@ -19,9 +20,10 @@
 					},
 					{
 						"start": 10,
-						"end": 34,
+						"end": 35,
 						"class": "Element",
 						"name": "strong",
+						"attributes": [],
 						"children": [
 							{
 								"start": 18,
@@ -31,8 +33,12 @@
 									"start": 19,
 									"end": 23,
 									"class": "SimpleIdentifier",
-									"name": "name",
-									"isAssignable": true
+									"token": {
+										"start": 19,
+										"end": 23,
+										"lexeme": "name"
+									},
+									"name": "name"
 								}
 							},
 							{
@@ -45,17 +51,11 @@
 						]
 					},
 					{
-						"start": 34,
-						"end": 35,
-						"class": "Text",
-						"raw": ">",
-						"data": ">"
-					},
-					{
 						"start": 35,
-						"end": 59,
+						"end": 60,
 						"class": "Element",
 						"name": "span",
+						"attributes": [],
 						"children": [
 							{
 								"start": 41,
@@ -65,22 +65,8 @@
 								"data": "How are you?"
 							}
 						]
-					},
-					{
-						"start": 59,
-						"end": 60,
-						"class": "Text",
-						"raw": ">",
-						"data": ">"
 					}
 				]
-			},
-			{
-				"start": 64,
-				"end": 65,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

@@ -16,22 +16,74 @@
 						"start": 5,
 						"end": 6,
 						"class": "SimpleIdentifier",
-						"name": "x",
-						"isAssignable": true
+						"token": {
+							"start": 5,
+							"end": 6,
+							"lexeme": "x"
+						},
+						"name": "x"
+					},
+					"operator": {
+						"start": 7,
+						"end": 8,
+						"lexeme": ">"
 					},
 					"rightOperand": {
 						"start": 9,
 						"end": 11,
 						"class": "IntegerLiteral",
-						"value": 10
+						"literal": {
+							"start": 9,
+							"end": 11,
+							"lexeme": "10"
+						}
+					},
+					"inConstantContext": false,
+					"isAssignable": false,
+					"unParenthesized": {
+						"start": 5,
+						"end": 11,
+						"class": "BinaryExpression",
+						"leftOperand": {
+							"start": 5,
+							"end": 6,
+							"class": "SimpleIdentifier",
+							"token": {
+								"start": 5,
+								"end": 6,
+								"lexeme": "x"
+							},
+							"name": "x"
+						},
+						"operator": {
+							"start": 7,
+							"end": 8,
+							"lexeme": ">"
+						},
+						"rightOperand": {
+							"start": 9,
+							"end": 11,
+							"class": "IntegerLiteral",
+							"literal": {
+								"start": 9,
+								"end": 11,
+								"lexeme": "10"
+							}
+						},
+						"inConstantContext": false,
+						"isAssignable": false,
+						"unParenthesized": "@seen"
 					}
 				},
+				"casePattern": null,
+				"whenExpression": null,
 				"children": [
 					{
 						"start": 14,
-						"end": 40,
+						"end": 41,
 						"class": "Element",
 						"name": "p",
+						"attributes": [],
 						"children": [
 							{
 								"start": 17,
@@ -41,15 +93,9 @@
 								"data": "x is greater than 10"
 							}
 						]
-					},
-					{
-						"start": 40,
-						"end": 42,
-						"class": "Text",
-						"raw": ">\n",
-						"data": ">"
 					}
 				],
+				"elseIf": false,
 				"elseBlock": {
 					"start": 42,
 					"end": 84,
@@ -67,22 +113,74 @@
 									"start": 52,
 									"end": 53,
 									"class": "SimpleIdentifier",
-									"name": "x",
-									"isAssignable": true
+									"token": {
+										"start": 52,
+										"end": 53,
+										"lexeme": "x"
+									},
+									"name": "x"
+								},
+								"operator": {
+									"start": 54,
+									"end": 55,
+									"lexeme": "<"
 								},
 								"rightOperand": {
 									"start": 56,
 									"end": 57,
 									"class": "IntegerLiteral",
-									"value": 5
+									"literal": {
+										"start": 56,
+										"end": 57,
+										"lexeme": "5"
+									}
+								},
+								"inConstantContext": false,
+								"isAssignable": false,
+								"unParenthesized": {
+									"start": 52,
+									"end": 57,
+									"class": "BinaryExpression",
+									"leftOperand": {
+										"start": 52,
+										"end": 53,
+										"class": "SimpleIdentifier",
+										"token": {
+											"start": 52,
+											"end": 53,
+											"lexeme": "x"
+										},
+										"name": "x"
+									},
+									"operator": {
+										"start": 54,
+										"end": 55,
+										"lexeme": "<"
+									},
+									"rightOperand": {
+										"start": 56,
+										"end": 57,
+										"class": "IntegerLiteral",
+										"literal": {
+											"start": 56,
+											"end": 57,
+											"lexeme": "5"
+										}
+									},
+									"inConstantContext": false,
+									"isAssignable": false,
+									"unParenthesized": "@seen"
 								}
 							},
+							"casePattern": null,
+							"whenExpression": null,
 							"children": [
 								{
 									"start": 60,
-									"end": 82,
+									"end": 83,
 									"class": "Element",
 									"name": "p",
+									"attributes": [],
 									"children": [
 										{
 											"start": 63,
@@ -92,16 +190,10 @@
 											"data": "x is less than 5"
 										}
 									]
-								},
-								{
-									"start": 82,
-									"end": 84,
-									"class": "Text",
-									"raw": ">\n",
-									"data": ">"
 								}
 							],
-							"elseIf": true
+							"elseIf": true,
+							"elseBlock": null
 						}
 					]
 				}

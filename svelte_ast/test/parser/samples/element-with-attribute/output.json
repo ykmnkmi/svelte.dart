@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 23,
+				"end": 24,
 				"class": "Element",
 				"name": "span",
 				"attributes": [
@@ -29,15 +29,15 @@
 				"children": []
 			},
 			{
-				"start": 23,
+				"start": 24,
 				"end": 25,
 				"class": "Text",
-				"raw": ">\n",
-				"data": ">\n"
+				"raw": "\n",
+				"data": "\n"
 			},
 			{
 				"start": 25,
-				"end": 48,
+				"end": 49,
 				"class": "Element",
 				"name": "span",
 				"attributes": [
@@ -58,13 +58,6 @@
 					}
 				],
 				"children": []
-			},
-			{
-				"start": 48,
-				"end": 49,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 26,
+				"end": 27,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -17,6 +17,7 @@
 						"name": "fade",
 						"modifiers": [],
 						"intro": true,
+						"outro": false,
 						"expression": null
 					}
 				],
@@ -29,13 +30,6 @@
 						"data": "fades in"
 					}
 				]
-			},
-			{
-				"start": 26,
-				"end": 27,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

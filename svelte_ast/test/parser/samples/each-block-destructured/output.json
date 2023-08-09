@@ -19,8 +19,12 @@
 					"start": 50,
 					"end": 57,
 					"class": "SimpleIdentifier",
-					"name": "animals",
-					"isAssignable": true
+					"token": {
+						"start": 50,
+						"end": 57,
+						"lexeme": "animals"
+					},
+					"name": "animals"
 				},
 				"context": {
 					"start": 61,
@@ -30,26 +34,192 @@
 						{
 							"start": 62,
 							"end": 65,
-							"class": "AssignedVariablePattern"
+							"class": "AssignedVariablePattern",
+							"name": {
+								"start": 62,
+								"end": 65,
+								"lexeme": "key"
+							}
 						},
 						{
 							"start": 67,
 							"end": 72,
-							"class": "AssignedVariablePattern"
+							"class": "AssignedVariablePattern",
+							"name": {
+								"start": 67,
+								"end": 72,
+								"lexeme": "value"
+							}
 						},
 						{
 							"start": 74,
 							"end": 77,
-							"class": "RestPatternElement"
+							"class": "MapPatternElementImpl",
+							"isSynthetic": false,
+							"parent": {
+								"start": 61,
+								"end": 78,
+								"class": "ListPattern",
+								"elements": [
+									{
+										"start": 62,
+										"end": 65,
+										"class": "AssignedVariablePattern",
+										"name": {
+											"start": 62,
+											"end": 65,
+											"lexeme": "key"
+										}
+									},
+									{
+										"start": 67,
+										"end": 72,
+										"class": "AssignedVariablePattern",
+										"name": {
+											"start": 67,
+											"end": 72,
+											"lexeme": "value"
+										}
+									},
+									{
+										"start": 74,
+										"end": 77,
+										"class": "MapPatternElementImpl",
+										"isSynthetic": false,
+										"parent": "@seen",
+										"root": "@seen"
+									}
+								],
+								"leftBracket": {
+									"start": 61,
+									"end": 62,
+									"lexeme": "["
+								},
+								"rightBracket": {
+									"start": 77,
+									"end": 78,
+									"lexeme": "]"
+								},
+								"typeArguments": null,
+								"unParenthesized": "@seen"
+							},
+							"root": {
+								"start": 61,
+								"end": 78,
+								"class": "ListPattern",
+								"elements": [
+									{
+										"start": 62,
+										"end": 65,
+										"class": "AssignedVariablePattern",
+										"name": {
+											"start": 62,
+											"end": 65,
+											"lexeme": "key"
+										}
+									},
+									{
+										"start": 67,
+										"end": 72,
+										"class": "AssignedVariablePattern",
+										"name": {
+											"start": 67,
+											"end": 72,
+											"lexeme": "value"
+										}
+									},
+									{
+										"start": 74,
+										"end": 77,
+										"class": "MapPatternElementImpl",
+										"isSynthetic": false,
+										"parent": "@seen",
+										"root": "@seen"
+									}
+								],
+								"leftBracket": {
+									"start": 61,
+									"end": 62,
+									"lexeme": "["
+								},
+								"rightBracket": {
+									"start": 77,
+									"end": 78,
+									"lexeme": "]"
+								},
+								"typeArguments": null,
+								"unParenthesized": "@seen"
+							}
 						}
-					]
+					],
+					"leftBracket": {
+						"start": 61,
+						"end": 62,
+						"lexeme": "["
+					},
+					"rightBracket": {
+						"start": 77,
+						"end": 78,
+						"lexeme": "]"
+					},
+					"typeArguments": null,
+					"unParenthesized": {
+						"start": 61,
+						"end": 78,
+						"class": "ListPattern",
+						"elements": [
+							{
+								"start": 62,
+								"end": 65,
+								"class": "AssignedVariablePattern",
+								"name": {
+									"start": 62,
+									"end": 65,
+									"lexeme": "key"
+								}
+							},
+							{
+								"start": 67,
+								"end": 72,
+								"class": "AssignedVariablePattern",
+								"name": {
+									"start": 67,
+									"end": 72,
+									"lexeme": "value"
+								}
+							},
+							{
+								"start": 74,
+								"end": 77,
+								"class": "MapPatternElementImpl",
+								"isSynthetic": false,
+								"parent": "@seen",
+								"root": "@seen"
+							}
+						],
+						"leftBracket": {
+							"start": 61,
+							"end": 62,
+							"lexeme": "["
+						},
+						"rightBracket": {
+							"start": 77,
+							"end": 78,
+							"lexeme": "]"
+						},
+						"typeArguments": null,
+						"unParenthesized": "@seen"
+					}
 				},
+				"index": null,
+				"key": null,
 				"children": [
 					{
 						"start": 80,
-						"end": 100,
+						"end": 101,
 						"class": "Element",
 						"name": "p",
+						"attributes": [],
 						"children": [
 							{
 								"start": 83,
@@ -59,8 +229,12 @@
 									"start": 84,
 									"end": 87,
 									"class": "SimpleIdentifier",
-									"name": "key",
-									"isAssignable": true
+									"token": {
+										"start": 84,
+										"end": 87,
+										"lexeme": "key"
+									},
+									"name": "key"
 								}
 							},
 							{
@@ -78,20 +252,18 @@
 									"start": 91,
 									"end": 96,
 									"class": "SimpleIdentifier",
-									"name": "value",
-									"isAssignable": true
+									"token": {
+										"start": 91,
+										"end": 96,
+										"lexeme": "value"
+									},
+									"name": "value"
 								}
 							}
 						]
-					},
-					{
-						"start": 100,
-						"end": 102,
-						"class": "Text",
-						"raw": ">\n",
-						"data": ">"
 					}
-				]
+				],
+				"elseBlock": null
 			}
 		]
 	},
@@ -105,22 +277,47 @@
 			"end": 32,
 			"data": "\n\texternal var animals;\n"
 		},
-		"variables": [
+		"body": [
 			{
 				"start": 10,
 				"end": 31,
 				"class": "TopLevelVariableDeclaration",
+				"semicolon": {
+					"start": 30,
+					"end": 31,
+					"lexeme": ";"
+				},
 				"variables": {
 					"start": 19,
 					"end": 30,
 					"class": "VariableDeclarationList",
+					"isConst": false,
+					"isFinal": false,
+					"isLate": false,
+					"type": null,
 					"variables": [
 						{
 							"start": 23,
 							"end": 30,
-							"class": "VariableDeclaration"
+							"class": "VariableDeclaration",
+							"initializer": null,
+							"isConst": false,
+							"isFinal": false,
+							"isLate": false,
+							"name": {
+								"start": 23,
+								"end": 30,
+								"lexeme": "animals"
+							}
 						}
-					]
+					],
+					"documentationComment": null,
+					"firstTokenAfterCommentAndMetadata": {
+						"start": 19,
+						"end": 22,
+						"lexeme": "var"
+					},
+					"metadata": []
 				}
 			}
 		]

@@ -12,25 +12,39 @@
 					"start": 7,
 					"end": 13,
 					"class": "SimpleIdentifier",
-					"name": "things",
-					"isAssignable": true
+					"token": {
+						"start": 7,
+						"end": 13,
+						"lexeme": "things"
+					},
+					"name": "things"
 				},
 				"context": {
 					"start": 17,
 					"end": 22,
-					"class": "AssignedVariablePattern"
+					"class": "AssignedVariablePattern",
+					"name": {
+						"start": 17,
+						"end": 22,
+						"lexeme": "thing"
+					}
 				},
+				"index": null,
 				"key": {
 					"start": 24,
 					"end": 29,
 					"class": "SimpleIdentifier",
-					"name": "thing",
-					"isAssignable": true
+					"token": {
+						"start": 24,
+						"end": 29,
+						"lexeme": "thing"
+					},
+					"name": "thing"
 				},
 				"children": [
 					{
 						"start": 33,
-						"end": 61,
+						"end": 62,
 						"class": "Element",
 						"name": "div",
 						"attributes": [
@@ -52,15 +66,9 @@
 								"data": "flips"
 							}
 						]
-					},
-					{
-						"start": 61,
-						"end": 63,
-						"class": "Text",
-						"raw": ">\n",
-						"data": ">"
 					}
-				]
+				],
+				"elseBlock": null
 			}
 		]
 	}

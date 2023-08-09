@@ -6,13 +6,15 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 44,
+				"end": 45,
 				"class": "InlineComponent",
 				"name": "Component",
+				"expression": null,
+				"attributes": [],
 				"children": [
 					{
 						"start": 11,
-						"end": 32,
+						"end": 33,
 						"class": "Element",
 						"name": "div",
 						"attributes": [
@@ -33,22 +35,8 @@
 							}
 						],
 						"children": []
-					},
-					{
-						"start": 32,
-						"end": 33,
-						"class": "Text",
-						"raw": ">",
-						"data": ">"
 					}
 				]
-			},
-			{
-				"start": 44,
-				"end": 45,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

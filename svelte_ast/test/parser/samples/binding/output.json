@@ -27,8 +27,12 @@
 							"start": 50,
 							"end": 54,
 							"class": "SimpleIdentifier",
-							"name": "name",
-							"isAssignable": true
+							"token": {
+								"start": 50,
+								"end": 54,
+								"lexeme": "name"
+							},
+							"name": "name"
 						}
 					}
 				],
@@ -46,22 +50,90 @@
 			"end": 20,
 			"data": "\n\tvar name;\n"
 		},
-		"statements": [
+		"body": [
 			{
 				"start": 10,
 				"end": 19,
 				"class": "VariableDeclarationStatement",
+				"semicolon": {
+					"start": 18,
+					"end": 19,
+					"lexeme": ";"
+				},
 				"variables": {
 					"start": 10,
 					"end": 18,
 					"class": "VariableDeclarationList",
+					"isConst": false,
+					"isFinal": false,
+					"isLate": false,
+					"type": null,
 					"variables": [
 						{
 							"start": 14,
 							"end": 18,
-							"class": "VariableDeclaration"
+							"class": "VariableDeclaration",
+							"initializer": null,
+							"isConst": false,
+							"isFinal": false,
+							"isLate": false,
+							"name": {
+								"start": 14,
+								"end": 18,
+								"lexeme": "name"
+							}
 						}
-					]
+					],
+					"documentationComment": null,
+					"firstTokenAfterCommentAndMetadata": {
+						"start": 10,
+						"end": 13,
+						"lexeme": "var"
+					},
+					"metadata": []
+				},
+				"unlabeled": {
+					"start": 10,
+					"end": 19,
+					"class": "VariableDeclarationStatement",
+					"semicolon": {
+						"start": 18,
+						"end": 19,
+						"lexeme": ";"
+					},
+					"variables": {
+						"start": 10,
+						"end": 18,
+						"class": "VariableDeclarationList",
+						"isConst": false,
+						"isFinal": false,
+						"isLate": false,
+						"type": null,
+						"variables": [
+							{
+								"start": 14,
+								"end": 18,
+								"class": "VariableDeclaration",
+								"initializer": null,
+								"isConst": false,
+								"isFinal": false,
+								"isLate": false,
+								"name": {
+									"start": 14,
+									"end": 18,
+									"lexeme": "name"
+								}
+							}
+						],
+						"documentationComment": null,
+						"firstTokenAfterCommentAndMetadata": {
+							"start": 10,
+							"end": 13,
+							"lexeme": "var"
+						},
+						"metadata": []
+					},
+					"unlabeled": "@seen"
 				}
 			}
 		]

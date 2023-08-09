@@ -13,9 +13,10 @@
 			},
 			{
 				"start": 41,
-				"end": 62,
+				"end": 63,
 				"class": "Element",
 				"name": "h1",
+				"attributes": [],
 				"children": [
 					{
 						"start": 45,
@@ -32,8 +33,12 @@
 							"start": 52,
 							"end": 56,
 							"class": "SimpleIdentifier",
-							"name": "name",
-							"isAssignable": true
+							"token": {
+								"start": 52,
+								"end": 56,
+								"lexeme": "name"
+							},
+							"name": "name"
 						}
 					},
 					{
@@ -44,13 +49,6 @@
 						"data": "!"
 					}
 				]
-			},
-			{
-				"start": 62,
-				"end": 63,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	},
@@ -64,15 +62,24 @@
 			"end": 30,
 			"data": "\n\tvar name = 'world';\n"
 		},
-		"statements": [
+		"body": [
 			{
 				"start": 10,
 				"end": 29,
 				"class": "VariableDeclarationStatement",
+				"semicolon": {
+					"start": 28,
+					"end": 29,
+					"lexeme": ";"
+				},
 				"variables": {
 					"start": 10,
 					"end": 28,
 					"class": "VariableDeclarationList",
+					"isConst": false,
+					"isFinal": false,
+					"isLate": false,
+					"type": null,
 					"variables": [
 						{
 							"start": 14,
@@ -82,14 +89,89 @@
 								"start": 21,
 								"end": 28,
 								"class": "SimpleStringLiteral",
+								"literal": {
+									"start": 21,
+									"end": 28,
+									"lexeme": "'world'"
+								},
 								"value": "world",
-								"contentsEnd": 27,
-								"contentsOffset": 22,
-								"isSingleQuoted": true,
-								"stringValue": "world"
+								"isMultiline": false,
+								"isRaw": false,
+								"isSingleQuoted": true
+							},
+							"isConst": false,
+							"isFinal": false,
+							"isLate": false,
+							"name": {
+								"start": 14,
+								"end": 18,
+								"lexeme": "name"
 							}
 						}
-					]
+					],
+					"documentationComment": null,
+					"firstTokenAfterCommentAndMetadata": {
+						"start": 10,
+						"end": 13,
+						"lexeme": "var"
+					},
+					"metadata": []
+				},
+				"unlabeled": {
+					"start": 10,
+					"end": 29,
+					"class": "VariableDeclarationStatement",
+					"semicolon": {
+						"start": 28,
+						"end": 29,
+						"lexeme": ";"
+					},
+					"variables": {
+						"start": 10,
+						"end": 28,
+						"class": "VariableDeclarationList",
+						"isConst": false,
+						"isFinal": false,
+						"isLate": false,
+						"type": null,
+						"variables": [
+							{
+								"start": 14,
+								"end": 28,
+								"class": "VariableDeclaration",
+								"initializer": {
+									"start": 21,
+									"end": 28,
+									"class": "SimpleStringLiteral",
+									"literal": {
+										"start": 21,
+										"end": 28,
+										"lexeme": "'world'"
+									},
+									"value": "world",
+									"isMultiline": false,
+									"isRaw": false,
+									"isSingleQuoted": true
+								},
+								"isConst": false,
+								"isFinal": false,
+								"isLate": false,
+								"name": {
+									"start": 14,
+									"end": 18,
+									"lexeme": "name"
+								}
+							}
+						],
+						"documentationComment": null,
+						"firstTokenAfterCommentAndMetadata": {
+							"start": 10,
+							"end": 13,
+							"lexeme": "var"
+						},
+						"metadata": []
+					},
+					"unlabeled": "@seen"
 				}
 			}
 		]

@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 27,
+				"end": 28,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -42,13 +42,6 @@
 					}
 				],
 				"children": []
-			},
-			{
-				"start": 27,
-				"end": 28,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

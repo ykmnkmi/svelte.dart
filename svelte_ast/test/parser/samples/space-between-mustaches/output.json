@@ -6,9 +6,10 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 23,
+				"end": 24,
 				"class": "Element",
 				"name": "p",
+				"attributes": [],
 				"children": [
 					{
 						"start": 3,
@@ -25,8 +26,12 @@
 							"start": 5,
 							"end": 6,
 							"class": "SimpleIdentifier",
-							"name": "a",
-							"isAssignable": true
+							"token": {
+								"start": 5,
+								"end": 6,
+								"lexeme": "a"
+							},
+							"name": "a"
 						}
 					},
 					{
@@ -44,8 +49,12 @@
 							"start": 9,
 							"end": 10,
 							"class": "SimpleIdentifier",
-							"name": "b",
-							"isAssignable": true
+							"token": {
+								"start": 9,
+								"end": 10,
+								"lexeme": "b"
+							},
+							"name": "b"
 						}
 					},
 					{
@@ -63,8 +72,12 @@
 							"start": 15,
 							"end": 16,
 							"class": "SimpleIdentifier",
-							"name": "c",
-							"isAssignable": true
+							"token": {
+								"start": 15,
+								"end": 16,
+								"lexeme": "c"
+							},
+							"name": "c"
 						}
 					},
 					{
@@ -75,13 +88,6 @@
 						"data": " : "
 					}
 				]
-			},
-			{
-				"start": 23,
-				"end": 24,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

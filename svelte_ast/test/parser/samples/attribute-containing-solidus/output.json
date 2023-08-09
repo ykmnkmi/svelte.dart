@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 40,
+				"end": 41,
 				"class": "Element",
 				"name": "a",
 				"attributes": [
@@ -35,13 +35,6 @@
 						"data": "Google"
 					}
 				]
-			},
-			{
-				"start": 40,
-				"end": 41,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

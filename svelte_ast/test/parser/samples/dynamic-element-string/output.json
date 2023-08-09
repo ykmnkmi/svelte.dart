@@ -6,22 +6,23 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 43,
+				"end": 44,
 				"class": "InlineElement",
 				"name": "svelte:element",
 				"tag": "div",
+				"attributes": [],
 				"children": []
 			},
 			{
-				"start": 43,
+				"start": 44,
 				"end": 45,
 				"class": "Text",
-				"raw": ">\n",
-				"data": ">\n"
+				"raw": "\n",
+				"data": "\n"
 			},
 			{
 				"start": 45,
-				"end": 100,
+				"end": 101,
 				"class": "InlineElement",
 				"name": "svelte:element",
 				"tag": "div",
@@ -43,13 +44,6 @@
 					}
 				],
 				"children": []
-			},
-			{
-				"start": 100,
-				"end": 101,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

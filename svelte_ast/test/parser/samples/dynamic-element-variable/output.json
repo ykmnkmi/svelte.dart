@@ -6,36 +6,45 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 43,
+				"end": 44,
 				"class": "InlineElement",
 				"name": "svelte:element",
 				"tag": {
 					"start": 22,
 					"end": 25,
 					"class": "SimpleIdentifier",
-					"name": "tag",
-					"isAssignable": true
+					"token": {
+						"start": 22,
+						"end": 25,
+						"lexeme": "tag"
+					},
+					"name": "tag"
 				},
+				"attributes": [],
 				"children": []
 			},
 			{
-				"start": 43,
+				"start": 44,
 				"end": 45,
 				"class": "Text",
-				"raw": ">\n",
-				"data": ">\n"
+				"raw": "\n",
+				"data": "\n"
 			},
 			{
 				"start": 45,
-				"end": 100,
+				"end": 101,
 				"class": "InlineElement",
 				"name": "svelte:element",
 				"tag": {
 					"start": 67,
 					"end": 70,
 					"class": "SimpleIdentifier",
-					"name": "tag",
-					"isAssignable": true
+					"token": {
+						"start": 67,
+						"end": 70,
+						"lexeme": "tag"
+					},
+					"name": "tag"
 				},
 				"attributes": [
 					{
@@ -55,13 +64,6 @@
 					}
 				],
 				"children": []
-			},
-			{
-				"start": 100,
-				"end": 101,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

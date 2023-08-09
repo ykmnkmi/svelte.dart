@@ -12,14 +12,24 @@
 					"start": 7,
 					"end": 12,
 					"class": "SimpleIdentifier",
-					"name": "todos",
-					"isAssignable": true
+					"token": {
+						"start": 7,
+						"end": 12,
+						"lexeme": "todos"
+					},
+					"name": "todos"
 				},
 				"context": {
 					"start": 16,
 					"end": 20,
-					"class": "AssignedVariablePattern"
+					"class": "AssignedVariablePattern",
+					"name": {
+						"start": 16,
+						"end": 20,
+						"lexeme": "todo"
+					}
 				},
+				"index": null,
 				"key": {
 					"start": 22,
 					"end": 29,
@@ -28,25 +38,39 @@
 						"start": 27,
 						"end": 29,
 						"class": "SimpleIdentifier",
-						"name": "id",
-						"isAssignable": true
+						"token": {
+							"start": 27,
+							"end": 29,
+							"lexeme": "id"
+						},
+						"name": "id"
+					},
+					"isDeferred": false,
+					"period": {
+						"start": 26,
+						"end": 27,
+						"lexeme": "."
 					},
 					"prefix": {
 						"start": 22,
 						"end": 26,
 						"class": "SimpleIdentifier",
-						"name": "todo",
-						"isAssignable": true
+						"token": {
+							"start": 22,
+							"end": 26,
+							"lexeme": "todo"
+						},
+						"name": "todo"
 					},
-					"name": "todo.id",
-					"isAssignable": true
+					"name": "todo.id"
 				},
 				"children": [
 					{
 						"start": 33,
-						"end": 45,
+						"end": 46,
 						"class": "Element",
 						"name": "p",
+						"attributes": [],
 						"children": [
 							{
 								"start": 36,
@@ -56,20 +80,18 @@
 									"start": 37,
 									"end": 41,
 									"class": "SimpleIdentifier",
-									"name": "todo",
-									"isAssignable": true
+									"token": {
+										"start": 37,
+										"end": 41,
+										"lexeme": "todo"
+									},
+									"name": "todo"
 								}
 							}
 						]
-					},
-					{
-						"start": 45,
-						"end": 47,
-						"class": "Text",
-						"raw": ">\n",
-						"data": ">"
 					}
-				]
+				],
+				"elseBlock": null
 			}
 		]
 	}

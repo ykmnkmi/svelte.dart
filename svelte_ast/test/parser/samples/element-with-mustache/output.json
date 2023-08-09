@@ -6,9 +6,10 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 21,
+				"end": 22,
 				"class": "Element",
 				"name": "h1",
+				"attributes": [],
 				"children": [
 					{
 						"start": 4,
@@ -25,8 +26,12 @@
 							"start": 11,
 							"end": 15,
 							"class": "SimpleIdentifier",
-							"name": "name",
-							"isAssignable": true
+							"token": {
+								"start": 11,
+								"end": 15,
+								"lexeme": "name"
+							},
+							"name": "name"
 						}
 					},
 					{
@@ -37,13 +42,6 @@
 						"data": "!"
 					}
 				]
-			},
-			{
-				"start": 21,
-				"end": 22,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

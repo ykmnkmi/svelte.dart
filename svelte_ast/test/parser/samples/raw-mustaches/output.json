@@ -6,9 +6,10 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 33,
+				"end": 34,
 				"class": "Element",
 				"name": "p",
+				"attributes": [],
 				"children": [
 					{
 						"start": 3,
@@ -25,8 +26,12 @@
 							"start": 11,
 							"end": 15,
 							"class": "SimpleIdentifier",
-							"name": "raw1",
-							"isAssignable": true
+							"token": {
+								"start": 11,
+								"end": 15,
+								"lexeme": "raw1"
+							},
+							"name": "raw1"
 						}
 					},
 					{
@@ -44,8 +49,12 @@
 							"start": 24,
 							"end": 28,
 							"class": "SimpleIdentifier",
-							"name": "raw2",
-							"isAssignable": true
+							"token": {
+								"start": 24,
+								"end": 28,
+								"lexeme": "raw2"
+							},
+							"name": "raw2"
 						}
 					},
 					{
@@ -56,13 +65,6 @@
 						"data": " "
 					}
 				]
-			},
-			{
-				"start": 33,
-				"end": 34,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

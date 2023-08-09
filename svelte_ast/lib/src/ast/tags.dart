@@ -18,17 +18,18 @@ final class Attribute extends Node {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Attribute',
       'name': name,
-      if (value case bool value? when value) 'value': value,
-      if (value case List<Node> values? when values.isNotEmpty)
-        'value': <Map<String, Object?>>[
-          for (Node value in values) value.toJson(),
-        ],
+      if (value case bool value? when value)
+        'value': value
+      else if (value case List<Node> nodes?)
+        'value': <Object?>[for (Node node in nodes) node.toJson(mapper)]
+      else
+        'value': null,
     };
   }
 }
@@ -48,12 +49,12 @@ final class AttributeShorthand extends Node {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'AttributeShorthand',
-      if (mapper != null) 'expression': mapper(expression),
+      'expression': mapper(expression),
     };
   }
 }
@@ -73,12 +74,12 @@ final class Spread extends Node {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Spread',
-      if (mapper != null) 'expression': mapper(expression),
+      'expression': mapper(expression),
     };
   }
 }
@@ -120,7 +121,7 @@ abstract base class Directive extends Node {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -154,12 +155,10 @@ final class Action extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
-      ...super.toJson(),
-      if (mapper != null)
-        if (expression case Expression expression?)
-          'expression': mapper(expression),
+      ...super.toJson(mapper),
+      'expression': mapper(expression),
     };
   }
 }
@@ -187,12 +186,10 @@ final class Animation extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
-      ...super.toJson(),
-      if (mapper != null)
-        if (expression case Expression expression?)
-          'expression': mapper(expression),
+      ...super.toJson(mapper),
+      'expression': mapper(expression),
     };
   }
 }
@@ -220,12 +217,10 @@ final class Binding extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
-      ...super.toJson(),
-      if (mapper != null)
-        if (expression case Expression expression?)
-          'expression': mapper(expression),
+      ...super.toJson(mapper),
+      'expression': mapper(expression),
     };
   }
 }
@@ -253,12 +248,10 @@ final class ClassDirective extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
-      ...super.toJson(),
-      if (mapper != null)
-        if (expression case Expression expression?)
-          'expression': mapper(expression),
+      ...super.toJson(mapper),
+      'expression': mapper(expression),
     };
   }
 }
@@ -280,15 +273,17 @@ final class StyleDirective extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
-      ...super.toJson(),
-      if (value case bool value? when value)
+      ...super.toJson(mapper),
+      if (value case bool value?)
         'value': value
-      else if (value case List<Node> values? when values.isNotEmpty)
-        'value': <Map<String, Object?>>[
-          for (Node value in values) value.toJson(),
-        ],
+      else if (value case List<Node> nodes?)
+        'value': <Object?>[
+          for (Node node in nodes) node.toJson(mapper),
+        ]
+      else
+        'value': null,
     };
   }
 }
@@ -299,14 +294,8 @@ final class EventHandler extends Directive {
     required super.end,
     required super.name,
     super.modifiers,
-    this.intro = false,
-    this.outro = false,
     this.expression,
   }) : super(type: DirectiveType.eventHandler);
-
-  final bool intro;
-
-  final bool outro;
 
   final Expression? expression;
 
@@ -316,12 +305,10 @@ final class EventHandler extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
-      ...super.toJson(),
-      if (mapper != null)
-        if (expression case Expression expression?)
-          'expression': mapper(expression),
+      ...super.toJson(mapper),
+      'expression': mapper(expression),
     };
   }
 }
@@ -332,14 +319,8 @@ final class Let extends Directive {
     required super.end,
     required super.name,
     super.modifiers,
-    this.intro = false,
-    this.outro = false,
     this.expression,
   }) : super(type: DirectiveType.let);
-
-  final bool intro;
-
-  final bool outro;
 
   final Expression? expression;
 
@@ -349,12 +330,10 @@ final class Let extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
-      ...super.toJson(),
-      if (mapper != null)
-        if (expression case Expression expression?)
-          'expression': mapper(expression),
+      ...super.toJson(mapper),
+      'expression': mapper(expression),
     };
   }
 }
@@ -365,14 +344,8 @@ final class Ref extends Directive {
     required super.end,
     required super.name,
     super.modifiers,
-    this.intro = false,
-    this.outro = false,
     this.expression,
   }) : super(type: DirectiveType.ref);
-
-  final bool intro;
-
-  final bool outro;
 
   final Expression? expression;
 
@@ -382,12 +355,10 @@ final class Ref extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
-      ...super.toJson(),
-      if (mapper != null)
-        if (expression case Expression expression?)
-          'expression': mapper(expression),
+      ...super.toJson(mapper),
+      'expression': mapper(expression),
     };
   }
 }
@@ -415,14 +386,12 @@ final class TransitionDirective extends Directive {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
-      ...super.toJson(),
-      if (intro) 'intro': intro,
-      if (outro) 'outro': outro,
-      if (mapper != null)
-        if (expression case Expression expression?)
-          'expression': mapper(expression),
+      ...super.toJson(mapper),
+      'intro': intro,
+      'outro': outro,
+      'expression': mapper(expression),
     };
   }
 }
@@ -461,18 +430,17 @@ final class Head extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Head',
       'name': name,
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }
@@ -493,18 +461,17 @@ final class Options extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Options',
       'name': name,
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }
@@ -525,18 +492,17 @@ final class Window extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Window',
       'name': name,
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }
@@ -557,18 +523,17 @@ final class Document extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Document',
       'name': name,
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }
@@ -589,18 +554,17 @@ final class Body extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Body',
       'name': name,
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }
@@ -624,20 +588,18 @@ final class InlineComponent extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'InlineComponent',
       'name': name,
-      if (expression case Expression expression?)
-        if (mapper != null) 'expression': mapper(expression),
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      'expression': mapper(expression),
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }
@@ -661,7 +623,7 @@ final class InlineElement extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
@@ -669,14 +631,15 @@ final class InlineElement extends Tag {
       'name': name,
       if (tag case String tag)
         'tag': tag
-      else if (mapper != null)
-        if (tag case Expression tag?) 'tag': mapper(tag),
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      else if (tag case Expression tag?)
+        'tag': mapper(tag)
+      else
+        'tag': null,
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }
@@ -697,18 +660,17 @@ final class SlotTemplate extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'SlotTemplate',
       'name': name,
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }
@@ -729,18 +691,17 @@ final class Title extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Title',
       'name': name,
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }
@@ -761,18 +722,17 @@ final class Slot extends Tag {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Slot',
       'name': name,
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }
@@ -793,18 +753,17 @@ final class Element extends Tag implements HasName {
   }
 
   @override
-  Map<String, Object?> toJson([JsonMapper? mapper]) {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'start': start,
       'end': end,
       'class': 'Element',
       'name': name,
-      if (attributes.isNotEmpty)
-        'attributes': <Map<String, Object?>>[
-          for (Node attribute in attributes) attribute.toJson(),
-        ],
-      'children': <Map<String, Object?>>[
-        for (Node node in children) node.toJson(),
+      'attributes': <Object?>[
+        for (Node attribute in attributes) attribute.toJson(mapper),
+      ],
+      'children': <Object?>[
+        for (Node child in children) child.toJson(mapper),
       ],
     };
   }

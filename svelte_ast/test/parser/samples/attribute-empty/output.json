@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 37,
+				"end": 38,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -39,11 +39,15 @@
 									"start": 13,
 									"end": 15,
 									"class": "SimpleStringLiteral",
+									"literal": {
+										"start": 13,
+										"end": 15,
+										"lexeme": "''"
+									},
 									"value": "",
-									"contentsEnd": 14,
-									"contentsOffset": 14,
-									"isSingleQuoted": true,
-									"stringValue": ""
+									"isMultiline": false,
+									"isRaw": false,
+									"isSingleQuoted": true
 								}
 							}
 						]
@@ -77,24 +81,21 @@
 									"start": 26,
 									"end": 28,
 									"class": "SimpleStringLiteral",
+									"literal": {
+										"start": 26,
+										"end": 28,
+										"lexeme": "''"
+									},
 									"value": "",
-									"contentsEnd": 27,
-									"contentsOffset": 27,
-									"isSingleQuoted": true,
-									"stringValue": ""
+									"isMultiline": false,
+									"isRaw": false,
+									"isSingleQuoted": true
 								}
 							}
 						]
 					}
 				],
 				"children": []
-			},
-			{
-				"start": 37,
-				"end": 38,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

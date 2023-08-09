@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 32,
+				"end": 33,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -25,21 +25,18 @@
 									"start": 18,
 									"end": 25,
 									"class": "SimpleIdentifier",
-									"name": "myColor",
-									"isAssignable": true
+									"token": {
+										"start": 18,
+										"end": 25,
+										"lexeme": "myColor"
+									},
+									"name": "myColor"
 								}
 							}
 						]
 					}
 				],
 				"children": []
-			},
-			{
-				"start": 32,
-				"end": 33,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

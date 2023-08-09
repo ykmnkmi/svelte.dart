@@ -20,11 +20,15 @@
 							"start": 21,
 							"end": 34,
 							"class": "SimpleStringLiteral",
+							"literal": {
+								"start": 21,
+								"end": 34,
+								"lexeme": "'tooltip msg'"
+							},
 							"value": "tooltip msg",
-							"contentsEnd": 33,
-							"contentsOffset": 22,
-							"isSingleQuoted": true,
-							"stringValue": "tooltip msg"
+							"isMultiline": false,
+							"isRaw": false,
+							"isSingleQuoted": true
 						}
 					}
 				],

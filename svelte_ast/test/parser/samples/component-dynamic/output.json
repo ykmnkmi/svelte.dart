@@ -6,43 +6,112 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 61,
+				"end": 62,
 				"class": "InlineComponent",
 				"name": "svelte:component",
 				"expression": {
 					"start": 25,
 					"end": 40,
 					"class": "ConditionalExpression",
+					"colon": {
+						"start": 35,
+						"end": 36,
+						"lexeme": ":"
+					},
 					"condition": {
 						"start": 25,
 						"end": 28,
 						"class": "SimpleIdentifier",
-						"name": "foo",
-						"isAssignable": true
+						"token": {
+							"start": 25,
+							"end": 28,
+							"lexeme": "foo"
+						},
+						"name": "foo"
 					},
 					"elseExpression": {
 						"start": 37,
 						"end": 40,
 						"class": "SimpleIdentifier",
-						"name": "Bar",
-						"isAssignable": true
+						"token": {
+							"start": 37,
+							"end": 40,
+							"lexeme": "Bar"
+						},
+						"name": "Bar"
+					},
+					"question": {
+						"start": 29,
+						"end": 30,
+						"lexeme": "?"
 					},
 					"thenExpression": {
 						"start": 31,
 						"end": 34,
 						"class": "SimpleIdentifier",
-						"name": "Foo",
-						"isAssignable": true
+						"token": {
+							"start": 31,
+							"end": 34,
+							"lexeme": "Foo"
+						},
+						"name": "Foo"
+					},
+					"inConstantContext": false,
+					"isAssignable": false,
+					"unParenthesized": {
+						"start": 25,
+						"end": 40,
+						"class": "ConditionalExpression",
+						"colon": {
+							"start": 35,
+							"end": 36,
+							"lexeme": ":"
+						},
+						"condition": {
+							"start": 25,
+							"end": 28,
+							"class": "SimpleIdentifier",
+							"token": {
+								"start": 25,
+								"end": 28,
+								"lexeme": "foo"
+							},
+							"name": "foo"
+						},
+						"elseExpression": {
+							"start": 37,
+							"end": 40,
+							"class": "SimpleIdentifier",
+							"token": {
+								"start": 37,
+								"end": 40,
+								"lexeme": "Bar"
+							},
+							"name": "Bar"
+						},
+						"question": {
+							"start": 29,
+							"end": 30,
+							"lexeme": "?"
+						},
+						"thenExpression": {
+							"start": 31,
+							"end": 34,
+							"class": "SimpleIdentifier",
+							"token": {
+								"start": 31,
+								"end": 34,
+								"lexeme": "Foo"
+							},
+							"name": "Foo"
+						},
+						"inConstantContext": false,
+						"isAssignable": false,
+						"unParenthesized": "@seen"
 					}
 				},
+				"attributes": [],
 				"children": []
-			},
-			{
-				"start": 61,
-				"end": 62,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

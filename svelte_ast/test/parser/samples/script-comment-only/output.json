@@ -13,17 +13,11 @@
 			},
 			{
 				"start": 45,
-				"end": 55,
+				"end": 56,
 				"class": "Element",
 				"name": "div",
+				"attributes": [],
 				"children": []
-			},
-			{
-				"start": 55,
-				"end": 56,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	},
@@ -36,6 +30,7 @@
 			"start": 8,
 			"end": 34,
 			"data": "\n\t// TODO write some code\n"
-		}
+		},
+		"body": []
 	}
 }

@@ -6,9 +6,10 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 50,
+				"end": 51,
 				"class": "Element",
 				"name": "ul",
+				"attributes": [],
 				"children": [
 					{
 						"start": 4,
@@ -22,6 +23,7 @@
 						"end": 40,
 						"class": "Element",
 						"name": "li",
+						"attributes": [],
 						"children": [
 							{
 								"start": 10,
@@ -38,14 +40,22 @@
 									"start": 18,
 									"end": 22,
 									"class": "BooleanLiteral",
+									"literal": {
+										"start": 18,
+										"end": 22,
+										"lexeme": "true"
+									},
 									"value": true
 								},
+								"casePattern": null,
+								"whenExpression": null,
 								"children": [
 									{
 										"start": 26,
 										"end": 33,
 										"class": "Element",
 										"name": "li",
+										"attributes": [],
 										"children": [
 											{
 												"start": 30,
@@ -56,7 +66,9 @@
 											}
 										]
 									}
-								]
+								],
+								"elseIf": false,
+								"elseBlock": null
 							},
 							{
 								"start": 38,
@@ -72,6 +84,7 @@
 						"end": 46,
 						"class": "Element",
 						"name": "li",
+						"attributes": [],
 						"children": [
 							{
 								"start": 44,
@@ -83,13 +96,6 @@
 						]
 					}
 				]
-			},
-			{
-				"start": 50,
-				"end": 51,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

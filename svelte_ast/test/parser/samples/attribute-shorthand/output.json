@@ -24,8 +24,12 @@
 									"start": 6,
 									"end": 8,
 									"class": "SimpleIdentifier",
-									"name": "id",
-									"isAssignable": true
+									"token": {
+										"start": 6,
+										"end": 8,
+										"lexeme": "id"
+									},
+									"name": "id"
 								}
 							}
 						]

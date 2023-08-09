@@ -13,7 +13,7 @@
 			},
 			{
 				"start": 30,
-				"end": 62,
+				"end": 63,
 				"class": "Element",
 				"name": "canvas",
 				"attributes": [
@@ -27,19 +27,16 @@
 							"start": 49,
 							"end": 52,
 							"class": "SimpleIdentifier",
-							"name": "foo",
-							"isAssignable": true
+							"token": {
+								"start": 49,
+								"end": 52,
+								"lexeme": "foo"
+							},
+							"name": "foo"
 						}
 					}
 				],
 				"children": []
-			},
-			{
-				"start": 62,
-				"end": 63,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	},
@@ -53,22 +50,90 @@
 			"end": 19,
 			"data": "\n\tvar foo;\n"
 		},
-		"statements": [
+		"body": [
 			{
 				"start": 10,
 				"end": 18,
 				"class": "VariableDeclarationStatement",
+				"semicolon": {
+					"start": 17,
+					"end": 18,
+					"lexeme": ";"
+				},
 				"variables": {
 					"start": 10,
 					"end": 17,
 					"class": "VariableDeclarationList",
+					"isConst": false,
+					"isFinal": false,
+					"isLate": false,
+					"type": null,
 					"variables": [
 						{
 							"start": 14,
 							"end": 17,
-							"class": "VariableDeclaration"
+							"class": "VariableDeclaration",
+							"initializer": null,
+							"isConst": false,
+							"isFinal": false,
+							"isLate": false,
+							"name": {
+								"start": 14,
+								"end": 17,
+								"lexeme": "foo"
+							}
 						}
-					]
+					],
+					"documentationComment": null,
+					"firstTokenAfterCommentAndMetadata": {
+						"start": 10,
+						"end": 13,
+						"lexeme": "var"
+					},
+					"metadata": []
+				},
+				"unlabeled": {
+					"start": 10,
+					"end": 18,
+					"class": "VariableDeclarationStatement",
+					"semicolon": {
+						"start": 17,
+						"end": 18,
+						"lexeme": ";"
+					},
+					"variables": {
+						"start": 10,
+						"end": 17,
+						"class": "VariableDeclarationList",
+						"isConst": false,
+						"isFinal": false,
+						"isLate": false,
+						"type": null,
+						"variables": [
+							{
+								"start": 14,
+								"end": 17,
+								"class": "VariableDeclaration",
+								"initializer": null,
+								"isConst": false,
+								"isFinal": false,
+								"isLate": false,
+								"name": {
+									"start": 14,
+									"end": 17,
+									"lexeme": "foo"
+								}
+							}
+						],
+						"documentationComment": null,
+						"firstTokenAfterCommentAndMetadata": {
+							"start": 10,
+							"end": 13,
+							"lexeme": "var"
+						},
+						"metadata": []
+					},
+					"unlabeled": "@seen"
 				}
 			}
 		]

@@ -9,6 +9,7 @@
 				"end": 61,
 				"class": "Element",
 				"name": "textarea",
+				"attributes": [],
 				"children": [
 					{
 						"start": 10,
@@ -25,8 +26,12 @@
 							"start": 41,
 							"end": 44,
 							"class": "SimpleIdentifier",
-							"name": "foo",
-							"isAssignable": true
+							"token": {
+								"start": 41,
+								"end": 44,
+								"lexeme": "foo"
+							},
+							"name": "foo"
 						}
 					},
 					{

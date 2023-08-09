@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 41,
+				"end": 42,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -31,8 +31,12 @@
 									"start": 20,
 									"end": 25,
 									"class": "SimpleIdentifier",
-									"name": "color",
-									"isAssignable": true
+									"token": {
+										"start": 20,
+										"end": 25,
+										"lexeme": "color"
+									},
+									"name": "color"
 								}
 							},
 							{
@@ -54,18 +58,15 @@
 							"start": 30,
 							"end": 35,
 							"class": "SimpleIdentifier",
-							"name": "color",
-							"isAssignable": true
+							"token": {
+								"start": 30,
+								"end": 35,
+								"lexeme": "color"
+							},
+							"name": "color"
 						}
 					}
 				]
-			},
-			{
-				"start": 41,
-				"end": 42,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

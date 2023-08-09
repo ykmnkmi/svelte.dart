@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 60,
+				"end": 61,
 				"class": "Element",
 				"name": "button",
 				"attributes": [
@@ -32,8 +32,17 @@
 										"start": 25,
 										"end": 32,
 										"class": "SimpleIdentifier",
-										"name": "visible",
-										"isAssignable": true
+										"token": {
+											"start": 25,
+											"end": 32,
+											"lexeme": "visible"
+										},
+										"name": "visible"
+									},
+									"operator": {
+										"start": 33,
+										"end": 34,
+										"lexeme": "="
 									},
 									"rightHandSide": {
 										"start": 35,
@@ -43,17 +52,301 @@
 											"start": 36,
 											"end": 43,
 											"class": "SimpleIdentifier",
-											"name": "visible",
-											"isAssignable": true
-										}
-									}
+											"token": {
+												"start": 36,
+												"end": 43,
+												"lexeme": "visible"
+											},
+											"name": "visible"
+										},
+										"operator": {
+											"start": 35,
+											"end": 36,
+											"lexeme": "!"
+										},
+										"inConstantContext": false,
+										"isAssignable": false,
+										"unParenthesized": "@seen",
+										"nullShortingTermination": "@seen"
+									},
+									"nullShortingTermination": "@seen"
 								},
+								"functionDefinition": {
+									"start": 22,
+									"end": 24,
+									"lexeme": "=>"
+								},
+								"isAsynchronous": false,
+								"isGenerator": false,
 								"isSynchronous": true
 							},
 							"parameters": {
 								"start": 19,
 								"end": 21,
-								"class": "FormalParameterList"
+								"class": "FormalParameterList",
+								"leftParenthesis": {
+									"start": 19,
+									"end": 20,
+									"lexeme": "("
+								},
+								"parameters": [],
+								"rightParenthesis": {
+									"start": 20,
+									"end": 21,
+									"lexeme": ")"
+								},
+								"beginToken": {
+									"start": 19,
+									"end": 20,
+									"lexeme": "("
+								},
+								"endToken": {
+									"start": 20,
+									"end": 21,
+									"lexeme": ")"
+								},
+								"isSynthetic": false,
+								"parent": {
+									"start": 19,
+									"end": 43,
+									"class": "FunctionExpression",
+									"body": {
+										"start": 22,
+										"end": 43,
+										"class": "ExpressionFunctionBody",
+										"expression": {
+											"start": 25,
+											"end": 43,
+											"class": "AssignmentExpression",
+											"leftHandSide": {
+												"start": 25,
+												"end": 32,
+												"class": "SimpleIdentifier",
+												"token": {
+													"start": 25,
+													"end": 32,
+													"lexeme": "visible"
+												},
+												"name": "visible"
+											},
+											"operator": {
+												"start": 33,
+												"end": 34,
+												"lexeme": "="
+											},
+											"rightHandSide": {
+												"start": 35,
+												"end": 43,
+												"class": "PrefixExpression",
+												"operand": {
+													"start": 36,
+													"end": 43,
+													"class": "SimpleIdentifier",
+													"token": {
+														"start": 36,
+														"end": 43,
+														"lexeme": "visible"
+													},
+													"name": "visible"
+												},
+												"operator": {
+													"start": 35,
+													"end": 36,
+													"lexeme": "!"
+												},
+												"inConstantContext": false,
+												"isAssignable": false,
+												"unParenthesized": "@seen",
+												"nullShortingTermination": "@seen"
+											},
+											"nullShortingTermination": "@seen"
+										},
+										"functionDefinition": {
+											"start": 22,
+											"end": 24,
+											"lexeme": "=>"
+										},
+										"isAsynchronous": false,
+										"isGenerator": false,
+										"isSynchronous": true
+									},
+									"parameters": "@seen",
+									"typeParameters": null,
+									"inConstantContext": false,
+									"isAssignable": false,
+									"unParenthesized": "@seen"
+								},
+								"root": {
+									"start": 19,
+									"end": 43,
+									"class": "FunctionExpression",
+									"body": {
+										"start": 22,
+										"end": 43,
+										"class": "ExpressionFunctionBody",
+										"expression": {
+											"start": 25,
+											"end": 43,
+											"class": "AssignmentExpression",
+											"leftHandSide": {
+												"start": 25,
+												"end": 32,
+												"class": "SimpleIdentifier",
+												"token": {
+													"start": 25,
+													"end": 32,
+													"lexeme": "visible"
+												},
+												"name": "visible"
+											},
+											"operator": {
+												"start": 33,
+												"end": 34,
+												"lexeme": "="
+											},
+											"rightHandSide": {
+												"start": 35,
+												"end": 43,
+												"class": "PrefixExpression",
+												"operand": {
+													"start": 36,
+													"end": 43,
+													"class": "SimpleIdentifier",
+													"token": {
+														"start": 36,
+														"end": 43,
+														"lexeme": "visible"
+													},
+													"name": "visible"
+												},
+												"operator": {
+													"start": 35,
+													"end": 36,
+													"lexeme": "!"
+												},
+												"inConstantContext": false,
+												"isAssignable": false,
+												"unParenthesized": "@seen",
+												"nullShortingTermination": "@seen"
+											},
+											"nullShortingTermination": "@seen"
+										},
+										"functionDefinition": {
+											"start": 22,
+											"end": 24,
+											"lexeme": "=>"
+										},
+										"isAsynchronous": false,
+										"isGenerator": false,
+										"isSynchronous": true
+									},
+									"parameters": "@seen",
+									"typeParameters": null,
+									"inConstantContext": false,
+									"isAssignable": false,
+									"unParenthesized": "@seen"
+								}
+							},
+							"typeParameters": null,
+							"inConstantContext": false,
+							"isAssignable": false,
+							"unParenthesized": {
+								"start": 19,
+								"end": 43,
+								"class": "FunctionExpression",
+								"body": {
+									"start": 22,
+									"end": 43,
+									"class": "ExpressionFunctionBody",
+									"expression": {
+										"start": 25,
+										"end": 43,
+										"class": "AssignmentExpression",
+										"leftHandSide": {
+											"start": 25,
+											"end": 32,
+											"class": "SimpleIdentifier",
+											"token": {
+												"start": 25,
+												"end": 32,
+												"lexeme": "visible"
+											},
+											"name": "visible"
+										},
+										"operator": {
+											"start": 33,
+											"end": 34,
+											"lexeme": "="
+										},
+										"rightHandSide": {
+											"start": 35,
+											"end": 43,
+											"class": "PrefixExpression",
+											"operand": {
+												"start": 36,
+												"end": 43,
+												"class": "SimpleIdentifier",
+												"token": {
+													"start": 36,
+													"end": 43,
+													"lexeme": "visible"
+												},
+												"name": "visible"
+											},
+											"operator": {
+												"start": 35,
+												"end": 36,
+												"lexeme": "!"
+											},
+											"inConstantContext": false,
+											"isAssignable": false,
+											"unParenthesized": "@seen",
+											"nullShortingTermination": "@seen"
+										},
+										"nullShortingTermination": "@seen"
+									},
+									"functionDefinition": {
+										"start": 22,
+										"end": 24,
+										"lexeme": "=>"
+									},
+									"isAsynchronous": false,
+									"isGenerator": false,
+									"isSynchronous": true
+								},
+								"parameters": {
+									"start": 19,
+									"end": 21,
+									"class": "FormalParameterList",
+									"leftParenthesis": {
+										"start": 19,
+										"end": 20,
+										"lexeme": "("
+									},
+									"parameters": [],
+									"rightParenthesis": {
+										"start": 20,
+										"end": 21,
+										"lexeme": ")"
+									},
+									"beginToken": {
+										"start": 19,
+										"end": 20,
+										"lexeme": "("
+									},
+									"endToken": {
+										"start": 20,
+										"end": 21,
+										"lexeme": ")"
+									},
+									"isSynthetic": false,
+									"parent": "@seen",
+									"root": "@seen"
+								},
+								"typeParameters": null,
+								"inConstantContext": false,
+								"isAssignable": false,
+								"unParenthesized": "@seen"
 							}
 						}
 					}
@@ -69,11 +362,11 @@
 				]
 			},
 			{
-				"start": 60,
+				"start": 61,
 				"end": 63,
 				"class": "Text",
-				"raw": ">\n\n",
-				"data": ">\n\n"
+				"raw": "\n\n",
+				"data": "\n\n"
 			},
 			{
 				"start": 63,
@@ -83,15 +376,22 @@
 					"start": 68,
 					"end": 75,
 					"class": "SimpleIdentifier",
-					"name": "visible",
-					"isAssignable": true
+					"token": {
+						"start": 68,
+						"end": 75,
+						"lexeme": "visible"
+					},
+					"name": "visible"
 				},
+				"casePattern": null,
+				"whenExpression": null,
 				"children": [
 					{
 						"start": 78,
-						"end": 90,
+						"end": 91,
 						"class": "Element",
 						"name": "p",
+						"attributes": [],
 						"children": [
 							{
 								"start": 81,
@@ -101,15 +401,10 @@
 								"data": "hello!"
 							}
 						]
-					},
-					{
-						"start": 90,
-						"end": 92,
-						"class": "Text",
-						"raw": ">\n",
-						"data": ">"
 					}
-				]
+				],
+				"elseIf": false,
+				"elseBlock": null
 			}
 		]
 	}

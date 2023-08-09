@@ -20,12 +20,97 @@
 							"start": 21,
 							"end": 37,
 							"class": "MethodInvocation",
+							"isCascaded": false,
+							"isNullAware": false,
 							"methodName": {
 								"start": 21,
 								"end": 22,
 								"class": "SimpleIdentifier",
-								"name": "t",
-								"isAssignable": true
+								"token": {
+									"start": 21,
+									"end": 22,
+									"lexeme": "t"
+								},
+								"name": "t"
+							},
+							"realTarget": null,
+							"target": null,
+							"nullShortingTermination": {
+								"start": 21,
+								"end": 37,
+								"class": "MethodInvocation",
+								"isCascaded": false,
+								"isNullAware": false,
+								"methodName": {
+									"start": 21,
+									"end": 22,
+									"class": "SimpleIdentifier",
+									"token": {
+										"start": 21,
+										"end": 22,
+										"lexeme": "t"
+									},
+									"name": "t"
+								},
+								"realTarget": null,
+								"target": null,
+								"nullShortingTermination": "@seen",
+								"argumentList": {
+									"start": 22,
+									"end": 37,
+									"class": "ArgumentList",
+									"arguments": [
+										{
+											"start": 23,
+											"end": 36,
+											"class": "SimpleStringLiteral",
+											"literal": {
+												"start": 23,
+												"end": 36,
+												"lexeme": "'tooltip msg'"
+											},
+											"value": "tooltip msg",
+											"isMultiline": false,
+											"isRaw": false,
+											"isSingleQuoted": true
+										}
+									],
+									"leftParenthesis": {
+										"start": 22,
+										"end": 23,
+										"lexeme": "("
+									},
+									"rightParenthesis": {
+										"start": 36,
+										"end": 37,
+										"lexeme": ")"
+									},
+									"beginToken": {
+										"start": 22,
+										"end": 23,
+										"lexeme": "("
+									},
+									"endToken": {
+										"start": 36,
+										"end": 37,
+										"lexeme": ")"
+									},
+									"isSynthetic": false,
+									"parent": "@seen",
+									"root": "@seen"
+								},
+								"function": {
+									"start": 21,
+									"end": 22,
+									"class": "SimpleIdentifier",
+									"token": {
+										"start": 21,
+										"end": 22,
+										"lexeme": "t"
+									},
+									"name": "t"
+								},
+								"typeArguments": null
 							},
 							"argumentList": {
 								"start": 22,
@@ -36,21 +121,119 @@
 										"start": 23,
 										"end": 36,
 										"class": "SimpleStringLiteral",
+										"literal": {
+											"start": 23,
+											"end": 36,
+											"lexeme": "'tooltip msg'"
+										},
 										"value": "tooltip msg",
-										"contentsEnd": 35,
-										"contentsOffset": 24,
-										"isSingleQuoted": true,
-										"stringValue": "tooltip msg"
+										"isMultiline": false,
+										"isRaw": false,
+										"isSingleQuoted": true
 									}
-								]
+								],
+								"leftParenthesis": {
+									"start": 22,
+									"end": 23,
+									"lexeme": "("
+								},
+								"rightParenthesis": {
+									"start": 36,
+									"end": 37,
+									"lexeme": ")"
+								},
+								"beginToken": {
+									"start": 22,
+									"end": 23,
+									"lexeme": "("
+								},
+								"endToken": {
+									"start": 36,
+									"end": 37,
+									"lexeme": ")"
+								},
+								"isSynthetic": false,
+								"parent": {
+									"start": 21,
+									"end": 37,
+									"class": "MethodInvocation",
+									"isCascaded": false,
+									"isNullAware": false,
+									"methodName": {
+										"start": 21,
+										"end": 22,
+										"class": "SimpleIdentifier",
+										"token": {
+											"start": 21,
+											"end": 22,
+											"lexeme": "t"
+										},
+										"name": "t"
+									},
+									"realTarget": null,
+									"target": null,
+									"nullShortingTermination": "@seen",
+									"argumentList": "@seen",
+									"function": {
+										"start": 21,
+										"end": 22,
+										"class": "SimpleIdentifier",
+										"token": {
+											"start": 21,
+											"end": 22,
+											"lexeme": "t"
+										},
+										"name": "t"
+									},
+									"typeArguments": null
+								},
+								"root": {
+									"start": 21,
+									"end": 37,
+									"class": "MethodInvocation",
+									"isCascaded": false,
+									"isNullAware": false,
+									"methodName": {
+										"start": 21,
+										"end": 22,
+										"class": "SimpleIdentifier",
+										"token": {
+											"start": 21,
+											"end": 22,
+											"lexeme": "t"
+										},
+										"name": "t"
+									},
+									"realTarget": null,
+									"target": null,
+									"nullShortingTermination": "@seen",
+									"argumentList": "@seen",
+									"function": {
+										"start": 21,
+										"end": 22,
+										"class": "SimpleIdentifier",
+										"token": {
+											"start": 21,
+											"end": 22,
+											"lexeme": "t"
+										},
+										"name": "t"
+									},
+									"typeArguments": null
+								}
 							},
 							"function": {
 								"start": 21,
 								"end": 22,
 								"class": "SimpleIdentifier",
-								"name": "t",
-								"isAssignable": true
-							}
+								"token": {
+									"start": 21,
+									"end": 22,
+									"lexeme": "t"
+								},
+								"name": "t"
+							},
+							"typeArguments": null
 						}
 					}
 				],

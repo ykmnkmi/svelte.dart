@@ -13,9 +13,10 @@
 			},
 			{
 				"start": 6,
-				"end": 35,
+				"end": 36,
 				"class": "Element",
 				"name": "p",
+				"attributes": [],
 				"children": [
 					{
 						"start": 9,
@@ -25,13 +26,6 @@
 						"data": "just chillin' over here"
 					}
 				]
-			},
-			{
-				"start": 35,
-				"end": 36,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

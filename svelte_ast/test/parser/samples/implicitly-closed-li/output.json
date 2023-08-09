@@ -6,9 +6,10 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 30,
+				"end": 31,
 				"class": "Element",
 				"name": "ul",
+				"attributes": [],
 				"children": [
 					{
 						"start": 4,
@@ -22,6 +23,7 @@
 						"end": 13,
 						"class": "Element",
 						"name": "li",
+						"attributes": [],
 						"children": [
 							{
 								"start": 10,
@@ -37,6 +39,7 @@
 						"end": 20,
 						"class": "Element",
 						"name": "li",
+						"attributes": [],
 						"children": [
 							{
 								"start": 17,
@@ -52,6 +55,7 @@
 						"end": 26,
 						"class": "Element",
 						"name": "li",
+						"attributes": [],
 						"children": [
 							{
 								"start": 24,
@@ -63,13 +67,6 @@
 						]
 					}
 				]
-			},
-			{
-				"start": 30,
-				"end": 31,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

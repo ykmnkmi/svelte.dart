@@ -12,9 +12,15 @@
 					"start": 5,
 					"end": 8,
 					"class": "SimpleIdentifier",
-					"name": "foo",
-					"isAssignable": true
+					"token": {
+						"start": 5,
+						"end": 8,
+						"lexeme": "foo"
+					},
+					"name": "foo"
 				},
+				"casePattern": null,
+				"whenExpression": null,
 				"children": [
 					{
 						"start": 9,
@@ -23,7 +29,9 @@
 						"raw": "bar",
 						"data": "bar"
 					}
-				]
+				],
+				"elseIf": false,
+				"elseBlock": null
 			}
 		]
 	}

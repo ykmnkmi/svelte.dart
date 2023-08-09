@@ -2,6 +2,6 @@
 	"code": "css-syntax-error",
 	"message": "expected {, but found end of file",
 	"line": 2,
-	"column": 9,
-	"offset": 17
+	"column": 16,
+	"offset": 24
 }

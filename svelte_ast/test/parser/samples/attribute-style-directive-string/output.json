@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 28,
+				"end": 29,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -30,15 +30,15 @@
 				"children": []
 			},
 			{
-				"start": 28,
+				"start": 29,
 				"end": 30,
 				"class": "Text",
-				"raw": ">\n",
-				"data": ">\n"
+				"raw": "\n",
+				"data": "\n"
 			},
 			{
 				"start": 30,
-				"end": 58,
+				"end": 59,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -62,15 +62,15 @@
 				"children": []
 			},
 			{
-				"start": 58,
+				"start": 59,
 				"end": 60,
 				"class": "Text",
-				"raw": ">\n",
-				"data": ">\n"
+				"raw": "\n",
+				"data": "\n"
 			},
 			{
 				"start": 60,
-				"end": 86,
+				"end": 87,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -94,15 +94,15 @@
 				"children": []
 			},
 			{
-				"start": 86,
+				"start": 87,
 				"end": 88,
 				"class": "Text",
-				"raw": ">\n",
-				"data": ">\n"
+				"raw": "\n",
+				"data": "\n"
 			},
 			{
 				"start": 88,
-				"end": 126,
+				"end": 127,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -128,8 +128,12 @@
 									"start": 110,
 									"end": 118,
 									"class": "SimpleIdentifier",
-									"name": "variable",
-									"isAssignable": true
+									"token": {
+										"start": 110,
+										"end": 118,
+										"lexeme": "variable"
+									},
+									"name": "variable"
 								}
 							}
 						]
@@ -138,15 +142,15 @@
 				"children": []
 			},
 			{
-				"start": 126,
+				"start": 127,
 				"end": 128,
 				"class": "Text",
-				"raw": ">\n",
-				"data": ">\n"
+				"raw": "\n",
+				"data": "\n"
 			},
 			{
 				"start": 128,
-				"end": 166,
+				"end": 167,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -172,8 +176,12 @@
 									"start": 150,
 									"end": 158,
 									"class": "SimpleIdentifier",
-									"name": "variable",
-									"isAssignable": true
+									"token": {
+										"start": 150,
+										"end": 158,
+										"lexeme": "variable"
+									},
+									"name": "variable"
 								}
 							}
 						]
@@ -182,15 +190,15 @@
 				"children": []
 			},
 			{
-				"start": 166,
+				"start": 167,
 				"end": 168,
 				"class": "Text",
-				"raw": ">\n",
-				"data": ">\n"
+				"raw": "\n",
+				"data": "\n"
 			},
 			{
 				"start": 168,
-				"end": 204,
+				"end": 205,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -216,8 +224,12 @@
 									"start": 189,
 									"end": 197,
 									"class": "SimpleIdentifier",
-									"name": "variable",
-									"isAssignable": true
+									"token": {
+										"start": 189,
+										"end": 197,
+										"lexeme": "variable"
+									},
+									"name": "variable"
 								}
 							}
 						]
@@ -226,15 +238,15 @@
 				"children": []
 			},
 			{
-				"start": 204,
+				"start": 205,
 				"end": 206,
 				"class": "Text",
-				"raw": ">\n",
-				"data": ">\n"
+				"raw": "\n",
+				"data": "\n"
 			},
 			{
 				"start": 206,
-				"end": 249,
+				"end": 250,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -258,8 +270,11 @@
 											"start": 224,
 											"end": 233,
 											"class": "InterpolationString",
-											"contentsEnd": 233,
-											"contentsOffset": 225,
+											"contents": {
+												"start": 224,
+												"end": 233,
+												"lexeme": "'template"
+											},
 											"value": "template"
 										},
 										{
@@ -270,16 +285,28 @@
 												"start": 234,
 												"end": 241,
 												"class": "SimpleIdentifier",
-												"name": "literal",
-												"isAssignable": true
+												"token": {
+													"start": 234,
+													"end": 241,
+													"lexeme": "literal"
+												},
+												"name": "literal"
+											},
+											"leftBracket": {
+												"start": 233,
+												"end": 234,
+												"lexeme": "$"
 											}
 										},
 										{
 											"start": 241,
 											"end": 242,
 											"class": "InterpolationString",
-											"contentsEnd": 241,
-											"contentsOffset": 241,
+											"contents": {
+												"start": 241,
+												"end": 242,
+												"lexeme": "'"
+											},
 											"value": ""
 										}
 									],
@@ -287,20 +314,26 @@
 										"start": 224,
 										"end": 233,
 										"class": "InterpolationString",
-										"contentsEnd": 233,
-										"contentsOffset": 225,
+										"contents": {
+											"start": 224,
+											"end": 233,
+											"lexeme": "'template"
+										},
 										"value": "template"
 									},
 									"lastString": {
 										"start": 241,
 										"end": 242,
 										"class": "InterpolationString",
-										"contentsEnd": 241,
-										"contentsOffset": 241,
+										"contents": {
+											"start": 241,
+											"end": 242,
+											"lexeme": "'"
+										},
 										"value": ""
 									},
-									"contentsEnd": 241,
-									"contentsOffset": 225,
+									"isMultiline": false,
+									"isRaw": false,
 									"isSingleQuoted": true
 								}
 							}
@@ -308,13 +341,6 @@
 					}
 				],
 				"children": []
-			},
-			{
-				"start": 249,
-				"end": 250,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

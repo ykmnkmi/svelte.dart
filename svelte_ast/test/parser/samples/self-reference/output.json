@@ -16,22 +16,74 @@
 						"start": 5,
 						"end": 10,
 						"class": "SimpleIdentifier",
-						"name": "depth",
-						"isAssignable": true
+						"token": {
+							"start": 5,
+							"end": 10,
+							"lexeme": "depth"
+						},
+						"name": "depth"
+					},
+					"operator": {
+						"start": 11,
+						"end": 12,
+						"lexeme": ">"
 					},
 					"rightOperand": {
 						"start": 13,
 						"end": 14,
 						"class": "IntegerLiteral",
-						"value": 1
+						"literal": {
+							"start": 13,
+							"end": 14,
+							"lexeme": "1"
+						}
+					},
+					"inConstantContext": false,
+					"isAssignable": false,
+					"unParenthesized": {
+						"start": 5,
+						"end": 14,
+						"class": "BinaryExpression",
+						"leftOperand": {
+							"start": 5,
+							"end": 10,
+							"class": "SimpleIdentifier",
+							"token": {
+								"start": 5,
+								"end": 10,
+								"lexeme": "depth"
+							},
+							"name": "depth"
+						},
+						"operator": {
+							"start": 11,
+							"end": 12,
+							"lexeme": ">"
+						},
+						"rightOperand": {
+							"start": 13,
+							"end": 14,
+							"class": "IntegerLiteral",
+							"literal": {
+								"start": 13,
+								"end": 14,
+								"lexeme": "1"
+							}
+						},
+						"inConstantContext": false,
+						"isAssignable": false,
+						"unParenthesized": "@seen"
 					}
 				},
+				"casePattern": null,
+				"whenExpression": null,
 				"children": [
 					{
 						"start": 17,
 						"end": 51,
 						"class": "InlineComponent",
 						"name": "svelte:self",
+						"expression": null,
 						"attributes": [
 							{
 								"start": 30,
@@ -51,14 +103,63 @@
 												"start": 38,
 												"end": 43,
 												"class": "SimpleIdentifier",
-												"name": "depth",
-												"isAssignable": true
+												"token": {
+													"start": 38,
+													"end": 43,
+													"lexeme": "depth"
+												},
+												"name": "depth"
+											},
+											"operator": {
+												"start": 44,
+												"end": 45,
+												"lexeme": "-"
 											},
 											"rightOperand": {
 												"start": 46,
 												"end": 47,
 												"class": "IntegerLiteral",
-												"value": 1
+												"literal": {
+													"start": 46,
+													"end": 47,
+													"lexeme": "1"
+												}
+											},
+											"inConstantContext": false,
+											"isAssignable": false,
+											"unParenthesized": {
+												"start": 38,
+												"end": 47,
+												"class": "BinaryExpression",
+												"leftOperand": {
+													"start": 38,
+													"end": 43,
+													"class": "SimpleIdentifier",
+													"token": {
+														"start": 38,
+														"end": 43,
+														"lexeme": "depth"
+													},
+													"name": "depth"
+												},
+												"operator": {
+													"start": 44,
+													"end": 45,
+													"lexeme": "-"
+												},
+												"rightOperand": {
+													"start": 46,
+													"end": 47,
+													"class": "IntegerLiteral",
+													"literal": {
+														"start": 46,
+														"end": 47,
+														"lexeme": "1"
+													}
+												},
+												"inConstantContext": false,
+												"isAssignable": false,
+												"unParenthesized": "@seen"
 											}
 										}
 									}
@@ -67,7 +168,9 @@
 						],
 						"children": []
 					}
-				]
+				],
+				"elseIf": false,
+				"elseBlock": null
 			}
 		]
 	}

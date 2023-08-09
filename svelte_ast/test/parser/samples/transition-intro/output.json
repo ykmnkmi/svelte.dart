@@ -6,7 +6,7 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 44,
+				"end": 45,
 				"class": "Element",
 				"name": "div",
 				"attributes": [
@@ -17,6 +17,7 @@
 						"name": "style",
 						"modifiers": [],
 						"intro": true,
+						"outro": false,
 						"expression": {
 							"start": 16,
 							"end": 28,
@@ -30,17 +31,44 @@
 										"start": 17,
 										"end": 24,
 										"class": "SimpleIdentifier",
-										"name": "opacity",
-										"isAssignable": true
+										"token": {
+											"start": 17,
+											"end": 24,
+											"lexeme": "opacity"
+										},
+										"name": "opacity"
+									},
+									"separator": {
+										"start": 24,
+										"end": 25,
+										"lexeme": ":"
 									},
 									"value": {
 										"start": 26,
 										"end": 27,
 										"class": "IntegerLiteral",
-										"value": 0
+										"literal": {
+											"start": 26,
+											"end": 27,
+											"lexeme": "0"
+										}
 									}
 								}
-							]
+							],
+							"isMap": false,
+							"isSet": false,
+							"leftBracket": {
+								"start": 16,
+								"end": 17,
+								"lexeme": "{"
+							},
+							"rightBracket": {
+								"start": 27,
+								"end": 28,
+								"lexeme": "}"
+							},
+							"isConst": false,
+							"typeArguments": null
 						}
 					}
 				],
@@ -53,13 +81,6 @@
 						"data": "fades in"
 					}
 				]
-			},
-			{
-				"start": 44,
-				"end": 45,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

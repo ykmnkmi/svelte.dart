@@ -6,9 +6,10 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 18,
+				"end": 19,
 				"class": "Element",
 				"name": "span",
+				"attributes": [],
 				"children": [
 					{
 						"start": 6,
@@ -18,13 +19,6 @@
 						"data": " "
 					}
 				]
-			},
-			{
-				"start": 18,
-				"end": 19,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

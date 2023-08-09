@@ -6,15 +6,17 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 41,
-				"class": "Element",
+				"end": 42,
+				"class": "Head",
 				"name": "svelte:head",
+				"attributes": [],
 				"children": [
 					{
 						"start": 13,
 						"end": 28,
 						"class": "Element",
 						"name": "style",
+						"attributes": [],
 						"children": [
 							{
 								"start": 20,
@@ -26,13 +28,6 @@
 						]
 					}
 				]
-			},
-			{
-				"start": 41,
-				"end": 42,
-				"class": "Text",
-				"raw": ">",
-				"data": ">"
 			}
 		]
 	}

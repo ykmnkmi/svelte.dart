@@ -24,8 +24,12 @@
 									"start": 20,
 									"end": 28,
 									"class": "SimpleIdentifier",
-									"name": "readonly",
-									"isAssignable": true
+									"token": {
+										"start": 20,
+										"end": 28,
+										"lexeme": "readonly"
+									},
+									"name": "readonly"
 								}
 							}
 						]

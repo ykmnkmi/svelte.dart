@@ -580,6 +580,8 @@ extension TagParser on Parser {
         error(invalidVoidContent(name), start);
       }
 
+      expect('>');
+
       while (parent is! Tag || parent.name != name) {
         if (parent is! Element) {
           if (lastAutoCloseTag case AutoCloseTag tag? when tag.tag == name) {

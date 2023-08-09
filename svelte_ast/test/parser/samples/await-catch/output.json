@@ -12,13 +12,23 @@
 					"start": 8,
 					"end": 18,
 					"class": "SimpleIdentifier",
-					"name": "thePromise",
-					"isAssignable": true
+					"token": {
+						"start": 8,
+						"end": 18,
+						"lexeme": "thePromise"
+					},
+					"name": "thePromise"
 				},
+				"value": null,
 				"error": {
 					"start": 47,
 					"end": 55,
-					"class": "AssignedVariablePattern"
+					"class": "AssignedVariablePattern",
+					"name": {
+						"start": 47,
+						"end": 55,
+						"lexeme": "theError"
+					}
 				},
 				"pendingBlock": {
 					"start": 0,
@@ -34,9 +44,10 @@
 						},
 						{
 							"start": 21,
-							"end": 37,
+							"end": 38,
 							"class": "Element",
 							"name": "p",
+							"attributes": [],
 							"children": [
 								{
 									"start": 24,
@@ -48,14 +59,15 @@
 							]
 						},
 						{
-							"start": 37,
+							"start": 38,
 							"end": 39,
 							"class": "Text",
-							"raw": ">\n",
-							"data": ">\n"
+							"raw": "\n",
+							"data": "\n"
 						}
 					]
 				},
+				"thenBlock": null,
 				"catchBlock": {
 					"start": 39,
 					"end": 91,
@@ -70,9 +82,10 @@
 						},
 						{
 							"start": 58,
-							"end": 89,
+							"end": 90,
 							"class": "Element",
 							"name": "p",
+							"attributes": [],
 							"children": [
 								{
 									"start": 61,
@@ -93,28 +106,41 @@
 											"start": 78,
 											"end": 85,
 											"class": "SimpleIdentifier",
-											"name": "message",
-											"isAssignable": true
+											"token": {
+												"start": 78,
+												"end": 85,
+												"lexeme": "message"
+											},
+											"name": "message"
+										},
+										"isDeferred": false,
+										"period": {
+											"start": 77,
+											"end": 78,
+											"lexeme": "."
 										},
 										"prefix": {
 											"start": 69,
 											"end": 77,
 											"class": "SimpleIdentifier",
-											"name": "theError",
-											"isAssignable": true
+											"token": {
+												"start": 69,
+												"end": 77,
+												"lexeme": "theError"
+											},
+											"name": "theError"
 										},
-										"name": "theError.message",
-										"isAssignable": true
+										"name": "theError.message"
 									}
 								}
 							]
 						},
 						{
-							"start": 89,
+							"start": 90,
 							"end": 91,
 							"class": "Text",
-							"raw": ">\n",
-							"data": ">\n"
+							"raw": "\n",
+							"data": "\n"
 						}
 					]
 				}

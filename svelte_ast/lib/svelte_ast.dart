@@ -21,12 +21,12 @@ final class SvelteAst {
 
   final Style? style;
 
-  Map<String, Object?> toJson() {
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
-      'html': html.toJson(),
-      if (style case Style style?) 'style': style.toJson(),
-      if (instance case Script instance?) 'instance': instance.toJson(),
-      if (module case Script module?) 'module': module.toJson(),
+      'html': html.toJson(mapper),
+      if (style case Style style?) 'style': style.toJson(mapper),
+      if (instance case Script instance?) 'instance': instance.toJson(mapper),
+      if (module case Script module?) 'module': module.toJson(mapper),
     };
   }
 }

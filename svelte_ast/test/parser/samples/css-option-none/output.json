@@ -6,9 +6,10 @@
 		"children": [
 			{
 				"start": 0,
-				"end": 13,
+				"end": 14,
 				"class": "Element",
 				"name": "div",
+				"attributes": [],
 				"children": [
 					{
 						"start": 5,
@@ -20,11 +21,11 @@
 				]
 			},
 			{
-				"start": 13,
+				"start": 14,
 				"end": 16,
 				"class": "Text",
-				"raw": ">\n\n",
-				"data": ">\n\n"
+				"raw": "\n\n",
+				"data": "\n\n"
 			}
 		]
 	}

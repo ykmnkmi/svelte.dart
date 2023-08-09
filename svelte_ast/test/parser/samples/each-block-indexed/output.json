@@ -12,21 +12,32 @@
 					"start": 7,
 					"end": 14,
 					"class": "SimpleIdentifier",
-					"name": "animals",
-					"isAssignable": true
+					"token": {
+						"start": 7,
+						"end": 14,
+						"lexeme": "animals"
+					},
+					"name": "animals"
 				},
 				"context": {
 					"start": 18,
 					"end": 24,
-					"class": "AssignedVariablePattern"
+					"class": "AssignedVariablePattern",
+					"name": {
+						"start": 18,
+						"end": 24,
+						"lexeme": "animal"
+					}
 				},
 				"index": "i",
+				"key": null,
 				"children": [
 					{
 						"start": 30,
-						"end": 49,
+						"end": 50,
 						"class": "Element",
 						"name": "p",
+						"attributes": [],
 						"children": [
 							{
 								"start": 33,
@@ -36,8 +47,12 @@
 									"start": 34,
 									"end": 35,
 									"class": "SimpleIdentifier",
-									"name": "i",
-									"isAssignable": true
+									"token": {
+										"start": 34,
+										"end": 35,
+										"lexeme": "i"
+									},
+									"name": "i"
 								}
 							},
 							{
@@ -55,20 +70,18 @@
 									"start": 39,
 									"end": 45,
 									"class": "SimpleIdentifier",
-									"name": "animal",
-									"isAssignable": true
+									"token": {
+										"start": 39,
+										"end": 45,
+										"lexeme": "animal"
+									},
+									"name": "animal"
 								}
 							}
 						]
-					},
-					{
-						"start": 49,
-						"end": 51,
-						"class": "Text",
-						"raw": ">\n",
-						"data": ">"
 					}
-				]
+				],
+				"elseBlock": null
 			}
 		]
 	}
