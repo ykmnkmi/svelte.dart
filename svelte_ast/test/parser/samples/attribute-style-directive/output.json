@@ -28,6 +28,7 @@
 									"token": {
 										"start": 18,
 										"end": 25,
+										"type": "IDENTIFIER",
 										"lexeme": "myColor"
 									},
 									"name": "myColor"

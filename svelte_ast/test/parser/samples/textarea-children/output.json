@@ -29,6 +29,7 @@
 							"token": {
 								"start": 41,
 								"end": 44,
+								"type": "IDENTIFIER",
 								"lexeme": "foo"
 							},
 							"name": "foo"

@@ -1,3074 +1,442 @@
 {
   "html": {
-    "start": -1,
-    "end": -1,
+    "start": 36,
+    "end": 94,
     "class": "Fragment",
-    "children": []
-  },
-  "instance": {
-    "start": 0,
-    "end": 181,
-    "class": "Script",
-    "context": "default",
-    "content": {
-      "start": 8,
-      "end": 172,
-      "data": "\n\timport 'package:svelte/svelte.dart' show onMount;\n\n\timport 'foo.dart' deferred as foo;\n\n\tonMount(() async {\n\t\tawait foo.loadLibrary();\n\t\tprint(foo.message);\n\t});\n"
-    },
-    "body": [
+    "children": [
       {
-        "start": 10,
-        "end": 59,
-        "class": "ImportDirective",
-        "importKeyword": {
-          "start": 10,
-          "end": 16,
-          "lexeme": "import"
-        },
-        "prefix": null,
-        "combinators": [
+        "start": 35,
+        "end": 36,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 36,
+        "end": 94,
+        "class": "Element",
+        "name": "button",
+        "attributes": [
           {
-            "start": 46,
-            "end": 58,
-            "class": "ShowCombinator",
-            "shownNames": [
-              {
-                "start": 51,
-                "end": 58,
-                "class": "SimpleIdentifier",
-                "token": {
-                  "start": 51,
-                  "end": 58,
-                  "lexeme": "onMount"
-                },
-                "name": "onMount"
-              }
-            ],
-            "keyword": {
-              "start": 46,
-              "end": 50,
-              "lexeme": "show"
-            }
-          }
-        ],
-        "configurations": [],
-        "semicolon": {
-          "start": 58,
-          "end": 59,
-          "lexeme": ";"
-        }
-      },
-      {
-        "start": 62,
-        "end": 96,
-        "class": "ImportDirective",
-        "importKeyword": {
-          "start": 62,
-          "end": 68,
-          "lexeme": "import"
-        },
-        "prefix": {
-          "start": 92,
-          "end": 95,
-          "class": "SimpleIdentifier",
-          "token": {
-            "start": 92,
-            "end": 95,
-            "lexeme": "foo"
-          },
-          "name": "foo"
-        },
-        "combinators": [],
-        "configurations": [],
-        "semicolon": {
-          "start": 95,
-          "end": 96,
-          "lexeme": ";"
-        }
-      },
-      {
-        "start": 99,
-        "end": 171,
-        "class": "ExpressionStatement",
-        "expression": {
-          "start": 99,
-          "end": 170,
-          "class": "MethodInvocation",
-          "isCascaded": false,
-          "isNullAware": false,
-          "methodName": {
-            "start": 99,
-            "end": 106,
-            "class": "SimpleIdentifier",
-            "token": {
-              "start": 99,
-              "end": 106,
-              "lexeme": "onMount"
-            },
-            "name": "onMount"
-          },
-          "realTarget": null,
-          "target": null,
-          "nullShortingTermination": "@seen",
-          "argumentList": {
-            "start": 106,
-            "end": 170,
-            "class": "ArgumentList",
-            "arguments": [
-              {
-                "start": 107,
-                "end": 169,
-                "class": "FunctionExpression",
-                "body": {
-                  "start": 110,
-                  "end": 169,
-                  "class": "BlockFunctionBody",
-                  "block": {
-                    "start": 116,
-                    "end": 169,
-                    "class": "Block",
-                    "leftBracket": {
-                      "start": 116,
-                      "end": 117,
-                      "lexeme": "{"
+            "start": 44,
+            "end": 70,
+            "type": "EventHandler",
+            "name": "click",
+            "modifiers": [],
+            "expression": {
+              "start": 55,
+              "end": 68,
+              "class": "FunctionExpression",
+              "body": {
+                "start": 58,
+                "end": 68,
+                "class": "ExpressionFunctionBody",
+                "expression": {
+                  "start": 61,
+                  "end": 68,
+                  "class": "PostfixExpression",
+                  "operand": {
+                    "start": 61,
+                    "end": 66,
+                    "class": "SimpleIdentifier",
+                    "token": {
+                      "start": 61,
+                      "end": 66,
+                      "type": "IDENTIFIER",
+                      "lexeme": "count"
                     },
-                    "rightBracket": {
-                      "start": 168,
-                      "end": 169,
-                      "lexeme": "}"
-                    },
-                    "statements": [
-                      {
-                        "start": 120,
-                        "end": 144,
-                        "class": "ExpressionStatement",
-                        "expression": {
-                          "start": 120,
-                          "end": 143,
-                          "class": "AwaitExpression",
-                          "awaitKeyword": {
-                            "start": 120,
-                            "end": 125,
-                            "lexeme": "await"
-                          },
-                          "expression": {
-                            "start": 126,
-                            "end": 143,
-                            "class": "MethodInvocation",
-                            "isCascaded": false,
-                            "isNullAware": false,
-                            "methodName": {
-                              "start": 130,
-                              "end": 141,
-                              "class": "SimpleIdentifier",
-                              "token": {
-                                "start": 130,
-                                "end": 141,
-                                "lexeme": "loadLibrary"
-                              },
-                              "name": "loadLibrary"
-                            },
-                            "realTarget": {
-                              "start": 126,
-                              "end": 129,
-                              "class": "SimpleIdentifier",
-                              "token": {
-                                "start": 126,
-                                "end": 129,
-                                "lexeme": "foo"
-                              },
-                              "name": "foo"
-                            },
-                            "target": {
-                              "start": 126,
-                              "end": 129,
-                              "class": "SimpleIdentifier",
-                              "token": {
-                                "start": 126,
-                                "end": 129,
-                                "lexeme": "foo"
-                              },
-                              "name": "foo"
-                            },
-                            "nullShortingTermination": "@seen",
-                            "argumentList": {
-                              "start": 141,
-                              "end": 143,
-                              "class": "ArgumentList",
-                              "arguments": [],
-                              "leftParenthesis": {
-                                "start": 141,
-                                "end": 142,
-                                "lexeme": "("
-                              },
-                              "rightParenthesis": {
-                                "start": 142,
-                                "end": 143,
-                                "lexeme": ")"
-                              },
-                              "beginToken": {
-                                "start": 141,
-                                "end": 142,
-                                "lexeme": "("
-                              },
-                              "endToken": {
-                                "start": 142,
-                                "end": 143,
-                                "lexeme": ")"
-                              },
-                              "isSynthetic": false,
-                              "parent": "@seen",
-                              "root": {
-                                "start": 99,
-                                "end": 171,
-                                "class": "ExpressionStatement",
-                                "expression": "@seen",
-                                "unlabeled": "@seen"
-                              }
-                            },
-                            "function": {
-                              "start": 130,
-                              "end": 141,
-                              "class": "SimpleIdentifier",
-                              "token": {
-                                "start": 130,
-                                "end": 141,
-                                "lexeme": "loadLibrary"
-                              },
-                              "name": "loadLibrary"
-                            },
-                            "typeArguments": null
-                          },
-                          "inConstantContext": false,
-                          "isAssignable": false,
-                          "unParenthesized": "@seen"
-                        },
-                        "unlabeled": {
-                          "start": 120,
-                          "end": 144,
-                          "class": "ExpressionStatement",
-                          "expression": {
-                            "start": 120,
-                            "end": 143,
-                            "class": "AwaitExpression",
-                            "awaitKeyword": {
-                              "start": 120,
-                              "end": 125,
-                              "lexeme": "await"
-                            },
-                            "expression": {
-                              "start": 126,
-                              "end": 143,
-                              "class": "MethodInvocation",
-                              "isCascaded": false,
-                              "isNullAware": false,
-                              "methodName": {
-                                "start": 130,
-                                "end": 141,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "lexeme": "loadLibrary"
-                                },
-                                "name": "loadLibrary"
-                              },
-                              "realTarget": {
-                                "start": 126,
-                                "end": 129,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "lexeme": "foo"
-                                },
-                                "name": "foo"
-                              },
-                              "target": {
-                                "start": 126,
-                                "end": 129,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "lexeme": "foo"
-                                },
-                                "name": "foo"
-                              },
-                              "nullShortingTermination": "@seen",
-                              "argumentList": {
-                                "start": 141,
-                                "end": 143,
-                                "class": "ArgumentList",
-                                "arguments": [],
-                                "leftParenthesis": {
-                                  "start": 141,
-                                  "end": 142,
-                                  "lexeme": "("
-                                },
-                                "rightParenthesis": {
-                                  "start": 142,
-                                  "end": 143,
-                                  "lexeme": ")"
-                                },
-                                "beginToken": {
-                                  "start": 141,
-                                  "end": 142,
-                                  "lexeme": "("
-                                },
-                                "endToken": {
-                                  "start": 142,
-                                  "end": 143,
-                                  "lexeme": ")"
-                                },
-                                "isSynthetic": false,
-                                "parent": "@seen",
-                                "root": {
-                                  "start": 99,
-                                  "end": 171,
-                                  "class": "ExpressionStatement",
-                                  "expression": "@seen",
-                                  "unlabeled": "@seen"
-                                }
-                              },
-                              "function": {
-                                "start": 130,
-                                "end": 141,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "lexeme": "loadLibrary"
-                                },
-                                "name": "loadLibrary"
-                              },
-                              "typeArguments": null
-                            },
-                            "inConstantContext": false,
-                            "isAssignable": false,
-                            "unParenthesized": "@seen"
-                          },
-                          "unlabeled": "@seen"
-                        }
-                      },
-                      {
-                        "start": 147,
-                        "end": 166,
-                        "class": "ExpressionStatement",
-                        "expression": {
-                          "start": 147,
-                          "end": 165,
-                          "class": "MethodInvocation",
-                          "isCascaded": false,
-                          "isNullAware": false,
-                          "methodName": {
-                            "start": 147,
-                            "end": 152,
-                            "class": "SimpleIdentifier",
-                            "token": {
-                              "start": 147,
-                              "end": 152,
-                              "lexeme": "print"
-                            },
-                            "name": "print"
-                          },
-                          "realTarget": null,
-                          "target": null,
-                          "nullShortingTermination": "@seen",
-                          "argumentList": {
-                            "start": 152,
-                            "end": 165,
-                            "class": "ArgumentList",
-                            "arguments": [
-                              {
-                                "start": 153,
-                                "end": 164,
-                                "class": "PrefixedIdentifier",
-                                "identifier": {
-                                  "start": 157,
-                                  "end": 164,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 157,
-                                    "end": 164,
-                                    "lexeme": "message"
-                                  },
-                                  "name": "message"
-                                },
-                                "isDeferred": false,
-                                "period": {
-                                  "start": 156,
-                                  "end": 157,
-                                  "lexeme": "."
-                                },
-                                "prefix": {
-                                  "start": 153,
-                                  "end": 156,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 153,
-                                    "end": 156,
-                                    "lexeme": "foo"
-                                  },
-                                  "name": "foo"
-                                },
-                                "name": "foo.message"
-                              }
-                            ],
-                            "leftParenthesis": {
-                              "start": 152,
-                              "end": 153,
-                              "lexeme": "("
-                            },
-                            "rightParenthesis": {
-                              "start": 164,
-                              "end": 165,
-                              "lexeme": ")"
-                            },
-                            "beginToken": {
-                              "start": 152,
-                              "end": 153,
-                              "lexeme": "("
-                            },
-                            "endToken": {
-                              "start": 164,
-                              "end": 165,
-                              "lexeme": ")"
-                            },
-                            "isSynthetic": false,
-                            "parent": "@seen",
-                            "root": {
-                              "start": 99,
-                              "end": 171,
-                              "class": "ExpressionStatement",
-                              "expression": "@seen",
-                              "unlabeled": "@seen"
-                            }
-                          },
-                          "function": {
-                            "start": 147,
-                            "end": 152,
-                            "class": "SimpleIdentifier",
-                            "token": {
-                              "start": 147,
-                              "end": 152,
-                              "lexeme": "print"
-                            },
-                            "name": "print"
-                          },
-                          "typeArguments": null
-                        },
-                        "unlabeled": {
-                          "start": 147,
-                          "end": 166,
-                          "class": "ExpressionStatement",
-                          "expression": {
-                            "start": 147,
-                            "end": 165,
-                            "class": "MethodInvocation",
-                            "isCascaded": false,
-                            "isNullAware": false,
-                            "methodName": {
-                              "start": 147,
-                              "end": 152,
-                              "class": "SimpleIdentifier",
-                              "token": {
-                                "start": 147,
-                                "end": 152,
-                                "lexeme": "print"
-                              },
-                              "name": "print"
-                            },
-                            "realTarget": null,
-                            "target": null,
-                            "nullShortingTermination": "@seen",
-                            "argumentList": {
-                              "start": 152,
-                              "end": 165,
-                              "class": "ArgumentList",
-                              "arguments": [
-                                {
-                                  "start": 153,
-                                  "end": 164,
-                                  "class": "PrefixedIdentifier",
-                                  "identifier": {
-                                    "start": 157,
-                                    "end": 164,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 157,
-                                      "end": 164,
-                                      "lexeme": "message"
-                                    },
-                                    "name": "message"
-                                  },
-                                  "isDeferred": false,
-                                  "period": {
-                                    "start": 156,
-                                    "end": 157,
-                                    "lexeme": "."
-                                  },
-                                  "prefix": {
-                                    "start": 153,
-                                    "end": 156,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 153,
-                                      "end": 156,
-                                      "lexeme": "foo"
-                                    },
-                                    "name": "foo"
-                                  },
-                                  "name": "foo.message"
-                                }
-                              ],
-                              "leftParenthesis": {
-                                "start": 152,
-                                "end": 153,
-                                "lexeme": "("
-                              },
-                              "rightParenthesis": {
-                                "start": 164,
-                                "end": 165,
-                                "lexeme": ")"
-                              },
-                              "beginToken": {
-                                "start": 152,
-                                "end": 153,
-                                "lexeme": "("
-                              },
-                              "endToken": {
-                                "start": 164,
-                                "end": 165,
-                                "lexeme": ")"
-                              },
-                              "isSynthetic": false,
-                              "parent": "@seen",
-                              "root": {
-                                "start": 99,
-                                "end": 171,
-                                "class": "ExpressionStatement",
-                                "expression": "@seen",
-                                "unlabeled": "@seen"
-                              }
-                            },
-                            "function": {
-                              "start": 147,
-                              "end": 152,
-                              "class": "SimpleIdentifier",
-                              "token": {
-                                "start": 147,
-                                "end": 152,
-                                "lexeme": "print"
-                              },
-                              "name": "print"
-                            },
-                            "typeArguments": null
-                          },
-                          "unlabeled": "@seen"
-                        }
-                      }
-                    ],
-                    "unlabeled": "@seen"
+                    "name": "count"
                   },
-                  "isAsynchronous": true,
-                  "isGenerator": false,
-                  "isSynchronous": false
+                  "operator": {
+                    "start": 66,
+                    "end": 68,
+                    "type": "PLUS_PLUS",
+                    "lexeme": "++"
+                  },
+                  "inConstantContext": false,
+                  "isAssignable": false,
+                  "unParenthesized": "@seen",
+                  "nullShortingTermination": "@seen"
                 },
-                "parameters": {
-                  "start": 107,
-                  "end": 109,
-                  "class": "FormalParameterList",
-                  "leftParenthesis": {
-                    "start": 107,
-                    "end": 108,
-                    "lexeme": "("
-                  },
-                  "parameters": [],
-                  "rightParenthesis": {
-                    "start": 108,
-                    "end": 109,
-                    "lexeme": ")"
-                  },
-                  "beginToken": {
-                    "start": 107,
-                    "end": 108,
-                    "lexeme": "("
-                  },
-                  "endToken": {
-                    "start": 108,
-                    "end": 109,
-                    "lexeme": ")"
-                  },
-                  "isSynthetic": false,
-                  "parent": {
-                    "start": 107,
-                    "end": 169,
-                    "class": "FunctionExpression",
-                    "body": {
-                      "start": 110,
-                      "end": 169,
-                      "class": "BlockFunctionBody",
-                      "block": {
-                        "start": 116,
-                        "end": 169,
-                        "class": "Block",
-                        "leftBracket": {
-                          "start": 116,
-                          "end": 117,
-                          "lexeme": "{"
-                        },
-                        "rightBracket": {
-                          "start": 168,
-                          "end": 169,
-                          "lexeme": "}"
-                        },
-                        "statements": [
-                          {
-                            "start": 120,
-                            "end": 144,
-                            "class": "ExpressionStatement",
-                            "expression": {
-                              "start": 120,
-                              "end": 143,
-                              "class": "AwaitExpression",
-                              "awaitKeyword": {
-                                "start": 120,
-                                "end": 125,
-                                "lexeme": "await"
-                              },
-                              "expression": {
-                                "start": 126,
-                                "end": 143,
-                                "class": "MethodInvocation",
-                                "isCascaded": false,
-                                "isNullAware": false,
-                                "methodName": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "lexeme": "loadLibrary"
-                                  },
-                                  "name": "loadLibrary"
-                                },
-                                "realTarget": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "lexeme": "foo"
-                                  },
-                                  "name": "foo"
-                                },
-                                "target": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "lexeme": "foo"
-                                  },
-                                  "name": "foo"
-                                },
-                                "nullShortingTermination": "@seen",
-                                "argumentList": {
-                                  "start": 141,
-                                  "end": 143,
-                                  "class": "ArgumentList",
-                                  "arguments": [],
-                                  "leftParenthesis": {
-                                    "start": 141,
-                                    "end": 142,
-                                    "lexeme": "("
-                                  },
-                                  "rightParenthesis": {
-                                    "start": 142,
-                                    "end": 143,
-                                    "lexeme": ")"
-                                  },
-                                  "beginToken": {
-                                    "start": 141,
-                                    "end": 142,
-                                    "lexeme": "("
-                                  },
-                                  "endToken": {
-                                    "start": 142,
-                                    "end": 143,
-                                    "lexeme": ")"
-                                  },
-                                  "isSynthetic": false,
-                                  "parent": "@seen",
-                                  "root": {
-                                    "start": 99,
-                                    "end": 171,
-                                    "class": "ExpressionStatement",
-                                    "expression": "@seen",
-                                    "unlabeled": "@seen"
-                                  }
-                                },
-                                "function": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "lexeme": "loadLibrary"
-                                  },
-                                  "name": "loadLibrary"
-                                },
-                                "typeArguments": null
-                              },
-                              "inConstantContext": false,
-                              "isAssignable": false,
-                              "unParenthesized": "@seen"
-                            },
-                            "unlabeled": {
-                              "start": 120,
-                              "end": 144,
-                              "class": "ExpressionStatement",
-                              "expression": {
-                                "start": 120,
-                                "end": 143,
-                                "class": "AwaitExpression",
-                                "awaitKeyword": {
-                                  "start": 120,
-                                  "end": 125,
-                                  "lexeme": "await"
-                                },
-                                "expression": {
-                                  "start": 126,
-                                  "end": 143,
-                                  "class": "MethodInvocation",
-                                  "isCascaded": false,
-                                  "isNullAware": false,
-                                  "methodName": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 130,
-                                      "end": 141,
-                                      "lexeme": "loadLibrary"
-                                    },
-                                    "name": "loadLibrary"
-                                  },
-                                  "realTarget": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 126,
-                                      "end": 129,
-                                      "lexeme": "foo"
-                                    },
-                                    "name": "foo"
-                                  },
-                                  "target": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 126,
-                                      "end": 129,
-                                      "lexeme": "foo"
-                                    },
-                                    "name": "foo"
-                                  },
-                                  "nullShortingTermination": "@seen",
-                                  "argumentList": {
-                                    "start": 141,
-                                    "end": 143,
-                                    "class": "ArgumentList",
-                                    "arguments": [],
-                                    "leftParenthesis": {
-                                      "start": 141,
-                                      "end": 142,
-                                      "lexeme": "("
-                                    },
-                                    "rightParenthesis": {
-                                      "start": 142,
-                                      "end": 143,
-                                      "lexeme": ")"
-                                    },
-                                    "beginToken": {
-                                      "start": 141,
-                                      "end": 142,
-                                      "lexeme": "("
-                                    },
-                                    "endToken": {
-                                      "start": 142,
-                                      "end": 143,
-                                      "lexeme": ")"
-                                    },
-                                    "isSynthetic": false,
-                                    "parent": "@seen",
-                                    "root": {
-                                      "start": 99,
-                                      "end": 171,
-                                      "class": "ExpressionStatement",
-                                      "expression": "@seen",
-                                      "unlabeled": "@seen"
-                                    }
-                                  },
-                                  "function": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 130,
-                                      "end": 141,
-                                      "lexeme": "loadLibrary"
-                                    },
-                                    "name": "loadLibrary"
-                                  },
-                                  "typeArguments": null
-                                },
-                                "inConstantContext": false,
-                                "isAssignable": false,
-                                "unParenthesized": "@seen"
-                              },
-                              "unlabeled": "@seen"
-                            }
-                          },
-                          {
-                            "start": 147,
-                            "end": 166,
-                            "class": "ExpressionStatement",
-                            "expression": {
-                              "start": 147,
-                              "end": 165,
-                              "class": "MethodInvocation",
-                              "isCascaded": false,
-                              "isNullAware": false,
-                              "methodName": {
-                                "start": 147,
-                                "end": 152,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "lexeme": "print"
-                                },
-                                "name": "print"
-                              },
-                              "realTarget": null,
-                              "target": null,
-                              "nullShortingTermination": "@seen",
-                              "argumentList": {
-                                "start": 152,
-                                "end": 165,
-                                "class": "ArgumentList",
-                                "arguments": [
-                                  {
-                                    "start": 153,
-                                    "end": 164,
-                                    "class": "PrefixedIdentifier",
-                                    "identifier": {
-                                      "start": 157,
-                                      "end": 164,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 157,
-                                        "end": 164,
-                                        "lexeme": "message"
-                                      },
-                                      "name": "message"
-                                    },
-                                    "isDeferred": false,
-                                    "period": {
-                                      "start": 156,
-                                      "end": 157,
-                                      "lexeme": "."
-                                    },
-                                    "prefix": {
-                                      "start": 153,
-                                      "end": 156,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 153,
-                                        "end": 156,
-                                        "lexeme": "foo"
-                                      },
-                                      "name": "foo"
-                                    },
-                                    "name": "foo.message"
-                                  }
-                                ],
-                                "leftParenthesis": {
-                                  "start": 152,
-                                  "end": 153,
-                                  "lexeme": "("
-                                },
-                                "rightParenthesis": {
-                                  "start": 164,
-                                  "end": 165,
-                                  "lexeme": ")"
-                                },
-                                "beginToken": {
-                                  "start": 152,
-                                  "end": 153,
-                                  "lexeme": "("
-                                },
-                                "endToken": {
-                                  "start": 164,
-                                  "end": 165,
-                                  "lexeme": ")"
-                                },
-                                "isSynthetic": false,
-                                "parent": "@seen",
-                                "root": {
-                                  "start": 99,
-                                  "end": 171,
-                                  "class": "ExpressionStatement",
-                                  "expression": "@seen",
-                                  "unlabeled": "@seen"
-                                }
-                              },
-                              "function": {
-                                "start": 147,
-                                "end": 152,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "lexeme": "print"
-                                },
-                                "name": "print"
-                              },
-                              "typeArguments": null
-                            },
-                            "unlabeled": {
-                              "start": 147,
-                              "end": 166,
-                              "class": "ExpressionStatement",
-                              "expression": {
-                                "start": 147,
-                                "end": 165,
-                                "class": "MethodInvocation",
-                                "isCascaded": false,
-                                "isNullAware": false,
-                                "methodName": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 147,
-                                    "end": 152,
-                                    "lexeme": "print"
-                                  },
-                                  "name": "print"
-                                },
-                                "realTarget": null,
-                                "target": null,
-                                "nullShortingTermination": "@seen",
-                                "argumentList": {
-                                  "start": 152,
-                                  "end": 165,
-                                  "class": "ArgumentList",
-                                  "arguments": [
-                                    {
-                                      "start": 153,
-                                      "end": 164,
-                                      "class": "PrefixedIdentifier",
-                                      "identifier": {
-                                        "start": 157,
-                                        "end": 164,
-                                        "class": "SimpleIdentifier",
-                                        "token": {
-                                          "start": 157,
-                                          "end": 164,
-                                          "lexeme": "message"
-                                        },
-                                        "name": "message"
-                                      },
-                                      "isDeferred": false,
-                                      "period": {
-                                        "start": 156,
-                                        "end": 157,
-                                        "lexeme": "."
-                                      },
-                                      "prefix": {
-                                        "start": 153,
-                                        "end": 156,
-                                        "class": "SimpleIdentifier",
-                                        "token": {
-                                          "start": 153,
-                                          "end": 156,
-                                          "lexeme": "foo"
-                                        },
-                                        "name": "foo"
-                                      },
-                                      "name": "foo.message"
-                                    }
-                                  ],
-                                  "leftParenthesis": {
-                                    "start": 152,
-                                    "end": 153,
-                                    "lexeme": "("
-                                  },
-                                  "rightParenthesis": {
-                                    "start": 164,
-                                    "end": 165,
-                                    "lexeme": ")"
-                                  },
-                                  "beginToken": {
-                                    "start": 152,
-                                    "end": 153,
-                                    "lexeme": "("
-                                  },
-                                  "endToken": {
-                                    "start": 164,
-                                    "end": 165,
-                                    "lexeme": ")"
-                                  },
-                                  "isSynthetic": false,
-                                  "parent": "@seen",
-                                  "root": {
-                                    "start": 99,
-                                    "end": 171,
-                                    "class": "ExpressionStatement",
-                                    "expression": "@seen",
-                                    "unlabeled": "@seen"
-                                  }
-                                },
-                                "function": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 147,
-                                    "end": 152,
-                                    "lexeme": "print"
-                                  },
-                                  "name": "print"
-                                },
-                                "typeArguments": null
-                              },
-                              "unlabeled": "@seen"
-                            }
-                          }
-                        ],
-                        "unlabeled": "@seen"
-                      },
-                      "isAsynchronous": true,
-                      "isGenerator": false,
-                      "isSynchronous": false
-                    },
-                    "parameters": "@seen",
-                    "typeParameters": null,
-                    "inConstantContext": false,
-                    "isAssignable": false,
-                    "unParenthesized": "@seen"
-                  },
-                  "root": {
-                    "start": 99,
-                    "end": 171,
-                    "class": "ExpressionStatement",
-                    "expression": "@seen",
-                    "unlabeled": "@seen"
-                  }
+                "functionDefinition": {
+                  "start": 58,
+                  "end": 60,
+                  "type": "FUNCTION",
+                  "lexeme": "=>"
                 },
-                "typeParameters": null,
-                "inConstantContext": false,
-                "isAssignable": false,
-                "unParenthesized": {
-                  "start": 107,
-                  "end": 169,
+                "isAsynchronous": false,
+                "isGenerator": false,
+                "isSynchronous": true
+              },
+              "parameters": {
+                "start": 55,
+                "end": 57,
+                "class": "FormalParameterList",
+                "leftParenthesis": {
+                  "start": 55,
+                  "end": 56,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "parameters": [],
+                "rightParenthesis": {
+                  "start": 56,
+                  "end": 57,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "beginToken": {
+                  "start": 55,
+                  "end": 56,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "endToken": {
+                  "start": 56,
+                  "end": 57,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "isSynthetic": false,
+                "parent": {
+                  "start": 55,
+                  "end": 68,
                   "class": "FunctionExpression",
                   "body": {
-                    "start": 110,
-                    "end": 169,
-                    "class": "BlockFunctionBody",
-                    "block": {
-                      "start": 116,
-                      "end": 169,
-                      "class": "Block",
-                      "leftBracket": {
-                        "start": 116,
-                        "end": 117,
-                        "lexeme": "{"
-                      },
-                      "rightBracket": {
-                        "start": 168,
-                        "end": 169,
-                        "lexeme": "}"
-                      },
-                      "statements": [
-                        {
-                          "start": 120,
-                          "end": 144,
-                          "class": "ExpressionStatement",
-                          "expression": {
-                            "start": 120,
-                            "end": 143,
-                            "class": "AwaitExpression",
-                            "awaitKeyword": {
-                              "start": 120,
-                              "end": 125,
-                              "lexeme": "await"
-                            },
-                            "expression": {
-                              "start": 126,
-                              "end": 143,
-                              "class": "MethodInvocation",
-                              "isCascaded": false,
-                              "isNullAware": false,
-                              "methodName": {
-                                "start": 130,
-                                "end": 141,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "lexeme": "loadLibrary"
-                                },
-                                "name": "loadLibrary"
-                              },
-                              "realTarget": {
-                                "start": 126,
-                                "end": 129,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "lexeme": "foo"
-                                },
-                                "name": "foo"
-                              },
-                              "target": {
-                                "start": 126,
-                                "end": 129,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "lexeme": "foo"
-                                },
-                                "name": "foo"
-                              },
-                              "nullShortingTermination": "@seen",
-                              "argumentList": {
-                                "start": 141,
-                                "end": 143,
-                                "class": "ArgumentList",
-                                "arguments": [],
-                                "leftParenthesis": {
-                                  "start": 141,
-                                  "end": 142,
-                                  "lexeme": "("
-                                },
-                                "rightParenthesis": {
-                                  "start": 142,
-                                  "end": 143,
-                                  "lexeme": ")"
-                                },
-                                "beginToken": {
-                                  "start": 141,
-                                  "end": 142,
-                                  "lexeme": "("
-                                },
-                                "endToken": {
-                                  "start": 142,
-                                  "end": 143,
-                                  "lexeme": ")"
-                                },
-                                "isSynthetic": false,
-                                "parent": "@seen",
-                                "root": {
-                                  "start": 99,
-                                  "end": 171,
-                                  "class": "ExpressionStatement",
-                                  "expression": "@seen",
-                                  "unlabeled": "@seen"
-                                }
-                              },
-                              "function": {
-                                "start": 130,
-                                "end": 141,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "lexeme": "loadLibrary"
-                                },
-                                "name": "loadLibrary"
-                              },
-                              "typeArguments": null
-                            },
-                            "inConstantContext": false,
-                            "isAssignable": false,
-                            "unParenthesized": "@seen"
-                          },
-                          "unlabeled": {
-                            "start": 120,
-                            "end": 144,
-                            "class": "ExpressionStatement",
-                            "expression": {
-                              "start": 120,
-                              "end": 143,
-                              "class": "AwaitExpression",
-                              "awaitKeyword": {
-                                "start": 120,
-                                "end": 125,
-                                "lexeme": "await"
-                              },
-                              "expression": {
-                                "start": 126,
-                                "end": 143,
-                                "class": "MethodInvocation",
-                                "isCascaded": false,
-                                "isNullAware": false,
-                                "methodName": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "lexeme": "loadLibrary"
-                                  },
-                                  "name": "loadLibrary"
-                                },
-                                "realTarget": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "lexeme": "foo"
-                                  },
-                                  "name": "foo"
-                                },
-                                "target": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "lexeme": "foo"
-                                  },
-                                  "name": "foo"
-                                },
-                                "nullShortingTermination": "@seen",
-                                "argumentList": {
-                                  "start": 141,
-                                  "end": 143,
-                                  "class": "ArgumentList",
-                                  "arguments": [],
-                                  "leftParenthesis": {
-                                    "start": 141,
-                                    "end": 142,
-                                    "lexeme": "("
-                                  },
-                                  "rightParenthesis": {
-                                    "start": 142,
-                                    "end": 143,
-                                    "lexeme": ")"
-                                  },
-                                  "beginToken": {
-                                    "start": 141,
-                                    "end": 142,
-                                    "lexeme": "("
-                                  },
-                                  "endToken": {
-                                    "start": 142,
-                                    "end": 143,
-                                    "lexeme": ")"
-                                  },
-                                  "isSynthetic": false,
-                                  "parent": "@seen",
-                                  "root": {
-                                    "start": 99,
-                                    "end": 171,
-                                    "class": "ExpressionStatement",
-                                    "expression": "@seen",
-                                    "unlabeled": "@seen"
-                                  }
-                                },
-                                "function": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "lexeme": "loadLibrary"
-                                  },
-                                  "name": "loadLibrary"
-                                },
-                                "typeArguments": null
-                              },
-                              "inConstantContext": false,
-                              "isAssignable": false,
-                              "unParenthesized": "@seen"
-                            },
-                            "unlabeled": "@seen"
-                          }
+                    "start": 58,
+                    "end": 68,
+                    "class": "ExpressionFunctionBody",
+                    "expression": {
+                      "start": 61,
+                      "end": 68,
+                      "class": "PostfixExpression",
+                      "operand": {
+                        "start": 61,
+                        "end": 66,
+                        "class": "SimpleIdentifier",
+                        "token": {
+                          "start": 61,
+                          "end": 66,
+                          "type": "IDENTIFIER",
+                          "lexeme": "count"
                         },
-                        {
-                          "start": 147,
-                          "end": 166,
-                          "class": "ExpressionStatement",
-                          "expression": {
-                            "start": 147,
-                            "end": 165,
-                            "class": "MethodInvocation",
-                            "isCascaded": false,
-                            "isNullAware": false,
-                            "methodName": {
-                              "start": 147,
-                              "end": 152,
-                              "class": "SimpleIdentifier",
-                              "token": {
-                                "start": 147,
-                                "end": 152,
-                                "lexeme": "print"
-                              },
-                              "name": "print"
-                            },
-                            "realTarget": null,
-                            "target": null,
-                            "nullShortingTermination": "@seen",
-                            "argumentList": {
-                              "start": 152,
-                              "end": 165,
-                              "class": "ArgumentList",
-                              "arguments": [
-                                {
-                                  "start": 153,
-                                  "end": 164,
-                                  "class": "PrefixedIdentifier",
-                                  "identifier": {
-                                    "start": 157,
-                                    "end": 164,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 157,
-                                      "end": 164,
-                                      "lexeme": "message"
-                                    },
-                                    "name": "message"
-                                  },
-                                  "isDeferred": false,
-                                  "period": {
-                                    "start": 156,
-                                    "end": 157,
-                                    "lexeme": "."
-                                  },
-                                  "prefix": {
-                                    "start": 153,
-                                    "end": 156,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 153,
-                                      "end": 156,
-                                      "lexeme": "foo"
-                                    },
-                                    "name": "foo"
-                                  },
-                                  "name": "foo.message"
-                                }
-                              ],
-                              "leftParenthesis": {
-                                "start": 152,
-                                "end": 153,
-                                "lexeme": "("
-                              },
-                              "rightParenthesis": {
-                                "start": 164,
-                                "end": 165,
-                                "lexeme": ")"
-                              },
-                              "beginToken": {
-                                "start": 152,
-                                "end": 153,
-                                "lexeme": "("
-                              },
-                              "endToken": {
-                                "start": 164,
-                                "end": 165,
-                                "lexeme": ")"
-                              },
-                              "isSynthetic": false,
-                              "parent": "@seen",
-                              "root": {
-                                "start": 99,
-                                "end": 171,
-                                "class": "ExpressionStatement",
-                                "expression": "@seen",
-                                "unlabeled": "@seen"
-                              }
-                            },
-                            "function": {
-                              "start": 147,
-                              "end": 152,
-                              "class": "SimpleIdentifier",
-                              "token": {
-                                "start": 147,
-                                "end": 152,
-                                "lexeme": "print"
-                              },
-                              "name": "print"
-                            },
-                            "typeArguments": null
-                          },
-                          "unlabeled": {
-                            "start": 147,
-                            "end": 166,
-                            "class": "ExpressionStatement",
-                            "expression": {
-                              "start": 147,
-                              "end": 165,
-                              "class": "MethodInvocation",
-                              "isCascaded": false,
-                              "isNullAware": false,
-                              "methodName": {
-                                "start": 147,
-                                "end": 152,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "lexeme": "print"
-                                },
-                                "name": "print"
-                              },
-                              "realTarget": null,
-                              "target": null,
-                              "nullShortingTermination": "@seen",
-                              "argumentList": {
-                                "start": 152,
-                                "end": 165,
-                                "class": "ArgumentList",
-                                "arguments": [
-                                  {
-                                    "start": 153,
-                                    "end": 164,
-                                    "class": "PrefixedIdentifier",
-                                    "identifier": {
-                                      "start": 157,
-                                      "end": 164,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 157,
-                                        "end": 164,
-                                        "lexeme": "message"
-                                      },
-                                      "name": "message"
-                                    },
-                                    "isDeferred": false,
-                                    "period": {
-                                      "start": 156,
-                                      "end": 157,
-                                      "lexeme": "."
-                                    },
-                                    "prefix": {
-                                      "start": 153,
-                                      "end": 156,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 153,
-                                        "end": 156,
-                                        "lexeme": "foo"
-                                      },
-                                      "name": "foo"
-                                    },
-                                    "name": "foo.message"
-                                  }
-                                ],
-                                "leftParenthesis": {
-                                  "start": 152,
-                                  "end": 153,
-                                  "lexeme": "("
-                                },
-                                "rightParenthesis": {
-                                  "start": 164,
-                                  "end": 165,
-                                  "lexeme": ")"
-                                },
-                                "beginToken": {
-                                  "start": 152,
-                                  "end": 153,
-                                  "lexeme": "("
-                                },
-                                "endToken": {
-                                  "start": 164,
-                                  "end": 165,
-                                  "lexeme": ")"
-                                },
-                                "isSynthetic": false,
-                                "parent": "@seen",
-                                "root": {
-                                  "start": 99,
-                                  "end": 171,
-                                  "class": "ExpressionStatement",
-                                  "expression": "@seen",
-                                  "unlabeled": "@seen"
-                                }
-                              },
-                              "function": {
-                                "start": 147,
-                                "end": 152,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "lexeme": "print"
-                                },
-                                "name": "print"
-                              },
-                              "typeArguments": null
-                            },
-                            "unlabeled": "@seen"
-                          }
-                        }
-                      ],
-                      "unlabeled": "@seen"
+                        "name": "count"
+                      },
+                      "operator": {
+                        "start": 66,
+                        "end": 68,
+                        "type": "PLUS_PLUS",
+                        "lexeme": "++"
+                      },
+                      "inConstantContext": false,
+                      "isAssignable": false,
+                      "unParenthesized": "@seen",
+                      "nullShortingTermination": "@seen"
                     },
-                    "isAsynchronous": true,
+                    "functionDefinition": {
+                      "start": 58,
+                      "end": 60,
+                      "type": "FUNCTION",
+                      "lexeme": "=>"
+                    },
+                    "isAsynchronous": false,
                     "isGenerator": false,
-                    "isSynchronous": false
+                    "isSynchronous": true
                   },
-                  "parameters": {
-                    "start": 107,
-                    "end": 109,
-                    "class": "FormalParameterList",
-                    "leftParenthesis": {
-                      "start": 107,
-                      "end": 108,
-                      "lexeme": "("
+                  "parameters": "@seen",
+                  "typeParameters": null,
+                  "inConstantContext": false,
+                  "isAssignable": false,
+                  "unParenthesized": "@seen"
+                },
+                "root": {
+                  "start": 55,
+                  "end": 68,
+                  "class": "FunctionExpression",
+                  "body": {
+                    "start": 58,
+                    "end": 68,
+                    "class": "ExpressionFunctionBody",
+                    "expression": {
+                      "start": 61,
+                      "end": 68,
+                      "class": "PostfixExpression",
+                      "operand": {
+                        "start": 61,
+                        "end": 66,
+                        "class": "SimpleIdentifier",
+                        "token": {
+                          "start": 61,
+                          "end": 66,
+                          "type": "IDENTIFIER",
+                          "lexeme": "count"
+                        },
+                        "name": "count"
+                      },
+                      "operator": {
+                        "start": 66,
+                        "end": 68,
+                        "type": "PLUS_PLUS",
+                        "lexeme": "++"
+                      },
+                      "inConstantContext": false,
+                      "isAssignable": false,
+                      "unParenthesized": "@seen",
+                      "nullShortingTermination": "@seen"
                     },
-                    "parameters": [],
-                    "rightParenthesis": {
-                      "start": 108,
-                      "end": 109,
-                      "lexeme": ")"
+                    "functionDefinition": {
+                      "start": 58,
+                      "end": 60,
+                      "type": "FUNCTION",
+                      "lexeme": "=>"
                     },
-                    "beginToken": {
-                      "start": 107,
-                      "end": 108,
-                      "lexeme": "("
-                    },
-                    "endToken": {
-                      "start": 108,
-                      "end": 109,
-                      "lexeme": ")"
-                    },
-                    "isSynthetic": false,
-                    "parent": "@seen",
-                    "root": {
-                      "start": 99,
-                      "end": 171,
-                      "class": "ExpressionStatement",
-                      "expression": "@seen",
-                      "unlabeled": "@seen"
-                    }
+                    "isAsynchronous": false,
+                    "isGenerator": false,
+                    "isSynchronous": true
                   },
+                  "parameters": "@seen",
                   "typeParameters": null,
                   "inConstantContext": false,
                   "isAssignable": false,
                   "unParenthesized": "@seen"
                 }
-              }
-            ],
-            "leftParenthesis": {
-              "start": 106,
-              "end": 107,
-              "lexeme": "("
-            },
-            "rightParenthesis": {
-              "start": 169,
-              "end": 170,
-              "lexeme": ")"
-            },
-            "beginToken": {
-              "start": 106,
-              "end": 107,
-              "lexeme": "("
-            },
-            "endToken": {
-              "start": 169,
-              "end": 170,
-              "lexeme": ")"
-            },
-            "isSynthetic": false,
-            "parent": "@seen",
-            "root": {
-              "start": 99,
-              "end": 171,
-              "class": "ExpressionStatement",
-              "expression": "@seen",
-              "unlabeled": "@seen"
-            }
-          },
-          "function": {
-            "start": 99,
-            "end": 106,
-            "class": "SimpleIdentifier",
-            "token": {
-              "start": 99,
-              "end": 106,
-              "lexeme": "onMount"
-            },
-            "name": "onMount"
-          },
-          "typeArguments": null
-        },
-        "unlabeled": {
-          "start": 99,
-          "end": 171,
-          "class": "ExpressionStatement",
-          "expression": {
-            "start": 99,
-            "end": 170,
-            "class": "MethodInvocation",
-            "isCascaded": false,
-            "isNullAware": false,
-            "methodName": {
-              "start": 99,
-              "end": 106,
-              "class": "SimpleIdentifier",
-              "token": {
-                "start": 99,
-                "end": 106,
-                "lexeme": "onMount"
               },
-              "name": "onMount"
-            },
-            "realTarget": null,
-            "target": null,
-            "nullShortingTermination": "@seen",
-            "argumentList": {
-              "start": 106,
-              "end": 170,
-              "class": "ArgumentList",
-              "arguments": [
-                {
-                  "start": 107,
-                  "end": 169,
-                  "class": "FunctionExpression",
-                  "body": {
-                    "start": 110,
-                    "end": 169,
-                    "class": "BlockFunctionBody",
-                    "block": {
-                      "start": 116,
-                      "end": 169,
-                      "class": "Block",
-                      "leftBracket": {
-                        "start": 116,
-                        "end": 117,
-                        "lexeme": "{"
+              "typeParameters": null,
+              "inConstantContext": false,
+              "isAssignable": false,
+              "unParenthesized": {
+                "start": 55,
+                "end": 68,
+                "class": "FunctionExpression",
+                "body": {
+                  "start": 58,
+                  "end": 68,
+                  "class": "ExpressionFunctionBody",
+                  "expression": {
+                    "start": 61,
+                    "end": 68,
+                    "class": "PostfixExpression",
+                    "operand": {
+                      "start": 61,
+                      "end": 66,
+                      "class": "SimpleIdentifier",
+                      "token": {
+                        "start": 61,
+                        "end": 66,
+                        "type": "IDENTIFIER",
+                        "lexeme": "count"
                       },
-                      "rightBracket": {
-                        "start": 168,
-                        "end": 169,
-                        "lexeme": "}"
-                      },
-                      "statements": [
-                        {
-                          "start": 120,
-                          "end": 144,
-                          "class": "ExpressionStatement",
-                          "expression": {
-                            "start": 120,
-                            "end": 143,
-                            "class": "AwaitExpression",
-                            "awaitKeyword": {
-                              "start": 120,
-                              "end": 125,
-                              "lexeme": "await"
-                            },
-                            "expression": {
-                              "start": 126,
-                              "end": 143,
-                              "class": "MethodInvocation",
-                              "isCascaded": false,
-                              "isNullAware": false,
-                              "methodName": {
-                                "start": 130,
-                                "end": 141,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "lexeme": "loadLibrary"
-                                },
-                                "name": "loadLibrary"
-                              },
-                              "realTarget": {
-                                "start": 126,
-                                "end": 129,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "lexeme": "foo"
-                                },
-                                "name": "foo"
-                              },
-                              "target": {
-                                "start": 126,
-                                "end": 129,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "lexeme": "foo"
-                                },
-                                "name": "foo"
-                              },
-                              "nullShortingTermination": "@seen",
-                              "argumentList": {
-                                "start": 141,
-                                "end": 143,
-                                "class": "ArgumentList",
-                                "arguments": [],
-                                "leftParenthesis": {
-                                  "start": 141,
-                                  "end": 142,
-                                  "lexeme": "("
-                                },
-                                "rightParenthesis": {
-                                  "start": 142,
-                                  "end": 143,
-                                  "lexeme": ")"
-                                },
-                                "beginToken": {
-                                  "start": 141,
-                                  "end": 142,
-                                  "lexeme": "("
-                                },
-                                "endToken": {
-                                  "start": 142,
-                                  "end": 143,
-                                  "lexeme": ")"
-                                },
-                                "isSynthetic": false,
-                                "parent": "@seen",
-                                "root": "@seen"
-                              },
-                              "function": {
-                                "start": 130,
-                                "end": 141,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "lexeme": "loadLibrary"
-                                },
-                                "name": "loadLibrary"
-                              },
-                              "typeArguments": null
-                            },
-                            "inConstantContext": false,
-                            "isAssignable": false,
-                            "unParenthesized": "@seen"
-                          },
-                          "unlabeled": {
-                            "start": 120,
-                            "end": 144,
-                            "class": "ExpressionStatement",
-                            "expression": {
-                              "start": 120,
-                              "end": 143,
-                              "class": "AwaitExpression",
-                              "awaitKeyword": {
-                                "start": 120,
-                                "end": 125,
-                                "lexeme": "await"
-                              },
-                              "expression": {
-                                "start": 126,
-                                "end": 143,
-                                "class": "MethodInvocation",
-                                "isCascaded": false,
-                                "isNullAware": false,
-                                "methodName": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "lexeme": "loadLibrary"
-                                  },
-                                  "name": "loadLibrary"
-                                },
-                                "realTarget": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "lexeme": "foo"
-                                  },
-                                  "name": "foo"
-                                },
-                                "target": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "lexeme": "foo"
-                                  },
-                                  "name": "foo"
-                                },
-                                "nullShortingTermination": "@seen",
-                                "argumentList": {
-                                  "start": 141,
-                                  "end": 143,
-                                  "class": "ArgumentList",
-                                  "arguments": [],
-                                  "leftParenthesis": {
-                                    "start": 141,
-                                    "end": 142,
-                                    "lexeme": "("
-                                  },
-                                  "rightParenthesis": {
-                                    "start": 142,
-                                    "end": 143,
-                                    "lexeme": ")"
-                                  },
-                                  "beginToken": {
-                                    "start": 141,
-                                    "end": 142,
-                                    "lexeme": "("
-                                  },
-                                  "endToken": {
-                                    "start": 142,
-                                    "end": 143,
-                                    "lexeme": ")"
-                                  },
-                                  "isSynthetic": false,
-                                  "parent": "@seen",
-                                  "root": "@seen"
-                                },
-                                "function": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "lexeme": "loadLibrary"
-                                  },
-                                  "name": "loadLibrary"
-                                },
-                                "typeArguments": null
-                              },
-                              "inConstantContext": false,
-                              "isAssignable": false,
-                              "unParenthesized": "@seen"
-                            },
-                            "unlabeled": "@seen"
-                          }
-                        },
-                        {
-                          "start": 147,
-                          "end": 166,
-                          "class": "ExpressionStatement",
-                          "expression": {
-                            "start": 147,
-                            "end": 165,
-                            "class": "MethodInvocation",
-                            "isCascaded": false,
-                            "isNullAware": false,
-                            "methodName": {
-                              "start": 147,
-                              "end": 152,
-                              "class": "SimpleIdentifier",
-                              "token": {
-                                "start": 147,
-                                "end": 152,
-                                "lexeme": "print"
-                              },
-                              "name": "print"
-                            },
-                            "realTarget": null,
-                            "target": null,
-                            "nullShortingTermination": "@seen",
-                            "argumentList": {
-                              "start": 152,
-                              "end": 165,
-                              "class": "ArgumentList",
-                              "arguments": [
-                                {
-                                  "start": 153,
-                                  "end": 164,
-                                  "class": "PrefixedIdentifier",
-                                  "identifier": {
-                                    "start": 157,
-                                    "end": 164,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 157,
-                                      "end": 164,
-                                      "lexeme": "message"
-                                    },
-                                    "name": "message"
-                                  },
-                                  "isDeferred": false,
-                                  "period": {
-                                    "start": 156,
-                                    "end": 157,
-                                    "lexeme": "."
-                                  },
-                                  "prefix": {
-                                    "start": 153,
-                                    "end": 156,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 153,
-                                      "end": 156,
-                                      "lexeme": "foo"
-                                    },
-                                    "name": "foo"
-                                  },
-                                  "name": "foo.message"
-                                }
-                              ],
-                              "leftParenthesis": {
-                                "start": 152,
-                                "end": 153,
-                                "lexeme": "("
-                              },
-                              "rightParenthesis": {
-                                "start": 164,
-                                "end": 165,
-                                "lexeme": ")"
-                              },
-                              "beginToken": {
-                                "start": 152,
-                                "end": 153,
-                                "lexeme": "("
-                              },
-                              "endToken": {
-                                "start": 164,
-                                "end": 165,
-                                "lexeme": ")"
-                              },
-                              "isSynthetic": false,
-                              "parent": "@seen",
-                              "root": "@seen"
-                            },
-                            "function": {
-                              "start": 147,
-                              "end": 152,
-                              "class": "SimpleIdentifier",
-                              "token": {
-                                "start": 147,
-                                "end": 152,
-                                "lexeme": "print"
-                              },
-                              "name": "print"
-                            },
-                            "typeArguments": null
-                          },
-                          "unlabeled": {
-                            "start": 147,
-                            "end": 166,
-                            "class": "ExpressionStatement",
-                            "expression": {
-                              "start": 147,
-                              "end": 165,
-                              "class": "MethodInvocation",
-                              "isCascaded": false,
-                              "isNullAware": false,
-                              "methodName": {
-                                "start": 147,
-                                "end": 152,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "lexeme": "print"
-                                },
-                                "name": "print"
-                              },
-                              "realTarget": null,
-                              "target": null,
-                              "nullShortingTermination": "@seen",
-                              "argumentList": {
-                                "start": 152,
-                                "end": 165,
-                                "class": "ArgumentList",
-                                "arguments": [
-                                  {
-                                    "start": 153,
-                                    "end": 164,
-                                    "class": "PrefixedIdentifier",
-                                    "identifier": {
-                                      "start": 157,
-                                      "end": 164,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 157,
-                                        "end": 164,
-                                        "lexeme": "message"
-                                      },
-                                      "name": "message"
-                                    },
-                                    "isDeferred": false,
-                                    "period": {
-                                      "start": 156,
-                                      "end": 157,
-                                      "lexeme": "."
-                                    },
-                                    "prefix": {
-                                      "start": 153,
-                                      "end": 156,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 153,
-                                        "end": 156,
-                                        "lexeme": "foo"
-                                      },
-                                      "name": "foo"
-                                    },
-                                    "name": "foo.message"
-                                  }
-                                ],
-                                "leftParenthesis": {
-                                  "start": 152,
-                                  "end": 153,
-                                  "lexeme": "("
-                                },
-                                "rightParenthesis": {
-                                  "start": 164,
-                                  "end": 165,
-                                  "lexeme": ")"
-                                },
-                                "beginToken": {
-                                  "start": 152,
-                                  "end": 153,
-                                  "lexeme": "("
-                                },
-                                "endToken": {
-                                  "start": 164,
-                                  "end": 165,
-                                  "lexeme": ")"
-                                },
-                                "isSynthetic": false,
-                                "parent": "@seen",
-                                "root": "@seen"
-                              },
-                              "function": {
-                                "start": 147,
-                                "end": 152,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "lexeme": "print"
-                                },
-                                "name": "print"
-                              },
-                              "typeArguments": null
-                            },
-                            "unlabeled": "@seen"
-                          }
-                        }
-                      ],
-                      "unlabeled": "@seen"
+                      "name": "count"
                     },
-                    "isAsynchronous": true,
-                    "isGenerator": false,
-                    "isSynchronous": false
-                  },
-                  "parameters": {
-                    "start": 107,
-                    "end": 109,
-                    "class": "FormalParameterList",
-                    "leftParenthesis": {
-                      "start": 107,
-                      "end": 108,
-                      "lexeme": "("
+                    "operator": {
+                      "start": 66,
+                      "end": 68,
+                      "type": "PLUS_PLUS",
+                      "lexeme": "++"
                     },
-                    "parameters": [],
-                    "rightParenthesis": {
-                      "start": 108,
-                      "end": 109,
-                      "lexeme": ")"
-                    },
-                    "beginToken": {
-                      "start": 107,
-                      "end": 108,
-                      "lexeme": "("
-                    },
-                    "endToken": {
-                      "start": 108,
-                      "end": 109,
-                      "lexeme": ")"
-                    },
-                    "isSynthetic": false,
-                    "parent": {
-                      "start": 107,
-                      "end": 169,
-                      "class": "FunctionExpression",
-                      "body": {
-                        "start": 110,
-                        "end": 169,
-                        "class": "BlockFunctionBody",
-                        "block": {
-                          "start": 116,
-                          "end": 169,
-                          "class": "Block",
-                          "leftBracket": {
-                            "start": 116,
-                            "end": 117,
-                            "lexeme": "{"
-                          },
-                          "rightBracket": {
-                            "start": 168,
-                            "end": 169,
-                            "lexeme": "}"
-                          },
-                          "statements": [
-                            {
-                              "start": 120,
-                              "end": 144,
-                              "class": "ExpressionStatement",
-                              "expression": {
-                                "start": 120,
-                                "end": 143,
-                                "class": "AwaitExpression",
-                                "awaitKeyword": {
-                                  "start": 120,
-                                  "end": 125,
-                                  "lexeme": "await"
-                                },
-                                "expression": {
-                                  "start": 126,
-                                  "end": 143,
-                                  "class": "MethodInvocation",
-                                  "isCascaded": false,
-                                  "isNullAware": false,
-                                  "methodName": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 130,
-                                      "end": 141,
-                                      "lexeme": "loadLibrary"
-                                    },
-                                    "name": "loadLibrary"
-                                  },
-                                  "realTarget": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 126,
-                                      "end": 129,
-                                      "lexeme": "foo"
-                                    },
-                                    "name": "foo"
-                                  },
-                                  "target": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 126,
-                                      "end": 129,
-                                      "lexeme": "foo"
-                                    },
-                                    "name": "foo"
-                                  },
-                                  "nullShortingTermination": "@seen",
-                                  "argumentList": {
-                                    "start": 141,
-                                    "end": 143,
-                                    "class": "ArgumentList",
-                                    "arguments": [],
-                                    "leftParenthesis": {
-                                      "start": 141,
-                                      "end": 142,
-                                      "lexeme": "("
-                                    },
-                                    "rightParenthesis": {
-                                      "start": 142,
-                                      "end": 143,
-                                      "lexeme": ")"
-                                    },
-                                    "beginToken": {
-                                      "start": 141,
-                                      "end": 142,
-                                      "lexeme": "("
-                                    },
-                                    "endToken": {
-                                      "start": 142,
-                                      "end": 143,
-                                      "lexeme": ")"
-                                    },
-                                    "isSynthetic": false,
-                                    "parent": "@seen",
-                                    "root": "@seen"
-                                  },
-                                  "function": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 130,
-                                      "end": 141,
-                                      "lexeme": "loadLibrary"
-                                    },
-                                    "name": "loadLibrary"
-                                  },
-                                  "typeArguments": null
-                                },
-                                "inConstantContext": false,
-                                "isAssignable": false,
-                                "unParenthesized": "@seen"
-                              },
-                              "unlabeled": {
-                                "start": 120,
-                                "end": 144,
-                                "class": "ExpressionStatement",
-                                "expression": {
-                                  "start": 120,
-                                  "end": 143,
-                                  "class": "AwaitExpression",
-                                  "awaitKeyword": {
-                                    "start": 120,
-                                    "end": 125,
-                                    "lexeme": "await"
-                                  },
-                                  "expression": {
-                                    "start": 126,
-                                    "end": 143,
-                                    "class": "MethodInvocation",
-                                    "isCascaded": false,
-                                    "isNullAware": false,
-                                    "methodName": {
-                                      "start": 130,
-                                      "end": 141,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 130,
-                                        "end": 141,
-                                        "lexeme": "loadLibrary"
-                                      },
-                                      "name": "loadLibrary"
-                                    },
-                                    "realTarget": {
-                                      "start": 126,
-                                      "end": 129,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 126,
-                                        "end": 129,
-                                        "lexeme": "foo"
-                                      },
-                                      "name": "foo"
-                                    },
-                                    "target": {
-                                      "start": 126,
-                                      "end": 129,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 126,
-                                        "end": 129,
-                                        "lexeme": "foo"
-                                      },
-                                      "name": "foo"
-                                    },
-                                    "nullShortingTermination": "@seen",
-                                    "argumentList": {
-                                      "start": 141,
-                                      "end": 143,
-                                      "class": "ArgumentList",
-                                      "arguments": [],
-                                      "leftParenthesis": {
-                                        "start": 141,
-                                        "end": 142,
-                                        "lexeme": "("
-                                      },
-                                      "rightParenthesis": {
-                                        "start": 142,
-                                        "end": 143,
-                                        "lexeme": ")"
-                                      },
-                                      "beginToken": {
-                                        "start": 141,
-                                        "end": 142,
-                                        "lexeme": "("
-                                      },
-                                      "endToken": {
-                                        "start": 142,
-                                        "end": 143,
-                                        "lexeme": ")"
-                                      },
-                                      "isSynthetic": false,
-                                      "parent": "@seen",
-                                      "root": "@seen"
-                                    },
-                                    "function": {
-                                      "start": 130,
-                                      "end": 141,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 130,
-                                        "end": 141,
-                                        "lexeme": "loadLibrary"
-                                      },
-                                      "name": "loadLibrary"
-                                    },
-                                    "typeArguments": null
-                                  },
-                                  "inConstantContext": false,
-                                  "isAssignable": false,
-                                  "unParenthesized": "@seen"
-                                },
-                                "unlabeled": "@seen"
-                              }
-                            },
-                            {
-                              "start": 147,
-                              "end": 166,
-                              "class": "ExpressionStatement",
-                              "expression": {
-                                "start": 147,
-                                "end": 165,
-                                "class": "MethodInvocation",
-                                "isCascaded": false,
-                                "isNullAware": false,
-                                "methodName": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 147,
-                                    "end": 152,
-                                    "lexeme": "print"
-                                  },
-                                  "name": "print"
-                                },
-                                "realTarget": null,
-                                "target": null,
-                                "nullShortingTermination": "@seen",
-                                "argumentList": {
-                                  "start": 152,
-                                  "end": 165,
-                                  "class": "ArgumentList",
-                                  "arguments": [
-                                    {
-                                      "start": 153,
-                                      "end": 164,
-                                      "class": "PrefixedIdentifier",
-                                      "identifier": {
-                                        "start": 157,
-                                        "end": 164,
-                                        "class": "SimpleIdentifier",
-                                        "token": {
-                                          "start": 157,
-                                          "end": 164,
-                                          "lexeme": "message"
-                                        },
-                                        "name": "message"
-                                      },
-                                      "isDeferred": false,
-                                      "period": {
-                                        "start": 156,
-                                        "end": 157,
-                                        "lexeme": "."
-                                      },
-                                      "prefix": {
-                                        "start": 153,
-                                        "end": 156,
-                                        "class": "SimpleIdentifier",
-                                        "token": {
-                                          "start": 153,
-                                          "end": 156,
-                                          "lexeme": "foo"
-                                        },
-                                        "name": "foo"
-                                      },
-                                      "name": "foo.message"
-                                    }
-                                  ],
-                                  "leftParenthesis": {
-                                    "start": 152,
-                                    "end": 153,
-                                    "lexeme": "("
-                                  },
-                                  "rightParenthesis": {
-                                    "start": 164,
-                                    "end": 165,
-                                    "lexeme": ")"
-                                  },
-                                  "beginToken": {
-                                    "start": 152,
-                                    "end": 153,
-                                    "lexeme": "("
-                                  },
-                                  "endToken": {
-                                    "start": 164,
-                                    "end": 165,
-                                    "lexeme": ")"
-                                  },
-                                  "isSynthetic": false,
-                                  "parent": "@seen",
-                                  "root": "@seen"
-                                },
-                                "function": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 147,
-                                    "end": 152,
-                                    "lexeme": "print"
-                                  },
-                                  "name": "print"
-                                },
-                                "typeArguments": null
-                              },
-                              "unlabeled": {
-                                "start": 147,
-                                "end": 166,
-                                "class": "ExpressionStatement",
-                                "expression": {
-                                  "start": 147,
-                                  "end": 165,
-                                  "class": "MethodInvocation",
-                                  "isCascaded": false,
-                                  "isNullAware": false,
-                                  "methodName": {
-                                    "start": 147,
-                                    "end": 152,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 147,
-                                      "end": 152,
-                                      "lexeme": "print"
-                                    },
-                                    "name": "print"
-                                  },
-                                  "realTarget": null,
-                                  "target": null,
-                                  "nullShortingTermination": "@seen",
-                                  "argumentList": {
-                                    "start": 152,
-                                    "end": 165,
-                                    "class": "ArgumentList",
-                                    "arguments": [
-                                      {
-                                        "start": 153,
-                                        "end": 164,
-                                        "class": "PrefixedIdentifier",
-                                        "identifier": {
-                                          "start": 157,
-                                          "end": 164,
-                                          "class": "SimpleIdentifier",
-                                          "token": {
-                                            "start": 157,
-                                            "end": 164,
-                                            "lexeme": "message"
-                                          },
-                                          "name": "message"
-                                        },
-                                        "isDeferred": false,
-                                        "period": {
-                                          "start": 156,
-                                          "end": 157,
-                                          "lexeme": "."
-                                        },
-                                        "prefix": {
-                                          "start": 153,
-                                          "end": 156,
-                                          "class": "SimpleIdentifier",
-                                          "token": {
-                                            "start": 153,
-                                            "end": 156,
-                                            "lexeme": "foo"
-                                          },
-                                          "name": "foo"
-                                        },
-                                        "name": "foo.message"
-                                      }
-                                    ],
-                                    "leftParenthesis": {
-                                      "start": 152,
-                                      "end": 153,
-                                      "lexeme": "("
-                                    },
-                                    "rightParenthesis": {
-                                      "start": 164,
-                                      "end": 165,
-                                      "lexeme": ")"
-                                    },
-                                    "beginToken": {
-                                      "start": 152,
-                                      "end": 153,
-                                      "lexeme": "("
-                                    },
-                                    "endToken": {
-                                      "start": 164,
-                                      "end": 165,
-                                      "lexeme": ")"
-                                    },
-                                    "isSynthetic": false,
-                                    "parent": "@seen",
-                                    "root": "@seen"
-                                  },
-                                  "function": {
-                                    "start": 147,
-                                    "end": 152,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 147,
-                                      "end": 152,
-                                      "lexeme": "print"
-                                    },
-                                    "name": "print"
-                                  },
-                                  "typeArguments": null
-                                },
-                                "unlabeled": "@seen"
-                              }
-                            }
-                          ],
-                          "unlabeled": "@seen"
-                        },
-                        "isAsynchronous": true,
-                        "isGenerator": false,
-                        "isSynchronous": false
-                      },
-                      "parameters": "@seen",
-                      "typeParameters": null,
-                      "inConstantContext": false,
-                      "isAssignable": false,
-                      "unParenthesized": "@seen"
-                    },
-                    "root": "@seen"
-                  },
-                  "typeParameters": null,
-                  "inConstantContext": false,
-                  "isAssignable": false,
-                  "unParenthesized": {
-                    "start": 107,
-                    "end": 169,
-                    "class": "FunctionExpression",
-                    "body": {
-                      "start": 110,
-                      "end": 169,
-                      "class": "BlockFunctionBody",
-                      "block": {
-                        "start": 116,
-                        "end": 169,
-                        "class": "Block",
-                        "leftBracket": {
-                          "start": 116,
-                          "end": 117,
-                          "lexeme": "{"
-                        },
-                        "rightBracket": {
-                          "start": 168,
-                          "end": 169,
-                          "lexeme": "}"
-                        },
-                        "statements": [
-                          {
-                            "start": 120,
-                            "end": 144,
-                            "class": "ExpressionStatement",
-                            "expression": {
-                              "start": 120,
-                              "end": 143,
-                              "class": "AwaitExpression",
-                              "awaitKeyword": {
-                                "start": 120,
-                                "end": 125,
-                                "lexeme": "await"
-                              },
-                              "expression": {
-                                "start": 126,
-                                "end": 143,
-                                "class": "MethodInvocation",
-                                "isCascaded": false,
-                                "isNullAware": false,
-                                "methodName": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "lexeme": "loadLibrary"
-                                  },
-                                  "name": "loadLibrary"
-                                },
-                                "realTarget": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "lexeme": "foo"
-                                  },
-                                  "name": "foo"
-                                },
-                                "target": {
-                                  "start": 126,
-                                  "end": 129,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "lexeme": "foo"
-                                  },
-                                  "name": "foo"
-                                },
-                                "nullShortingTermination": "@seen",
-                                "argumentList": {
-                                  "start": 141,
-                                  "end": 143,
-                                  "class": "ArgumentList",
-                                  "arguments": [],
-                                  "leftParenthesis": {
-                                    "start": 141,
-                                    "end": 142,
-                                    "lexeme": "("
-                                  },
-                                  "rightParenthesis": {
-                                    "start": 142,
-                                    "end": 143,
-                                    "lexeme": ")"
-                                  },
-                                  "beginToken": {
-                                    "start": 141,
-                                    "end": 142,
-                                    "lexeme": "("
-                                  },
-                                  "endToken": {
-                                    "start": 142,
-                                    "end": 143,
-                                    "lexeme": ")"
-                                  },
-                                  "isSynthetic": false,
-                                  "parent": "@seen",
-                                  "root": "@seen"
-                                },
-                                "function": {
-                                  "start": 130,
-                                  "end": 141,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "lexeme": "loadLibrary"
-                                  },
-                                  "name": "loadLibrary"
-                                },
-                                "typeArguments": null
-                              },
-                              "inConstantContext": false,
-                              "isAssignable": false,
-                              "unParenthesized": "@seen"
-                            },
-                            "unlabeled": {
-                              "start": 120,
-                              "end": 144,
-                              "class": "ExpressionStatement",
-                              "expression": {
-                                "start": 120,
-                                "end": 143,
-                                "class": "AwaitExpression",
-                                "awaitKeyword": {
-                                  "start": 120,
-                                  "end": 125,
-                                  "lexeme": "await"
-                                },
-                                "expression": {
-                                  "start": 126,
-                                  "end": 143,
-                                  "class": "MethodInvocation",
-                                  "isCascaded": false,
-                                  "isNullAware": false,
-                                  "methodName": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 130,
-                                      "end": 141,
-                                      "lexeme": "loadLibrary"
-                                    },
-                                    "name": "loadLibrary"
-                                  },
-                                  "realTarget": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 126,
-                                      "end": 129,
-                                      "lexeme": "foo"
-                                    },
-                                    "name": "foo"
-                                  },
-                                  "target": {
-                                    "start": 126,
-                                    "end": 129,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 126,
-                                      "end": 129,
-                                      "lexeme": "foo"
-                                    },
-                                    "name": "foo"
-                                  },
-                                  "nullShortingTermination": "@seen",
-                                  "argumentList": {
-                                    "start": 141,
-                                    "end": 143,
-                                    "class": "ArgumentList",
-                                    "arguments": [],
-                                    "leftParenthesis": {
-                                      "start": 141,
-                                      "end": 142,
-                                      "lexeme": "("
-                                    },
-                                    "rightParenthesis": {
-                                      "start": 142,
-                                      "end": 143,
-                                      "lexeme": ")"
-                                    },
-                                    "beginToken": {
-                                      "start": 141,
-                                      "end": 142,
-                                      "lexeme": "("
-                                    },
-                                    "endToken": {
-                                      "start": 142,
-                                      "end": 143,
-                                      "lexeme": ")"
-                                    },
-                                    "isSynthetic": false,
-                                    "parent": "@seen",
-                                    "root": "@seen"
-                                  },
-                                  "function": {
-                                    "start": 130,
-                                    "end": 141,
-                                    "class": "SimpleIdentifier",
-                                    "token": {
-                                      "start": 130,
-                                      "end": 141,
-                                      "lexeme": "loadLibrary"
-                                    },
-                                    "name": "loadLibrary"
-                                  },
-                                  "typeArguments": null
-                                },
-                                "inConstantContext": false,
-                                "isAssignable": false,
-                                "unParenthesized": "@seen"
-                              },
-                              "unlabeled": "@seen"
-                            }
-                          },
-                          {
-                            "start": 147,
-                            "end": 166,
-                            "class": "ExpressionStatement",
-                            "expression": {
-                              "start": 147,
-                              "end": 165,
-                              "class": "MethodInvocation",
-                              "isCascaded": false,
-                              "isNullAware": false,
-                              "methodName": {
-                                "start": 147,
-                                "end": 152,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "lexeme": "print"
-                                },
-                                "name": "print"
-                              },
-                              "realTarget": null,
-                              "target": null,
-                              "nullShortingTermination": "@seen",
-                              "argumentList": {
-                                "start": 152,
-                                "end": 165,
-                                "class": "ArgumentList",
-                                "arguments": [
-                                  {
-                                    "start": 153,
-                                    "end": 164,
-                                    "class": "PrefixedIdentifier",
-                                    "identifier": {
-                                      "start": 157,
-                                      "end": 164,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 157,
-                                        "end": 164,
-                                        "lexeme": "message"
-                                      },
-                                      "name": "message"
-                                    },
-                                    "isDeferred": false,
-                                    "period": {
-                                      "start": 156,
-                                      "end": 157,
-                                      "lexeme": "."
-                                    },
-                                    "prefix": {
-                                      "start": 153,
-                                      "end": 156,
-                                      "class": "SimpleIdentifier",
-                                      "token": {
-                                        "start": 153,
-                                        "end": 156,
-                                        "lexeme": "foo"
-                                      },
-                                      "name": "foo"
-                                    },
-                                    "name": "foo.message"
-                                  }
-                                ],
-                                "leftParenthesis": {
-                                  "start": 152,
-                                  "end": 153,
-                                  "lexeme": "("
-                                },
-                                "rightParenthesis": {
-                                  "start": 164,
-                                  "end": 165,
-                                  "lexeme": ")"
-                                },
-                                "beginToken": {
-                                  "start": 152,
-                                  "end": 153,
-                                  "lexeme": "("
-                                },
-                                "endToken": {
-                                  "start": 164,
-                                  "end": 165,
-                                  "lexeme": ")"
-                                },
-                                "isSynthetic": false,
-                                "parent": "@seen",
-                                "root": "@seen"
-                              },
-                              "function": {
-                                "start": 147,
-                                "end": 152,
-                                "class": "SimpleIdentifier",
-                                "token": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "lexeme": "print"
-                                },
-                                "name": "print"
-                              },
-                              "typeArguments": null
-                            },
-                            "unlabeled": {
-                              "start": 147,
-                              "end": 166,
-                              "class": "ExpressionStatement",
-                              "expression": {
-                                "start": 147,
-                                "end": 165,
-                                "class": "MethodInvocation",
-                                "isCascaded": false,
-                                "isNullAware": false,
-                                "methodName": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 147,
-                                    "end": 152,
-                                    "lexeme": "print"
-                                  },
-                                  "name": "print"
-                                },
-                                "realTarget": null,
-                                "target": null,
-                                "nullShortingTermination": "@seen",
-                                "argumentList": {
-                                  "start": 152,
-                                  "end": 165,
-                                  "class": "ArgumentList",
-                                  "arguments": [
-                                    {
-                                      "start": 153,
-                                      "end": 164,
-                                      "class": "PrefixedIdentifier",
-                                      "identifier": {
-                                        "start": 157,
-                                        "end": 164,
-                                        "class": "SimpleIdentifier",
-                                        "token": {
-                                          "start": 157,
-                                          "end": 164,
-                                          "lexeme": "message"
-                                        },
-                                        "name": "message"
-                                      },
-                                      "isDeferred": false,
-                                      "period": {
-                                        "start": 156,
-                                        "end": 157,
-                                        "lexeme": "."
-                                      },
-                                      "prefix": {
-                                        "start": 153,
-                                        "end": 156,
-                                        "class": "SimpleIdentifier",
-                                        "token": {
-                                          "start": 153,
-                                          "end": 156,
-                                          "lexeme": "foo"
-                                        },
-                                        "name": "foo"
-                                      },
-                                      "name": "foo.message"
-                                    }
-                                  ],
-                                  "leftParenthesis": {
-                                    "start": 152,
-                                    "end": 153,
-                                    "lexeme": "("
-                                  },
-                                  "rightParenthesis": {
-                                    "start": 164,
-                                    "end": 165,
-                                    "lexeme": ")"
-                                  },
-                                  "beginToken": {
-                                    "start": 152,
-                                    "end": 153,
-                                    "lexeme": "("
-                                  },
-                                  "endToken": {
-                                    "start": 164,
-                                    "end": 165,
-                                    "lexeme": ")"
-                                  },
-                                  "isSynthetic": false,
-                                  "parent": "@seen",
-                                  "root": "@seen"
-                                },
-                                "function": {
-                                  "start": 147,
-                                  "end": 152,
-                                  "class": "SimpleIdentifier",
-                                  "token": {
-                                    "start": 147,
-                                    "end": 152,
-                                    "lexeme": "print"
-                                  },
-                                  "name": "print"
-                                },
-                                "typeArguments": null
-                              },
-                              "unlabeled": "@seen"
-                            }
-                          }
-                        ],
-                        "unlabeled": "@seen"
-                      },
-                      "isAsynchronous": true,
-                      "isGenerator": false,
-                      "isSynchronous": false
-                    },
-                    "parameters": {
-                      "start": 107,
-                      "end": 109,
-                      "class": "FormalParameterList",
-                      "leftParenthesis": {
-                        "start": 107,
-                        "end": 108,
-                        "lexeme": "("
-                      },
-                      "parameters": [],
-                      "rightParenthesis": {
-                        "start": 108,
-                        "end": 109,
-                        "lexeme": ")"
-                      },
-                      "beginToken": {
-                        "start": 107,
-                        "end": 108,
-                        "lexeme": "("
-                      },
-                      "endToken": {
-                        "start": 108,
-                        "end": 109,
-                        "lexeme": ")"
-                      },
-                      "isSynthetic": false,
-                      "parent": "@seen",
-                      "root": "@seen"
-                    },
-                    "typeParameters": null,
                     "inConstantContext": false,
                     "isAssignable": false,
-                    "unParenthesized": "@seen"
-                  }
-                }
-              ],
-              "leftParenthesis": {
-                "start": 106,
-                "end": 107,
-                "lexeme": "("
-              },
-              "rightParenthesis": {
-                "start": 169,
-                "end": 170,
-                "lexeme": ")"
-              },
-              "beginToken": {
-                "start": 106,
-                "end": 107,
-                "lexeme": "("
-              },
-              "endToken": {
-                "start": 169,
-                "end": 170,
-                "lexeme": ")"
-              },
-              "isSynthetic": false,
-              "parent": "@seen",
-              "root": "@seen"
-            },
-            "function": {
-              "start": 99,
-              "end": 106,
+                    "unParenthesized": "@seen",
+                    "nullShortingTermination": "@seen"
+                  },
+                  "functionDefinition": {
+                    "start": 58,
+                    "end": 60,
+                    "type": "FUNCTION",
+                    "lexeme": "=>"
+                  },
+                  "isAsynchronous": false,
+                  "isGenerator": false,
+                  "isSynchronous": true
+                },
+                "parameters": {
+                  "start": 55,
+                  "end": 57,
+                  "class": "FormalParameterList",
+                  "leftParenthesis": {
+                    "start": 55,
+                    "end": 56,
+                    "type": "OPEN_PAREN",
+                    "lexeme": "("
+                  },
+                  "parameters": [],
+                  "rightParenthesis": {
+                    "start": 56,
+                    "end": 57,
+                    "type": "CLOSE_PAREN",
+                    "lexeme": ")"
+                  },
+                  "beginToken": {
+                    "start": 55,
+                    "end": 56,
+                    "type": "OPEN_PAREN",
+                    "lexeme": "("
+                  },
+                  "endToken": {
+                    "start": 56,
+                    "end": 57,
+                    "type": "CLOSE_PAREN",
+                    "lexeme": ")"
+                  },
+                  "isSynthetic": false,
+                  "parent": "@seen",
+                  "root": "@seen"
+                },
+                "typeParameters": null,
+                "inConstantContext": false,
+                "isAssignable": false,
+                "unParenthesized": "@seen"
+              }
+            }
+          }
+        ],
+        "children": [
+          {
+            "start": 71,
+            "end": 78,
+            "class": "Text",
+            "raw": "count: ",
+            "data": "count: "
+          },
+          {
+            "start": 78,
+            "end": 85,
+            "class": "MustacheTag",
+            "expression": {
+              "start": 79,
+              "end": 84,
               "class": "SimpleIdentifier",
               "token": {
-                "start": 99,
-                "end": 106,
-                "lexeme": "onMount"
+                "start": 79,
+                "end": 84,
+                "type": "IDENTIFIER",
+                "lexeme": "count"
               },
-              "name": "onMount"
+              "name": "count"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 35,
+    "class": "Script",
+    "context": "default",
+    "content": {
+      "start": 8,
+      "end": 26,
+      "data": "\n  var count = 0;\n"
+    },
+    "body": [
+      {
+        "start": 11,
+        "end": 25,
+        "class": "VariableDeclarationStatement",
+        "semicolon": {
+          "start": 24,
+          "end": 25,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "variables": {
+          "start": 11,
+          "end": 24,
+          "class": "VariableDeclarationList",
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
+          "variables": [
+            {
+              "start": 15,
+              "end": 24,
+              "class": "VariableDeclaration",
+              "initializer": {
+                "start": 23,
+                "end": 24,
+                "class": "IntegerLiteral",
+                "literal": {
+                  "start": 23,
+                  "end": 24,
+                  "type": "INT",
+                  "lexeme": "0"
+                }
+              },
+              "isConst": false,
+              "isFinal": false,
+              "isLate": false,
+              "name": {
+                "start": 15,
+                "end": 20,
+                "type": "IDENTIFIER",
+                "lexeme": "count"
+              }
+            }
+          ],
+          "documentationComment": null,
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 11,
+            "end": 14,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "metadata": []
+        },
+        "unlabeled": {
+          "start": 11,
+          "end": 25,
+          "class": "VariableDeclarationStatement",
+          "semicolon": {
+            "start": 24,
+            "end": 25,
+            "type": "SEMICOLON",
+            "lexeme": ";"
+          },
+          "variables": {
+            "start": 11,
+            "end": 24,
+            "class": "VariableDeclarationList",
+            "isConst": false,
+            "isFinal": false,
+            "isLate": false,
+            "type": null,
+            "variables": [
+              {
+                "start": 15,
+                "end": 24,
+                "class": "VariableDeclaration",
+                "initializer": {
+                  "start": 23,
+                  "end": 24,
+                  "class": "IntegerLiteral",
+                  "literal": {
+                    "start": 23,
+                    "end": 24,
+                    "type": "INT",
+                    "lexeme": "0"
+                  }
+                },
+                "isConst": false,
+                "isFinal": false,
+                "isLate": false,
+                "name": {
+                  "start": 15,
+                  "end": 20,
+                  "type": "IDENTIFIER",
+                  "lexeme": "count"
+                }
+              }
+            ],
+            "documentationComment": null,
+            "firstTokenAfterCommentAndMetadata": {
+              "start": 11,
+              "end": 14,
+              "type": "VAR",
+              "lexeme": "var"
             },
-            "typeArguments": null
+            "metadata": []
           },
           "unlabeled": "@seen"
         }

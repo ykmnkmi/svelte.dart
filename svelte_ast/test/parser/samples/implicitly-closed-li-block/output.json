@@ -43,6 +43,7 @@
 									"literal": {
 										"start": 18,
 										"end": 22,
+										"type": "TRUE",
 										"lexeme": "true"
 									},
 									"value": true

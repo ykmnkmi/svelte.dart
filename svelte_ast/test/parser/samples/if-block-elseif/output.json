@@ -19,6 +19,7 @@
 						"token": {
 							"start": 5,
 							"end": 6,
+							"type": "IDENTIFIER",
 							"lexeme": "x"
 						},
 						"name": "x"
@@ -26,6 +27,7 @@
 					"operator": {
 						"start": 7,
 						"end": 8,
+						"type": "GT",
 						"lexeme": ">"
 					},
 					"rightOperand": {
@@ -35,6 +37,7 @@
 						"literal": {
 							"start": 9,
 							"end": 11,
+							"type": "INT",
 							"lexeme": "10"
 						}
 					},
@@ -51,6 +54,7 @@
 							"token": {
 								"start": 5,
 								"end": 6,
+								"type": "IDENTIFIER",
 								"lexeme": "x"
 							},
 							"name": "x"
@@ -58,6 +62,7 @@
 						"operator": {
 							"start": 7,
 							"end": 8,
+							"type": "GT",
 							"lexeme": ">"
 						},
 						"rightOperand": {
@@ -67,6 +72,7 @@
 							"literal": {
 								"start": 9,
 								"end": 11,
+								"type": "INT",
 								"lexeme": "10"
 							}
 						},
@@ -116,6 +122,7 @@
 									"token": {
 										"start": 52,
 										"end": 53,
+										"type": "IDENTIFIER",
 										"lexeme": "x"
 									},
 									"name": "x"
@@ -123,6 +130,7 @@
 								"operator": {
 									"start": 54,
 									"end": 55,
+									"type": "LT",
 									"lexeme": "<"
 								},
 								"rightOperand": {
@@ -132,6 +140,7 @@
 									"literal": {
 										"start": 56,
 										"end": 57,
+										"type": "INT",
 										"lexeme": "5"
 									}
 								},
@@ -148,6 +157,7 @@
 										"token": {
 											"start": 52,
 											"end": 53,
+											"type": "IDENTIFIER",
 											"lexeme": "x"
 										},
 										"name": "x"
@@ -155,6 +165,7 @@
 									"operator": {
 										"start": 54,
 										"end": 55,
+										"type": "LT",
 										"lexeme": "<"
 									},
 									"rightOperand": {
@@ -164,6 +175,7 @@
 										"literal": {
 											"start": 56,
 											"end": 57,
+											"type": "INT",
 											"lexeme": "5"
 										}
 									},

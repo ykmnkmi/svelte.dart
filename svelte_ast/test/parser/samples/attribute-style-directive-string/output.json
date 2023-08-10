@@ -131,6 +131,7 @@
 									"token": {
 										"start": 110,
 										"end": 118,
+										"type": "IDENTIFIER",
 										"lexeme": "variable"
 									},
 									"name": "variable"
@@ -179,6 +180,7 @@
 									"token": {
 										"start": 150,
 										"end": 158,
+										"type": "IDENTIFIER",
 										"lexeme": "variable"
 									},
 									"name": "variable"
@@ -227,6 +229,7 @@
 									"token": {
 										"start": 189,
 										"end": 197,
+										"type": "IDENTIFIER",
 										"lexeme": "variable"
 									},
 									"name": "variable"
@@ -273,6 +276,7 @@
 											"contents": {
 												"start": 224,
 												"end": 233,
+												"type": "STRING",
 												"lexeme": "'template"
 											},
 											"value": "template"
@@ -288,6 +292,7 @@
 												"token": {
 													"start": 234,
 													"end": 241,
+													"type": "IDENTIFIER",
 													"lexeme": "literal"
 												},
 												"name": "literal"
@@ -295,6 +300,7 @@
 											"leftBracket": {
 												"start": 233,
 												"end": 234,
+												"type": "STRING_INTERPOLATION_IDENTIFIER",
 												"lexeme": "$"
 											}
 										},
@@ -305,6 +311,7 @@
 											"contents": {
 												"start": 241,
 												"end": 242,
+												"type": "STRING",
 												"lexeme": "'"
 											},
 											"value": ""
@@ -317,6 +324,7 @@
 										"contents": {
 											"start": 224,
 											"end": 233,
+											"type": "STRING",
 											"lexeme": "'template"
 										},
 										"value": "template"
@@ -328,6 +336,7 @@
 										"contents": {
 											"start": 241,
 											"end": 242,
+											"type": "STRING",
 											"lexeme": "'"
 										},
 										"value": ""

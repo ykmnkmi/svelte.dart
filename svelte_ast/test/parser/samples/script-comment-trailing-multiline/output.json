@@ -36,6 +36,7 @@
 							"token": {
 								"start": 90,
 								"end": 94,
+								"type": "IDENTIFIER",
 								"lexeme": "name"
 							},
 							"name": "name"
@@ -70,6 +71,7 @@
 				"semicolon": {
 					"start": 28,
 					"end": 29,
+					"type": "SEMICOLON",
 					"lexeme": ";"
 				},
 				"variables": {
@@ -92,6 +94,7 @@
 								"literal": {
 									"start": 21,
 									"end": 28,
+									"type": "STRING",
 									"lexeme": "'world'"
 								},
 								"value": "world",
@@ -105,6 +108,7 @@
 							"name": {
 								"start": 14,
 								"end": 18,
+								"type": "IDENTIFIER",
 								"lexeme": "name"
 							}
 						}
@@ -113,6 +117,7 @@
 					"firstTokenAfterCommentAndMetadata": {
 						"start": 10,
 						"end": 13,
+						"type": "VAR",
 						"lexeme": "var"
 					},
 					"metadata": []
@@ -124,6 +129,7 @@
 					"semicolon": {
 						"start": 28,
 						"end": 29,
+						"type": "SEMICOLON",
 						"lexeme": ";"
 					},
 					"variables": {
@@ -146,6 +152,7 @@
 									"literal": {
 										"start": 21,
 										"end": 28,
+										"type": "STRING",
 										"lexeme": "'world'"
 									},
 									"value": "world",
@@ -159,6 +166,7 @@
 								"name": {
 									"start": 14,
 									"end": 18,
+									"type": "IDENTIFIER",
 									"lexeme": "name"
 								}
 							}
@@ -167,6 +175,7 @@
 						"firstTokenAfterCommentAndMetadata": {
 							"start": 10,
 							"end": 13,
+							"type": "VAR",
 							"lexeme": "var"
 						},
 						"metadata": []

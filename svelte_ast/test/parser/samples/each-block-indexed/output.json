@@ -15,6 +15,7 @@
 					"token": {
 						"start": 7,
 						"end": 14,
+						"type": "IDENTIFIER",
 						"lexeme": "animals"
 					},
 					"name": "animals"
@@ -26,6 +27,7 @@
 					"name": {
 						"start": 18,
 						"end": 24,
+						"type": "IDENTIFIER",
 						"lexeme": "animal"
 					}
 				},
@@ -50,6 +52,7 @@
 									"token": {
 										"start": 34,
 										"end": 35,
+										"type": "IDENTIFIER",
 										"lexeme": "i"
 									},
 									"name": "i"
@@ -73,6 +76,7 @@
 									"token": {
 										"start": 39,
 										"end": 45,
+										"type": "IDENTIFIER",
 										"lexeme": "animal"
 									},
 									"name": "animal"

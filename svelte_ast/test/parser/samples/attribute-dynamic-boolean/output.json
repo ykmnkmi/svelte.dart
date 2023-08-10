@@ -27,6 +27,7 @@
 									"token": {
 										"start": 20,
 										"end": 28,
+										"type": "IDENTIFIER",
 										"lexeme": "readonly"
 									},
 									"name": "readonly"

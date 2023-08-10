@@ -29,6 +29,7 @@
 							"token": {
 								"start": 11,
 								"end": 15,
+								"type": "IDENTIFIER",
 								"lexeme": "raw1"
 							},
 							"name": "raw1"
@@ -52,6 +53,7 @@
 							"token": {
 								"start": 24,
 								"end": 28,
+								"type": "IDENTIFIER",
 								"lexeme": "raw2"
 							},
 							"name": "raw2"

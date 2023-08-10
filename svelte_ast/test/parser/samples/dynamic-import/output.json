@@ -23,6 +23,7 @@
 				"importKeyword": {
 					"start": 10,
 					"end": 16,
+					"type": "IMPORT",
 					"lexeme": "import"
 				},
 				"prefix": null,
@@ -39,6 +40,7 @@
 								"token": {
 									"start": 51,
 									"end": 58,
+									"type": "IDENTIFIER",
 									"lexeme": "onMount"
 								},
 								"name": "onMount"
@@ -47,6 +49,7 @@
 						"keyword": {
 							"start": 46,
 							"end": 50,
+							"type": "SHOW",
 							"lexeme": "show"
 						}
 					}
@@ -55,6 +58,7 @@
 				"semicolon": {
 					"start": 58,
 					"end": 59,
+					"type": "SEMICOLON",
 					"lexeme": ";"
 				}
 			},
@@ -65,6 +69,7 @@
 				"importKeyword": {
 					"start": 62,
 					"end": 68,
+					"type": "IMPORT",
 					"lexeme": "import"
 				},
 				"prefix": {
@@ -74,6 +79,7 @@
 					"token": {
 						"start": 92,
 						"end": 95,
+						"type": "IDENTIFIER",
 						"lexeme": "foo"
 					},
 					"name": "foo"
@@ -83,6 +89,7 @@
 				"semicolon": {
 					"start": 95,
 					"end": 96,
+					"type": "SEMICOLON",
 					"lexeme": ";"
 				}
 			},
@@ -103,6 +110,7 @@
 						"token": {
 							"start": 99,
 							"end": 106,
+							"type": "IDENTIFIER",
 							"lexeme": "onMount"
 						},
 						"name": "onMount"
@@ -130,11 +138,13 @@
 										"leftBracket": {
 											"start": 116,
 											"end": 117,
+											"type": "OPEN_CURLY_BRACKET",
 											"lexeme": "{"
 										},
 										"rightBracket": {
 											"start": 165,
 											"end": 166,
+											"type": "CLOSE_CURLY_BRACKET",
 											"lexeme": "}"
 										},
 										"statements": [
@@ -149,6 +159,7 @@
 													"awaitKeyword": {
 														"start": 120,
 														"end": 125,
+														"type": "AWAIT",
 														"lexeme": "await"
 													},
 													"expression": {
@@ -164,6 +175,7 @@
 															"token": {
 																"start": 130,
 																"end": 141,
+																"type": "IDENTIFIER",
 																"lexeme": "loadLibrary"
 															},
 															"name": "loadLibrary"
@@ -175,6 +187,7 @@
 															"token": {
 																"start": 126,
 																"end": 129,
+																"type": "IDENTIFIER",
 																"lexeme": "foo"
 															},
 															"name": "foo"
@@ -186,6 +199,7 @@
 															"token": {
 																"start": 126,
 																"end": 129,
+																"type": "IDENTIFIER",
 																"lexeme": "foo"
 															},
 															"name": "foo"
@@ -199,21 +213,25 @@
 															"leftParenthesis": {
 																"start": 141,
 																"end": 142,
+																"type": "OPEN_PAREN",
 																"lexeme": "("
 															},
 															"rightParenthesis": {
 																"start": 142,
 																"end": 143,
+																"type": "CLOSE_PAREN",
 																"lexeme": ")"
 															},
 															"beginToken": {
 																"start": 141,
 																"end": 142,
+																"type": "OPEN_PAREN",
 																"lexeme": "("
 															},
 															"endToken": {
 																"start": 142,
 																"end": 143,
+																"type": "CLOSE_PAREN",
 																"lexeme": ")"
 															},
 															"isSynthetic": false,
@@ -233,6 +251,7 @@
 															"token": {
 																"start": 130,
 																"end": 141,
+																"type": "IDENTIFIER",
 																"lexeme": "loadLibrary"
 															},
 															"name": "loadLibrary"
@@ -254,6 +273,7 @@
 														"awaitKeyword": {
 															"start": 120,
 															"end": 125,
+															"type": "AWAIT",
 															"lexeme": "await"
 														},
 														"expression": {
@@ -269,6 +289,7 @@
 																"token": {
 																	"start": 130,
 																	"end": 141,
+																	"type": "IDENTIFIER",
 																	"lexeme": "loadLibrary"
 																},
 																"name": "loadLibrary"
@@ -280,6 +301,7 @@
 																"token": {
 																	"start": 126,
 																	"end": 129,
+																	"type": "IDENTIFIER",
 																	"lexeme": "foo"
 																},
 																"name": "foo"
@@ -291,6 +313,7 @@
 																"token": {
 																	"start": 126,
 																	"end": 129,
+																	"type": "IDENTIFIER",
 																	"lexeme": "foo"
 																},
 																"name": "foo"
@@ -304,21 +327,25 @@
 																"leftParenthesis": {
 																	"start": 141,
 																	"end": 142,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"rightParenthesis": {
 																	"start": 142,
 																	"end": 143,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"beginToken": {
 																	"start": 141,
 																	"end": 142,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"endToken": {
 																	"start": 142,
 																	"end": 143,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"isSynthetic": false,
@@ -338,6 +365,7 @@
 																"token": {
 																	"start": 130,
 																	"end": 141,
+																	"type": "IDENTIFIER",
 																	"lexeme": "loadLibrary"
 																},
 																"name": "loadLibrary"
@@ -368,6 +396,7 @@
 														"token": {
 															"start": 147,
 															"end": 152,
+															"type": "IDENTIFIER",
 															"lexeme": "print"
 														},
 														"name": "print"
@@ -391,6 +420,7 @@
 																	"token": {
 																		"start": 157,
 																		"end": 161,
+																		"type": "IDENTIFIER",
 																		"lexeme": "main"
 																	},
 																	"name": "main"
@@ -399,6 +429,7 @@
 																"period": {
 																	"start": 156,
 																	"end": 157,
+																	"type": "PERIOD",
 																	"lexeme": "."
 																},
 																"prefix": {
@@ -408,6 +439,7 @@
 																	"token": {
 																		"start": 153,
 																		"end": 156,
+																		"type": "IDENTIFIER",
 																		"lexeme": "foo"
 																	},
 																	"name": "foo"
@@ -418,21 +450,25 @@
 														"leftParenthesis": {
 															"start": 152,
 															"end": 153,
+															"type": "OPEN_PAREN",
 															"lexeme": "("
 														},
 														"rightParenthesis": {
 															"start": 161,
 															"end": 162,
+															"type": "CLOSE_PAREN",
 															"lexeme": ")"
 														},
 														"beginToken": {
 															"start": 152,
 															"end": 153,
+															"type": "OPEN_PAREN",
 															"lexeme": "("
 														},
 														"endToken": {
 															"start": 161,
 															"end": 162,
+															"type": "CLOSE_PAREN",
 															"lexeme": ")"
 														},
 														"isSynthetic": false,
@@ -452,6 +488,7 @@
 														"token": {
 															"start": 147,
 															"end": 152,
+															"type": "IDENTIFIER",
 															"lexeme": "print"
 														},
 														"name": "print"
@@ -475,6 +512,7 @@
 															"token": {
 																"start": 147,
 																"end": 152,
+																"type": "IDENTIFIER",
 																"lexeme": "print"
 															},
 															"name": "print"
@@ -498,6 +536,7 @@
 																		"token": {
 																			"start": 157,
 																			"end": 161,
+																			"type": "IDENTIFIER",
 																			"lexeme": "main"
 																		},
 																		"name": "main"
@@ -506,6 +545,7 @@
 																	"period": {
 																		"start": 156,
 																		"end": 157,
+																		"type": "PERIOD",
 																		"lexeme": "."
 																	},
 																	"prefix": {
@@ -515,6 +555,7 @@
 																		"token": {
 																			"start": 153,
 																			"end": 156,
+																			"type": "IDENTIFIER",
 																			"lexeme": "foo"
 																		},
 																		"name": "foo"
@@ -525,21 +566,25 @@
 															"leftParenthesis": {
 																"start": 152,
 																"end": 153,
+																"type": "OPEN_PAREN",
 																"lexeme": "("
 															},
 															"rightParenthesis": {
 																"start": 161,
 																"end": 162,
+																"type": "CLOSE_PAREN",
 																"lexeme": ")"
 															},
 															"beginToken": {
 																"start": 152,
 																"end": 153,
+																"type": "OPEN_PAREN",
 																"lexeme": "("
 															},
 															"endToken": {
 																"start": 161,
 																"end": 162,
+																"type": "CLOSE_PAREN",
 																"lexeme": ")"
 															},
 															"isSynthetic": false,
@@ -559,6 +604,7 @@
 															"token": {
 																"start": 147,
 																"end": 152,
+																"type": "IDENTIFIER",
 																"lexeme": "print"
 															},
 															"name": "print"
@@ -582,22 +628,26 @@
 									"leftParenthesis": {
 										"start": 107,
 										"end": 108,
+										"type": "OPEN_PAREN",
 										"lexeme": "("
 									},
 									"parameters": [],
 									"rightParenthesis": {
 										"start": 108,
 										"end": 109,
+										"type": "CLOSE_PAREN",
 										"lexeme": ")"
 									},
 									"beginToken": {
 										"start": 107,
 										"end": 108,
+										"type": "OPEN_PAREN",
 										"lexeme": "("
 									},
 									"endToken": {
 										"start": 108,
 										"end": 109,
+										"type": "CLOSE_PAREN",
 										"lexeme": ")"
 									},
 									"isSynthetic": false,
@@ -616,11 +666,13 @@
 												"leftBracket": {
 													"start": 116,
 													"end": 117,
+													"type": "OPEN_CURLY_BRACKET",
 													"lexeme": "{"
 												},
 												"rightBracket": {
 													"start": 165,
 													"end": 166,
+													"type": "CLOSE_CURLY_BRACKET",
 													"lexeme": "}"
 												},
 												"statements": [
@@ -635,6 +687,7 @@
 															"awaitKeyword": {
 																"start": 120,
 																"end": 125,
+																"type": "AWAIT",
 																"lexeme": "await"
 															},
 															"expression": {
@@ -650,6 +703,7 @@
 																	"token": {
 																		"start": 130,
 																		"end": 141,
+																		"type": "IDENTIFIER",
 																		"lexeme": "loadLibrary"
 																	},
 																	"name": "loadLibrary"
@@ -661,6 +715,7 @@
 																	"token": {
 																		"start": 126,
 																		"end": 129,
+																		"type": "IDENTIFIER",
 																		"lexeme": "foo"
 																	},
 																	"name": "foo"
@@ -672,6 +727,7 @@
 																	"token": {
 																		"start": 126,
 																		"end": 129,
+																		"type": "IDENTIFIER",
 																		"lexeme": "foo"
 																	},
 																	"name": "foo"
@@ -685,21 +741,25 @@
 																	"leftParenthesis": {
 																		"start": 141,
 																		"end": 142,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"rightParenthesis": {
 																		"start": 142,
 																		"end": 143,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"beginToken": {
 																		"start": 141,
 																		"end": 142,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"endToken": {
 																		"start": 142,
 																		"end": 143,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"isSynthetic": false,
@@ -719,6 +779,7 @@
 																	"token": {
 																		"start": 130,
 																		"end": 141,
+																		"type": "IDENTIFIER",
 																		"lexeme": "loadLibrary"
 																	},
 																	"name": "loadLibrary"
@@ -740,6 +801,7 @@
 																"awaitKeyword": {
 																	"start": 120,
 																	"end": 125,
+																	"type": "AWAIT",
 																	"lexeme": "await"
 																},
 																"expression": {
@@ -755,6 +817,7 @@
 																		"token": {
 																			"start": 130,
 																			"end": 141,
+																			"type": "IDENTIFIER",
 																			"lexeme": "loadLibrary"
 																		},
 																		"name": "loadLibrary"
@@ -766,6 +829,7 @@
 																		"token": {
 																			"start": 126,
 																			"end": 129,
+																			"type": "IDENTIFIER",
 																			"lexeme": "foo"
 																		},
 																		"name": "foo"
@@ -777,6 +841,7 @@
 																		"token": {
 																			"start": 126,
 																			"end": 129,
+																			"type": "IDENTIFIER",
 																			"lexeme": "foo"
 																		},
 																		"name": "foo"
@@ -790,21 +855,25 @@
 																		"leftParenthesis": {
 																			"start": 141,
 																			"end": 142,
+																			"type": "OPEN_PAREN",
 																			"lexeme": "("
 																		},
 																		"rightParenthesis": {
 																			"start": 142,
 																			"end": 143,
+																			"type": "CLOSE_PAREN",
 																			"lexeme": ")"
 																		},
 																		"beginToken": {
 																			"start": 141,
 																			"end": 142,
+																			"type": "OPEN_PAREN",
 																			"lexeme": "("
 																		},
 																		"endToken": {
 																			"start": 142,
 																			"end": 143,
+																			"type": "CLOSE_PAREN",
 																			"lexeme": ")"
 																		},
 																		"isSynthetic": false,
@@ -824,6 +893,7 @@
 																		"token": {
 																			"start": 130,
 																			"end": 141,
+																			"type": "IDENTIFIER",
 																			"lexeme": "loadLibrary"
 																		},
 																		"name": "loadLibrary"
@@ -854,6 +924,7 @@
 																"token": {
 																	"start": 147,
 																	"end": 152,
+																	"type": "IDENTIFIER",
 																	"lexeme": "print"
 																},
 																"name": "print"
@@ -877,6 +948,7 @@
 																			"token": {
 																				"start": 157,
 																				"end": 161,
+																				"type": "IDENTIFIER",
 																				"lexeme": "main"
 																			},
 																			"name": "main"
@@ -885,6 +957,7 @@
 																		"period": {
 																			"start": 156,
 																			"end": 157,
+																			"type": "PERIOD",
 																			"lexeme": "."
 																		},
 																		"prefix": {
@@ -894,6 +967,7 @@
 																			"token": {
 																				"start": 153,
 																				"end": 156,
+																				"type": "IDENTIFIER",
 																				"lexeme": "foo"
 																			},
 																			"name": "foo"
@@ -904,21 +978,25 @@
 																"leftParenthesis": {
 																	"start": 152,
 																	"end": 153,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"rightParenthesis": {
 																	"start": 161,
 																	"end": 162,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"beginToken": {
 																	"start": 152,
 																	"end": 153,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"endToken": {
 																	"start": 161,
 																	"end": 162,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"isSynthetic": false,
@@ -938,6 +1016,7 @@
 																"token": {
 																	"start": 147,
 																	"end": 152,
+																	"type": "IDENTIFIER",
 																	"lexeme": "print"
 																},
 																"name": "print"
@@ -961,6 +1040,7 @@
 																	"token": {
 																		"start": 147,
 																		"end": 152,
+																		"type": "IDENTIFIER",
 																		"lexeme": "print"
 																	},
 																	"name": "print"
@@ -984,6 +1064,7 @@
 																				"token": {
 																					"start": 157,
 																					"end": 161,
+																					"type": "IDENTIFIER",
 																					"lexeme": "main"
 																				},
 																				"name": "main"
@@ -992,6 +1073,7 @@
 																			"period": {
 																				"start": 156,
 																				"end": 157,
+																				"type": "PERIOD",
 																				"lexeme": "."
 																			},
 																			"prefix": {
@@ -1001,6 +1083,7 @@
 																				"token": {
 																					"start": 153,
 																					"end": 156,
+																					"type": "IDENTIFIER",
 																					"lexeme": "foo"
 																				},
 																				"name": "foo"
@@ -1011,21 +1094,25 @@
 																	"leftParenthesis": {
 																		"start": 152,
 																		"end": 153,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"rightParenthesis": {
 																		"start": 161,
 																		"end": 162,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"beginToken": {
 																		"start": 152,
 																		"end": 153,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"endToken": {
 																		"start": 161,
 																		"end": 162,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"isSynthetic": false,
@@ -1045,6 +1132,7 @@
 																	"token": {
 																		"start": 147,
 																		"end": 152,
+																		"type": "IDENTIFIER",
 																		"lexeme": "print"
 																	},
 																	"name": "print"
@@ -1093,11 +1181,13 @@
 											"leftBracket": {
 												"start": 116,
 												"end": 117,
+												"type": "OPEN_CURLY_BRACKET",
 												"lexeme": "{"
 											},
 											"rightBracket": {
 												"start": 165,
 												"end": 166,
+												"type": "CLOSE_CURLY_BRACKET",
 												"lexeme": "}"
 											},
 											"statements": [
@@ -1112,6 +1202,7 @@
 														"awaitKeyword": {
 															"start": 120,
 															"end": 125,
+															"type": "AWAIT",
 															"lexeme": "await"
 														},
 														"expression": {
@@ -1127,6 +1218,7 @@
 																"token": {
 																	"start": 130,
 																	"end": 141,
+																	"type": "IDENTIFIER",
 																	"lexeme": "loadLibrary"
 																},
 																"name": "loadLibrary"
@@ -1138,6 +1230,7 @@
 																"token": {
 																	"start": 126,
 																	"end": 129,
+																	"type": "IDENTIFIER",
 																	"lexeme": "foo"
 																},
 																"name": "foo"
@@ -1149,6 +1242,7 @@
 																"token": {
 																	"start": 126,
 																	"end": 129,
+																	"type": "IDENTIFIER",
 																	"lexeme": "foo"
 																},
 																"name": "foo"
@@ -1162,21 +1256,25 @@
 																"leftParenthesis": {
 																	"start": 141,
 																	"end": 142,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"rightParenthesis": {
 																	"start": 142,
 																	"end": 143,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"beginToken": {
 																	"start": 141,
 																	"end": 142,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"endToken": {
 																	"start": 142,
 																	"end": 143,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"isSynthetic": false,
@@ -1196,6 +1294,7 @@
 																"token": {
 																	"start": 130,
 																	"end": 141,
+																	"type": "IDENTIFIER",
 																	"lexeme": "loadLibrary"
 																},
 																"name": "loadLibrary"
@@ -1217,6 +1316,7 @@
 															"awaitKeyword": {
 																"start": 120,
 																"end": 125,
+																"type": "AWAIT",
 																"lexeme": "await"
 															},
 															"expression": {
@@ -1232,6 +1332,7 @@
 																	"token": {
 																		"start": 130,
 																		"end": 141,
+																		"type": "IDENTIFIER",
 																		"lexeme": "loadLibrary"
 																	},
 																	"name": "loadLibrary"
@@ -1243,6 +1344,7 @@
 																	"token": {
 																		"start": 126,
 																		"end": 129,
+																		"type": "IDENTIFIER",
 																		"lexeme": "foo"
 																	},
 																	"name": "foo"
@@ -1254,6 +1356,7 @@
 																	"token": {
 																		"start": 126,
 																		"end": 129,
+																		"type": "IDENTIFIER",
 																		"lexeme": "foo"
 																	},
 																	"name": "foo"
@@ -1267,21 +1370,25 @@
 																	"leftParenthesis": {
 																		"start": 141,
 																		"end": 142,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"rightParenthesis": {
 																		"start": 142,
 																		"end": 143,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"beginToken": {
 																		"start": 141,
 																		"end": 142,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"endToken": {
 																		"start": 142,
 																		"end": 143,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"isSynthetic": false,
@@ -1301,6 +1408,7 @@
 																	"token": {
 																		"start": 130,
 																		"end": 141,
+																		"type": "IDENTIFIER",
 																		"lexeme": "loadLibrary"
 																	},
 																	"name": "loadLibrary"
@@ -1331,6 +1439,7 @@
 															"token": {
 																"start": 147,
 																"end": 152,
+																"type": "IDENTIFIER",
 																"lexeme": "print"
 															},
 															"name": "print"
@@ -1354,6 +1463,7 @@
 																		"token": {
 																			"start": 157,
 																			"end": 161,
+																			"type": "IDENTIFIER",
 																			"lexeme": "main"
 																		},
 																		"name": "main"
@@ -1362,6 +1472,7 @@
 																	"period": {
 																		"start": 156,
 																		"end": 157,
+																		"type": "PERIOD",
 																		"lexeme": "."
 																	},
 																	"prefix": {
@@ -1371,6 +1482,7 @@
 																		"token": {
 																			"start": 153,
 																			"end": 156,
+																			"type": "IDENTIFIER",
 																			"lexeme": "foo"
 																		},
 																		"name": "foo"
@@ -1381,21 +1493,25 @@
 															"leftParenthesis": {
 																"start": 152,
 																"end": 153,
+																"type": "OPEN_PAREN",
 																"lexeme": "("
 															},
 															"rightParenthesis": {
 																"start": 161,
 																"end": 162,
+																"type": "CLOSE_PAREN",
 																"lexeme": ")"
 															},
 															"beginToken": {
 																"start": 152,
 																"end": 153,
+																"type": "OPEN_PAREN",
 																"lexeme": "("
 															},
 															"endToken": {
 																"start": 161,
 																"end": 162,
+																"type": "CLOSE_PAREN",
 																"lexeme": ")"
 															},
 															"isSynthetic": false,
@@ -1415,6 +1531,7 @@
 															"token": {
 																"start": 147,
 																"end": 152,
+																"type": "IDENTIFIER",
 																"lexeme": "print"
 															},
 															"name": "print"
@@ -1438,6 +1555,7 @@
 																"token": {
 																	"start": 147,
 																	"end": 152,
+																	"type": "IDENTIFIER",
 																	"lexeme": "print"
 																},
 																"name": "print"
@@ -1461,6 +1579,7 @@
 																			"token": {
 																				"start": 157,
 																				"end": 161,
+																				"type": "IDENTIFIER",
 																				"lexeme": "main"
 																			},
 																			"name": "main"
@@ -1469,6 +1588,7 @@
 																		"period": {
 																			"start": 156,
 																			"end": 157,
+																			"type": "PERIOD",
 																			"lexeme": "."
 																		},
 																		"prefix": {
@@ -1478,6 +1598,7 @@
 																			"token": {
 																				"start": 153,
 																				"end": 156,
+																				"type": "IDENTIFIER",
 																				"lexeme": "foo"
 																			},
 																			"name": "foo"
@@ -1488,21 +1609,25 @@
 																"leftParenthesis": {
 																	"start": 152,
 																	"end": 153,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"rightParenthesis": {
 																	"start": 161,
 																	"end": 162,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"beginToken": {
 																	"start": 152,
 																	"end": 153,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"endToken": {
 																	"start": 161,
 																	"end": 162,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"isSynthetic": false,
@@ -1522,6 +1647,7 @@
 																"token": {
 																	"start": 147,
 																	"end": 152,
+																	"type": "IDENTIFIER",
 																	"lexeme": "print"
 																},
 																"name": "print"
@@ -1545,22 +1671,26 @@
 										"leftParenthesis": {
 											"start": 107,
 											"end": 108,
+											"type": "OPEN_PAREN",
 											"lexeme": "("
 										},
 										"parameters": [],
 										"rightParenthesis": {
 											"start": 108,
 											"end": 109,
+											"type": "CLOSE_PAREN",
 											"lexeme": ")"
 										},
 										"beginToken": {
 											"start": 107,
 											"end": 108,
+											"type": "OPEN_PAREN",
 											"lexeme": "("
 										},
 										"endToken": {
 											"start": 108,
 											"end": 109,
+											"type": "CLOSE_PAREN",
 											"lexeme": ")"
 										},
 										"isSynthetic": false,
@@ -1583,21 +1713,25 @@
 						"leftParenthesis": {
 							"start": 106,
 							"end": 107,
+							"type": "OPEN_PAREN",
 							"lexeme": "("
 						},
 						"rightParenthesis": {
 							"start": 166,
 							"end": 167,
+							"type": "CLOSE_PAREN",
 							"lexeme": ")"
 						},
 						"beginToken": {
 							"start": 106,
 							"end": 107,
+							"type": "OPEN_PAREN",
 							"lexeme": "("
 						},
 						"endToken": {
 							"start": 166,
 							"end": 167,
+							"type": "CLOSE_PAREN",
 							"lexeme": ")"
 						},
 						"isSynthetic": false,
@@ -1617,6 +1751,7 @@
 						"token": {
 							"start": 99,
 							"end": 106,
+							"type": "IDENTIFIER",
 							"lexeme": "onMount"
 						},
 						"name": "onMount"
@@ -1640,6 +1775,7 @@
 							"token": {
 								"start": 99,
 								"end": 106,
+								"type": "IDENTIFIER",
 								"lexeme": "onMount"
 							},
 							"name": "onMount"
@@ -1667,11 +1803,13 @@
 											"leftBracket": {
 												"start": 116,
 												"end": 117,
+												"type": "OPEN_CURLY_BRACKET",
 												"lexeme": "{"
 											},
 											"rightBracket": {
 												"start": 165,
 												"end": 166,
+												"type": "CLOSE_CURLY_BRACKET",
 												"lexeme": "}"
 											},
 											"statements": [
@@ -1686,6 +1824,7 @@
 														"awaitKeyword": {
 															"start": 120,
 															"end": 125,
+															"type": "AWAIT",
 															"lexeme": "await"
 														},
 														"expression": {
@@ -1701,6 +1840,7 @@
 																"token": {
 																	"start": 130,
 																	"end": 141,
+																	"type": "IDENTIFIER",
 																	"lexeme": "loadLibrary"
 																},
 																"name": "loadLibrary"
@@ -1712,6 +1852,7 @@
 																"token": {
 																	"start": 126,
 																	"end": 129,
+																	"type": "IDENTIFIER",
 																	"lexeme": "foo"
 																},
 																"name": "foo"
@@ -1723,6 +1864,7 @@
 																"token": {
 																	"start": 126,
 																	"end": 129,
+																	"type": "IDENTIFIER",
 																	"lexeme": "foo"
 																},
 																"name": "foo"
@@ -1736,21 +1878,25 @@
 																"leftParenthesis": {
 																	"start": 141,
 																	"end": 142,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"rightParenthesis": {
 																	"start": 142,
 																	"end": 143,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"beginToken": {
 																	"start": 141,
 																	"end": 142,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"endToken": {
 																	"start": 142,
 																	"end": 143,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"isSynthetic": false,
@@ -1764,6 +1910,7 @@
 																"token": {
 																	"start": 130,
 																	"end": 141,
+																	"type": "IDENTIFIER",
 																	"lexeme": "loadLibrary"
 																},
 																"name": "loadLibrary"
@@ -1785,6 +1932,7 @@
 															"awaitKeyword": {
 																"start": 120,
 																"end": 125,
+																"type": "AWAIT",
 																"lexeme": "await"
 															},
 															"expression": {
@@ -1800,6 +1948,7 @@
 																	"token": {
 																		"start": 130,
 																		"end": 141,
+																		"type": "IDENTIFIER",
 																		"lexeme": "loadLibrary"
 																	},
 																	"name": "loadLibrary"
@@ -1811,6 +1960,7 @@
 																	"token": {
 																		"start": 126,
 																		"end": 129,
+																		"type": "IDENTIFIER",
 																		"lexeme": "foo"
 																	},
 																	"name": "foo"
@@ -1822,6 +1972,7 @@
 																	"token": {
 																		"start": 126,
 																		"end": 129,
+																		"type": "IDENTIFIER",
 																		"lexeme": "foo"
 																	},
 																	"name": "foo"
@@ -1835,21 +1986,25 @@
 																	"leftParenthesis": {
 																		"start": 141,
 																		"end": 142,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"rightParenthesis": {
 																		"start": 142,
 																		"end": 143,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"beginToken": {
 																		"start": 141,
 																		"end": 142,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"endToken": {
 																		"start": 142,
 																		"end": 143,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"isSynthetic": false,
@@ -1863,6 +2018,7 @@
 																	"token": {
 																		"start": 130,
 																		"end": 141,
+																		"type": "IDENTIFIER",
 																		"lexeme": "loadLibrary"
 																	},
 																	"name": "loadLibrary"
@@ -1893,6 +2049,7 @@
 															"token": {
 																"start": 147,
 																"end": 152,
+																"type": "IDENTIFIER",
 																"lexeme": "print"
 															},
 															"name": "print"
@@ -1916,6 +2073,7 @@
 																		"token": {
 																			"start": 157,
 																			"end": 161,
+																			"type": "IDENTIFIER",
 																			"lexeme": "main"
 																		},
 																		"name": "main"
@@ -1924,6 +2082,7 @@
 																	"period": {
 																		"start": 156,
 																		"end": 157,
+																		"type": "PERIOD",
 																		"lexeme": "."
 																	},
 																	"prefix": {
@@ -1933,6 +2092,7 @@
 																		"token": {
 																			"start": 153,
 																			"end": 156,
+																			"type": "IDENTIFIER",
 																			"lexeme": "foo"
 																		},
 																		"name": "foo"
@@ -1943,21 +2103,25 @@
 															"leftParenthesis": {
 																"start": 152,
 																"end": 153,
+																"type": "OPEN_PAREN",
 																"lexeme": "("
 															},
 															"rightParenthesis": {
 																"start": 161,
 																"end": 162,
+																"type": "CLOSE_PAREN",
 																"lexeme": ")"
 															},
 															"beginToken": {
 																"start": 152,
 																"end": 153,
+																"type": "OPEN_PAREN",
 																"lexeme": "("
 															},
 															"endToken": {
 																"start": 161,
 																"end": 162,
+																"type": "CLOSE_PAREN",
 																"lexeme": ")"
 															},
 															"isSynthetic": false,
@@ -1971,6 +2135,7 @@
 															"token": {
 																"start": 147,
 																"end": 152,
+																"type": "IDENTIFIER",
 																"lexeme": "print"
 															},
 															"name": "print"
@@ -1994,6 +2159,7 @@
 																"token": {
 																	"start": 147,
 																	"end": 152,
+																	"type": "IDENTIFIER",
 																	"lexeme": "print"
 																},
 																"name": "print"
@@ -2017,6 +2183,7 @@
 																			"token": {
 																				"start": 157,
 																				"end": 161,
+																				"type": "IDENTIFIER",
 																				"lexeme": "main"
 																			},
 																			"name": "main"
@@ -2025,6 +2192,7 @@
 																		"period": {
 																			"start": 156,
 																			"end": 157,
+																			"type": "PERIOD",
 																			"lexeme": "."
 																		},
 																		"prefix": {
@@ -2034,6 +2202,7 @@
 																			"token": {
 																				"start": 153,
 																				"end": 156,
+																				"type": "IDENTIFIER",
 																				"lexeme": "foo"
 																			},
 																			"name": "foo"
@@ -2044,21 +2213,25 @@
 																"leftParenthesis": {
 																	"start": 152,
 																	"end": 153,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"rightParenthesis": {
 																	"start": 161,
 																	"end": 162,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"beginToken": {
 																	"start": 152,
 																	"end": 153,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"endToken": {
 																	"start": 161,
 																	"end": 162,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"isSynthetic": false,
@@ -2072,6 +2245,7 @@
 																"token": {
 																	"start": 147,
 																	"end": 152,
+																	"type": "IDENTIFIER",
 																	"lexeme": "print"
 																},
 																"name": "print"
@@ -2095,22 +2269,26 @@
 										"leftParenthesis": {
 											"start": 107,
 											"end": 108,
+											"type": "OPEN_PAREN",
 											"lexeme": "("
 										},
 										"parameters": [],
 										"rightParenthesis": {
 											"start": 108,
 											"end": 109,
+											"type": "CLOSE_PAREN",
 											"lexeme": ")"
 										},
 										"beginToken": {
 											"start": 107,
 											"end": 108,
+											"type": "OPEN_PAREN",
 											"lexeme": "("
 										},
 										"endToken": {
 											"start": 108,
 											"end": 109,
+											"type": "CLOSE_PAREN",
 											"lexeme": ")"
 										},
 										"isSynthetic": false,
@@ -2129,11 +2307,13 @@
 													"leftBracket": {
 														"start": 116,
 														"end": 117,
+														"type": "OPEN_CURLY_BRACKET",
 														"lexeme": "{"
 													},
 													"rightBracket": {
 														"start": 165,
 														"end": 166,
+														"type": "CLOSE_CURLY_BRACKET",
 														"lexeme": "}"
 													},
 													"statements": [
@@ -2148,6 +2328,7 @@
 																"awaitKeyword": {
 																	"start": 120,
 																	"end": 125,
+																	"type": "AWAIT",
 																	"lexeme": "await"
 																},
 																"expression": {
@@ -2163,6 +2344,7 @@
 																		"token": {
 																			"start": 130,
 																			"end": 141,
+																			"type": "IDENTIFIER",
 																			"lexeme": "loadLibrary"
 																		},
 																		"name": "loadLibrary"
@@ -2174,6 +2356,7 @@
 																		"token": {
 																			"start": 126,
 																			"end": 129,
+																			"type": "IDENTIFIER",
 																			"lexeme": "foo"
 																		},
 																		"name": "foo"
@@ -2185,6 +2368,7 @@
 																		"token": {
 																			"start": 126,
 																			"end": 129,
+																			"type": "IDENTIFIER",
 																			"lexeme": "foo"
 																		},
 																		"name": "foo"
@@ -2198,21 +2382,25 @@
 																		"leftParenthesis": {
 																			"start": 141,
 																			"end": 142,
+																			"type": "OPEN_PAREN",
 																			"lexeme": "("
 																		},
 																		"rightParenthesis": {
 																			"start": 142,
 																			"end": 143,
+																			"type": "CLOSE_PAREN",
 																			"lexeme": ")"
 																		},
 																		"beginToken": {
 																			"start": 141,
 																			"end": 142,
+																			"type": "OPEN_PAREN",
 																			"lexeme": "("
 																		},
 																		"endToken": {
 																			"start": 142,
 																			"end": 143,
+																			"type": "CLOSE_PAREN",
 																			"lexeme": ")"
 																		},
 																		"isSynthetic": false,
@@ -2226,6 +2414,7 @@
 																		"token": {
 																			"start": 130,
 																			"end": 141,
+																			"type": "IDENTIFIER",
 																			"lexeme": "loadLibrary"
 																		},
 																		"name": "loadLibrary"
@@ -2247,6 +2436,7 @@
 																	"awaitKeyword": {
 																		"start": 120,
 																		"end": 125,
+																		"type": "AWAIT",
 																		"lexeme": "await"
 																	},
 																	"expression": {
@@ -2262,6 +2452,7 @@
 																			"token": {
 																				"start": 130,
 																				"end": 141,
+																				"type": "IDENTIFIER",
 																				"lexeme": "loadLibrary"
 																			},
 																			"name": "loadLibrary"
@@ -2273,6 +2464,7 @@
 																			"token": {
 																				"start": 126,
 																				"end": 129,
+																				"type": "IDENTIFIER",
 																				"lexeme": "foo"
 																			},
 																			"name": "foo"
@@ -2284,6 +2476,7 @@
 																			"token": {
 																				"start": 126,
 																				"end": 129,
+																				"type": "IDENTIFIER",
 																				"lexeme": "foo"
 																			},
 																			"name": "foo"
@@ -2297,21 +2490,25 @@
 																			"leftParenthesis": {
 																				"start": 141,
 																				"end": 142,
+																				"type": "OPEN_PAREN",
 																				"lexeme": "("
 																			},
 																			"rightParenthesis": {
 																				"start": 142,
 																				"end": 143,
+																				"type": "CLOSE_PAREN",
 																				"lexeme": ")"
 																			},
 																			"beginToken": {
 																				"start": 141,
 																				"end": 142,
+																				"type": "OPEN_PAREN",
 																				"lexeme": "("
 																			},
 																			"endToken": {
 																				"start": 142,
 																				"end": 143,
+																				"type": "CLOSE_PAREN",
 																				"lexeme": ")"
 																			},
 																			"isSynthetic": false,
@@ -2325,6 +2522,7 @@
 																			"token": {
 																				"start": 130,
 																				"end": 141,
+																				"type": "IDENTIFIER",
 																				"lexeme": "loadLibrary"
 																			},
 																			"name": "loadLibrary"
@@ -2355,6 +2553,7 @@
 																	"token": {
 																		"start": 147,
 																		"end": 152,
+																		"type": "IDENTIFIER",
 																		"lexeme": "print"
 																	},
 																	"name": "print"
@@ -2378,6 +2577,7 @@
 																				"token": {
 																					"start": 157,
 																					"end": 161,
+																					"type": "IDENTIFIER",
 																					"lexeme": "main"
 																				},
 																				"name": "main"
@@ -2386,6 +2586,7 @@
 																			"period": {
 																				"start": 156,
 																				"end": 157,
+																				"type": "PERIOD",
 																				"lexeme": "."
 																			},
 																			"prefix": {
@@ -2395,6 +2596,7 @@
 																				"token": {
 																					"start": 153,
 																					"end": 156,
+																					"type": "IDENTIFIER",
 																					"lexeme": "foo"
 																				},
 																				"name": "foo"
@@ -2405,21 +2607,25 @@
 																	"leftParenthesis": {
 																		"start": 152,
 																		"end": 153,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"rightParenthesis": {
 																		"start": 161,
 																		"end": 162,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"beginToken": {
 																		"start": 152,
 																		"end": 153,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"endToken": {
 																		"start": 161,
 																		"end": 162,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"isSynthetic": false,
@@ -2433,6 +2639,7 @@
 																	"token": {
 																		"start": 147,
 																		"end": 152,
+																		"type": "IDENTIFIER",
 																		"lexeme": "print"
 																	},
 																	"name": "print"
@@ -2456,6 +2663,7 @@
 																		"token": {
 																			"start": 147,
 																			"end": 152,
+																			"type": "IDENTIFIER",
 																			"lexeme": "print"
 																		},
 																		"name": "print"
@@ -2479,6 +2687,7 @@
 																					"token": {
 																						"start": 157,
 																						"end": 161,
+																						"type": "IDENTIFIER",
 																						"lexeme": "main"
 																					},
 																					"name": "main"
@@ -2487,6 +2696,7 @@
 																				"period": {
 																					"start": 156,
 																					"end": 157,
+																					"type": "PERIOD",
 																					"lexeme": "."
 																				},
 																				"prefix": {
@@ -2496,6 +2706,7 @@
 																					"token": {
 																						"start": 153,
 																						"end": 156,
+																						"type": "IDENTIFIER",
 																						"lexeme": "foo"
 																					},
 																					"name": "foo"
@@ -2506,21 +2717,25 @@
 																		"leftParenthesis": {
 																			"start": 152,
 																			"end": 153,
+																			"type": "OPEN_PAREN",
 																			"lexeme": "("
 																		},
 																		"rightParenthesis": {
 																			"start": 161,
 																			"end": 162,
+																			"type": "CLOSE_PAREN",
 																			"lexeme": ")"
 																		},
 																		"beginToken": {
 																			"start": 152,
 																			"end": 153,
+																			"type": "OPEN_PAREN",
 																			"lexeme": "("
 																		},
 																		"endToken": {
 																			"start": 161,
 																			"end": 162,
+																			"type": "CLOSE_PAREN",
 																			"lexeme": ")"
 																		},
 																		"isSynthetic": false,
@@ -2534,6 +2749,7 @@
 																		"token": {
 																			"start": 147,
 																			"end": 152,
+																			"type": "IDENTIFIER",
 																			"lexeme": "print"
 																		},
 																		"name": "print"
@@ -2576,11 +2792,13 @@
 												"leftBracket": {
 													"start": 116,
 													"end": 117,
+													"type": "OPEN_CURLY_BRACKET",
 													"lexeme": "{"
 												},
 												"rightBracket": {
 													"start": 165,
 													"end": 166,
+													"type": "CLOSE_CURLY_BRACKET",
 													"lexeme": "}"
 												},
 												"statements": [
@@ -2595,6 +2813,7 @@
 															"awaitKeyword": {
 																"start": 120,
 																"end": 125,
+																"type": "AWAIT",
 																"lexeme": "await"
 															},
 															"expression": {
@@ -2610,6 +2829,7 @@
 																	"token": {
 																		"start": 130,
 																		"end": 141,
+																		"type": "IDENTIFIER",
 																		"lexeme": "loadLibrary"
 																	},
 																	"name": "loadLibrary"
@@ -2621,6 +2841,7 @@
 																	"token": {
 																		"start": 126,
 																		"end": 129,
+																		"type": "IDENTIFIER",
 																		"lexeme": "foo"
 																	},
 																	"name": "foo"
@@ -2632,6 +2853,7 @@
 																	"token": {
 																		"start": 126,
 																		"end": 129,
+																		"type": "IDENTIFIER",
 																		"lexeme": "foo"
 																	},
 																	"name": "foo"
@@ -2645,21 +2867,25 @@
 																	"leftParenthesis": {
 																		"start": 141,
 																		"end": 142,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"rightParenthesis": {
 																		"start": 142,
 																		"end": 143,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"beginToken": {
 																		"start": 141,
 																		"end": 142,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"endToken": {
 																		"start": 142,
 																		"end": 143,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"isSynthetic": false,
@@ -2673,6 +2899,7 @@
 																	"token": {
 																		"start": 130,
 																		"end": 141,
+																		"type": "IDENTIFIER",
 																		"lexeme": "loadLibrary"
 																	},
 																	"name": "loadLibrary"
@@ -2694,6 +2921,7 @@
 																"awaitKeyword": {
 																	"start": 120,
 																	"end": 125,
+																	"type": "AWAIT",
 																	"lexeme": "await"
 																},
 																"expression": {
@@ -2709,6 +2937,7 @@
 																		"token": {
 																			"start": 130,
 																			"end": 141,
+																			"type": "IDENTIFIER",
 																			"lexeme": "loadLibrary"
 																		},
 																		"name": "loadLibrary"
@@ -2720,6 +2949,7 @@
 																		"token": {
 																			"start": 126,
 																			"end": 129,
+																			"type": "IDENTIFIER",
 																			"lexeme": "foo"
 																		},
 																		"name": "foo"
@@ -2731,6 +2961,7 @@
 																		"token": {
 																			"start": 126,
 																			"end": 129,
+																			"type": "IDENTIFIER",
 																			"lexeme": "foo"
 																		},
 																		"name": "foo"
@@ -2744,21 +2975,25 @@
 																		"leftParenthesis": {
 																			"start": 141,
 																			"end": 142,
+																			"type": "OPEN_PAREN",
 																			"lexeme": "("
 																		},
 																		"rightParenthesis": {
 																			"start": 142,
 																			"end": 143,
+																			"type": "CLOSE_PAREN",
 																			"lexeme": ")"
 																		},
 																		"beginToken": {
 																			"start": 141,
 																			"end": 142,
+																			"type": "OPEN_PAREN",
 																			"lexeme": "("
 																		},
 																		"endToken": {
 																			"start": 142,
 																			"end": 143,
+																			"type": "CLOSE_PAREN",
 																			"lexeme": ")"
 																		},
 																		"isSynthetic": false,
@@ -2772,6 +3007,7 @@
 																		"token": {
 																			"start": 130,
 																			"end": 141,
+																			"type": "IDENTIFIER",
 																			"lexeme": "loadLibrary"
 																		},
 																		"name": "loadLibrary"
@@ -2802,6 +3038,7 @@
 																"token": {
 																	"start": 147,
 																	"end": 152,
+																	"type": "IDENTIFIER",
 																	"lexeme": "print"
 																},
 																"name": "print"
@@ -2825,6 +3062,7 @@
 																			"token": {
 																				"start": 157,
 																				"end": 161,
+																				"type": "IDENTIFIER",
 																				"lexeme": "main"
 																			},
 																			"name": "main"
@@ -2833,6 +3071,7 @@
 																		"period": {
 																			"start": 156,
 																			"end": 157,
+																			"type": "PERIOD",
 																			"lexeme": "."
 																		},
 																		"prefix": {
@@ -2842,6 +3081,7 @@
 																			"token": {
 																				"start": 153,
 																				"end": 156,
+																				"type": "IDENTIFIER",
 																				"lexeme": "foo"
 																			},
 																			"name": "foo"
@@ -2852,21 +3092,25 @@
 																"leftParenthesis": {
 																	"start": 152,
 																	"end": 153,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"rightParenthesis": {
 																	"start": 161,
 																	"end": 162,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"beginToken": {
 																	"start": 152,
 																	"end": 153,
+																	"type": "OPEN_PAREN",
 																	"lexeme": "("
 																},
 																"endToken": {
 																	"start": 161,
 																	"end": 162,
+																	"type": "CLOSE_PAREN",
 																	"lexeme": ")"
 																},
 																"isSynthetic": false,
@@ -2880,6 +3124,7 @@
 																"token": {
 																	"start": 147,
 																	"end": 152,
+																	"type": "IDENTIFIER",
 																	"lexeme": "print"
 																},
 																"name": "print"
@@ -2903,6 +3148,7 @@
 																	"token": {
 																		"start": 147,
 																		"end": 152,
+																		"type": "IDENTIFIER",
 																		"lexeme": "print"
 																	},
 																	"name": "print"
@@ -2926,6 +3172,7 @@
 																				"token": {
 																					"start": 157,
 																					"end": 161,
+																					"type": "IDENTIFIER",
 																					"lexeme": "main"
 																				},
 																				"name": "main"
@@ -2934,6 +3181,7 @@
 																			"period": {
 																				"start": 156,
 																				"end": 157,
+																				"type": "PERIOD",
 																				"lexeme": "."
 																			},
 																			"prefix": {
@@ -2943,6 +3191,7 @@
 																				"token": {
 																					"start": 153,
 																					"end": 156,
+																					"type": "IDENTIFIER",
 																					"lexeme": "foo"
 																				},
 																				"name": "foo"
@@ -2953,21 +3202,25 @@
 																	"leftParenthesis": {
 																		"start": 152,
 																		"end": 153,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"rightParenthesis": {
 																		"start": 161,
 																		"end": 162,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"beginToken": {
 																		"start": 152,
 																		"end": 153,
+																		"type": "OPEN_PAREN",
 																		"lexeme": "("
 																	},
 																	"endToken": {
 																		"start": 161,
 																		"end": 162,
+																		"type": "CLOSE_PAREN",
 																		"lexeme": ")"
 																	},
 																	"isSynthetic": false,
@@ -2981,6 +3234,7 @@
 																	"token": {
 																		"start": 147,
 																		"end": 152,
+																		"type": "IDENTIFIER",
 																		"lexeme": "print"
 																	},
 																	"name": "print"
@@ -3004,22 +3258,26 @@
 											"leftParenthesis": {
 												"start": 107,
 												"end": 108,
+												"type": "OPEN_PAREN",
 												"lexeme": "("
 											},
 											"parameters": [],
 											"rightParenthesis": {
 												"start": 108,
 												"end": 109,
+												"type": "CLOSE_PAREN",
 												"lexeme": ")"
 											},
 											"beginToken": {
 												"start": 107,
 												"end": 108,
+												"type": "OPEN_PAREN",
 												"lexeme": "("
 											},
 											"endToken": {
 												"start": 108,
 												"end": 109,
+												"type": "CLOSE_PAREN",
 												"lexeme": ")"
 											},
 											"isSynthetic": false,
@@ -3036,21 +3294,25 @@
 							"leftParenthesis": {
 								"start": 106,
 								"end": 107,
+								"type": "OPEN_PAREN",
 								"lexeme": "("
 							},
 							"rightParenthesis": {
 								"start": 166,
 								"end": 167,
+								"type": "CLOSE_PAREN",
 								"lexeme": ")"
 							},
 							"beginToken": {
 								"start": 106,
 								"end": 107,
+								"type": "OPEN_PAREN",
 								"lexeme": "("
 							},
 							"endToken": {
 								"start": 166,
 								"end": 167,
+								"type": "CLOSE_PAREN",
 								"lexeme": ")"
 							},
 							"isSynthetic": false,
@@ -3064,6 +3326,7 @@
 							"token": {
 								"start": 99,
 								"end": 106,
+								"type": "IDENTIFIER",
 								"lexeme": "onMount"
 							},
 							"name": "onMount"

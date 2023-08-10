@@ -27,6 +27,7 @@
 									"token": {
 										"start": 6,
 										"end": 8,
+										"type": "IDENTIFIER",
 										"lexeme": "id"
 									},
 									"name": "id"

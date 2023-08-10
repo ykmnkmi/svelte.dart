@@ -1,7 +1,3 @@
-## 1.0.0-beta.4
-
-- Refactoring.
-
-## 1.0.0-beta.0
+## 1.0.0-7.beta
 
 - Initial version.

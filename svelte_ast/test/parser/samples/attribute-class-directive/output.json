@@ -23,6 +23,7 @@
 							"token": {
 								"start": 16,
 								"end": 21,
+								"type": "IDENTIFIER",
 								"lexeme": "isFoo"
 							},
 							"name": "isFoo"

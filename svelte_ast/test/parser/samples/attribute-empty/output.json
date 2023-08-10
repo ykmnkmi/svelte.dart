@@ -42,6 +42,7 @@
 									"literal": {
 										"start": 13,
 										"end": 15,
+										"type": "STRING",
 										"lexeme": "''"
 									},
 									"value": "",
@@ -84,6 +85,7 @@
 									"literal": {
 										"start": 26,
 										"end": 28,
+										"type": "STRING",
 										"lexeme": "''"
 									},
 									"value": "",

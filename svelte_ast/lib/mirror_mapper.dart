@@ -151,6 +151,7 @@ void _fillAstNode(
         result[name] = <String, Object?>{
           'start': _getValue(token, #offset),
           'end': _getValue(token, #end),
+          'type': _getValue(token, #type).toString(),
           'lexeme': _getValue(token, #lexeme),
         };
       }

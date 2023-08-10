@@ -15,6 +15,7 @@
 					"token": {
 						"start": 7,
 						"end": 13,
+						"type": "IDENTIFIER",
 						"lexeme": "things"
 					},
 					"name": "things"
@@ -26,6 +27,7 @@
 					"name": {
 						"start": 17,
 						"end": 22,
+						"type": "IDENTIFIER",
 						"lexeme": "thing"
 					}
 				},
@@ -37,6 +39,7 @@
 					"token": {
 						"start": 24,
 						"end": 29,
+						"type": "IDENTIFIER",
 						"lexeme": "thing"
 					},
 					"name": "thing"

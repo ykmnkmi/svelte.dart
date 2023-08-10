@@ -19,6 +19,7 @@
 						"token": {
 							"start": 5,
 							"end": 10,
+							"type": "IDENTIFIER",
 							"lexeme": "depth"
 						},
 						"name": "depth"
@@ -26,6 +27,7 @@
 					"operator": {
 						"start": 11,
 						"end": 12,
+						"type": "GT",
 						"lexeme": ">"
 					},
 					"rightOperand": {
@@ -35,6 +37,7 @@
 						"literal": {
 							"start": 13,
 							"end": 14,
+							"type": "INT",
 							"lexeme": "1"
 						}
 					},
@@ -51,6 +54,7 @@
 							"token": {
 								"start": 5,
 								"end": 10,
+								"type": "IDENTIFIER",
 								"lexeme": "depth"
 							},
 							"name": "depth"
@@ -58,6 +62,7 @@
 						"operator": {
 							"start": 11,
 							"end": 12,
+							"type": "GT",
 							"lexeme": ">"
 						},
 						"rightOperand": {
@@ -67,6 +72,7 @@
 							"literal": {
 								"start": 13,
 								"end": 14,
+								"type": "INT",
 								"lexeme": "1"
 							}
 						},
@@ -106,6 +112,7 @@
 												"token": {
 													"start": 38,
 													"end": 43,
+													"type": "IDENTIFIER",
 													"lexeme": "depth"
 												},
 												"name": "depth"
@@ -113,6 +120,7 @@
 											"operator": {
 												"start": 44,
 												"end": 45,
+												"type": "MINUS",
 												"lexeme": "-"
 											},
 											"rightOperand": {
@@ -122,6 +130,7 @@
 												"literal": {
 													"start": 46,
 													"end": 47,
+													"type": "INT",
 													"lexeme": "1"
 												}
 											},
@@ -138,6 +147,7 @@
 													"token": {
 														"start": 38,
 														"end": 43,
+														"type": "IDENTIFIER",
 														"lexeme": "depth"
 													},
 													"name": "depth"
@@ -145,6 +155,7 @@
 												"operator": {
 													"start": 44,
 													"end": 45,
+													"type": "MINUS",
 													"lexeme": "-"
 												},
 												"rightOperand": {
@@ -154,6 +165,7 @@
 													"literal": {
 														"start": 46,
 														"end": 47,
+														"type": "INT",
 														"lexeme": "1"
 													}
 												},

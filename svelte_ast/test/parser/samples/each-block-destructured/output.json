@@ -22,6 +22,7 @@
 					"token": {
 						"start": 50,
 						"end": 57,
+						"type": "IDENTIFIER",
 						"lexeme": "animals"
 					},
 					"name": "animals"
@@ -38,6 +39,7 @@
 							"name": {
 								"start": 62,
 								"end": 65,
+								"type": "IDENTIFIER",
 								"lexeme": "key"
 							}
 						},
@@ -48,6 +50,7 @@
 							"name": {
 								"start": 67,
 								"end": 72,
+								"type": "IDENTIFIER",
 								"lexeme": "value"
 							}
 						},
@@ -68,6 +71,7 @@
 										"name": {
 											"start": 62,
 											"end": 65,
+											"type": "IDENTIFIER",
 											"lexeme": "key"
 										}
 									},
@@ -78,6 +82,7 @@
 										"name": {
 											"start": 67,
 											"end": 72,
+											"type": "IDENTIFIER",
 											"lexeme": "value"
 										}
 									},
@@ -93,11 +98,13 @@
 								"leftBracket": {
 									"start": 61,
 									"end": 62,
+									"type": "OPEN_SQUARE_BRACKET",
 									"lexeme": "["
 								},
 								"rightBracket": {
 									"start": 77,
 									"end": 78,
+									"type": "CLOSE_SQUARE_BRACKET",
 									"lexeme": "]"
 								},
 								"typeArguments": null,
@@ -115,6 +122,7 @@
 										"name": {
 											"start": 62,
 											"end": 65,
+											"type": "IDENTIFIER",
 											"lexeme": "key"
 										}
 									},
@@ -125,6 +133,7 @@
 										"name": {
 											"start": 67,
 											"end": 72,
+											"type": "IDENTIFIER",
 											"lexeme": "value"
 										}
 									},
@@ -140,11 +149,13 @@
 								"leftBracket": {
 									"start": 61,
 									"end": 62,
+									"type": "OPEN_SQUARE_BRACKET",
 									"lexeme": "["
 								},
 								"rightBracket": {
 									"start": 77,
 									"end": 78,
+									"type": "CLOSE_SQUARE_BRACKET",
 									"lexeme": "]"
 								},
 								"typeArguments": null,
@@ -155,11 +166,13 @@
 					"leftBracket": {
 						"start": 61,
 						"end": 62,
+						"type": "OPEN_SQUARE_BRACKET",
 						"lexeme": "["
 					},
 					"rightBracket": {
 						"start": 77,
 						"end": 78,
+						"type": "CLOSE_SQUARE_BRACKET",
 						"lexeme": "]"
 					},
 					"typeArguments": null,
@@ -175,6 +188,7 @@
 								"name": {
 									"start": 62,
 									"end": 65,
+									"type": "IDENTIFIER",
 									"lexeme": "key"
 								}
 							},
@@ -185,6 +199,7 @@
 								"name": {
 									"start": 67,
 									"end": 72,
+									"type": "IDENTIFIER",
 									"lexeme": "value"
 								}
 							},
@@ -200,11 +215,13 @@
 						"leftBracket": {
 							"start": 61,
 							"end": 62,
+							"type": "OPEN_SQUARE_BRACKET",
 							"lexeme": "["
 						},
 						"rightBracket": {
 							"start": 77,
 							"end": 78,
+							"type": "CLOSE_SQUARE_BRACKET",
 							"lexeme": "]"
 						},
 						"typeArguments": null,
@@ -232,6 +249,7 @@
 									"token": {
 										"start": 84,
 										"end": 87,
+										"type": "IDENTIFIER",
 										"lexeme": "key"
 									},
 									"name": "key"
@@ -255,6 +273,7 @@
 									"token": {
 										"start": 91,
 										"end": 96,
+										"type": "IDENTIFIER",
 										"lexeme": "value"
 									},
 									"name": "value"
@@ -285,6 +304,7 @@
 				"semicolon": {
 					"start": 30,
 					"end": 31,
+					"type": "SEMICOLON",
 					"lexeme": ";"
 				},
 				"variables": {
@@ -307,6 +327,7 @@
 							"name": {
 								"start": 23,
 								"end": 30,
+								"type": "IDENTIFIER",
 								"lexeme": "animals"
 							}
 						}
@@ -315,6 +336,7 @@
 					"firstTokenAfterCommentAndMetadata": {
 						"start": 19,
 						"end": 22,
+						"type": "VAR",
 						"lexeme": "var"
 					},
 					"metadata": []

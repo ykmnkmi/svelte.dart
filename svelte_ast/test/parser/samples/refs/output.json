@@ -30,6 +30,7 @@
 							"token": {
 								"start": 49,
 								"end": 52,
+								"type": "IDENTIFIER",
 								"lexeme": "foo"
 							},
 							"name": "foo"
@@ -58,6 +59,7 @@
 				"semicolon": {
 					"start": 17,
 					"end": 18,
+					"type": "SEMICOLON",
 					"lexeme": ";"
 				},
 				"variables": {
@@ -80,6 +82,7 @@
 							"name": {
 								"start": 14,
 								"end": 17,
+								"type": "IDENTIFIER",
 								"lexeme": "foo"
 							}
 						}
@@ -88,6 +91,7 @@
 					"firstTokenAfterCommentAndMetadata": {
 						"start": 10,
 						"end": 13,
+						"type": "VAR",
 						"lexeme": "var"
 					},
 					"metadata": []
@@ -99,6 +103,7 @@
 					"semicolon": {
 						"start": 17,
 						"end": 18,
+						"type": "SEMICOLON",
 						"lexeme": ";"
 					},
 					"variables": {
@@ -121,6 +126,7 @@
 								"name": {
 									"start": 14,
 									"end": 17,
+									"type": "IDENTIFIER",
 									"lexeme": "foo"
 								}
 							}
@@ -129,6 +135,7 @@
 						"firstTokenAfterCommentAndMetadata": {
 							"start": 10,
 							"end": 13,
+							"type": "VAR",
 							"lexeme": "var"
 						},
 						"metadata": []

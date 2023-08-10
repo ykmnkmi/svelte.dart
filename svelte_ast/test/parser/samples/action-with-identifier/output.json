@@ -23,6 +23,7 @@
 							"token": {
 								"start": 20,
 								"end": 27,
+								"type": "IDENTIFIER",
 								"lexeme": "message"
 							},
 							"name": "message"

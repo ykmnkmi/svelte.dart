@@ -9,16 +9,9 @@ import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
 <script>
-	import 'package:svelte/svelte.dart' show onMount;
-
-	import 'foo.dart' deferred as foo;
-
-	onMount(() async {
-		await foo.loadLibrary();
-		print(foo.message);
-	});
+  var count = 0;
 </script>
-''';
+<button on:click="{() => count++}">count: {count}</button>''';
 
 void main() {
   try {

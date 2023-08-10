@@ -16,6 +16,7 @@
 					"token": {
 						"start": 22,
 						"end": 25,
+						"type": "IDENTIFIER",
 						"lexeme": "tag"
 					},
 					"name": "tag"
@@ -42,6 +43,7 @@
 					"token": {
 						"start": 67,
 						"end": 70,
+						"type": "IDENTIFIER",
 						"lexeme": "tag"
 					},
 					"name": "tag"

@@ -35,6 +35,7 @@
 										"token": {
 											"start": 25,
 											"end": 32,
+											"type": "IDENTIFIER",
 											"lexeme": "visible"
 										},
 										"name": "visible"
@@ -42,6 +43,7 @@
 									"operator": {
 										"start": 33,
 										"end": 34,
+										"type": "EQ",
 										"lexeme": "="
 									},
 									"rightHandSide": {
@@ -55,6 +57,7 @@
 											"token": {
 												"start": 36,
 												"end": 43,
+												"type": "IDENTIFIER",
 												"lexeme": "visible"
 											},
 											"name": "visible"
@@ -62,6 +65,7 @@
 										"operator": {
 											"start": 35,
 											"end": 36,
+											"type": "BANG",
 											"lexeme": "!"
 										},
 										"inConstantContext": false,
@@ -74,6 +78,7 @@
 								"functionDefinition": {
 									"start": 22,
 									"end": 24,
+									"type": "FUNCTION",
 									"lexeme": "=>"
 								},
 								"isAsynchronous": false,
@@ -87,22 +92,26 @@
 								"leftParenthesis": {
 									"start": 19,
 									"end": 20,
+									"type": "OPEN_PAREN",
 									"lexeme": "("
 								},
 								"parameters": [],
 								"rightParenthesis": {
 									"start": 20,
 									"end": 21,
+									"type": "CLOSE_PAREN",
 									"lexeme": ")"
 								},
 								"beginToken": {
 									"start": 19,
 									"end": 20,
+									"type": "OPEN_PAREN",
 									"lexeme": "("
 								},
 								"endToken": {
 									"start": 20,
 									"end": 21,
+									"type": "CLOSE_PAREN",
 									"lexeme": ")"
 								},
 								"isSynthetic": false,
@@ -125,6 +134,7 @@
 												"token": {
 													"start": 25,
 													"end": 32,
+													"type": "IDENTIFIER",
 													"lexeme": "visible"
 												},
 												"name": "visible"
@@ -132,6 +142,7 @@
 											"operator": {
 												"start": 33,
 												"end": 34,
+												"type": "EQ",
 												"lexeme": "="
 											},
 											"rightHandSide": {
@@ -145,6 +156,7 @@
 													"token": {
 														"start": 36,
 														"end": 43,
+														"type": "IDENTIFIER",
 														"lexeme": "visible"
 													},
 													"name": "visible"
@@ -152,6 +164,7 @@
 												"operator": {
 													"start": 35,
 													"end": 36,
+													"type": "BANG",
 													"lexeme": "!"
 												},
 												"inConstantContext": false,
@@ -164,6 +177,7 @@
 										"functionDefinition": {
 											"start": 22,
 											"end": 24,
+											"type": "FUNCTION",
 											"lexeme": "=>"
 										},
 										"isAsynchronous": false,
@@ -195,6 +209,7 @@
 												"token": {
 													"start": 25,
 													"end": 32,
+													"type": "IDENTIFIER",
 													"lexeme": "visible"
 												},
 												"name": "visible"
@@ -202,6 +217,7 @@
 											"operator": {
 												"start": 33,
 												"end": 34,
+												"type": "EQ",
 												"lexeme": "="
 											},
 											"rightHandSide": {
@@ -215,6 +231,7 @@
 													"token": {
 														"start": 36,
 														"end": 43,
+														"type": "IDENTIFIER",
 														"lexeme": "visible"
 													},
 													"name": "visible"
@@ -222,6 +239,7 @@
 												"operator": {
 													"start": 35,
 													"end": 36,
+													"type": "BANG",
 													"lexeme": "!"
 												},
 												"inConstantContext": false,
@@ -234,6 +252,7 @@
 										"functionDefinition": {
 											"start": 22,
 											"end": 24,
+											"type": "FUNCTION",
 											"lexeme": "=>"
 										},
 										"isAsynchronous": false,
@@ -269,6 +288,7 @@
 											"token": {
 												"start": 25,
 												"end": 32,
+												"type": "IDENTIFIER",
 												"lexeme": "visible"
 											},
 											"name": "visible"
@@ -276,6 +296,7 @@
 										"operator": {
 											"start": 33,
 											"end": 34,
+											"type": "EQ",
 											"lexeme": "="
 										},
 										"rightHandSide": {
@@ -289,6 +310,7 @@
 												"token": {
 													"start": 36,
 													"end": 43,
+													"type": "IDENTIFIER",
 													"lexeme": "visible"
 												},
 												"name": "visible"
@@ -296,6 +318,7 @@
 											"operator": {
 												"start": 35,
 												"end": 36,
+												"type": "BANG",
 												"lexeme": "!"
 											},
 											"inConstantContext": false,
@@ -308,6 +331,7 @@
 									"functionDefinition": {
 										"start": 22,
 										"end": 24,
+										"type": "FUNCTION",
 										"lexeme": "=>"
 									},
 									"isAsynchronous": false,
@@ -321,22 +345,26 @@
 									"leftParenthesis": {
 										"start": 19,
 										"end": 20,
+										"type": "OPEN_PAREN",
 										"lexeme": "("
 									},
 									"parameters": [],
 									"rightParenthesis": {
 										"start": 20,
 										"end": 21,
+										"type": "CLOSE_PAREN",
 										"lexeme": ")"
 									},
 									"beginToken": {
 										"start": 19,
 										"end": 20,
+										"type": "OPEN_PAREN",
 										"lexeme": "("
 									},
 									"endToken": {
 										"start": 20,
 										"end": 21,
+										"type": "CLOSE_PAREN",
 										"lexeme": ")"
 									},
 									"isSynthetic": false,
@@ -379,6 +407,7 @@
 					"token": {
 						"start": 68,
 						"end": 75,
+						"type": "IDENTIFIER",
 						"lexeme": "visible"
 					},
 					"name": "visible"

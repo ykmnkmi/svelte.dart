@@ -21,6 +21,7 @@
 							"token": {
 								"start": 9,
 								"end": 14,
+								"type": "IDENTIFIER",
 								"lexeme": "props"
 							},
 							"name": "props"

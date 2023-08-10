@@ -15,6 +15,7 @@
 					"token": {
 						"start": 5,
 						"end": 8,
+						"type": "IDENTIFIER",
 						"lexeme": "foo"
 					},
 					"name": "foo"

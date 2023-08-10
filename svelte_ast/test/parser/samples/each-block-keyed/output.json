@@ -15,6 +15,7 @@
 					"token": {
 						"start": 7,
 						"end": 12,
+						"type": "IDENTIFIER",
 						"lexeme": "todos"
 					},
 					"name": "todos"
@@ -26,6 +27,7 @@
 					"name": {
 						"start": 16,
 						"end": 20,
+						"type": "IDENTIFIER",
 						"lexeme": "todo"
 					}
 				},
@@ -41,6 +43,7 @@
 						"token": {
 							"start": 27,
 							"end": 29,
+							"type": "IDENTIFIER",
 							"lexeme": "id"
 						},
 						"name": "id"
@@ -49,6 +52,7 @@
 					"period": {
 						"start": 26,
 						"end": 27,
+						"type": "PERIOD",
 						"lexeme": "."
 					},
 					"prefix": {
@@ -58,6 +62,7 @@
 						"token": {
 							"start": 22,
 							"end": 26,
+							"type": "IDENTIFIER",
 							"lexeme": "todo"
 						},
 						"name": "todo"
@@ -83,6 +88,7 @@
 									"token": {
 										"start": 37,
 										"end": 41,
+										"type": "IDENTIFIER",
 										"lexeme": "todo"
 									},
 									"name": "todo"

@@ -23,6 +23,7 @@
 							"literal": {
 								"start": 21,
 								"end": 34,
+								"type": "STRING",
 								"lexeme": "'tooltip msg'"
 							},
 							"value": "tooltip msg",

@@ -29,6 +29,7 @@
 							"token": {
 								"start": 5,
 								"end": 6,
+								"type": "IDENTIFIER",
 								"lexeme": "a"
 							},
 							"name": "a"
@@ -52,6 +53,7 @@
 							"token": {
 								"start": 9,
 								"end": 10,
+								"type": "IDENTIFIER",
 								"lexeme": "b"
 							},
 							"name": "b"
@@ -75,6 +77,7 @@
 							"token": {
 								"start": 15,
 								"end": 16,
+								"type": "IDENTIFIER",
 								"lexeme": "c"
 							},
 							"name": "c"

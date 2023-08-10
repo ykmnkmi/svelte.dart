@@ -15,6 +15,7 @@
 					"token": {
 						"start": 8,
 						"end": 18,
+						"type": "IDENTIFIER",
 						"lexeme": "thePromise"
 					},
 					"name": "thePromise"
@@ -27,6 +28,7 @@
 					"name": {
 						"start": 47,
 						"end": 55,
+						"type": "IDENTIFIER",
 						"lexeme": "theError"
 					}
 				},
@@ -109,6 +111,7 @@
 											"token": {
 												"start": 78,
 												"end": 85,
+												"type": "IDENTIFIER",
 												"lexeme": "message"
 											},
 											"name": "message"
@@ -117,6 +120,7 @@
 										"period": {
 											"start": 77,
 											"end": 78,
+											"type": "PERIOD",
 											"lexeme": "."
 										},
 										"prefix": {
@@ -126,6 +130,7 @@
 											"token": {
 												"start": 69,
 												"end": 77,
+												"type": "IDENTIFIER",
 												"lexeme": "theError"
 											},
 											"name": "theError"

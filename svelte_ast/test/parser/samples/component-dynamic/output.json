@@ -16,6 +16,7 @@
 					"colon": {
 						"start": 35,
 						"end": 36,
+						"type": "COLON",
 						"lexeme": ":"
 					},
 					"condition": {
@@ -25,6 +26,7 @@
 						"token": {
 							"start": 25,
 							"end": 28,
+							"type": "IDENTIFIER",
 							"lexeme": "foo"
 						},
 						"name": "foo"
@@ -36,6 +38,7 @@
 						"token": {
 							"start": 37,
 							"end": 40,
+							"type": "IDENTIFIER",
 							"lexeme": "Bar"
 						},
 						"name": "Bar"
@@ -43,6 +46,7 @@
 					"question": {
 						"start": 29,
 						"end": 30,
+						"type": "QUESTION",
 						"lexeme": "?"
 					},
 					"thenExpression": {
@@ -52,6 +56,7 @@
 						"token": {
 							"start": 31,
 							"end": 34,
+							"type": "IDENTIFIER",
 							"lexeme": "Foo"
 						},
 						"name": "Foo"
@@ -65,6 +70,7 @@
 						"colon": {
 							"start": 35,
 							"end": 36,
+							"type": "COLON",
 							"lexeme": ":"
 						},
 						"condition": {
@@ -74,6 +80,7 @@
 							"token": {
 								"start": 25,
 								"end": 28,
+								"type": "IDENTIFIER",
 								"lexeme": "foo"
 							},
 							"name": "foo"
@@ -85,6 +92,7 @@
 							"token": {
 								"start": 37,
 								"end": 40,
+								"type": "IDENTIFIER",
 								"lexeme": "Bar"
 							},
 							"name": "Bar"
@@ -92,6 +100,7 @@
 						"question": {
 							"start": 29,
 							"end": 30,
+							"type": "QUESTION",
 							"lexeme": "?"
 						},
 						"thenExpression": {
@@ -101,6 +110,7 @@
 							"token": {
 								"start": 31,
 								"end": 34,
+								"type": "IDENTIFIER",
 								"lexeme": "Foo"
 							},
 							"name": "Foo"

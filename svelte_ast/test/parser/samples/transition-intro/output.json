@@ -34,6 +34,7 @@
 										"token": {
 											"start": 17,
 											"end": 24,
+											"type": "IDENTIFIER",
 											"lexeme": "opacity"
 										},
 										"name": "opacity"
@@ -41,6 +42,7 @@
 									"separator": {
 										"start": 24,
 										"end": 25,
+										"type": "COLON",
 										"lexeme": ":"
 									},
 									"value": {
@@ -50,6 +52,7 @@
 										"literal": {
 											"start": 26,
 											"end": 27,
+											"type": "INT",
 											"lexeme": "0"
 										}
 									}
@@ -60,11 +63,13 @@
 							"leftBracket": {
 								"start": 16,
 								"end": 17,
+								"type": "OPEN_CURLY_BRACKET",
 								"lexeme": "{"
 							},
 							"rightBracket": {
 								"start": 27,
 								"end": 28,
+								"type": "CLOSE_CURLY_BRACKET",
 								"lexeme": "}"
 							},
 							"isConst": false,
