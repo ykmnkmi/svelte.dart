@@ -629,7 +629,7 @@ final class InlineElement extends Tag {
       'end': end,
       'class': 'InlineElement',
       'name': name,
-      if (tag case String tag)
+      if (tag case String tag?)
         'tag': tag
       else if (tag case Expression tag?)
         'tag': mapper(tag)

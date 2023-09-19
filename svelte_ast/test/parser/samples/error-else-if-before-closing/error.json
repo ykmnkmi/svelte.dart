@@ -1,6 +1,6 @@
 {
 	"code": "invalid-else-placement",
-	"message": "Expected to close PendingBlock before seeing {:else} block",
+	"message": "Expected to close {#await} block before seeing {:else} block",
 	"line": 3,
 	"column": 9,
 	"offset": 34

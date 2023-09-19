@@ -2,20 +2,16 @@ import 'package:svelte_ast/src/ast.dart';
 
 String nodeToString(Node node) {
   return switch (node) {
-    IfBlock _ => '{#if} block',
-    // ThenBlock _ => => '{:then} block',
-    ElseBlock _ => '{:else} block',
-    // PendingBlock _ || AwaitBlock _=> '{#await} block',
-    // case 'CatchBlock': return '{:catch} block';
-    EachBlock _ => '{#each} block',
-    RawMustacheTag _ => '{@html} block',
-    DebugTag _ => '{@debug} block',
-    ConstTag _ => '{@const} tag',
-    // case 'Element':
-    // case 'InlineComponent':
-    // case 'Slot':
-    // case 'Title':
-    // 	return `<${node.name}> tag`;
-    _ => node.runtimeType.toString(),
+    IfBlock() => '{#if} block',
+    ThenBlock() => '{:then} block',
+    ElseBlock() => '{:else} block',
+    PendingBlock _ || AwaitBlock _ => '{#await} block',
+    CatchBlock() => '{:catch} block',
+    EachBlock() => '{#each} block',
+    RawMustacheTag() => '{@html} block',
+    DebugTag() => '{@debug} block',
+    ConstTag() => '{@const} tag',
+    Tag() => '<${node.name}> tag',
+    _ => throw UnimplementedError(),
   };
 }

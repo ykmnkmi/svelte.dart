@@ -1,2 +1,2 @@
-test/check.dart
-test/check.json
+experiments/*
+test/check.*

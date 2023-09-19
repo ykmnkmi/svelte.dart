@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages, implementation_imports
-
 import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe
     show Parser;
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
@@ -61,7 +59,7 @@ class Parser {
 
   bool skipToken([int n = 1]) {
     for (int i = 0; i < n; i += 1) {
-      if (token.next case Token next when next.type != TokenType.EOF) {
+      if (token.next case Token next? when next.type != TokenType.EOF) {
         token = next;
       } else {
         return false;
@@ -94,7 +92,7 @@ class Parser {
   }
 
   Token expectToken(TokenType type, [String? value]) {
-    if (nextTokenIf(type, value) case Token token) {
+    if (nextTokenIf(type, value) case Token token?) {
       return token;
     }
 
@@ -115,7 +113,7 @@ class Parser {
     List<Node> children = <Node>[];
 
     while (token.type != TokenType.EOF) {
-      if (fragment() case Node node) {
+      if (fragment() case Node node?) {
         children.add(node);
       }
     }

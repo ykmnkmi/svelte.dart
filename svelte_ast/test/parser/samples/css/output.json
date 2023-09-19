@@ -62,7 +62,12 @@
 										"start": 2,
 										"end": 5,
 										"class": "ElementSelector"
-									}
+									},
+									"isCombinatorNone": true,
+									"isCombinatorPlus": false,
+									"isCombinatorGreater": false,
+									"isCombinatorTilde": false,
+									"isCombinatorDescendant": false
 								}
 							]
 						}
@@ -89,7 +94,11 @@
 									}
 								]
 							},
-							"dartStyle": null
+							"dartStyle": null,
+							"important": false,
+							"isIE7": false,
+							"property": "color",
+							"hasDartStyle": false
 						}
 					]
 				}

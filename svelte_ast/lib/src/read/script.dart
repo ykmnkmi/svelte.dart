@@ -24,7 +24,7 @@ extension ScriptParser on Parser {
       return 'default';
     }
 
-    if (attribute.value case <Node>[Text(data: String data)]) {
+    if (attribute.value case <Node>[Text(data: String data)]?) {
       if (data == 'module') {
         return data;
       }

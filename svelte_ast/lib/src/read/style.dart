@@ -86,7 +86,7 @@ class StyleValidator extends Object with csslib.Visitor {
 
   @override
   dynamic visitDeclaration(Declaration node) {
-    if (node.expression case Expressions expressions
+    if (node.expression case Expressions expressions?
         when expressions.expressions.isEmpty) {
       parser.error(invalidDeclaration, offset + expressions.span!.start.offset);
     }

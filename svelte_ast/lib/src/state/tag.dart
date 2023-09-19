@@ -351,7 +351,7 @@ extension TagParser on Parser {
   List<Node> _readAttributeValue() {
     String? quoteMark = read('"') ?? read("'");
 
-    if (quoteMark case String mark when scan(mark)) {
+    if (quoteMark case String mark? when scan(mark)) {
       return <Node>[Text(start: position - 1, end: position - 1)];
     }
 

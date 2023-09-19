@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:stack_trace/stack_trace.dart';
+import 'package:svelte_ast/reflection.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 
@@ -15,9 +15,9 @@ const String string = '''
 void main() {
   try {
     Node node = parse(string, uri: Uri.file('main.dart'));
-    Map<String, Object?> json = node.toJson();
+    Map<String, Object?> json = node.toJson(mapper);
     String output = const JsonEncoder.withIndent('  ').convert(json);
-    File('dart_token_parser/main.json').writeAsStringSync(output);
+    print(output);
   } on ParseError catch (error, stackTrace) {
     print(error);
     print(error.span.highlight());

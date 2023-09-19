@@ -123,11 +123,7 @@ void _fillAstNode(
         result[name] = _getAstNode(node);
         _removeSeen(node.reflectee);
       }
-
-      return;
-    }
-
-    if (type.isSubtypeOf(_analyzerNodeList)) {
+    } else if (type.isSubtypeOf(_analyzerNodeList)) {
       var nodes = instance.getField(symbol);
       var values = nodes.reflectee;
 
@@ -138,11 +134,7 @@ void _fillAstNode(
           for (var node in values as analyzer.NodeList) mapper(node),
         ];
       }
-
-      return;
-    }
-
-    if (identical(type, _analyzerToken)) {
+    } else if (identical(type, _analyzerToken)) {
       var token = instance.getField(symbol);
 
       if (token.reflectee == null) {
@@ -155,13 +147,8 @@ void _fillAstNode(
           'lexeme': _getValue(token, #lexeme),
         };
       }
-
-      return;
-    }
-
-    if (_isCoreValue(type)) {
+    } else if (_isCoreValue(type)) {
       result[name] = _getValue(instance, symbol);
-      return;
     }
   }
 
@@ -175,10 +162,6 @@ void _fillAstNode(
       klass.declarations.forEach(forEach);
     }
   }
-
-  // for (var superinterface in instance.type.superinterfaces) {
-  //   print((superinterface, superinterface.superclass, superinterface.superinterfaces));
-  // }
 }
 
 Map<String, Object?> _getTreeNode(InstanceMirror instance) {
@@ -228,11 +211,7 @@ void _fillTreeNode(
       } else {
         result[name] = _getTreeNode(node);
       }
-
-      return;
-    }
-
-    if (type.isSubtypeOf(_csslibListTreeNode)) {
+    } else if (type.isSubtypeOf(_csslibListTreeNode)) {
       var nodes = instance.getField(symbol);
       var values = nodes.reflectee;
 
@@ -243,13 +222,8 @@ void _fillTreeNode(
           for (var node in values as List<csslib.TreeNode>) mapper(node),
         ];
       }
-
-      if (_isCoreValue(type)) {
-        result[name] = _getValue(instance, symbol);
-        return;
-      }
-
-      return;
+    } else if (_isCoreValue(type)) {
+      result[name] = _getValue(instance, symbol);
     }
   }
 
