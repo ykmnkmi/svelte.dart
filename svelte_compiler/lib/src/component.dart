@@ -34,7 +34,7 @@ class Component {
 
   late final ComponentOptions componentOptions = processComponentOptions();
 
-  late final Stylesheet stylesheet = Stylesheet.hash(
+  late final StyleSheet stylesheet = StyleSheet.hash(
     ast: ast,
     source: source,
     fileName: compileOptions.fileName,

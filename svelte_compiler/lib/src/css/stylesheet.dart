@@ -3,7 +3,7 @@ import 'package:svelte_compiler/src/component.dart';
 import 'package:svelte_compiler/src/interface.dart';
 import 'package:svelte_compiler/src/utils/hash.dart';
 
-String getDefaultCssHash(
+String getDefaultCSSHash(
   String name,
   String? fileName,
   String css,
@@ -12,8 +12,8 @@ String getDefaultCssHash(
   return 'svelte-${hash(css)}';
 }
 
-final class Stylesheet {
-  factory Stylesheet.hash({
+final class StyleSheet {
+  factory StyleSheet.hash({
     required SvelteAst ast,
     required String source,
     String? fileName,
@@ -27,14 +27,14 @@ final class Stylesheet {
     if (ast.style case Style style? when style.topLevels.isNotEmpty) {
       hasStyles = true;
 
-      getCssHash ??= getDefaultCssHash;
+      getCssHash ??= getDefaultCSSHash;
       id = getCssHash(componentName, fileName, style.content.data, hash);
       // TODO(stylesheet): visit
     } else {
       hasStyles = false;
     }
 
-    return Stylesheet(
+    return StyleSheet(
       ast: ast,
       source: source,
       fileName: fileName,
@@ -45,7 +45,7 @@ final class Stylesheet {
     );
   }
 
-  Stylesheet({
+  StyleSheet({
     required this.ast,
     required this.source,
     this.fileName,
