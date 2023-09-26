@@ -18,7 +18,7 @@ void transitionIn(Fragment? fragment, bool local) {
 void transitionOut(
   Fragment? fragment,
   bool local, [
-  VoidCallback? callback,
+  VoidFunction? callback,
 ]) {
   if (fragment != null) {
     if (outroing.add(fragment)) {

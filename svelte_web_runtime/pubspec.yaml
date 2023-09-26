@@ -1,6 +1,6 @@
 name: svelte_web_runtime
 description: SvelteDart WEB runtime library.
-version: 1.0.0-dev.1
+version: 1.0.0-dev.2
 repository: https://github.com/ykmnkmi/svelte.dart
 
 environment:

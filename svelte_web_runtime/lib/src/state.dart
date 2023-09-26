@@ -1,17 +1,28 @@
 import 'dart:html';
 
 import 'package:svelte_web_runtime/src/fragment.dart';
+import 'package:svelte_web_runtime/src/utilities.dart';
 
 class State {
+  Element? root;
+
   Fragment? fragment;
 
-  late List<Object?> instance;
+  bool destroyed = false;
+
+  List<Object?> instance = <Object?>[];
 
   late Map<String, int> props;
 
-  late VoidCallback update;
-
   late List<int> dirty;
 
-  Element? root;
+  VoidCallback update = noop;
+
+  List<VoidFunction> onMount = <VoidFunction>[];
+
+  List<VoidFunction> onDestroy = <VoidFunction>[];
+
+  List<VoidFunction> beforeUpdate = <VoidFunction>[];
+
+  List<VoidFunction> afterUpdate = <VoidFunction>[];
 }
