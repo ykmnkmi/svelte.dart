@@ -4,6 +4,10 @@ svelte.dart
 [Svelte](https://svelte.dev/) ([v3.59.2](https://github.com/sveltejs/svelte/tree/v3.59.2))
 web framework, (not yet) ported to [Dart](https://dart.dev).
 
+| Package | Description | Version |
+|---|---|---|
+| [svelte_ast](svelte_ast/) | Parser and utilities for SvelteDart template compiler.| [![Pub Package][ast_pub_icon]][ast_pub] |
+
 ```html
 <!-- app.svelte -->
 <script>
@@ -65,3 +69,6 @@ Status:
 - [ ] SSR
   - shelf
   - ...
+
+[ast_pub_icon]: https://img.shields.io/pub/v/svelte_ast.svg
+[ast_pub]: https://pub.dev/packages/svelte_ast
