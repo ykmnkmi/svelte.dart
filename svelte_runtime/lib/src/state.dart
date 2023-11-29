@@ -1,7 +1,7 @@
 import 'dart:html';
 
-import 'package:svelte_web_runtime/src/fragment.dart';
-import 'package:svelte_web_runtime/src/utilities.dart';
+import 'package:svelte_runtime/src/fragment.dart';
+import 'package:svelte_runtime/src/utilities.dart';
 
 class State {
   Element? root;

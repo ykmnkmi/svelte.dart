@@ -1,12 +1,12 @@
 import 'dart:html' show Element, Node;
 
 import 'package:meta/dart2js.dart';
-import 'package:svelte_web_runtime/src/fragment.dart';
-import 'package:svelte_web_runtime/src/lifecycle.dart';
-import 'package:svelte_web_runtime/src/scheduler.dart';
-import 'package:svelte_web_runtime/src/state.dart';
-import 'package:svelte_web_runtime/src/transition.dart';
-import 'package:svelte_web_runtime/src/utilities.dart';
+import 'package:svelte_runtime/src/fragment.dart';
+import 'package:svelte_runtime/src/lifecycle.dart';
+import 'package:svelte_runtime/src/scheduler.dart';
+import 'package:svelte_runtime/src/state.dart';
+import 'package:svelte_runtime/src/transition.dart';
+import 'package:svelte_runtime/src/utilities.dart';
 
 typedef InstanceFactory = List<Object?> Function(
   Component component,

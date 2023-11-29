@@ -1,7 +1,7 @@
 import 'package:meta/dart2js.dart';
-import 'package:svelte_web_runtime/src/component.dart';
-import 'package:svelte_web_runtime/src/lifecycle.dart';
-import 'package:svelte_web_runtime/src/utilities.dart';
+import 'package:svelte_runtime/src/component.dart';
+import 'package:svelte_runtime/src/lifecycle.dart';
+import 'package:svelte_runtime/src/utilities.dart';
 
 List<Component> dirtyComponents = <Component>[];
 
