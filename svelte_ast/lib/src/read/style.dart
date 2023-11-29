@@ -1,18 +1,6 @@
-import 'package:csslib/parser.dart' show Message, PreprocessorOptions, parse;
-import 'package:csslib/visitor.dart' as csslib show Visitor;
-import 'package:csslib/visitor.dart'
-    show
-        Declaration,
-        DeclarationGroup,
-        ElementSelector,
-        Expressions,
-        PseudoClassSelector,
-        RuleSet,
-        Selector,
-        SelectorGroup,
-        SimpleSelectorSequence,
-        StyleSheet,
-        TreeNode;
+import 'package:csslib/parser.dart' hide Parser;
+import 'package:csslib/visitor.dart' as csslib;
+import 'package:csslib/visitor.dart' hide Visitor;
 import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';

@@ -1,6 +1,6 @@
 // ignore_for_file: unused_import
 
-import 'package:analyzer/dart/ast/ast.dart' show Expression, SimpleIdentifier;
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';

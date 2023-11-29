@@ -1,8 +1,8 @@
 // ignore_for_file: implementation_imports
 
-import 'package:analyzer/dart/ast/ast.dart' show AstNode, CompilationUnit;
-import 'package:analyzer/dart/ast/token.dart' show Keyword, Token;
-import 'package:analyzer/src/fasta/ast_builder.dart' show AstBuilder;
+import 'package:analyzer/dart/ast/token.dart';
+import 'package:analyzer/src/dart/ast/ast.dart';
+import 'package:analyzer/src/fasta/ast_builder.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/parser.dart';
@@ -50,37 +50,49 @@ extension ScriptParser on Parser {
     int dataEnd = position;
     expect(_scriptCloseTag);
 
-    List<AstNode> body = <AstNode>[];
+    List<AstNode> directives = <AstNode>[];
+    List<AstNode> properties = <AstNode>[];
+    List<AstNode> nodes = <AstNode>[];
 
     withScriptParserRun(dataStart, _scriptCloseTag, (parser, token) {
       AstBuilder builder = parser.builder;
 
       if (context == 'default') {
+        builder.beginCompilationUnit(token);
+
         Token previousToken = parser.syntheticPreviousToken(token);
         Token next = previousToken.next!;
 
         while (!next.isEof) {
-          if (next case Token(type: Keyword.IMPORT)) {
-            next = parser.parseMetadataStar(next);
-            next = parser.parseImport(next);
+          next = parser.parseMetadataStar(next);
+
+          if (next case Token(type: Keyword.LIBRARY)) {
+            next = parser.parseLibraryName(next);
+            directives.add(builder.pop() as AstNode);
             next = next.next!;
+          } else if (next case Token(type: Keyword.IMPORT)) {
+            next = parser.parseImport(next);
+            directives.add(builder.pop() as AstNode);
+            next = next.next!;
+          } else if (next case Token(type: Keyword.EXPORT || Keyword.PART)) {
+            throw UnimplementedError();
           } else if (next case Token(type: Keyword.EXTERNAL)) {
-            next = parser.parseMetadataStar(next);
-            next = parser.parseTopLevelMember(next);
+            next = next.next!;
+            next = parser.parseStatement(next.previous!);
+            properties.add(builder.pop() as AstNode);
+            next = next.next!;
           } else {
             next = parser.parseStatement(next.previous!);
+            nodes.add(builder.pop() as AstNode);
             next = next.next!;
           }
         }
-
-        body.addAll(builder.directives);
-        body.addAll(builder.declarations);
-        body.addAll(builder.stack.values.whereType<AstNode>());
       } else {
         parser.parseUnit(token);
 
         CompilationUnit unit = builder.pop() as CompilationUnit;
-        body.addAll(unit.childEntities.whereType<AstNode>());
+        directives.addAll(unit.directives);
+        nodes.addAll(unit.declarations);
       }
     });
 
@@ -93,7 +105,11 @@ extension ScriptParser on Parser {
         end: dataEnd,
         data: data,
       ),
-      body: body,
+      body: (
+        directives: directives,
+        properties: properties,
+        nodes: nodes,
+      ),
     ));
   }
 }

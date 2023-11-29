@@ -1,17 +1,13 @@
-import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe
-    show Parser;
-import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
-    show ScannerConfiguration, Token;
-import 'package:_fe_analyzer_shared/src/scanner/token.dart'
-    show Token, TokenType;
-import 'package:analyzer/dart/analysis/features.dart' show Feature, FeatureSet;
-import 'package:analyzer/error/listener.dart'
-    show ErrorReporter, RecordingErrorListener;
-import 'package:analyzer/source/line_info.dart' show LineInfo;
-import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
-import 'package:analyzer/src/fasta/ast_builder.dart' show AstBuilder;
-import 'package:analyzer/src/string_source.dart' show StringSource;
-import 'package:source_span/source_span.dart' show SourceFile, SourceSpan;
+import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe;
+import 'package:_fe_analyzer_shared/src/scanner/scanner.dart';
+import 'package:_fe_analyzer_shared/src/scanner/token.dart';
+import 'package:analyzer/dart/analysis/features.dart';
+import 'package:analyzer/error/listener.dart';
+import 'package:analyzer/source/line_info.dart';
+import 'package:analyzer/src/dart/scanner/scanner.dart' as dart;
+import 'package:analyzer/src/fasta/ast_builder.dart';
+import 'package:analyzer/src/string_source.dart';
+import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 

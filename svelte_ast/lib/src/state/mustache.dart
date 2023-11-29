@@ -1,12 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
-
-import 'package:analyzer/dart/ast/ast.dart'
-    show
-        AssignmentExpression,
-        DartPattern,
-        Expression,
-        PatternAssignment,
-        SimpleIdentifier;
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/html.dart';

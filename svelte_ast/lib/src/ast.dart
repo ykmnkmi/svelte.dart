@@ -1,6 +1,5 @@
-import 'package:analyzer/dart/ast/ast.dart'
-    show AstNode, DartPattern, Expression, SimpleIdentifier;
-import 'package:csslib/visitor.dart' show TreeNode;
+import 'package:analyzer/dart/ast/ast.dart';
+import 'package:csslib/visitor.dart' hide Expression;
 
 part 'ast/blocks.dart';
 part 'ast/tags.dart';
@@ -229,6 +228,12 @@ final class Fragment extends Node {
   }
 }
 
+typedef ScriptBody = ({
+  List<AstNode> directives,
+  List<AstNode> properties,
+  List<AstNode> nodes,
+});
+
 final class Script extends Node {
   Script({
     super.start,
@@ -242,7 +247,7 @@ final class Script extends Node {
 
   final ({int start, int end, String data}) content;
 
-  final List<AstNode> body;
+  final ScriptBody body;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -261,7 +266,17 @@ final class Script extends Node {
         'end': content.end,
         'data': content.data,
       },
-      'body': body.map<Object?>(mapper).toList(),
+      'body': <String, Object?>{
+        'directives': <Object?>[
+          for (AstNode directive in body.directives) mapper(directive),
+        ],
+        'externals': <Object?>[
+          for (AstNode property in body.properties) mapper(property),
+        ],
+        'body': <Object?>[
+          for (AstNode node in body.nodes) mapper(node),
+        ],
+      },
     };
   }
 }

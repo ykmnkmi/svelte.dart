@@ -1,8 +1,7 @@
-// ignore_for_file: depend_on_referenced_packages, implementation_imports
+// ignore_for_file: implementation_imports
 
-import 'package:_fe_analyzer_shared/src/scanner/characters.dart' show $EOF;
-import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
-    show ErrorToken, StringScanner, Token;
+import 'package:_fe_analyzer_shared/src/scanner/characters.dart';
+import 'package:_fe_analyzer_shared/src/scanner/scanner.dart';
 
 class ScriptScanner extends StringScanner {
   ScriptScanner({

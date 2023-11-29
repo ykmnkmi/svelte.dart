@@ -4,8 +4,8 @@ import 'package:_fe_analyzer_shared/src/scanner/characters.dart';
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart';
 import 'package:_fe_analyzer_shared/src/scanner/token.dart';
 import 'package:_fe_analyzer_shared/src/scanner/token_constants.dart';
-import 'package:analyzer/dart/analysis/features.dart' show FeatureSet;
-import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
+import 'package:analyzer/dart/analysis/features.dart';
+import 'package:analyzer/src/dart/scanner/scanner.dart' as dart;
 
 enum ScannerState {
   data,

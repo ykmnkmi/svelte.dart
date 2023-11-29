@@ -9,9 +9,16 @@ import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
 <script>
-  var count = 0;
-</script>
-<button on:click="{() => count++}">count: {count}</button>''';
+  var count = defaultCount;
+
+  void increment([int value = 1]) {
+    count += value;
+  }
+
+  for (var name in names) {
+    console.log(name);
+  }
+</script>''';
 
 void main() {
   try {
@@ -24,7 +31,6 @@ void main() {
     Map<String, Object?> json = ast.toJson(mapper);
     String output = const JsonEncoder.withIndent('  ').convert(json);
     File.fromUri(Uri(path: 'test/check.json')).writeAsStringSync(output);
-    print(output);
   } on ParseError catch (error, stackTrace) {
     print(error);
     print(error.span.highlight());

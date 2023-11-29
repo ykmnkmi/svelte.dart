@@ -8,4 +8,5 @@ stages:
       - format:
         sdk:
           - dev
-      - unit_test: --test-randomize-ordering-seed=random
+  - unit_test:
+      - test: --test-randomize-ordering-seed=random

@@ -1,17 +1,15 @@
-// ignore_for_file: depend_on_referenced_packages, implementation_imports
+// ignore_for_file: implementation_imports
 
-import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe
-    show Parser;
+import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe;
 import 'package:_fe_analyzer_shared/src/scanner/abstract_scanner.dart';
-import 'package:analyzer/dart/analysis/features.dart' show Feature, FeatureSet;
-import 'package:analyzer/dart/ast/token.dart' show Keyword, Token;
-import 'package:analyzer/error/error.dart' show AnalysisError;
-import 'package:analyzer/error/listener.dart' show ErrorReporter;
-import 'package:analyzer/error/listener.dart' show AnalysisErrorListener;
-import 'package:analyzer/source/line_info.dart' show LineInfo;
-import 'package:analyzer/src/dart/scanner/scanner.dart' as dart show Scanner;
-import 'package:analyzer/src/fasta/ast_builder.dart' show AstBuilder;
-import 'package:analyzer/src/string_source.dart' show StringSource;
+import 'package:analyzer/dart/analysis/features.dart';
+import 'package:analyzer/dart/ast/token.dart';
+import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/listener.dart';
+import 'package:analyzer/source/line_info.dart';
+import 'package:analyzer/src/dart/scanner/scanner.dart' as dart;
+import 'package:analyzer/src/fasta/ast_builder.dart';
+import 'package:analyzer/src/string_source.dart';
 import 'package:svelte_ast/src/read/script_scanner.dart';
 
 final class ThrowingErrorListener extends AnalysisErrorListener {

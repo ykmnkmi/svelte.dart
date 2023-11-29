@@ -1,4 +1,4 @@
-import 'package:source_span/source_span.dart' show SourceSpan;
+import 'package:source_span/source_span.dart';
 
 class ParseError extends Error {
   ParseError(this.errorCode, this.span);

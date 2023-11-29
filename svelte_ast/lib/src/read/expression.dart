@@ -1,17 +1,11 @@
-// ignore_for_file: depend_on_referenced_packages, implementation_imports, unnecessary_import
+// ignore_for_file: implementation_imports
 
-import 'package:_fe_analyzer_shared/src/messages/codes.dart' show Message;
-import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart'
-    show PatternContext;
-import 'package:_fe_analyzer_shared/src/scanner/scanner.dart'
-    show ErrorToken, Token;
-import 'package:_fe_analyzer_shared/src/scanner/token_impl.dart'
-    show StringTokenImpl;
-import 'package:analyzer/dart/ast/ast.dart'
-    show DartPattern, Expression, SimpleIdentifier;
+import 'package:_fe_analyzer_shared/src/messages/codes.dart';
+import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' hide Parser;
+import 'package:_fe_analyzer_shared/src/scanner/scanner.dart';
 import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/error/error.dart';
-import 'package:analyzer/src/dart/ast/ast.dart' show SimpleIdentifierImpl;
+import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/read/script_parser.dart';
 

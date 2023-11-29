@@ -1,8 +1,8 @@
 import 'dart:mirrors';
 
-import 'package:analyzer/dart/ast/ast.dart' as analyzer show AstNode, NodeList;
-import 'package:analyzer/dart/ast/token.dart' as analyzer show Token;
-import 'package:csslib/visitor.dart' as csslib show TreeNode;
+import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/token.dart';
+import 'package:csslib/visitor.dart';
 
 const Set<Symbol> _ignored = <Symbol>{
   #immediatelyNegated, // null check error
@@ -21,15 +21,15 @@ final TypeMirror _list = reflectType(List);
 
 final TypeMirror _map = reflectType(Map);
 
-final TypeMirror _analyzerAstNode = reflectType(analyzer.AstNode);
+final TypeMirror _astNodeTypeMirror = reflectType(AstNode);
 
-final TypeMirror _analyzerNodeList = reflectType(analyzer.NodeList);
+final TypeMirror _nodeListTypeMirror = reflectType(List<AstNode>);
 
-final TypeMirror _analyzerToken = reflectType(analyzer.Token);
+final TypeMirror _tokenTypeMirror = reflectType(Token);
 
-final TypeMirror _csslibTreeNode = reflectType(csslib.TreeNode);
+final TypeMirror _csslibTreeNode = reflectType(TreeNode);
 
-final TypeMirror _csslibListTreeNode = reflectType(List<csslib.TreeNode>);
+final TypeMirror _csslibListTreeNode = reflectType(List<TreeNode>);
 
 bool _isDeprecated(DeclarationMirror declaration) {
   return declaration.metadata.any((element) {
@@ -48,30 +48,20 @@ bool _isCoreValue(TypeMirror typeMirror) {
 }
 
 String _getClassName(InstanceMirror instance) {
-  var klass = instance.type;
+  ClassMirror klass = instance.type;
   return MirrorSystem.getName(klass.simpleName);
 }
 
 Object? _getValue(InstanceMirror instance, Symbol symbol) {
-  var field = instance.getField(symbol);
+  InstanceMirror field = instance.getField(symbol);
   return field.reflectee;
-}
-
-Map<String, Object?> _getAstNode(InstanceMirror instance) {
-  var result = <String, Object?>{
-    'start': _getValue(instance, #offset),
-    'end': _getValue(instance, #end),
-  };
-
-  _fillAstNode(instance, result);
-  return result;
 }
 
 List<Object?> _seen = <Object?>[];
 
 bool _checkCycle(Object? object) {
   for (int i = _seen.length - 1; i >= 0; i--) {
-    if (identical(object, _seen[i]) || object == _seen[i]) {
+    if (identical(object, _seen[i])) {
       return true;
     }
   }
@@ -86,87 +76,91 @@ void _removeSeen(Object? object) {
   _seen.removeLast();
 }
 
-void _fillAstNode(
-  InstanceMirror instance,
-  Map<String, Object?> result,
-) {
-  void forEach(Symbol symbol, DeclarationMirror declaration) {
-    if (declaration.isPrivate ||
+Object _getAstNode(AstNode node) {
+  if (_checkCycle(node)) {
+    return '@seen';
+  }
+
+  Map<String, Object?> result = <String, Object?>{
+    'start': node.offset,
+    'end': node.end,
+  };
+
+  InstanceMirror instanceMirror = reflect(node);
+  ClassMirror typeMirror = instanceMirror.type;
+  TypeMirror originalDeclaration = typeMirror.originalDeclaration;
+
+  if (originalDeclaration is ClassMirror) {
+    typeMirror = originalDeclaration;
+  }
+
+  result['class'] = MirrorSystem.getName(typeMirror.simpleName);
+
+  void forEach(Symbol symbol, DeclarationMirror declarationMirror) {
+    if (declarationMirror.isPrivate ||
         _ignored.contains(symbol) ||
-        _isDeprecated(declaration)) {
+        _isDeprecated(declarationMirror)) {
       return;
     }
 
-    var name = MirrorSystem.getName(symbol);
-
+    String name = MirrorSystem.getName(symbol);
     TypeMirror type;
 
-    if (declaration is MethodMirror && declaration.isGetter) {
-      type = declaration.returnType;
-    } else if (declaration is VariableMirror) {
-      type = declaration.type;
+    if (declarationMirror is MethodMirror && declarationMirror.isGetter) {
+      type = declarationMirror.returnType;
+    } else if (declarationMirror is VariableMirror) {
+      type = declarationMirror.type;
     } else {
       return;
     }
 
-    if (type.isSubtypeOf(_analyzerAstNode)) {
-      var node = instance.getField(symbol);
+    if (type.isSubtypeOf(_astNodeTypeMirror)) {
+      InstanceMirror fieldMirror = instanceMirror.getField(symbol);
+      AstNode? field = fieldMirror.reflectee as AstNode?;
 
-      if (node.reflectee == null) {
+      if (field == null) {
         result[name] = null;
       } else {
-        if (_checkCycle(node.reflectee)) {
-          result[name] = '@seen';
-          return;
-        }
-
-        result[name] = _getAstNode(node);
-        _removeSeen(node.reflectee);
+        result[name] = _getAstNode(field);
       }
-    } else if (type.isSubtypeOf(_analyzerNodeList)) {
-      var nodes = instance.getField(symbol);
-      var values = nodes.reflectee;
+    } else if (type.isSubtypeOf(_nodeListTypeMirror)) {
+      InstanceMirror nodes = instanceMirror.getField(symbol);
+      Object? values = nodes.reflectee;
 
       if (values == null) {
         result[name] = null;
       } else {
         result[name] = <Object?>[
-          for (var node in values as analyzer.NodeList) mapper(node),
+          for (AstNode node in values as List<AstNode>) mapper(node),
         ];
       }
-    } else if (identical(type, _analyzerToken)) {
-      var token = instance.getField(symbol);
+    } else if (type.isSubtypeOf(_tokenTypeMirror)) {
+      InstanceMirror fieldMirror = instanceMirror.getField(symbol);
+      Token? token = fieldMirror.reflectee as Token?;
 
-      if (token.reflectee == null) {
+      if (token == null) {
         result[name] = null;
       } else {
         result[name] = <String, Object?>{
-          'start': _getValue(token, #offset),
-          'end': _getValue(token, #end),
-          'type': _getValue(token, #type).toString(),
-          'lexeme': _getValue(token, #lexeme),
+          'start': token.offset,
+          'end': token.end,
+          'type': '${token.type}',
+          'lexeme': token.lexeme,
         };
       }
     } else if (_isCoreValue(type)) {
-      result[name] = _getValue(instance, symbol);
+      result[name] = _getValue(instanceMirror, symbol);
     }
   }
 
-  ClassMirror type = instance.type;
-
-  if (type.superinterfaces case [..., var typeInterface]) {
-    result['class'] = MirrorSystem.getName(typeInterface.simpleName);
-    typeInterface.declarations.forEach(forEach);
-
-    for (ClassMirror klass in typeInterface.superinterfaces) {
-      klass.declarations.forEach(forEach);
-    }
-  }
+  typeMirror.declarations.forEach(forEach);
+  _removeSeen(node);
+  return result;
 }
 
 Map<String, Object?> _getTreeNode(InstanceMirror instance) {
-  var span = instance.getField(#span);
-  var result = <String, Object?>{};
+  InstanceMirror span = instance.getField(#span);
+  Map<String, Object?> result = <String, Object?>{};
 
   if (span.reflectee == null) {
     result['start'] = null;
@@ -191,8 +185,7 @@ void _fillTreeNode(
       return;
     }
 
-    var name = MirrorSystem.getName(symbol);
-
+    String name = MirrorSystem.getName(symbol);
     TypeMirror type;
 
     if (declaration is MethodMirror && declaration.isGetter) {
@@ -204,7 +197,7 @@ void _fillTreeNode(
     }
 
     if (type.isSubtypeOf(_csslibTreeNode)) {
-      var node = instance.getField(symbol);
+      InstanceMirror node = instance.getField(symbol);
 
       if (node.reflectee == null) {
         result[name] = null;
@@ -212,14 +205,14 @@ void _fillTreeNode(
         result[name] = _getTreeNode(node);
       }
     } else if (type.isSubtypeOf(_csslibListTreeNode)) {
-      var nodes = instance.getField(symbol);
-      var values = nodes.reflectee;
+      InstanceMirror nodes = instance.getField(symbol);
+      Object? values = nodes.reflectee;
 
       if (values == null) {
         result[name] = null;
       } else {
         result[name] = <Object?>[
-          for (var node in values as List<csslib.TreeNode>) mapper(node),
+          for (var node in values as List<TreeNode>) mapper(node),
         ];
       }
     } else if (_isCoreValue(type)) {
@@ -228,7 +221,6 @@ void _fillTreeNode(
   }
 
   ClassMirror type = instance.type;
-
   result['class'] = MirrorSystem.getName(type.simpleName);
   type.declarations.forEach(forEach);
 
@@ -237,20 +229,18 @@ void _fillTreeNode(
   }
 }
 
-Object? mapper(Object? object) {
-  if (object == null) {
+Object? mapper(Object? node) {
+  if (node == null) {
     return null;
   }
 
-  var instance = reflect(object);
-
-  if (object is analyzer.AstNode) {
-    return _getAstNode(instance);
+  if (node is AstNode) {
+    return _getAstNode(node);
   }
 
-  if (object is csslib.TreeNode) {
-    return _getTreeNode(instance);
-  }
+  // if (node is TreeNode) {
+  //   return _getTreeNode(node);
+  // }
 
-  throw UnimplementedError(_getClassName(instance));
+  throw UnimplementedError('${node.runtimeType}');
 }
