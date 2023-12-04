@@ -87,8 +87,8 @@ void appendStyles(Node? target, String styleSheetId, String styles) {
 
 @noInline
 void appendStyleSheet(Node target, Element style) {
-  if (target case HtmlDocument document) {
-    append(document.head ?? document, style);
+  if (target is HtmlDocument) {
+    append(target.head ?? target, style);
   } else {
     append(target, style);
   }
@@ -116,9 +116,11 @@ Node getRootForStyle(Node? node) {
 
 @noInline
 EventListener listener(FutureOr<void> Function() function) {
-  return (Event event) {
+  void handler(Event event) {
     function();
-  };
+  }
+
+  return handler;
 }
 
 @noInline
@@ -127,12 +129,14 @@ void Function() listen(
   String type,
   EventListener listener,
 ) {
-  EventListener fn = allowInterop(listener);
+  EventListener fn = allowInterop<EventListener>(listener);
   target.addEventListener(type, fn);
 
-  return () {
+  void cancel() {
     target.removeEventListener(type, fn);
-  };
+  }
+
+  return cancel;
 }
 
 @noInline

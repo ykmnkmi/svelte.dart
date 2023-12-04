@@ -1,6 +1,6 @@
 name: svelte_runtime
-description: SvelteDart runtime library.
-version: 1.0.0-dev.3
+description: SvelteDart Runtime.
+version: 1.0.0-dev.4
 repository: https://github.com/ykmnkmi/svelte.dart
 
 environment:

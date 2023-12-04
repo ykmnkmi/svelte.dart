@@ -14,18 +14,75 @@ typedef InstanceFactory = List<Object?> Function(
   Invalidate invalidate,
 );
 
-typedef Invalidate = void Function(
-  int index,
-  Object? value, [
-  Object? expression,
-]);
+typedef Invalidate = void Function(int index, Object? value, [bool mutation]);
 
 typedef PropertiesSetter = void Function(Map<String, Object?> props);
 
 typedef UpdateFactory = void Function() Function(List<int> dirty);
 
-abstract class Component {
-  late final State state;
+abstract base class Component {
+  Component({
+    Element? target,
+    Node? anchor,
+    Map<String, Object?> props = const <String, Object?>{},
+    bool hydrate = false,
+    bool intro = false,
+    InstanceFactory? createInstance,
+    FragmentFactory? createFragment,
+    void Function(Element? target)? appendStyles,
+    List<int> dirty = const <int>[-1],
+  }) : state = State() {
+    Component? parentComponent = currentComponent;
+    setCurrentComponent(this);
+
+    state
+      ..root = target ?? parentComponent?.state.root
+      ..dirty = dirty;
+
+    if (appendStyles != null) {
+      appendStyles(target);
+    }
+
+    bool ready = false;
+
+    if (createInstance != null) {
+      void invalidate(int i, Object? value, [bool mutation = false]) {
+        if (state.instance[i] != (state.instance[i] = value) || mutation) {
+          if (ready) {
+            makeComponentDirty(this, i);
+          }
+        }
+      }
+
+      state.instance = createInstance(this, props, invalidate);
+    }
+
+    state.update();
+    ready = true;
+
+    if (createFragment != null) {
+      state.fragment = createFragment(state.instance);
+    }
+
+    if (target != null) {
+      if (hydrate) {
+        throw UnimplementedError();
+      } else {
+        state.fragment?.create();
+      }
+
+      if (intro) {
+        transitionIn(state.fragment, false);
+      }
+
+      mountComponent(this, target, anchor);
+      flush();
+    }
+
+    setCurrentComponent(parentComponent);
+  }
+
+  final State state;
 
   PropertiesSetter? _set;
 
@@ -51,92 +108,12 @@ abstract class Component {
   }
 }
 
-@tryInline
 void setComponentUpdate(Component component, UpdateFactory updateFactory) {
   component.state.update = updateFactory(component.state.dirty);
 }
 
-@tryInline
 void setComponentSet(Component component, PropertiesSetter setter) {
   component._set = setter;
-}
-
-typedef Options = ({
-  Element? target,
-  Node? anchor,
-  Map<String, Object?>? props,
-  bool hydrate,
-  bool intro,
-});
-
-@noInline
-void init({
-  required Component component,
-  required Options options,
-  InstanceFactory? createInstance,
-  FragmentFactory? createFragment,
-  Map<String, int> props = const <String, int>{},
-  void Function(Element? target)? appendStyles,
-  List<int> dirty = const <int>[-1],
-}) {
-  Component? parentComponent = currentComponent;
-  setCurrentComponent(component);
-
-  Element? target = options.target;
-
-  State state = State()
-    ..root = target ?? parentComponent?.state.root
-    ..props = props
-    ..dirty = dirty;
-
-  component.state = state;
-
-  if (appendStyles != null) {
-    appendStyles(target);
-  }
-
-  bool ready = false;
-
-  if (createInstance != null) {
-    void invalidate(int i, Object? value, [Object? expression]) {
-      if (state.instance[i] != (state.instance[i] = value) ||
-          expression != null) {
-        if (ready) {
-          makeComponentDirty(component, i);
-        }
-      }
-    }
-
-    state.instance = createInstance(
-      component,
-      options.props ?? <String, Object?>{},
-      invalidate,
-    );
-  }
-
-  state.update();
-  ready = true;
-
-  if (createFragment != null) {
-    state.fragment = createFragment(state.instance);
-  }
-
-  if (target != null) {
-    if (options.hydrate) {
-      throw UnimplementedError();
-    } else {
-      state.fragment?.create();
-    }
-
-    if (options.intro) {
-      transitionIn(state.fragment, false);
-    }
-
-    mountComponent(component, target, options.anchor);
-    flush();
-  }
-
-  setCurrentComponent(parentComponent);
 }
 
 @noInline
@@ -148,11 +125,9 @@ void createComponent(Component component) {
 void mountComponent(Component component, Element target, [Node? anchor]) {
   component.state.fragment?.mount(target, anchor);
 
-  addRenderCallback(() {
-    List<VoidFunction> newOnDestroy = component.state.onMount
-        .map<Object?>(run)
-        .whereType<VoidFunction>()
-        .toList();
+  void callback() {
+    Iterable<VoidFunction> newOnDestroy =
+        component.state.onMount.map<Object?>(run).whereType<VoidFunction>();
 
     if (component.state.destroyed) {
       component.state.onDestroy.addAll(newOnDestroy);
@@ -161,8 +136,9 @@ void mountComponent(Component component, Element target, [Node? anchor]) {
     }
 
     component.state.onMount = <VoidFunction>[];
-  });
+  }
 
+  addRenderCallback(callback);
   component.state.afterUpdate.forEach(addRenderCallback);
 }
 
@@ -183,7 +159,7 @@ void makeComponentDirty(Component component, int index) {
 void updateComponent(Component component) {
   component.state.update();
 
-  if (component.state.fragment case Fragment fragment?) {
+  if (component.state.fragment case var fragment?) {
     List<int> dirty = component.state.dirty;
     component.state.dirty = const <int>[-1];
     fragment.update(component.state.instance, dirty);
@@ -206,7 +182,7 @@ void transitionOutComponent(
 
 @noInline
 void destroyComponent(Component component, bool detaching) {
-  if (component.state.fragment case Fragment fragment?) {
+  if (component.state.fragment case var fragment?) {
     runAll(component.state.onDestroy);
     fragment.detach(detaching);
 

@@ -12,8 +12,6 @@ class State {
 
   List<Object?> instance = <Object?>[];
 
-  late Map<String, int> props;
-
   late List<int> dirty;
 
   VoidCallback update = noop;
