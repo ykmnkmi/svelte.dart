@@ -7,18 +7,42 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/reflection.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
-const String string = '''
+const String string = r'''
+<!-- app.svelte -->
 <script>
-  var count = defaultCount;
+  // imports
+  import 'package:svelte/svelte.dart';
 
-  void increment([int value = 1]) {
-    count += value;
+  // properties
+  external int count = 0;
+
+  // body
+  $: doubled = count * 2;
+  $: quadrupled = doubled * 2;
+
+  void handleClick() {
+    count += 1;
   }
 
-  for (var name in names) {
-    console.log(name);
-  }
-</script>''';
+  const duration = Duration(seconds: 1);
+
+  onMount(() {
+    var timer = Timer.periodic(duration, (_) {
+      count += 1;
+    });
+
+    return () {
+      timer.cancel();
+    };
+  });
+</script>
+
+<button on:click={handleClick}>
+  Clicked {count} {count == 1 ? 'time' : 'times'}
+</button>
+
+<p>{count} * 2 = {doubled}</p>
+<p>{doubled} * 2 = {quadrupled}</p>''';
 
 void main() {
   try {

@@ -1,4 +1,5 @@
-import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/ast.dart' hide Directive;
+import 'package:analyzer/dart/ast/ast.dart' as dart show Directive;
 import 'package:csslib/visitor.dart' hide Expression;
 
 part 'ast/blocks.dart';
@@ -229,8 +230,8 @@ final class Fragment extends Node {
 }
 
 typedef ScriptBody = ({
-  List<AstNode> directives,
-  List<AstNode> properties,
+  List<dart.Directive> directives,
+  List<VariableDeclarationStatement> properties,
   List<AstNode> nodes,
 });
 
