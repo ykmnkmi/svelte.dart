@@ -2,6 +2,16 @@ import 'dart:html';
 
 import 'package:svelte_runtime/svelte_runtime.dart';
 
+extension on List<Object?> {
+  int get _count {
+    return this[0] as int;
+  }
+
+  void Function() get _handleClick {
+    return this[1] as void Function();
+  }
+}
+
 Fragment createFragment(List<Object?> instance) {
   late Element button;
   late Text t0, t1, t2, t3;
@@ -20,7 +30,7 @@ Fragment createFragment(List<Object?> instance) {
       t2 = space();
       t3 = text(t3value = instance._count == 1 ? 'time' : 'times');
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, button, anchor);
       append(button, t0);
       append(button, t1);
@@ -32,7 +42,7 @@ Fragment createFragment(List<Object?> instance) {
         mounted = true;
       }
     },
-    update: (context, dirty) {
+    update: (List<Object?> context, List<int> dirty) {
       if (dirty[0] & 1 != 0) {
         setData(t1, '${context._count}');
 
@@ -41,7 +51,7 @@ Fragment createFragment(List<Object?> instance) {
         }
       }
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(button);
       }
@@ -63,7 +73,7 @@ List<Object?> createInstance(
     invalidate(0, count += 1);
   }
 
-  setComponentUpdate(self, (dirty) {
+  setComponentUpdate(self, (List<int> dirty) {
     return () {
       if (dirty[0] & 1 != 0) {
         $:
@@ -78,35 +88,12 @@ List<Object?> createInstance(
   return <Object?>[count, handleClick];
 }
 
-extension on List<Object?> {
-  int get _count {
-    return this[0] as int;
-  }
-
-  void Function() get _handleClick {
-    return this[1] as void Function();
-  }
-}
-
-class App extends Component {
+final class App extends Component {
   App({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createInstance: createInstance,
-      createFragment: createFragment,
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createInstance: createInstance, createFragment: createFragment);
 }

@@ -11,10 +11,10 @@ Fragment createFragment(List<Object?> instance) {
       setAttribute(img, 'src', src);
       setAttribute(img, 'alt', '$name dancing');
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, img, anchor);
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(img);
       }
@@ -25,24 +25,12 @@ Fragment createFragment(List<Object?> instance) {
 var src = '/tutorial/image.gif';
 var name = 'Rick Astley';
 
-class App extends Component {
+final class App extends Component {
   App({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createFragment: createFragment,
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createFragment: createFragment);
 }

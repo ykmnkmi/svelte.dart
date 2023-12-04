@@ -30,13 +30,13 @@ Fragment createFragment(List<Object?> instance) {
       createComponent(nested);
       setAttribute(p, 'class', 'svelte-urs9w7');
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, p, anchor);
       insert(target, t1, anchor);
       mountComponent(nested, target, anchor);
       current = true;
     },
-    intro: (local) {
+    intro: (bool local) {
       if (current) {
         return;
       }
@@ -44,11 +44,11 @@ Fragment createFragment(List<Object?> instance) {
       transitionInComponent(nested, local);
       current = true;
     },
-    outro: (local) {
+    outro: (bool local) {
       transitionOutComponent(nested, local);
       current = false;
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(p);
         detach(t1);
@@ -59,25 +59,12 @@ Fragment createFragment(List<Object?> instance) {
   );
 }
 
-class App extends Component {
+final class App extends Component {
   App({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createFragment: createFragment,
-      appendStyles: addCss,
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createFragment: createFragment, appendStyles: addCss);
 }

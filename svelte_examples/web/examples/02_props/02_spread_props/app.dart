@@ -4,6 +4,12 @@ import 'package:svelte_runtime/svelte_runtime.dart';
 
 import 'info.dart';
 
+extension on List<Object?> {
+  Map<String, Object?> get _pkg {
+    return this[0] as Map<String, Object?>;
+  }
+}
+
 Fragment createFragment(List<Object?> instance) {
   Info info;
 
@@ -22,15 +28,15 @@ Fragment createFragment(List<Object?> instance) {
     create: () {
       createComponent(info);
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       mountComponent(info, target, anchor);
       current = true;
     },
-    update: (context, dirty) {
+    update: (List<Object?> instance, List<int> dirty) {
       Map<String, Object?> infoChanges;
 
       if (dirty[0] & 1 != 0) {
-        var list = <Map<String, Object?>>[getSpreadProps(context._pkg)];
+        var list = <Map<String, Object?>>[getSpreadProps(instance._pkg)];
         infoChanges = getSpreadUpdate(infoSpreadLevels, list);
       } else {
         infoChanges = <String, Object?>{};
@@ -38,7 +44,7 @@ Fragment createFragment(List<Object?> instance) {
 
       info.set(infoChanges);
     },
-    intro: (local) {
+    intro: (bool local) {
       if (current) {
         return;
       }
@@ -46,11 +52,11 @@ Fragment createFragment(List<Object?> instance) {
       transitionInComponent(info, local);
       current = true;
     },
-    outro: (local) {
+    outro: (bool local) {
       transitionOutComponent(info, local);
       current = false;
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       destroyComponent(info, detaching);
     },
   );
@@ -59,7 +65,7 @@ Fragment createFragment(List<Object?> instance) {
 List<Object?> createInstance(
   Component self,
   Map<String, Object?> props,
-  void Function(int i, Object? value) invalidate,
+  Invalidate invalidate,
 ) {
   var pkg = <String, Object>{
     'name': 'svelte',
@@ -71,31 +77,12 @@ List<Object?> createInstance(
   return <Object?>[pkg];
 }
 
-extension on List<Object?> {
-  Map<String, Object?> get _pkg {
-    return this[0] as Map<String, Object?>;
-  }
-}
-
-class App extends Component {
+final class App extends Component {
   App({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createInstance: createInstance,
-      createFragment: createFragment,
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createInstance: createInstance, createFragment: createFragment);
 }

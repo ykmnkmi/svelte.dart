@@ -4,6 +4,16 @@ import 'package:svelte_runtime/svelte_runtime.dart';
 
 import 'user.dart';
 
+extension on List<Object?> {
+  User get _user {
+    return this[0] as User;
+  }
+
+  void Function() get _toggle {
+    return this[1] as void Function();
+  }
+}
+
 Fragment createIfBlock(List<Object?> instance) {
   late Element button;
 
@@ -16,7 +26,7 @@ Fragment createIfBlock(List<Object?> instance) {
       button = element('button');
       setText(button, 'Log out');
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, button, anchor);
 
       if (!mounted) {
@@ -24,7 +34,7 @@ Fragment createIfBlock(List<Object?> instance) {
         mounted = true;
       }
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(button);
       }
@@ -47,7 +57,7 @@ Fragment createElseBlock(List<Object?> instance) {
       button = element('button');
       setText(button, 'Log in');
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, button, anchor);
 
       if (!mounted) {
@@ -55,7 +65,7 @@ Fragment createElseBlock(List<Object?> instance) {
         mounted = true;
       }
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(button);
       }
@@ -69,7 +79,7 @@ Fragment createElseBlock(List<Object?> instance) {
 Fragment createFragment(List<Object?> instance) {
   late Node ifBlockAnchor;
 
-  Fragment Function(List<Object?>) selectCurrentBlock(
+  FragmentFactory selectCurrentBlock(
     List<Object?> context,
     List<int> dirty,
   ) {
@@ -88,26 +98,26 @@ Fragment createFragment(List<Object?> instance) {
       ifBlock.create();
       ifBlockAnchor = empty();
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       ifBlock.mount(target, anchor);
       insert(target, ifBlockAnchor, anchor);
     },
-    update: (context, dirty) {
-      var newBlockFactory = selectCurrentBlock(context, dirty);
+    update: (List<Object?> instance, List<int> dirty) {
+      var newBlockFactory = selectCurrentBlock(instance, dirty);
 
       if (currentBlockFactory == newBlockFactory) {
-        ifBlock.update(context, dirty);
+        ifBlock.update(instance, dirty);
       } else {
         ifBlock.detach(true);
 
-        ifBlock = newBlockFactory(context)
+        ifBlock = newBlockFactory(instance)
           ..create()
           ..mount(ifBlockAnchor.parent as Element, ifBlockAnchor);
 
         currentBlockFactory = newBlockFactory;
       }
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       ifBlock.detach(detaching);
 
       if (detaching) {
@@ -131,35 +141,12 @@ List<Object?> createInstance(
   return <Object?>[user, toggle];
 }
 
-extension on List<Object?> {
-  User get _user {
-    return this[0] as User;
-  }
-
-  void Function() get _toggle {
-    return this[1] as void Function();
-  }
-}
-
-class App extends Component {
+final class App extends Component {
   App({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createInstance: createInstance,
-      createFragment: createFragment,
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createInstance: createInstance, createFragment: createFragment);
 }

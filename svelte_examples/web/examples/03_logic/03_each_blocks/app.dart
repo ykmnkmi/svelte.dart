@@ -5,25 +5,26 @@ import 'package:svelte_runtime/svelte_runtime.dart';
 
 import 'cat.dart';
 
+extension on List<Object?> {
+  List<Cat> get cats {
+    return this[0] as List<Cat>;
+  }
+}
+
 List<Object?> getEachContext(
   List<Object?> context,
   List<Cat> list,
   int index,
 ) {
-  var childContext = context.toList();
-  childContext.length = 5;
-  childContext[1] = list[index].id;
-  childContext[2] = list[index].name;
-  childContext[4] = index;
-  return childContext;
+  return List<Object?>.of(context)
+    ..length = 5
+    ..[1] = list[index].id
+    ..[2] = list[index].name
+    ..[4] = index;
 }
 
 Fragment createEachBlock(List<Object?> instance) {
-  return Fragment(
-    create: () {},
-    mount: (target, anchor) {},
-    detach: (detaching) {},
-  );
+  return const Fragment();
 }
 
 Fragment createFragment(List<Object?> instance) {
@@ -51,7 +52,7 @@ Fragment createFragment(List<Object?> instance) {
         eachBlock.create();
       }
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, h1, anchor);
       insert(target, t1, anchor);
       insert(target, ul, anchor);
@@ -60,21 +61,21 @@ Fragment createFragment(List<Object?> instance) {
         eachBlock.mount(ul, null);
       }
     },
-    update: (context, dirty) {
+    update: (List<Object?> instance, List<int> dirty) {
       if (dirty[0] & 1 != 0) {
-        eachValue = context.cats;
+        eachValue = instance.cats;
 
         var length = min(eachBlocks.length, eachValue.length);
         var index = 0;
 
         for (; index < length; index += 1) {
-          var eachContext = getEachContext(context, eachValue, index);
+          var eachContext = getEachContext(instance, eachValue, index);
           eachBlocks[index].update(eachContext, dirty);
         }
 
         if (index < eachValue.length) {
           for (; index < eachValue.length; index += 1) {
-            var eachContext = getEachContext(context, eachValue, index);
+            var eachContext = getEachContext(instance, eachValue, index);
             var newBlocks = createEachBlock(eachContext)
               ..create()
               ..mount(ul, null);
@@ -88,7 +89,7 @@ Fragment createFragment(List<Object?> instance) {
         }
       }
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(h1);
         detach(t1);
@@ -114,31 +115,12 @@ List<Object?> createInstance(
   return <Object?>[cats];
 }
 
-extension on List<Object?> {
-  List<Cat> get cats {
-    return this[0] as List<Cat>;
-  }
-}
-
-class App extends Component {
+final class App extends Component {
   App({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createInstance: createInstance,
-      createFragment: createFragment,
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createInstance: createInstance, createFragment: createFragment);
 }

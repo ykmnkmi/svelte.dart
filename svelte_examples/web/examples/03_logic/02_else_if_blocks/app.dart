@@ -10,10 +10,10 @@ Fragment createIfBlock1(List<Object?> instance) {
       p = element('p');
       setText(p, '$x is greater than 10');
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, p, anchor);
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(p);
       }
@@ -29,10 +29,10 @@ Fragment createIfBlock2(List<Object?> instance) {
       p = element('p');
       setText(p, '$x is less than 5');
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, p, anchor);
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(p);
       }
@@ -48,10 +48,10 @@ Fragment createElseBlock(List<Object?> instance) {
       p = element('p');
       setText(p, '$x is between 5 and 10');
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, p, anchor);
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(p);
       }
@@ -62,7 +62,7 @@ Fragment createElseBlock(List<Object?> instance) {
 Fragment createFragment(List<Object?> instance) {
   late Node ifBlockAnchor;
 
-  Fragment Function(List<Object?>) selectCurrentBlock(
+  FragmentFactory selectCurrentBlock(
     List<Object?> context,
     List<int> dirty,
   ) {
@@ -85,26 +85,26 @@ Fragment createFragment(List<Object?> instance) {
       ifBlock.create();
       ifBlockAnchor = empty();
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       ifBlock.mount(target, anchor);
       insert(target, ifBlockAnchor, anchor);
     },
-    update: (context, dirty) {
-      var newBlockFactory = selectCurrentBlock(context, dirty);
+    update: (List<Object?> instance, List<int> dirty) {
+      var newBlockFactory = selectCurrentBlock(instance, dirty);
 
       if (currentBlockFactory == newBlockFactory) {
-        ifBlock.update(context, dirty);
+        ifBlock.update(instance, dirty);
       } else {
         ifBlock.detach(true);
 
-        ifBlock = newBlockFactory(context)
+        ifBlock = newBlockFactory(instance)
           ..create()
           ..mount(ifBlockAnchor.parent as Element, ifBlockAnchor);
 
         currentBlockFactory = newBlockFactory;
       }
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       ifBlock.detach(detaching);
 
       if (detaching) {
@@ -116,24 +116,12 @@ Fragment createFragment(List<Object?> instance) {
 
 var x = 7;
 
-class App extends Component {
+final class App extends Component {
   App({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createFragment: createFragment,
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createFragment: createFragment);
 }

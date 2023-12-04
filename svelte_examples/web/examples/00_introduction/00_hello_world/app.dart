@@ -10,10 +10,10 @@ Fragment createFragment(List<Object?> instance) {
       h1 = element('h1');
       setText(h1, 'Hello $name!');
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, h1, anchor);
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(h1);
       }
@@ -23,24 +23,12 @@ Fragment createFragment(List<Object?> instance) {
 
 var name = 'world';
 
-class App extends Component {
+final class App extends Component {
   App({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createFragment: createFragment,
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createFragment: createFragment);
 }

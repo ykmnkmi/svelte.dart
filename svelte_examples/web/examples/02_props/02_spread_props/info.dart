@@ -2,6 +2,24 @@ import 'dart:html';
 
 import 'package:svelte_runtime/svelte_runtime.dart';
 
+extension on List<Object?> {
+  Object? get _name {
+    return this[0];
+  }
+
+  Object? get _version {
+    return this[1];
+  }
+
+  Object? get _speed {
+    return this[2];
+  }
+
+  Object? get _website {
+    return this[3];
+  }
+}
+
 Fragment createFragment(List<Object?> instance) {
   late Element p0;
   late Text t0;
@@ -33,7 +51,7 @@ Fragment createFragment(List<Object?> instance) {
           a0, 'href', a0href = 'https://pub.dev/package/${instance._name}');
       setAttribute(a1, 'href', '${instance._website}');
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, p0, anchor);
       append(p0, t0);
       append(p0, code0);
@@ -49,30 +67,30 @@ Fragment createFragment(List<Object?> instance) {
       append(p0, a1);
       append(a1, t9);
     },
-    update: (context, dirty) {
+    update: (List<Object?> instance, List<int> dirty) {
       if (dirty[0] & 1 != 0) {
-        setData(t1, '${context._name}');
+        setData(t1, '${instance._name}');
       }
 
       if (dirty[0] & 4 != 0) {
-        setData(t3, '${context._speed}');
+        setData(t3, '${instance._speed}');
       }
 
       if (dirty[0] & 2 != 0) {
-        setData(t5, '${context._version}');
+        setData(t5, '${instance._version}');
       }
 
       if (dirty[0] & 1 != 0 &&
           a0href !=
-              (a0href = 'https://www.npmjs.com/package/${context._name}')) {
+              (a0href = 'https://www.npmjs.com/package/${instance._name}')) {
         setAttribute(a0, 'href', a0href);
       }
 
       if (dirty[0] & 8 != 0) {
-        setAttribute(a1, 'href', '${context._website}');
+        setAttribute(a1, 'href', '${instance._website}');
       }
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(p0);
       }
@@ -90,7 +108,7 @@ List<Object?> createInstance(
   var speed = props['speed'];
   var website = props['website'];
 
-  setComponentSet(self, (props) {
+  setComponentSet(self, (Map<String, Object?> props) {
     if (props.containsKey('name')) {
       invalidate(0, name = props['name']);
     }
@@ -111,49 +129,12 @@ List<Object?> createInstance(
   return <Object?>[name, version, speed, website];
 }
 
-extension on List<Object?> {
-  Object? get _name {
-    return this[0];
-  }
-
-  Object? get _version {
-    return this[1];
-  }
-
-  Object? get _speed {
-    return this[2];
-  }
-
-  Object? get _website {
-    return this[3];
-  }
-}
-
-class Info extends Component {
+final class Info extends Component {
   Info({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createInstance: createInstance,
-      createFragment: createFragment,
-      props: const <String, int>{
-        'answer': 0,
-        'version': 1,
-        'speed': 2,
-        'website': 3,
-      },
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createInstance: createInstance, createFragment: createFragment);
 }

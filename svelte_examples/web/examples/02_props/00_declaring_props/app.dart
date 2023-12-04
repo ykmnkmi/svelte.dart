@@ -15,11 +15,11 @@ Fragment createFragment(List<Object?> instance) {
     create: () {
       createComponent(nested);
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       mountComponent(nested, target, anchor);
       current = true;
     },
-    intro: (local) {
+    intro: (bool local) {
       if (current) {
         return;
       }
@@ -27,34 +27,22 @@ Fragment createFragment(List<Object?> instance) {
       transitionInComponent(nested, local);
       current = true;
     },
-    outro: (local) {
+    outro: (bool local) {
       transitionOutComponent(nested, local);
       current = false;
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       destroyComponent(nested, detaching);
     },
   );
 }
 
-class App extends Component {
+final class App extends Component {
   App({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createFragment: createFragment,
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createFragment: createFragment);
 }

@@ -10,10 +10,10 @@ Fragment createFragment(List<Object?> instance) {
       p = element('p');
       setText(p, "...don't affect this element");
     },
-    mount: (target, anchor) {
+    mount: (Element target, Node? anchor) {
       insert(target, p, anchor);
     },
-    detach: (detaching) {
+    detach: (bool detaching) {
       if (detaching) {
         detach(p);
       }
@@ -21,24 +21,12 @@ Fragment createFragment(List<Object?> instance) {
   );
 }
 
-class Nested extends Component {
+final class Nested extends Component {
   Nested({
-    Element? target,
-    Node? anchor,
-    Map<String, Object?>? props,
-    bool hydrate = false,
-    bool intro = false,
-  }) {
-    init(
-      component: this,
-      options: (
-        target: target,
-        anchor: anchor,
-        props: props,
-        hydrate: hydrate,
-        intro: intro,
-      ),
-      createFragment: createFragment,
-    );
-  }
+    super.target,
+    super.anchor,
+    super.props,
+    super.hydrate,
+    super.intro,
+  }) : super(createFragment: createFragment);
 }

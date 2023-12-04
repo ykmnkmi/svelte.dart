@@ -1,6 +1,6 @@
 name: svelte_examples
-description: Svelte examples.
-version: 1.0.0-dev.2
+description: SvelteDart examples.
+version: 1.0.0-dev.3
 repository: https://github.com/ykmnkmi/svelte.dart
 publish_to: none
 
@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   meta: ^1.11.0
-  svelte_runtime: ^1.0.0-dev.3
+  svelte_runtime: ^1.0.0-dev.4
 
 dev_dependencies:
   build_runner: ^2.4.7
