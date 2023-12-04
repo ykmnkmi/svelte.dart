@@ -1,0 +1,3 @@
+dependency_overrides:
+  svelte_ast:
+    path: ../svelte_ast
