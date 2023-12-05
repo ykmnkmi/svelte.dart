@@ -59,14 +59,12 @@ SvelteAst parse(
       }
 
       instance = script;
-      break;
     } else if (script.context == 'module') {
       if (module != null) {
         error(invalidScriptModule, script.start);
       }
 
       module = script;
-      break;
     }
   }
 
