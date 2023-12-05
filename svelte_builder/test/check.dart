@@ -18,6 +18,7 @@ import 'package:logging/logging.dart' show Level, Logger;
 import 'package:stack_trace/stack_trace.dart' show Trace;
 import 'package:svelte_ast/svelte_ast.dart';
 import 'package:svelte_builder/src/builders/meta.dart';
+import 'package:svelte_builder/src/builders/svelte.dart';
 
 final Map<AssetId, String> sourceAssets = <AssetId, String>{
   AssetId('app', 'web/app.svelte'): r'''
@@ -139,6 +140,17 @@ Future<void> run() async {
   await build(
     const MetaBuilder(),
     <AssetId>{AssetId('app', 'web/app.svelte')},
+    rootPackage: 'app',
+    reader: multiReader,
+    writer: inMemoryWriter,
+  );
+
+  printAssets(inMemoryWriter.assets);
+  print('> SVELTE '.padRight(80, '='));
+
+  await build(
+    const SvelteBuilder(),
+    <AssetId>{AssetId('app', 'web/main.zap')},
     rootPackage: 'app',
     reader: multiReader,
     writer: inMemoryWriter,

@@ -12,7 +12,7 @@ class MetaBuilder implements Builder {
   @override
   Map<String, List<String>> get buildExtensions {
     return const <String, List<String>>{
-      '^{{dir}}/{{file}}.svelte': <String>[
+      '{{dir}}/{{file}}.svelte': <String>[
         '{{dir}}/{{file}}.svelte.html',
         '{{dir}}/{{file}}.svelte.instance.dart',
         '{{dir}}/{{file}}.svelte.module.dart',
@@ -40,8 +40,6 @@ class MetaBuilder implements Builder {
     String? instance, module;
 
     if (ast.instance case var script?) {
-      html = replace(content, script.start, script.end);
-
       var body = script.body;
 
       for (var directive in body.directives) {
@@ -51,7 +49,7 @@ class MetaBuilder implements Builder {
       if (ast.module != null) {
         instanceBuffer
           ..writeln()
-          ..writeln("import '${moduleAsset.path}' as module;")
+          ..writeln("import '${moduleAsset.path}';")
           ..writeln();
       }
 
@@ -101,11 +99,12 @@ class MetaBuilder implements Builder {
 
       instanceBuffer.writeln('}');
       instance = formatter.format('$instanceBuffer');
+      html = replace(html, script.start, script.end);
     }
 
     if (ast.module case var script?) {
-      module = formatter.format(content.substring(script.start, script.end));
-      html = replace(content, script.start, script.end);
+      module = formatter.format(script.content.data);
+      html = replace(html, script.start, script.end);
     }
 
     await buildStep.writeAsString(htmlAsset, html);

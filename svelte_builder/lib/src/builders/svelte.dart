@@ -6,7 +6,7 @@ class SvelteBuilder implements Builder {
   @override
   Map<String, List<String>> get buildExtensions {
     return const <String, List<String>>{
-      '^{{dir}}/{{file}}.svelte': <String>[
+      '{{dir}}/{{file}}.svelte': <String>[
         '{{dir}}/{{file}}.svelte.dart',
       ],
     };
@@ -17,9 +17,6 @@ class SvelteBuilder implements Builder {
     var inputAsset = buildStep.inputId;
 
     var outputAsset = inputAsset.changeExtension('.svelte.dart');
-    var instanceAsset = inputAsset.changeExtension('.svelte.instance.dart');
-
-    print(outputAsset);
-    print(instanceAsset);
+    await buildStep.writeAsString(outputAsset, '// ${inputAsset.path}');
   }
 }
