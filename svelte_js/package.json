@@ -1,0 +1,12 @@
+{
+  "name": "svelte",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "svelte": "^5.0.0-next.23"
+  },
+  "devDependencies": {
+    "vite": "^5.0.8"
+  }
+}
