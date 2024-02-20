@@ -1,20 +1,34 @@
 @JS(r'$$')
 library;
 
-import 'package:js/js.dart';
+import 'dart:js_interop';
+
 import 'package:svelte_js/src/types.dart';
+import 'package:svelte_js/src/unsafe_cast.dart';
 
 @JS('get')
-external V get<V>(Signal<V> signal);
+external JSAny? _get(JSObject signal);
+
+V get<V>(Signal<V> signal) {
+  return unsafeCast<V>(_get(signal.ref));
+}
 
 @JS('set')
-external V set<V>(Signal<V> signal, V value);
+external JSAny? _set(JSObject signal, JSAny? value);
+
+V set<V>(Signal<V> signal, V value) {
+  return unsafeCast<V>(_set(signal.ref, unsafeCast<JSAny?>(value)));
+}
 
 @JS('mutable_source')
-external SourceSignal<V> mutableSource<V>(V value);
+external JSObject _mutableSource(JSAny? value);
+
+SourceSignal<V> mutableSource<V>(V value) {
+  return SourceSignal<V>(_mutableSource(unsafeCast<JSAny?>(value)));
+}
 
 @JS('push')
-external void push(Object properties, [bool runes, bool immutable]);
+external void push(JSObject properties, [bool runes, bool immutable]);
 
 @JS('pop')
-external void pop([Object? accessors]);
+external void pop([JSObject? accessors]);

@@ -1,22 +1,10 @@
 @JS(r'$$')
 library;
 
-import 'package:js/js.dart';
+import 'dart:js_interop';
 
-@JS('FragmentFactory')
-@staticInterop
-abstract interface class FragmentFactory {}
+extension type FragmentFactory(JSFunction ref) {}
 
-extension FragmentFactoryExtension on FragmentFactory {}
+extension type Signal<V>(JSObject ref) {}
 
-@JS('Signal')
-@staticInterop
-abstract interface class Signal<V> {}
-
-extension SignalExtension<V> on Signal<V> {}
-
-@JS('SourceSignal')
-@staticInterop
-abstract interface class SourceSignal<V> implements Signal<V> {}
-
-extension SourceSignalExtension<V> on SourceSignal<V> {}
+extension type SourceSignal<V>(JSObject ref) implements Signal<V> {}

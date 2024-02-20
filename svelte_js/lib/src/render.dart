@@ -1,20 +1,30 @@
 @JS(r'$$')
 library;
 
-import 'dart:html';
+import 'dart:js_interop';
 
-import 'package:js/js.dart';
 import 'package:meta/dart2js.dart';
 import 'package:svelte_js/src/types.dart';
+import 'package:svelte_js/src/unsafe_cast.dart';
+import 'package:web/web.dart';
 
 @JS('template')
-external FragmentFactory template(String html, [bool isFragment]);
+external JSFunction _template(String html, [bool isFragment]);
+
+FragmentFactory fragment(String html) {
+  return FragmentFactory(_template(html, true));
+}
+
+FragmentFactory template(String html) {
+  return FragmentFactory(_template(html));
+}
 
 @JS('open')
-external T open<T>(Node? anchor, bool useCloneNode, FragmentFactory fragment);
+external T open<T extends JSAny?>(
+    Node? anchor, bool useCloneNode, FragmentFactory fragment);
 
 @JS('open_frag')
-external T openFragment<T>(Node? anchor, bool useCloneNode,
+external T openFragment<T extends JSAny?>(Node? anchor, bool useCloneNode,
     [FragmentFactory fragment]);
 
 @JS('close')
@@ -24,29 +34,33 @@ external void close(Node? anchor, Node dom);
 external void closeFragment(Node? anchor, Node dom);
 
 @JS('text_effect')
-external void _textEffect(Node dom, String Function() value);
+external void _textEffect(Node dom, JSFunction value);
 
 @noInline
 void textEffect(Node dom, String Function() value) {
-  _textEffect(dom, allowInterop(value));
+  _textEffect(dom, value.toJS);
 }
 
 @JS('text')
-external void _text(Node dom, String Function() value);
+external void _text(Node dom, JSFunction value);
 
 void text(Node dom, String Function() value) {
-  _text(dom, allowInterop(value));
+  _text(dom, value.toJS);
 }
 
 @JS('delegate')
-external void delegate(List<String> events);
+external void _delegate(JSArray events);
+
+void delegate(List<String> events) {
+  _delegate(unsafeCast<List<JSAny?>>(events).toJS);
+}
 
 @JS('html')
-external void _html(Node dom, String Function() getValue, bool svg);
+external void _html(Node dom, JSFunction getValue, bool svg);
 
 @noInline
 void html(Node dom, String Function() getValue, bool svg) {
-  _html(dom, allowInterop(getValue), svg);
+  _html(dom, getValue.toJS, svg);
 }
 
 @JS('attr')
@@ -61,10 +75,9 @@ String stringify(Object? value) {
 }
 
 @JS('mount')
-external Object _mount(ComponentFactory? component, _Mount options);
+external JSObject _mount(JSFunction? component, _Mount options);
 
-typedef ComponentFactory = void Function(
-    Node anchor, Object properties, Object events);
+typedef ComponentFactory = void Function(Node anchor, JSObject properties);
 
 @JS()
 @anonymous
@@ -75,7 +88,7 @@ abstract class _Mount {
 
 @noInline
 Object mount(ComponentFactory component, {required Node target}) {
-  return _mount(allowInterop(component), _Mount(target: target));
+  return _mount(component.toJS, _Mount(target: target));
 }
 
 @JS('append_styles')

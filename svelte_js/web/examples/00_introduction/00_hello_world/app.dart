@@ -1,16 +1,16 @@
-// ignore: library_prefixes
-import 'dart:html';
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 
-import 'package:js/js_util.dart';
 import 'package:svelte_js/internal.dart' as $; // ignore: library_prefixes
 import 'package:svelte_js/svelte_js.dart';
+import 'package:web/web.dart';
 
 typedef AppFactory = ComponentFactory;
 
 final AppFactory app = () {
   var $fragment = $.template('<p> </p>');
 
-  void app(Node $anchor, Object $properties, Object $events) {
+  void app(Node $anchor, JSObject $properties) {
     $.push($properties, false);
 
     var name = 'world';
@@ -18,7 +18,7 @@ final AppFactory app = () {
     var p = $.open<Node>($anchor, true, $fragment);
     var text = $.child<Text>(p);
 
-    setProperty(text, 'nodeValue', 'Hello ${$.stringify(name)}!');
+    text.setProperty('nodeValue'.toJS, 'Hello ${$.stringify(name)}!'.toJS);
     $.close($anchor, p);
     $.pop();
   }
