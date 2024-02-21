@@ -7,10 +7,14 @@
       arr[i]();
     }
   }
+  function run(fn) {
+    return fn();
+  }
   var is_array = Array.isArray;
   var array_from = Array.from;
   var define_property = Object.defineProperty;
   var get_descriptor = Object.getOwnPropertyDescriptor;
+  var get_descriptors = Object.getOwnPropertyDescriptors;
   const PassiveDelegatedEvents = ["touchstart", "touchmove", "touchend"];
   const ROOT_BLOCK = 0;
   const IF_BLOCK = 1;
@@ -159,7 +163,7 @@
     return false;
   }
   function execute_signal_fn(signal) {
-    const init = signal.i;
+    const init2 = signal.i;
     const flags = signal.f;
     const previous_dependencies = current_dependencies;
     const previous_dependencies_index = current_dependencies_index;
@@ -183,7 +187,7 @@
       let res;
       if (is_render_effect) {
         res = /** @type {(block: import('./types.js').Block, signal: import('./types.js').Signal) => V} */
-        init(
+        init2(
           /** @type {import('./types.js').Block} */
           signal.b,
           /** @type {import('./types.js').Signal} */
@@ -191,7 +195,7 @@
         );
       } else {
         res = /** @type {() => V} */
-        init();
+        init2();
       }
       let dependencies = (
         /** @type {import('./types.js').Signal<unknown>[]} **/
@@ -452,6 +456,18 @@
     current_raf_tasks = [];
     run_all(tasks);
   }
+  function flush_local_render_effects() {
+    const effects = [];
+    for (let i = 0; i < current_queued_pre_and_render_effects.length; i++) {
+      const effect = current_queued_pre_and_render_effects[i];
+      if ((effect.f & RENDER_EFFECT) !== 0 && effect.x === current_component_context) {
+        effects.push(effect);
+        current_queued_pre_and_render_effects.splice(i, 1);
+        i--;
+      }
+    }
+    flush_queued_effects(effects);
+  }
   function flush_local_pre_effects(context) {
     const effects = [];
     for (let i = 0; i < current_queued_pre_and_render_effects.length; i++) {
@@ -704,9 +720,18 @@
     s.e = safe_equal;
     return s;
   }
-  function internal_create_effect(type, init, sync, block, schedule) {
+  function untrack(fn) {
+    const previous_untracking = current_untracking;
+    try {
+      current_untracking = true;
+      return fn();
+    } finally {
+      current_untracking = previous_untracking;
+    }
+  }
+  function internal_create_effect(type, init2, sync, block, schedule) {
     const signal = create_computation_signal(type | DIRTY, null, block);
-    signal.i = init;
+    signal.i = init2;
     signal.x = current_component_context;
     if (current_effect !== null) {
       signal.l = current_effect.l + 1;
@@ -719,7 +744,49 @@
     }
     return signal;
   }
-  function render_effect(init, block = current_block, managed = false, sync = true) {
+  function user_effect(init2) {
+    if (current_effect === null) {
+      throw new Error(
+        "ERR_SVELTE_ORPHAN_EFFECT"
+      );
+    }
+    const apply_component_effect_heuristics = current_effect.f & RENDER_EFFECT && current_component_context !== null && !current_component_context.m;
+    const effect = internal_create_effect(
+      EFFECT,
+      init2,
+      false,
+      current_block,
+      !apply_component_effect_heuristics
+    );
+    if (apply_component_effect_heuristics) {
+      const context = (
+        /** @type {import('./types.js').ComponentContext} */
+        current_component_context
+      );
+      (context.e ?? (context.e = [])).push(effect);
+    }
+    return effect;
+  }
+  function pre_effect(init2) {
+    if (current_effect === null) {
+      throw new Error(
+        "ERR_SVELTE_ORPHAN_EFFECT"
+      );
+    }
+    const sync = current_effect !== null && (current_effect.f & RENDER_EFFECT) !== 0;
+    return internal_create_effect(
+      PRE_EFFECT,
+      () => {
+        const val = init2();
+        flush_local_render_effects();
+        return val;
+      },
+      sync,
+      current_block,
+      true
+    );
+  }
+  function render_effect(init2, block = current_block, managed = false, sync = true) {
     let flags = RENDER_EFFECT;
     if (managed) {
       flags |= MANAGED;
@@ -727,7 +794,7 @@
     return internal_create_effect(
       flags,
       /** @type {any} */
-      init,
+      init2,
       sync,
       block,
       true
@@ -796,6 +863,44 @@
     }
     return component || /** @type {T} */
     {};
+  }
+  function observe_all(context) {
+    if (context.d) {
+      for (const signal of context.d)
+        get(signal);
+    }
+    const props = get_descriptors(context.s);
+    for (const descriptor of Object.values(props)) {
+      if (descriptor.get)
+        descriptor.get();
+    }
+  }
+  function init() {
+    const context = (
+      /** @type {import('./types.js').ComponentContext} */
+      current_component_context
+    );
+    const callbacks = context.u;
+    if (!callbacks)
+      return;
+    pre_effect(() => {
+      observe_all(context);
+      callbacks.b.forEach(run);
+    });
+    user_effect(() => {
+      const fns = untrack(() => callbacks.m.map(run));
+      return () => {
+        for (const fn of fns) {
+          if (typeof fn === "function") {
+            fn();
+          }
+        }
+      };
+    });
+    user_effect(() => {
+      observe_all(context);
+      callbacks.a.forEach(run);
+    });
   }
   var node_prototype;
   var element_prototype;
@@ -1024,6 +1129,26 @@
   function close_frag(anchor, dom) {
     close_template(dom, true, anchor);
   }
+  function event(event_name, dom, handler, capture, passive) {
+    const options = {
+      capture,
+      passive
+    };
+    function target_handler(event2) {
+      handle_event_propagation(dom, event2);
+      if (!event2.cancelBubble) {
+        return handler.call(this, event2);
+      }
+    }
+    dom.addEventListener(event_name, target_handler, options);
+    if (dom === document.body || dom === window || dom === document) {
+      render_effect(() => {
+        return () => {
+          dom.removeEventListener(event_name, target_handler, options);
+        };
+      });
+    }
+  }
   function text_effect(dom, value) {
     render_effect(() => text(dom, value()));
   }
@@ -1035,34 +1160,26 @@
       dom.__nodeValue = next_node_value;
     }
   }
-  function delegate(events) {
-    for (let i = 0; i < events.length; i++) {
-      all_registerd_events.add(events[i]);
-    }
-    for (const fn of root_event_handles) {
-      fn(events);
-    }
-  }
-  function handle_event_propagation(handler_element, event) {
+  function handle_event_propagation(handler_element, event2) {
     var _a;
-    const event_name = event.type;
-    const path = ((_a = event.composedPath) == null ? void 0 : _a.call(event)) || [];
+    const event_name = event2.type;
+    const path = ((_a = event2.composedPath) == null ? void 0 : _a.call(event2)) || [];
     let current_target = (
       /** @type {null | Element} */
-      path[0] || event.target
+      path[0] || event2.target
     );
-    if (event.target !== current_target) {
-      define_property(event, "target", {
+    if (event2.target !== current_target) {
+      define_property(event2, "target", {
         configurable: true,
         value: current_target
       });
     }
     let path_idx = 0;
-    const handled_at = event.__root;
+    const handled_at = event2.__root;
     if (handled_at) {
       const at_idx = path.indexOf(handled_at);
       if (at_idx !== -1 && handler_element === document) {
-        event.__root = document;
+        event2.__root = document;
         return;
       }
       const handler_idx = path.indexOf(handler_element);
@@ -1074,8 +1191,8 @@
       }
     }
     current_target = /** @type {Element} */
-    path[path_idx] || event.target;
-    define_property(event, "currentTarget", {
+    path[path_idx] || event2.target;
+    define_property(event2, "currentTarget", {
       configurable: true,
       get() {
         return current_target || document;
@@ -1090,17 +1207,17 @@
       current_target.disabled) {
         if (is_array(delegated)) {
           const [fn, ...data] = delegated;
-          fn.apply(current_target, [event, ...data]);
+          fn.apply(current_target, [event2, ...data]);
         } else {
-          delegated.call(current_target, event);
+          delegated.call(current_target, event2);
         }
       }
-      if (event.cancelBubble || parent_element === handler_element || current_target === handler_element) {
+      if (event2.cancelBubble || parent_element === handler_element || current_target === handler_element) {
         break;
       }
       current_target = parent_element;
     }
-    event.__root = handler_element;
+    event2.__root = handler_element;
     current_target = handler_element;
   }
   function stringify(value) {
@@ -1241,9 +1358,9 @@
     open_frag,
     close,
     close_frag,
+    event,
     text_effect,
     text,
-    delegate,
     html,
     attr,
     mount,
@@ -1252,7 +1369,8 @@
     set,
     mutable_source,
     push,
-    pop
+    pop,
+    init
   };
   return svelte;
 });

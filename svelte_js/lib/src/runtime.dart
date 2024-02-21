@@ -23,7 +23,7 @@ V set<V>(Signal<V> signal, V value) {
 @JS('mutable_source')
 external JSObject _mutableSource(JSAny? value);
 
-SourceSignal<V> mutableSource<V>(V value) {
+SourceSignal<V> mutableSource<V>([V? value]) {
   return SourceSignal<V>(_mutableSource(unsafeCast<JSAny?>(value)));
 }
 
@@ -32,3 +32,6 @@ external void push(JSObject properties, [bool runes, bool immutable]);
 
 @JS('pop')
 external void pop([JSObject? accessors]);
+
+@JS('init')
+external void init();

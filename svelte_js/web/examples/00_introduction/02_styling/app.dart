@@ -6,14 +6,15 @@ import 'package:web/web.dart';
 
 typedef AppFactory = ComponentFactory;
 
-final AppFactory app = () {
-  var $fragment = $.template('<p class="svelte-1xxr51v">Styled!</p>');
+final _$fragment = $.template('<p class="svelte-1xxr51v">Styled!</p>');
 
+final AppFactory app = () {
   void app(Node $anchor, JSObject $properties) {
     $.push($properties, false);
+    $.init();
 
     /* Init */
-    var p = $.open<Element>($anchor, true, $fragment);
+    var p = $.open<Element>($anchor, true, _$fragment);
 
     $.close($anchor, p);
     $.pop();

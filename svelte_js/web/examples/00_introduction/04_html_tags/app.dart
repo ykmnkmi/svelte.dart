@@ -6,21 +6,20 @@ import 'package:web/web.dart';
 
 typedef AppFactory = ComponentFactory;
 
-final AppFactory app = () {
-  var $fragment = $.template('<p><!></p>');
+final _$fragment = $.template('<p><!></p>');
 
-  void app(Node $anchor, JSObject $properties) {
-    $.push($properties, false);
+void app(Node $anchor, JSObject $properties) {
+  $.push($properties, false);
 
-    var string = "here's some <strong>HTML!!!</strong>";
-    /* Init */
-    var p = $.open<Node>($anchor, true, $fragment);
-    var node = $.child<Text>(p);
+  var string = "here's some <strong>HTML!!!</strong>";
 
-    $.html(node, () => string, false);
-    $.close($anchor, p);
-    $.pop();
-  }
+  $.init();
 
-  return app;
-}();
+  /* Init */
+  var p = $.open<Node>($anchor, true, _$fragment);
+  var node = $.child<Text>(p);
+
+  $.html(node, () => string, false);
+  $.close($anchor, p);
+  $.pop();
+}

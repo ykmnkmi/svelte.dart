@@ -4,7 +4,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "svelte": "^5.0.0-next.60"
+    "svelte": "^5.0.0-next.64"
   },
   "devDependencies": {
     "vite": "^5.1.3"

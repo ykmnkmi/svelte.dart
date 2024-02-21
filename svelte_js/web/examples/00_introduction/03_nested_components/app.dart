@@ -8,19 +8,20 @@ import 'nested.dart';
 
 typedef AppFactory = ComponentFactory;
 
-final AppFactory app = () {
-  var $fragment =
-      $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
+final _$fragment =
+    $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
 
+final AppFactory app = () {
   void app(Node $anchor, JSObject $properties) {
     $.push($properties, false);
+    $.init();
 
     /* Init */
-    var fragment = $.openFragment<Node>($anchor, true, $fragment);
-    var node = $.childFragment<Node>(fragment);
-    var $nestedAnchor = $.sibling<Node>($.sibling<Node>(node));
+    var fragment = $.openFragment<Node>($anchor, true, _$fragment);
+    var p = $.childFragment<Node>(fragment);
+    var node = $.sibling<Node>($.sibling<Node>(p));
 
-    nested($nestedAnchor, JSObject());
+    nested(node, JSObject());
     $.closeFragment($anchor, fragment);
     $.pop();
   }

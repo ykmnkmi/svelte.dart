@@ -6,32 +6,29 @@ import 'package:web/web.dart';
 
 typedef AppFactory = ComponentFactory;
 
-final AppFactory app = () {
-  var $fragment = $.template('<button> </button>');
+final _$fragment = $.template('<button> </button>');
 
-  void app(Node $anchor, JSObject $properties) {
-    $.push($properties, false);
+void app(Node $anchor, JSObject $properties) {
+  $.push($properties, false);
 
-    var count = $.mutableSource(0);
+  var count = $.mutableSource(0);
 
-    void handleClick(Event event) {
-      $.set(count, $.get(count) + 1);
-    }
-
-    /* Init */
-    var button = $.open<Node>($anchor, true, $fragment);
-    var text = $.child<Text>(button);
-
-    /* Update */
-    $.textEffect(text, () {
-      return 'Clicked ${$.get(count)} ${$.get(count) == 1 ? 'time' : 'times'}';
-    });
-
-    $.listen(button, 'click', handleClick);
-    $.close($anchor, button);
-    $.pop();
+  void handleClick(Event event) {
+    $.set(count, $.get(count) + 1);
   }
 
-  $.delegate(['click']);
-  return app;
-}();
+  $.init();
+
+  /* Init */
+  var button = $.open<Node>($anchor, true, _$fragment);
+  var text = $.child<Text>(button);
+
+  /* Update */
+  $.textEffect(text, () {
+    return 'Clicked ${$.get(count)} ${$.get(count) == 1 ? 'time' : 'times'}';
+  });
+
+  $.event('click', button, handleClick, false);
+  $.close($anchor, button);
+  $.pop();
+}

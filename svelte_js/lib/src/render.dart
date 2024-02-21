@@ -5,7 +5,6 @@ import 'dart:js_interop';
 
 import 'package:meta/dart2js.dart';
 import 'package:svelte_js/src/types.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
 @JS('template')
@@ -33,6 +32,21 @@ external void close(Node? anchor, Node dom);
 @JS('close_frag')
 external void closeFragment(Node? anchor, Node dom);
 
+@JS('event')
+external void _event<T extends Event>(
+    String eventName, Node node, JSFunction handler, bool capture,
+    [bool passive]);
+
+void event<T extends Event>(
+    String eventName, Node node, void Function(T) handler, bool capture) {
+  _event(eventName, node, handler.toJS, capture);
+}
+
+void eventPassive<T extends Event>(
+    String eventName, Node node, void Function(T) handler, bool capture) {
+  _event(eventName, node, handler.toJS, capture, true);
+}
+
 @JS('text_effect')
 external void _textEffect(Node dom, JSFunction value);
 
@@ -46,13 +60,6 @@ external void _text(Node dom, JSFunction value);
 
 void text(Node dom, String Function() value) {
   _text(dom, value.toJS);
-}
-
-@JS('delegate')
-external void _delegate(JSArray events);
-
-void delegate(List<String> events) {
-  _delegate(unsafeCast<List<JSAny?>>(events).toJS);
 }
 
 @JS('html')
