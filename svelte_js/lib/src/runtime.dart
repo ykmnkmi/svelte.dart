@@ -4,34 +4,44 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/src/types.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 
 @JS('get')
-external JSAny? _get(JSObject signal);
+external JSBoxedDartObject? _get(JSObject signal);
 
-V get<V>(Signal<V> signal) {
-  return unsafeCast<V>(_get(signal.ref));
+T get<T>(Signal<T> signal) {
+  var boxed = _get(signal.ref);
+  return boxed?.toDart as T;
 }
 
 @JS('set')
-external JSAny? _set(JSObject signal, JSAny? value);
+external JSBoxedDartObject? _set(JSObject signal, JSBoxedDartObject? value);
 
-V set<V>(Signal<V> signal, V value) {
-  return unsafeCast<V>(_set(signal.ref, unsafeCast<JSAny?>(value)));
+T set<T>(Signal<T> signal, T? value) {
+  var boxed = _set(signal.ref, value?.toJSBox);
+  return boxed?.toDart as T;
 }
 
-@JS('mutable_source')
-external JSObject _mutableSource(JSAny? value);
+@JS('untrack')
+external JSBoxedDartObject? _untrack(JSFunction function);
 
-SourceSignal<V> mutableSource<V>([V? value]) {
-  return SourceSignal<V>(_mutableSource(unsafeCast<JSAny?>(value)));
+T untrack<T>(T Function() function) {
+  var boxed = _untrack((function as JSBoxedDartObject? Function()).toJS);
+  return boxed?.toDart as T;
 }
 
 @JS('push')
-external void push(JSObject properties, [bool runes, bool immutable]);
+external void _push(JSObject properties, [bool? runes, JSFunction? function]);
+
+void push(JSObject properties, [bool? runes, void Function()? function]) {
+  if (function == null) {
+    _push(properties, runes);
+  } else {
+    _push(properties, runes, function.toJS);
+  }
+}
 
 @JS('pop')
-external void pop([JSObject? accessors]);
+external void pop([JSObject? component]);
 
 @JS('init')
 external void init();

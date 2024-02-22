@@ -16,7 +16,7 @@ void app(Node $anchor, JSObject $properties) {
   $.init();
 
   /* Init */
-  var p = $.open<Node>($anchor, true, _$fragment);
+  var p = $.open<Element>($anchor, true, _$fragment);
   var text = $.child<Text>(p);
 
   $.nodeValue(text, 'Hello $name!');

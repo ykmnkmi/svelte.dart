@@ -8,23 +8,15 @@ import 'package:svelte_js/src/types.dart';
 import 'package:web/web.dart';
 
 @JS('template')
-external JSFunction _template(String html, [bool isFragment]);
-
-FragmentFactory fragment(String html) {
-  return FragmentFactory(_template(html, true));
-}
-
-FragmentFactory template(String html) {
-  return FragmentFactory(_template(html));
-}
+external TemplateFactory template(String html, [bool returnFragment]);
 
 @JS('open')
-external T open<T extends JSAny?>(
-    Node? anchor, bool useCloneNode, FragmentFactory fragment);
+external T open<T extends JSAny>(Node? anchor, bool useCloneNode,
+    [TemplateFactory templateFactory]);
 
 @JS('open_frag')
-external T openFragment<T extends JSAny?>(Node? anchor, bool useCloneNode,
-    [FragmentFactory fragment]);
+external T openFragment<T extends JSAny>(Node? anchor, bool useCloneNode,
+    [TemplateFactory templateFactory]);
 
 @JS('close')
 external void close(Node? anchor, Node dom);
@@ -34,17 +26,17 @@ external void closeFragment(Node? anchor, Node dom);
 
 @JS('event')
 external void _event<T extends Event>(
-    String eventName, Node node, JSFunction handler, bool capture,
+    String eventName, Element dom, JSFunction handler, bool capture,
     [bool passive]);
 
 void event<T extends Event>(
-    String eventName, Node node, void Function(T) handler, bool capture) {
-  _event(eventName, node, handler.toJS, capture);
-}
-
-void eventPassive<T extends Event>(
-    String eventName, Node node, void Function(T) handler, bool capture) {
-  _event(eventName, node, handler.toJS, capture, true);
+    String eventName, Element dom, void Function(T) handler, bool capture,
+    [bool? passive]) {
+  if (passive == null) {
+    _event(eventName, dom, handler.toJS, capture);
+  } else {
+    _event(eventName, dom, handler.toJS, capture, passive);
+  }
 }
 
 @JS('text_effect')
@@ -63,28 +55,18 @@ void text(Node dom, String Function() value) {
 }
 
 @JS('html')
-external void _html(Node dom, JSFunction getValue, bool svg);
+external void _html(Node dom, JSFunction value, bool svg);
 
 @noInline
-void html(Node dom, String Function() getValue, bool svg) {
-  _html(dom, getValue.toJS, svg);
+void html(Node dom, String Function() value, bool svg) {
+  _html(dom, value.toJS, svg);
 }
 
 @JS('attr')
 external void attr(Element dom, String attribute, String? value);
 
-String stringify(Object? value) {
-  if (value == null) {
-    return '';
-  }
-
-  return value is String ? value : '$value';
-}
-
 @JS('mount')
 external JSObject _mount(JSFunction? component, _Mount options);
-
-typedef ComponentFactory = void Function(Node anchor, JSObject properties);
 
 @JS()
 @anonymous

@@ -11,25 +11,17 @@ var array_from = Array.from;
 var define_property = Object.defineProperty;
 var get_descriptor = Object.getOwnPropertyDescriptor;
 var get_descriptors = Object.getOwnPropertyDescriptors;
-const PassiveDelegatedEvents = ["touchstart", "touchmove", "touchend"];
-const ROOT_BLOCK = 0;
-const IF_BLOCK = 1;
-const EACH_BLOCK = 2;
-function create_root_block(intro) {
-  return {
-    // dom
-    d: null,
-    // effect
-    e: null,
-    // intro
-    i: intro,
-    // parent
-    p: null,
-    // transition
-    r: null,
-    // type
-    t: ROOT_BLOCK
-  };
+function default_equals(a, b) {
+  return a === b;
+}
+function safe_not_equal(a, b) {
+  return a != a ? (
+    // eslint-disable-next-line eqeqeq
+    b == b
+  ) : a !== b || a !== null && typeof a === "object" || typeof a === "function";
+}
+function safe_equal(a, b) {
+  return !safe_not_equal(a, b);
 }
 const SOURCE = 1;
 const DERIVED = 1 << 1;
@@ -43,19 +35,143 @@ const DIRTY = 1 << 9;
 const MAYBE_DIRTY = 1 << 10;
 const INERT = 1 << 11;
 const DESTROYED = 1 << 12;
+const ROOT_BLOCK = 0;
+const IF_BLOCK = 1;
+const EACH_BLOCK = 2;
+const UNINITIALIZED = Symbol();
+function create_computation_signal(flags, value, block) {
+  const signal = {
+    b: block,
+    c: null,
+    d: null,
+    e: null,
+    f: flags,
+    l: 0,
+    i: null,
+    r: null,
+    v: value,
+    w: 0,
+    x: null,
+    y: null
+  };
+  return signal;
+}
+function push_reference(target_signal, ref_signal) {
+  const references = target_signal.r;
+  if (references === null) {
+    target_signal.r = [ref_signal];
+  } else {
+    references.push(ref_signal);
+  }
+}
+function internal_create_effect(type, fn, sync, block, schedule) {
+  const signal = create_computation_signal(type | DIRTY, null, block);
+  signal.i = fn;
+  signal.x = current_component_context;
+  if (current_effect !== null) {
+    signal.l = current_effect.l + 1;
+    if ((type & MANAGED) === 0) {
+      push_reference(current_effect, signal);
+    }
+  }
+  if (schedule) {
+    schedule_effect(signal, sync);
+  }
+  return signal;
+}
+function user_effect(fn) {
+  if (current_effect === null) {
+    throw new Error(
+      "ERR_SVELTE_ORPHAN_EFFECT"
+    );
+  }
+  const apply_component_effect_heuristics = current_effect.f & RENDER_EFFECT && current_component_context !== null && !current_component_context.m;
+  const effect = internal_create_effect(
+    EFFECT,
+    fn,
+    false,
+    current_block,
+    !apply_component_effect_heuristics
+  );
+  if (apply_component_effect_heuristics) {
+    const context = (
+      /** @type {import('../types.js').ComponentContext} */
+      current_component_context
+    );
+    (context.e ?? (context.e = [])).push(effect);
+  }
+  return effect;
+}
+function pre_effect(fn) {
+  if (current_effect === null) {
+    throw new Error(
+      "ERR_SVELTE_ORPHAN_EFFECT"
+    );
+  }
+  const sync = current_effect !== null && (current_effect.f & RENDER_EFFECT) !== 0;
+  return internal_create_effect(
+    PRE_EFFECT,
+    () => {
+      const val = fn();
+      flush_local_render_effects();
+      return val;
+    },
+    sync,
+    current_block,
+    true
+  );
+}
+function render_effect(fn, block = current_block, managed = false, sync = true) {
+  let flags = RENDER_EFFECT;
+  if (managed) {
+    flags |= MANAGED;
+  }
+  return internal_create_effect(
+    flags,
+    /** @type {any} */
+    fn,
+    sync,
+    block,
+    true
+  );
+}
+// @__NO_SIDE_EFFECTS__
+function source(initial_value) {
+  return create_source_signal(SOURCE | CLEAN, initial_value);
+}
+// @__NO_SIDE_EFFECTS__
+function mutable_source(initial_value) {
+  const s = /* @__PURE__ */ source(initial_value);
+  s.e = safe_equal;
+  if (current_component_context) {
+    (current_component_context.d ?? (current_component_context.d = [])).push(s);
+  }
+  return s;
+}
+function create_source_signal(flags, value) {
+  return {
+    // consumers
+    c: null,
+    // equals
+    e: default_equals,
+    // flags
+    f: flags,
+    // value
+    v: value,
+    // write version
+    w: 0
+  };
+}
+function flush_tasks() {
+}
 const IS_EFFECT = EFFECT | PRE_EFFECT | RENDER_EFFECT;
 const FLUSH_MICROTASK = 0;
 const FLUSH_SYNC = 1;
-const UNINITIALIZED = Symbol();
 let current_scheduler_mode = FLUSH_MICROTASK;
 let is_micro_task_queued = false;
-let is_task_queued = false;
-let is_raf_queued = false;
 let is_flushing_effect = false;
 let current_queued_pre_and_render_effects = [];
 let current_queued_effects = [];
-let current_queued_tasks = [];
-let current_raf_tasks = [];
 let flush_count = 0;
 let current_consumer = null;
 let current_effect = null;
@@ -70,55 +186,6 @@ let current_component_context = null;
 function is_runes(context) {
   const component_context = context || current_component_context;
   return component_context !== null && component_context.r;
-}
-function default_equals(a, b) {
-  return a === b;
-}
-function create_source_signal(flags, value) {
-  return {
-    // consumers
-    c: null,
-    // equals
-    e: default_equals,
-    // flags
-    f: flags,
-    // value
-    v: value
-  };
-}
-function create_computation_signal(flags, value, block) {
-  return {
-    // block
-    b: block,
-    // consumers
-    c: null,
-    // destroy
-    d: null,
-    // equals
-    e: null,
-    // flags
-    f: flags,
-    // level
-    l: 0,
-    // init
-    i: null,
-    // references
-    r: null,
-    // value
-    v: value,
-    // context: We can remove this if we get rid of beforeUpdate/afterUpdate
-    x: null,
-    // destroy
-    y: null
-  };
-}
-function push_reference(target_signal, ref_signal) {
-  const references = target_signal.r;
-  if (references === null) {
-    target_signal.r = [ref_signal];
-  } else {
-    references.push(ref_signal);
-  }
 }
 function is_signal_dirty(signal) {
   const flags = signal.f;
@@ -152,6 +219,13 @@ function is_signal_dirty(signal) {
           } else {
             return true;
           }
+        }
+        const is_unowned = (flags & UNOWNED) !== 0;
+        const write_version = signal.w;
+        const dep_write_version = dependency.w;
+        if (is_unowned && dep_write_version > write_version) {
+          signal.w = dep_write_version;
+          return true;
         }
       }
     }
@@ -440,18 +514,6 @@ function schedule_effect(signal, sync) {
     }
   }
 }
-function process_task() {
-  is_task_queued = false;
-  const tasks = current_queued_tasks.slice();
-  current_queued_tasks = [];
-  run_all(tasks);
-}
-function process_raf_task() {
-  is_raf_queued = false;
-  const tasks = current_raf_tasks.slice();
-  current_raf_tasks = [];
-  run_all(tasks);
-}
 function flush_local_render_effects() {
   const effects = [];
   for (let i = 0; i < current_queued_pre_and_render_effects.length; i++) {
@@ -501,12 +563,7 @@ function flush_sync(fn, flush_previous = true) {
     if (current_queued_pre_and_render_effects.length > 0 || effects.length > 0) {
       flushSync();
     }
-    if (is_raf_queued) {
-      process_raf_task();
-    }
-    if (is_task_queued) {
-      process_task();
-    }
+    flush_tasks();
     flush_count = 0;
   } finally {
     current_scheduler_mode = previous_scheduler_mode;
@@ -518,7 +575,7 @@ function flush_sync(fn, flush_previous = true) {
 function update_derived(signal, force_schedule) {
   destroy_references(signal);
   const value = execute_signal_fn(signal);
-  const status = current_skip_consumer || (signal.f & UNOWNED) !== 0 ? DIRTY : CLEAN;
+  const status = (current_skip_consumer || (signal.f & UNOWNED) !== 0) && signal.d !== null ? MAYBE_DIRTY : CLEAN;
   set_signal_status(signal, status);
   const equals = (
     /** @type {import('./types.js').EqualsFunctions} */
@@ -629,12 +686,12 @@ function mark_signal_consumers(signal, to_status, force_schedule) {
       const consumer = consumers[i];
       const flags = consumer.f;
       const unowned = (flags & UNOWNED) !== 0;
-      const dirty = (flags & DIRTY) !== 0;
-      if (dirty && !unowned || (!force_schedule || !runes) && consumer === current_effect) {
+      if ((!force_schedule || !runes) && consumer === current_effect) {
         continue;
       }
       set_signal_status(consumer, to_status);
-      if ((flags & CLEAN) !== 0 || dirty && unowned) {
+      const maybe_dirty = (flags & MAYBE_DIRTY) !== 0;
+      if ((flags & CLEAN) !== 0 || maybe_dirty && unowned) {
         if ((consumer.f & IS_EFFECT) !== 0) {
           schedule_effect(
             /** @type {import('./types.js').EffectSignal} */
@@ -657,6 +714,7 @@ function set_signal_value(signal, value) {
   if ((signal.f & SOURCE) !== 0 && !/** @type {import('./types.js').EqualsFunctions} */
   signal.e(value, signal.v)) {
     signal.v = value;
+    signal.w++;
     if (is_runes(null) && !ignore_mutation_validation && current_effect !== null && current_effect.c === null && (current_effect.f & CLEAN) !== 0) {
       if (current_dependencies !== null && current_dependencies.includes(signal)) {
         set_signal_status(current_effect, DIRTY);
@@ -694,28 +752,6 @@ function destroy_signal(signal) {
     teardown();
   }
 }
-// @__NO_SIDE_EFFECTS__
-function source(initial_value) {
-  const source2 = create_source_signal(SOURCE | CLEAN, initial_value);
-  bind_signal_to_component_context(source2);
-  return source2;
-}
-function bind_signal_to_component_context(signal) {
-  if (current_component_context === null || !current_component_context.r)
-    return;
-  const signals = current_component_context.d;
-  if (signals) {
-    signals.push(signal);
-  } else {
-    current_component_context.d = [signal];
-  }
-}
-// @__NO_SIDE_EFFECTS__
-function mutable_source(initial_value) {
-  const s = /* @__PURE__ */ source(initial_value);
-  s.e = safe_equal;
-  return s;
-}
 function untrack(fn) {
   const previous_untracking = current_untracking;
   try {
@@ -724,77 +760,6 @@ function untrack(fn) {
   } finally {
     current_untracking = previous_untracking;
   }
-}
-function internal_create_effect(type, init2, sync, block, schedule) {
-  const signal = create_computation_signal(type | DIRTY, null, block);
-  signal.i = init2;
-  signal.x = current_component_context;
-  if (current_effect !== null) {
-    signal.l = current_effect.l + 1;
-    if ((type & MANAGED) === 0) {
-      push_reference(current_effect, signal);
-    }
-  }
-  if (schedule) {
-    schedule_effect(signal, sync);
-  }
-  return signal;
-}
-function user_effect(init2) {
-  if (current_effect === null) {
-    throw new Error(
-      "ERR_SVELTE_ORPHAN_EFFECT"
-    );
-  }
-  const apply_component_effect_heuristics = current_effect.f & RENDER_EFFECT && current_component_context !== null && !current_component_context.m;
-  const effect = internal_create_effect(
-    EFFECT,
-    init2,
-    false,
-    current_block,
-    !apply_component_effect_heuristics
-  );
-  if (apply_component_effect_heuristics) {
-    const context = (
-      /** @type {import('./types.js').ComponentContext} */
-      current_component_context
-    );
-    (context.e ?? (context.e = [])).push(effect);
-  }
-  return effect;
-}
-function pre_effect(init2) {
-  if (current_effect === null) {
-    throw new Error(
-      "ERR_SVELTE_ORPHAN_EFFECT"
-    );
-  }
-  const sync = current_effect !== null && (current_effect.f & RENDER_EFFECT) !== 0;
-  return internal_create_effect(
-    PRE_EFFECT,
-    () => {
-      const val = init2();
-      flush_local_render_effects();
-      return val;
-    },
-    sync,
-    current_block,
-    true
-  );
-}
-function render_effect(init2, block = current_block, managed = false, sync = true) {
-  let flags = RENDER_EFFECT;
-  if (managed) {
-    flags |= MANAGED;
-  }
-  return internal_create_effect(
-    flags,
-    /** @type {any} */
-    init2,
-    sync,
-    block,
-    true
-  );
 }
 function push_destroy_fn(signal, destroy_fn) {
   let destroy = signal.y;
@@ -810,16 +775,7 @@ const STATUS_MASK = ~(DIRTY | MAYBE_DIRTY | CLEAN);
 function set_signal_status(signal, status) {
   signal.f = signal.f & STATUS_MASK | status;
 }
-function safe_not_equal(a, b) {
-  return a != a ? (
-    // eslint-disable-next-line eqeqeq
-    b == b
-  ) : a !== b || a !== null && typeof a === "object" || typeof a === "function";
-}
-function safe_equal(a, b) {
-  return !safe_not_equal(a, b);
-}
-function push(props, runes = false) {
+function push(props, runes = false, fn) {
   current_component_context = {
     // exports (and props, if `accessors: true`)
     x: null,
@@ -860,48 +816,33 @@ function pop(component) {
   return component || /** @type {T} */
   {};
 }
-function observe_all(context) {
-  if (context.d) {
-    for (const signal of context.d)
-      get(signal);
-  }
-  const props = get_descriptors(context.s);
-  for (const descriptor of Object.values(props)) {
-    if (descriptor.get)
-      descriptor.get();
-  }
-}
-function init() {
-  const context = (
-    /** @type {import('./types.js').ComponentContext} */
-    current_component_context
-  );
-  const callbacks = context.u;
-  if (!callbacks)
-    return;
-  pre_effect(() => {
-    observe_all(context);
-    callbacks.b.forEach(run);
-  });
-  user_effect(() => {
-    const fns = untrack(() => callbacks.m.map(run));
-    return () => {
-      for (const fn of fns) {
-        if (typeof fn === "function") {
-          fn();
+function deep_read(value, visited = /* @__PURE__ */ new Set()) {
+  if (typeof value === "object" && value !== null && !visited.has(value)) {
+    visited.add(value);
+    for (let key in value) {
+      try {
+        deep_read(value[key], visited);
+      } catch (e) {
+      }
+    }
+    const proto = Object.getPrototypeOf(value);
+    if (proto !== Object.prototype && proto !== Array.prototype && proto !== Map.prototype && proto !== Set.prototype && proto !== Date.prototype) {
+      const descriptors = get_descriptors(proto);
+      for (let key in descriptors) {
+        const get2 = descriptors[key].get;
+        if (get2) {
+          try {
+            get2.call(value);
+          } catch (e) {
+          }
         }
       }
-    };
-  });
-  user_effect(() => {
-    observe_all(context);
-    callbacks.a.forEach(run);
-  });
+    }
+  }
 }
 var node_prototype;
 var element_prototype;
 var text_prototype;
-var map_prototype;
 var append_child_method;
 var clone_node_method;
 var first_child_get;
@@ -913,12 +854,8 @@ function init_operations() {
   node_prototype = Node.prototype;
   element_prototype = Element.prototype;
   text_prototype = Text.prototype;
-  map_prototype = Map.prototype;
   append_child_method = node_prototype.appendChild;
   clone_node_method = node_prototype.cloneNode;
-  map_prototype.set;
-  map_prototype.get;
-  map_prototype.delete;
   element_prototype.__click = void 0;
   text_prototype.__nodeValue = " ";
   element_prototype.__className = "";
@@ -971,19 +908,6 @@ function create_fragment_from_html(html2) {
   var elem = document.createElement("template");
   elem.innerHTML = html2;
   return elem.content;
-}
-function create_fragment_with_script_from_html(html2) {
-  var content = create_fragment_from_html(html2);
-  var scripts = content.querySelectorAll("script");
-  for (const script of scripts) {
-    var new_script = document.createElement("script");
-    for (var i = 0; i < script.attributes.length; i++) {
-      new_script.setAttribute(script.attributes[i].name, script.attributes[i].value);
-    }
-    new_script.textContent = script.textContent;
-    script.parentNode.replaceChild(new_script, script);
-  }
-  return content;
 }
 function insert(current, parent_element, sibling2) {
   if (is_array(current)) {
@@ -1054,7 +978,7 @@ function reconcile_html(target, value, svg) {
   if (svg) {
     html2 = `<svg>${html2}</svg>`;
   }
-  var content = create_fragment_with_script_from_html(html2);
+  var content = create_fragment_from_html(html2);
   if (svg) {
     content = /** @type {DocumentFragment} */
     /** @type {unknown} */
@@ -1069,6 +993,23 @@ function reconcile_html(target, value, svg) {
     /** @type {Array<Text | Comment | Element>} */
     frag_nodes
   );
+}
+const PassiveDelegatedEvents = ["touchstart", "touchmove", "touchend"];
+function create_root_block(intro) {
+  return {
+    // dom
+    d: null,
+    // effect
+    e: null,
+    // intro
+    i: intro,
+    // parent
+    p: null,
+    // transition
+    r: null,
+    // type
+    t: ROOT_BLOCK
+  };
 }
 const all_registerd_events = /* @__PURE__ */ new Set();
 const root_event_handles = /* @__PURE__ */ new Set();
@@ -1263,7 +1204,15 @@ function _mount(Component, options) {
         push({});
         current_component_context.c = options.context;
       }
-      component = Component(options.anchor, options.props || {}) || {};
+      if (!options.props) {
+        options.props = /** @type {Props} */
+        {};
+      }
+      if (options.events) {
+        options.props.$$events = options.events;
+      }
+      component = // @ts-expect-error the public typings are not what the actual function looks like
+      Component(options.anchor, options.props) || {};
       if (options.context) {
         pop();
       }
@@ -1345,10 +1294,46 @@ function get_root_for_style(node) {
     node.ownerDocument
   );
 }
+function init() {
+  const context = (
+    /** @type {import('./types.js').ComponentContext} */
+    current_component_context
+  );
+  const callbacks = context.u;
+  if (!callbacks)
+    return;
+  pre_effect(() => {
+    observe_all(context);
+    callbacks.b.forEach(run);
+  });
+  user_effect(() => {
+    const fns = untrack(() => callbacks.m.map(run));
+    return () => {
+      for (const fn of fns) {
+        if (typeof fn === "function") {
+          fn();
+        }
+      }
+    };
+  });
+  user_effect(() => {
+    observe_all(context);
+    callbacks.a.forEach(run);
+  });
+}
+function observe_all(context) {
+  if (context.d) {
+    for (const signal of context.d)
+      get(signal);
+  }
+  deep_read(context.s);
+}
 const svelte = {
   child,
   child_frag,
   sibling,
+  pre_effect,
+  mutable_source,
   template,
   open,
   open_frag,
@@ -1363,7 +1348,7 @@ const svelte = {
   append_styles,
   get,
   set,
-  mutable_source,
+  untrack,
   push,
   pop,
   init

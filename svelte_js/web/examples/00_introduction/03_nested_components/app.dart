@@ -9,7 +9,7 @@ import 'nested.dart';
 typedef AppFactory = ComponentFactory;
 
 final _$fragment =
-    $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
+    $.template('<p class="svelte-urs9w7">These styles...</p> <!>', true);
 
 final AppFactory app = () {
   void app(Node $anchor, JSObject $properties) {
@@ -18,7 +18,7 @@ final AppFactory app = () {
 
     /* Init */
     var fragment = $.openFragment<Node>($anchor, true, _$fragment);
-    var p = $.childFragment<Node>(fragment);
+    var p = $.childFragment<Element>(fragment);
     var node = $.sibling<Node>($.sibling<Node>(p));
 
     nested(node, JSObject());

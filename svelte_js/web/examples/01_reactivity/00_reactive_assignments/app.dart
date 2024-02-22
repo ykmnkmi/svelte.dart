@@ -20,7 +20,7 @@ void app(Node $anchor, JSObject $properties) {
   $.init();
 
   /* Init */
-  var button = $.open<Node>($anchor, true, _$fragment);
+  var button = $.open<Element>($anchor, true, _$fragment);
   var text = $.child<Text>(button);
 
   /* Update */
