@@ -66,13 +66,12 @@ void html(Node dom, String Function() value, bool svg) {
 external void attr(Element dom, String attribute, String? value);
 
 @JS('mount')
-external JSObject _mount(JSFunction? component, _Mount options);
+external JSObject _mount(JSFunction component, _Mount options);
 
-@JS()
-@anonymous
-@staticInterop
-abstract class _Mount {
+extension type _Mount._(JSObject ref) implements JSObject {
   external factory _Mount({Node target});
+
+  external Node target;
 }
 
 @noInline

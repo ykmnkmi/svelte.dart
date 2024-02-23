@@ -25,7 +25,12 @@ T set<T>(Signal<T> signal, T? value) {
 external JSBoxedDartObject? _untrack(JSFunction function);
 
 T untrack<T>(T Function() function) {
-  var boxed = _untrack((function as JSBoxedDartObject? Function()).toJS);
+  JSBoxedDartObject? wrapper() {
+    var result = function() as T?;
+    return result?.toJSBox;
+  }
+
+  var boxed = _untrack(wrapper.toJS);
   return boxed?.toDart as T;
 }
 
@@ -41,7 +46,19 @@ void push(JSObject properties, [bool? runes, void Function()? function]) {
 }
 
 @JS('pop')
-external void pop([JSObject? component]);
+external void _pop([JSObject? component]);
+
+void pop([JSObject? component]) {
+  if (component == null) {
+    _pop();
+  } else {
+    _pop(component);
+  }
+}
 
 @JS('init')
-external void init();
+external void _init();
+
+void init() {
+  _init();
+}
