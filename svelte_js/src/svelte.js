@@ -2,7 +2,7 @@ import {
   // operations.dart
   child, child_frag, sibling,
   // reactivity/computations.dart
-  pre_effect,
+  pre_effect, render_effect,
   // reactivity/sources.dart
   mutable_source,
   // render.dart
@@ -13,7 +13,7 @@ import {
 
 export default {
   child, child_frag, sibling,
-  pre_effect,
+  pre_effect, render_effect,
   mutable_source,
   template, open, open_frag, close, close_frag, event, text_effect, text, html, attr, mount, append_styles,
   get, set, untrack, push, pop, init,

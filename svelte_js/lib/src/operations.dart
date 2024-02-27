@@ -26,9 +26,13 @@ T childFragment<T extends Node>(Node node, [bool? isText]) {
 }
 
 @JS('sibling')
-external Node _sibling(Node node);
+external Node _sibling(Node node, [bool isText]);
 
 @pragma('dart2js:as:trust')
-T sibling<T extends Node>(Node node) {
-  return _sibling(node) as T;
+T sibling<T extends Node>(Node node, [bool? isText]) {
+  if (isText == null) {
+    return _sibling(node) as T;
+  }
+
+  return _sibling(node, isText) as T;
 }

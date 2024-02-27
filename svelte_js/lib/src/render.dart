@@ -8,34 +8,68 @@ import 'package:svelte_js/src/types.dart';
 import 'package:web/web.dart';
 
 @JS('template')
-external TemplateFactory template(String html, [bool returnFragment]);
+external TemplateFactory _template(String html, [JSBoolean returnFragment]);
+
+TemplateFactory template(String html, [bool? returnFragment]) {
+  if (returnFragment == null) {
+    return _template(html);
+  }
+
+  return _template(html, returnFragment.toJS);
+}
 
 @JS('open')
-external T open<T extends JSAny>(Node? anchor, bool useCloneNode,
+external JSAny _open(Node? anchor, JSBoolean useCloneNode,
     [TemplateFactory templateFactory]);
+
+T open<T extends JSAny>(Node? anchor, bool useCloneNode,
+    [TemplateFactory? templateFactory]) {
+  if (templateFactory == null) {
+    return _open(anchor, useCloneNode.toJS) as T;
+  }
+
+  return _open(anchor, useCloneNode.toJS, templateFactory) as T;
+}
 
 @JS('open_frag')
-external T openFragment<T extends JSAny>(Node? anchor, bool useCloneNode,
+external JSAny _openFragment(Node? anchor, JSBoolean useCloneNode,
     [TemplateFactory templateFactory]);
 
+T openFragment<T extends JSAny>(Node? anchor, bool useCloneNode,
+    [TemplateFactory? templateFactory]) {
+  if (templateFactory == null) {
+    return _openFragment(anchor, useCloneNode.toJS) as T;
+  }
+
+  return _openFragment(anchor, useCloneNode.toJS, templateFactory) as T;
+}
+
 @JS('close')
-external void close(Node? anchor, Node dom);
+external void _close(Node? anchor, Node dom);
+
+void close(Node? anchor, Node dom) {
+  _close(anchor, dom);
+}
 
 @JS('close_frag')
-external void closeFragment(Node? anchor, Node dom);
+external void _closeFragment(Node? anchor, Node dom);
+
+void closeFragment(Node? anchor, Node dom) {
+  _closeFragment(anchor, dom);
+}
 
 @JS('event')
 external void _event<T extends Event>(
-    String eventName, Element dom, JSFunction handler, bool capture,
-    [bool passive]);
+    String eventName, Element dom, JSFunction handler, JSBoolean capture,
+    [JSBoolean passive]);
 
 void event<T extends Event>(
     String eventName, Element dom, void Function(T) handler, bool capture,
     [bool? passive]) {
   if (passive == null) {
-    _event(eventName, dom, handler.toJS, capture);
+    _event(eventName, dom, handler.toJS, capture.toJS);
   } else {
-    _event(eventName, dom, handler.toJS, capture, passive);
+    _event(eventName, dom, handler.toJS, capture.toJS, passive.toJS);
   }
 }
 
@@ -48,9 +82,9 @@ void textEffect(Node dom, String Function() value) {
 }
 
 @JS('text')
-external void _text(Node dom, JSFunction value);
+external void _text(Node dom, JSString value);
 
-void text(Node dom, String Function() value) {
+void text(Node dom, String value) {
   _text(dom, value.toJS);
 }
 
@@ -63,10 +97,15 @@ void html(Node dom, String Function() value, bool svg) {
 }
 
 @JS('attr')
-external void attr(Element dom, String attribute, String? value);
+external void _attr(Element dom, JSString attribute, [JSString value]);
 
-@JS('mount')
-external JSObject _mount(JSFunction component, _Mount options);
+void attr(Element dom, String attribute, [String? value]) {
+  if (value == null) {
+    _attr(dom, attribute.toJS);
+  } else {
+    _attr(dom, attribute.toJS, value.toJS);
+  }
+}
 
 extension type _Mount._(JSObject ref) implements JSObject {
   external factory _Mount({Node target});
@@ -74,10 +113,17 @@ extension type _Mount._(JSObject ref) implements JSObject {
   external Node target;
 }
 
+@JS('mount')
+external void _mount(JSFunction component, _Mount options);
+
 @noInline
-Object mount(ComponentFactory component, {required Node target}) {
-  return _mount(component.toJS, _Mount(target: target));
+void mount(ComponentFactory component, {required Node target}) {
+  _mount(component.toJS, _Mount(target: target));
 }
 
 @JS('append_styles')
-external void appendStyles(Node? target, String id, String styles);
+external void _appendStyles(Node? target, JSString id, JSString styles);
+
+void appendStyles(Node? target, String id, String styles) {
+  _appendStyles(target, id.toJS, styles.toJS);
+}

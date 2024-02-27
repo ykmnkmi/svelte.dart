@@ -1337,6 +1337,7 @@
     child_frag,
     sibling,
     pre_effect,
+    render_effect,
     mutable_source,
     template,
     open,

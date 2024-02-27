@@ -11,10 +11,10 @@ final _$fragment = $.template('<button> </button>');
 void app(Node $anchor, JSObject $properties) {
   $.push($properties, false);
 
-  var count = $.mutableSource(0);
+  var count = $.mutableSource<int>(0);
 
   void handleClick(Event event) {
-    $.set(count, $.get(count) + 1);
+    $.set<int>(count, $.get<int>(count) + 1);
   }
 
   $.init();
@@ -25,7 +25,7 @@ void app(Node $anchor, JSObject $properties) {
 
   /* Update */
   $.textEffect(text, () {
-    return 'Clicked ${$.get(count)} ${$.get(count) == 1 ? 'time' : 'times'}';
+    return 'Clicked ${$.get<int>(count)} ${$.get<int>(count) == 1 ? 'time' : 'times'}';
   });
 
   $.event('click', button, handleClick, false);
