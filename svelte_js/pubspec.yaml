@@ -1,6 +1,6 @@
 name: svelte_js
 description: An absolute bare-bones web app.
-version: 1.0.0-dev.5
+version: 1.0.0-dev.6
 publish_to: none
 
 environment:

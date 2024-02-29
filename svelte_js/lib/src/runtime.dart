@@ -9,7 +9,7 @@ import 'package:svelte_js/src/types.dart';
 external JSBoxedDartObject? _get(JSObject signal);
 
 T get<T>(Signal<T> signal) {
-  var boxed = _get(signal.ref);
+  var boxed = _get(signal);
   return boxed?.toDart as T;
 }
 
@@ -17,7 +17,7 @@ T get<T>(Signal<T> signal) {
 external JSBoxedDartObject? _set(JSObject signal, JSBoxedDartObject? value);
 
 T set<T>(Signal<T> signal, T? value) {
-  var boxed = _set(signal.ref, value?.toJSBox);
+  var boxed = _set(signal, value?.toJSBox);
   return boxed?.toDart as T;
 }
 
@@ -35,13 +35,13 @@ T untrack<T>(T Function() function) {
 }
 
 @JS('push')
-external void _push(JSObject properties, [bool? runes, JSFunction? function]);
+external void _push(JSObject properties, [JSBoolean? runes]);
 
-void push(JSObject properties, [bool? runes, void Function()? function]) {
-  if (function == null) {
-    _push(properties, runes);
+void push(JSObject properties, [bool? runes]) {
+  if (runes == null) {
+    _push(properties);
   } else {
-    _push(properties, runes, function.toJS);
+    _push(properties, runes.toJS);
   }
 }
 

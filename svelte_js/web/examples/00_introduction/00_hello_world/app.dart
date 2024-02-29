@@ -4,11 +4,21 @@ import 'package:svelte_js/internal.dart' as $; // ignore: library_prefixes
 import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-typedef AppFactory = ComponentFactory;
+extension type AppProperties._(JSObject object) implements JSObject {
+  AppProperties() : object = JSObject();
+}
 
-final _$fragment = $.template('<p> </p>');
+extension type const App._(Component<AppProperties> component) {
+  void call(Node node) {
+    component(node, AppProperties());
+  }
+}
 
-void app(Node $anchor, JSObject $properties) {
+const App app = App._(_component);
+
+final _template = $.template('<p> </p>');
+
+void _component(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
 
   var name = 'world';
@@ -16,7 +26,7 @@ void app(Node $anchor, JSObject $properties) {
   $.init();
 
   /* Init */
-  var p = $.open<Element>($anchor, true, _$fragment);
+  var p = $.open<Element>($anchor, true, _template);
   var text = $.child<Text>(p);
 
   $.nodeValue(text, 'Hello $name!');

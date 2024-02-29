@@ -18,19 +18,15 @@ extension type const App._(Component<AppProperties> component) {
 
 const App app = App._(_component);
 
-final _fragment =
-    $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
-
 void _component(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
   $.init();
 
   /* Init */
-  var fragment = $.openFragment($anchor, true, _fragment);
-  var p = $.childFragment<Element>(fragment);
-  var node = $.sibling<Node>($.sibling<Node>(p));
+  var fragment = $.comment($anchor);
+  var node = $.childFragment<Node>(fragment);
 
-  nested(node);
+  nested(node, answer: 42);
   $.closeFragment($anchor, fragment);
   $.pop();
 }

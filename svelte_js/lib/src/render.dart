@@ -4,44 +4,44 @@ library;
 import 'dart:js_interop';
 
 import 'package:meta/dart2js.dart';
+import 'package:meta/meta.dart';
 import 'package:svelte_js/src/types.dart';
 import 'package:web/web.dart';
 
 @JS('template')
-external TemplateFactory _template(String html, [JSBoolean returnFragment]);
+external JSFunction _template(JSString html, [JSBoolean returnFragment]);
 
-TemplateFactory template(String html, [bool? returnFragment]) {
-  if (returnFragment == null) {
-    return _template(html);
-  }
+TemplateFactory template(String html) {
+  return TemplateFactory(_template(html.toJS));
+}
 
-  return _template(html, returnFragment.toJS);
+FragmentFactory fragment(String html) {
+  return FragmentFactory(_template(html.toJS, true.toJS));
 }
 
 @JS('open')
 external JSAny _open(Node? anchor, JSBoolean useCloneNode,
-    [TemplateFactory templateFactory]);
+    [JSFunction templateFactory]);
 
-T open<T extends JSAny>(Node? anchor, bool useCloneNode,
-    [TemplateFactory? templateFactory]) {
-  if (templateFactory == null) {
-    return _open(anchor, useCloneNode.toJS) as T;
-  }
-
+T open<T extends JSAny>(
+    Node? anchor, bool useCloneNode, TemplateFactory templateFactory) {
   return _open(anchor, useCloneNode.toJS, templateFactory) as T;
 }
 
 @JS('open_frag')
-external JSAny _openFragment(Node? anchor, JSBoolean useCloneNode,
-    [TemplateFactory templateFactory]);
+external DocumentFragment _openFragment(Node? anchor, JSBoolean useCloneNode,
+    [JSFunction fragmentFactory]);
 
-T openFragment<T extends JSAny>(Node? anchor, bool useCloneNode,
-    [TemplateFactory? templateFactory]) {
-  if (templateFactory == null) {
-    return _openFragment(anchor, useCloneNode.toJS) as T;
-  }
+DocumentFragment openFragment(
+    Node? anchor, bool useCloneNode, FragmentFactory fragmentFactory) {
+  return _openFragment(anchor, useCloneNode.toJS, fragmentFactory);
+}
 
-  return _openFragment(anchor, useCloneNode.toJS, templateFactory) as T;
+@JS('comment')
+external DocumentFragment _comment(Node? anchor);
+
+DocumentFragment comment(Node? anchor) {
+  return _comment(anchor);
 }
 
 @JS('close')
@@ -52,24 +52,24 @@ void close(Node? anchor, Node dom) {
 }
 
 @JS('close_frag')
-external void _closeFragment(Node? anchor, Node dom);
+external void _closeFragment(Node? anchor, DocumentFragment fragment);
 
-void closeFragment(Node? anchor, Node dom) {
-  _closeFragment(anchor, dom);
+void closeFragment(Node? anchor, DocumentFragment fragment) {
+  _closeFragment(anchor, fragment);
 }
 
 @JS('event')
 external void _event<T extends Event>(
-    String eventName, Element dom, JSFunction handler, JSBoolean capture,
+    JSString eventName, Element dom, JSFunction handler, JSBoolean capture,
     [JSBoolean passive]);
 
 void event<T extends Event>(
     String eventName, Element dom, void Function(T) handler, bool capture,
     [bool? passive]) {
   if (passive == null) {
-    _event(eventName, dom, handler.toJS, capture.toJS);
+    _event(eventName.toJS, dom, handler.toJS, capture.toJS);
   } else {
-    _event(eventName, dom, handler.toJS, capture.toJS, passive.toJS);
+    _event(eventName.toJS, dom, handler.toJS, capture.toJS, passive.toJS);
   }
 }
 
@@ -89,11 +89,11 @@ void text(Node dom, String value) {
 }
 
 @JS('html')
-external void _html(Node dom, JSFunction value, bool svg);
+external void _html(Node dom, JSFunction value, JSBoolean svg);
 
 @noInline
 void html(Node dom, String Function() value, bool svg) {
-  _html(dom, value.toJS, svg);
+  _html(dom, value.toJS, svg.toJS);
 }
 
 @JS('attr')
@@ -114,11 +114,17 @@ extension type _Mount._(JSObject ref) implements JSObject {
 }
 
 @JS('mount')
-external void _mount(JSFunction component, _Mount options);
+external JSObject _mount(JSFunction component, _Mount options);
 
-@noInline
-void mount(ComponentFactory component, {required Node target}) {
-  _mount(component.toJS, _Mount(target: target));
+@optionalTypeArgs
+typedef Component<T extends JSObject> = void Function(
+    Node anchor, T properties);
+
+extension type ComponentReference._(JSObject component) implements JSObject {}
+
+ComponentReference mount<T extends JSObject>(Component<T> component,
+    {required Node target}) {
+  return ComponentReference._(_mount(component.toJS, _Mount(target: target)));
 }
 
 @JS('append_styles')
@@ -126,4 +132,11 @@ external void _appendStyles(Node? target, JSString id, JSString styles);
 
 void appendStyles(Node? target, String id, String styles) {
   _appendStyles(target, id.toJS, styles.toJS);
+}
+
+@JS('unmount')
+external void _unmount(JSObject component);
+
+void unmount(ComponentReference component) {
+  _unmount(component);
 }

@@ -1,5 +1,5 @@
 <script>
-	import 'nested.svelte';
+	import 'Nested.svelte';
 </script>
 
 <p>These styles...</p>

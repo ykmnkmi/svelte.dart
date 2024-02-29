@@ -4,11 +4,21 @@ import 'package:svelte_js/internal.dart' as $; // ignore: library_prefixes
 import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-typedef AppFactory = ComponentFactory;
+extension type AppProperties._(JSObject object) implements JSObject {
+  AppProperties() : object = JSObject();
+}
 
-final _$fragment = $.template('<button> </button> <p> </p> <p> </p>', true);
+extension type const App._(Component<AppProperties> component) {
+  void call(Node node) {
+    component(node, AppProperties());
+  }
+}
 
-void app(Node $anchor, JSObject $properties) {
+const App app = App._(_component);
+
+final _fragment = $.fragment('<button> </button> <p> </p> <p> </p>');
+
+void _component(Node $anchor, AppProperties $properties) {
   $.push($properties, true);
 
   var count = $.mutableSource<int>(0);
@@ -38,7 +48,7 @@ void app(Node $anchor, JSObject $properties) {
   $.init();
 
   /* Init */
-  var fragment = $.openFragment<Node>($anchor, true, _$fragment);
+  var fragment = $.openFragment($anchor, true, _fragment);
   var button = $.childFragment<Element>(fragment);
   var text = $.child<Text>(button);
   var p = $.sibling<Element>($.sibling<Text>(button, true));

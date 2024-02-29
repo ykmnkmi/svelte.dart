@@ -1,1 +1,1 @@
-Testing Svelte 5 bindings and compiler.
+Testing Svelte 5 JS bindings and ~~compiler~~.

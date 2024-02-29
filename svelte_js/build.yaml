@@ -31,5 +31,4 @@ targets:
             - --no-minify
             # - --no-source-maps
             # - --omit-as-casts
-            # - --server-mode
             # - --verbose

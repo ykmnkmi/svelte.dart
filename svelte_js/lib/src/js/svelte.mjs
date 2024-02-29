@@ -39,6 +39,7 @@ const ROOT_BLOCK = 0;
 const IF_BLOCK = 1;
 const EACH_BLOCK = 2;
 const UNINITIALIZED = Symbol();
+const STATE_SYMBOL = Symbol("$state");
 function create_computation_signal(flags, value, block) {
   const signal = {
     b: block,
@@ -408,6 +409,7 @@ function execute_effect(signal) {
 }
 function infinite_loop_guard() {
   if (flush_count > 100) {
+    flush_count = 0;
     throw new Error(
       "ERR_SVELTE_TOO_MANY_UPDATES"
     );
@@ -603,7 +605,7 @@ function get(signal) {
         current_dependencies.push(signal);
       }
     }
-    if (current_untracked_writes !== null && current_effect !== null && (current_effect.f & CLEAN) !== 0 && current_untracked_writes.includes(signal)) {
+    if (current_untracked_writes !== null && current_effect !== null && (current_effect.f & CLEAN) !== 0 && (current_effect.f & MANAGED) === 0 && current_untracked_writes.includes(signal)) {
       set_signal_status(current_effect, DIRTY);
       schedule_effect(current_effect, false);
     }
@@ -715,7 +717,7 @@ function set_signal_value(signal, value) {
   signal.e(value, signal.v)) {
     signal.v = value;
     signal.w++;
-    if (is_runes(null) && !ignore_mutation_validation && current_effect !== null && current_effect.c === null && (current_effect.f & CLEAN) !== 0) {
+    if (is_runes(null) && !ignore_mutation_validation && current_effect !== null && current_effect.c === null && (current_effect.f & CLEAN) !== 0 && (current_effect.f & MANAGED) === 0) {
       if (current_dependencies !== null && current_dependencies.includes(signal)) {
         set_signal_status(current_effect, DIRTY);
         schedule_effect(current_effect, false);
@@ -816,8 +818,24 @@ function pop(component) {
   return component || /** @type {T} */
   {};
 }
+function deep_read_state(value) {
+  if (typeof value !== "object" || !value || value instanceof EventTarget) {
+    return;
+  }
+  if (STATE_SYMBOL in value) {
+    deep_read(value);
+  } else if (!Array.isArray(value)) {
+    for (let key in value) {
+      const prop = value[key];
+      if (typeof prop === "object" && prop && STATE_SYMBOL in prop) {
+        deep_read(prop);
+      }
+    }
+  }
+}
 function deep_read(value, visited = /* @__PURE__ */ new Set()) {
-  if (typeof value === "object" && value !== null && !visited.has(value)) {
+  if (typeof value === "object" && value !== null && // We don't want to traverse DOM elements
+  !(value instanceof EventTarget) && !visited.has(value)) {
     visited.add(value);
     for (let key in value) {
       try {
@@ -1046,6 +1064,11 @@ function open(anchor, use_clone_node, template_element_fn) {
 function open_frag(anchor, use_clone_node, template_element_fn) {
   return open_template(true, use_clone_node, anchor, template_element_fn);
 }
+const comment_template = /* @__PURE__ */ template("<!>", true);
+// @__NO_SIDE_EFFECTS__
+function comment(anchor) {
+  return /* @__PURE__ */ open_frag(anchor, true, comment_template);
+}
 function close_template(dom, is_fragment, anchor) {
   const block = (
     /** @type {import('./types.js').Block} */
@@ -1099,6 +1122,7 @@ function text(dom, value) {
 }
 function handle_event_propagation(handler_element, event2) {
   var _a;
+  const owner_document = handler_element.ownerDocument;
   const event_name = event2.type;
   const path = ((_a = event2.composedPath) == null ? void 0 : _a.call(event2)) || [];
   let current_target = (
@@ -1115,8 +1139,9 @@ function handle_event_propagation(handler_element, event2) {
   const handled_at = event2.__root;
   if (handled_at) {
     const at_idx = path.indexOf(handled_at);
-    if (at_idx !== -1 && handler_element === document) {
-      event2.__root = document;
+    if (at_idx !== -1 && (handler_element === document || handler_element === /** @type {any} */
+    window)) {
+      event2.__root = handler_element;
       return;
     }
     const handler_idx = path.indexOf(handler_element);
@@ -1132,7 +1157,7 @@ function handle_event_propagation(handler_element, event2) {
   define_property(event2, "currentTarget", {
     configurable: true,
     get() {
-      return current_target || document;
+      return current_target || owner_document;
     }
   });
   while (current_target !== null) {
@@ -1264,6 +1289,10 @@ function _mount(Component, options) {
   return component;
 }
 let mounted_components = /* @__PURE__ */ new WeakMap();
+function unmount(component) {
+  const fn = mounted_components.get(component);
+  fn == null ? void 0 : fn();
+}
 async function append_styles(target, style_sheet_id, styles) {
   await Promise.resolve();
   const append_styles_to = get_root_for_style(target);
@@ -1302,10 +1331,12 @@ function init() {
   const callbacks = context.u;
   if (!callbacks)
     return;
-  pre_effect(() => {
-    observe_all(context);
-    callbacks.b.forEach(run);
-  });
+  if (callbacks.b.length) {
+    pre_effect(() => {
+      observe_all(context);
+      callbacks.b.forEach(run);
+    });
+  }
   user_effect(() => {
     const fns = untrack(() => callbacks.m.map(run));
     return () => {
@@ -1316,17 +1347,19 @@ function init() {
       }
     };
   });
-  user_effect(() => {
-    observe_all(context);
-    callbacks.a.forEach(run);
-  });
+  if (callbacks.a.length) {
+    user_effect(() => {
+      observe_all(context);
+      callbacks.a.forEach(run);
+    });
+  }
 }
 function observe_all(context) {
   if (context.d) {
     for (const signal of context.d)
       get(signal);
   }
-  deep_read(context.s);
+  deep_read_state(context.s);
 }
 const svelte = {
   child,
@@ -1338,6 +1371,7 @@ const svelte = {
   template,
   open,
   open_frag,
+  comment,
   close,
   close_frag,
   event,
@@ -1347,6 +1381,7 @@ const svelte = {
   attr,
   mount,
   append_styles,
+  unmount,
   get,
   set,
   untrack,

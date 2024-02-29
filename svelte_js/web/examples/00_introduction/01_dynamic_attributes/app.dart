@@ -4,11 +4,21 @@ import 'package:svelte_js/internal.dart' as $; // ignore: library_prefixes
 import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-typedef AppFactory = ComponentFactory;
+extension type AppProperties._(JSObject object) implements JSObject {
+  AppProperties() : object = JSObject();
+}
 
-final _$fragment = $.template('<img>');
+extension type const App._(Component<AppProperties> component) {
+  void call(Node node) {
+    component(node, AppProperties());
+  }
+}
 
-void app(Node $anchor, JSObject $properties) {
+const App app = App._(_component);
+
+final _template = $.template('<img>');
+
+void _component(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
 
   var src = '/tutorial/image.gif';
@@ -17,7 +27,7 @@ void app(Node $anchor, JSObject $properties) {
   $.init();
 
   /* Init */
-  var img = $.open<Element>($anchor, true, _$fragment);
+  var img = $.open<Element>($anchor, true, _template);
 
   $.attr(img, 'src', src);
   $.attr(img, 'alt', '$name dancing');

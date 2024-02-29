@@ -19,13 +19,24 @@ const App app = App._(_component);
 final _template = $.template('<button> </button>');
 
 void _component(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
+  $.push($properties, true);
 
   var count = $.mutableSource<int>(0);
 
   void handleClick(Event event) {
     $.set<int>(count, $.get<int>(count) + 1);
   }
+
+  $.preEffect(() {
+    $.get<int>(count);
+
+    $.untrack<void>(() {
+      if ($.get<int>(count) > 10) {
+        window.alert('count is dangerously high!');
+        $.set<int>(count, 9);
+      }
+    });
+  });
 
   $.init();
 

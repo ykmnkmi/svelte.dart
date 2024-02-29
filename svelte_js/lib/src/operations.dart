@@ -8,27 +8,26 @@ import 'package:web/web.dart';
 @JS('child')
 external Node _child(Node node);
 
-@pragma('dart2js:as:trust')
 T child<T extends Node>(Node node) {
   return _child(node) as T;
 }
 
 @JS('child_frag')
-external Node _childFragment(Node node, [bool isText]);
+external Node _childFragment(DocumentFragment fragment, [bool isText]);
 
-@pragma('dart2js:as:trust')
-T childFragment<T extends Node>(Node node, [bool? isText]) {
+T childFragment<T extends Node>(DocumentFragment fragment, [bool? isText]) {
+  assert(fragment.nodeType == 11, 'Expected a DocumentFragment');
+
   if (isText == null) {
-    return _childFragment(node) as T;
+    return _childFragment(fragment) as T;
   }
 
-  return _childFragment(node, isText) as T;
+  return _childFragment(fragment, isText) as T;
 }
 
 @JS('sibling')
 external Node _sibling(Node node, [bool isText]);
 
-@pragma('dart2js:as:trust')
 T sibling<T extends Node>(Node node, [bool? isText]) {
   if (isText == null) {
     return _sibling(node) as T;
