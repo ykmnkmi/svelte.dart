@@ -8,7 +8,7 @@ import {
   // render.dart
   template, open, open_frag, comment, close, close_frag, event, text_effect, text, html, attr, mount, append_styles, unmount,
   // runtime.dart
-  get, set, untrack, push, pop, init,
+  get, set, untrack, push, pop, prop, init,
 } from 'svelte/internal';
 
 export default {
@@ -16,5 +16,5 @@ export default {
   pre_effect, render_effect,
   mutable_source,
   template, open, open_frag, comment, close, close_frag, event, text_effect, text, html, attr, mount, append_styles, unmount,
-  get, set, untrack, push, pop, init,
+  get, set, untrack, push, pop, prop, init,
 };

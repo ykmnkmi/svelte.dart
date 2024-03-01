@@ -16,8 +16,6 @@ T child<T extends Node>(Node node) {
 external Node _childFragment(DocumentFragment fragment, [bool isText]);
 
 T childFragment<T extends Node>(DocumentFragment fragment, [bool? isText]) {
-  assert(fragment.nodeType == 11, 'Expected a DocumentFragment');
-
   if (isText == null) {
     return _childFragment(fragment) as T;
   }

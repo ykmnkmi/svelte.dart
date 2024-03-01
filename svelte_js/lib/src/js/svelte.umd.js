@@ -141,6 +141,21 @@
     );
   }
   // @__NO_SIDE_EFFECTS__
+  function derived(fn) {
+    const is_unowned = current_effect === null;
+    const flags = is_unowned ? DERIVED | UNOWNED : DERIVED;
+    const signal = (
+      /** @type {import('../types.js').ComputationSignal<V>} */
+      create_computation_signal(flags | CLEAN, UNINITIALIZED, current_block)
+    );
+    signal.i = fn;
+    signal.e = default_equals;
+    if (current_consumer !== null) {
+      push_reference(current_consumer, signal);
+    }
+    return signal;
+  }
+  // @__NO_SIDE_EFFECTS__
   function source(initial_value) {
     return create_source_signal(SOURCE | CLEAN, initial_value);
   }
@@ -830,9 +845,9 @@
       deep_read(value);
     } else if (!Array.isArray(value)) {
       for (let key in value) {
-        const prop = value[key];
-        if (typeof prop === "object" && prop && STATE_SYMBOL in prop) {
-          deep_read(prop);
+        const prop2 = value[key];
+        if (typeof prop2 === "object" && prop2 && STATE_SYMBOL in prop2) {
+          deep_read(prop2);
         }
       }
     }
@@ -1016,6 +1031,10 @@
       frag_nodes
     );
   }
+  const PROPS_IS_IMMUTABLE = 1;
+  const PROPS_IS_RUNES = 1 << 1;
+  const PROPS_IS_UPDATED = 1 << 2;
+  const PROPS_IS_LAZY_INITIAL = 1 << 3;
   const PassiveDelegatedEvents = ["touchstart", "touchmove", "touchend"];
   function create_root_block(intro) {
     return {
@@ -1327,6 +1346,79 @@
       node.ownerDocument
     );
   }
+  function prop(props, key, flags, initial) {
+    var _a;
+    var immutable = (flags & PROPS_IS_IMMUTABLE) !== 0;
+    var runes = (flags & PROPS_IS_RUNES) !== 0;
+    var prop_value = (
+      /** @type {V} */
+      props[key]
+    );
+    var setter = (_a = get_descriptor(props, key)) == null ? void 0 : _a.set;
+    if (prop_value === void 0 && initial !== void 0) {
+      if (setter && runes) {
+        throw new Error(
+          "ERR_SVELTE_BINDING_FALLBACK"
+        );
+      }
+      if ((flags & PROPS_IS_LAZY_INITIAL) !== 0)
+        initial = initial();
+      prop_value = /** @type {V} */
+      initial;
+      if (setter)
+        setter(prop_value);
+    }
+    var getter = () => {
+      var value = (
+        /** @type {V} */
+        props[key]
+      );
+      if (value !== void 0)
+        initial = void 0;
+      return value === void 0 ? (
+        /** @type {V} */
+        initial
+      ) : value;
+    };
+    if ((flags & PROPS_IS_UPDATED) === 0) {
+      return getter;
+    }
+    if (setter) {
+      return function(value) {
+        if (arguments.length === 1) {
+          setter(value);
+          return value;
+        } else {
+          return getter();
+        }
+      };
+    }
+    var from_child = false;
+    var inner_current_value = /* @__PURE__ */ mutable_source(prop_value);
+    var current_value = /* @__PURE__ */ derived(() => {
+      var parent_value = getter();
+      var child_value = get(inner_current_value);
+      if (from_child) {
+        from_child = false;
+        return child_value;
+      }
+      return inner_current_value.v = parent_value;
+    });
+    if (!immutable)
+      current_value.e = safe_equal;
+    return function(value, mutation = false) {
+      var current = get(current_value);
+      if (arguments.length > 0) {
+        if (mutation || (immutable ? value !== current : safe_not_equal(value, current))) {
+          from_child = true;
+          set(inner_current_value, mutation ? current : value);
+          get(current_value);
+        }
+        return value;
+      }
+      return current;
+    };
+  }
   function init() {
     const context = (
       /** @type {import('./types.js').ComponentContext} */
@@ -1391,6 +1483,7 @@
     untrack,
     push,
     pop,
+    prop,
     init
   };
   return svelte;
