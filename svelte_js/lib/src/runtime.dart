@@ -4,7 +4,6 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/src/types.dart';
-import 'package:web/web.dart';
 
 @JS('get')
 external JSBoxedDartObject? _get(JSObject signal);
@@ -61,13 +60,11 @@ void pop([JSObject? component]) {
 external JSFunction _prop(JSObject properties, JSString key, JSNumber flag);
 
 T Function([T? value]) prop<T>(JSObject properties, String key, int flag) {
-  console.log(properties);
-
-  var jsFunction = _prop(properties, key.toJS, flag.toJS) as JSBoxedDartObject?
-      Function(JSBoxedDartObject?);
+  var jsFunction = _prop(properties, key.toJS, flag.toJS);
 
   return ([T? value]) {
-    var boxed = jsFunction(value?.toJSBox);
+    var result = jsFunction.callAsFunction(null, value?.toJSBox);
+    var boxed = result as JSBoxedDartObject?;
     return boxed?.toDart as T;
   };
 }

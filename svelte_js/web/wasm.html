@@ -9,7 +9,7 @@
   <meta name="scaffolded-by" content="https://github.com/dart-lang/sdk">
   <title>svelte.dart</title>
   <script src="packages/svelte_js/src/js/svelte.umd.js"></script>
-  <script defer src="main.dart.js"></script>
+  <!-- <script defer src="main.dart.js"></script> -->
 </head>
 
 <body>
@@ -35,10 +35,18 @@
       </optgroup>
     </select>
 
-    <a href="wasm.html">WASM version</a>
+    <a href="index.html">JS version</a>
   </nav>
   <main>
   </main>
+  <script type="module">
+    import { instantiate, invoke } from './main.dart.mjs';
+    const response = await fetch('main.dart.wasm');
+    const bytes = await response.arrayBuffer();
+    const module = new WebAssembly.Module(bytes);
+    const instance = await instantiate(module, {});
+    invoke(instance);
+  </script>
 </body>
 
 </html>

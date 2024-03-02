@@ -37,6 +37,13 @@ DocumentFragment openFragment(
   return _openFragment(anchor, useCloneNode.toJS, fragmentFactory);
 }
 
+@JS('space')
+external Node _space(Node anchor);
+
+Node space(Node anchor) {
+  return _space(anchor);
+}
+
 @JS('comment')
 external DocumentFragment _comment(Node? anchor);
 
@@ -105,6 +112,17 @@ void attr(Element dom, String attribute, [String? value]) {
   } else {
     _attr(dom, attribute.toJS, value.toJS);
   }
+}
+
+@JS('spread_props')
+external JSObject _spreadProperties(JSObject object, [JSObject rest]);
+
+T spreadProperties<T extends JSObject>(T object, [JSObject? rest]) {
+  if (rest == null) {
+    return _spreadProperties(object) as T;
+  }
+
+  return _spreadProperties(object, rest) as T;
 }
 
 extension type _Mount._(JSObject ref) implements JSObject {

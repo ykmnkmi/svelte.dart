@@ -15,6 +15,9 @@
   var define_property = Object.defineProperty;
   var get_descriptor = Object.getOwnPropertyDescriptor;
   var get_descriptors = Object.getOwnPropertyDescriptors;
+  function is_function(thing) {
+    return typeof thing === "function";
+  }
   function default_equals(a, b) {
     return a === b;
   }
@@ -1089,6 +1092,10 @@
   }
   const comment_template = /* @__PURE__ */ template("<!>", true);
   // @__NO_SIDE_EFFECTS__
+  function space(anchor) {
+    return anchor;
+  }
+  // @__NO_SIDE_EFFECTS__
   function comment(anchor) {
     return /* @__PURE__ */ open_frag(anchor, true, comment_template);
   }
@@ -1234,6 +1241,52 @@
         dom.setAttribute(attribute, value);
       }
     }
+  }
+  const spread_props_handler = {
+    get(target, key) {
+      let i = target.props.length;
+      while (i--) {
+        let p = target.props[i];
+        if (is_function(p))
+          p = p();
+        if (typeof p === "object" && p !== null && key in p)
+          return p[key];
+      }
+    },
+    getOwnPropertyDescriptor(target, key) {
+      let i = target.props.length;
+      while (i--) {
+        let p = target.props[i];
+        if (is_function(p))
+          p = p();
+        if (typeof p === "object" && p !== null && key in p)
+          return get_descriptor(p, key);
+      }
+    },
+    has(target, key) {
+      for (let p of target.props) {
+        if (is_function(p))
+          p = p();
+        if (key in p)
+          return true;
+      }
+      return false;
+    },
+    ownKeys(target) {
+      const keys = [];
+      for (let p of target.props) {
+        if (is_function(p))
+          p = p();
+        for (const key in p) {
+          if (!keys.includes(key))
+            keys.push(key);
+        }
+      }
+      return keys;
+    }
+  };
+  function spread_props(...props) {
+    return new Proxy({ props }, spread_props_handler);
   }
   function mount(component, options) {
     init_operations();
@@ -1467,6 +1520,7 @@
     template,
     open,
     open_frag,
+    space,
     comment,
     close,
     close_frag,
@@ -1475,6 +1529,7 @@
     text,
     html,
     attr,
+    spread_props,
     mount,
     append_styles,
     unmount,

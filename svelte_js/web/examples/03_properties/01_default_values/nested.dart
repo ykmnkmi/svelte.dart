@@ -5,7 +5,11 @@ import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 extension type NestedProperties._(JSObject object) implements JSObject {
-  external factory NestedProperties._boxed({JSBoxedDartObject? answer});
+  factory NestedProperties({required Object answer}) {
+    return NestedProperties._boxed(answer: answer.toJSBox);
+  }
+
+  external factory NestedProperties._boxed({JSBoxedDartObject answer});
 
   @JS('answer')
   external JSBoxedDartObject get _answer;
@@ -14,8 +18,8 @@ extension type NestedProperties._(JSObject object) implements JSObject {
 }
 
 extension type const Nested._(Component<NestedProperties> component) {
-  void call(Node node, {Object? answer = 'a mystery'}) {
-    component(node, NestedProperties._boxed(answer: answer?.toJSBox));
+  void call(Node node, {Object answer = 'a mystery'}) {
+    component(node, NestedProperties(answer: answer));
   }
 }
 
@@ -26,7 +30,7 @@ final _template = $.template('<p> </p>');
 void _component(Node $anchor, NestedProperties $properties) {
   $.push($properties, false);
 
-  var answer = $.prop<Object?>($properties, 'answer', 0);
+  var answer = $.prop<Object>($properties, 'answer', 0);
 
   $.init();
 

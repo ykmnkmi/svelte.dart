@@ -19,6 +19,8 @@ import 'examples/01_reactivity/02_reactive_statements/app.dart'
 import 'examples/03_properties/00_declaring_properties/app.dart'
     as declaring_properties;
 import 'examples/03_properties/01_default_values/app.dart' as default_values;
+import 'examples/03_properties/02_spread_properties/app.dart'
+    as spread_properties;
 
 Component getFactory(void Function(Node) component) {
   return (Node node, JSObject properties) {
@@ -28,7 +30,6 @@ Component getFactory(void Function(Node) component) {
 
 Component? selectFactory(String name) {
   return switch (name) {
-    '' => null,
     'hello_world' => getFactory(hello_world.app.call),
     'dynamic_attributes' => getFactory(dynamic_attributes.app.call),
     'styling' => getFactory(styling.app.call),
@@ -39,7 +40,8 @@ Component? selectFactory(String name) {
     'reactive_statements' => getFactory(reactive_statements.app.call),
     'declaring_properties' => getFactory(declaring_properties.app.call),
     'default_values' => getFactory(default_values.app.call),
-    _ => throw ArgumentError('Unknown example: $name'),
+    'spread_properties' => getFactory(spread_properties.app.call),
+    _ => null,
   };
 }
 

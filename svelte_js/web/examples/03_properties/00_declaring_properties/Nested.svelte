@@ -1,5 +1,5 @@
 <script>
-	external String answer;
+	external int answer;
 </script>
 
 <p>The answer is {answer}</p>
