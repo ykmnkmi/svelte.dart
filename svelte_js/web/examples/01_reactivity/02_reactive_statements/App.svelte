@@ -1,4 +1,4 @@
-<script>
+<script type="application/dart">
 	import 'package:web/web.dart';
 
 	let count = 0;

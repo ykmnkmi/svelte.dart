@@ -21,6 +21,14 @@ T set<T>(Signal<T> signal, T? value) {
   return boxed?.toDart as T;
 }
 
+@JS('mutate')
+external JSBoxedDartObject? _mutate(JSObject signal, JSBoxedDartObject? value);
+
+T mutate<T>(Signal<T> signal, T value) {
+  var boxed = _mutate(signal, value?.toJSBox);
+  return boxed?.toDart as T;
+}
+
 @JS('untrack')
 external JSBoxedDartObject? _untrack(JSFunction function);
 

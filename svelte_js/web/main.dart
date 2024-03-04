@@ -16,11 +16,12 @@ import 'examples/01_reactivity/01_reactive_declarations/app.dart'
     as reactive_declarations;
 import 'examples/01_reactivity/02_reactive_statements/app.dart'
     as reactive_statements;
-import 'examples/03_properties/00_declaring_properties/app.dart'
+import 'examples/02_properties/00_declaring_properties/app.dart'
     as declaring_properties;
-import 'examples/03_properties/01_default_values/app.dart' as default_values;
-import 'examples/03_properties/02_spread_properties/app.dart'
+import 'examples/02_properties/01_default_values/app.dart' as default_values;
+import 'examples/02_properties/02_spread_properties/app.dart'
     as spread_properties;
+import 'examples/03_logic/00_if_blocks/app.dart' as if_blocks;
 
 Component getFactory(void Function(Node) component) {
   return (Node node, JSObject properties) {
@@ -41,6 +42,7 @@ Component? selectFactory(String name) {
     'declaring_properties' => getFactory(declaring_properties.app.call),
     'default_values' => getFactory(default_values.app.call),
     'spread_properties' => getFactory(spread_properties.app.call),
+    'if_blocks' => getFactory(if_blocks.app.call),
     _ => null,
   };
 }

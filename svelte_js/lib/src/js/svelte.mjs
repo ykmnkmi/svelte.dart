@@ -106,6 +106,12 @@ function user_effect(fn) {
   }
   return effect;
 }
+function managed_effect(fn) {
+  return internal_create_effect(EFFECT | MANAGED, fn, false, current_block, true);
+}
+function managed_pre_effect(fn, sync) {
+  return internal_create_effect(PRE_EFFECT | MANAGED, fn, sync, current_block, true);
+}
 function pre_effect(fn) {
   if (current_effect === null) {
     throw new Error(
@@ -643,6 +649,13 @@ function set(signal, value) {
   set_signal_value(signal, value);
   return value;
 }
+function mutate(source2, value) {
+  set_signal_value(
+    source2,
+    untrack(() => get(source2))
+  );
+  return value;
+}
 function mark_subtree_children_inert(signal, inert, visited_blocks) {
   const references = signal.r;
   if (references !== null) {
@@ -1035,6 +1048,171 @@ const PROPS_IS_RUNES = 1 << 1;
 const PROPS_IS_UPDATED = 1 << 2;
 const PROPS_IS_LAZY_INITIAL = 1 << 3;
 const PassiveDelegatedEvents = ["touchstart", "touchmove", "touchend"];
+function trigger_transitions(transitions, target_direction, from) {
+  const outros = [];
+  for (const transition of transitions) {
+    const direction = transition.r;
+    const effect = transition.e;
+    if (target_direction === "in") {
+      if (direction === "in" || direction === "both") {
+        transition.in();
+      } else {
+        transition.c();
+      }
+      transition.d.inert = false;
+      mark_subtree_inert(effect, false);
+    } else if (target_direction === "key") {
+      if (direction === "key") {
+        if (!transition.p) {
+          transition.p = transition.i(
+            /** @type {DOMRect} */
+            from
+          );
+        }
+        transition.in();
+      }
+    } else {
+      if (direction === "out" || direction === "both") {
+        if (!transition.p) {
+          transition.p = transition.i();
+        }
+        outros.push(transition.o);
+      }
+      transition.d.inert = true;
+      mark_subtree_inert(effect, true);
+    }
+  }
+  if (outros.length > 0) {
+    const e = managed_pre_effect(() => {
+      destroy_signal(e);
+      const e2 = managed_effect(() => {
+        destroy_signal(e2);
+        run_all(outros);
+      });
+    }, false);
+  }
+}
+function create_if_block() {
+  return {
+    // alternate transitions
+    a: null,
+    // alternate effect
+    ae: null,
+    // consequent transitions
+    c: null,
+    // consequent effect
+    ce: null,
+    // dom
+    d: null,
+    // effect
+    e: null,
+    // parent
+    p: (
+      /** @type {import('../../types.js').Block} */
+      current_block
+    ),
+    // transition
+    r: null,
+    // type
+    t: IF_BLOCK,
+    // value
+    v: false
+  };
+}
+function if_block(anchor_node, condition_fn, consequent_fn, alternate_fn) {
+  const block = create_if_block();
+  let consequent_dom = null;
+  let alternate_dom = null;
+  let has_mounted = false;
+  let current_branch_effect = null;
+  const if_effect = render_effect(
+    () => {
+      const result = !!condition_fn();
+      if (block.v !== result || !has_mounted) {
+        block.v = result;
+        if (has_mounted) {
+          const consequent_transitions = block.c;
+          const alternate_transitions = block.a;
+          if (result) {
+            if (alternate_transitions === null || alternate_transitions.size === 0) {
+              execute_effect(alternate_effect);
+            } else {
+              trigger_transitions(alternate_transitions, "out");
+            }
+            if (consequent_transitions === null || consequent_transitions.size === 0) {
+              execute_effect(consequent_effect);
+            } else {
+              trigger_transitions(consequent_transitions, "in");
+            }
+          } else {
+            if (consequent_transitions === null || consequent_transitions.size === 0) {
+              execute_effect(consequent_effect);
+            } else {
+              trigger_transitions(consequent_transitions, "out");
+            }
+            if (alternate_transitions === null || alternate_transitions.size === 0) {
+              execute_effect(alternate_effect);
+            } else {
+              trigger_transitions(alternate_transitions, "in");
+            }
+          }
+        }
+        has_mounted = true;
+      }
+    },
+    block,
+    false
+  );
+  const consequent_effect = render_effect(
+    (_, consequent_effect2) => {
+      const result = block.v;
+      if (!result && consequent_dom !== null) {
+        remove(consequent_dom);
+        consequent_dom = null;
+      }
+      if (result && current_branch_effect !== consequent_effect2) {
+        consequent_fn(anchor_node);
+        current_branch_effect = consequent_effect2;
+        consequent_dom = block.d;
+      }
+      block.d = null;
+    },
+    block,
+    true
+  );
+  block.ce = consequent_effect;
+  const alternate_effect = render_effect(
+    (_, alternate_effect2) => {
+      const result = block.v;
+      if (result && alternate_dom !== null) {
+        remove(alternate_dom);
+        alternate_dom = null;
+      }
+      if (!result && current_branch_effect !== alternate_effect2) {
+        if (alternate_fn !== null) {
+          alternate_fn(anchor_node);
+        }
+        current_branch_effect = alternate_effect2;
+        alternate_dom = block.d;
+      }
+      block.d = null;
+    },
+    block,
+    true
+  );
+  block.ae = alternate_effect;
+  push_destroy_fn(if_effect, () => {
+    if (consequent_dom !== null) {
+      remove(consequent_dom);
+    }
+    if (alternate_dom !== null) {
+      remove(alternate_dom);
+    }
+    destroy_signal(consequent_effect);
+    destroy_signal(alternate_effect);
+  });
+  block.e = if_effect;
+}
 function create_root_block(intro) {
   return {
     // dom
@@ -1507,6 +1685,7 @@ function observe_all(context) {
   deep_read_state(context.s);
 }
 const svelte = {
+  if_block,
   child,
   child_frag,
   sibling,
@@ -1531,6 +1710,7 @@ const svelte = {
   unmount,
   get,
   set,
+  mutate,
   untrack,
   push,
   pop,

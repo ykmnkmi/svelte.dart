@@ -1,4 +1,4 @@
-<script>
+<script type="application/dart">
 	var count = 1;
 
 	// the `$:` means 're-run whenever these values change'

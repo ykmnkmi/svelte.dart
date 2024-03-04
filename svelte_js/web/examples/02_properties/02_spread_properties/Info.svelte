@@ -1,4 +1,4 @@
-<script>
+<script type="application/dart">
 	external var name;
 
 	external var version;

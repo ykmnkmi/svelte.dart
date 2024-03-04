@@ -1,4 +1,4 @@
-<script>
+<script type="application/dart">
 	import 'Info.svelte';
 
 	var properties = InfoProperties(

@@ -71,7 +71,7 @@ external void _event<T extends Event>(
     [JSBoolean passive]);
 
 void event<T extends Event>(
-    String eventName, Element dom, void Function(T) handler, bool capture,
+    String eventName, Element dom, void Function(T event) handler, bool capture,
     [bool? passive]) {
   if (passive == null) {
     _event(eventName.toJS, dom, handler.toJS, capture.toJS);
