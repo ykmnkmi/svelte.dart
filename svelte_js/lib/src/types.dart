@@ -14,14 +14,17 @@ extension type FragmentFactory(JSFunction fragmentFactory)
 extension type Block(JSObject block) implements JSObject {}
 
 @optionalTypeArgs
-extension type Signal<V>(JSObject signal) implements JSObject {}
+extension type Signal<T>(JSObject signal) implements MaybeSignal<T> {}
 
 @optionalTypeArgs
-extension type SourceSignal<V>(JSObject sourceSignal) implements Signal<V> {}
+extension type SourceSignal<T>(JSObject sourceSignal) implements Signal<T> {}
 
 @optionalTypeArgs
-extension type ComputationSignal<V>(JSObject computationSignal)
-    implements Signal<V> {}
+extension type ComputationSignal<T>(JSObject computationSignal)
+    implements Signal<T> {}
 
 extension type EffectSignal(JSObject effectSignal)
     implements ComputationSignal<void Function()?> {}
+
+@optionalTypeArgs
+extension type MaybeSignal<T>(JSObject signalOrT) implements JSObject {}

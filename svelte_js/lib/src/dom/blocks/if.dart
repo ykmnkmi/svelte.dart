@@ -9,8 +9,10 @@ import 'package:web/web.dart';
 external void _ifBlock(Comment anchor, JSFunction condition,
     JSFunction consequent, JSFunction? alternate);
 
-void ifBlock(Comment anchor, bool Function() condition,
+void ifBlock(
+    Comment anchor,
+    bool Function() condition,
     void Function(Node anchor) consequent,
-    [void Function(Node anchor)? alternate]) {
+    void Function(Node anchor)? alternate) {
   _ifBlock(anchor, condition.toJS, consequent.toJS, alternate?.toJS);
 }

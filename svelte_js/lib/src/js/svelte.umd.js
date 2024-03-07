@@ -2,6 +2,8 @@
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global.$$ = factory());
 })(this, function() {
   "use strict";
+  const noop = () => {
+  };
   function run_all(arr) {
     for (var i = 0; i < arr.length; i++) {
       arr[i]();
@@ -45,6 +47,7 @@
   const ROOT_BLOCK = 0;
   const IF_BLOCK = 1;
   const EACH_BLOCK = 2;
+  const EACH_ITEM_BLOCK = 3;
   const UNINITIALIZED = Symbol();
   const STATE_SYMBOL = Symbol("$state");
   function create_computation_signal(flags, value, block) {
@@ -812,6 +815,10 @@
   function set_signal_status(signal, status) {
     signal.f = signal.f & STATUS_MASK | status;
   }
+  function is_signal(val) {
+    return typeof val === "object" && val !== null && typeof /** @type {import('./types.js').Signal<V>} */
+    val.f === "number";
+  }
   function push(props, runes = false, fn) {
     current_component_context = {
       // exports (and props, if `accessors: true`)
@@ -893,6 +900,12 @@
       }
     }
   }
+  function unwrap(value) {
+    if (is_signal(value)) {
+      return get(value);
+    }
+    return value;
+  }
   var node_prototype;
   var element_prototype;
   var text_prototype;
@@ -900,6 +913,7 @@
   var clone_node_method;
   var first_child_get;
   var next_sibling_get;
+  var text_content_set;
   function init_operations() {
     if (node_prototype !== void 0) {
       return;
@@ -918,6 +932,7 @@
     next_sibling_get = /** @type {(this: Node) => ChildNode | null} */
     // @ts-ignore
     get_descriptor(node_prototype, "nextSibling").get;
+    text_content_set = /** @type {(this: Node, text: string ) => void} */
     // @ts-ignore
     get_descriptor(node_prototype, "textContent").set;
     // @ts-ignore
@@ -952,6 +967,9 @@
   function sibling(node, is_text = false) {
     const next_sibling = next_sibling_get.call(node);
     return next_sibling;
+  }
+  function clear_text_content(node) {
+    text_content_set.call(node, "");
   }
   // @__NO_SIDE_EFFECTS__
   function create_element(name) {
@@ -1047,11 +1065,346 @@
       frag_nodes
     );
   }
+  const EACH_ITEM_REACTIVE = 1;
+  const EACH_INDEX_REACTIVE = 1 << 1;
+  const EACH_KEYED = 1 << 2;
+  const EACH_IS_CONTROLLED = 1 << 3;
+  const EACH_IS_STRICT_EQUALS = 1 << 6;
   const PROPS_IS_IMMUTABLE = 1;
   const PROPS_IS_RUNES = 1 << 1;
   const PROPS_IS_UPDATED = 1 << 2;
   const PROPS_IS_LAZY_INITIAL = 1 << 3;
   const PassiveDelegatedEvents = ["touchstart", "touchmove", "touchend"];
+  function create_each_block(flags, anchor) {
+    return {
+      // anchor
+      a: anchor,
+      // dom
+      d: null,
+      // flags
+      f: flags,
+      // items
+      v: [],
+      // effect
+      e: null,
+      p: (
+        /** @type {import('../../types.js').Block} */
+        current_block
+      ),
+      // transition
+      r: null,
+      // transitions
+      s: [],
+      // type
+      t: EACH_BLOCK
+    };
+  }
+  function create_each_item_block(item, index, key) {
+    return {
+      // animate transition
+      a: null,
+      // dom
+      d: null,
+      // effect
+      e: null,
+      // index
+      i: index,
+      // key
+      k: key,
+      // item
+      v: item,
+      // parent
+      p: (
+        /** @type {import('../../types.js').EachBlock} */
+        current_block
+      ),
+      // transition
+      r: null,
+      // transitions
+      s: null,
+      // type
+      t: EACH_ITEM_BLOCK
+    };
+  }
+  function each(anchor_node, collection, flags, key_fn, render_fn, fallback_fn, reconcile_fn) {
+    const block = create_each_block(flags, anchor_node);
+    let current_fallback = null;
+    let array;
+    let keys = null;
+    let render = null;
+    block.r = /** @param {import('../../types.js').Transition} transition */
+    (transition) => {
+      const fallback = (
+        /** @type {import('../../types.js').Render} */
+        current_fallback
+      );
+      const transitions = fallback.s;
+      transitions.add(transition);
+      transition.f(() => {
+        transitions.delete(transition);
+        if (transitions.size === 0) {
+          if (fallback.e !== null) {
+            if (fallback.d !== null) {
+              remove(fallback.d);
+              fallback.d = null;
+            }
+            destroy_signal(fallback.e);
+            fallback.e = null;
+          }
+        }
+      });
+    };
+    const create_fallback_effect = () => {
+      const fallback = {
+        d: null,
+        e: null,
+        s: /* @__PURE__ */ new Set(),
+        p: current_fallback
+      };
+      const effect = render_effect(
+        () => {
+          const dom = block.d;
+          if (dom !== null) {
+            remove(dom);
+            block.d = null;
+          }
+          let anchor = block.a;
+          const is_controlled = (block.f & EACH_IS_CONTROLLED) !== 0;
+          if (is_controlled) {
+            {
+              anchor = empty();
+              block.a.appendChild(anchor);
+            }
+          }
+          fallback_fn(anchor);
+          fallback.d = block.d;
+          block.d = null;
+        },
+        block,
+        true
+      );
+      fallback.e = effect;
+      current_fallback = fallback;
+    };
+    const render_each = (block2) => {
+      const flags2 = block2.f;
+      const is_controlled = (flags2 & EACH_IS_CONTROLLED) !== 0;
+      const anchor_node2 = block2.a;
+      reconcile_fn(array, block2, anchor_node2, is_controlled, render_fn, flags2, true, keys);
+    };
+    const each2 = render_effect(
+      () => {
+        const maybe_array = collection();
+        array = is_array(maybe_array) ? maybe_array : maybe_array == null ? [] : Array.from(maybe_array);
+        if (key_fn !== null) {
+          keys = array.map(key_fn);
+        } else if ((flags & EACH_KEYED) === 0) {
+          array.map(noop);
+        }
+        const length = array.length;
+        if (fallback_fn !== null) {
+          if (length === 0) {
+            if (block.v.length !== 0 || render === null) {
+              render_each(block);
+              create_fallback_effect();
+              return;
+            }
+          } else if (block.v.length === 0 && current_fallback !== null) {
+            const fallback = current_fallback;
+            const transitions = fallback.s;
+            if (transitions.size === 0) {
+              if (fallback.d !== null) {
+                remove(fallback.d);
+                fallback.d = null;
+              }
+            } else {
+              trigger_transitions(transitions, "out");
+            }
+          }
+        }
+        if (render !== null) {
+          execute_effect(render);
+        }
+      },
+      block,
+      false
+    );
+    render = render_effect(render_each, block, true);
+    push_destroy_fn(each2, () => {
+      const flags2 = block.f;
+      const anchor_node2 = block.a;
+      const is_controlled = (flags2 & EACH_IS_CONTROLLED) !== 0;
+      let fallback = current_fallback;
+      while (fallback !== null) {
+        const dom = fallback.d;
+        if (dom !== null) {
+          remove(dom);
+        }
+        const effect = fallback.e;
+        if (effect !== null) {
+          destroy_signal(effect);
+        }
+        fallback = fallback.p;
+      }
+      reconcile_fn([], block, anchor_node2, is_controlled, render_fn, flags2, false, keys);
+      destroy_signal(
+        /** @type {import('../../types.js').EffectSignal} */
+        render
+      );
+    });
+    block.e = each2;
+  }
+  function each_indexed(anchor_node, collection, flags, render_fn, fallback_fn) {
+    each(anchor_node, collection, flags, null, render_fn, fallback_fn, reconcile_indexed_array);
+  }
+  function reconcile_indexed_array(array, each_block, dom, is_controlled, render_fn, flags, apply_transitions) {
+    var a_blocks = each_block.v;
+    var active_transitions = each_block.s;
+    var a = a_blocks.length;
+    var b = array.length;
+    var length = Math.max(a, b);
+    var index = 0;
+    var b_blocks;
+    var block;
+    if (active_transitions.length !== 0) {
+      destroy_active_transition_blocks(active_transitions);
+    }
+    if (b === 0) {
+      b_blocks = [];
+      if (is_controlled && a !== 0) {
+        clear_text_content(dom);
+      }
+      while (index < length) {
+        block = a_blocks[index++];
+        destroy_each_item_block(block, active_transitions, apply_transitions, is_controlled);
+      }
+    } else {
+      var item;
+      b_blocks = Array(b);
+      for (; index < length; index++) {
+        if (index >= a) {
+          item = array[index];
+          block = each_item_block(item, null, index, render_fn, flags);
+          b_blocks[index] = block;
+          insert_each_item_block(block, dom, is_controlled, null);
+        } else if (index >= b) {
+          block = a_blocks[index];
+          destroy_each_item_block(block, active_transitions, apply_transitions);
+        } else {
+          item = array[index];
+          block = a_blocks[index];
+          b_blocks[index] = block;
+          update_each_item_block(block, item, index, flags);
+        }
+      }
+    }
+    each_block.v = b_blocks;
+  }
+  function insert_each_item_block(block, dom, is_controlled, sibling2) {
+    var current = (
+      /** @type {import('../../types.js').TemplateNode} */
+      block.d
+    );
+    if (sibling2 === null) {
+      if (is_controlled) {
+        return insert(
+          current,
+          /** @type {Element} */
+          dom,
+          null
+        );
+      } else {
+        return insert(
+          current,
+          /** @type {Element} */
+          dom.parentNode,
+          dom
+        );
+      }
+    }
+    return insert(current, null, sibling2);
+  }
+  function destroy_active_transition_blocks(active_transitions) {
+    var length = active_transitions.length;
+    if (length > 0) {
+      var i = 0;
+      var block;
+      var transition;
+      for (; i < length; i++) {
+        block = active_transitions[i];
+        transition = block.r;
+        if (transition !== null) {
+          block.r = null;
+          destroy_each_item_block(block, null, false);
+        }
+      }
+      active_transitions.length = 0;
+    }
+  }
+  function update_each_item_block(block, item, index, type) {
+    const block_v = block.v;
+    if ((type & EACH_ITEM_REACTIVE) !== 0) {
+      set_signal_value(block_v, item);
+    }
+    const transitions = block.s;
+    const index_is_reactive = (type & EACH_INDEX_REACTIVE) !== 0;
+    const each_animation = block.a;
+    if (transitions !== null && (type & EACH_KEYED) !== 0 && each_animation !== null) {
+      each_animation(block, transitions);
+    }
+    if (index_is_reactive) {
+      set_signal_value(
+        /** @type {import('../../types.js').Signal<number>} */
+        block.i,
+        index
+      );
+    } else {
+      block.i = index;
+    }
+  }
+  function destroy_each_item_block(block, transition_block, apply_transitions, controlled = false) {
+    const transitions = block.s;
+    if (apply_transitions && transitions !== null) {
+      for (let other of transitions) {
+        if (other.r === "key") {
+          transitions.delete(other);
+        }
+      }
+      if (transitions.size === 0) {
+        block.s = null;
+      } else {
+        trigger_transitions(transitions, "out");
+        if (transition_block !== null) {
+          transition_block.push(block);
+        }
+        return;
+      }
+    }
+    const dom = block.d;
+    if (!controlled && dom !== null) {
+      remove(dom);
+    }
+    destroy_signal(
+      /** @type {import('../../types.js').EffectSignal} */
+      block.e
+    );
+  }
+  function each_item_block(item, key, index, render_fn, flags) {
+    const each_item_not_reactive = (flags & EACH_ITEM_REACTIVE) === 0;
+    const item_value = each_item_not_reactive ? item : (flags & EACH_IS_STRICT_EQUALS) !== 0 ? /* @__PURE__ */ source(item) : /* @__PURE__ */ mutable_source(item);
+    const index_value = (flags & EACH_INDEX_REACTIVE) === 0 ? index : /* @__PURE__ */ source(index);
+    const block = create_each_item_block(item_value, index_value, key);
+    const effect = render_effect(
+      /** @param {import('../../types.js').EachItemBlock} block */
+      (block2) => {
+        render_fn(null, block2.v, block2.i);
+      },
+      block,
+      true
+    );
+    block.e = effect;
+    return block;
+  }
   function trigger_transitions(transitions, target_direction, from) {
     const outros = [];
     for (const transition of transitions) {
@@ -1689,6 +2042,7 @@
     deep_read_state(context.s);
   }
   const svelte = {
+    each_indexed,
     if_block,
     child,
     child_frag,
@@ -1710,16 +2064,17 @@
     attr,
     spread_props,
     mount,
-    append_styles,
     unmount,
+    append_styles,
+    prop,
+    init,
     get,
     set,
     mutate,
     untrack,
     push,
     pop,
-    prop,
-    init
+    unwrap
   };
   return svelte;
 });

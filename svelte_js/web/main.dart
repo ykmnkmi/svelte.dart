@@ -22,6 +22,9 @@ import 'examples/02_properties/01_default_values/app.dart' as default_values;
 import 'examples/02_properties/02_spread_properties/app.dart'
     as spread_properties;
 import 'examples/03_logic/00_if_blocks/app.dart' as if_blocks;
+import 'examples/03_logic/01_else_blocks/app.dart' as else_blocks;
+import 'examples/03_logic/02_else_if_blocks/app.dart' as else_if_blocks;
+import 'examples/03_logic/03_each_blocks/app.dart' as each_blocks;
 
 Component getFactory(void Function(Node) component) {
   return (Node node, JSObject properties) {
@@ -43,6 +46,9 @@ Component? selectFactory(String name) {
     'default_values' => getFactory(default_values.app.call),
     'spread_properties' => getFactory(spread_properties.app.call),
     'if_blocks' => getFactory(if_blocks.app.call),
+    'else_blocks' => getFactory(else_blocks.app.call),
+    'else_if_blocks' => getFactory(else_if_blocks.app.call),
+    'each_blocks' => getFactory(each_blocks.app.call),
     _ => null,
   };
 }
@@ -54,14 +60,19 @@ void main() {
   ComponentReference? component;
 
   void onChange(Event event) {
-    var app = selectFactory(select.value);
+    try {
+      var app = selectFactory(select.value);
 
-    if (component case var component?) {
-      unmount(component);
-    }
+      if (component case var component?) {
+        unmount(component);
+      }
 
-    if (app != null) {
-      component = mount(app, target: target);
+      if (app != null) {
+        component = mount(app, target: target);
+      }
+    } catch (error, trace) {
+      print(error);
+      print(trace);
     }
   }
 

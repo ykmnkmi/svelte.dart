@@ -20,7 +20,6 @@ const App app = App._(_component);
 
 final _template1 = $.template('<button>Log out</button>');
 final _template2 = $.template('<button>Log in</button>');
-final _fragment = $.fragment('<!> <!>');
 
 void _component(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
@@ -34,9 +33,8 @@ void _component(Node $anchor, AppProperties $properties) {
   $.init();
 
   /* Init */
-  var fragment = $.openFragment($anchor, true, _fragment);
+  var fragment = $.comment($anchor);
   var node = $.childFragment<Comment>(fragment);
-  var node1 = $.sibling<Comment>($.sibling<Text>(node, true));
 
   $.ifBlock(node, () => $.get<User>(user).loggedIn, ($anchor) {
     /* Init */
@@ -44,15 +42,13 @@ void _component(Node $anchor, AppProperties $properties) {
 
     $.event<Event>('click', button, toggle, false);
     $.close($anchor, button);
-  }, null);
-
-  $.ifBlock(node1, () => !$.get<User>(user).loggedIn, ($anchor) {
+  }, ($anchor) {
     /* Init */
     var button1 = $.open<Element>($anchor, true, _template2);
 
     $.event<Event>('click', button1, toggle, false);
     $.close($anchor, button1);
-  }, null);
+  });
 
   $.closeFragment($anchor, fragment);
   $.pop();

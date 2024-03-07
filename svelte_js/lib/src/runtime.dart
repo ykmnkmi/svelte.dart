@@ -64,22 +64,10 @@ void pop([JSObject? component]) {
   }
 }
 
-@JS('prop')
-external JSFunction _prop(JSObject properties, JSString key, JSNumber flag);
+@JS('unwrap')
+external JSBoxedDartObject? _unwrap(JSBoxedDartObject? value);
 
-T Function([T? value]) prop<T>(JSObject properties, String key, int flag) {
-  var jsFunction = _prop(properties, key.toJS, flag.toJS);
-
-  return ([T? value]) {
-    var result = jsFunction.callAsFunction(null, value?.toJSBox);
-    var boxed = result as JSBoxedDartObject?;
-    return boxed?.toDart as T;
-  };
-}
-
-@JS('init')
-external void _init();
-
-void init() {
-  _init();
+T unwrap<T>(Object? value) {
+  var boxed = _unwrap(value?.toJSBox);
+  return boxed?.toDart as T;
 }

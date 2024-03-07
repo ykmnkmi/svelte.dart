@@ -145,6 +145,13 @@ ComponentReference mount<T extends JSObject>(Component<T> component,
   return ComponentReference._(_mount(component.toJS, _Mount(target: target)));
 }
 
+@JS('unmount')
+external void _unmount(JSObject component);
+
+void unmount(ComponentReference component) {
+  _unmount(component);
+}
+
 @JS('append_styles')
 external void _appendStyles(Node? target, JSString id, JSString styles);
 
@@ -152,9 +159,22 @@ void appendStyles(Node? target, String id, String styles) {
   _appendStyles(target, id.toJS, styles.toJS);
 }
 
-@JS('unmount')
-external void _unmount(JSObject component);
+@JS('prop')
+external JSFunction _prop(JSObject properties, JSString key, JSNumber flag);
 
-void unmount(ComponentReference component) {
-  _unmount(component);
+T Function([T? value]) prop<T>(JSObject properties, String key, int flag) {
+  var jsFunction = _prop(properties, key.toJS, flag.toJS);
+
+  return ([T? value]) {
+    var result = jsFunction.callAsFunction(null, value?.toJSBox);
+    var boxed = result as JSBoxedDartObject?;
+    return boxed?.toDart as T;
+  };
+}
+
+@JS('init')
+external void _init();
+
+void init() {
+  _init();
 }

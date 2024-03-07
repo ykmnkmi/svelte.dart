@@ -1,3 +1,4 @@
+export 'package:svelte_js/src/dom/blocks/each.dart';
 export 'package:svelte_js/src/dom/blocks/if.dart';
 export 'package:svelte_js/src/helpers.dart';
 export 'package:svelte_js/src/operations.dart';
