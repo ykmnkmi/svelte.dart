@@ -1,11 +1,14 @@
+// ignore_for_file: library_prefixes
+library;
+
 import 'dart:js_interop';
 
-import 'package:svelte_js/internal.dart' as $; // ignore: library_prefixes
+import 'package:svelte_js/internal.dart' as $;
 import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-extension type AppProperties._(JSObject object) implements JSObject {
-  AppProperties() : object = JSObject();
+extension type AppProperties._(JSObject _) implements JSObject {
+  AppProperties() : _ = JSObject();
 }
 
 extension type const App._(Component<AppProperties> component) {
@@ -29,25 +32,33 @@ void _component(Node $anchor, AppProperties $properties) {
     $.set<int>(count, $.get<int>(count) + 1);
   }
 
-  $.preEffect(() {
+  void app$preEffect() {
     $.get<int>(count);
 
-    $.untrack<void>(() {
+    void doubled$untrack() {
       $.set<int>(doubled, $.get<int>(count) * 2);
-    });
-  });
+    }
 
-  $.preEffect(() {
+    $.untrack<void>(doubled$untrack);
+  }
+
+  $.preEffect(app$preEffect);
+
+  void app1$preEffect() {
     $.get<int>(doubled);
 
-    $.untrack<void>(() {
+    void quadrupled$untracked() {
       $.set<int>(quadrupled, $.get<int>(doubled) * 2);
-    });
-  });
+    }
+
+    $.untrack<void>(quadrupled$untracked);
+  }
+
+  $.preEffect(app1$preEffect);
 
   $.init();
 
-  /* Init */
+  // Init
   var fragment = $.openFragment($anchor, true, _fragment);
   var button = $.childFragment<Element>(fragment);
   var text = $.child<Text>(button);
@@ -56,12 +67,14 @@ void _component(Node $anchor, AppProperties $properties) {
   var p1 = $.sibling<Element>($.sibling<Text>(p, true));
   var text2 = $.child<Text>(p1);
 
-  /* Update */
-  $.renderEffect(() {
+  // Update
+  void app$renderEffect() {
     $.text(text, 'Count: ${$.get<int>(count)}');
     $.text(text1, '${$.get<int>(count)} * 2 = ${$.get<int>(doubled)}');
     $.text(text2, '${$.get<int>(doubled)} * 2 = ${$.get<int>(quadrupled)}');
-  });
+  }
+
+  $.renderEffect(app$renderEffect);
 
   $.event('click', button, handleClick, false);
   $.closeFragment($anchor, fragment);

@@ -1,11 +1,14 @@
+// ignore_for_file: library_prefixes
+library;
+
 import 'dart:js_interop';
 
-import 'package:svelte_js/internal.dart' as $; // ignore: library_prefixes
+import 'package:svelte_js/internal.dart' as $;
 import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-extension type AppProperties._(JSObject object) implements JSObject {
-  AppProperties() : object = JSObject();
+extension type AppProperties._(JSObject _) implements JSObject {
+  AppProperties() : _ = JSObject();
 }
 
 extension type const App._(Component<AppProperties> component) {
@@ -29,15 +32,16 @@ void _component(Node $anchor, AppProperties $properties) {
 
   $.init();
 
-  /* Init */
+  // Init
   var button = $.open<Element>($anchor, true, _template);
   var text = $.child<Text>(button);
 
-  /* Update */
-  $.textEffect(text, () {
+  String text$textEffect() {
     return 'Clicked ${$.get<int>(count)} ${$.get<int>(count) == 1 ? 'time' : 'times'}';
-  });
+  }
 
+  // Update
+  $.textEffect(text, text$textEffect);
   $.event('click', button, handleClick, false);
   $.close($anchor, button);
   $.pop();

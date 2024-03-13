@@ -1,11 +1,14 @@
+// ignore_for_file: library_prefixes
+library;
+
 import 'dart:js_interop';
 
-import 'package:svelte_js/internal.dart' as $; // ignore: library_prefixes
+import 'package:svelte_js/internal.dart' as $;
 import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-extension type AppProperties._(JSObject object) implements JSObject {
-  AppProperties() : object = JSObject();
+extension type AppProperties._(JSObject _) implements JSObject {
+  AppProperties() : _ = JSObject();
 }
 
 extension type const App._(Component<AppProperties> component) {
@@ -25,11 +28,15 @@ void _component(Node $anchor, AppProperties $properties) {
 
   $.init();
 
-  /* Init */
+  // Init
   var p = $.open<Node>($anchor, true, _template);
   var node = $.child<Text>(p);
 
-  $.html(node, () => string, false);
+  String node$html() {
+    return string;
+  }
+
+  $.html(node, node$html, false);
   $.close($anchor, p);
   $.pop();
 }

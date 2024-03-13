@@ -78,3 +78,7 @@ void main() {
 
   select.addEventListener('change', onChange.toJS);
 }
+
+extension type CurrentObject._(JSObject _) implements JSObject {
+  external CurrentObject();
+}

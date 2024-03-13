@@ -13,7 +13,16 @@ import {
   get, set, mutate, untrack, push, pop, unwrap,
 } from 'svelte/internal';
 
+const set_getter = (object, key, getter) => {
+  Object.defineProperty(object, key, {
+    get: getter,
+    enumerable: true,
+    configurable: true,
+  });
+};
+
 export default {
+  setGetter: set_getter,
   each_indexed, if_block,
   child, child_frag, sibling,
   pre_effect, render_effect,

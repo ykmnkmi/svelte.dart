@@ -34,12 +34,16 @@ void _component(Node $anchor, AppProperties $properties) {
 
   $.init();
 
-  /* Init */
+  // Init
   var fragment = $.openFragment($anchor, true, _fragment);
   var h1 = $.childFragment<Element>(fragment);
   var ul = $.sibling<Element>($.sibling<Text>(h1, true));
 
-  $.eachIndexed(ul, () => $.get<List<Cat>>(cats), 9, ($anchor, $item, index) {
+  List<Cat> ul$each$collection() {
+    return $.get<List<Cat>>(cats);
+  }
+
+  void ul$each$render(Node? $anchor, Signal<Cat> $item, int index) {
     String id() {
       return $.unwrap<Cat>($item).id;
     }
@@ -48,22 +52,26 @@ void _component(Node $anchor, AppProperties $properties) {
       return $.unwrap<Cat>($item).name;
     }
 
-    /* Init */
+    // Init
     var li = $.open<Element>($anchor, true, _eachBlock);
     var a = $.child<Element>(li);
     var text = $.child<Text>(a);
     String? ahref;
 
-    $.renderEffect(() {
+    void ul$each$renderEffect() {
       if (ahref != (ahref = 'https://www.youtube.com/watch?v=${id()}')) {
         $.attr(a, 'href', ahref);
       }
 
-      $.text(text, '${$.unwrap<int>(index) + 1}: ${name()}');
-    });
+      $.text(text, '${index + 1}: ${name()}');
+    }
+
+    $.renderEffect(ul$each$renderEffect);
 
     $.close($anchor, li);
-  }, null);
+  }
+
+  $.eachIndexed(ul, ul$each$collection, 9, ul$each$render, null);
 
   $.closeFragment($anchor, fragment);
   $.pop();

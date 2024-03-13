@@ -2041,7 +2041,15 @@
     }
     deep_read_state(context.s);
   }
+  const set_getter = (object, key, getter) => {
+    Object.defineProperty(object, key, {
+      get: getter,
+      enumerable: true,
+      configurable: true
+    });
+  };
   const svelte = {
+    setGetter: set_getter,
     each_indexed,
     if_block,
     child,

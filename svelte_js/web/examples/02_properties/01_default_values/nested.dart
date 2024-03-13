@@ -1,15 +1,18 @@
+// ignore_for_file: library_prefixes
+library;
+
 import 'dart:js_interop';
 
-import 'package:svelte_js/internal.dart' as $; // ignore: library_prefixes
+import 'package:svelte_js/internal.dart' as $;
 import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-extension type NestedProperties._(JSObject object) implements JSObject {
+extension type NestedProperties._(JSObject _) implements JSObject {
   factory NestedProperties({required Object answer}) {
-    return NestedProperties._boxed(answer: answer.toJSBox);
+    return NestedProperties.js(answer: answer.toJSBox);
   }
 
-  external factory NestedProperties._boxed({JSBoxedDartObject answer});
+  external NestedProperties.js({JSBoxedDartObject answer});
 
   @JS('answer')
   external JSBoxedDartObject get _answer;
@@ -34,11 +37,16 @@ void _component(Node $anchor, NestedProperties $properties) {
 
   $.init();
 
-  /* Init */
+  // Init
   var p = $.open<Element>($anchor, true, _template);
   var text = $.child<Text>(p);
 
-  $.textEffect(text, () => 'The answer is ${answer()}');
+  // Update
+  String text$effect() {
+    return 'The answer is ${answer()}';
+  }
+
+  $.textEffect(text, text$effect);
   $.close($anchor, p);
   $.pop();
 }

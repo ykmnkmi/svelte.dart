@@ -1,23 +1,26 @@
+// ignore_for_file: library_prefixes
+library;
+
 import 'dart:js_interop';
 
-import 'package:svelte_js/internal.dart' as $; // ignore: library_prefixes
+import 'package:svelte_js/internal.dart' as $;
 import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-extension type InfoProperties._(JSObject object) implements JSObject {
+extension type InfoProperties._(JSObject _) implements JSObject {
   factory InfoProperties(
       {required String name,
       required int version,
       required String speed,
       required String website}) {
-    return InfoProperties._boxed(
+    return InfoProperties.js(
         name: name.toJS,
         version: version.toJS,
         speed: speed.toJS,
         website: website.toJS);
   }
 
-  external factory InfoProperties._boxed(
+  external InfoProperties.js(
       {JSString name, JSNumber version, JSString speed, JSString website});
 
   @JS('name')
@@ -63,7 +66,7 @@ void _component(Node $anchor, InfoProperties $properties) {
   $.push($properties, false);
   $.init();
 
-  /* Init */
+  // Init
   var p = $.open<Element>($anchor, true, _template);
   var code = $.sibling<Element>($.child<Text>(p));
   var text = $.space($.child<Text>(code));
@@ -73,7 +76,7 @@ void _component(Node $anchor, InfoProperties $properties) {
   String? ahref;
   String? a1href;
 
-  $.renderEffect(() {
+  void app$preEffect() {
     $.text(text, $properties.name);
     $.text(text1,
         ' package is ${$properties.speed} fast. Download version ${$properties.version} from ');
@@ -86,7 +89,9 @@ void _component(Node $anchor, InfoProperties $properties) {
     if (a1href != (a1href = $properties.website)) {
       $.attr(a1, 'href', a1href);
     }
-  });
+  }
+
+  $.renderEffect(app$preEffect);
 
   $.close($anchor, p);
   $.pop();

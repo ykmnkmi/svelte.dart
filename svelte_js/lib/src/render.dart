@@ -20,8 +20,8 @@ FragmentFactory fragment(String html) {
 }
 
 @JS('open')
-external JSAny _open(Node? anchor, JSBoolean useCloneNode,
-    [JSFunction templateFactory]);
+external JSAny _open(
+    Node? anchor, JSBoolean useCloneNode, JSFunction templateFactory);
 
 T open<T extends JSAny>(
     Node? anchor, bool useCloneNode, TemplateFactory templateFactory) {
@@ -103,15 +103,18 @@ void html(Node dom, String Function() value, bool svg) {
   _html(dom, value.toJS, svg.toJS);
 }
 
-@JS('attr')
-external void _attr(Element dom, JSString attribute, [JSString value]);
+@JS('attr_effect')
+external void _attrEffect(Element dom, JSString attribute, JSFunction value);
 
-void attr(Element dom, String attribute, [String? value]) {
-  if (value == null) {
-    _attr(dom, attribute.toJS);
-  } else {
-    _attr(dom, attribute.toJS, value.toJS);
-  }
+void attrEffect(Element dom, String attribute, String Function() value) {
+  _attrEffect(dom, attribute.toJS, value.toJS);
+}
+
+@JS('attr')
+external void _attr(Element dom, JSString attribute, JSString? value);
+
+void attr(Element dom, String attribute, String? value) {
+  _attr(dom, attribute.toJS, value?.toJS);
 }
 
 @JS('spread_props')

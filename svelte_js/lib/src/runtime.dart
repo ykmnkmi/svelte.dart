@@ -67,7 +67,7 @@ void pop([JSObject? component]) {
 @JS('unwrap')
 external JSBoxedDartObject? _unwrap(JSBoxedDartObject? value);
 
-T unwrap<T>(Object? value) {
+T unwrap<T>(MaybeSignal<T>? value) {
   var boxed = _unwrap(value?.toJSBox);
   return boxed?.toDart as T;
 }
