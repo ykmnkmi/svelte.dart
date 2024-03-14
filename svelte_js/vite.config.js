@@ -5,7 +5,7 @@ export default defineConfig({
   base: '/packages/svelte/src/js/',
   build: {
     minify: false,
-    outDir: 'lib/src/js',
+    outDir: 'lib/src/bundle',
     lib: {
       name: '$$',
       fileName: 'svelte',

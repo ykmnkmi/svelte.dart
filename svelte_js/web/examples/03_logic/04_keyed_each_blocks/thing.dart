@@ -40,11 +40,14 @@ void _component(Node $anchor, ThingProperties $properties) {
   var span = $.child<Element>(p);
   $.attr(span, 'style', 'background-color: $initial');
 
-  var span1 = $.sibling<Element>($.sibling<Text>(p, true));
-  $.attr(span1, 'style', 'background-color: ${$properties.current}');
+  var span1 = $.sibling<Element>($.sibling<Text>(span, true));
 
   // Update
-  $.attrEffect(span1, 'style', () => 'The current is ${$properties.current}');
+  String span1$attrEffect() {
+    return 'The current is ${$properties.current}';
+  }
+
+  $.attrEffect(span1, 'style', span1$attrEffect);
   $.close($anchor, p);
   $.pop();
 }

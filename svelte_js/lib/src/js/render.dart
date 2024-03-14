@@ -4,75 +4,71 @@ library;
 import 'dart:js_interop';
 
 import 'package:meta/dart2js.dart';
-import 'package:meta/meta.dart';
+import 'package:svelte_js/src/js/unsafe_cast.dart';
 import 'package:svelte_js/src/types.dart';
 import 'package:web/web.dart';
 
 @JS('template')
 external JSFunction _template(JSString html, [JSBoolean returnFragment]);
 
-TemplateFactory template(String html) {
-  return TemplateFactory(_template(html.toJS));
+Template template(String html) {
+  return Template(_template(html.toJS));
 }
 
-FragmentFactory fragment(String html) {
-  return FragmentFactory(_template(html.toJS, true.toJS));
+Fragment fragment(String html) {
+  return Fragment(_template(html.toJS, true.toJS));
 }
 
 @JS('open')
-external JSAny _open(
-    Node? anchor, JSBoolean useCloneNode, JSFunction templateFactory);
+external JSAny _open(Node? anchor, JSBoolean useCloneNode, JSFunction template);
 
-T open<T extends JSAny>(
-    Node? anchor, bool useCloneNode, TemplateFactory templateFactory) {
-  return _open(anchor, useCloneNode.toJS, templateFactory) as T;
+T open<T extends JSAny>(Node? anchor, bool useCloneNode, Template template) {
+  return _open(anchor, useCloneNode.toJS, template) as T;
 }
 
 @JS('open_frag')
-external DocumentFragment _openFragment(Node? anchor, JSBoolean useCloneNode,
-    [JSFunction fragmentFactory]);
+external DocumentFragment _openFragment(
+  Node? anchor,
+  JSBoolean useCloneNode, [
+  JSFunction fragment,
+]);
 
 DocumentFragment openFragment(
-    Node? anchor, bool useCloneNode, FragmentFactory fragmentFactory) {
-  return _openFragment(anchor, useCloneNode.toJS, fragmentFactory);
+  Node? anchor,
+  bool useCloneNode,
+  Fragment fragment,
+) {
+  return _openFragment(anchor, useCloneNode.toJS, fragment);
 }
 
 @JS('space')
-external Node _space(Node anchor);
-
-Node space(Node anchor) {
-  return _space(anchor);
-}
+external Node space(Node anchor);
 
 @JS('comment')
-external DocumentFragment _comment(Node? anchor);
-
-DocumentFragment comment(Node? anchor) {
-  return _comment(anchor);
-}
+external DocumentFragment comment(Node? anchor);
 
 @JS('close')
-external void _close(Node? anchor, Node dom);
-
-void close(Node? anchor, Node dom) {
-  _close(anchor, dom);
-}
+external void close(Node? anchor, Node dom);
 
 @JS('close_frag')
-external void _closeFragment(Node? anchor, DocumentFragment fragment);
-
-void closeFragment(Node? anchor, DocumentFragment fragment) {
-  _closeFragment(anchor, fragment);
-}
+external void closeFragment(Node? anchor, DocumentFragment fragment);
 
 @JS('event')
 external void _event<T extends Event>(
-    JSString eventName, Element dom, JSFunction handler, JSBoolean capture,
-    [JSBoolean passive]);
+  JSString eventName,
+  Element dom,
+  JSFunction handler,
+  JSBoolean capture, [
+  JSBoolean passive,
+]);
 
 void event<T extends Event>(
-    String eventName, Element dom, void Function(T event) handler, bool capture,
-    [bool? passive]) {
+  String eventName,
+  Element dom,
+  void Function(T event) handler,
+  bool capture, [
+  bool? passive,
+]) {
   if (passive == null) {
     _event(eventName.toJS, dom, handler.toJS, capture.toJS);
   } else {
@@ -137,15 +133,11 @@ extension type _Mount._(JSObject ref) implements JSObject {
 @JS('mount')
 external JSObject _mount(JSFunction component, _Mount options);
 
-@optionalTypeArgs
-typedef Component<T extends JSObject> = void Function(
-    Node anchor, T properties);
-
-extension type ComponentReference._(JSObject component) implements JSObject {}
-
-ComponentReference mount<T extends JSObject>(Component<T> component,
-    {required Node target}) {
-  return ComponentReference._(_mount(component.toJS, _Mount(target: target)));
+ComponentReference mount<T extends JSObject>(
+  Component<T> component, {
+  required Node target,
+}) {
+  return ComponentReference(_mount(component.toJS, _Mount(target: target)));
 }
 
 @JS('unmount')
@@ -169,9 +161,9 @@ T Function([T? value]) prop<T>(JSObject properties, String key, int flag) {
   var jsFunction = _prop(properties, key.toJS, flag.toJS);
 
   return ([T? value]) {
-    var result = jsFunction.callAsFunction(null, value?.toJSBox);
-    var boxed = result as JSBoxedDartObject?;
-    return boxed?.toDart as T;
+    var jsValue = unsafeCast<JSAny?>(value);
+    var result = jsFunction.callAsFunction(null, jsValue);
+    return unsafeCast<T>(result);
   };
 }
 

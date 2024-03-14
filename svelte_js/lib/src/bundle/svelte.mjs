@@ -905,6 +905,9 @@ function unwrap(value) {
 var node_prototype;
 var element_prototype;
 var text_prototype;
+var map_prototype = Map.prototype;
+var map_set_method = map_prototype.set;
+var map_get_method = map_prototype.get;
 var append_child_method;
 var clone_node_method;
 var first_child_get;
@@ -936,6 +939,12 @@ function init_operations() {
 }
 function append_child(element, child2) {
   append_child_method.call(element, child2);
+}
+function map_set(map, key, value) {
+  map_set_method.call(map, key, value);
+}
+function map_get(map, key) {
+  return map_get_method.call(map, key);
 }
 // @__NO_SIDE_EFFECTS__
 function clone_node(node, deep) {
@@ -1065,12 +1074,16 @@ const EACH_ITEM_REACTIVE = 1;
 const EACH_INDEX_REACTIVE = 1 << 1;
 const EACH_KEYED = 1 << 2;
 const EACH_IS_CONTROLLED = 1 << 3;
+const EACH_IS_ANIMATED = 1 << 4;
 const EACH_IS_STRICT_EQUALS = 1 << 6;
 const PROPS_IS_IMMUTABLE = 1;
 const PROPS_IS_RUNES = 1 << 1;
 const PROPS_IS_UPDATED = 1 << 2;
 const PROPS_IS_LAZY_INITIAL = 1 << 3;
 const PassiveDelegatedEvents = ["touchstart", "touchmove", "touchend"];
+const NEW_BLOCK = -1;
+const MOVED_BLOCK = 99999999;
+const LIS_BLOCK = -2;
 function create_each_block(flags, anchor) {
   return {
     // anchor
@@ -1250,6 +1263,9 @@ function each(anchor_node, collection, flags, key_fn, render_fn, fallback_fn, re
   });
   block.e = each2;
 }
+function each_keyed(anchor_node, collection, flags, key_fn, render_fn, fallback_fn) {
+  each(anchor_node, collection, flags, key_fn, render_fn, fallback_fn, reconcile_tracked_array);
+}
 function each_indexed(anchor_node, collection, flags, render_fn, fallback_fn) {
   each(anchor_node, collection, flags, null, render_fn, fallback_fn, reconcile_indexed_array);
 }
@@ -1296,6 +1312,212 @@ function reconcile_indexed_array(array, each_block, dom, is_controlled, render_f
   }
   each_block.v = b_blocks;
 }
+function reconcile_tracked_array(array, each_block, dom, is_controlled, render_fn, flags, apply_transitions, keys) {
+  var a_blocks = each_block.v;
+  const is_computed_key = keys !== null;
+  var active_transitions = each_block.s;
+  var a = a_blocks.length;
+  var b = array.length;
+  var b_blocks;
+  var block;
+  if (active_transitions.length !== 0) {
+    destroy_active_transition_blocks(active_transitions);
+  }
+  if (b === 0) {
+    b_blocks = [];
+    if (is_controlled && a !== 0) {
+      clear_text_content(dom);
+    }
+    while (a > 0) {
+      block = a_blocks[--a];
+      destroy_each_item_block(block, active_transitions, apply_transitions, is_controlled);
+    }
+  } else {
+    var a_end = a - 1;
+    var b_end = b - 1;
+    var key;
+    var item;
+    var idx;
+    b_blocks = Array(b);
+    if (a === 0) {
+      while (b > 0) {
+        idx = b_end - --b;
+        item = array[idx];
+        key = is_computed_key ? keys[idx] : item;
+        block = each_item_block(item, key, idx, render_fn, flags);
+        b_blocks[idx] = block;
+        insert_each_item_block(block, dom, is_controlled, null);
+      }
+    } else {
+      var is_animated = (flags & EACH_IS_ANIMATED) !== 0;
+      var should_update_block = (flags & (EACH_ITEM_REACTIVE | EACH_INDEX_REACTIVE)) !== 0 || is_animated;
+      var start = 0;
+      var sibling2 = null;
+      item = array[b_end];
+      key = is_computed_key ? keys[b_end] : item;
+      outer:
+        while (true) {
+          while (a_blocks[a_end].k === key) {
+            block = a_blocks[a_end--];
+            item = array[b_end];
+            if (should_update_block) {
+              update_each_item_block(block, item, b_end, flags);
+            }
+            sibling2 = get_first_child(block);
+            b_blocks[b_end] = block;
+            if (start > --b_end || start > a_end) {
+              break outer;
+            }
+            key = is_computed_key ? keys[b_end] : item;
+          }
+          item = array[start];
+          key = is_computed_key ? keys[start] : item;
+          while (start <= a_end && start <= b_end && a_blocks[start].k === key) {
+            item = array[start];
+            block = a_blocks[start];
+            if (should_update_block) {
+              update_each_item_block(block, item, start, flags);
+            }
+            b_blocks[start] = block;
+            ++start;
+            key = is_computed_key ? keys[start] : array[start];
+          }
+          break;
+        }
+      if (start > a_end) {
+        while (b_end >= start) {
+          item = array[b_end];
+          key = is_computed_key ? keys[b_end] : item;
+          block = each_item_block(item, key, b_end, render_fn, flags);
+          b_blocks[b_end--] = block;
+          sibling2 = insert_each_item_block(block, dom, is_controlled, sibling2);
+        }
+      } else if (start > b_end) {
+        b = start;
+        do {
+          if ((block = a_blocks[b++]) !== null) {
+            destroy_each_item_block(block, active_transitions, apply_transitions);
+          }
+        } while (b <= a_end);
+      } else {
+        var pos = 0;
+        var b_length = b_end - start + 1;
+        var sources = new Int32Array(b_length);
+        var item_index = /* @__PURE__ */ new Map();
+        for (b = 0; b < b_length; ++b) {
+          a = b + start;
+          sources[b] = NEW_BLOCK;
+          item = array[a];
+          key = is_computed_key ? keys[a] : item;
+          map_set(item_index, key, a);
+        }
+        if (is_animated) {
+          for (b = start; b <= a_end; ++b) {
+            a = map_get(
+              item_index,
+              /** @type {V} */
+              a_blocks[b].k
+            );
+            if (a !== void 0) {
+              item = array[a];
+              block = a_blocks[b];
+              update_each_item_block(block, item, a, flags);
+            }
+          }
+        }
+        for (b = start; b <= a_end; ++b) {
+          a = map_get(
+            item_index,
+            /** @type {V} */
+            a_blocks[b].k
+          );
+          block = a_blocks[b];
+          if (a !== void 0) {
+            pos = pos < a ? a : MOVED_BLOCK;
+            sources[a - start] = b;
+            b_blocks[a] = block;
+          } else if (block !== null) {
+            destroy_each_item_block(block, active_transitions, apply_transitions);
+          }
+        }
+        if (pos === MOVED_BLOCK) {
+          mark_lis(sources);
+        }
+        var last_block;
+        var last_sibling;
+        var should_create;
+        while (b_length-- > 0) {
+          b_end = b_length + start;
+          a = sources[b_length];
+          should_create = a === -1;
+          item = array[b_end];
+          if (should_create) {
+            key = is_computed_key ? keys[b_end] : item;
+            block = each_item_block(item, key, b_end, render_fn, flags);
+          } else {
+            block = b_blocks[b_end];
+            if (!is_animated && should_update_block) {
+              update_each_item_block(block, item, b_end, flags);
+            }
+          }
+          if (should_create || pos === MOVED_BLOCK && a !== LIS_BLOCK) {
+            last_sibling = last_block === void 0 ? sibling2 : get_first_child(last_block);
+            sibling2 = insert_each_item_block(block, dom, is_controlled, last_sibling);
+          }
+          b_blocks[b_end] = block;
+          last_block = block;
+        }
+      }
+    }
+  }
+  each_block.v = b_blocks;
+}
+function mark_lis(a) {
+  var length = a.length;
+  var parent = new Int32Array(length);
+  var index = new Int32Array(length);
+  var index_length = 0;
+  var i = 0;
+  var j;
+  var k;
+  var lo;
+  var hi;
+  for (; a[i] === NEW_BLOCK; ++i) {
+  }
+  index[0] = i++;
+  for (; i < length; ++i) {
+    k = a[i];
+    if (k !== NEW_BLOCK) {
+      j = index[index_length];
+      if (a[j] < k) {
+        parent[i] = j;
+        index[++index_length] = i;
+      } else {
+        lo = 0;
+        hi = index_length;
+        while (lo < hi) {
+          j = lo + hi >> 1;
+          if (a[index[j]] < k) {
+            lo = j + 1;
+          } else {
+            hi = j;
+          }
+        }
+        if (k < a[index[lo]]) {
+          if (lo > 0) {
+            parent[i] = index[lo - 1];
+          }
+          index[lo] = i;
+        }
+      }
+    }
+  }
+  j = index[index_length];
+  while (index_length-- >= 0) {
+    a[j] = LIS_BLOCK;
+    j = parent[j];
+  }
+}
 function insert_each_item_block(block, dom, is_controlled, sibling2) {
   var current = (
     /** @type {import('../../types.js').TemplateNode} */
@@ -1319,6 +1541,19 @@ function insert_each_item_block(block, dom, is_controlled, sibling2) {
     }
   }
   return insert(current, null, sibling2);
+}
+function get_first_child(block) {
+  var current = block.d;
+  if (is_array(current)) {
+    return (
+      /** @type {Text | Element | Comment} */
+      current[0]
+    );
+  }
+  return (
+    /** @type {Text | Element | Comment} */
+    current
+  );
 }
 function destroy_active_transition_blocks(active_transitions) {
   var length = active_transitions.length;
@@ -1759,6 +1994,12 @@ function html(dom, get_value, svg) {
     }
   });
 }
+function attr_effect(dom, attribute, value) {
+  render_effect(() => {
+    const string = value();
+    attr(dom, attribute, string);
+  });
+}
 function attr(dom, attribute, value) {
   value = value == null ? null : value + "";
   {
@@ -2045,7 +2286,8 @@ const set_getter = (object, key, getter) => {
   });
 };
 const svelte = {
-  setGetter: set_getter,
+  set_getter,
+  each_keyed,
   each_indexed,
   if_block,
   child,
@@ -2065,6 +2307,7 @@ const svelte = {
   text_effect,
   text,
   html,
+  attr_effect,
   attr,
   spread_props,
   mount,

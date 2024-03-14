@@ -13,23 +13,23 @@ T child<T extends Node>(Node node) {
 }
 
 @JS('child_frag')
-external Node _childFragment(DocumentFragment fragment, [bool isText]);
+external Node _childFragment(DocumentFragment fragment, [JSBoolean isText]);
 
 T childFragment<T extends Node>(DocumentFragment fragment, [bool? isText]) {
   if (isText == null) {
     return _childFragment(fragment) as T;
   }
 
-  return _childFragment(fragment, isText) as T;
+  return _childFragment(fragment, isText.toJS) as T;
 }
 
 @JS('sibling')
-external Node _sibling(Node node, [bool isText]);
+external Node _sibling(Node node, [JSBoolean isText]);
 
 T sibling<T extends Node>(Node node, [bool? isText]) {
   if (isText == null) {
     return _sibling(node) as T;
   }
 
-  return _sibling(node, isText) as T;
+  return _sibling(node, isText.toJS) as T;
 }

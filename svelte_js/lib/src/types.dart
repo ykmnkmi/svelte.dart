@@ -4,27 +4,31 @@ library;
 import 'dart:js_interop';
 
 import 'package:meta/meta.dart';
+import 'package:web/web.dart';
 
-extension type TemplateFactory(JSFunction templateFactory)
-    implements JSFunction {}
+extension type Template(JSFunction _) implements JSFunction {}
 
-extension type FragmentFactory(JSFunction fragmentFactory)
-    implements JSFunction {}
+extension type Fragment(JSFunction _) implements JSFunction {}
 
-extension type Block(JSObject block) implements JSObject {}
-
-@optionalTypeArgs
-extension type Signal<T>(JSObject signal) implements MaybeSignal<T> {}
+extension type Block(JSObject _) implements JSObject {}
 
 @optionalTypeArgs
-extension type SourceSignal<T>(JSObject sourceSignal) implements Signal<T> {}
+extension type Signal<T>(JSObject _) implements MaybeSignal<T> {}
 
 @optionalTypeArgs
-extension type ComputationSignal<T>(JSObject computationSignal)
-    implements Signal<T> {}
+extension type SourceSignal<T>(JSObject _) implements Signal<T> {}
 
-extension type EffectSignal(JSObject effectSignal)
+@optionalTypeArgs
+extension type ComputationSignal<T>(JSObject _) implements Signal<T> {}
+
+extension type EffectSignal(JSObject _)
     implements ComputationSignal<void Function()?> {}
 
 @optionalTypeArgs
-extension type MaybeSignal<T>(JSObject signalOrT) implements JSObject {}
+extension type MaybeSignal<T>(JSObject _) implements JSObject {}
+
+@optionalTypeArgs
+typedef Component<T extends JSObject> = void Function(
+    Node anchor, T properties);
+
+extension type ComponentReference(JSObject _) implements JSObject {}

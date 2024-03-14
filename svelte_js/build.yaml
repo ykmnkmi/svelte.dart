@@ -7,7 +7,7 @@ targets:
         options:
           native_null_assertions: false
           dart2js_args:
-            # - -O0
+            - -O0
             # - --disable-inlining
             # - --disable-type-inference
             # - --disable-rti-optimizations
@@ -23,11 +23,11 @@ targets:
             # - --no-native-null-assertions
             # - --omit-implicit-checks
 
-            - -O4
+            # - -O4
             # - --trust-primitives
 
             # - --csp
-            # - --enable-asserts
+            - --enable-asserts
             - --no-minify
             # - --no-source-maps
             # - --omit-as-casts

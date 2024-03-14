@@ -25,6 +25,7 @@ import 'examples/03_logic/00_if_blocks/app.dart' as if_blocks;
 import 'examples/03_logic/01_else_blocks/app.dart' as else_blocks;
 import 'examples/03_logic/02_else_if_blocks/app.dart' as else_if_blocks;
 import 'examples/03_logic/03_each_blocks/app.dart' as each_blocks;
+import 'examples/03_logic/04_keyed_each_blocks/app.dart' as keyed_each_blocks;
 
 Component getFactory(void Function(Node) component) {
   return (Node node, JSObject properties) {
@@ -49,6 +50,7 @@ Component? selectFactory(String name) {
     'else_blocks' => getFactory(else_blocks.app.call),
     'else_if_blocks' => getFactory(else_if_blocks.app.call),
     'each_blocks' => getFactory(each_blocks.app.call),
+    'keyed_each_blocks' => getFactory(keyed_each_blocks.app.call),
     _ => null,
   };
 }

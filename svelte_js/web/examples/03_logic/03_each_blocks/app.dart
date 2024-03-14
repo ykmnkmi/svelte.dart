@@ -20,8 +20,7 @@ const App app = App._(_component);
 
 final _eachBlock =
     $.template('<li><a target="_blank" rel="noreferrer"> </a></li>');
-// final _fragment = $.fragment('<h1>The Famous Cats of YouTube</h1> <ul></ul>');
-final _fragment = $.fragment('<h1>...</h1> <ul></ul>');
+final _fragment = $.fragment('<h1>The Famous Cats of YouTube</h1> <ul></ul>');
 
 void _component(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
@@ -43,13 +42,13 @@ void _component(Node $anchor, AppProperties $properties) {
     return $.get<List<Cat>>(cats);
   }
 
-  void ul$each$render(Node? $anchor, Signal<Cat> $item, int index) {
+  void ul$each$render(Node? $anchor, MaybeSignal<Cat> item, int index) {
     String id() {
-      return $.unwrap<Cat>($item).id;
+      return $.unwrap<Cat>(item).id;
     }
 
     String name() {
-      return $.unwrap<Cat>($item).name;
+      return $.unwrap<Cat>(item).name;
     }
 
     // Init
@@ -58,6 +57,7 @@ void _component(Node $anchor, AppProperties $properties) {
     var text = $.child<Text>(a);
     String? ahref;
 
+    // Update
     void ul$each$renderEffect() {
       if (ahref != (ahref = 'https://www.youtube.com/watch?v=${id()}')) {
         $.attr(a, 'href', ahref);
