@@ -12,18 +12,47 @@
 					"start": 7,
 					"end": 13,
 					"class": "SimpleIdentifier",
+					"toString": "things",
 					"token": {
 						"start": 7,
 						"end": 13,
 						"type": "IDENTIFIER",
 						"lexeme": "things"
 					},
+					"ancestorCascade": null,
+					"beginToken": {
+						"start": 7,
+						"end": 13,
+						"type": "IDENTIFIER",
+						"lexeme": "things"
+					},
+					"endToken": {
+						"start": 7,
+						"end": 13,
+						"type": "IDENTIFIER",
+						"lexeme": "things"
+					},
+					"isQualified": "@error { Null check operator used on a null value }",
+					"isSynthetic": false,
 					"name": "things"
 				},
 				"context": {
 					"start": 17,
 					"end": 22,
 					"class": "AssignedVariablePattern",
+					"toString": "thing",
+					"beginToken": {
+						"start": 17,
+						"end": 22,
+						"type": "IDENTIFIER",
+						"lexeme": "thing"
+					},
+					"endToken": {
+						"start": 17,
+						"end": 22,
+						"type": "IDENTIFIER",
+						"lexeme": "thing"
+					},
 					"name": {
 						"start": 17,
 						"end": 22,
@@ -36,12 +65,28 @@
 					"start": 24,
 					"end": 29,
 					"class": "SimpleIdentifier",
+					"toString": "thing",
 					"token": {
 						"start": 24,
 						"end": 29,
 						"type": "IDENTIFIER",
 						"lexeme": "thing"
 					},
+					"ancestorCascade": null,
+					"beginToken": {
+						"start": 24,
+						"end": 29,
+						"type": "IDENTIFIER",
+						"lexeme": "thing"
+					},
+					"endToken": {
+						"start": 24,
+						"end": 29,
+						"type": "IDENTIFIER",
+						"lexeme": "thing"
+					},
+					"isQualified": "@error { Null check operator used on a null value }",
+					"isSynthetic": false,
 					"name": "thing"
 				},
 				"children": [

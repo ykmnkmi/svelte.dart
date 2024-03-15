@@ -20,127 +20,86 @@
 							"start": 21,
 							"end": 37,
 							"class": "MethodInvocation",
-							"isCascaded": false,
-							"isNullAware": false,
-							"methodName": {
+							"toString": "t('tooltip msg')",
+							"operator": null,
+							"beginToken": {
+								"start": 21,
+								"end": 22,
+								"type": "IDENTIFIER",
+								"lexeme": "t"
+							},
+							"endToken": {
+								"start": 36,
+								"end": 37,
+								"type": "CLOSE_PAREN",
+								"lexeme": ")"
+							},
+							"function": {
 								"start": 21,
 								"end": 22,
 								"class": "SimpleIdentifier",
+								"toString": "t",
 								"token": {
 									"start": 21,
 									"end": 22,
 									"type": "IDENTIFIER",
 									"lexeme": "t"
 								},
+								"ancestorCascade": null,
+								"beginToken": {
+									"start": 21,
+									"end": 22,
+									"type": "IDENTIFIER",
+									"lexeme": "t"
+								},
+								"endToken": {
+									"start": 21,
+									"end": 22,
+									"type": "IDENTIFIER",
+									"lexeme": "t"
+								},
+								"isQualified": false,
+								"isSynthetic": false,
+								"name": "t"
+							},
+							"isCascaded": false,
+							"isNullAware": false,
+							"methodName": {
+								"start": 21,
+								"end": 22,
+								"class": "SimpleIdentifier",
+								"toString": "t",
+								"token": {
+									"start": 21,
+									"end": 22,
+									"type": "IDENTIFIER",
+									"lexeme": "t"
+								},
+								"ancestorCascade": null,
+								"beginToken": {
+									"start": 21,
+									"end": 22,
+									"type": "IDENTIFIER",
+									"lexeme": "t"
+								},
+								"endToken": {
+									"start": 21,
+									"end": 22,
+									"type": "IDENTIFIER",
+									"lexeme": "t"
+								},
+								"isQualified": false,
+								"isSynthetic": false,
 								"name": "t"
 							},
 							"realTarget": null,
 							"target": null,
-							"nullShortingTermination": {
-								"start": 21,
-								"end": 37,
-								"class": "MethodInvocation",
-								"isCascaded": false,
-								"isNullAware": false,
-								"methodName": {
-									"start": 21,
-									"end": 22,
-									"class": "SimpleIdentifier",
-									"token": {
-										"start": 21,
-										"end": 22,
-										"type": "IDENTIFIER",
-										"lexeme": "t"
-									},
-									"name": "t"
-								},
-								"realTarget": null,
-								"target": null,
-								"nullShortingTermination": "@seen",
-								"argumentList": {
-									"start": 22,
-									"end": 37,
-									"class": "ArgumentList",
-									"arguments": [
-										{
-											"start": 23,
-											"end": 36,
-											"class": "SimpleStringLiteral",
-											"literal": {
-												"start": 23,
-												"end": 36,
-												"type": "STRING",
-												"lexeme": "'tooltip msg'"
-											},
-											"value": "tooltip msg",
-											"isMultiline": false,
-											"isRaw": false,
-											"isSingleQuoted": true
-										}
-									],
-									"leftParenthesis": {
-										"start": 22,
-										"end": 23,
-										"type": "OPEN_PAREN",
-										"lexeme": "("
-									},
-									"rightParenthesis": {
-										"start": 36,
-										"end": 37,
-										"type": "CLOSE_PAREN",
-										"lexeme": ")"
-									},
-									"beginToken": {
-										"start": 22,
-										"end": 23,
-										"type": "OPEN_PAREN",
-										"lexeme": "("
-									},
-									"endToken": {
-										"start": 36,
-										"end": 37,
-										"type": "CLOSE_PAREN",
-										"lexeme": ")"
-									},
-									"isSynthetic": false,
-									"parent": "@seen",
-									"root": "@seen"
-								},
-								"function": {
-									"start": 21,
-									"end": 22,
-									"class": "SimpleIdentifier",
-									"token": {
-										"start": 21,
-										"end": 22,
-										"type": "IDENTIFIER",
-										"lexeme": "t"
-									},
-									"name": "t"
-								},
-								"typeArguments": null
-							},
+							"nullShortingTermination": "@seen { self }",
 							"argumentList": {
 								"start": 22,
 								"end": 37,
 								"class": "ArgumentList",
-								"arguments": [
-									{
-										"start": 23,
-										"end": 36,
-										"class": "SimpleStringLiteral",
-										"literal": {
-											"start": 23,
-											"end": 36,
-											"type": "STRING",
-											"lexeme": "'tooltip msg'"
-										},
-										"value": "tooltip msg",
-										"isMultiline": false,
-										"isRaw": false,
-										"isSingleQuoted": true
-									}
-								],
+								"toString": "('tooltip msg')",
 								"leftParenthesis": {
 									"start": 22,
 									"end": 23,
@@ -153,6 +112,37 @@
 									"type": "CLOSE_PAREN",
 									"lexeme": ")"
 								},
+								"arguments": [
+									{
+										"start": 23,
+										"end": 36,
+										"class": "SimpleStringLiteral",
+										"toString": "'tooltip msg'",
+										"literal": {
+											"start": 23,
+											"end": 36,
+											"type": "STRING",
+											"lexeme": "'tooltip msg'"
+										},
+										"value": "tooltip msg",
+										"beginToken": {
+											"start": 23,
+											"end": 36,
+											"type": "STRING",
+											"lexeme": "'tooltip msg'"
+										},
+										"endToken": {
+											"start": 23,
+											"end": 36,
+											"type": "STRING",
+											"lexeme": "'tooltip msg'"
+										},
+										"isMultiline": false,
+										"isRaw": false,
+										"isSingleQuoted": true,
+										"isSynthetic": false
+									}
+								],
 								"beginToken": {
 									"start": 22,
 									"end": 23,
@@ -165,91 +155,7 @@
 									"type": "CLOSE_PAREN",
 									"lexeme": ")"
 								},
-								"isSynthetic": false,
-								"parent": {
-									"start": 21,
-									"end": 37,
-									"class": "MethodInvocation",
-									"isCascaded": false,
-									"isNullAware": false,
-									"methodName": {
-										"start": 21,
-										"end": 22,
-										"class": "SimpleIdentifier",
-										"token": {
-											"start": 21,
-											"end": 22,
-											"type": "IDENTIFIER",
-											"lexeme": "t"
-										},
-										"name": "t"
-									},
-									"realTarget": null,
-									"target": null,
-									"nullShortingTermination": "@seen",
-									"argumentList": "@seen",
-									"function": {
-										"start": 21,
-										"end": 22,
-										"class": "SimpleIdentifier",
-										"token": {
-											"start": 21,
-											"end": 22,
-											"type": "IDENTIFIER",
-											"lexeme": "t"
-										},
-										"name": "t"
-									},
-									"typeArguments": null
-								},
-								"root": {
-									"start": 21,
-									"end": 37,
-									"class": "MethodInvocation",
-									"isCascaded": false,
-									"isNullAware": false,
-									"methodName": {
-										"start": 21,
-										"end": 22,
-										"class": "SimpleIdentifier",
-										"token": {
-											"start": 21,
-											"end": 22,
-											"type": "IDENTIFIER",
-											"lexeme": "t"
-										},
-										"name": "t"
-									},
-									"realTarget": null,
-									"target": null,
-									"nullShortingTermination": "@seen",
-									"argumentList": "@seen",
-									"function": {
-										"start": 21,
-										"end": 22,
-										"class": "SimpleIdentifier",
-										"token": {
-											"start": 21,
-											"end": 22,
-											"type": "IDENTIFIER",
-											"lexeme": "t"
-										},
-										"name": "t"
-									},
-									"typeArguments": null
-								}
-							},
-							"function": {
-								"start": 21,
-								"end": 22,
-								"class": "SimpleIdentifier",
-								"token": {
-									"start": 21,
-									"end": 22,
-									"type": "IDENTIFIER",
-									"lexeme": "t"
-								},
-								"name": "t"
+								"isSynthetic": false
 							},
 							"typeArguments": null
 						}

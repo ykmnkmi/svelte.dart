@@ -24,12 +24,28 @@
 									"start": 20,
 									"end": 28,
 									"class": "SimpleIdentifier",
+									"toString": "readonly",
 									"token": {
 										"start": 20,
 										"end": 28,
 										"type": "IDENTIFIER",
 										"lexeme": "readonly"
 									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 20,
+										"end": 28,
+										"type": "IDENTIFIER",
+										"lexeme": "readonly"
+									},
+									"endToken": {
+										"start": 20,
+										"end": 28,
+										"type": "IDENTIFIER",
+										"lexeme": "readonly"
+									},
+									"isQualified": "@error { Null check operator used on a null value }",
+									"isSynthetic": false,
 									"name": "readonly"
 								}
 							}

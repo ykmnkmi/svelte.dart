@@ -76,11 +76,6 @@ extension ScriptParser on Parser {
           } else if (next case Token(type: Keyword.IMPORT)) {
             next = parser.parseImport(next);
             directives.add(builder.directives.removeLast());
-
-            if (builder.pop() is! Token) {
-              throw StateError("Expected a 'import' token.");
-            }
-
             next = next.next!;
           } else if (next case Token(type: Keyword.EXPORT || Keyword.PART)) {
             throw UnimplementedError();
@@ -92,7 +87,7 @@ extension ScriptParser on Parser {
 
             if (declaration.variables.variables.length != 1) {
               // TODO(ast): Change exception type.
-              throw Exception('Expected a single variable declaration.');
+              throw StateError('Expected a single variable declaration.');
             }
 
             properties.add(declaration);
@@ -109,7 +104,7 @@ extension ScriptParser on Parser {
 
             if (pop is! Statement) {
               // TODO(ast): Change exception type.
-              throw Exception('Expected a statement.');
+              throw StateError('Expected a statement.');
             }
 
             nodes.add(pop);

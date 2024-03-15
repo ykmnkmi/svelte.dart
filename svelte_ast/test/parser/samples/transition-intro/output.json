@@ -22,44 +22,7 @@
 							"start": 16,
 							"end": 28,
 							"class": "SetOrMapLiteral",
-							"elements": [
-								{
-									"start": 17,
-									"end": 27,
-									"class": "MapLiteralEntry",
-									"key": {
-										"start": 17,
-										"end": 24,
-										"class": "SimpleIdentifier",
-										"token": {
-											"start": 17,
-											"end": 24,
-											"type": "IDENTIFIER",
-											"lexeme": "opacity"
-										},
-										"name": "opacity"
-									},
-									"separator": {
-										"start": 24,
-										"end": 25,
-										"type": "COLON",
-										"lexeme": ":"
-									},
-									"value": {
-										"start": 26,
-										"end": 27,
-										"class": "IntegerLiteral",
-										"literal": {
-											"start": 26,
-											"end": 27,
-											"type": "INT",
-											"lexeme": "0"
-										}
-									}
-								}
-							],
-							"isMap": false,
-							"isSet": false,
+							"toString": "{opacity : 0}",
 							"leftBracket": {
 								"start": 16,
 								"end": 17,
@@ -72,6 +35,100 @@
 								"type": "CLOSE_CURLY_BRACKET",
 								"lexeme": "}"
 							},
+							"beginToken": {
+								"start": 16,
+								"end": 17,
+								"type": "OPEN_CURLY_BRACKET",
+								"lexeme": "{"
+							},
+							"elements": [
+								{
+									"start": 17,
+									"end": 27,
+									"class": "MapLiteralEntry",
+									"toString": "opacity : 0",
+									"separator": {
+										"start": 24,
+										"end": 25,
+										"type": "COLON",
+										"lexeme": ":"
+									},
+									"beginToken": {
+										"start": 17,
+										"end": 24,
+										"type": "IDENTIFIER",
+										"lexeme": "opacity"
+									},
+									"endToken": {
+										"start": 26,
+										"end": 27,
+										"type": "INT",
+										"lexeme": "0"
+									},
+									"key": {
+										"start": 17,
+										"end": 24,
+										"class": "SimpleIdentifier",
+										"toString": "opacity",
+										"token": {
+											"start": 17,
+											"end": 24,
+											"type": "IDENTIFIER",
+											"lexeme": "opacity"
+										},
+										"ancestorCascade": null,
+										"beginToken": {
+											"start": 17,
+											"end": 24,
+											"type": "IDENTIFIER",
+											"lexeme": "opacity"
+										},
+										"endToken": {
+											"start": 17,
+											"end": 24,
+											"type": "IDENTIFIER",
+											"lexeme": "opacity"
+										},
+										"isQualified": false,
+										"isSynthetic": false,
+										"name": "opacity"
+									},
+									"value": {
+										"start": 26,
+										"end": 27,
+										"class": "IntegerLiteral",
+										"toString": "0",
+										"literal": {
+											"start": 26,
+											"end": 27,
+											"type": "INT",
+											"lexeme": "0"
+										},
+										"beginToken": {
+											"start": 26,
+											"end": 27,
+											"type": "INT",
+											"lexeme": "0"
+										},
+										"endToken": {
+											"start": 26,
+											"end": 27,
+											"type": "INT",
+											"lexeme": "0"
+										},
+										"immediatelyNegated": false
+									}
+								}
+							],
+							"endToken": {
+								"start": 27,
+								"end": 28,
+								"type": "CLOSE_CURLY_BRACKET",
+								"lexeme": "}"
+							},
+							"isMap": false,
+							"isSet": false,
+							"constKeyword": null,
 							"isConst": false,
 							"typeArguments": null
 						}

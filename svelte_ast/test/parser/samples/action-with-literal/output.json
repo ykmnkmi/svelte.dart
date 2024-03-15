@@ -20,6 +20,7 @@
 							"start": 21,
 							"end": 34,
 							"class": "SimpleStringLiteral",
+							"toString": "'tooltip msg'",
 							"literal": {
 								"start": 21,
 								"end": 34,
@@ -27,9 +28,22 @@
 								"lexeme": "'tooltip msg'"
 							},
 							"value": "tooltip msg",
+							"beginToken": {
+								"start": 21,
+								"end": 34,
+								"type": "STRING",
+								"lexeme": "'tooltip msg'"
+							},
+							"endToken": {
+								"start": 21,
+								"end": 34,
+								"type": "STRING",
+								"lexeme": "'tooltip msg'"
+							},
 							"isMultiline": false,
 							"isRaw": false,
-							"isSingleQuoted": true
+							"isSingleQuoted": true,
+							"isSynthetic": false
 						}
 					}
 				],

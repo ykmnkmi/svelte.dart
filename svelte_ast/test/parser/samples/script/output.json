@@ -33,12 +33,28 @@
 							"start": 52,
 							"end": 56,
 							"class": "SimpleIdentifier",
+							"toString": "name",
 							"token": {
 								"start": 52,
 								"end": 56,
 								"type": "IDENTIFIER",
 								"lexeme": "name"
 							},
+							"ancestorCascade": null,
+							"beginToken": {
+								"start": 52,
+								"end": 56,
+								"type": "IDENTIFIER",
+								"lexeme": "name"
+							},
+							"endToken": {
+								"start": 52,
+								"end": 56,
+								"type": "IDENTIFIER",
+								"lexeme": "name"
+							},
+							"isQualified": "@error { Null check operator used on a null value }",
+							"isSynthetic": false,
 							"name": "name"
 						}
 					},
@@ -63,70 +79,28 @@
 			"end": 30,
 			"data": "\n\tvar name = 'world';\n"
 		},
-		"body": [
-			{
-				"start": 10,
-				"end": 29,
-				"class": "VariableDeclarationStatement",
-				"semicolon": {
-					"start": 28,
-					"end": 29,
-					"type": "SEMICOLON",
-					"lexeme": ";"
-				},
-				"variables": {
+		"body": {
+			"directives": [],
+			"externals": [],
+			"body": [
+				{
 					"start": 10,
-					"end": 28,
-					"class": "VariableDeclarationList",
-					"isConst": false,
-					"isFinal": false,
-					"isLate": false,
-					"type": null,
-					"variables": [
-						{
-							"start": 14,
-							"end": 28,
-							"class": "VariableDeclaration",
-							"initializer": {
-								"start": 21,
-								"end": 28,
-								"class": "SimpleStringLiteral",
-								"literal": {
-									"start": 21,
-									"end": 28,
-									"type": "STRING",
-									"lexeme": "'world'"
-								},
-								"value": "world",
-								"isMultiline": false,
-								"isRaw": false,
-								"isSingleQuoted": true
-							},
-							"isConst": false,
-							"isFinal": false,
-							"isLate": false,
-							"name": {
-								"start": 14,
-								"end": 18,
-								"type": "IDENTIFIER",
-								"lexeme": "name"
-							}
-						}
-					],
-					"documentationComment": null,
-					"firstTokenAfterCommentAndMetadata": {
+					"end": 29,
+					"class": "VariableDeclarationStatement",
+					"toString": "var name = 'world';",
+					"semicolon": {
+						"start": 28,
+						"end": 29,
+						"type": "SEMICOLON",
+						"lexeme": ";"
+					},
+					"beginToken": {
 						"start": 10,
 						"end": 13,
 						"type": "VAR",
 						"lexeme": "var"
 					},
-					"metadata": []
-				},
-				"unlabeled": {
-					"start": 10,
-					"end": 29,
-					"class": "VariableDeclarationStatement",
-					"semicolon": {
+					"endToken": {
 						"start": 28,
 						"end": 29,
 						"type": "SEMICOLON",
@@ -136,6 +110,26 @@
 						"start": 10,
 						"end": 28,
 						"class": "VariableDeclarationList",
+						"toString": "var name = 'world'",
+						"keyword": {
+							"start": 10,
+							"end": 13,
+							"type": "VAR",
+							"lexeme": "var"
+						},
+						"lateKeyword": null,
+						"endToken": {
+							"start": 21,
+							"end": 28,
+							"type": "STRING",
+							"lexeme": "'world'"
+						},
+						"firstTokenAfterCommentAndMetadata": {
+							"start": 10,
+							"end": 13,
+							"type": "VAR",
+							"lexeme": "var"
+						},
 						"isConst": false,
 						"isFinal": false,
 						"isLate": false,
@@ -145,10 +139,38 @@
 								"start": 14,
 								"end": 28,
 								"class": "VariableDeclaration",
+								"toString": "name = 'world'",
+								"name": {
+									"start": 14,
+									"end": 18,
+									"type": "IDENTIFIER",
+									"lexeme": "name"
+								},
+								"equals": {
+									"start": 19,
+									"end": 20,
+									"type": "EQ",
+									"lexeme": "="
+								},
+								"hasInitializer": false,
+								"documentationComment": null,
+								"endToken": {
+									"start": 21,
+									"end": 28,
+									"type": "STRING",
+									"lexeme": "'world'"
+								},
+								"firstTokenAfterCommentAndMetadata": {
+									"start": 14,
+									"end": 18,
+									"type": "IDENTIFIER",
+									"lexeme": "name"
+								},
 								"initializer": {
 									"start": 21,
 									"end": 28,
 									"class": "SimpleStringLiteral",
+									"toString": "'world'",
 									"literal": {
 										"start": 21,
 										"end": 28,
@@ -156,33 +178,34 @@
 										"lexeme": "'world'"
 									},
 									"value": "world",
+									"beginToken": {
+										"start": 21,
+										"end": 28,
+										"type": "STRING",
+										"lexeme": "'world'"
+									},
+									"endToken": {
+										"start": 21,
+										"end": 28,
+										"type": "STRING",
+										"lexeme": "'world'"
+									},
 									"isMultiline": false,
 									"isRaw": false,
-									"isSingleQuoted": true
+									"isSingleQuoted": true,
+									"isSynthetic": false
 								},
 								"isConst": false,
 								"isFinal": false,
-								"isLate": false,
-								"name": {
-									"start": 14,
-									"end": 18,
-									"type": "IDENTIFIER",
-									"lexeme": "name"
-								}
+								"isLate": false
 							}
 						],
 						"documentationComment": null,
-						"firstTokenAfterCommentAndMetadata": {
-							"start": 10,
-							"end": 13,
-							"type": "VAR",
-							"lexeme": "var"
-						},
-						"metadata": []
-					},
-					"unlabeled": "@seen"
+						"metadata": [],
+						"sortedCommentAndAnnotations": []
+					}
 				}
-			}
-		]
+			]
+		}
 	}
 }

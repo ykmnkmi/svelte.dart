@@ -18,12 +18,28 @@
 							"start": 9,
 							"end": 14,
 							"class": "SimpleIdentifier",
+							"toString": "props",
 							"token": {
 								"start": 9,
 								"end": 14,
 								"type": "IDENTIFIER",
 								"lexeme": "props"
 							},
+							"ancestorCascade": null,
+							"beginToken": {
+								"start": 9,
+								"end": 14,
+								"type": "IDENTIFIER",
+								"lexeme": "props"
+							},
+							"endToken": {
+								"start": 9,
+								"end": 14,
+								"type": "IDENTIFIER",
+								"lexeme": "props"
+							},
+							"isQualified": "@error { Null check operator used on a null value }",
+							"isSynthetic": false,
 							"name": "props"
 						}
 					}

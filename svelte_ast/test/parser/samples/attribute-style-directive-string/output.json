@@ -128,12 +128,28 @@
 									"start": 110,
 									"end": 118,
 									"class": "SimpleIdentifier",
+									"toString": "variable",
 									"token": {
 										"start": 110,
 										"end": 118,
 										"type": "IDENTIFIER",
 										"lexeme": "variable"
 									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 110,
+										"end": 118,
+										"type": "IDENTIFIER",
+										"lexeme": "variable"
+									},
+									"endToken": {
+										"start": 110,
+										"end": 118,
+										"type": "IDENTIFIER",
+										"lexeme": "variable"
+									},
+									"isQualified": "@error { Null check operator used on a null value }",
+									"isSynthetic": false,
 									"name": "variable"
 								}
 							}
@@ -177,12 +193,28 @@
 									"start": 150,
 									"end": 158,
 									"class": "SimpleIdentifier",
+									"toString": "variable",
 									"token": {
 										"start": 150,
 										"end": 158,
 										"type": "IDENTIFIER",
 										"lexeme": "variable"
 									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 150,
+										"end": 158,
+										"type": "IDENTIFIER",
+										"lexeme": "variable"
+									},
+									"endToken": {
+										"start": 150,
+										"end": 158,
+										"type": "IDENTIFIER",
+										"lexeme": "variable"
+									},
+									"isQualified": "@error { Null check operator used on a null value }",
+									"isSynthetic": false,
 									"name": "variable"
 								}
 							}
@@ -226,12 +258,28 @@
 									"start": 189,
 									"end": 197,
 									"class": "SimpleIdentifier",
+									"toString": "variable",
 									"token": {
 										"start": 189,
 										"end": 197,
 										"type": "IDENTIFIER",
 										"lexeme": "variable"
 									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 189,
+										"end": 197,
+										"type": "IDENTIFIER",
+										"lexeme": "variable"
+									},
+									"endToken": {
+										"start": 189,
+										"end": 197,
+										"type": "IDENTIFIER",
+										"lexeme": "variable"
+									},
+									"isQualified": "@error { Null check operator used on a null value }",
+									"isSynthetic": false,
 									"name": "variable"
 								}
 							}
@@ -268,82 +316,177 @@
 									"start": 224,
 									"end": 242,
 									"class": "StringInterpolation",
+									"toString": "'template$literal'",
+									"beginToken": {
+										"start": 224,
+										"end": 233,
+										"type": "STRING",
+										"lexeme": "'template"
+									},
 									"elements": [
 										{
 											"start": 224,
 											"end": 233,
 											"class": "InterpolationString",
+											"toString": "'template",
 											"contents": {
 												"start": 224,
 												"end": 233,
 												"type": "STRING",
 												"lexeme": "'template"
 											},
-											"value": "template"
+											"value": "template",
+											"beginToken": {
+												"start": 224,
+												"end": 233,
+												"type": "STRING",
+												"lexeme": "'template"
+											},
+											"endToken": {
+												"start": 224,
+												"end": 233,
+												"type": "STRING",
+												"lexeme": "'template"
+											}
 										},
 										{
 											"start": 233,
 											"end": 241,
 											"class": "InterpolationExpression",
+											"toString": "$literal",
+											"leftBracket": {
+												"start": 233,
+												"end": 234,
+												"type": "STRING_INTERPOLATION_IDENTIFIER",
+												"lexeme": "$"
+											},
+											"rightBracket": null,
+											"beginToken": {
+												"start": 233,
+												"end": 234,
+												"type": "STRING_INTERPOLATION_IDENTIFIER",
+												"lexeme": "$"
+											},
+											"endToken": {
+												"start": 234,
+												"end": 241,
+												"type": "IDENTIFIER",
+												"lexeme": "literal"
+											},
 											"expression": {
 												"start": 234,
 												"end": 241,
 												"class": "SimpleIdentifier",
+												"toString": "literal",
 												"token": {
 													"start": 234,
 													"end": 241,
 													"type": "IDENTIFIER",
 													"lexeme": "literal"
 												},
+												"ancestorCascade": null,
+												"beginToken": {
+													"start": 234,
+													"end": 241,
+													"type": "IDENTIFIER",
+													"lexeme": "literal"
+												},
+												"endToken": {
+													"start": 234,
+													"end": 241,
+													"type": "IDENTIFIER",
+													"lexeme": "literal"
+												},
+												"isQualified": false,
+												"isSynthetic": false,
 												"name": "literal"
-											},
-											"leftBracket": {
-												"start": 233,
-												"end": 234,
-												"type": "STRING_INTERPOLATION_IDENTIFIER",
-												"lexeme": "$"
 											}
 										},
 										{
 											"start": 241,
 											"end": 242,
 											"class": "InterpolationString",
+											"toString": "'",
 											"contents": {
 												"start": 241,
 												"end": 242,
 												"type": "STRING",
 												"lexeme": "'"
 											},
-											"value": ""
+											"value": "",
+											"beginToken": {
+												"start": 241,
+												"end": 242,
+												"type": "STRING",
+												"lexeme": "'"
+											},
+											"endToken": {
+												"start": 241,
+												"end": 242,
+												"type": "STRING",
+												"lexeme": "'"
+											}
 										}
 									],
+									"endToken": {
+										"start": 241,
+										"end": 242,
+										"type": "STRING",
+										"lexeme": "'"
+									},
 									"firstString": {
 										"start": 224,
 										"end": 233,
 										"class": "InterpolationString",
+										"toString": "'template",
 										"contents": {
 											"start": 224,
 											"end": 233,
 											"type": "STRING",
 											"lexeme": "'template"
 										},
-										"value": "template"
+										"value": "template",
+										"beginToken": {
+											"start": 224,
+											"end": 233,
+											"type": "STRING",
+											"lexeme": "'template"
+										},
+										"endToken": {
+											"start": 224,
+											"end": 233,
+											"type": "STRING",
+											"lexeme": "'template"
+										}
 									},
+									"isMultiline": false,
+									"isRaw": false,
+									"isSingleQuoted": true,
 									"lastString": {
 										"start": 241,
 										"end": 242,
 										"class": "InterpolationString",
+										"toString": "'",
 										"contents": {
 											"start": 241,
 											"end": 242,
 											"type": "STRING",
 											"lexeme": "'"
 										},
-										"value": ""
-									},
-									"isMultiline": false,
-									"isRaw": false,
-									"isSingleQuoted": true
+										"value": "",
+										"beginToken": {
+											"start": 241,
+											"end": 242,
+											"type": "STRING",
+											"lexeme": "'"
+										},
+										"endToken": {
+											"start": 241,
+											"end": 242,
+											"type": "STRING",
+											"lexeme": "'"
+										}
+									}
 								}
 							}
 						]

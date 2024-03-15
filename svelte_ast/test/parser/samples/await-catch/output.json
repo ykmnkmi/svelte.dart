@@ -12,12 +12,28 @@
 					"start": 8,
 					"end": 18,
 					"class": "SimpleIdentifier",
+					"toString": "thePromise",
 					"token": {
 						"start": 8,
 						"end": 18,
 						"type": "IDENTIFIER",
 						"lexeme": "thePromise"
 					},
+					"ancestorCascade": null,
+					"beginToken": {
+						"start": 8,
+						"end": 18,
+						"type": "IDENTIFIER",
+						"lexeme": "thePromise"
+					},
+					"endToken": {
+						"start": 8,
+						"end": 18,
+						"type": "IDENTIFIER",
+						"lexeme": "thePromise"
+					},
+					"isQualified": "@error { Null check operator used on a null value }",
+					"isSynthetic": false,
 					"name": "thePromise"
 				},
 				"value": null,
@@ -25,6 +41,19 @@
 					"start": 47,
 					"end": 55,
 					"class": "AssignedVariablePattern",
+					"toString": "theError",
+					"beginToken": {
+						"start": 47,
+						"end": 55,
+						"type": "IDENTIFIER",
+						"lexeme": "theError"
+					},
+					"endToken": {
+						"start": 47,
+						"end": 55,
+						"type": "IDENTIFIER",
+						"lexeme": "theError"
+					},
 					"name": {
 						"start": 47,
 						"end": 55,
@@ -104,38 +133,83 @@
 										"start": 69,
 										"end": 85,
 										"class": "PrefixedIdentifier",
-										"identifier": {
-											"start": 78,
-											"end": 85,
-											"class": "SimpleIdentifier",
-											"token": {
-												"start": 78,
-												"end": 85,
-												"type": "IDENTIFIER",
-												"lexeme": "message"
-											},
-											"name": "message"
-										},
-										"isDeferred": false,
+										"toString": "theError.message",
 										"period": {
 											"start": 77,
 											"end": 78,
 											"type": "PERIOD",
 											"lexeme": "."
 										},
+										"beginToken": {
+											"start": 69,
+											"end": 77,
+											"type": "IDENTIFIER",
+											"lexeme": "theError"
+										},
+										"endToken": {
+											"start": 78,
+											"end": 85,
+											"type": "IDENTIFIER",
+											"lexeme": "message"
+										},
+										"identifier": {
+											"start": 78,
+											"end": 85,
+											"class": "SimpleIdentifier",
+											"toString": "message",
+											"token": {
+												"start": 78,
+												"end": 85,
+												"type": "IDENTIFIER",
+												"lexeme": "message"
+											},
+											"ancestorCascade": null,
+											"beginToken": {
+												"start": 78,
+												"end": 85,
+												"type": "IDENTIFIER",
+												"lexeme": "message"
+											},
+											"endToken": {
+												"start": 78,
+												"end": 85,
+												"type": "IDENTIFIER",
+												"lexeme": "message"
+											},
+											"isQualified": true,
+											"isSynthetic": false,
+											"name": "message"
+										},
+										"isDeferred": false,
+										"name": "theError.message",
 										"prefix": {
 											"start": 69,
 											"end": 77,
 											"class": "SimpleIdentifier",
+											"toString": "theError",
 											"token": {
 												"start": 69,
 												"end": 77,
 												"type": "IDENTIFIER",
 												"lexeme": "theError"
 											},
+											"ancestorCascade": null,
+											"beginToken": {
+												"start": 69,
+												"end": 77,
+												"type": "IDENTIFIER",
+												"lexeme": "theError"
+											},
+											"endToken": {
+												"start": 69,
+												"end": 77,
+												"type": "IDENTIFIER",
+												"lexeme": "theError"
+											},
+											"isQualified": false,
+											"isSynthetic": false,
 											"name": "theError"
-										},
-										"name": "theError.message"
+										}
 									}
 								}
 							]

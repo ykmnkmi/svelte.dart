@@ -39,6 +39,7 @@
 									"start": 13,
 									"end": 15,
 									"class": "SimpleStringLiteral",
+									"toString": "''",
 									"literal": {
 										"start": 13,
 										"end": 15,
@@ -46,9 +47,22 @@
 										"lexeme": "''"
 									},
 									"value": "",
+									"beginToken": {
+										"start": 13,
+										"end": 15,
+										"type": "STRING",
+										"lexeme": "''"
+									},
+									"endToken": {
+										"start": 13,
+										"end": 15,
+										"type": "STRING",
+										"lexeme": "''"
+									},
 									"isMultiline": false,
 									"isRaw": false,
-									"isSingleQuoted": true
+									"isSingleQuoted": true,
+									"isSynthetic": false
 								}
 							}
 						]
@@ -82,6 +96,7 @@
 									"start": 26,
 									"end": 28,
 									"class": "SimpleStringLiteral",
+									"toString": "''",
 									"literal": {
 										"start": 26,
 										"end": 28,
@@ -89,9 +104,22 @@
 										"lexeme": "''"
 									},
 									"value": "",
+									"beginToken": {
+										"start": 26,
+										"end": 28,
+										"type": "STRING",
+										"lexeme": "''"
+									},
+									"endToken": {
+										"start": 26,
+										"end": 28,
+										"type": "STRING",
+										"lexeme": "''"
+									},
 									"isMultiline": false,
 									"isRaw": false,
-									"isSingleQuoted": true
+									"isSingleQuoted": true,
+									"isSynthetic": false
 								}
 							}
 						]

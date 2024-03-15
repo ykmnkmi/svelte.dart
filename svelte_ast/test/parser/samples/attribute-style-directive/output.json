@@ -25,12 +25,28 @@
 									"start": 18,
 									"end": 25,
 									"class": "SimpleIdentifier",
+									"toString": "myColor",
 									"token": {
 										"start": 18,
 										"end": 25,
 										"type": "IDENTIFIER",
 										"lexeme": "myColor"
 									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 18,
+										"end": 25,
+										"type": "IDENTIFIER",
+										"lexeme": "myColor"
+									},
+									"endToken": {
+										"start": 18,
+										"end": 25,
+										"type": "IDENTIFIER",
+										"lexeme": "myColor"
+									},
+									"isQualified": "@error { Null check operator used on a null value }",
+									"isSynthetic": false,
 									"name": "myColor"
 								}
 							}

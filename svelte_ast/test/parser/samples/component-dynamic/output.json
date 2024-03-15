@@ -13,112 +13,118 @@
 					"start": 25,
 					"end": 40,
 					"class": "ConditionalExpression",
-					"colon": {
-						"start": 35,
-						"end": 36,
-						"type": "COLON",
-						"lexeme": ":"
-					},
-					"condition": {
-						"start": 25,
-						"end": 28,
-						"class": "SimpleIdentifier",
-						"token": {
-							"start": 25,
-							"end": 28,
-							"type": "IDENTIFIER",
-							"lexeme": "foo"
-						},
-						"name": "foo"
-					},
-					"elseExpression": {
-						"start": 37,
-						"end": 40,
-						"class": "SimpleIdentifier",
-						"token": {
-							"start": 37,
-							"end": 40,
-							"type": "IDENTIFIER",
-							"lexeme": "Bar"
-						},
-						"name": "Bar"
-					},
+					"toString": "foo ? Foo : Bar",
 					"question": {
 						"start": 29,
 						"end": 30,
 						"type": "QUESTION",
 						"lexeme": "?"
 					},
+					"colon": {
+						"start": 35,
+						"end": 36,
+						"type": "COLON",
+						"lexeme": ":"
+					},
+					"beginToken": {
+						"start": 25,
+						"end": 28,
+						"type": "IDENTIFIER",
+						"lexeme": "foo"
+					},
+					"condition": {
+						"start": 25,
+						"end": 28,
+						"class": "SimpleIdentifier",
+						"toString": "foo",
+						"token": {
+							"start": 25,
+							"end": 28,
+							"type": "IDENTIFIER",
+							"lexeme": "foo"
+						},
+						"ancestorCascade": null,
+						"beginToken": {
+							"start": 25,
+							"end": 28,
+							"type": "IDENTIFIER",
+							"lexeme": "foo"
+						},
+						"endToken": {
+							"start": 25,
+							"end": 28,
+							"type": "IDENTIFIER",
+							"lexeme": "foo"
+						},
+						"isQualified": false,
+						"isSynthetic": false,
+						"name": "foo"
+					},
+					"elseExpression": {
+						"start": 37,
+						"end": 40,
+						"class": "SimpleIdentifier",
+						"toString": "Bar",
+						"token": {
+							"start": 37,
+							"end": 40,
+							"type": "IDENTIFIER",
+							"lexeme": "Bar"
+						},
+						"ancestorCascade": null,
+						"beginToken": {
+							"start": 37,
+							"end": 40,
+							"type": "IDENTIFIER",
+							"lexeme": "Bar"
+						},
+						"endToken": {
+							"start": 37,
+							"end": 40,
+							"type": "IDENTIFIER",
+							"lexeme": "Bar"
+						},
+						"isQualified": false,
+						"isSynthetic": false,
+						"name": "Bar"
+					},
+					"endToken": {
+						"start": 37,
+						"end": 40,
+						"type": "IDENTIFIER",
+						"lexeme": "Bar"
+					},
 					"thenExpression": {
 						"start": 31,
 						"end": 34,
 						"class": "SimpleIdentifier",
+						"toString": "Foo",
 						"token": {
 							"start": 31,
 							"end": 34,
 							"type": "IDENTIFIER",
 							"lexeme": "Foo"
 						},
+						"ancestorCascade": null,
+						"beginToken": {
+							"start": 31,
+							"end": 34,
+							"type": "IDENTIFIER",
+							"lexeme": "Foo"
+						},
+						"endToken": {
+							"start": 31,
+							"end": 34,
+							"type": "IDENTIFIER",
+							"lexeme": "Foo"
+						},
+						"isQualified": false,
+						"isSynthetic": false,
 						"name": "Foo"
 					},
 					"inConstantContext": false,
 					"isAssignable": false,
-					"unParenthesized": {
-						"start": 25,
-						"end": 40,
-						"class": "ConditionalExpression",
-						"colon": {
-							"start": 35,
-							"end": 36,
-							"type": "COLON",
-							"lexeme": ":"
-						},
-						"condition": {
-							"start": 25,
-							"end": 28,
-							"class": "SimpleIdentifier",
-							"token": {
-								"start": 25,
-								"end": 28,
-								"type": "IDENTIFIER",
-								"lexeme": "foo"
-							},
-							"name": "foo"
-						},
-						"elseExpression": {
-							"start": 37,
-							"end": 40,
-							"class": "SimpleIdentifier",
-							"token": {
-								"start": 37,
-								"end": 40,
-								"type": "IDENTIFIER",
-								"lexeme": "Bar"
-							},
-							"name": "Bar"
-						},
-						"question": {
-							"start": 29,
-							"end": 30,
-							"type": "QUESTION",
-							"lexeme": "?"
-						},
-						"thenExpression": {
-							"start": 31,
-							"end": 34,
-							"class": "SimpleIdentifier",
-							"token": {
-								"start": 31,
-								"end": 34,
-								"type": "IDENTIFIER",
-								"lexeme": "Foo"
-							},
-							"name": "Foo"
-						},
-						"inConstantContext": false,
-						"isAssignable": false,
-						"unParenthesized": "@seen"
-					}
+					"unParenthesized": "@seen { self }"
 				},
 				"attributes": [],
 				"children": []

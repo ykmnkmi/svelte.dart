@@ -31,12 +31,28 @@
 									"start": 20,
 									"end": 25,
 									"class": "SimpleIdentifier",
+									"toString": "color",
 									"token": {
 										"start": 20,
 										"end": 25,
 										"type": "IDENTIFIER",
 										"lexeme": "color"
 									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 20,
+										"end": 25,
+										"type": "IDENTIFIER",
+										"lexeme": "color"
+									},
+									"endToken": {
+										"start": 20,
+										"end": 25,
+										"type": "IDENTIFIER",
+										"lexeme": "color"
+									},
+									"isQualified": "@error { Null check operator used on a null value }",
+									"isSynthetic": false,
 									"name": "color"
 								}
 							},
@@ -59,12 +75,28 @@
 							"start": 30,
 							"end": 35,
 							"class": "SimpleIdentifier",
+							"toString": "color",
 							"token": {
 								"start": 30,
 								"end": 35,
 								"type": "IDENTIFIER",
 								"lexeme": "color"
 							},
+							"ancestorCascade": null,
+							"beginToken": {
+								"start": 30,
+								"end": 35,
+								"type": "IDENTIFIER",
+								"lexeme": "color"
+							},
+							"endToken": {
+								"start": 30,
+								"end": 35,
+								"type": "IDENTIFIER",
+								"lexeme": "color"
+							},
+							"isQualified": "@error { Null check operator used on a null value }",
+							"isSynthetic": false,
 							"name": "color"
 						}
 					}

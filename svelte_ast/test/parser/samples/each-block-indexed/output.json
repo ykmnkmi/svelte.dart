@@ -12,18 +12,47 @@
 					"start": 7,
 					"end": 14,
 					"class": "SimpleIdentifier",
+					"toString": "animals",
 					"token": {
 						"start": 7,
 						"end": 14,
 						"type": "IDENTIFIER",
 						"lexeme": "animals"
 					},
+					"ancestorCascade": null,
+					"beginToken": {
+						"start": 7,
+						"end": 14,
+						"type": "IDENTIFIER",
+						"lexeme": "animals"
+					},
+					"endToken": {
+						"start": 7,
+						"end": 14,
+						"type": "IDENTIFIER",
+						"lexeme": "animals"
+					},
+					"isQualified": "@error { Null check operator used on a null value }",
+					"isSynthetic": false,
 					"name": "animals"
 				},
 				"context": {
 					"start": 18,
 					"end": 24,
 					"class": "AssignedVariablePattern",
+					"toString": "animal",
+					"beginToken": {
+						"start": 18,
+						"end": 24,
+						"type": "IDENTIFIER",
+						"lexeme": "animal"
+					},
+					"endToken": {
+						"start": 18,
+						"end": 24,
+						"type": "IDENTIFIER",
+						"lexeme": "animal"
+					},
 					"name": {
 						"start": 18,
 						"end": 24,
@@ -49,12 +78,28 @@
 									"start": 34,
 									"end": 35,
 									"class": "SimpleIdentifier",
+									"toString": "i",
 									"token": {
 										"start": 34,
 										"end": 35,
 										"type": "IDENTIFIER",
 										"lexeme": "i"
 									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 34,
+										"end": 35,
+										"type": "IDENTIFIER",
+										"lexeme": "i"
+									},
+									"endToken": {
+										"start": 34,
+										"end": 35,
+										"type": "IDENTIFIER",
+										"lexeme": "i"
+									},
+									"isQualified": "@error { Null check operator used on a null value }",
+									"isSynthetic": false,
 									"name": "i"
 								}
 							},
@@ -73,12 +118,28 @@
 									"start": 39,
 									"end": 45,
 									"class": "SimpleIdentifier",
+									"toString": "animal",
 									"token": {
 										"start": 39,
 										"end": 45,
 										"type": "IDENTIFIER",
 										"lexeme": "animal"
 									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 39,
+										"end": 45,
+										"type": "IDENTIFIER",
+										"lexeme": "animal"
+									},
+									"endToken": {
+										"start": 39,
+										"end": 45,
+										"type": "IDENTIFIER",
+										"lexeme": "animal"
+									},
+									"isQualified": "@error { Null check operator used on a null value }",
+									"isSynthetic": false,
 									"name": "animal"
 								}
 							}

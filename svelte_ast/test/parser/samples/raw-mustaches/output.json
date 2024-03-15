@@ -26,12 +26,28 @@
 							"start": 11,
 							"end": 15,
 							"class": "SimpleIdentifier",
+							"toString": "raw1",
 							"token": {
 								"start": 11,
 								"end": 15,
 								"type": "IDENTIFIER",
 								"lexeme": "raw1"
 							},
+							"ancestorCascade": null,
+							"beginToken": {
+								"start": 11,
+								"end": 15,
+								"type": "IDENTIFIER",
+								"lexeme": "raw1"
+							},
+							"endToken": {
+								"start": 11,
+								"end": 15,
+								"type": "IDENTIFIER",
+								"lexeme": "raw1"
+							},
+							"isQualified": "@error { Null check operator used on a null value }",
+							"isSynthetic": false,
 							"name": "raw1"
 						}
 					},
@@ -50,12 +66,28 @@
 							"start": 24,
 							"end": 28,
 							"class": "SimpleIdentifier",
+							"toString": "raw2",
 							"token": {
 								"start": 24,
 								"end": 28,
 								"type": "IDENTIFIER",
 								"lexeme": "raw2"
 							},
+							"ancestorCascade": null,
+							"beginToken": {
+								"start": 24,
+								"end": 28,
+								"type": "IDENTIFIER",
+								"lexeme": "raw2"
+							},
+							"endToken": {
+								"start": 24,
+								"end": 28,
+								"type": "IDENTIFIER",
+								"lexeme": "raw2"
+							},
+							"isQualified": "@error { Null check operator used on a null value }",
+							"isSynthetic": false,
 							"name": "raw2"
 						}
 					},

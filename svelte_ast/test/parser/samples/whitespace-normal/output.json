@@ -33,12 +33,28 @@
 									"start": 19,
 									"end": 23,
 									"class": "SimpleIdentifier",
+									"toString": "name",
 									"token": {
 										"start": 19,
 										"end": 23,
 										"type": "IDENTIFIER",
 										"lexeme": "name"
 									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 19,
+										"end": 23,
+										"type": "IDENTIFIER",
+										"lexeme": "name"
+									},
+									"endToken": {
+										"start": 19,
+										"end": 23,
+										"type": "IDENTIFIER",
+										"lexeme": "name"
+									},
+									"isQualified": "@error { Null check operator used on a null value }",
+									"isSynthetic": false,
 									"name": "name"
 								}
 							},

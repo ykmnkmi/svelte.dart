@@ -26,12 +26,28 @@
 							"start": 5,
 							"end": 6,
 							"class": "SimpleIdentifier",
+							"toString": "a",
 							"token": {
 								"start": 5,
 								"end": 6,
 								"type": "IDENTIFIER",
 								"lexeme": "a"
 							},
+							"ancestorCascade": null,
+							"beginToken": {
+								"start": 5,
+								"end": 6,
+								"type": "IDENTIFIER",
+								"lexeme": "a"
+							},
+							"endToken": {
+								"start": 5,
+								"end": 6,
+								"type": "IDENTIFIER",
+								"lexeme": "a"
+							},
+							"isQualified": "@error { Null check operator used on a null value }",
+							"isSynthetic": false,
 							"name": "a"
 						}
 					},
@@ -50,12 +66,28 @@
 							"start": 9,
 							"end": 10,
 							"class": "SimpleIdentifier",
+							"toString": "b",
 							"token": {
 								"start": 9,
 								"end": 10,
 								"type": "IDENTIFIER",
 								"lexeme": "b"
 							},
+							"ancestorCascade": null,
+							"beginToken": {
+								"start": 9,
+								"end": 10,
+								"type": "IDENTIFIER",
+								"lexeme": "b"
+							},
+							"endToken": {
+								"start": 9,
+								"end": 10,
+								"type": "IDENTIFIER",
+								"lexeme": "b"
+							},
+							"isQualified": "@error { Null check operator used on a null value }",
+							"isSynthetic": false,
 							"name": "b"
 						}
 					},
@@ -74,12 +106,28 @@
 							"start": 15,
 							"end": 16,
 							"class": "SimpleIdentifier",
+							"toString": "c",
 							"token": {
 								"start": 15,
 								"end": 16,
 								"type": "IDENTIFIER",
 								"lexeme": "c"
 							},
+							"ancestorCascade": null,
+							"beginToken": {
+								"start": 15,
+								"end": 16,
+								"type": "IDENTIFIER",
+								"lexeme": "c"
+							},
+							"endToken": {
+								"start": 15,
+								"end": 16,
+								"type": "IDENTIFIER",
+								"lexeme": "c"
+							},
+							"isQualified": "@error { Null check operator used on a null value }",
+							"isSynthetic": false,
 							"name": "c"
 						}
 					},

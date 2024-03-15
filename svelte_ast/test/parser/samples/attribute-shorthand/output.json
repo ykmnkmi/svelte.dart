@@ -24,12 +24,28 @@
 									"start": 6,
 									"end": 8,
 									"class": "SimpleIdentifier",
+									"toString": "id",
 									"token": {
 										"start": 6,
 										"end": 8,
 										"type": "IDENTIFIER",
 										"lexeme": "id"
 									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 6,
+										"end": 8,
+										"type": "IDENTIFIER",
+										"lexeme": "id"
+									},
+									"endToken": {
+										"start": 6,
+										"end": 8,
+										"type": "IDENTIFIER",
+										"lexeme": "id"
+									},
+									"isQualified": "@error { Null check operator used on a null value }",
+									"isSynthetic": false,
 									"name": "id"
 								}
 							}

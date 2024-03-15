@@ -40,13 +40,27 @@
 									"start": 18,
 									"end": 22,
 									"class": "BooleanLiteral",
+									"toString": "true",
 									"literal": {
 										"start": 18,
 										"end": 22,
 										"type": "TRUE",
 										"lexeme": "true"
 									},
-									"value": true
+									"value": true,
+									"beginToken": {
+										"start": 18,
+										"end": 22,
+										"type": "TRUE",
+										"lexeme": "true"
+									},
+									"endToken": {
+										"start": 18,
+										"end": 22,
+										"type": "TRUE",
+										"lexeme": "true"
+									},
+									"isSynthetic": false
 								},
 								"casePattern": null,
 								"whenExpression": null,

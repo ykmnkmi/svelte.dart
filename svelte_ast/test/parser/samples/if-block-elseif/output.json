@@ -12,74 +12,81 @@
 					"start": 5,
 					"end": 11,
 					"class": "BinaryExpression",
-					"leftOperand": {
-						"start": 5,
-						"end": 6,
-						"class": "SimpleIdentifier",
-						"token": {
-							"start": 5,
-							"end": 6,
-							"type": "IDENTIFIER",
-							"lexeme": "x"
-						},
-						"name": "x"
-					},
+					"toString": "x > 10",
 					"operator": {
 						"start": 7,
 						"end": 8,
 						"type": "GT",
 						"lexeme": ">"
 					},
+					"beginToken": {
+						"start": 5,
+						"end": 6,
+						"type": "IDENTIFIER",
+						"lexeme": "x"
+					},
+					"endToken": {
+						"start": 9,
+						"end": 11,
+						"type": "INT",
+						"lexeme": "10"
+					},
+					"leftOperand": {
+						"start": 5,
+						"end": 6,
+						"class": "SimpleIdentifier",
+						"toString": "x",
+						"token": {
+							"start": 5,
+							"end": 6,
+							"type": "IDENTIFIER",
+							"lexeme": "x"
+						},
+						"ancestorCascade": null,
+						"beginToken": {
+							"start": 5,
+							"end": 6,
+							"type": "IDENTIFIER",
+							"lexeme": "x"
+						},
+						"endToken": {
+							"start": 5,
+							"end": 6,
+							"type": "IDENTIFIER",
+							"lexeme": "x"
+						},
+						"isQualified": false,
+						"isSynthetic": false,
+						"name": "x"
+					},
 					"rightOperand": {
 						"start": 9,
 						"end": 11,
 						"class": "IntegerLiteral",
+						"toString": "10",
 						"literal": {
 							"start": 9,
 							"end": 11,
 							"type": "INT",
 							"lexeme": "10"
-						}
+						},
+						"beginToken": {
+							"start": 9,
+							"end": 11,
+							"type": "INT",
+							"lexeme": "10"
+						},
+						"endToken": {
+							"start": 9,
+							"end": 11,
+							"type": "INT",
+							"lexeme": "10"
+						},
+						"immediatelyNegated": false
 					},
 					"inConstantContext": false,
 					"isAssignable": false,
-					"unParenthesized": {
-						"start": 5,
-						"end": 11,
-						"class": "BinaryExpression",
-						"leftOperand": {
-							"start": 5,
-							"end": 6,
-							"class": "SimpleIdentifier",
-							"token": {
-								"start": 5,
-								"end": 6,
-								"type": "IDENTIFIER",
-								"lexeme": "x"
-							},
-							"name": "x"
-						},
-						"operator": {
-							"start": 7,
-							"end": 8,
-							"type": "GT",
-							"lexeme": ">"
-						},
-						"rightOperand": {
-							"start": 9,
-							"end": 11,
-							"class": "IntegerLiteral",
-							"literal": {
-								"start": 9,
-								"end": 11,
-								"type": "INT",
-								"lexeme": "10"
-							}
-						},
-						"inConstantContext": false,
-						"isAssignable": false,
-						"unParenthesized": "@seen"
-					}
+					"unParenthesized": "@seen { self }"
 				},
 				"casePattern": null,
 				"whenExpression": null,
@@ -115,74 +122,81 @@
 								"start": 52,
 								"end": 57,
 								"class": "BinaryExpression",
-								"leftOperand": {
-									"start": 52,
-									"end": 53,
-									"class": "SimpleIdentifier",
-									"token": {
-										"start": 52,
-										"end": 53,
-										"type": "IDENTIFIER",
-										"lexeme": "x"
-									},
-									"name": "x"
-								},
+								"toString": "x < 5",
 								"operator": {
 									"start": 54,
 									"end": 55,
 									"type": "LT",
 									"lexeme": "<"
 								},
+								"beginToken": {
+									"start": 52,
+									"end": 53,
+									"type": "IDENTIFIER",
+									"lexeme": "x"
+								},
+								"endToken": {
+									"start": 56,
+									"end": 57,
+									"type": "INT",
+									"lexeme": "5"
+								},
+								"leftOperand": {
+									"start": 52,
+									"end": 53,
+									"class": "SimpleIdentifier",
+									"toString": "x",
+									"token": {
+										"start": 52,
+										"end": 53,
+										"type": "IDENTIFIER",
+										"lexeme": "x"
+									},
+									"ancestorCascade": null,
+									"beginToken": {
+										"start": 52,
+										"end": 53,
+										"type": "IDENTIFIER",
+										"lexeme": "x"
+									},
+									"endToken": {
+										"start": 52,
+										"end": 53,
+										"type": "IDENTIFIER",
+										"lexeme": "x"
+									},
+									"isQualified": false,
+									"isSynthetic": false,
+									"name": "x"
+								},
 								"rightOperand": {
 									"start": 56,
 									"end": 57,
 									"class": "IntegerLiteral",
+									"toString": "5",
 									"literal": {
 										"start": 56,
 										"end": 57,
 										"type": "INT",
 										"lexeme": "5"
-									}
+									},
+									"beginToken": {
+										"start": 56,
+										"end": 57,
+										"type": "INT",
+										"lexeme": "5"
+									},
+									"endToken": {
+										"start": 56,
+										"end": 57,
+										"type": "INT",
+										"lexeme": "5"
+									},
+									"immediatelyNegated": false
 								},
 								"inConstantContext": false,
 								"isAssignable": false,
-								"unParenthesized": {
-									"start": 52,
-									"end": 57,
-									"class": "BinaryExpression",
-									"leftOperand": {
-										"start": 52,
-										"end": 53,
-										"class": "SimpleIdentifier",
-										"token": {
-											"start": 52,
-											"end": 53,
-											"type": "IDENTIFIER",
-											"lexeme": "x"
-										},
-										"name": "x"
-									},
-									"operator": {
-										"start": 54,
-										"end": 55,
-										"type": "LT",
-										"lexeme": "<"
-									},
-									"rightOperand": {
-										"start": 56,
-										"end": 57,
-										"class": "IntegerLiteral",
-										"literal": {
-											"start": 56,
-											"end": 57,
-											"type": "INT",
-											"lexeme": "5"
-										}
-									},
-									"inConstantContext": false,
-									"isAssignable": false,
-									"unParenthesized": "@seen"
-								}
+								"unParenthesized": "@seen { self }"
 							},
 							"casePattern": null,
 							"whenExpression": null,

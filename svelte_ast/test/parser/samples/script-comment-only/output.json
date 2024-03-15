@@ -31,6 +31,10 @@
 			"end": 34,
 			"data": "\n\t// TODO write some code\n"
 		},
-		"body": []
+		"body": {
+			"directives": [],
+			"externals": [],
+			"body": []
+		}
 	}
 }

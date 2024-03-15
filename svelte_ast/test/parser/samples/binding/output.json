@@ -27,12 +27,28 @@
 							"start": 50,
 							"end": 54,
 							"class": "SimpleIdentifier",
+							"toString": "name",
 							"token": {
 								"start": 50,
 								"end": 54,
 								"type": "IDENTIFIER",
 								"lexeme": "name"
 							},
+							"ancestorCascade": null,
+							"beginToken": {
+								"start": 50,
+								"end": 54,
+								"type": "IDENTIFIER",
+								"lexeme": "name"
+							},
+							"endToken": {
+								"start": 50,
+								"end": 54,
+								"type": "IDENTIFIER",
+								"lexeme": "name"
+							},
+							"isQualified": "@error { Null check operator used on a null value }",
+							"isSynthetic": false,
 							"name": "name"
 						}
 					}
@@ -51,56 +67,28 @@
 			"end": 20,
 			"data": "\n\tvar name;\n"
 		},
-		"body": [
-			{
-				"start": 10,
-				"end": 19,
-				"class": "VariableDeclarationStatement",
-				"semicolon": {
-					"start": 18,
-					"end": 19,
-					"type": "SEMICOLON",
-					"lexeme": ";"
-				},
-				"variables": {
+		"body": {
+			"directives": [],
+			"externals": [],
+			"body": [
+				{
 					"start": 10,
-					"end": 18,
-					"class": "VariableDeclarationList",
-					"isConst": false,
-					"isFinal": false,
-					"isLate": false,
-					"type": null,
-					"variables": [
-						{
-							"start": 14,
-							"end": 18,
-							"class": "VariableDeclaration",
-							"initializer": null,
-							"isConst": false,
-							"isFinal": false,
-							"isLate": false,
-							"name": {
-								"start": 14,
-								"end": 18,
-								"type": "IDENTIFIER",
-								"lexeme": "name"
-							}
-						}
-					],
-					"documentationComment": null,
-					"firstTokenAfterCommentAndMetadata": {
+					"end": 19,
+					"class": "VariableDeclarationStatement",
+					"toString": "var name;",
+					"semicolon": {
+						"start": 18,
+						"end": 19,
+						"type": "SEMICOLON",
+						"lexeme": ";"
+					},
+					"beginToken": {
 						"start": 10,
 						"end": 13,
 						"type": "VAR",
 						"lexeme": "var"
 					},
-					"metadata": []
-				},
-				"unlabeled": {
-					"start": 10,
-					"end": 19,
-					"class": "VariableDeclarationStatement",
-					"semicolon": {
+					"endToken": {
 						"start": 18,
 						"end": 19,
 						"type": "SEMICOLON",
@@ -110,6 +98,26 @@
 						"start": 10,
 						"end": 18,
 						"class": "VariableDeclarationList",
+						"toString": "var name",
+						"keyword": {
+							"start": 10,
+							"end": 13,
+							"type": "VAR",
+							"lexeme": "var"
+						},
+						"lateKeyword": null,
+						"endToken": {
+							"start": 14,
+							"end": 18,
+							"type": "IDENTIFIER",
+							"lexeme": "name"
+						},
+						"firstTokenAfterCommentAndMetadata": {
+							"start": 10,
+							"end": 13,
+							"type": "VAR",
+							"lexeme": "var"
+						},
 						"isConst": false,
 						"isFinal": false,
 						"isLate": false,
@@ -119,30 +127,40 @@
 								"start": 14,
 								"end": 18,
 								"class": "VariableDeclaration",
-								"initializer": null,
-								"isConst": false,
-								"isFinal": false,
-								"isLate": false,
+								"toString": "name",
 								"name": {
 									"start": 14,
 									"end": 18,
 									"type": "IDENTIFIER",
 									"lexeme": "name"
-								}
+								},
+								"equals": null,
+								"hasInitializer": false,
+								"documentationComment": null,
+								"endToken": {
+									"start": 14,
+									"end": 18,
+									"type": "IDENTIFIER",
+									"lexeme": "name"
+								},
+								"firstTokenAfterCommentAndMetadata": {
+									"start": 14,
+									"end": 18,
+									"type": "IDENTIFIER",
+									"lexeme": "name"
+								},
+								"initializer": null,
+								"isConst": false,
+								"isFinal": false,
+								"isLate": false
 							}
 						],
 						"documentationComment": null,
-						"firstTokenAfterCommentAndMetadata": {
-							"start": 10,
-							"end": 13,
-							"type": "VAR",
-							"lexeme": "var"
-						},
-						"metadata": []
-					},
-					"unlabeled": "@seen"
+						"metadata": [],
+						"sortedCommentAndAnnotations": []
+					}
 				}
-			}
-		]
+			]
+		}
 	}
 }

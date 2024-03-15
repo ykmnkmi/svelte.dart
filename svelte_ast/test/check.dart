@@ -42,7 +42,27 @@ const String string = r'''
 </button>
 
 <p>{count} * 2 = {doubled}</p>
-<p>{doubled} * 2 = {quadrupled}</p>''';
+<p>{doubled} * 2 = {quadrupled}</p>
+
+<style>
+  button {
+    background-color: #ff3e00;
+    color: white;
+    padding: 8px 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #ff6f40;
+  }
+
+  p {
+    margin-top: 8px;
+  }
+</style>
+''';
 
 void main() {
   try {

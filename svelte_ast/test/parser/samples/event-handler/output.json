@@ -20,53 +20,141 @@
 							"start": 19,
 							"end": 43,
 							"class": "FunctionExpression",
+							"toString": "() => visible = !visible",
+							"wasFunctionTypeSupplied": false,
+							"beginToken": {
+								"start": 19,
+								"end": 20,
+								"type": "OPEN_PAREN",
+								"lexeme": "("
+							},
 							"body": {
 								"start": 22,
 								"end": 43,
 								"class": "ExpressionFunctionBody",
+								"toString": "=> visible = !visible",
+								"keyword": null,
+								"star": null,
+								"functionDefinition": {
+									"start": 22,
+									"end": 24,
+									"type": "FUNCTION",
+									"lexeme": "=>"
+								},
+								"semicolon": null,
+								"beginToken": {
+									"start": 22,
+									"end": 24,
+									"type": "FUNCTION",
+									"lexeme": "=>"
+								},
+								"endToken": {
+									"start": 36,
+									"end": 43,
+									"type": "IDENTIFIER",
+									"lexeme": "visible"
+								},
 								"expression": {
 									"start": 25,
 									"end": 43,
 									"class": "AssignmentExpression",
-									"leftHandSide": {
-										"start": 25,
-										"end": 32,
-										"class": "SimpleIdentifier",
-										"token": {
-											"start": 25,
-											"end": 32,
-											"type": "IDENTIFIER",
-											"lexeme": "visible"
-										},
-										"name": "visible"
-									},
+									"toString": "visible = !visible",
 									"operator": {
 										"start": 33,
 										"end": 34,
 										"type": "EQ",
 										"lexeme": "="
 									},
+									"beginToken": {
+										"start": 25,
+										"end": 32,
+										"type": "IDENTIFIER",
+										"lexeme": "visible"
+									},
+									"endToken": {
+										"start": 36,
+										"end": 43,
+										"type": "IDENTIFIER",
+										"lexeme": "visible"
+									},
+									"leftHandSide": {
+										"start": 25,
+										"end": 32,
+										"class": "SimpleIdentifier",
+										"toString": "visible",
+										"token": {
+											"start": 25,
+											"end": 32,
+											"type": "IDENTIFIER",
+											"lexeme": "visible"
+										},
+										"ancestorCascade": null,
+										"beginToken": {
+											"start": 25,
+											"end": 32,
+											"type": "IDENTIFIER",
+											"lexeme": "visible"
+										},
+										"endToken": {
+											"start": 25,
+											"end": 32,
+											"type": "IDENTIFIER",
+											"lexeme": "visible"
+										},
+										"isQualified": false,
+										"isSynthetic": false,
+										"name": "visible"
+									},
 									"rightHandSide": {
 										"start": 35,
 										"end": 43,
 										"class": "PrefixExpression",
+										"toString": "!visible",
+										"operator": {
+											"start": 35,
+											"end": 36,
+											"type": "BANG",
+											"lexeme": "!"
+										},
+										"beginToken": {
+											"start": 35,
+											"end": 36,
+											"type": "BANG",
+											"lexeme": "!"
+										},
+										"endToken": {
+											"start": 36,
+											"end": 43,
+											"type": "IDENTIFIER",
+											"lexeme": "visible"
+										},
 										"operand": {
 											"start": 36,
 											"end": 43,
 											"class": "SimpleIdentifier",
+											"toString": "visible",
 											"token": {
 												"start": 36,
 												"end": 43,
 												"type": "IDENTIFIER",
 												"lexeme": "visible"
 											},
+											"ancestorCascade": null,
+											"beginToken": {
+												"start": 36,
+												"end": 43,
+												"type": "IDENTIFIER",
+												"lexeme": "visible"
+											},
+											"endToken": {
+												"start": 36,
+												"end": 43,
+												"type": "IDENTIFIER",
+												"lexeme": "visible"
+											},
+											"isQualified": false,
+											"isSynthetic": false,
 											"name": "visible"
-										},
-										"operator": {
-											"start": 35,
-											"end": 36,
-											"type": "BANG",
-											"lexeme": "!"
 										},
 										"inConstantContext": false,
 										"isAssignable": false,
@@ -75,27 +163,29 @@
 									},
 									"nullShortingTermination": "@seen"
 								},
-								"functionDefinition": {
-									"start": 22,
-									"end": 24,
-									"type": "FUNCTION",
-									"lexeme": "=>"
-								},
 								"isAsynchronous": false,
 								"isGenerator": false,
 								"isSynchronous": true
+							},
+							"endToken": {
+								"start": 36,
+								"end": 43,
+								"type": "IDENTIFIER",
+								"lexeme": "visible"
 							},
 							"parameters": {
 								"start": 19,
 								"end": 21,
 								"class": "FormalParameterList",
+								"toString": "()",
 								"leftParenthesis": {
 									"start": 19,
 									"end": 20,
 									"type": "OPEN_PAREN",
 									"lexeme": "("
 								},
-								"parameters": [],
+								"leftDelimiter": null,
+								"rightDelimiter": null,
 								"rightParenthesis": {
 									"start": 20,
 									"end": 21,
@@ -114,268 +204,13 @@
 									"type": "CLOSE_PAREN",
 									"lexeme": ")"
 								},
-								"isSynthetic": false,
-								"parent": {
-									"start": 19,
-									"end": 43,
-									"class": "FunctionExpression",
-									"body": {
-										"start": 22,
-										"end": 43,
-										"class": "ExpressionFunctionBody",
-										"expression": {
-											"start": 25,
-											"end": 43,
-											"class": "AssignmentExpression",
-											"leftHandSide": {
-												"start": 25,
-												"end": 32,
-												"class": "SimpleIdentifier",
-												"token": {
-													"start": 25,
-													"end": 32,
-													"type": "IDENTIFIER",
-													"lexeme": "visible"
-												},
-												"name": "visible"
-											},
-											"operator": {
-												"start": 33,
-												"end": 34,
-												"type": "EQ",
-												"lexeme": "="
-											},
-											"rightHandSide": {
-												"start": 35,
-												"end": 43,
-												"class": "PrefixExpression",
-												"operand": {
-													"start": 36,
-													"end": 43,
-													"class": "SimpleIdentifier",
-													"token": {
-														"start": 36,
-														"end": 43,
-														"type": "IDENTIFIER",
-														"lexeme": "visible"
-													},
-													"name": "visible"
-												},
-												"operator": {
-													"start": 35,
-													"end": 36,
-													"type": "BANG",
-													"lexeme": "!"
-												},
-												"inConstantContext": false,
-												"isAssignable": false,
-												"unParenthesized": "@seen",
-												"nullShortingTermination": "@seen"
-											},
-											"nullShortingTermination": "@seen"
-										},
-										"functionDefinition": {
-											"start": 22,
-											"end": 24,
-											"type": "FUNCTION",
-											"lexeme": "=>"
-										},
-										"isAsynchronous": false,
-										"isGenerator": false,
-										"isSynchronous": true
-									},
-									"parameters": "@seen",
-									"typeParameters": null,
-									"inConstantContext": false,
-									"isAssignable": false,
-									"unParenthesized": "@seen"
-								},
-								"root": {
-									"start": 19,
-									"end": 43,
-									"class": "FunctionExpression",
-									"body": {
-										"start": 22,
-										"end": 43,
-										"class": "ExpressionFunctionBody",
-										"expression": {
-											"start": 25,
-											"end": 43,
-											"class": "AssignmentExpression",
-											"leftHandSide": {
-												"start": 25,
-												"end": 32,
-												"class": "SimpleIdentifier",
-												"token": {
-													"start": 25,
-													"end": 32,
-													"type": "IDENTIFIER",
-													"lexeme": "visible"
-												},
-												"name": "visible"
-											},
-											"operator": {
-												"start": 33,
-												"end": 34,
-												"type": "EQ",
-												"lexeme": "="
-											},
-											"rightHandSide": {
-												"start": 35,
-												"end": 43,
-												"class": "PrefixExpression",
-												"operand": {
-													"start": 36,
-													"end": 43,
-													"class": "SimpleIdentifier",
-													"token": {
-														"start": 36,
-														"end": 43,
-														"type": "IDENTIFIER",
-														"lexeme": "visible"
-													},
-													"name": "visible"
-												},
-												"operator": {
-													"start": 35,
-													"end": 36,
-													"type": "BANG",
-													"lexeme": "!"
-												},
-												"inConstantContext": false,
-												"isAssignable": false,
-												"unParenthesized": "@seen",
-												"nullShortingTermination": "@seen"
-											},
-											"nullShortingTermination": "@seen"
-										},
-										"functionDefinition": {
-											"start": 22,
-											"end": 24,
-											"type": "FUNCTION",
-											"lexeme": "=>"
-										},
-										"isAsynchronous": false,
-										"isGenerator": false,
-										"isSynchronous": true
-									},
-									"parameters": "@seen",
-									"typeParameters": null,
-									"inConstantContext": false,
-									"isAssignable": false,
-									"unParenthesized": "@seen"
-								}
+								"parameters": [],
+								"isSynthetic": false
 							},
 							"typeParameters": null,
 							"inConstantContext": false,
 							"isAssignable": false,
-							"unParenthesized": {
-								"start": 19,
-								"end": 43,
-								"class": "FunctionExpression",
-								"body": {
-									"start": 22,
-									"end": 43,
-									"class": "ExpressionFunctionBody",
-									"expression": {
-										"start": 25,
-										"end": 43,
-										"class": "AssignmentExpression",
-										"leftHandSide": {
-											"start": 25,
-											"end": 32,
-											"class": "SimpleIdentifier",
-											"token": {
-												"start": 25,
-												"end": 32,
-												"type": "IDENTIFIER",
-												"lexeme": "visible"
-											},
-											"name": "visible"
-										},
-										"operator": {
-											"start": 33,
-											"end": 34,
-											"type": "EQ",
-											"lexeme": "="
-										},
-										"rightHandSide": {
-											"start": 35,
-											"end": 43,
-											"class": "PrefixExpression",
-											"operand": {
-												"start": 36,
-												"end": 43,
-												"class": "SimpleIdentifier",
-												"token": {
-													"start": 36,
-													"end": 43,
-													"type": "IDENTIFIER",
-													"lexeme": "visible"
-												},
-												"name": "visible"
-											},
-											"operator": {
-												"start": 35,
-												"end": 36,
-												"type": "BANG",
-												"lexeme": "!"
-											},
-											"inConstantContext": false,
-											"isAssignable": false,
-											"unParenthesized": "@seen",
-											"nullShortingTermination": "@seen"
-										},
-										"nullShortingTermination": "@seen"
-									},
-									"functionDefinition": {
-										"start": 22,
-										"end": 24,
-										"type": "FUNCTION",
-										"lexeme": "=>"
-									},
-									"isAsynchronous": false,
-									"isGenerator": false,
-									"isSynchronous": true
-								},
-								"parameters": {
-									"start": 19,
-									"end": 21,
-									"class": "FormalParameterList",
-									"leftParenthesis": {
-										"start": 19,
-										"end": 20,
-										"type": "OPEN_PAREN",
-										"lexeme": "("
-									},
-									"parameters": [],
-									"rightParenthesis": {
-										"start": 20,
-										"end": 21,
-										"type": "CLOSE_PAREN",
-										"lexeme": ")"
-									},
-									"beginToken": {
-										"start": 19,
-										"end": 20,
-										"type": "OPEN_PAREN",
-										"lexeme": "("
-									},
-									"endToken": {
-										"start": 20,
-										"end": 21,
-										"type": "CLOSE_PAREN",
-										"lexeme": ")"
-									},
-									"isSynthetic": false,
-									"parent": "@seen",
-									"root": "@seen"
-								},
-								"typeParameters": null,
-								"inConstantContext": false,
-								"isAssignable": false,
-								"unParenthesized": "@seen"
-							}
+							"unParenthesized": "@seen { self }"
 						}
 					}
 				],
@@ -404,12 +239,28 @@
 					"start": 68,
 					"end": 75,
 					"class": "SimpleIdentifier",
+					"toString": "visible",
 					"token": {
 						"start": 68,
 						"end": 75,
 						"type": "IDENTIFIER",
 						"lexeme": "visible"
 					},
+					"ancestorCascade": null,
+					"beginToken": {
+						"start": 68,
+						"end": 75,
+						"type": "IDENTIFIER",
+						"lexeme": "visible"
+					},
+					"endToken": {
+						"start": 68,
+						"end": 75,
+						"type": "IDENTIFIER",
+						"lexeme": "visible"
+					},
+					"isQualified": "@error { Null check operator used on a null value }",
+					"isSynthetic": false,
 					"name": "visible"
 				},
 				"casePattern": null,

@@ -13,12 +13,28 @@
 					"start": 22,
 					"end": 25,
 					"class": "SimpleIdentifier",
+					"toString": "tag",
 					"token": {
 						"start": 22,
 						"end": 25,
 						"type": "IDENTIFIER",
 						"lexeme": "tag"
 					},
+					"ancestorCascade": null,
+					"beginToken": {
+						"start": 22,
+						"end": 25,
+						"type": "IDENTIFIER",
+						"lexeme": "tag"
+					},
+					"endToken": {
+						"start": 22,
+						"end": 25,
+						"type": "IDENTIFIER",
+						"lexeme": "tag"
+					},
+					"isQualified": "@error { Null check operator used on a null value }",
+					"isSynthetic": false,
 					"name": "tag"
 				},
 				"attributes": [],
@@ -40,12 +56,28 @@
 					"start": 67,
 					"end": 70,
 					"class": "SimpleIdentifier",
+					"toString": "tag",
 					"token": {
 						"start": 67,
 						"end": 70,
 						"type": "IDENTIFIER",
 						"lexeme": "tag"
 					},
+					"ancestorCascade": null,
+					"beginToken": {
+						"start": 67,
+						"end": 70,
+						"type": "IDENTIFIER",
+						"lexeme": "tag"
+					},
+					"endToken": {
+						"start": 67,
+						"end": 70,
+						"type": "IDENTIFIER",
+						"lexeme": "tag"
+					},
+					"isQualified": "@error { Null check operator used on a null value }",
+					"isSynthetic": false,
 					"name": "tag"
 				},
 				"attributes": [

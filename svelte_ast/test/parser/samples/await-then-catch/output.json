@@ -12,18 +12,47 @@
 					"start": 8,
 					"end": 18,
 					"class": "SimpleIdentifier",
+					"toString": "thePromise",
 					"token": {
 						"start": 8,
 						"end": 18,
 						"type": "IDENTIFIER",
 						"lexeme": "thePromise"
 					},
+					"ancestorCascade": null,
+					"beginToken": {
+						"start": 8,
+						"end": 18,
+						"type": "IDENTIFIER",
+						"lexeme": "thePromise"
+					},
+					"endToken": {
+						"start": 8,
+						"end": 18,
+						"type": "IDENTIFIER",
+						"lexeme": "thePromise"
+					},
+					"isQualified": "@error { Null check operator used on a null value }",
+					"isSynthetic": false,
 					"name": "thePromise"
 				},
 				"value": {
 					"start": 46,
 					"end": 54,
 					"class": "AssignedVariablePattern",
+					"toString": "theValue",
+					"beginToken": {
+						"start": 46,
+						"end": 54,
+						"type": "IDENTIFIER",
+						"lexeme": "theValue"
+					},
+					"endToken": {
+						"start": 46,
+						"end": 54,
+						"type": "IDENTIFIER",
+						"lexeme": "theValue"
+					},
 					"name": {
 						"start": 46,
 						"end": 54,
@@ -35,6 +64,19 @@
 					"start": 96,
 					"end": 104,
 					"class": "AssignedVariablePattern",
+					"toString": "theError",
+					"beginToken": {
+						"start": 96,
+						"end": 104,
+						"type": "IDENTIFIER",
+						"lexeme": "theError"
+					},
+					"endToken": {
+						"start": 96,
+						"end": 104,
+						"type": "IDENTIFIER",
+						"lexeme": "theError"
+					},
 					"name": {
 						"start": 96,
 						"end": 104,
@@ -113,12 +155,28 @@
 										"start": 74,
 										"end": 82,
 										"class": "SimpleIdentifier",
+										"toString": "theValue",
 										"token": {
 											"start": 74,
 											"end": 82,
 											"type": "IDENTIFIER",
 											"lexeme": "theValue"
 										},
+										"ancestorCascade": null,
+										"beginToken": {
+											"start": 74,
+											"end": 82,
+											"type": "IDENTIFIER",
+											"lexeme": "theValue"
+										},
+										"endToken": {
+											"start": 74,
+											"end": 82,
+											"type": "IDENTIFIER",
+											"lexeme": "theValue"
+										},
+										"isQualified": "@error { Null check operator used on a null value }",
+										"isSynthetic": false,
 										"name": "theValue"
 									}
 								}
@@ -167,38 +225,83 @@
 										"start": 118,
 										"end": 134,
 										"class": "PrefixedIdentifier",
-										"identifier": {
-											"start": 127,
-											"end": 134,
-											"class": "SimpleIdentifier",
-											"token": {
-												"start": 127,
-												"end": 134,
-												"type": "IDENTIFIER",
-												"lexeme": "message"
-											},
-											"name": "message"
-										},
-										"isDeferred": false,
+										"toString": "theError.message",
 										"period": {
 											"start": 126,
 											"end": 127,
 											"type": "PERIOD",
 											"lexeme": "."
 										},
+										"beginToken": {
+											"start": 118,
+											"end": 126,
+											"type": "IDENTIFIER",
+											"lexeme": "theError"
+										},
+										"endToken": {
+											"start": 127,
+											"end": 134,
+											"type": "IDENTIFIER",
+											"lexeme": "message"
+										},
+										"identifier": {
+											"start": 127,
+											"end": 134,
+											"class": "SimpleIdentifier",
+											"toString": "message",
+											"token": {
+												"start": 127,
+												"end": 134,
+												"type": "IDENTIFIER",
+												"lexeme": "message"
+											},
+											"ancestorCascade": null,
+											"beginToken": {
+												"start": 127,
+												"end": 134,
+												"type": "IDENTIFIER",
+												"lexeme": "message"
+											},
+											"endToken": {
+												"start": 127,
+												"end": 134,
+												"type": "IDENTIFIER",
+												"lexeme": "message"
+											},
+											"isQualified": true,
+											"isSynthetic": false,
+											"name": "message"
+										},
+										"isDeferred": false,
+										"name": "theError.message",
 										"prefix": {
 											"start": 118,
 											"end": 126,
 											"class": "SimpleIdentifier",
+											"toString": "theError",
 											"token": {
 												"start": 118,
 												"end": 126,
 												"type": "IDENTIFIER",
 												"lexeme": "theError"
 											},
+											"ancestorCascade": null,
+											"beginToken": {
+												"start": 118,
+												"end": 126,
+												"type": "IDENTIFIER",
+												"lexeme": "theError"
+											},
+											"endToken": {
+												"start": 118,
+												"end": 126,
+												"type": "IDENTIFIER",
+												"lexeme": "theError"
+											},
+											"isQualified": false,
+											"isSynthetic": false,
 											"name": "theError"
-										},
-										"name": "theError.message"
+										}
 									}
 								}
 							]

@@ -12,74 +12,81 @@
 					"start": 5,
 					"end": 14,
 					"class": "BinaryExpression",
-					"leftOperand": {
-						"start": 5,
-						"end": 10,
-						"class": "SimpleIdentifier",
-						"token": {
-							"start": 5,
-							"end": 10,
-							"type": "IDENTIFIER",
-							"lexeme": "depth"
-						},
-						"name": "depth"
-					},
+					"toString": "depth > 1",
 					"operator": {
 						"start": 11,
 						"end": 12,
 						"type": "GT",
 						"lexeme": ">"
 					},
+					"beginToken": {
+						"start": 5,
+						"end": 10,
+						"type": "IDENTIFIER",
+						"lexeme": "depth"
+					},
+					"endToken": {
+						"start": 13,
+						"end": 14,
+						"type": "INT",
+						"lexeme": "1"
+					},
+					"leftOperand": {
+						"start": 5,
+						"end": 10,
+						"class": "SimpleIdentifier",
+						"toString": "depth",
+						"token": {
+							"start": 5,
+							"end": 10,
+							"type": "IDENTIFIER",
+							"lexeme": "depth"
+						},
+						"ancestorCascade": null,
+						"beginToken": {
+							"start": 5,
+							"end": 10,
+							"type": "IDENTIFIER",
+							"lexeme": "depth"
+						},
+						"endToken": {
+							"start": 5,
+							"end": 10,
+							"type": "IDENTIFIER",
+							"lexeme": "depth"
+						},
+						"isQualified": false,
+						"isSynthetic": false,
+						"name": "depth"
+					},
 					"rightOperand": {
 						"start": 13,
 						"end": 14,
 						"class": "IntegerLiteral",
+						"toString": "1",
 						"literal": {
 							"start": 13,
 							"end": 14,
 							"type": "INT",
 							"lexeme": "1"
-						}
+						},
+						"beginToken": {
+							"start": 13,
+							"end": 14,
+							"type": "INT",
+							"lexeme": "1"
+						},
+						"endToken": {
+							"start": 13,
+							"end": 14,
+							"type": "INT",
+							"lexeme": "1"
+						},
+						"immediatelyNegated": false
 					},
 					"inConstantContext": false,
 					"isAssignable": false,
-					"unParenthesized": {
-						"start": 5,
-						"end": 14,
-						"class": "BinaryExpression",
-						"leftOperand": {
-							"start": 5,
-							"end": 10,
-							"class": "SimpleIdentifier",
-							"token": {
-								"start": 5,
-								"end": 10,
-								"type": "IDENTIFIER",
-								"lexeme": "depth"
-							},
-							"name": "depth"
-						},
-						"operator": {
-							"start": 11,
-							"end": 12,
-							"type": "GT",
-							"lexeme": ">"
-						},
-						"rightOperand": {
-							"start": 13,
-							"end": 14,
-							"class": "IntegerLiteral",
-							"literal": {
-								"start": 13,
-								"end": 14,
-								"type": "INT",
-								"lexeme": "1"
-							}
-						},
-						"inConstantContext": false,
-						"isAssignable": false,
-						"unParenthesized": "@seen"
-					}
+					"unParenthesized": "@seen { self }"
 				},
 				"casePattern": null,
 				"whenExpression": null,
@@ -105,74 +112,81 @@
 											"start": 38,
 											"end": 47,
 											"class": "BinaryExpression",
-											"leftOperand": {
-												"start": 38,
-												"end": 43,
-												"class": "SimpleIdentifier",
-												"token": {
-													"start": 38,
-													"end": 43,
-													"type": "IDENTIFIER",
-													"lexeme": "depth"
-												},
-												"name": "depth"
-											},
+											"toString": "depth - 1",
 											"operator": {
 												"start": 44,
 												"end": 45,
 												"type": "MINUS",
 												"lexeme": "-"
 											},
+											"beginToken": {
+												"start": 38,
+												"end": 43,
+												"type": "IDENTIFIER",
+												"lexeme": "depth"
+											},
+											"endToken": {
+												"start": 46,
+												"end": 47,
+												"type": "INT",
+												"lexeme": "1"
+											},
+											"leftOperand": {
+												"start": 38,
+												"end": 43,
+												"class": "SimpleIdentifier",
+												"toString": "depth",
+												"token": {
+													"start": 38,
+													"end": 43,
+													"type": "IDENTIFIER",
+													"lexeme": "depth"
+												},
+												"ancestorCascade": null,
+												"beginToken": {
+													"start": 38,
+													"end": 43,
+													"type": "IDENTIFIER",
+													"lexeme": "depth"
+												},
+												"endToken": {
+													"start": 38,
+													"end": 43,
+													"type": "IDENTIFIER",
+													"lexeme": "depth"
+												},
+												"isQualified": false,
+												"isSynthetic": false,
+												"name": "depth"
+											},
 											"rightOperand": {
 												"start": 46,
 												"end": 47,
 												"class": "IntegerLiteral",
+												"toString": "1",
 												"literal": {
 													"start": 46,
 													"end": 47,
 													"type": "INT",
 													"lexeme": "1"
-												}
+												},
+												"beginToken": {
+													"start": 46,
+													"end": 47,
+													"type": "INT",
+													"lexeme": "1"
+												},
+												"endToken": {
+													"start": 46,
+													"end": 47,
+													"type": "INT",
+													"lexeme": "1"
+												},
+												"immediatelyNegated": false
 											},
 											"inConstantContext": false,
 											"isAssignable": false,
-											"unParenthesized": {
-												"start": 38,
-												"end": 47,
-												"class": "BinaryExpression",
-												"leftOperand": {
-													"start": 38,
-													"end": 43,
-													"class": "SimpleIdentifier",
-													"token": {
-														"start": 38,
-														"end": 43,
-														"type": "IDENTIFIER",
-														"lexeme": "depth"
-													},
-													"name": "depth"
-												},
-												"operator": {
-													"start": 44,
-													"end": 45,
-													"type": "MINUS",
-													"lexeme": "-"
-												},
-												"rightOperand": {
-													"start": 46,
-													"end": 47,
-													"class": "IntegerLiteral",
-													"literal": {
-														"start": 46,
-														"end": 47,
-														"type": "INT",
-														"lexeme": "1"
-													}
-												},
-												"inConstantContext": false,
-												"isAssignable": false,
-												"unParenthesized": "@seen"
-											}
+											"unParenthesized": "@seen { self }"
 										}
 									}
 								]
