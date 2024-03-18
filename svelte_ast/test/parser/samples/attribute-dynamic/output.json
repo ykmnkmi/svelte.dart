@@ -30,8 +30,8 @@
 								"expression": {
 									"start": 20,
 									"end": 25,
-									"class": "SimpleIdentifier",
-									"toString": "color",
+									"@class": "SimpleIdentifier",
+									"@toString": "color",
 									"token": {
 										"start": 20,
 										"end": 25,
@@ -74,8 +74,8 @@
 						"expression": {
 							"start": 30,
 							"end": 35,
-							"class": "SimpleIdentifier",
-							"toString": "color",
+							"@class": "SimpleIdentifier",
+							"@toString": "color",
 							"token": {
 								"start": 30,
 								"end": 35,

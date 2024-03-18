@@ -12,8 +12,8 @@
 				"expression": {
 					"start": 25,
 					"end": 40,
-					"class": "ConditionalExpression",
-					"toString": "foo ? Foo : Bar",
+					"@class": "ConditionalExpression",
+					"@toString": "foo ? Foo : Bar",
 					"question": {
 						"start": 29,
 						"end": 30,
@@ -35,8 +35,8 @@
 					"condition": {
 						"start": 25,
 						"end": 28,
-						"class": "SimpleIdentifier",
-						"toString": "foo",
+						"@class": "SimpleIdentifier",
+						"@toString": "foo",
 						"token": {
 							"start": 25,
 							"end": 28,
@@ -63,8 +63,8 @@
 					"elseExpression": {
 						"start": 37,
 						"end": 40,
-						"class": "SimpleIdentifier",
-						"toString": "Bar",
+						"@class": "SimpleIdentifier",
+						"@toString": "Bar",
 						"token": {
 							"start": 37,
 							"end": 40,
@@ -97,8 +97,8 @@
 					"thenExpression": {
 						"start": 31,
 						"end": 34,
-						"class": "SimpleIdentifier",
-						"toString": "Foo",
+						"@class": "SimpleIdentifier",
+						"@toString": "Foo",
 						"token": {
 							"start": 31,
 							"end": 34,

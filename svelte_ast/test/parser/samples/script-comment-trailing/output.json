@@ -32,8 +32,8 @@
 						"expression": {
 							"start": 79,
 							"end": 83,
-							"class": "SimpleIdentifier",
-							"toString": "name",
+							"@class": "SimpleIdentifier",
+							"@toString": "name",
 							"token": {
 								"start": 79,
 								"end": 83,
@@ -86,8 +86,8 @@
 				{
 					"start": 10,
 					"end": 29,
-					"class": "VariableDeclarationStatement",
-					"toString": "var name = 'world';",
+					"@class": "VariableDeclarationStatement",
+					"@toString": "var name = 'world';",
 					"semicolon": {
 						"start": 28,
 						"end": 29,
@@ -109,8 +109,8 @@
 					"variables": {
 						"start": 10,
 						"end": 28,
-						"class": "VariableDeclarationList",
-						"toString": "var name = 'world'",
+						"@class": "VariableDeclarationList",
+						"@toString": "var name = 'world'",
 						"keyword": {
 							"start": 10,
 							"end": 13,
@@ -138,8 +138,8 @@
 							{
 								"start": 14,
 								"end": 28,
-								"class": "VariableDeclaration",
-								"toString": "name = 'world'",
+								"@class": "VariableDeclaration",
+								"@toString": "name = 'world'",
 								"name": {
 									"start": 14,
 									"end": 18,
@@ -169,8 +169,8 @@
 								"initializer": {
 									"start": 21,
 									"end": 28,
-									"class": "SimpleStringLiteral",
-									"toString": "'world'",
+									"@class": "SimpleStringLiteral",
+									"@toString": "'world'",
 									"literal": {
 										"start": 21,
 										"end": 28,
@@ -184,6 +184,8 @@
 										"type": "STRING",
 										"lexeme": "'world'"
 									},
+									"contentsEnd": 27,
+									"contentsOffset": 22,
 									"endToken": {
 										"start": 21,
 										"end": 28,

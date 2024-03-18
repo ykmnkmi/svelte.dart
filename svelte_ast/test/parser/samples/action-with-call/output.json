@@ -19,8 +19,8 @@
 						"expression": {
 							"start": 21,
 							"end": 37,
-							"class": "MethodInvocation",
-							"toString": "t('tooltip msg')",
+							"@class": "MethodInvocation",
+							"@toString": "t('tooltip msg')",
 							"operator": null,
 							"beginToken": {
 								"start": 21,
@@ -37,8 +37,8 @@
 							"function": {
 								"start": 21,
 								"end": 22,
-								"class": "SimpleIdentifier",
-								"toString": "t",
+								"@class": "SimpleIdentifier",
+								"@toString": "t",
 								"token": {
 									"start": 21,
 									"end": 22,
@@ -67,8 +67,8 @@
 							"methodName": {
 								"start": 21,
 								"end": 22,
-								"class": "SimpleIdentifier",
-								"toString": "t",
+								"@class": "SimpleIdentifier",
+								"@toString": "t",
 								"token": {
 									"start": 21,
 									"end": 22,
@@ -98,8 +98,8 @@
 							"argumentList": {
 								"start": 22,
 								"end": 37,
-								"class": "ArgumentList",
-								"toString": "('tooltip msg')",
+								"@class": "ArgumentList",
+								"@toString": "('tooltip msg')",
 								"leftParenthesis": {
 									"start": 22,
 									"end": 23,
@@ -116,8 +116,8 @@
 									{
 										"start": 23,
 										"end": 36,
-										"class": "SimpleStringLiteral",
-										"toString": "'tooltip msg'",
+										"@class": "SimpleStringLiteral",
+										"@toString": "'tooltip msg'",
 										"literal": {
 											"start": 23,
 											"end": 36,
@@ -131,6 +131,8 @@
 											"type": "STRING",
 											"lexeme": "'tooltip msg'"
 										},
+										"contentsEnd": 35,
+										"contentsOffset": 24,
 										"endToken": {
 											"start": 23,
 											"end": 36,
@@ -155,7 +157,9 @@
 									"type": "CLOSE_PAREN",
 									"lexeme": ")"
 								},
-								"isSynthetic": false
+								"isSynthetic": false,
+								"length": 15,
+								"offset": 22
 							},
 							"typeArguments": null
 						}

@@ -36,23 +36,23 @@ void _removeSeen(Object? object) {
   _seen.removeLast();
 }
 
+// TODO(css): Handle dynamic type
 Object dart(AstNode node) {
   if (_checkCycle(node)) {
     return _i == 0 ? '@seen { self }' : '@seen';
   }
-
-  Map<String, Object?> result = <String, Object?>{
-    'start': node.offset,
-    'end': node.end,
-  };
 
   InstanceMirror instanceMirror = reflect(node);
   ClassMirror classMirror = instanceMirror.type;
   List<ClassMirror> superinterfaces = classMirror.superinterfaces;
   ClassMirror interface = superinterfaces.first;
 
-  result['class'] = MirrorSystem.getName(interface.simpleName);
-  result['toString'] = '$node';
+  Map<String, Object?> result = <String, Object?>{
+    '@class': MirrorSystem.getName(interface.simpleName),
+    '@toString': '$node',
+    'start': node.offset,
+    'end': node.end,
+  };
 
   void forEach(Symbol symbol, DeclarationMirror declarationMirror) {
     if (declarationMirror.isPrivate ||
@@ -105,7 +105,7 @@ Object dart(AstNode node) {
           'lexeme': token.lexeme,
         };
       }
-    } else if (isCoreValue(type)) {
+    } else if (isEncodable(type)) {
       result[name] = getValue(instanceMirror, symbol);
     }
   }

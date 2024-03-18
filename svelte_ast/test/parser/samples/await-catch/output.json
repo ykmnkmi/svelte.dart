@@ -11,8 +11,8 @@
 				"expession": {
 					"start": 8,
 					"end": 18,
-					"class": "SimpleIdentifier",
-					"toString": "thePromise",
+					"@class": "SimpleIdentifier",
+					"@toString": "thePromise",
 					"token": {
 						"start": 8,
 						"end": 18,
@@ -40,8 +40,8 @@
 				"error": {
 					"start": 47,
 					"end": 55,
-					"class": "AssignedVariablePattern",
-					"toString": "theError",
+					"@class": "AssignedVariablePattern",
+					"@toString": "theError",
 					"beginToken": {
 						"start": 47,
 						"end": 55,
@@ -132,8 +132,8 @@
 									"expression": {
 										"start": 69,
 										"end": 85,
-										"class": "PrefixedIdentifier",
-										"toString": "theError.message",
+										"@class": "PrefixedIdentifier",
+										"@toString": "theError.message",
 										"period": {
 											"start": 77,
 											"end": 78,
@@ -155,8 +155,8 @@
 										"identifier": {
 											"start": 78,
 											"end": 85,
-											"class": "SimpleIdentifier",
-											"toString": "message",
+											"@class": "SimpleIdentifier",
+											"@toString": "message",
 											"token": {
 												"start": 78,
 												"end": 85,
@@ -185,8 +185,8 @@
 										"prefix": {
 											"start": 69,
 											"end": 77,
-											"class": "SimpleIdentifier",
-											"toString": "theError",
+											"@class": "SimpleIdentifier",
+											"@toString": "theError",
 											"token": {
 												"start": 69,
 												"end": 77,

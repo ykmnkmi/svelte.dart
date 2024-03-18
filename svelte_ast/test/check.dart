@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:stack_trace/stack_trace.dart';
-import 'package:svelte_ast/reflection.dart';
+import 'package:svelte_ast/src/reflection.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = r'''

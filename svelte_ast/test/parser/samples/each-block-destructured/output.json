@@ -18,8 +18,8 @@
 				"expression": {
 					"start": 50,
 					"end": 57,
-					"class": "SimpleIdentifier",
-					"toString": "animals",
+					"@class": "SimpleIdentifier",
+					"@toString": "animals",
 					"token": {
 						"start": 50,
 						"end": 57,
@@ -46,8 +46,8 @@
 				"context": {
 					"start": 61,
 					"end": 78,
-					"class": "ListPattern",
-					"toString": "[key, value, ...]",
+					"@class": "ListPattern",
+					"@toString": "[key, value, ...]",
 					"typeArguments": null,
 					"leftBracket": {
 						"start": 61,
@@ -71,8 +71,8 @@
 						{
 							"start": 62,
 							"end": 65,
-							"class": "AssignedVariablePattern",
-							"toString": "key",
+							"@class": "AssignedVariablePattern",
+							"@toString": "key",
 							"beginToken": {
 								"start": 62,
 								"end": 65,
@@ -95,8 +95,8 @@
 						{
 							"start": 67,
 							"end": 72,
-							"class": "AssignedVariablePattern",
-							"toString": "value",
+							"@class": "AssignedVariablePattern",
+							"@toString": "value",
 							"beginToken": {
 								"start": 67,
 								"end": 72,
@@ -119,8 +119,8 @@
 						{
 							"start": 74,
 							"end": 77,
-							"class": "RestPatternElement",
-							"toString": "...",
+							"@class": "RestPatternElement",
+							"@toString": "...",
 							"operator": {
 								"start": 74,
 								"end": 77,
@@ -167,8 +167,8 @@
 								"expression": {
 									"start": 84,
 									"end": 87,
-									"class": "SimpleIdentifier",
-									"toString": "key",
+									"@class": "SimpleIdentifier",
+									"@toString": "key",
 									"token": {
 										"start": 84,
 										"end": 87,
@@ -207,8 +207,8 @@
 								"expression": {
 									"start": 91,
 									"end": 96,
-									"class": "SimpleIdentifier",
-									"toString": "value",
+									"@class": "SimpleIdentifier",
+									"@toString": "value",
 									"token": {
 										"start": 91,
 										"end": 96,
@@ -256,8 +256,8 @@
 				{
 					"start": 19,
 					"end": 31,
-					"class": "VariableDeclarationStatement",
-					"toString": "var animals;",
+					"@class": "VariableDeclarationStatement",
+					"@toString": "var animals;",
 					"semicolon": {
 						"start": 30,
 						"end": 31,
@@ -279,8 +279,8 @@
 					"variables": {
 						"start": 19,
 						"end": 30,
-						"class": "VariableDeclarationList",
-						"toString": "var animals",
+						"@class": "VariableDeclarationList",
+						"@toString": "var animals",
 						"keyword": {
 							"start": 19,
 							"end": 22,
@@ -308,8 +308,8 @@
 							{
 								"start": 23,
 								"end": 30,
-								"class": "VariableDeclaration",
-								"toString": "animals",
+								"@class": "VariableDeclaration",
+								"@toString": "animals",
 								"name": {
 									"start": 23,
 									"end": 30,

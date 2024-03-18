@@ -19,8 +19,8 @@
 						"expression": {
 							"start": 19,
 							"end": 22,
-							"class": "SimpleIdentifier",
-							"toString": "foo",
+							"@class": "SimpleIdentifier",
+							"@toString": "foo",
 							"token": {
 								"start": 19,
 								"end": 22,

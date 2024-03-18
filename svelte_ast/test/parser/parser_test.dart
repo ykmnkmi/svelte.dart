@@ -4,7 +4,7 @@ library;
 import 'dart:convert' show JsonEncoder, json;
 import 'dart:io' show Directory, File, FileSystemEntity;
 
-import 'package:svelte_ast/reflection.dart' show mapper;
+import 'package:svelte_ast/src/reflection.dart' show mapper;
 import 'package:svelte_ast/svelte_ast.dart' show ParseError, SvelteAst, parse;
 import 'package:test/test.dart' show TestOn, equals, expect, group, test;
 

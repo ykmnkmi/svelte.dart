@@ -23,8 +23,8 @@
 								"expression": {
 									"start": 6,
 									"end": 8,
-									"class": "SimpleIdentifier",
-									"toString": "id",
+									"@class": "SimpleIdentifier",
+									"@toString": "id",
 									"token": {
 										"start": 6,
 										"end": 8,

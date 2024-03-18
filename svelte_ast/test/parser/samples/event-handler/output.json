@@ -19,8 +19,8 @@
 						"expression": {
 							"start": 19,
 							"end": 43,
-							"class": "FunctionExpression",
-							"toString": "() => visible = !visible",
+							"@class": "FunctionExpression",
+							"@toString": "() => visible = !visible",
 							"wasFunctionTypeSupplied": false,
 							"beginToken": {
 								"start": 19,
@@ -31,8 +31,8 @@
 							"body": {
 								"start": 22,
 								"end": 43,
-								"class": "ExpressionFunctionBody",
-								"toString": "=> visible = !visible",
+								"@class": "ExpressionFunctionBody",
+								"@toString": "=> visible = !visible",
 								"keyword": null,
 								"star": null,
 								"functionDefinition": {
@@ -57,8 +57,8 @@
 								"expression": {
 									"start": 25,
 									"end": 43,
-									"class": "AssignmentExpression",
-									"toString": "visible = !visible",
+									"@class": "AssignmentExpression",
+									"@toString": "visible = !visible",
 									"operator": {
 										"start": 33,
 										"end": 34,
@@ -80,8 +80,8 @@
 									"leftHandSide": {
 										"start": 25,
 										"end": 32,
-										"class": "SimpleIdentifier",
-										"toString": "visible",
+										"@class": "SimpleIdentifier",
+										"@toString": "visible",
 										"token": {
 											"start": 25,
 											"end": 32,
@@ -108,8 +108,8 @@
 									"rightHandSide": {
 										"start": 35,
 										"end": 43,
-										"class": "PrefixExpression",
-										"toString": "!visible",
+										"@class": "PrefixExpression",
+										"@toString": "!visible",
 										"operator": {
 											"start": 35,
 											"end": 36,
@@ -131,8 +131,8 @@
 										"operand": {
 											"start": 36,
 											"end": 43,
-											"class": "SimpleIdentifier",
-											"toString": "visible",
+											"@class": "SimpleIdentifier",
+											"@toString": "visible",
 											"token": {
 												"start": 36,
 												"end": 43,
@@ -176,8 +176,8 @@
 							"parameters": {
 								"start": 19,
 								"end": 21,
-								"class": "FormalParameterList",
-								"toString": "()",
+								"@class": "FormalParameterList",
+								"@toString": "()",
 								"leftParenthesis": {
 									"start": 19,
 									"end": 20,
@@ -205,7 +205,9 @@
 									"lexeme": ")"
 								},
 								"parameters": [],
-								"isSynthetic": false
+								"isSynthetic": false,
+								"length": 2,
+								"offset": 19
 							},
 							"typeParameters": null,
 							"inConstantContext": false,
@@ -238,8 +240,8 @@
 				"expression": {
 					"start": 68,
 					"end": 75,
-					"class": "SimpleIdentifier",
-					"toString": "visible",
+					"@class": "SimpleIdentifier",
+					"@toString": "visible",
 					"token": {
 						"start": 68,
 						"end": 75,

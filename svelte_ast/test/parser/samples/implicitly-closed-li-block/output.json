@@ -39,8 +39,8 @@
 								"expression": {
 									"start": 18,
 									"end": 22,
-									"class": "BooleanLiteral",
-									"toString": "true",
+									"@class": "BooleanLiteral",
+									"@toString": "true",
 									"literal": {
 										"start": 18,
 										"end": 22,

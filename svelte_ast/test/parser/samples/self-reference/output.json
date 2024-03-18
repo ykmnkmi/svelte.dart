@@ -11,8 +11,8 @@
 				"expression": {
 					"start": 5,
 					"end": 14,
-					"class": "BinaryExpression",
-					"toString": "depth > 1",
+					"@class": "BinaryExpression",
+					"@toString": "depth > 1",
 					"operator": {
 						"start": 11,
 						"end": 12,
@@ -34,8 +34,8 @@
 					"leftOperand": {
 						"start": 5,
 						"end": 10,
-						"class": "SimpleIdentifier",
-						"toString": "depth",
+						"@class": "SimpleIdentifier",
+						"@toString": "depth",
 						"token": {
 							"start": 5,
 							"end": 10,
@@ -62,14 +62,15 @@
 					"rightOperand": {
 						"start": 13,
 						"end": 14,
-						"class": "IntegerLiteral",
-						"toString": "1",
+						"@class": "IntegerLiteral",
+						"@toString": "1",
 						"literal": {
 							"start": 13,
 							"end": 14,
 							"type": "INT",
 							"lexeme": "1"
 						},
+						"value": 1,
 						"beginToken": {
 							"start": 13,
 							"end": 14,
@@ -111,8 +112,8 @@
 										"expression": {
 											"start": 38,
 											"end": 47,
-											"class": "BinaryExpression",
-											"toString": "depth - 1",
+											"@class": "BinaryExpression",
+											"@toString": "depth - 1",
 											"operator": {
 												"start": 44,
 												"end": 45,
@@ -134,8 +135,8 @@
 											"leftOperand": {
 												"start": 38,
 												"end": 43,
-												"class": "SimpleIdentifier",
-												"toString": "depth",
+												"@class": "SimpleIdentifier",
+												"@toString": "depth",
 												"token": {
 													"start": 38,
 													"end": 43,
@@ -162,14 +163,15 @@
 											"rightOperand": {
 												"start": 46,
 												"end": 47,
-												"class": "IntegerLiteral",
-												"toString": "1",
+												"@class": "IntegerLiteral",
+												"@toString": "1",
 												"literal": {
 													"start": 46,
 													"end": 47,
 													"type": "INT",
 													"lexeme": "1"
 												},
+												"value": 1,
 												"beginToken": {
 													"start": 46,
 													"end": 47,

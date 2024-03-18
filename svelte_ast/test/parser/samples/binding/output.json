@@ -26,8 +26,8 @@
 						"expression": {
 							"start": 50,
 							"end": 54,
-							"class": "SimpleIdentifier",
-							"toString": "name",
+							"@class": "SimpleIdentifier",
+							"@toString": "name",
 							"token": {
 								"start": 50,
 								"end": 54,
@@ -74,8 +74,8 @@
 				{
 					"start": 10,
 					"end": 19,
-					"class": "VariableDeclarationStatement",
-					"toString": "var name;",
+					"@class": "VariableDeclarationStatement",
+					"@toString": "var name;",
 					"semicolon": {
 						"start": 18,
 						"end": 19,
@@ -97,8 +97,8 @@
 					"variables": {
 						"start": 10,
 						"end": 18,
-						"class": "VariableDeclarationList",
-						"toString": "var name",
+						"@class": "VariableDeclarationList",
+						"@toString": "var name",
 						"keyword": {
 							"start": 10,
 							"end": 13,
@@ -126,8 +126,8 @@
 							{
 								"start": 14,
 								"end": 18,
-								"class": "VariableDeclaration",
-								"toString": "name",
+								"@class": "VariableDeclaration",
+								"@toString": "name",
 								"name": {
 									"start": 14,
 									"end": 18,

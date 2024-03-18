@@ -11,8 +11,8 @@
 				"expression": {
 					"start": 7,
 					"end": 12,
-					"class": "SimpleIdentifier",
-					"toString": "todos",
+					"@class": "SimpleIdentifier",
+					"@toString": "todos",
 					"token": {
 						"start": 7,
 						"end": 12,
@@ -39,8 +39,8 @@
 				"context": {
 					"start": 16,
 					"end": 20,
-					"class": "AssignedVariablePattern",
-					"toString": "todo",
+					"@class": "AssignedVariablePattern",
+					"@toString": "todo",
 					"beginToken": {
 						"start": 16,
 						"end": 20,
@@ -64,8 +64,8 @@
 				"key": {
 					"start": 22,
 					"end": 29,
-					"class": "PrefixedIdentifier",
-					"toString": "todo.id",
+					"@class": "PrefixedIdentifier",
+					"@toString": "todo.id",
 					"period": {
 						"start": 26,
 						"end": 27,
@@ -87,8 +87,8 @@
 					"identifier": {
 						"start": 27,
 						"end": 29,
-						"class": "SimpleIdentifier",
-						"toString": "id",
+						"@class": "SimpleIdentifier",
+						"@toString": "id",
 						"token": {
 							"start": 27,
 							"end": 29,
@@ -117,8 +117,8 @@
 					"prefix": {
 						"start": 22,
 						"end": 26,
-						"class": "SimpleIdentifier",
-						"toString": "todo",
+						"@class": "SimpleIdentifier",
+						"@toString": "todo",
 						"token": {
 							"start": 22,
 							"end": 26,
@@ -158,8 +158,8 @@
 								"expression": {
 									"start": 37,
 									"end": 41,
-									"class": "SimpleIdentifier",
-									"toString": "todo",
+									"@class": "SimpleIdentifier",
+									"@toString": "todo",
 									"token": {
 										"start": 37,
 										"end": 41,

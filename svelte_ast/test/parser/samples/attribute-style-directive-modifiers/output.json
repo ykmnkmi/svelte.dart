@@ -26,8 +26,8 @@
 								"expression": {
 									"start": 28,
 									"end": 35,
-									"class": "SimpleIdentifier",
-									"toString": "myColor",
+									"@class": "SimpleIdentifier",
+									"@toString": "myColor",
 									"token": {
 										"start": 28,
 										"end": 35,

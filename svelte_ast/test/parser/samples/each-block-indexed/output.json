@@ -11,8 +11,8 @@
 				"expression": {
 					"start": 7,
 					"end": 14,
-					"class": "SimpleIdentifier",
-					"toString": "animals",
+					"@class": "SimpleIdentifier",
+					"@toString": "animals",
 					"token": {
 						"start": 7,
 						"end": 14,
@@ -39,8 +39,8 @@
 				"context": {
 					"start": 18,
 					"end": 24,
-					"class": "AssignedVariablePattern",
-					"toString": "animal",
+					"@class": "AssignedVariablePattern",
+					"@toString": "animal",
 					"beginToken": {
 						"start": 18,
 						"end": 24,
@@ -77,8 +77,8 @@
 								"expression": {
 									"start": 34,
 									"end": 35,
-									"class": "SimpleIdentifier",
-									"toString": "i",
+									"@class": "SimpleIdentifier",
+									"@toString": "i",
 									"token": {
 										"start": 34,
 										"end": 35,
@@ -117,8 +117,8 @@
 								"expression": {
 									"start": 39,
 									"end": 45,
-									"class": "SimpleIdentifier",
-									"toString": "animal",
+									"@class": "SimpleIdentifier",
+									"@toString": "animal",
 									"token": {
 										"start": 39,
 										"end": 45,

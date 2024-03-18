@@ -12,8 +12,8 @@
 				"tag": {
 					"start": 22,
 					"end": 25,
-					"class": "SimpleIdentifier",
-					"toString": "tag",
+					"@class": "SimpleIdentifier",
+					"@toString": "tag",
 					"token": {
 						"start": 22,
 						"end": 25,
@@ -55,8 +55,8 @@
 				"tag": {
 					"start": 67,
 					"end": 70,
-					"class": "SimpleIdentifier",
-					"toString": "tag",
+					"@class": "SimpleIdentifier",
+					"@toString": "tag",
 					"token": {
 						"start": 67,
 						"end": 70,

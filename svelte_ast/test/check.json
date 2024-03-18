@@ -38,10 +38,10 @@
             "name": "click",
             "modifiers": [],
             "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "handleClick",
               "start": 448,
               "end": 459,
-              "class": "SimpleIdentifier",
-              "toString": "handleClick",
               "token": {
                 "start": 448,
                 "end": 459,
@@ -80,10 +80,10 @@
             "end": 479,
             "class": "MustacheTag",
             "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "count",
               "start": 473,
               "end": 478,
-              "class": "SimpleIdentifier",
-              "toString": "count",
               "token": {
                 "start": 473,
                 "end": 478,
@@ -120,10 +120,10 @@
             "end": 511,
             "class": "MustacheTag",
             "expression": {
+              "@class": "ConditionalExpression",
+              "@toString": "count == 1 ? 'time' : 'times'",
               "start": 481,
               "end": 510,
-              "class": "ConditionalExpression",
-              "toString": "count == 1 ? 'time' : 'times'",
               "question": {
                 "start": 492,
                 "end": 493,
@@ -143,10 +143,10 @@
                 "lexeme": "count"
               },
               "condition": {
+                "@class": "BinaryExpression",
+                "@toString": "count == 1",
                 "start": 481,
                 "end": 491,
-                "class": "BinaryExpression",
-                "toString": "count == 1",
                 "operator": {
                   "start": 487,
                   "end": 489,
@@ -166,10 +166,10 @@
                   "lexeme": "1"
                 },
                 "leftOperand": {
+                  "@class": "SimpleIdentifier",
+                  "@toString": "count",
                   "start": 481,
                   "end": 486,
-                  "class": "SimpleIdentifier",
-                  "toString": "count",
                   "token": {
                     "start": 481,
                     "end": 486,
@@ -194,16 +194,17 @@
                   "name": "count"
                 },
                 "rightOperand": {
+                  "@class": "IntegerLiteral",
+                  "@toString": "1",
                   "start": 490,
                   "end": 491,
-                  "class": "IntegerLiteral",
-                  "toString": "1",
                   "literal": {
                     "start": 490,
                     "end": 491,
                     "type": "INT",
                     "lexeme": "1"
                   },
+                  "value": 1,
                   "beginToken": {
                     "start": 490,
                     "end": 491,
@@ -223,10 +224,10 @@
                 "unParenthesized": "@seen"
               },
               "elseExpression": {
+                "@class": "SimpleStringLiteral",
+                "@toString": "'times'",
                 "start": 503,
                 "end": 510,
-                "class": "SimpleStringLiteral",
-                "toString": "'times'",
                 "literal": {
                   "start": 503,
                   "end": 510,
@@ -240,6 +241,8 @@
                   "type": "STRING",
                   "lexeme": "'times'"
                 },
+                "contentsEnd": 509,
+                "contentsOffset": 504,
                 "endToken": {
                   "start": 503,
                   "end": 510,
@@ -258,10 +261,10 @@
                 "lexeme": "'times'"
               },
               "thenExpression": {
+                "@class": "SimpleStringLiteral",
+                "@toString": "'time'",
                 "start": 494,
                 "end": 500,
-                "class": "SimpleStringLiteral",
-                "toString": "'time'",
                 "literal": {
                   "start": 494,
                   "end": 500,
@@ -275,6 +278,8 @@
                   "type": "STRING",
                   "lexeme": "'time'"
                 },
+                "contentsEnd": 499,
+                "contentsOffset": 495,
                 "endToken": {
                   "start": 494,
                   "end": 500,
@@ -319,10 +324,10 @@
             "end": 533,
             "class": "MustacheTag",
             "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "count",
               "start": 527,
               "end": 532,
-              "class": "SimpleIdentifier",
-              "toString": "count",
               "token": {
                 "start": 527,
                 "end": 532,
@@ -359,10 +364,10 @@
             "end": 549,
             "class": "MustacheTag",
             "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "doubled",
               "start": 541,
               "end": 548,
-              "class": "SimpleIdentifier",
-              "toString": "doubled",
               "token": {
                 "start": 541,
                 "end": 548,
@@ -408,10 +413,10 @@
             "end": 566,
             "class": "MustacheTag",
             "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "doubled",
               "start": 558,
               "end": 565,
-              "class": "SimpleIdentifier",
-              "toString": "doubled",
               "token": {
                 "start": 558,
                 "end": 565,
@@ -448,10 +453,10 @@
             "end": 585,
             "class": "MustacheTag",
             "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "quadrupled",
               "start": 574,
               "end": 584,
-              "class": "SimpleIdentifier",
-              "toString": "quadrupled",
               "token": {
                 "start": 574,
                 "end": 584,
@@ -477,6 +482,469 @@
             }
           }
         ]
+      },
+      {
+        "start": 589,
+        "end": 591,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      }
+    ]
+  },
+  "style": {
+    "start": 591,
+    "end": 839,
+    "class": "Style",
+    "content": {
+      "start": 598,
+      "end": 831,
+      "data": "\n  button {\n    background-color: #ff3e00;\n    color: white;\n    padding: 8px 16px;\n    font-size: 16px;\n    border: none;\n    cursor: pointer;\n  }\n\n  button:hover {\n    background-color: #ff6f40;\n  }\n\n  p {\n    margin-top: 8px;\n  }\n"
+    },
+    "attributes": [],
+    "topLevels": [
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 3,
+        "end": 9,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 3,
+          "end": 9,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 3,
+              "end": 9,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "button",
+                  "start": 3,
+                  "end": 9,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "button",
+                    "start": 3,
+                    "end": 9
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 1
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 10,
+          "end": 147,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 16,
+              "end": 41,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 34,
+                "end": 35,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 34,
+                    "end": 41
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background-color",
+              "hasDartStyle": false,
+              "span": {
+                "start": 16,
+                "end": 41,
+                "lexeme": "background-color: #ff3e00"
+              }
+            },
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 47,
+              "end": 59,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 54,
+                "end": 59,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 54,
+                    "end": 59
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "color",
+              "hasDartStyle": false,
+              "span": {
+                "start": 47,
+                "end": 59,
+                "lexeme": "color: white"
+              }
+            },
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 65,
+              "end": 82,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 74,
+                "end": 75,
+                "expressions": [
+                  {
+                    "@class": "LengthTerm",
+                    "@toString": "8px",
+                    "start": 74,
+                    "end": 77
+                  },
+                  {
+                    "@class": "LengthTerm",
+                    "@toString": "16px",
+                    "start": 78,
+                    "end": 82
+                  }
+                ]
+              },
+              "dartStyle": {
+                "@class": "PaddingExpression",
+                "@toString": "Instance of 'PaddingExpression'",
+                "start": 74,
+                "end": 75
+              },
+              "important": false,
+              "isIE7": false,
+              "property": "padding",
+              "hasDartStyle": true,
+              "span": {
+                "start": 65,
+                "end": 82,
+                "lexeme": "padding: 8px 16px"
+              }
+            },
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 88,
+              "end": 103,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 99,
+                "end": 101,
+                "expressions": [
+                  {
+                    "@class": "LengthTerm",
+                    "@toString": "16px",
+                    "start": 99,
+                    "end": 103
+                  }
+                ]
+              },
+              "dartStyle": {
+                "@class": "FontExpression",
+                "@toString": "Instance of 'FontExpression'",
+                "start": 99,
+                "end": 101
+              },
+              "important": false,
+              "isIE7": false,
+              "property": "font-size",
+              "hasDartStyle": true,
+              "span": {
+                "start": 88,
+                "end": 103,
+                "lexeme": "font-size: 16px"
+              }
+            },
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 109,
+              "end": 121,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 117,
+                "end": 121,
+                "expressions": [
+                  {
+                    "@class": "LiteralTerm",
+                    "@toString": "Instance of 'LiteralTerm'",
+                    "start": 117,
+                    "end": 121,
+                    "text": "none"
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "border",
+              "hasDartStyle": false,
+              "span": {
+                "start": 109,
+                "end": 121,
+                "lexeme": "border: none"
+              }
+            },
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 127,
+              "end": 142,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 135,
+                "end": 142,
+                "expressions": [
+                  {
+                    "@class": "LiteralTerm",
+                    "@toString": "Instance of 'LiteralTerm'",
+                    "start": 135,
+                    "end": 142,
+                    "text": "pointer"
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "cursor",
+              "hasDartStyle": false,
+              "span": {
+                "start": 127,
+                "end": 142,
+                "lexeme": "cursor: pointer"
+              }
+            }
+          ],
+          "span": {
+            "start": 10,
+            "end": 147,
+            "lexeme": "{\n    background-color: #ff3e00;\n    color: white;\n    padding: 8px 16px;\n    font-size: 16px;\n    border: none;\n    cursor: pointer;\n  }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 151,
+        "end": 163,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 151,
+          "end": 163,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 151,
+              "end": 163,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "button",
+                  "start": 151,
+                  "end": 157,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "button",
+                    "start": 151,
+                    "end": 157
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "hover",
+                  "start": 157,
+                  "end": 158,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassSelector",
+                    "@toString": ":hover",
+                    "start": 157,
+                    "end": 163
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 164,
+          "end": 200,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 170,
+              "end": 195,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 188,
+                "end": 189,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 188,
+                    "end": 195
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background-color",
+              "hasDartStyle": false,
+              "span": {
+                "start": 170,
+                "end": 195,
+                "lexeme": "background-color: #ff6f40"
+              }
+            }
+          ],
+          "span": {
+            "start": 164,
+            "end": 200,
+            "lexeme": "{\n    background-color: #ff6f40;\n  }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 204,
+        "end": 205,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 204,
+          "end": 205,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 204,
+              "end": 205,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "p",
+                  "start": 204,
+                  "end": 205,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "p",
+                    "start": 204,
+                    "end": 205
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 1
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 206,
+          "end": 232,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 212,
+              "end": 227,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 224,
+                "end": 225,
+                "expressions": [
+                  {
+                    "@class": "LengthTerm",
+                    "@toString": "8px",
+                    "start": 224,
+                    "end": 227
+                  }
+                ]
+              },
+              "dartStyle": {
+                "@class": "MarginExpression",
+                "@toString": "Instance of 'MarginExpression'",
+                "start": 224,
+                "end": 225
+              },
+              "important": false,
+              "isIE7": false,
+              "property": "margin-top",
+              "hasDartStyle": true,
+              "span": {
+                "start": 212,
+                "end": 227,
+                "lexeme": "margin-top: 8px"
+              }
+            }
+          ],
+          "span": {
+            "start": 206,
+            "end": 232,
+            "lexeme": "{\n    margin-top: 8px;\n  }"
+          }
+        }
       }
     ]
   },
@@ -493,10 +961,10 @@
     "body": {
       "directives": [
         {
+          "@class": "ImportDirective",
+          "@toString": "import 'package:svelte/svelte.dart';",
           "start": 44,
           "end": 80,
-          "class": "ImportDirective",
-          "toString": "import 'package:svelte/svelte.dart';",
           "importKeyword": {
             "start": 44,
             "end": 50,
@@ -524,10 +992,10 @@
       ],
       "externals": [
         {
+          "@class": "VariableDeclarationStatement",
+          "@toString": "int count = 0;",
           "start": 109,
           "end": 123,
-          "class": "VariableDeclarationStatement",
-          "toString": "int count = 0;",
           "semicolon": {
             "start": 122,
             "end": 123,
@@ -547,10 +1015,10 @@
             "lexeme": ";"
           },
           "variables": {
+            "@class": "VariableDeclarationList",
+            "@toString": "int count = 0",
             "start": 109,
             "end": 122,
-            "class": "VariableDeclarationList",
-            "toString": "int count = 0",
             "keyword": null,
             "lateKeyword": null,
             "endToken": {
@@ -569,10 +1037,10 @@
             "isFinal": false,
             "isLate": false,
             "type": {
+              "@class": "NamedType",
+              "@toString": "int",
               "start": 109,
               "end": 112,
-              "class": "NamedType",
-              "toString": "int",
               "importPrefix": null,
               "name2": {
                 "start": 109,
@@ -599,10 +1067,10 @@
             },
             "variables": [
               {
+                "@class": "VariableDeclaration",
+                "@toString": "count = 0",
                 "start": 113,
                 "end": 122,
-                "class": "VariableDeclaration",
-                "toString": "count = 0",
                 "name": {
                   "start": 113,
                   "end": 118,
@@ -630,16 +1098,17 @@
                   "lexeme": "count"
                 },
                 "initializer": {
+                  "@class": "IntegerLiteral",
+                  "@toString": "0",
                   "start": 121,
                   "end": 122,
-                  "class": "IntegerLiteral",
-                  "toString": "0",
                   "literal": {
                     "start": 121,
                     "end": 122,
                     "type": "INT",
                     "lexeme": "0"
                   },
+                  "value": 0,
                   "beginToken": {
                     "start": 121,
                     "end": 122,
@@ -667,10 +1136,10 @@
       ],
       "body": [
         {
+          "@class": "LabeledStatement",
+          "@toString": "$: doubled = count * 2;",
           "start": 137,
           "end": 160,
-          "class": "LabeledStatement",
-          "toString": "$: doubled = count * 2;",
           "beginToken": {
             "start": 137,
             "end": 138,
@@ -685,10 +1154,10 @@
           },
           "labels": [
             {
+              "@class": "Label",
+              "@toString": "$:",
               "start": 137,
               "end": 139,
-              "class": "Label",
-              "toString": "$:",
               "colon": {
                 "start": 138,
                 "end": 139,
@@ -708,10 +1177,10 @@
                 "lexeme": ":"
               },
               "label": {
+                "@class": "SimpleIdentifier",
+                "@toString": "$",
                 "start": 137,
                 "end": 138,
-                "class": "SimpleIdentifier",
-                "toString": "$",
                 "token": {
                   "start": 137,
                   "end": 138,
@@ -735,14 +1204,16 @@
                 "isSynthetic": false,
                 "name": "$"
               },
-              "isSynthetic": false
+              "isSynthetic": false,
+              "length": 2,
+              "offset": 137
             }
           ],
           "statement": {
+            "@class": "ExpressionStatement",
+            "@toString": "doubled = count * 2;",
             "start": 140,
             "end": 160,
-            "class": "ExpressionStatement",
-            "toString": "doubled = count * 2;",
             "semicolon": {
               "start": 159,
               "end": 160,
@@ -762,10 +1233,10 @@
               "lexeme": ";"
             },
             "expression": {
+              "@class": "AssignmentExpression",
+              "@toString": "doubled = count * 2",
               "start": 140,
               "end": 159,
-              "class": "AssignmentExpression",
-              "toString": "doubled = count * 2",
               "operator": {
                 "start": 148,
                 "end": 149,
@@ -785,10 +1256,10 @@
                 "lexeme": "2"
               },
               "leftHandSide": {
+                "@class": "SimpleIdentifier",
+                "@toString": "doubled",
                 "start": 140,
                 "end": 147,
-                "class": "SimpleIdentifier",
-                "toString": "doubled",
                 "token": {
                   "start": 140,
                   "end": 147,
@@ -813,10 +1284,10 @@
                 "name": "doubled"
               },
               "rightHandSide": {
+                "@class": "BinaryExpression",
+                "@toString": "count * 2",
                 "start": 150,
                 "end": 159,
-                "class": "BinaryExpression",
-                "toString": "count * 2",
                 "operator": {
                   "start": 156,
                   "end": 157,
@@ -836,10 +1307,10 @@
                   "lexeme": "2"
                 },
                 "leftOperand": {
+                  "@class": "SimpleIdentifier",
+                  "@toString": "count",
                   "start": 150,
                   "end": 155,
-                  "class": "SimpleIdentifier",
-                  "toString": "count",
                   "token": {
                     "start": 150,
                     "end": 155,
@@ -864,16 +1335,17 @@
                   "name": "count"
                 },
                 "rightOperand": {
+                  "@class": "IntegerLiteral",
+                  "@toString": "2",
                   "start": 158,
                   "end": 159,
-                  "class": "IntegerLiteral",
-                  "toString": "2",
                   "literal": {
                     "start": 158,
                     "end": 159,
                     "type": "INT",
                     "lexeme": "2"
                   },
+                  "value": 2,
                   "beginToken": {
                     "start": 158,
                     "end": 159,
@@ -898,10 +1370,10 @@
           }
         },
         {
+          "@class": "LabeledStatement",
+          "@toString": "$: quadrupled = doubled * 2;",
           "start": 163,
           "end": 191,
-          "class": "LabeledStatement",
-          "toString": "$: quadrupled = doubled * 2;",
           "beginToken": {
             "start": 163,
             "end": 164,
@@ -916,10 +1388,10 @@
           },
           "labels": [
             {
+              "@class": "Label",
+              "@toString": "$:",
               "start": 163,
               "end": 165,
-              "class": "Label",
-              "toString": "$:",
               "colon": {
                 "start": 164,
                 "end": 165,
@@ -939,10 +1411,10 @@
                 "lexeme": ":"
               },
               "label": {
+                "@class": "SimpleIdentifier",
+                "@toString": "$",
                 "start": 163,
                 "end": 164,
-                "class": "SimpleIdentifier",
-                "toString": "$",
                 "token": {
                   "start": 163,
                   "end": 164,
@@ -966,14 +1438,16 @@
                 "isSynthetic": false,
                 "name": "$"
               },
-              "isSynthetic": false
+              "isSynthetic": false,
+              "length": 2,
+              "offset": 163
             }
           ],
           "statement": {
+            "@class": "ExpressionStatement",
+            "@toString": "quadrupled = doubled * 2;",
             "start": 166,
             "end": 191,
-            "class": "ExpressionStatement",
-            "toString": "quadrupled = doubled * 2;",
             "semicolon": {
               "start": 190,
               "end": 191,
@@ -993,10 +1467,10 @@
               "lexeme": ";"
             },
             "expression": {
+              "@class": "AssignmentExpression",
+              "@toString": "quadrupled = doubled * 2",
               "start": 166,
               "end": 190,
-              "class": "AssignmentExpression",
-              "toString": "quadrupled = doubled * 2",
               "operator": {
                 "start": 177,
                 "end": 178,
@@ -1016,10 +1490,10 @@
                 "lexeme": "2"
               },
               "leftHandSide": {
+                "@class": "SimpleIdentifier",
+                "@toString": "quadrupled",
                 "start": 166,
                 "end": 176,
-                "class": "SimpleIdentifier",
-                "toString": "quadrupled",
                 "token": {
                   "start": 166,
                   "end": 176,
@@ -1044,10 +1518,10 @@
                 "name": "quadrupled"
               },
               "rightHandSide": {
+                "@class": "BinaryExpression",
+                "@toString": "doubled * 2",
                 "start": 179,
                 "end": 190,
-                "class": "BinaryExpression",
-                "toString": "doubled * 2",
                 "operator": {
                   "start": 187,
                   "end": 188,
@@ -1067,10 +1541,10 @@
                   "lexeme": "2"
                 },
                 "leftOperand": {
+                  "@class": "SimpleIdentifier",
+                  "@toString": "doubled",
                   "start": 179,
                   "end": 186,
-                  "class": "SimpleIdentifier",
-                  "toString": "doubled",
                   "token": {
                     "start": 179,
                     "end": 186,
@@ -1095,16 +1569,17 @@
                   "name": "doubled"
                 },
                 "rightOperand": {
+                  "@class": "IntegerLiteral",
+                  "@toString": "2",
                   "start": 189,
                   "end": 190,
-                  "class": "IntegerLiteral",
-                  "toString": "2",
                   "literal": {
                     "start": 189,
                     "end": 190,
                     "type": "INT",
                     "lexeme": "2"
                   },
+                  "value": 2,
                   "beginToken": {
                     "start": 189,
                     "end": 190,
@@ -1129,10 +1604,10 @@
           }
         },
         {
+          "@class": "FunctionDeclarationStatement",
+          "@toString": "void handleClick() {count += 1;}",
           "start": 195,
           "end": 235,
-          "class": "FunctionDeclarationStatement",
-          "toString": "void handleClick() {count += 1;}",
           "beginToken": {
             "start": 195,
             "end": 199,
@@ -1146,10 +1621,10 @@
             "lexeme": "}"
           },
           "functionDeclaration": {
+            "@class": "FunctionDeclaration",
+            "@toString": "void handleClick() {count += 1;}",
             "start": 195,
             "end": 235,
-            "class": "FunctionDeclaration",
-            "toString": "void handleClick() {count += 1;}",
             "augmentKeyword": null,
             "externalKeyword": null,
             "propertyKeyword": null,
@@ -1166,10 +1641,10 @@
               "lexeme": "void"
             },
             "functionExpression": {
+              "@class": "FunctionExpression",
+              "@toString": "() {count += 1;}",
               "start": 211,
               "end": 235,
-              "class": "FunctionExpression",
-              "toString": "() {count += 1;}",
               "wasFunctionTypeSupplied": false,
               "beginToken": {
                 "start": 211,
@@ -1178,10 +1653,10 @@
                 "lexeme": "("
               },
               "body": {
+                "@class": "BlockFunctionBody",
+                "@toString": "{count += 1;}",
                 "start": 214,
                 "end": 235,
-                "class": "BlockFunctionBody",
-                "toString": "{count += 1;}",
                 "keyword": null,
                 "star": null,
                 "beginToken": {
@@ -1191,10 +1666,10 @@
                   "lexeme": "{"
                 },
                 "block": {
+                  "@class": "Block",
+                  "@toString": "{count += 1;}",
                   "start": 214,
                   "end": 235,
-                  "class": "Block",
-                  "toString": "{count += 1;}",
                   "leftBracket": {
                     "start": 214,
                     "end": 215,
@@ -1221,10 +1696,10 @@
                   },
                   "statements": [
                     {
+                      "@class": "ExpressionStatement",
+                      "@toString": "count += 1;",
                       "start": 220,
                       "end": 231,
-                      "class": "ExpressionStatement",
-                      "toString": "count += 1;",
                       "semicolon": {
                         "start": 230,
                         "end": 231,
@@ -1244,10 +1719,10 @@
                         "lexeme": ";"
                       },
                       "expression": {
+                        "@class": "AssignmentExpression",
+                        "@toString": "count += 1",
                         "start": 220,
                         "end": 230,
-                        "class": "AssignmentExpression",
-                        "toString": "count += 1",
                         "operator": {
                           "start": 226,
                           "end": 228,
@@ -1267,10 +1742,10 @@
                           "lexeme": "1"
                         },
                         "leftHandSide": {
+                          "@class": "SimpleIdentifier",
+                          "@toString": "count",
                           "start": 220,
                           "end": 225,
-                          "class": "SimpleIdentifier",
-                          "toString": "count",
                           "token": {
                             "start": 220,
                             "end": 225,
@@ -1295,16 +1770,17 @@
                           "name": "count"
                         },
                         "rightHandSide": {
+                          "@class": "IntegerLiteral",
+                          "@toString": "1",
                           "start": 229,
                           "end": 230,
-                          "class": "IntegerLiteral",
-                          "toString": "1",
                           "literal": {
                             "start": 229,
                             "end": 230,
                             "type": "INT",
                             "lexeme": "1"
                           },
+                          "value": 1,
                           "beginToken": {
                             "start": 229,
                             "end": 230,
@@ -1342,10 +1818,10 @@
                 "lexeme": "}"
               },
               "parameters": {
+                "@class": "FormalParameterList",
+                "@toString": "()",
                 "start": 211,
                 "end": 213,
-                "class": "FormalParameterList",
-                "toString": "()",
                 "leftParenthesis": {
                   "start": 211,
                   "end": 212,
@@ -1373,7 +1849,9 @@
                   "lexeme": ")"
                 },
                 "parameters": [],
-                "isSynthetic": false
+                "isSynthetic": false,
+                "length": 2,
+                "offset": 211
               },
               "typeParameters": null,
               "inConstantContext": false,
@@ -1383,10 +1861,10 @@
             "isGetter": false,
             "isSetter": false,
             "returnType": {
+              "@class": "NamedType",
+              "@toString": "void",
               "start": 195,
               "end": 199,
-              "class": "NamedType",
-              "toString": "void",
               "importPrefix": null,
               "name2": {
                 "start": 195,
@@ -1420,10 +1898,10 @@
           }
         },
         {
+          "@class": "VariableDeclarationStatement",
+          "@toString": "const duration = Duration(seconds: 1);",
           "start": 239,
           "end": 277,
-          "class": "VariableDeclarationStatement",
-          "toString": "const duration = Duration(seconds: 1);",
           "semicolon": {
             "start": 276,
             "end": 277,
@@ -1443,10 +1921,10 @@
             "lexeme": ";"
           },
           "variables": {
+            "@class": "VariableDeclarationList",
+            "@toString": "const duration = Duration(seconds: 1)",
             "start": 239,
             "end": 276,
-            "class": "VariableDeclarationList",
-            "toString": "const duration = Duration(seconds: 1)",
             "keyword": {
               "start": 239,
               "end": 244,
@@ -1472,10 +1950,10 @@
             "type": null,
             "variables": [
               {
+                "@class": "VariableDeclaration",
+                "@toString": "duration = Duration(seconds: 1)",
                 "start": 245,
                 "end": 276,
-                "class": "VariableDeclaration",
-                "toString": "duration = Duration(seconds: 1)",
                 "name": {
                   "start": 245,
                   "end": 253,
@@ -1503,10 +1981,10 @@
                   "lexeme": "duration"
                 },
                 "initializer": {
+                  "@class": "MethodInvocation",
+                  "@toString": "Duration(seconds: 1)",
                   "start": 256,
                   "end": 276,
-                  "class": "MethodInvocation",
-                  "toString": "Duration(seconds: 1)",
                   "operator": null,
                   "beginToken": {
                     "start": 256,
@@ -1521,10 +1999,10 @@
                     "lexeme": ")"
                   },
                   "function": {
+                    "@class": "SimpleIdentifier",
+                    "@toString": "Duration",
                     "start": 256,
                     "end": 264,
-                    "class": "SimpleIdentifier",
-                    "toString": "Duration",
                     "token": {
                       "start": 256,
                       "end": 264,
@@ -1551,10 +2029,10 @@
                   "isCascaded": false,
                   "isNullAware": false,
                   "methodName": {
+                    "@class": "SimpleIdentifier",
+                    "@toString": "Duration",
                     "start": 256,
                     "end": 264,
-                    "class": "SimpleIdentifier",
-                    "toString": "Duration",
                     "token": {
                       "start": 256,
                       "end": 264,
@@ -1582,10 +2060,10 @@
                   "target": null,
                   "nullShortingTermination": "@seen",
                   "argumentList": {
+                    "@class": "ArgumentList",
+                    "@toString": "(seconds: 1)",
                     "start": 264,
                     "end": 276,
-                    "class": "ArgumentList",
-                    "toString": "(seconds: 1)",
                     "leftParenthesis": {
                       "start": 264,
                       "end": 265,
@@ -1600,10 +2078,10 @@
                     },
                     "arguments": [
                       {
+                        "@class": "NamedExpression",
+                        "@toString": "seconds: 1",
                         "start": 265,
                         "end": 275,
-                        "class": "NamedExpression",
-                        "toString": "seconds: 1",
                         "beginToken": {
                           "start": 265,
                           "end": 272,
@@ -1617,16 +2095,17 @@
                           "lexeme": "1"
                         },
                         "expression": {
+                          "@class": "IntegerLiteral",
+                          "@toString": "1",
                           "start": 274,
                           "end": 275,
-                          "class": "IntegerLiteral",
-                          "toString": "1",
                           "literal": {
                             "start": 274,
                             "end": 275,
                             "type": "INT",
                             "lexeme": "1"
                           },
+                          "value": 1,
                           "beginToken": {
                             "start": 274,
                             "end": 275,
@@ -1642,10 +2121,10 @@
                           "immediatelyNegated": false
                         },
                         "name": {
+                          "@class": "Label",
+                          "@toString": "seconds:",
                           "start": 265,
                           "end": 273,
-                          "class": "Label",
-                          "toString": "seconds:",
                           "colon": {
                             "start": 272,
                             "end": 273,
@@ -1665,10 +2144,10 @@
                             "lexeme": ":"
                           },
                           "label": {
+                            "@class": "SimpleIdentifier",
+                            "@toString": "seconds",
                             "start": 265,
                             "end": 272,
-                            "class": "SimpleIdentifier",
-                            "toString": "seconds",
                             "token": {
                               "start": 265,
                               "end": 272,
@@ -1692,7 +2171,9 @@
                             "isSynthetic": false,
                             "name": "seconds"
                           },
-                          "isSynthetic": false
+                          "isSynthetic": false,
+                          "length": 8,
+                          "offset": 265
                         },
                         "inConstantContext": true,
                         "isAssignable": false,
@@ -1711,7 +2192,9 @@
                       "type": "CLOSE_PAREN",
                       "lexeme": ")"
                     },
-                    "isSynthetic": false
+                    "isSynthetic": false,
+                    "length": 12,
+                    "offset": 264
                   },
                   "typeArguments": null
                 },
@@ -1726,10 +2209,10 @@
           }
         },
         {
+          "@class": "ExpressionStatement",
+          "@toString": "onMount(() {var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};});",
           "start": 281,
           "end": 418,
-          "class": "ExpressionStatement",
-          "toString": "onMount(() {var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};});",
           "semicolon": {
             "start": 417,
             "end": 418,
@@ -1749,10 +2232,10 @@
             "lexeme": ";"
           },
           "expression": {
+            "@class": "MethodInvocation",
+            "@toString": "onMount(() {var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};})",
             "start": 281,
             "end": 417,
-            "class": "MethodInvocation",
-            "toString": "onMount(() {var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};})",
             "operator": null,
             "beginToken": {
               "start": 281,
@@ -1767,10 +2250,10 @@
               "lexeme": ")"
             },
             "function": {
+              "@class": "SimpleIdentifier",
+              "@toString": "onMount",
               "start": 281,
               "end": 288,
-              "class": "SimpleIdentifier",
-              "toString": "onMount",
               "token": {
                 "start": 281,
                 "end": 288,
@@ -1797,10 +2280,10 @@
             "isCascaded": false,
             "isNullAware": false,
             "methodName": {
+              "@class": "SimpleIdentifier",
+              "@toString": "onMount",
               "start": 281,
               "end": 288,
-              "class": "SimpleIdentifier",
-              "toString": "onMount",
               "token": {
                 "start": 281,
                 "end": 288,
@@ -1828,10 +2311,10 @@
             "target": null,
             "nullShortingTermination": "@seen",
             "argumentList": {
+              "@class": "ArgumentList",
+              "@toString": "(() {var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};})",
               "start": 288,
               "end": 417,
-              "class": "ArgumentList",
-              "toString": "(() {var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};})",
               "leftParenthesis": {
                 "start": 288,
                 "end": 289,
@@ -1846,10 +2329,10 @@
               },
               "arguments": [
                 {
+                  "@class": "FunctionExpression",
+                  "@toString": "() {var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};}",
                   "start": 289,
                   "end": 416,
-                  "class": "FunctionExpression",
-                  "toString": "() {var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};}",
                   "wasFunctionTypeSupplied": false,
                   "beginToken": {
                     "start": 289,
@@ -1858,10 +2341,10 @@
                     "lexeme": "("
                   },
                   "body": {
+                    "@class": "BlockFunctionBody",
+                    "@toString": "{var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};}",
                     "start": 292,
                     "end": 416,
-                    "class": "BlockFunctionBody",
-                    "toString": "{var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};}",
                     "keyword": null,
                     "star": null,
                     "beginToken": {
@@ -1871,10 +2354,10 @@
                       "lexeme": "{"
                     },
                     "block": {
+                      "@class": "Block",
+                      "@toString": "{var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};}",
                       "start": 292,
                       "end": 416,
-                      "class": "Block",
-                      "toString": "{var timer = Timer.periodic(duration, (_) {count += 1;}); return () {timer.cancel();};}",
                       "leftBracket": {
                         "start": 292,
                         "end": 293,
@@ -1901,10 +2384,10 @@
                       },
                       "statements": [
                         {
+                          "@class": "VariableDeclarationStatement",
+                          "@toString": "var timer = Timer.periodic(duration, (_) {count += 1;});",
                           "start": 298,
                           "end": 366,
-                          "class": "VariableDeclarationStatement",
-                          "toString": "var timer = Timer.periodic(duration, (_) {count += 1;});",
                           "semicolon": {
                             "start": 365,
                             "end": 366,
@@ -1924,10 +2407,10 @@
                             "lexeme": ";"
                           },
                           "variables": {
+                            "@class": "VariableDeclarationList",
+                            "@toString": "var timer = Timer.periodic(duration, (_) {count += 1;})",
                             "start": 298,
                             "end": 365,
-                            "class": "VariableDeclarationList",
-                            "toString": "var timer = Timer.periodic(duration, (_) {count += 1;})",
                             "keyword": {
                               "start": 298,
                               "end": 301,
@@ -1953,10 +2436,10 @@
                             "type": null,
                             "variables": [
                               {
+                                "@class": "VariableDeclaration",
+                                "@toString": "timer = Timer.periodic(duration, (_) {count += 1;})",
                                 "start": 302,
                                 "end": 365,
-                                "class": "VariableDeclaration",
-                                "toString": "timer = Timer.periodic(duration, (_) {count += 1;})",
                                 "name": {
                                   "start": 302,
                                   "end": 307,
@@ -1984,10 +2467,10 @@
                                   "lexeme": "timer"
                                 },
                                 "initializer": {
+                                  "@class": "MethodInvocation",
+                                  "@toString": "Timer.periodic(duration, (_) {count += 1;})",
                                   "start": 310,
                                   "end": 365,
-                                  "class": "MethodInvocation",
-                                  "toString": "Timer.periodic(duration, (_) {count += 1;})",
                                   "operator": {
                                     "start": 315,
                                     "end": 316,
@@ -2007,10 +2490,10 @@
                                     "lexeme": ")"
                                   },
                                   "function": {
+                                    "@class": "SimpleIdentifier",
+                                    "@toString": "periodic",
                                     "start": 316,
                                     "end": 324,
-                                    "class": "SimpleIdentifier",
-                                    "toString": "periodic",
                                     "token": {
                                       "start": 316,
                                       "end": 324,
@@ -2037,10 +2520,10 @@
                                   "isCascaded": false,
                                   "isNullAware": false,
                                   "methodName": {
+                                    "@class": "SimpleIdentifier",
+                                    "@toString": "periodic",
                                     "start": 316,
                                     "end": 324,
-                                    "class": "SimpleIdentifier",
-                                    "toString": "periodic",
                                     "token": {
                                       "start": 316,
                                       "end": 324,
@@ -2065,10 +2548,10 @@
                                     "name": "periodic"
                                   },
                                   "realTarget": {
+                                    "@class": "SimpleIdentifier",
+                                    "@toString": "Timer",
                                     "start": 310,
                                     "end": 315,
-                                    "class": "SimpleIdentifier",
-                                    "toString": "Timer",
                                     "token": {
                                       "start": 310,
                                       "end": 315,
@@ -2093,10 +2576,10 @@
                                     "name": "Timer"
                                   },
                                   "target": {
+                                    "@class": "SimpleIdentifier",
+                                    "@toString": "Timer",
                                     "start": 310,
                                     "end": 315,
-                                    "class": "SimpleIdentifier",
-                                    "toString": "Timer",
                                     "token": {
                                       "start": 310,
                                       "end": 315,
@@ -2122,10 +2605,10 @@
                                   },
                                   "nullShortingTermination": "@seen",
                                   "argumentList": {
+                                    "@class": "ArgumentList",
+                                    "@toString": "(duration, (_) {count += 1;})",
                                     "start": 324,
                                     "end": 365,
-                                    "class": "ArgumentList",
-                                    "toString": "(duration, (_) {count += 1;})",
                                     "leftParenthesis": {
                                       "start": 324,
                                       "end": 325,
@@ -2140,10 +2623,10 @@
                                     },
                                     "arguments": [
                                       {
+                                        "@class": "SimpleIdentifier",
+                                        "@toString": "duration",
                                         "start": 325,
                                         "end": 333,
-                                        "class": "SimpleIdentifier",
-                                        "toString": "duration",
                                         "token": {
                                           "start": 325,
                                           "end": 333,
@@ -2168,10 +2651,10 @@
                                         "name": "duration"
                                       },
                                       {
+                                        "@class": "FunctionExpression",
+                                        "@toString": "(_) {count += 1;}",
                                         "start": 335,
                                         "end": 364,
-                                        "class": "FunctionExpression",
-                                        "toString": "(_) {count += 1;}",
                                         "wasFunctionTypeSupplied": false,
                                         "beginToken": {
                                           "start": 335,
@@ -2180,10 +2663,10 @@
                                           "lexeme": "("
                                         },
                                         "body": {
+                                          "@class": "BlockFunctionBody",
+                                          "@toString": "{count += 1;}",
                                           "start": 339,
                                           "end": 364,
-                                          "class": "BlockFunctionBody",
-                                          "toString": "{count += 1;}",
                                           "keyword": null,
                                           "star": null,
                                           "beginToken": {
@@ -2193,10 +2676,10 @@
                                             "lexeme": "{"
                                           },
                                           "block": {
+                                            "@class": "Block",
+                                            "@toString": "{count += 1;}",
                                             "start": 339,
                                             "end": 364,
-                                            "class": "Block",
-                                            "toString": "{count += 1;}",
                                             "leftBracket": {
                                               "start": 339,
                                               "end": 340,
@@ -2223,10 +2706,10 @@
                                             },
                                             "statements": [
                                               {
+                                                "@class": "ExpressionStatement",
+                                                "@toString": "count += 1;",
                                                 "start": 347,
                                                 "end": 358,
-                                                "class": "ExpressionStatement",
-                                                "toString": "count += 1;",
                                                 "semicolon": {
                                                   "start": 357,
                                                   "end": 358,
@@ -2246,10 +2729,10 @@
                                                   "lexeme": ";"
                                                 },
                                                 "expression": {
+                                                  "@class": "AssignmentExpression",
+                                                  "@toString": "count += 1",
                                                   "start": 347,
                                                   "end": 357,
-                                                  "class": "AssignmentExpression",
-                                                  "toString": "count += 1",
                                                   "operator": {
                                                     "start": 353,
                                                     "end": 355,
@@ -2269,10 +2752,10 @@
                                                     "lexeme": "1"
                                                   },
                                                   "leftHandSide": {
+                                                    "@class": "SimpleIdentifier",
+                                                    "@toString": "count",
                                                     "start": 347,
                                                     "end": 352,
-                                                    "class": "SimpleIdentifier",
-                                                    "toString": "count",
                                                     "token": {
                                                       "start": 347,
                                                       "end": 352,
@@ -2297,16 +2780,17 @@
                                                     "name": "count"
                                                   },
                                                   "rightHandSide": {
+                                                    "@class": "IntegerLiteral",
+                                                    "@toString": "1",
                                                     "start": 356,
                                                     "end": 357,
-                                                    "class": "IntegerLiteral",
-                                                    "toString": "1",
                                                     "literal": {
                                                       "start": 356,
                                                       "end": 357,
                                                       "type": "INT",
                                                       "lexeme": "1"
                                                     },
+                                                    "value": 1,
                                                     "beginToken": {
                                                       "start": 356,
                                                       "end": 357,
@@ -2344,10 +2828,10 @@
                                           "lexeme": "}"
                                         },
                                         "parameters": {
+                                          "@class": "FormalParameterList",
+                                          "@toString": "(_)",
                                           "start": 335,
                                           "end": 338,
-                                          "class": "FormalParameterList",
-                                          "toString": "(_)",
                                           "leftParenthesis": {
                                             "start": 335,
                                             "end": 336,
@@ -2376,10 +2860,10 @@
                                           },
                                           "parameters": [
                                             {
+                                              "@class": "SimpleFormalParameter",
+                                              "@toString": "_",
                                               "start": 336,
                                               "end": 337,
-                                              "class": "SimpleFormalParameter",
-                                              "toString": "_",
                                               "keyword": null,
                                               "beginToken": {
                                                 "start": 336,
@@ -2401,7 +2885,9 @@
                                               "sortedCommentAndAnnotations": []
                                             }
                                           ],
-                                          "isSynthetic": false
+                                          "isSynthetic": false,
+                                          "length": 3,
+                                          "offset": 335
                                         },
                                         "typeParameters": null,
                                         "inConstantContext": false,
@@ -2421,7 +2907,9 @@
                                       "type": "CLOSE_PAREN",
                                       "lexeme": ")"
                                     },
-                                    "isSynthetic": false
+                                    "isSynthetic": false,
+                                    "length": 41,
+                                    "offset": 324
                                   },
                                   "typeArguments": null
                                 },
@@ -2436,10 +2924,10 @@
                           }
                         },
                         {
+                          "@class": "ReturnStatement",
+                          "@toString": "return () {timer.cancel();};",
                           "start": 372,
                           "end": 412,
-                          "class": "ReturnStatement",
-                          "toString": "return () {timer.cancel();};",
                           "returnKeyword": {
                             "start": 372,
                             "end": 378,
@@ -2465,10 +2953,10 @@
                             "lexeme": ";"
                           },
                           "expression": {
+                            "@class": "FunctionExpression",
+                            "@toString": "() {timer.cancel();}",
                             "start": 379,
                             "end": 411,
-                            "class": "FunctionExpression",
-                            "toString": "() {timer.cancel();}",
                             "wasFunctionTypeSupplied": false,
                             "beginToken": {
                               "start": 379,
@@ -2477,10 +2965,10 @@
                               "lexeme": "("
                             },
                             "body": {
+                              "@class": "BlockFunctionBody",
+                              "@toString": "{timer.cancel();}",
                               "start": 382,
                               "end": 411,
-                              "class": "BlockFunctionBody",
-                              "toString": "{timer.cancel();}",
                               "keyword": null,
                               "star": null,
                               "beginToken": {
@@ -2490,10 +2978,10 @@
                                 "lexeme": "{"
                               },
                               "block": {
+                                "@class": "Block",
+                                "@toString": "{timer.cancel();}",
                                 "start": 382,
                                 "end": 411,
-                                "class": "Block",
-                                "toString": "{timer.cancel();}",
                                 "leftBracket": {
                                   "start": 382,
                                   "end": 383,
@@ -2520,10 +3008,10 @@
                                 },
                                 "statements": [
                                   {
+                                    "@class": "ExpressionStatement",
+                                    "@toString": "timer.cancel();",
                                     "start": 390,
                                     "end": 405,
-                                    "class": "ExpressionStatement",
-                                    "toString": "timer.cancel();",
                                     "semicolon": {
                                       "start": 404,
                                       "end": 405,
@@ -2543,10 +3031,10 @@
                                       "lexeme": ";"
                                     },
                                     "expression": {
+                                      "@class": "MethodInvocation",
+                                      "@toString": "timer.cancel()",
                                       "start": 390,
                                       "end": 404,
-                                      "class": "MethodInvocation",
-                                      "toString": "timer.cancel()",
                                       "operator": {
                                         "start": 395,
                                         "end": 396,
@@ -2566,10 +3054,10 @@
                                         "lexeme": ")"
                                       },
                                       "function": {
+                                        "@class": "SimpleIdentifier",
+                                        "@toString": "cancel",
                                         "start": 396,
                                         "end": 402,
-                                        "class": "SimpleIdentifier",
-                                        "toString": "cancel",
                                         "token": {
                                           "start": 396,
                                           "end": 402,
@@ -2596,10 +3084,10 @@
                                       "isCascaded": false,
                                       "isNullAware": false,
                                       "methodName": {
+                                        "@class": "SimpleIdentifier",
+                                        "@toString": "cancel",
                                         "start": 396,
                                         "end": 402,
-                                        "class": "SimpleIdentifier",
-                                        "toString": "cancel",
                                         "token": {
                                           "start": 396,
                                           "end": 402,
@@ -2624,10 +3112,10 @@
                                         "name": "cancel"
                                       },
                                       "realTarget": {
+                                        "@class": "SimpleIdentifier",
+                                        "@toString": "timer",
                                         "start": 390,
                                         "end": 395,
-                                        "class": "SimpleIdentifier",
-                                        "toString": "timer",
                                         "token": {
                                           "start": 390,
                                           "end": 395,
@@ -2652,10 +3140,10 @@
                                         "name": "timer"
                                       },
                                       "target": {
+                                        "@class": "SimpleIdentifier",
+                                        "@toString": "timer",
                                         "start": 390,
                                         "end": 395,
-                                        "class": "SimpleIdentifier",
-                                        "toString": "timer",
                                         "token": {
                                           "start": 390,
                                           "end": 395,
@@ -2681,10 +3169,10 @@
                                       },
                                       "nullShortingTermination": "@seen",
                                       "argumentList": {
+                                        "@class": "ArgumentList",
+                                        "@toString": "()",
                                         "start": 402,
                                         "end": 404,
-                                        "class": "ArgumentList",
-                                        "toString": "()",
                                         "leftParenthesis": {
                                           "start": 402,
                                           "end": 403,
@@ -2710,7 +3198,9 @@
                                           "type": "CLOSE_PAREN",
                                           "lexeme": ")"
                                         },
-                                        "isSynthetic": false
+                                        "isSynthetic": false,
+                                        "length": 2,
+                                        "offset": 402
                                       },
                                       "typeArguments": null
                                     },
@@ -2735,10 +3225,10 @@
                               "lexeme": "}"
                             },
                             "parameters": {
+                              "@class": "FormalParameterList",
+                              "@toString": "()",
                               "start": 379,
                               "end": 381,
-                              "class": "FormalParameterList",
-                              "toString": "()",
                               "leftParenthesis": {
                                 "start": 379,
                                 "end": 380,
@@ -2766,7 +3256,9 @@
                                 "lexeme": ")"
                               },
                               "parameters": [],
-                              "isSynthetic": false
+                              "isSynthetic": false,
+                              "length": 2,
+                              "offset": 379
                             },
                             "typeParameters": null,
                             "inConstantContext": false,
@@ -2793,10 +3285,10 @@
                     "lexeme": "}"
                   },
                   "parameters": {
+                    "@class": "FormalParameterList",
+                    "@toString": "()",
                     "start": 289,
                     "end": 291,
-                    "class": "FormalParameterList",
-                    "toString": "()",
                     "leftParenthesis": {
                       "start": 289,
                       "end": 290,
@@ -2824,7 +3316,9 @@
                       "lexeme": ")"
                     },
                     "parameters": [],
-                    "isSynthetic": false
+                    "isSynthetic": false,
+                    "length": 2,
+                    "offset": 289
                   },
                   "typeParameters": null,
                   "inConstantContext": false,
@@ -2844,7 +3338,9 @@
                 "type": "CLOSE_PAREN",
                 "lexeme": ")"
               },
-              "isSynthetic": false
+              "isSynthetic": false,
+              "length": 129,
+              "offset": 288
             },
             "typeArguments": null
           },

@@ -11,8 +11,8 @@
 				"expession": {
 					"start": 8,
 					"end": 18,
-					"class": "SimpleIdentifier",
-					"toString": "thePromise",
+					"@class": "SimpleIdentifier",
+					"@toString": "thePromise",
 					"token": {
 						"start": 8,
 						"end": 18,
@@ -39,8 +39,8 @@
 				"value": {
 					"start": 46,
 					"end": 54,
-					"class": "AssignedVariablePattern",
-					"toString": "theValue",
+					"@class": "AssignedVariablePattern",
+					"@toString": "theValue",
 					"beginToken": {
 						"start": 46,
 						"end": 54,
@@ -63,8 +63,8 @@
 				"error": {
 					"start": 96,
 					"end": 104,
-					"class": "AssignedVariablePattern",
-					"toString": "theError",
+					"@class": "AssignedVariablePattern",
+					"@toString": "theError",
 					"beginToken": {
 						"start": 96,
 						"end": 104,
@@ -154,8 +154,8 @@
 									"expression": {
 										"start": 74,
 										"end": 82,
-										"class": "SimpleIdentifier",
-										"toString": "theValue",
+										"@class": "SimpleIdentifier",
+										"@toString": "theValue",
 										"token": {
 											"start": 74,
 											"end": 82,
@@ -224,8 +224,8 @@
 									"expression": {
 										"start": 118,
 										"end": 134,
-										"class": "PrefixedIdentifier",
-										"toString": "theError.message",
+										"@class": "PrefixedIdentifier",
+										"@toString": "theError.message",
 										"period": {
 											"start": 126,
 											"end": 127,
@@ -247,8 +247,8 @@
 										"identifier": {
 											"start": 127,
 											"end": 134,
-											"class": "SimpleIdentifier",
-											"toString": "message",
+											"@class": "SimpleIdentifier",
+											"@toString": "message",
 											"token": {
 												"start": 127,
 												"end": 134,
@@ -277,8 +277,8 @@
 										"prefix": {
 											"start": 118,
 											"end": 126,
-											"class": "SimpleIdentifier",
-											"toString": "theError",
+											"@class": "SimpleIdentifier",
+											"@toString": "theError",
 											"token": {
 												"start": 118,
 												"end": 126,

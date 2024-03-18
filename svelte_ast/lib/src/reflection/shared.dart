@@ -1,5 +1,7 @@
 import 'dart:mirrors';
 
+import 'package:csslib/visitor.dart';
+
 final TypeMirror _object = reflectType(Object);
 
 final TypeMirror _bool = reflectType(bool);
@@ -20,20 +22,24 @@ bool isDeprecated(DeclarationMirror declaration) {
   return declaration.metadata.any(_isDeprecated);
 }
 
-bool isCoreValue(TypeMirror typeMirror) {
-  return identical(typeMirror, _object) ||
-      identical(typeMirror, _bool) ||
-      identical(typeMirror, _num) ||
+bool isEncodable(TypeMirror typeMirror) {
+  return identical(typeMirror, _bool) ||
       identical(typeMirror, _string) ||
-      (_list.isSubtypeOf(typeMirror) &&
-          typeMirror.typeArguments.any(isCoreValue)) ||
-      (_map.isSubtypeOf(typeMirror) && _map.typeArguments.any(isCoreValue));
+      typeMirror.isSubtypeOf(_num) ||
+      (typeMirror.isSubtypeOf(_list) &&
+          typeMirror.typeArguments.any(isEncodable)) ||
+      (typeMirror.isSubtypeOf(_map) && _map.typeArguments.any(isEncodable));
+}
+
+bool isObject(TypeMirror typeMirror) {
+  return identical(typeMirror, _object);
 }
 
 Object? getValue(InstanceMirror instance, Symbol symbol) {
   try {
     InstanceMirror field = instance.getField(symbol);
-    return field.reflectee;
+    Object? reflectee = field.reflectee;
+    return reflectee is Identifier ? '@Identifier' : reflectee;
   } catch (error) {
     return '@error { $error }';
   }

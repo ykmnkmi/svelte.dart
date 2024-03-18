@@ -17,8 +17,8 @@
 						"expression": {
 							"start": 9,
 							"end": 14,
-							"class": "SimpleIdentifier",
-							"toString": "props",
+							"@class": "SimpleIdentifier",
+							"@toString": "props",
 							"token": {
 								"start": 9,
 								"end": 14,

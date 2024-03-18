@@ -23,8 +23,8 @@
 								"expression": {
 									"start": 20,
 									"end": 28,
-									"class": "SimpleIdentifier",
-									"toString": "readonly",
+									"@class": "SimpleIdentifier",
+									"@toString": "readonly",
 									"token": {
 										"start": 20,
 										"end": 28,

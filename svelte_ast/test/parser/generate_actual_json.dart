@@ -5,7 +5,7 @@ import 'dart:io' show Directory, File, FileSystemEntity;
 import 'dart:isolate' show Isolate;
 
 import 'package:collection/collection.dart' show DeepCollectionEquality;
-import 'package:svelte_ast/reflection.dart' show mapper;
+import 'package:svelte_ast/src/reflection.dart' show mapper;
 import 'package:svelte_ast/svelte_ast.dart' show ParseError, SvelteAst, parse;
 
 const DeepCollectionEquality equality = DeepCollectionEquality.unordered();

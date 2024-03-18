@@ -3,9 +3,9 @@
 import 'dart:convert';
 
 import 'package:stack_trace/stack_trace.dart';
-import 'package:svelte_ast/reflection.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
+import 'package:svelte_ast/src/reflection.dart';
 
 import 'parser.dart';
 

@@ -11,8 +11,8 @@
 				"expression": {
 					"start": 5,
 					"end": 9,
-					"class": "BooleanLiteral",
-					"toString": "true",
+					"@class": "BooleanLiteral",
+					"@toString": "true",
 					"literal": {
 						"start": 5,
 						"end": 9,
@@ -68,8 +68,8 @@
 				"expression": {
 					"start": 40,
 					"end": 44,
-					"class": "BooleanLiteral",
-					"toString": "true",
+					"@class": "BooleanLiteral",
+					"@toString": "true",
 					"literal": {
 						"start": 40,
 						"end": 44,
@@ -125,8 +125,8 @@
 				"expession": {
 					"start": 75,
 					"end": 79,
-					"class": "BooleanLiteral",
-					"toString": "true",
+					"@class": "BooleanLiteral",
+					"@toString": "true",
 					"literal": {
 						"start": 75,
 						"end": 79,
@@ -151,8 +151,8 @@
 				"value": {
 					"start": 97,
 					"end": 98,
-					"class": "AssignedVariablePattern",
-					"toString": "f",
+					"@class": "AssignedVariablePattern",
+					"@toString": "f",
 					"beginToken": {
 						"start": 97,
 						"end": 98,
@@ -232,8 +232,8 @@
 				"expession": {
 					"start": 118,
 					"end": 122,
-					"class": "BooleanLiteral",
-					"toString": "true",
+					"@class": "BooleanLiteral",
+					"@toString": "true",
 					"literal": {
 						"start": 118,
 						"end": 122,
@@ -258,8 +258,8 @@
 				"value": {
 					"start": 137,
 					"end": 138,
-					"class": "AssignedVariablePattern",
-					"toString": "f",
+					"@class": "AssignedVariablePattern",
+					"@toString": "f",
 					"beginToken": {
 						"start": 137,
 						"end": 138,

@@ -43,25 +43,31 @@
 			{
 				"start": 2,
 				"end": 5,
-				"class": "RuleSet",
+				"@class": "RuleSet",
+				"@toString": "Instance of 'RuleSet'",
 				"selectorGroup": {
 					"start": 2,
 					"end": 5,
-					"class": "SelectorGroup",
+					"@class": "SelectorGroup",
+					"@toString": "Instance of 'SelectorGroup'",
 					"selectors": [
 						{
 							"start": 2,
 							"end": 5,
-							"class": "Selector",
+							"@class": "Selector",
+							"@toString": "Instance of 'Selector'",
 							"simpleSelectorSequences": [
 								{
 									"start": 2,
 									"end": 5,
-									"class": "SimpleSelectorSequence",
+									"@class": "SimpleSelectorSequence",
+									"@toString": "div",
+									"combinator": 513,
 									"simpleSelector": {
 										"start": 2,
 										"end": 5,
-										"class": "ElementSelector"
+										"@class": "ElementSelector",
+										"@toString": "div"
 									},
 									"isCombinatorNone": true,
 									"isCombinatorPlus": false,
@@ -69,28 +75,33 @@
 									"isCombinatorTilde": false,
 									"isCombinatorDescendant": false
 								}
-							]
+							],
+							"length": 1
 						}
 					]
 				},
 				"declarationGroup": {
 					"start": 6,
 					"end": 24,
-					"class": "DeclarationGroup",
+					"@class": "DeclarationGroup",
+					"@toString": "Instance of 'DeclarationGroup'",
 					"declarations": [
 						{
 							"start": 10,
 							"end": 20,
-							"class": "Declaration",
+							"@class": "Declaration",
+							"@toString": "Instance of 'Declaration'",
 							"expression": {
 								"start": 17,
 								"end": 20,
-								"class": "Expressions",
+								"@class": "Expressions",
+								"@toString": "Instance of 'Expressions'",
 								"expressions": [
 									{
 										"start": 17,
 										"end": 20,
-										"class": "HexColorTerm"
+										"@class": "HexColorTerm",
+										"@toString": "Instance of 'HexColorTerm'"
 									}
 								]
 							},
@@ -98,9 +109,19 @@
 							"important": false,
 							"isIE7": false,
 							"property": "color",
-							"hasDartStyle": false
+							"hasDartStyle": false,
+							"span": {
+								"start": 10,
+								"end": 20,
+								"lexeme": "color: red"
+							}
 						}
-					]
+					],
+					"span": {
+						"start": 6,
+						"end": 24,
+						"lexeme": "{\n\t\tcolor: red;\n\t}"
+					}
 				}
 			}
 		]

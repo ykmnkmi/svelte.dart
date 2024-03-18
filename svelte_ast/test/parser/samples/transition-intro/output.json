@@ -21,8 +21,8 @@
 						"expression": {
 							"start": 16,
 							"end": 28,
-							"class": "SetOrMapLiteral",
-							"toString": "{opacity : 0}",
+							"@class": "SetOrMapLiteral",
+							"@toString": "{opacity : 0}",
 							"leftBracket": {
 								"start": 16,
 								"end": 17,
@@ -45,8 +45,8 @@
 								{
 									"start": 17,
 									"end": 27,
-									"class": "MapLiteralEntry",
-									"toString": "opacity : 0",
+									"@class": "MapLiteralEntry",
+									"@toString": "opacity : 0",
 									"separator": {
 										"start": 24,
 										"end": 25,
@@ -68,8 +68,8 @@
 									"key": {
 										"start": 17,
 										"end": 24,
-										"class": "SimpleIdentifier",
-										"toString": "opacity",
+										"@class": "SimpleIdentifier",
+										"@toString": "opacity",
 										"token": {
 											"start": 17,
 											"end": 24,
@@ -96,14 +96,15 @@
 									"value": {
 										"start": 26,
 										"end": 27,
-										"class": "IntegerLiteral",
-										"toString": "0",
+										"@class": "IntegerLiteral",
+										"@toString": "0",
 										"literal": {
 											"start": 26,
 											"end": 27,
 											"type": "INT",
 											"lexeme": "0"
 										},
+										"value": 0,
 										"beginToken": {
 											"start": 26,
 											"end": 27,

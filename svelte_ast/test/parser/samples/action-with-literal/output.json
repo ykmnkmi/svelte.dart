@@ -19,8 +19,8 @@
 						"expression": {
 							"start": 21,
 							"end": 34,
-							"class": "SimpleStringLiteral",
-							"toString": "'tooltip msg'",
+							"@class": "SimpleStringLiteral",
+							"@toString": "'tooltip msg'",
 							"literal": {
 								"start": 21,
 								"end": 34,
@@ -34,6 +34,8 @@
 								"type": "STRING",
 								"lexeme": "'tooltip msg'"
 							},
+							"contentsEnd": 33,
+							"contentsOffset": 22,
 							"endToken": {
 								"start": 21,
 								"end": 34,

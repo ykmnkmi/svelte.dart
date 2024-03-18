@@ -11,8 +11,8 @@
 				"expression": {
 					"start": 5,
 					"end": 11,
-					"class": "BinaryExpression",
-					"toString": "x > 10",
+					"@class": "BinaryExpression",
+					"@toString": "x > 10",
 					"operator": {
 						"start": 7,
 						"end": 8,
@@ -34,8 +34,8 @@
 					"leftOperand": {
 						"start": 5,
 						"end": 6,
-						"class": "SimpleIdentifier",
-						"toString": "x",
+						"@class": "SimpleIdentifier",
+						"@toString": "x",
 						"token": {
 							"start": 5,
 							"end": 6,
@@ -62,14 +62,15 @@
 					"rightOperand": {
 						"start": 9,
 						"end": 11,
-						"class": "IntegerLiteral",
-						"toString": "10",
+						"@class": "IntegerLiteral",
+						"@toString": "10",
 						"literal": {
 							"start": 9,
 							"end": 11,
 							"type": "INT",
 							"lexeme": "10"
 						},
+						"value": 10,
 						"beginToken": {
 							"start": 9,
 							"end": 11,
@@ -121,8 +122,8 @@
 							"expression": {
 								"start": 52,
 								"end": 57,
-								"class": "BinaryExpression",
-								"toString": "x < 5",
+								"@class": "BinaryExpression",
+								"@toString": "x < 5",
 								"operator": {
 									"start": 54,
 									"end": 55,
@@ -144,8 +145,8 @@
 								"leftOperand": {
 									"start": 52,
 									"end": 53,
-									"class": "SimpleIdentifier",
-									"toString": "x",
+									"@class": "SimpleIdentifier",
+									"@toString": "x",
 									"token": {
 										"start": 52,
 										"end": 53,
@@ -172,14 +173,15 @@
 								"rightOperand": {
 									"start": 56,
 									"end": 57,
-									"class": "IntegerLiteral",
-									"toString": "5",
+									"@class": "IntegerLiteral",
+									"@toString": "5",
 									"literal": {
 										"start": 56,
 										"end": 57,
 										"type": "INT",
 										"lexeme": "5"
 									},
+									"value": 5,
 									"beginToken": {
 										"start": 56,
 										"end": 57,

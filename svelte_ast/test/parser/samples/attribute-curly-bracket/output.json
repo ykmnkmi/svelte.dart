@@ -30,14 +30,15 @@
 								"expression": {
 									"start": 13,
 									"end": 14,
-									"class": "IntegerLiteral",
-									"toString": "1",
+									"@class": "IntegerLiteral",
+									"@toString": "1",
 									"literal": {
 										"start": 13,
 										"end": 14,
 										"type": "INT",
 										"lexeme": "1"
 									},
+									"value": 1,
 									"beginToken": {
 										"start": 13,
 										"end": 14,

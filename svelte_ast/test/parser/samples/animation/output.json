@@ -11,8 +11,8 @@
 				"expression": {
 					"start": 7,
 					"end": 13,
-					"class": "SimpleIdentifier",
-					"toString": "things",
+					"@class": "SimpleIdentifier",
+					"@toString": "things",
 					"token": {
 						"start": 7,
 						"end": 13,
@@ -39,8 +39,8 @@
 				"context": {
 					"start": 17,
 					"end": 22,
-					"class": "AssignedVariablePattern",
-					"toString": "thing",
+					"@class": "AssignedVariablePattern",
+					"@toString": "thing",
 					"beginToken": {
 						"start": 17,
 						"end": 22,
@@ -64,8 +64,8 @@
 				"key": {
 					"start": 24,
 					"end": 29,
-					"class": "SimpleIdentifier",
-					"toString": "thing",
+					"@class": "SimpleIdentifier",
+					"@toString": "thing",
 					"token": {
 						"start": 24,
 						"end": 29,

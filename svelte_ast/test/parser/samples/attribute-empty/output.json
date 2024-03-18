@@ -38,8 +38,8 @@
 								"expression": {
 									"start": 13,
 									"end": 15,
-									"class": "SimpleStringLiteral",
-									"toString": "''",
+									"@class": "SimpleStringLiteral",
+									"@toString": "''",
 									"literal": {
 										"start": 13,
 										"end": 15,
@@ -53,6 +53,8 @@
 										"type": "STRING",
 										"lexeme": "''"
 									},
+									"contentsEnd": 14,
+									"contentsOffset": 14,
 									"endToken": {
 										"start": 13,
 										"end": 15,
@@ -95,8 +97,8 @@
 								"expression": {
 									"start": 26,
 									"end": 28,
-									"class": "SimpleStringLiteral",
-									"toString": "''",
+									"@class": "SimpleStringLiteral",
+									"@toString": "''",
 									"literal": {
 										"start": 26,
 										"end": 28,
@@ -110,6 +112,8 @@
 										"type": "STRING",
 										"lexeme": "''"
 									},
+									"contentsEnd": 27,
+									"contentsOffset": 27,
 									"endToken": {
 										"start": 26,
 										"end": 28,

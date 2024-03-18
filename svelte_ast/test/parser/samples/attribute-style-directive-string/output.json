@@ -127,8 +127,8 @@
 								"expression": {
 									"start": 110,
 									"end": 118,
-									"class": "SimpleIdentifier",
-									"toString": "variable",
+									"@class": "SimpleIdentifier",
+									"@toString": "variable",
 									"token": {
 										"start": 110,
 										"end": 118,
@@ -192,8 +192,8 @@
 								"expression": {
 									"start": 150,
 									"end": 158,
-									"class": "SimpleIdentifier",
-									"toString": "variable",
+									"@class": "SimpleIdentifier",
+									"@toString": "variable",
 									"token": {
 										"start": 150,
 										"end": 158,
@@ -257,8 +257,8 @@
 								"expression": {
 									"start": 189,
 									"end": 197,
-									"class": "SimpleIdentifier",
-									"toString": "variable",
+									"@class": "SimpleIdentifier",
+									"@toString": "variable",
 									"token": {
 										"start": 189,
 										"end": 197,
@@ -315,20 +315,22 @@
 								"expression": {
 									"start": 224,
 									"end": 242,
-									"class": "StringInterpolation",
-									"toString": "'template$literal'",
+									"@class": "StringInterpolation",
+									"@toString": "'template$literal'",
 									"beginToken": {
 										"start": 224,
 										"end": 233,
 										"type": "STRING",
 										"lexeme": "'template"
 									},
+									"contentsEnd": 241,
+									"contentsOffset": 225,
 									"elements": [
 										{
 											"start": 224,
 											"end": 233,
-											"class": "InterpolationString",
-											"toString": "'template",
+											"@class": "InterpolationString",
+											"@toString": "'template",
 											"contents": {
 												"start": 224,
 												"end": 233,
@@ -342,6 +344,8 @@
 												"type": "STRING",
 												"lexeme": "'template"
 											},
+											"contentsEnd": 233,
+											"contentsOffset": 225,
 											"endToken": {
 												"start": 224,
 												"end": 233,
@@ -352,8 +356,8 @@
 										{
 											"start": 233,
 											"end": 241,
-											"class": "InterpolationExpression",
-											"toString": "$literal",
+											"@class": "InterpolationExpression",
+											"@toString": "$literal",
 											"leftBracket": {
 												"start": 233,
 												"end": 234,
@@ -376,8 +380,8 @@
 											"expression": {
 												"start": 234,
 												"end": 241,
-												"class": "SimpleIdentifier",
-												"toString": "literal",
+												"@class": "SimpleIdentifier",
+												"@toString": "literal",
 												"token": {
 													"start": 234,
 													"end": 241,
@@ -405,8 +409,8 @@
 										{
 											"start": 241,
 											"end": 242,
-											"class": "InterpolationString",
-											"toString": "'",
+											"@class": "InterpolationString",
+											"@toString": "'",
 											"contents": {
 												"start": 241,
 												"end": 242,
@@ -420,6 +424,8 @@
 												"type": "STRING",
 												"lexeme": "'"
 											},
+											"contentsEnd": 241,
+											"contentsOffset": 241,
 											"endToken": {
 												"start": 241,
 												"end": 242,
@@ -437,8 +443,8 @@
 									"firstString": {
 										"start": 224,
 										"end": 233,
-										"class": "InterpolationString",
-										"toString": "'template",
+										"@class": "InterpolationString",
+										"@toString": "'template",
 										"contents": {
 											"start": 224,
 											"end": 233,
@@ -452,6 +458,8 @@
 											"type": "STRING",
 											"lexeme": "'template"
 										},
+										"contentsEnd": 233,
+										"contentsOffset": 225,
 										"endToken": {
 											"start": 224,
 											"end": 233,
@@ -465,8 +473,8 @@
 									"lastString": {
 										"start": 241,
 										"end": 242,
-										"class": "InterpolationString",
-										"toString": "'",
+										"@class": "InterpolationString",
+										"@toString": "'",
 										"contents": {
 											"start": 241,
 											"end": 242,
@@ -480,6 +488,8 @@
 											"type": "STRING",
 											"lexeme": "'"
 										},
+										"contentsEnd": 241,
+										"contentsOffset": 241,
 										"endToken": {
 											"start": 241,
 											"end": 242,

@@ -25,8 +25,8 @@
 						"expression": {
 							"start": 5,
 							"end": 6,
-							"class": "SimpleIdentifier",
-							"toString": "a",
+							"@class": "SimpleIdentifier",
+							"@toString": "a",
 							"token": {
 								"start": 5,
 								"end": 6,
@@ -65,8 +65,8 @@
 						"expression": {
 							"start": 9,
 							"end": 10,
-							"class": "SimpleIdentifier",
-							"toString": "b",
+							"@class": "SimpleIdentifier",
+							"@toString": "b",
 							"token": {
 								"start": 9,
 								"end": 10,
@@ -105,8 +105,8 @@
 						"expression": {
 							"start": 15,
 							"end": 16,
-							"class": "SimpleIdentifier",
-							"toString": "c",
+							"@class": "SimpleIdentifier",
+							"@toString": "c",
 							"token": {
 								"start": 15,
 								"end": 16,
