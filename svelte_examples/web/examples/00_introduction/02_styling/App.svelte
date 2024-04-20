@@ -1,4 +1,4 @@
-<p>Styled!</p>
+<script type="application/dart">
 
 <style>
 	p {

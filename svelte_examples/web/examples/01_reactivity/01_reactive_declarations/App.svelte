@@ -1,8 +1,7 @@
-<script>
+<script type="application/dart">
 	var count = 1;
 
 	// the `$:` means 're-run whenever these values change'
-	//
 	$: doubled = count * 2;
 	$: quadrupled = doubled * 2;
 

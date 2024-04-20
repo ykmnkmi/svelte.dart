@@ -1,5 +1,5 @@
-<script>
-	import 'nested.svelte';
+<script type="application/dart">
+	import 'Nested.svelte';
 </script>
 
 <p>These styles...</p>

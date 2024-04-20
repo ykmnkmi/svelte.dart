@@ -1,4 +1,4 @@
-<script>
+<script type="application/dart">
 	var name = 'world';
 </script>
 

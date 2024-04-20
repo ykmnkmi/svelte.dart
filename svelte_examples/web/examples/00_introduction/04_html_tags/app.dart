@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:web/web.dart' show Element, Node;
 
 extension on List<Object?> {
   String get _string {

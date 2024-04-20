@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:web/web.dart' show Element, Node, Text;
 
 extension on List<Object?> {
   Object? get _name {
@@ -22,14 +21,20 @@ extension on List<Object?> {
 
 Fragment createFragment(List<Object?> instance) {
   late Element p0;
+
   late Text t0;
+
   late Element code0;
+
   late Text t1, t2, t3, t4, t5, t6;
-  late String a0href;
+
   late Element a0;
+
   late Text t7, t8;
+
   late Element a1;
-  late Text t9;
+
+  late Text t9, t10;
 
   return Fragment(
     create: () {
@@ -47,8 +52,8 @@ Fragment createFragment(List<Object?> instance) {
       t8 = text('\n\tand ');
       a1 = element('a');
       t9 = text('learn more here');
-      setAttribute(
-          a0, 'href', a0href = 'https://pub.dev/package/${instance._name}');
+      t10 = text('.');
+      setAttribute(a0, 'href', 'https://pub.dev/package/${instance._name}');
       setAttribute(a1, 'href', '${instance._website}');
     },
     mount: (Element target, Node? anchor) {
@@ -66,27 +71,26 @@ Fragment createFragment(List<Object?> instance) {
       append(p0, t8);
       append(p0, a1);
       append(a1, t9);
+      append(p0, t10);
     },
-    update: (List<Object?> instance, List<int> dirty) {
-      if (dirty[0] & 1 != 0) {
+    update: (List<Object?> instance, int dirty) {
+      if (dirty & 1 != 0) {
         setData(t1, '${instance._name}');
       }
 
-      if (dirty[0] & 4 != 0) {
+      if (dirty & 4 != 0) {
         setData(t3, '${instance._speed}');
       }
 
-      if (dirty[0] & 2 != 0) {
+      if (dirty & 2 != 0) {
         setData(t5, '${instance._version}');
       }
 
-      if (dirty[0] & 1 != 0 &&
-          a0href !=
-              (a0href = 'https://www.npmjs.com/package/${instance._name}')) {
-        setAttribute(a0, 'href', a0href);
+      if (dirty & 1 != 0) {
+        setAttribute(a0, 'href', 'https://www.npmjs.com/package/${instance._name}');
       }
 
-      if (dirty[0] & 8 != 0) {
+      if (dirty & 8 != 0) {
         setAttribute(a1, 'href', '${instance._website}');
       }
     },

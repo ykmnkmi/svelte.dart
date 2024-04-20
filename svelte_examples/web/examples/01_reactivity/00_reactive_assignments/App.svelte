@@ -1,4 +1,4 @@
-<script>
+<script type="application/dart">
 	var count = 0;
 
 	void handleClick() {

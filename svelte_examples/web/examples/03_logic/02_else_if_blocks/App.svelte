@@ -1,4 +1,4 @@
-<script>
+<script type="application/dart">
 	var x = 7;
 </script>
 

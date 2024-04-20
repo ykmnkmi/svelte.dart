@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:web/web.dart' show Element, Node;
 
 Fragment createFragment(List<Object?> instance) {
   late Element h1;

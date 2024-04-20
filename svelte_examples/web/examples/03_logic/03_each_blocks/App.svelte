@@ -1,10 +1,8 @@
-<script>
-	import 'cat.dart';
-
+<script type="application/dart">
 	var cats = [
-		Cat('J---aiyznGQ', 'Keyboard Cat'),
-		Cat('z_AbfPXTKms', 'Maru'),
-		Cat('OUtn3pvWmpg', 'Henri The Existential Cat')
+		(id: 'J---aiyznGQ', name: 'Keyboard Cat'),
+		(id: 'z_AbfPXTKms', name: 'Maru'),
+		(id: 'OUtn3pvWmpg', name: 'Henri The Existential Cat')
 	];
 </script>
 

@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:web/web.dart' show Element, Node, Text;
 
 extension on List<Object?> {
   Object? get _answer {
@@ -23,9 +22,9 @@ Fragment createFragment(List<Object?> instance) {
       append(p, t0);
       append(p, t1);
     },
-    update: (List<Object?> context, List<int> dirty) {
-      if (dirty[0] & 1 != 0) {
-        setData(t1, '${context._answer}');
+    update: (List<Object?> instance, int dirty) {
+      if (dirty & 1 != 0) {
+        setData(t1, '${instance._answer}');
       }
     },
     detach: (bool detaching) {
@@ -41,7 +40,7 @@ List<Object?> createInstance(
   Map<String, Object?> props,
   Invalidate invalidate,
 ) {
-  var answer = props['answer'];
+  var answer = props.containsKey('answer') ? props['answer'] : 'a mystery';
 
   setComponentSet(self, (Map<String, Object?> props) {
     if (props.containsKey('answer')) {

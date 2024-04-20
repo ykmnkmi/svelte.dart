@@ -1,5 +1,5 @@
-<script>
-	import 'info.svelte';
+<script type="application/dart">
+	import 'Info.svelte';
 
 	var pkg = <String, Object>{
 		'name': 'svelte',

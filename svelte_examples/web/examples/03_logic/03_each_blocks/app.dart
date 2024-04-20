@@ -1,19 +1,17 @@
-import 'dart:html';
 import 'dart:math' show min;
 
 import 'package:svelte_runtime/svelte_runtime.dart';
-
-import 'cat.dart';
+import 'package:web/web.dart' show Element, Node, Text;
 
 extension on List<Object?> {
-  List<Cat> get cats {
-    return this[0] as List<Cat>;
+  List<({String id, String name})> get cats {
+    return this[0] as List<({String id, String name})>;
   }
 }
 
 List<Object?> getEachContext(
   List<Object?> context,
-  List<Cat> list,
+  List<({String id, String name})> list,
   int index,
 ) {
   return List<Object?>.of(context)
@@ -61,8 +59,8 @@ Fragment createFragment(List<Object?> instance) {
         eachBlock.mount(ul, null);
       }
     },
-    update: (List<Object?> instance, List<int> dirty) {
-      if (dirty[0] & 1 != 0) {
+    update: (List<Object?> instance, int dirty) {
+      if (dirty & 1 != 0) {
         eachValue = instance.cats;
 
         var length = min(eachBlocks.length, eachValue.length);
@@ -106,10 +104,10 @@ List<Object?> createInstance(
   Map<String, Object?> props,
   Invalidate invalidate,
 ) {
-  var cats = <Cat>[
-    Cat('J---aiyznGQ', 'Keyboard Cat'),
-    Cat('z_AbfPXTKms', 'Maru'),
-    Cat('OUtn3pvWmpg', 'Henri The Existential Cat'),
+  var cats = [
+    (id: 'J---aiyznGQ', name: 'Keyboard Cat'),
+    (id: 'z_AbfPXTKms', name: 'Maru'),
+    (id: 'OUtn3pvWmpg', name: 'Henri The Existential Cat'),
   ];
 
   return <Object?>[cats];

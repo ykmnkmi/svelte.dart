@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:web/web.dart' show Element, Node;
 
 Fragment createIfBlock1(List<Object?> instance) {
   late Element p;
@@ -64,7 +63,7 @@ Fragment createFragment(List<Object?> instance) {
 
   FragmentFactory selectCurrentBlock(
     List<Object?> context,
-    List<int> dirty,
+    int dirty,
   ) {
     if (x > 10) {
       return createIfBlock1;
@@ -77,7 +76,7 @@ Fragment createFragment(List<Object?> instance) {
     return createElseBlock;
   }
 
-  var currentBlockFactory = selectCurrentBlock(instance, const <int>[-1]);
+  var currentBlockFactory = selectCurrentBlock(instance, -1);
   var ifBlock = currentBlockFactory(instance);
 
   return Fragment(
@@ -89,7 +88,7 @@ Fragment createFragment(List<Object?> instance) {
       ifBlock.mount(target, anchor);
       insert(target, ifBlockAnchor, anchor);
     },
-    update: (List<Object?> instance, List<int> dirty) {
+    update: (List<Object?> instance, int dirty) {
       var newBlockFactory = selectCurrentBlock(instance, dirty);
 
       if (currentBlockFactory == newBlockFactory) {
@@ -99,7 +98,7 @@ Fragment createFragment(List<Object?> instance) {
 
         ifBlock = newBlockFactory(instance)
           ..create()
-          ..mount(ifBlockAnchor.parent as Element, ifBlockAnchor);
+          ..mount(ifBlockAnchor.parentNode as Element, ifBlockAnchor);
 
         currentBlockFactory = newBlockFactory;
       }

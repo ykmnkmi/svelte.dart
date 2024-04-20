@@ -1,4 +1,4 @@
-<script>
+<script type="application/dart">
 	import 'user.dart';
 
 	var user = User(loggedIn: false);

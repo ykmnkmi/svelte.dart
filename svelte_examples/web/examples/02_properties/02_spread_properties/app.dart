@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:web/web.dart' show Element, Node;
 
 import 'info.dart';
 
@@ -32,10 +31,10 @@ Fragment createFragment(List<Object?> instance) {
       mountComponent(info, target, anchor);
       current = true;
     },
-    update: (List<Object?> instance, List<int> dirty) {
+    update: (List<Object?> instance, int dirty) {
       Map<String, Object?> infoChanges;
 
-      if (dirty[0] & 1 != 0) {
+      if (dirty & 1 != 0) {
         var list = <Map<String, Object?>>[getSpreadProps(instance._pkg)];
         infoChanges = getSpreadUpdate(infoSpreadLevels, list);
       } else {

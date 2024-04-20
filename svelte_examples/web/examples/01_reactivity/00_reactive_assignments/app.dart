@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:web/web.dart' show Element, Node, Text;
 
 extension on List<Object?> {
   int get _count {
@@ -49,8 +48,8 @@ Fragment createFragment(List<Object?> instance) {
         mounted = true;
       }
     },
-    update: (List<Object?> instance, List<int> dirty) {
-      if (dirty[0] & 1 != 0) {
+    update: (List<Object?> instance, int dirty) {
+      if (dirty & 1 != 0) {
         setData(t2, '${instance._count}');
 
         if (t4value != (t4value = instance._count == 1 ? 'time' : 'times')) {

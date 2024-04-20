@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:web/web.dart' show Element, Node, Text;
 
 import 'user.dart';
 
@@ -104,14 +103,14 @@ Fragment createFragment(List<Object?> instance) {
       ifBlock1?.mount(target, anchor);
       insert(target, ifBlock1Anchor, anchor);
     },
-    update: (List<Object?> instance, List<int> dirty) {
+    update: (List<Object?> instance, int dirty) {
       if (instance._user.loggedIn) {
         if (ifBlock0 != null) {
           ifBlock0!.update(instance, dirty);
         } else {
           ifBlock0 = createIfBlock0(instance)
             ..create()
-            ..mount(t.parent as Element, t);
+            ..mount(t.parentNode as Element, t);
         }
       } else if (ifBlock0 != null) {
         ifBlock0!.detach(true);
@@ -124,7 +123,7 @@ Fragment createFragment(List<Object?> instance) {
         } else {
           ifBlock1 = createIfBlock1(instance)
             ..create()
-            ..mount(ifBlock1Anchor.parent as Element, ifBlock1Anchor);
+            ..mount(ifBlock1Anchor.parentNode as Element, ifBlock1Anchor);
         }
       } else if (ifBlock1 != null) {
         ifBlock1!.detach(true);
