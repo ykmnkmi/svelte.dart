@@ -1,12 +1,15 @@
-import 'dart:async';
-import 'dart:html';
+import 'dart:js_interop';
 
-import 'package:js/js_util.dart';
 import 'package:meta/dart2js.dart';
+import 'package:meta/meta.dart';
+import 'package:web/web.dart' hide EventListener;
+
+typedef EventListener = void Function(Event);
 
 @noInline
-Element element(String tag) {
-  return document.createElement(tag);
+@optionalTypeArgs
+T element<T extends Element>(String tag) {
+  return document.createElement(tag) as T;
 }
 
 Text empty() {
@@ -28,13 +31,13 @@ void setData(Text target, String data) {
 }
 
 @noInline
-void setText(Node target, String? text) {
+void setText(Node target, String text) {
   target.text = text;
 }
 
 @noInline
 void setInnerHtml(Element target, String html) {
-  setProperty(target, 'innerHTML', html);
+  target.innerHTML = html;
 }
 
 @noInline
@@ -68,35 +71,30 @@ void insert(Element target, Node child, [Node? anchor]) {
 
 @noInline
 void append(Node target, Node child) {
-  target.append(child);
+  target.appendChild(child);
 }
 
 @noInline
-void appendStyles(Node? target, String styleSheetId, String styles) {
+void appendStyles(Node? target, String styleSheetID, String styles) {
   Node appendStylesTo = getRootForStyle(target);
-  NonElementParentNode appendStylesToNode =
-      appendStylesTo as NonElementParentNode;
 
-  if (appendStylesToNode.getElementById(styleSheetId) == null) {
-    Element style = element('style');
-    style.id = styleSheetId;
+  if (appendStylesTo.getElementById(styleSheetID) == null) {
+    HTMLStyleElement style = element('style');
+    style.id = styleSheetID;
     style.text = styles;
     appendStyleSheet(appendStylesTo, style);
   }
 }
 
+// ShadowRoot | Document target
 @noInline
-void appendStyleSheet(Node target, Element style) {
-  if (target is HtmlDocument) {
-    append(target.head ?? target, style);
-  } else {
-    append(target, style);
-  }
+void appendStyleSheet(Node target, HTMLStyleElement style) {
+  append(target.head ?? target, style);
 }
 
 @noInline
 void appendText(Element target, String text) {
-  target.appendText(text);
+  target.append(Text(text));
 }
 
 @noInline
@@ -115,7 +113,7 @@ Node getRootForStyle(Node? node) {
 }
 
 @noInline
-EventListener listener(FutureOr<void> Function() function) {
+EventListener listener(void Function() function) {
   void handler(Event event) {
     function();
   }
@@ -129,7 +127,7 @@ void Function() listen(
   String type,
   EventListener listener,
 ) {
-  EventListener fn = allowInterop<EventListener>(listener);
+  JSFunction fn = listener.toJS;
   target.addEventListener(type, fn);
 
   void cancel() {
@@ -141,5 +139,11 @@ void Function() listen(
 
 @noInline
 void detach(Node node) {
-  node.remove();
+  node.parentNode?.removeChild(node);
+}
+
+extension on Node {
+  external HTMLHeadElement? get head;
+
+  external Element? getElementById(String id);
 }

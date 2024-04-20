@@ -1,5 +1,3 @@
-import 'dart:html' show Element, Node;
-
 import 'package:meta/dart2js.dart';
 import 'package:svelte_runtime/src/fragment.dart';
 import 'package:svelte_runtime/src/lifecycle.dart';
@@ -7,6 +5,7 @@ import 'package:svelte_runtime/src/scheduler.dart';
 import 'package:svelte_runtime/src/state.dart';
 import 'package:svelte_runtime/src/transition.dart';
 import 'package:svelte_runtime/src/utilities.dart';
+import 'package:web/web.dart' show Element, Node;
 
 typedef InstanceFactory = List<Object?> Function(
   Component component,
@@ -18,7 +17,7 @@ typedef Invalidate = void Function(int index, Object? value, [bool mutation]);
 
 typedef PropertiesSetter = void Function(Map<String, Object?> props);
 
-typedef UpdateFactory = void Function() Function(List<int> dirty);
+typedef UpdateFactory = void Function() Function(int dirty);
 
 abstract base class Component {
   Component({
@@ -30,7 +29,7 @@ abstract base class Component {
     InstanceFactory? createInstance,
     FragmentFactory? createFragment,
     void Function(Element? target)? appendStyles,
-    List<int> dirty = const <int>[-1],
+    int dirty = -1,
   }) : state = State() {
     Component? parentComponent = currentComponent;
     setCurrentComponent(this);
@@ -46,8 +45,11 @@ abstract base class Component {
     bool ready = false;
 
     if (createInstance != null) {
-      void invalidate(int i, Object? value, [bool mutation = false]) {
-        if (state.instance[i] != (state.instance[i] = value) || mutation) {
+      const Object undefined = Object();
+
+      void invalidate(int i, Object? value, [Object? mutation = undefined]) {
+        if (state.instance[i] != (state.instance[i] = value) ||
+            !identical(mutation, undefined)) {
           if (ready) {
             makeComponentDirty(this, i);
           }
@@ -126,8 +128,10 @@ void mountComponent(Component component, Element target, [Node? anchor]) {
   component.state.fragment?.mount(target, anchor);
 
   void callback() {
-    Iterable<VoidFunction> newOnDestroy =
-        component.state.onMount.map<Object?>(run).whereType<VoidFunction>();
+    List<VoidFunction> newOnDestroy = component.state.onMount
+        .map<Object?>(run)
+        .whereType<VoidFunction>()
+        .toList();
 
     if (component.state.destroyed) {
       component.state.onDestroy.addAll(newOnDestroy);
@@ -144,15 +148,13 @@ void mountComponent(Component component, Element target, [Node? anchor]) {
 
 @noInline
 void makeComponentDirty(Component component, int index) {
-  int dirtyIndex = index ~/ 31;
-
-  if (component.state.dirty[0] == -1) {
+  if (component.state.dirty == -1) {
     dirtyComponents.add(component);
     scheduleUpdate();
-    component.state.dirty = List<int>.filled(dirtyIndex + 1, 0);
+    component.state.dirty = 0;
   }
 
-  component.state.dirty[dirtyIndex] |= 1 << index % 31;
+  component.state.dirty |= 1 << index;
 }
 
 @noInline
@@ -160,8 +162,8 @@ void updateComponent(Component component) {
   component.state.update();
 
   if (component.state.fragment case var fragment?) {
-    List<int> dirty = component.state.dirty;
-    component.state.dirty = const <int>[-1];
+    int dirty = component.state.dirty;
+    component.state.dirty = -1;
     fragment.update(component.state.instance, dirty);
   }
 }
@@ -188,7 +190,7 @@ void destroyComponent(Component component, bool detaching) {
 
     component.state
       ..fragment = null
-      ..instance = <Object?>[]
-      ..onDestroy = <VoidFunction>[];
+      ..instance = const <Object?>[]
+      ..onDestroy = const <VoidFunction>[];
   }
 }

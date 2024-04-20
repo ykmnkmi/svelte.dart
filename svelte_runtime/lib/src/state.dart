@@ -1,7 +1,6 @@
-import 'dart:html';
-
 import 'package:svelte_runtime/src/fragment.dart';
 import 'package:svelte_runtime/src/utilities.dart';
+import 'package:web/web.dart' show Element;
 
 class State {
   Element? root;
@@ -12,9 +11,9 @@ class State {
 
   List<Object?> instance = <Object?>[];
 
-  late List<int> dirty;
+  int dirty = -1;
 
-  VoidCallback update = noop;
+  void Function() update = noop;
 
   List<VoidFunction> onMount = <VoidFunction>[];
 

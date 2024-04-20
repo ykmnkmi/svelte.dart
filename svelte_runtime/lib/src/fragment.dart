@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:svelte_runtime/src/utilities.dart';
+import 'package:web/web.dart' show Element, Node;
 
 typedef FragmentFactory = Fragment Function(List<Object?> instance);
 
@@ -18,7 +17,7 @@ final class Fragment {
 
   final void Function(Element target, Node? anchor) mount;
 
-  final void Function(List<Object?> instance, List<int> dirty) update;
+  final void Function(List<Object?> instance, int dirty) update;
 
   final void Function(bool local) intro;
 
@@ -27,8 +26,8 @@ final class Fragment {
   final void Function(bool detaching) detach;
 
   static void detachAll(List<Fragment> fragments, bool detaching) {
-    for (Fragment fragment in fragments) {
-      fragment.detach(detaching);
+    for (int index = 0; index < fragments.length; index++) {
+      fragments[index].detach(detaching);
     }
   }
 }
