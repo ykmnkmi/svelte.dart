@@ -1,20 +1,20 @@
 name: svelte_ast
 description: Parser and utilities for SvelteDart template compiler.
-version: 1.0.0-15.beta
+version: 1.0.0-16.beta
 repository: https://github.com/ykmnkmi/svelte.dart
 
 environment:
-  sdk: ^3.3.0
+  sdk: ^3.3.4
 
 dependencies:
   _fe_analyzer_shared: ^67.0.0
   analyzer: ^6.4.1
   csslib: ^1.0.0
-  meta: ^1.12.0
+  meta: ^1.14.0
   source_span: ^1.10.0
 
 dev_dependencies:
   collection: ^1.18.0
   lints: ^3.0.0
   stack_trace: ^1.11.1
-  test: ^1.25.2
+  test: ^1.25.4
