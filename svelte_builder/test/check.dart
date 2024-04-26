@@ -17,7 +17,6 @@ import 'package:build_test/build_test.dart'
 import 'package:logging/logging.dart' show Level, Logger;
 import 'package:stack_trace/stack_trace.dart' show Trace;
 import 'package:svelte_ast/svelte_ast.dart';
-import 'package:svelte_builder/src/builders/meta.dart';
 import 'package:svelte_builder/src/builders/svelte.dart';
 
 final Map<AssetId, String> sourceAssets = <AssetId, String>{
@@ -94,11 +93,7 @@ Future<void> build(
   required MultiPackageAssetReader reader,
   required RecordingAssetWriter writer,
 }) async {
-  assets
-    ..add(AssetId(rootPackage, r'$package$'))
-    ..add(AssetId(rootPackage, r'lib/$lib$'))
-    ..add(AssetId(rootPackage, r'web/$web$'))
-    ..add(AssetId(rootPackage, r'test/$test$'));
+  assets.add(AssetId(rootPackage, r'web/$web$'));
 
   var resolvers = AnalyzerResolvers.sharedInstance;
 
@@ -135,22 +130,12 @@ Future<void> run() async {
 
   var readers = [isolateReader, inMemoryReader, writtenReader];
   var multiReader = MultiAssetReader(readers);
-  print('> META '.padRight(80, '='));
 
-  await build(
-    const MetaBuilder(),
-    <AssetId>{AssetId('app', 'web/app.svelte')},
-    rootPackage: 'app',
-    reader: multiReader,
-    writer: inMemoryWriter,
-  );
-
-  printAssets(inMemoryWriter.assets);
   print('> SVELTE '.padRight(80, '='));
 
   await build(
     const SvelteBuilder(),
-    <AssetId>{AssetId('app', 'web/main.zap')},
+    <AssetId>{AssetId('app', 'web/app.svelte')},
     rootPackage: 'app',
     reader: multiReader,
     writer: inMemoryWriter,

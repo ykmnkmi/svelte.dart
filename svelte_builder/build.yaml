@@ -2,7 +2,6 @@ builders:
   svelte_builder:
     import: package:svelte_builder/svelte_builder.dart
     builder_factories:
-      - metaBuilder
       - svelteBuilder
     auto_apply: dependents
     build_to: source
