@@ -8,7 +8,7 @@ Fragment createFragment(List<Object?> instance) {
 
   var current = false;
 
-  nested = Nested(props: <String, Object?>{'answer': 42});
+  nested = Nested(properties: <String, Object?>{'answer': 42});
 
   return Fragment(
     create: () {
@@ -40,7 +40,7 @@ final class App extends Component {
   App({
     super.target,
     super.anchor,
-    super.props,
+    super.properties,
     super.hydrate,
     super.intro,
   }) : super(createFragment: createFragment);

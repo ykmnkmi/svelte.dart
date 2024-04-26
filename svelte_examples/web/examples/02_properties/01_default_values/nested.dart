@@ -55,7 +55,7 @@ final class Nested extends Component {
   Nested({
     super.target,
     super.anchor,
-    super.props,
+    super.properties,
     super.hydrate,
     super.intro,
   }) : super(createInstance: createInstance, createFragment: createFragment);

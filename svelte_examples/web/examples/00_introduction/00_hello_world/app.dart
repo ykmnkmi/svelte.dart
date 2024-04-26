@@ -26,7 +26,7 @@ final class App extends Component {
   App({
     super.target,
     super.anchor,
-    super.props,
+    super.properties,
     super.hydrate,
     super.intro,
   }) : super(createFragment: createFragment);

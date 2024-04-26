@@ -137,7 +137,7 @@ final class Info extends Component {
   Info({
     super.target,
     super.anchor,
-    super.props,
+    super.properties,
     super.hydrate,
     super.intro,
   }) : super(createInstance: createInstance, createFragment: createFragment);

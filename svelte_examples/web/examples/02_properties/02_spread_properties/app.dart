@@ -21,7 +21,7 @@ Fragment createFragment(List<Object?> instance) {
     infoProps.addAll(infoSpreadLevels[i]);
   }
 
-  info = Info(props: infoProps);
+  info = Info(properties: infoProps);
 
   return Fragment(
     create: () {
@@ -80,7 +80,7 @@ final class App extends Component {
   App({
     super.target,
     super.anchor,
-    super.props,
+    super.properties,
     super.hydrate,
     super.intro,
   }) : super(createInstance: createInstance, createFragment: createFragment);
