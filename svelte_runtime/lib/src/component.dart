@@ -23,7 +23,7 @@ abstract base class Component {
   Component({
     Element? target,
     Node? anchor,
-    Map<String, Object?> props = const <String, Object?>{},
+    Map<String, Object?> properties = const <String, Object?>{},
     bool hydrate = false,
     bool intro = false,
     InstanceFactory? createInstance,
@@ -48,15 +48,18 @@ abstract base class Component {
       const Object undefined = Object();
 
       void invalidate(int i, Object? value, [Object? mutation = undefined]) {
-        if (state.instance[i] != (state.instance[i] = value) ||
-            !identical(mutation, undefined)) {
-          if (ready) {
-            makeComponentDirty(this, i);
-          }
+        if (state.instance[i] == value || identical(mutation, undefined)) {
+          return;
+        }
+
+        state.instance[i] = value;
+
+        if (ready) {
+          makeComponentDirty(this, i);
         }
       }
 
-      state.instance = createInstance(this, props, invalidate);
+      state.instance = createInstance(this, properties, invalidate);
     }
 
     state.update();
