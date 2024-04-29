@@ -1,10 +1,10 @@
 const List<int> codes = <int>[0x20, 0x2D, 0x5F];
 
-String _upperCaseFirstLetter(String word) {
+String upperCaseFirstLetter(String word) {
   return '${word.substring(0, 1).toUpperCase()}${word.substring(1).toLowerCase()}';
 }
 
-List<String> _groupIntoWords(String text) {
+List<String> groupIntoWords(String text) {
   int length = text.length;
 
   StringBuffer buffer = StringBuffer();
@@ -36,5 +36,5 @@ List<String> _groupIntoWords(String text) {
 }
 
 String pascalCase(String text) {
-  return _groupIntoWords(text).map<String>(_upperCaseFirstLetter).join();
+  return groupIntoWords(text).map<String>(upperCaseFirstLetter).join();
 }

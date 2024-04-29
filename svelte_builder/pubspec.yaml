@@ -1,6 +1,6 @@
 name: svelte_builder
 description: SvelteDart Builder.
-version: 1.0.0-dev.2
+version: 1.0.0-dev.3
 repository: https://github.com/ykmnkmi/svelte.dart
 
 environment:

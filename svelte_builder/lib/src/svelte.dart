@@ -4,6 +4,7 @@ import 'package:build/build.dart';
 import 'package:path/path.dart' as path;
 import 'package:svelte_ast/svelte_ast.dart';
 import 'package:svelte_builder/src/formatter.dart';
+import 'package:svelte_builder/src/template_expression_writer.dart';
 
 class SvelteBuilder implements Builder {
   const SvelteBuilder();
@@ -92,6 +93,12 @@ class SvelteBuilder implements Builder {
           ..writeln()
           ..writeln('   $node');
       }
+
+      instanceBuffer.writeln(r'  $template: {');
+
+      ast.html.accept(TemplateExpressionWriter(), instanceBuffer);
+
+      instanceBuffer.writeln('  }');
 
       instanceBuffer.writeln('}');
 

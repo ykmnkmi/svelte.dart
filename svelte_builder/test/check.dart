@@ -4,7 +4,7 @@ library;
 import 'dart:async' show Future, runZonedGuarded;
 
 import 'package:build/build.dart'
-    show AssetId, Builder, MultiPackageAssetReader, runBuilder;
+    show AssetId, Builder, BuilderOptions, MultiPackageAssetReader, runBuilder;
 import 'package:build_resolvers/build_resolvers.dart' show AnalyzerResolvers;
 import 'package:build_test/build_test.dart'
     show
@@ -16,8 +16,8 @@ import 'package:build_test/build_test.dart'
         WrittenAssetReader;
 import 'package:logging/logging.dart' show Level, Logger;
 import 'package:stack_trace/stack_trace.dart' show Trace;
-import 'package:svelte_ast/svelte_ast.dart';
-import 'package:svelte_builder/src/builders/svelte.dart';
+import 'package:svelte_ast/svelte_ast.dart' show ParseError;
+import 'package:svelte_builder/svelte_builder.dart';
 
 final Map<AssetId, String> sourceAssets = <AssetId, String>{
   AssetId('app', 'web/app.svelte'): r'''
@@ -134,7 +134,7 @@ Future<void> run() async {
   print('> SVELTE '.padRight(80, '='));
 
   await build(
-    const SvelteBuilder(),
+    svelteBuilder(BuilderOptions.empty),
     <AssetId>{AssetId('app', 'web/app.svelte')},
     rootPackage: 'app',
     reader: multiReader,
