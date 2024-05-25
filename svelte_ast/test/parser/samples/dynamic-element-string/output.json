@@ -8,8 +8,13 @@
 				"start": 0,
 				"end": 44,
 				"class": "InlineElement",
-				"name": "svelte:element",
-				"tag": "div",
+				"name": {
+					"start": 22,
+					"end": 25,
+					"class": "Text",
+					"raw": "div",
+					"data": "div"
+				},
 				"attributes": [],
 				"children": []
 			},
@@ -24,15 +29,20 @@
 				"start": 45,
 				"end": 101,
 				"class": "InlineElement",
-				"name": "svelte:element",
-				"tag": "div",
+				"name": {
+					"start": 67,
+					"end": 70,
+					"class": "Text",
+					"raw": "div",
+					"data": "div"
+				},
 				"attributes": [
 					{
 						"start": 72,
 						"end": 83,
 						"class": "Attribute",
 						"name": "class",
-						"value": [
+						"values": [
 							{
 								"start": 79,
 								"end": 82,

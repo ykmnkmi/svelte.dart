@@ -16,16 +16,16 @@
 						"type": "StyleDirective",
 						"name": "color",
 						"modifiers": [],
-						"value": [
+						"values": [
 							{
 								"start": 17,
 								"end": 26,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 18,
-									"end": 25,
 									"@class": "SimpleIdentifier",
 									"@toString": "myColor",
+									"start": 18,
+									"end": 25,
 									"token": {
 										"start": 18,
 										"end": 25,

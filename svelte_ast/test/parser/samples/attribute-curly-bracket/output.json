@@ -15,7 +15,7 @@
 						"end": 15,
 						"class": "Attribute",
 						"name": "foo",
-						"value": [
+						"values": [
 							{
 								"start": 11,
 								"end": 12,
@@ -28,10 +28,10 @@
 								"end": 15,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 13,
-									"end": 14,
 									"@class": "IntegerLiteral",
 									"@toString": "1",
+									"start": 13,
+									"end": 14,
 									"literal": {
 										"start": 13,
 										"end": 14,

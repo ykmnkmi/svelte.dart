@@ -15,16 +15,16 @@
 						"end": 29,
 						"class": "Attribute",
 						"name": "readonly",
-						"value": [
+						"values": [
 							{
 								"start": 19,
 								"end": 29,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 20,
-									"end": 28,
 									"@class": "SimpleIdentifier",
 									"@toString": "readonly",
+									"start": 20,
+									"end": 28,
 									"token": {
 										"start": 20,
 										"end": 28,

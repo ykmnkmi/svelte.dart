@@ -181,7 +181,7 @@ extension TagParser on Parser {
           start: start,
           end: position,
           name: name,
-          value: <Node>[
+          values: <Node>[
             AttributeShorthand(
               start: valueStart,
               end: valueStart + name.length,
@@ -208,17 +208,17 @@ extension TagParser on Parser {
       type = _getDirectiveType(name.substring(0, colonIndex));
     }
 
-    Object? value = true;
+    List<Node> values = <Node>[];
 
     if (scan('=')) {
       allowSpace();
-      value = _readAttributeValue();
+      values = _readAttributeValue();
       end = position;
     } else if (match(_startsWithQuoteCharacters)) {
       error(unexpectedToken('='), position);
     }
 
-    if (type case DirectiveType type?) {
+    if (type != null) {
       var <String>[
         String directiveName,
         ...List<String> modifiers,
@@ -245,19 +245,21 @@ extension TagParser on Parser {
           end: end,
           name: directiveName,
           modifiers: modifiers,
-          value: value,
+          values: values,
         );
       }
 
       Expression? expression;
 
-      if (value case <Node>[Node firstValue, ...]) {
-        if (value.length > 1 || firstValue is Text) {
-          error(invalidDirectiveValue, firstValue.start);
+      if (values.isNotEmpty) {
+        Node first = values.first;
+
+        if (first is Text || values.length > 1) {
+          error(invalidDirectiveValue, first.start);
         }
 
-        if (firstValue is MustacheTag) {
-          expression = firstValue.expression;
+        if (first is MustacheTag) {
+          expression = first.expression;
         }
       }
 
@@ -345,17 +347,17 @@ extension TagParser on Parser {
     }
 
     checkUnique(name);
-    return Attribute(start: start, end: end, name: name, value: value);
+    return Attribute(start: start, end: end, name: name, values: values);
   }
 
   List<Node> _readAttributeValue() {
     String? quoteMark = read('"') ?? read("'");
 
-    if (quoteMark case String mark? when scan(mark)) {
+    if (quoteMark != null && scan(quoteMark)) {
       return <Node>[Text(start: position - 1, end: position - 1)];
     }
 
-    List<Node>? value;
+    List<Node> value;
 
     try {
       Pattern end = quoteMark ?? _startsWithInvalidAttributeValue;
@@ -469,7 +471,9 @@ extension TagParser on Parser {
     String name = _readTagName();
     Tag element;
 
-    if (_metaTags[name] case String metaTag?) {
+    String? metaTag = _metaTags[name];
+
+    if (metaTag != null) {
       String slug = metaTag.toLowerCase();
 
       if (isClosingTag) {
@@ -582,9 +586,11 @@ extension TagParser on Parser {
 
       expect('>');
 
+      AutoCloseTag? tag = lastAutoCloseTag;
+
       while (parent is! Tag || parent.name != name) {
         if (parent is! Element) {
-          if (lastAutoCloseTag case AutoCloseTag tag? when tag.tag == name) {
+          if (tag != null && tag.tag == name) {
             error(invalidClosingTagAutoClosed(name, tag.reason), start);
           } else {
             error(invalidClosingTagUnopened(name), start);
@@ -599,20 +605,19 @@ extension TagParser on Parser {
       parent.end = position;
       stack.removeLast();
 
-      if (lastAutoCloseTag case AutoCloseTag tag?
-          when tag.depth > stack.length) {
+      if (tag != null && tag.depth > stack.length) {
         lastAutoCloseTag = null;
       }
 
       return;
     }
 
-    if (closingTagOmitted(parent is HasName ? parent.name : null, name)) {
+    if (parent is HasName && closingTagOmitted(parent.name, name)) {
       parent.end = start;
       stack.removeLast();
 
       lastAutoCloseTag = (
-        tag: parent is HasName ? parent.name : null,
+        tag: parent.name,
         reason: name,
         depth: stack.length,
       );
@@ -621,67 +626,77 @@ extension TagParser on Parser {
     Set<String> uniqueNames = <String>{};
 
     while (true) {
-      if (_readAttribute(uniqueNames) case Node attribute?) {
-        element.attributes.add(attribute);
-        allowSpace();
-      } else {
+      Node? attribute = _readAttribute(uniqueNames);
+
+      if (attribute == null) {
         break;
       }
+
+      element.attributes.add(attribute);
+      allowSpace();
     }
 
-    if (name == 'svelte:component') {
-      element as InlineComponent;
-
+    if (element is InlineComponent && name == 'svelte:component') {
       List<Node> attributes = element.attributes;
-      int found = -1;
+      Attribute? definition;
 
-      for (int index = 0; index < attributes.length; index += 1) {
-        if (attributes[index] case Attribute(name: 'this')) {
-          found = index;
+      for (int i = 0; i < attributes.length; i++) {
+        Node attribute = attributes[i];
+
+        if (attribute is Attribute && attribute.name == 'this') {
+          definition = attribute;
+          attributes.removeAt(i);
           break;
         }
       }
 
-      if (found == -1) {
+      if (definition == null) {
         error(missingComponentDefinition, start);
       }
 
-      Attribute definition = attributes.removeAt(found) as Attribute;
+      List<Node> values = definition.values;
+      Expression? expression;
 
-      Expression expression = switch (definition.value) {
-        <Node>[MustacheTag(:Expression expression)] => expression,
-        _ => error(invalidComponentDefinition, definition.start),
-      };
+      found:
+      {
+        if (values.length == 1) {
+          Node value = values.first;
+
+          if (value is MustacheTag) {
+            expression = value.expression;
+            break found;
+          }
+        }
+
+        error(invalidComponentDefinition, definition.start);
+      }
 
       element.expression = expression;
     }
 
-    if (name == 'svelte:element') {
-      element as InlineElement;
-
+    if (element is InlineElement) {
       List<Node> attributes = element.attributes;
-      int found = -1;
+      Attribute? definition;
 
-      for (int index = 0; index < attributes.length; index += 1) {
-        if (attributes[index] case Attribute(name: 'this')) {
-          found = index;
+      for (int i = 0; i < attributes.length; i++) {
+        Node attribute = attributes[i];
+
+        if (attribute is Attribute && attribute.name == 'this') {
+          definition = attribute;
+          attributes.removeAt(i);
           break;
         }
       }
 
-      if (found == -1) {
+      if (definition == null) {
         error(missingElementDefinition, start);
       }
 
-      Attribute definition = attributes.removeAt(found) as Attribute;
+      if (definition.values.length != 1) {
+        error(invalidElementDefinition, definition.start);
+      }
 
-      Object tag = switch (definition.value) {
-        <Node>[Text(:String data)] => data,
-        <Node>[MustacheTag(:Expression expression)] => expression,
-        _ => error(invalidElementDefinition, definition.start),
-      };
-
-      element.tag = tag;
+      element.tag = definition.values.first;
     }
 
     if (stack.length == 1) {

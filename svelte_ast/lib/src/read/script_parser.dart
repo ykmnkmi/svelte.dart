@@ -41,11 +41,7 @@ final class ScriptParser extends fe.Parser {
     return ScriptParser(
       scanner: scanner,
       builder: AstBuilder(
-        ErrorReporter(
-          ThrowingErrorListener(),
-          source,
-          isNonNullableByDefault: featureSet.isEnabled(Feature.non_nullable),
-        ),
+        ErrorReporter(ThrowingErrorListener(), source),
         source.uri,
         true,
         featureSet,
@@ -73,11 +69,11 @@ final class ScriptParser extends fe.Parser {
     Token next = previousToken.next!;
 
     while (!next.isEof) {
-      if (next case Token(type: Keyword.IMPORT)) {
+      if (next.type == Keyword.IMPORT) {
         next = parseMetadataStar(next);
         next = parseImport(next);
         next = next.next!;
-      } else if (next case Token(type: Keyword.EXTERNAL)) {
+      } else if (next.type == Keyword.EXTERNAL) {
         next = parseMetadataStar(next);
         next = parseTopLevelMember(next);
       } else {

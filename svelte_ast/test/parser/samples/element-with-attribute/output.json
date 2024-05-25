@@ -15,7 +15,7 @@
 						"end": 16,
 						"class": "Attribute",
 						"name": "attr",
-						"value": [
+						"values": [
 							{
 								"start": 12,
 								"end": 15,
@@ -46,7 +46,7 @@
 						"end": 41,
 						"class": "Attribute",
 						"name": "attr",
-						"value": [
+						"values": [
 							{
 								"start": 37,
 								"end": 40,

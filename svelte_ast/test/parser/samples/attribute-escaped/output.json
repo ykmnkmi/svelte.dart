@@ -15,7 +15,7 @@
 						"end": 76,
 						"class": "Attribute",
 						"name": "data-foo",
-						"value": [
+						"values": [
 							{
 								"start": 15,
 								"end": 75,

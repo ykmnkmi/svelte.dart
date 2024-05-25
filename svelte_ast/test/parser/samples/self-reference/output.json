@@ -9,10 +9,10 @@
 				"end": 57,
 				"class": "IfBlock",
 				"expression": {
-					"start": 5,
-					"end": 14,
 					"@class": "BinaryExpression",
 					"@toString": "depth > 1",
+					"start": 5,
+					"end": 14,
 					"operator": {
 						"start": 11,
 						"end": 12,
@@ -32,10 +32,10 @@
 						"lexeme": "1"
 					},
 					"leftOperand": {
-						"start": 5,
-						"end": 10,
 						"@class": "SimpleIdentifier",
 						"@toString": "depth",
+						"start": 5,
+						"end": 10,
 						"token": {
 							"start": 5,
 							"end": 10,
@@ -60,10 +60,10 @@
 						"name": "depth"
 					},
 					"rightOperand": {
-						"start": 13,
-						"end": 14,
 						"@class": "IntegerLiteral",
 						"@toString": "1",
+						"start": 13,
+						"end": 14,
 						"literal": {
 							"start": 13,
 							"end": 14,
@@ -104,16 +104,16 @@
 								"end": 49,
 								"class": "Attribute",
 								"name": "depth",
-								"value": [
+								"values": [
 									{
 										"start": 37,
 										"end": 48,
 										"class": "MustacheTag",
 										"expression": {
-											"start": 38,
-											"end": 47,
 											"@class": "BinaryExpression",
 											"@toString": "depth - 1",
+											"start": 38,
+											"end": 47,
 											"operator": {
 												"start": 44,
 												"end": 45,
@@ -133,10 +133,10 @@
 												"lexeme": "1"
 											},
 											"leftOperand": {
-												"start": 38,
-												"end": 43,
 												"@class": "SimpleIdentifier",
 												"@toString": "depth",
+												"start": 38,
+												"end": 43,
 												"token": {
 													"start": 38,
 													"end": 43,
@@ -161,10 +161,10 @@
 												"name": "depth"
 											},
 											"rightOperand": {
-												"start": 46,
-												"end": 47,
 												"@class": "IntegerLiteral",
 												"@toString": "1",
+												"start": 46,
+												"end": 47,
 												"literal": {
 													"start": 46,
 													"end": 47,

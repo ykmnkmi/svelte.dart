@@ -7,8 +7,15 @@ import 'package:svelte_ast/svelte_ast.dart';
 const String content = '''
 <script>
   var count = 0;
+
+  void onClick() {
+    count += 1;
+  }
 </script>
-<button on:click="{() => count++}">count: {count}</button>''';
+<button on:click={onClick}>
+  Count: {count}
+</button>
+''';
 
 void main() {
   // Create an AST tree by parsing an SvelteDart template.

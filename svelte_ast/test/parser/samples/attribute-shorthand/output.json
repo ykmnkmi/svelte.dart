@@ -15,16 +15,16 @@
 						"end": 9,
 						"class": "Attribute",
 						"name": "id",
-						"value": [
+						"values": [
 							{
 								"start": 6,
 								"end": 8,
 								"class": "AttributeShorthand",
 								"expression": {
-									"start": 6,
-									"end": 8,
 									"@class": "SimpleIdentifier",
 									"@toString": "id",
+									"start": 6,
+									"end": 8,
 									"token": {
 										"start": 6,
 										"end": 8,

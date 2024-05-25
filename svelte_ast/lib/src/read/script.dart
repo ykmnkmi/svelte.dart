@@ -17,7 +17,7 @@ extension ScriptParser on Parser {
     Attribute? attribute;
 
     for (Node node in nodes) {
-      if (node case Attribute(name: 'context')) {
+      if (node is Attribute && node.name == 'context') {
         attribute = node;
       }
     }
@@ -26,9 +26,13 @@ extension ScriptParser on Parser {
       return 'default';
     }
 
-    if (attribute.value case <Node>[Text(data: String data)]?) {
-      if (data == 'module') {
-        return data;
+    List<Node> values = attribute.values;
+
+    if (values.length == 1) {
+      Node text = values.first;
+
+      if (text is Text && text.data == 'module') {
+        return 'module';
       }
 
       error(invalidScriptContextValue, start);
@@ -69,17 +73,17 @@ extension ScriptParser on Parser {
         while (!next.isEof) {
           next = parser.parseMetadataStar(next);
 
-          if (next case Token(type: Keyword.LIBRARY)) {
+          if (next.type == Keyword.LIBRARY) {
             next = parser.parseLibraryName(next);
             directives.add(builder.pop() as dart.Directive);
             next = next.next!;
-          } else if (next case Token(type: Keyword.IMPORT)) {
+          } else if (next.type == Keyword.IMPORT) {
             next = parser.parseImport(next);
             directives.add(builder.directives.removeLast());
             next = next.next!;
-          } else if (next case Token(type: Keyword.EXPORT || Keyword.PART)) {
+          } else if (next.type == Keyword.EXPORT || next.type == Keyword.PART) {
             throw UnimplementedError();
-          } else if (next case Token(type: Keyword.EXTERNAL)) {
+          } else if (next.type == Keyword.EXTERNAL) {
             next = next.next!;
             next = parser.parseStatement(next.previous!);
 

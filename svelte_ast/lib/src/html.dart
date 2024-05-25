@@ -122,12 +122,10 @@ const Map<String, Set<String>> _disallowedContents = <String, Set<String>>{
   'th': <String>{'td', 'th', 'tr'},
 };
 
-bool closingTagOmitted(String? current, [String? next]) {
-  if (current == null) {
-    return false;
-  }
+bool closingTagOmitted(String current, [String? next]) {
+  Set<String>? disallowed = _disallowedContents[current];
 
-  if (_disallowedContents[current] case Set<String> disallowed?) {
+  if (disallowed != null) {
     return next == null || disallowed.contains(next);
   }
 

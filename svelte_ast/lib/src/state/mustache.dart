@@ -83,8 +83,8 @@ extension MustacheParser on Parser {
       stack.removeLast();
       block = current;
 
-      if (block case HasElse(elseBlock: ElseBlock elseBlock?)) {
-        elseBlock.end = start;
+      if (block is HasElse) {
+        block.elseBlock?.end = start;
       }
     }
 

@@ -9,10 +9,6 @@ part 'ast/visitor.dart';
 typedef JsonMapper = Object? Function(Object? object);
 
 Object? toStringMapper(Object? object) {
-  if (object == null) {
-    return null;
-  }
-
   return object.toString();
 }
 

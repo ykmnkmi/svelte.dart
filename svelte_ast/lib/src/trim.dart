@@ -26,8 +26,10 @@ void trimBlock(Node? block, bool before, bool after) {
     }
   }
 
-  if (after) {
-    if (block.children case <Node>[..., Text last]) {
+  if (after && block.children.isNotEmpty) {
+    Node last = block.children.last;
+
+    if (last is Text) {
       String data = trimEnd(last.data);
 
       if (data.isEmpty) {

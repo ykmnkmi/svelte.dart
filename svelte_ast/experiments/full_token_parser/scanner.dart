@@ -389,8 +389,9 @@ class SvelteStringScanner extends StringScanner {
         return advance();
       }
 
-      if (string.indexOf(tokenEnding, scanOffset) case int tokenEnd
-          when tokenEnd != 1) {
+      int tokenEnd = string.indexOf(tokenEnding, scanOffset);
+
+      if (tokenEnd != 1) {
         String value = string.substring(tokenStart, tokenEnd);
         appendToken(SvelteToken(SvelteToken.TAG_IDENTIFIER, tokenStart, value));
         scanOffset = tokenEnd;

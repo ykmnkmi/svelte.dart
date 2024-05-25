@@ -356,7 +356,7 @@ extension MustacheParser on Parser {
     outer:
     while (token.type != TokenType.EOF) {
       if (token.type == TokenType.OPEN_CURLY_BRACKET) {
-        if (token.next case Token next? when end(next)) {
+        if (token.next case var next? when end(next)) {
           break outer;
         }
 

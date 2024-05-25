@@ -45,18 +45,18 @@ const ErrorCode duplicateAttribute = (
 ErrorCode duplicateElement(String slug, String name) {
   return (
     code: 'duplicate-$slug',
-    message: 'A component can only have one <$name> tag'
+    message: 'A component can only have one <$name> tag',
   );
 }
 
 const ErrorCode duplicateStyle = (
   code: 'duplicate-style',
-  message: 'You can only have one top-level <style> tag per component'
+  message: 'You can only have one top-level <style> tag per component',
 );
 
 const ErrorCode emptyAttributeShorthand = (
   code: 'empty-attribute-shorthand',
-  message: 'Attribute shorthand cannot be empty'
+  message: 'Attribute shorthand cannot be empty',
 );
 
 ErrorCode emptyDirectiveName(String type) {
@@ -84,18 +84,18 @@ const ErrorCode expectedName = (
 ErrorCode invalidCatchPlacementUnclosedBlock(String block) {
   return (
     code: 'invalid-catch-placement',
-    message: 'Expected to close $block before seeing {:catch} block'
+    message: 'Expected to close $block before seeing {:catch} block',
   );
 }
 
 const ErrorCode invalidCatchPlacementWithoutAwait = (
   code: 'invalid-catch-placement',
-  message: 'Cannot have an {:catch} block outside an {#await ...} block'
+  message: 'Cannot have an {:catch} block outside an {#await ...} block',
 );
 
 const ErrorCode invalidComponentDefinition = (
   code: 'invalid-component-definition',
-  message: 'invalid component definition'
+  message: 'invalid component definition',
 );
 
 ErrorCode invalidClosingTagUnopened(String name) {
@@ -108,8 +108,8 @@ ErrorCode invalidClosingTagUnopened(String name) {
 ErrorCode invalidClosingTagAutoClosed(String name, String reason) {
   return (
     code: 'invalid-closing-tag',
-    message:
-        '</$name> attempted to close <$name> that was already automatically closed by <$reason>'
+    message: '</$name> attempted to close <$name> that was already '
+        'automatically closed by <$reason>',
   );
 }
 
@@ -125,8 +125,8 @@ const ErrorCode invalidDeclaration = (
 
 const ErrorCode invalidDirectiveValue = (
   code: 'invalid-directive-value',
-  message:
-      'Directive value must be a JavaScript expression enclosed in curly braces'
+  message: 'Directive value must be a JavaScript expression enclosed in curly '
+      'braces',
 );
 
 const ErrorCode invalidElseIf = (
@@ -136,26 +136,26 @@ const ErrorCode invalidElseIf = (
 
 const ErrorCode invalidElseIfPlacementOutsideIf = (
   code: 'invalid-elseif-placement',
-  message: 'Cannot have an {:else if ...} block outside an {#if ...} block'
+  message: 'Cannot have an {:else if ...} block outside an {#if ...} block',
 );
 
 ErrorCode invalidElseifPlacementUnclosedBlock(String? block) {
   return (
     code: 'invalid-elseif-placement',
-    message: 'Expected to close $block before seeing {:else if ...} block'
+    message: 'Expected to close $block before seeing {:else if ...} block',
   );
 }
 
 const ErrorCode invalidElsePlacementOutsideIf = (
   code: 'invalid-else-placement',
   message:
-      'Cannot have an {:else} block outside an {#if ...} or {#each ...} block'
+      'Cannot have an {:else} block outside an {#if ...} or {#each ...} block',
 );
 
 ErrorCode invalidElsePlacementUnclosedBlock(String? block) {
   return (
     code: 'invalid-else-placement',
-    message: 'Expected to close $block before seeing {:else} block'
+    message: 'Expected to close $block before seeing {:else} block',
   );
 }
 
@@ -174,51 +174,51 @@ const ErrorCode invalidElementDefinition = (
 ErrorCode invalidElementPlacement(String slug, String name) {
   return (
     code: 'invalid-$slug-placement',
-    message: '<$name> tags cannot be inside elements or blocks'
+    message: '<$name> tags cannot be inside elements or blocks',
   );
 }
 
 ErrorCode invalidLogicBlockPlacement(String? location, String? name) {
   return (
     code: 'invalid-logic-block-placement',
-    message: '{#$name} logic block cannot be $location'
+    message: '{#$name} logic block cannot be $location',
   );
 }
 
 ErrorCode invalidTagPlacement(String? location, String? name) {
   return (
     code: 'invalid-tag-placement',
-    message: '{@$name} tag cannot be $location'
+    message: '{@$name} tag cannot be $location',
   );
 }
 
 ErrorCode invalidRefDirective(String? name) {
   return (
     code: 'invalid-ref-directive',
-    message:
-        "The ref directive is no longer supported — use 'bind:this={$name}' instead"
+    message: 'The ref directive is no longer supported — use '
+        "'bind:this={$name}' instead",
   );
 }
 
 const ErrorCode invalidRefSelector = (
   code: 'invalid-ref-selector',
-  message: 'ref selectors are no longer supported'
+  message: 'ref selectors are no longer supported',
 );
 
 const ErrorCode invalidSelfPlacement = (
   code: 'invalid-self-placement',
-  message:
-      '<svelte:self> components can only exist inside {#if} blocks, {#each} blocks, or slots passed to components'
+  message: '<svelte:self> components can only exist inside {#if} blocks, '
+      '{#each} blocks, or slots passed to components',
 );
 
 const ErrorCode invalidScriptInstance = (
   code: 'invalid-script',
-  message: 'A component can only have one instance-level <script> element'
+  message: 'A component can only have one instance-level <script> element',
 );
 
 const ErrorCode invalidScriptModule = (
   code: 'invalid-script',
-  message: 'A component can only have one <script context="module"> element'
+  message: 'A component can only have one <script context="module"> element',
 );
 
 const ErrorCode invalidScriptContextAttribute = (
@@ -228,7 +228,7 @@ const ErrorCode invalidScriptContextAttribute = (
 
 const ErrorCode invalidScriptContextValue = (
   code: 'invalid-script',
-  message: 'If the context attribute is supplied, its value must be "module"'
+  message: 'If the context attribute is supplied, its value must be "module"',
 );
 
 const ErrorCode invalidTagName = (
@@ -239,43 +239,43 @@ const ErrorCode invalidTagName = (
 ErrorCode invalidTagNameSvelteElement(List<String> tags) {
   return (
     code: 'invalid-tag-name',
-    message: 'Valid <svelte:...> tag names are ${tags.join(', ')}'
+    message: 'Valid <svelte:...> tag names are ${tags.join(', ')}',
   );
 }
 
 ErrorCode invalidThenPlacementUnclosedBlock(String block) {
   return (
     code: 'invalid-then-placement',
-    message: 'Expected to close $block before seeing {:then} block'
+    message: 'Expected to close $block before seeing {:then} block',
   );
 }
 
 const ErrorCode invalidThenPlacementWithoutAwait = (
   code: 'invalid-then-placement',
-  message: 'Cannot have an {:then} block outside an {#await ...} block'
+  message: 'Cannot have an {:then} block outside an {#await ...} block',
 );
 
 ErrorCode invalidVoidContent(String name) {
   return (
     code: 'invalid-void-content',
-    message:
-        '<$name> is a void element and cannot have children, or a closing tag'
+    message: '<$name> is a void element and cannot have children, or a closing '
+        'tag',
   );
 }
 
 const ErrorCode missingComponentDefinition = (
   code: 'missing-component-definition',
-  message: "<svelte:component> must have a 'this' attribute"
+  message: "<svelte:component> must have a 'this' attribute",
 );
 
 const ErrorCode missingAttributeValue = (
   code: 'missing-attribute-value',
-  message: 'Expected value for the attribute'
+  message: 'Expected value for the attribute',
 );
 
 const ErrorCode missingElementDefinition = (
   code: 'missing-element-definition',
-  message: "<svelte:element> must have a 'this' attribute"
+  message: "<svelte:element> must have a 'this' attribute",
 );
 
 const ErrorCode unclosedScript = (
@@ -296,7 +296,7 @@ const ErrorCode unclosedComment = (
 ErrorCode unclosedAttributeValue(String token) {
   return (
     code: 'unclosed-attribute-value',
-    message: 'Expected to close the attribute value with $token'
+    message: 'Expected to close the attribute value with $token',
   );
 }
 
@@ -326,5 +326,5 @@ ErrorCode unexpectedToken(Pattern token) {
 
 const ErrorCode unexpectedTokenDestructure = (
   code: 'unexpected-token',
-  message: 'Expected identifier or destructure pattern'
+  message: 'Expected identifier or destructure pattern',
 );

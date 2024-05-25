@@ -104,7 +104,9 @@ final class Parser {
   void allowSpace({bool required = false}) {
     int start = position;
 
-    if (_spaceRe.matchAsPrefix(string, position) case Match match?) {
+    Match? match = _spaceRe.matchAsPrefix(string, position);
+
+    if (match != null) {
       position = match.end;
     }
 
@@ -114,7 +116,9 @@ final class Parser {
   }
 
   void skip(Pattern pattern) {
-    if (pattern.matchAsPrefix(string, position) case Match match?) {
+    Match? match = pattern.matchAsPrefix(string, position);
+
+    if (match != null) {
       position = match.end;
     }
   }
@@ -124,54 +128,61 @@ final class Parser {
   }
 
   bool scan(Pattern pattern) {
-    if (pattern.matchAsPrefix(string, position) case Match match?) {
-      position = match.end;
-      return true;
+    Match? match = pattern.matchAsPrefix(string, position);
+
+    if (match == null) {
+      return false;
     }
 
-    return false;
+    position = match.end;
+    return true;
   }
 
   String? read(Pattern pattern) {
-    if (pattern.matchAsPrefix(string, position) case Match match?) {
-      position = match.end;
-      return match[0];
+    Match? match = pattern.matchAsPrefix(string, position);
+
+    if (match == null) {
+      return null;
     }
 
-    return null;
+    position = match.end;
+    return match[0];
   }
 
   String readUntil(Pattern pattern, [ErrorCode? errorCode]) {
-    if (string.indexOf(pattern, position) case int found when found != -1) {
-      return string.substring(position, position = found);
+    int found = string.indexOf(pattern, position);
+
+    if (found == -1) {
+      if (isNotDone) {
+        return string.substring(position, position = string.length);
+      }
+
+      if (errorCode != null) {
+        error(errorCode);
+      }
+
+      error(unexpectedEOF);
     }
 
-    if (isNotDone) {
-      return string.substring(position, position = string.length);
-    }
-
-    if (errorCode case ErrorCode errorCode?) {
-      error(errorCode);
-    }
-
-    error(unexpectedEOF);
+    return string.substring(position, position = found);
   }
 
   void expect(Pattern pattern, [ErrorCode? errorCode]) {
-    if (pattern.matchAsPrefix(string, position) case Match match?) {
-      position = match.end;
-      return;
+    Match? match = pattern.matchAsPrefix(string, position);
+
+    if (match == null) {
+      if (errorCode != null) {
+        error(errorCode, position);
+      }
+
+      if (isNotDone) {
+        error(unexpectedToken(pattern), position);
+      }
+
+      error(unexpectedEOFToken(pattern));
     }
 
-    if (errorCode case ErrorCode errorCode?) {
-      error(errorCode, position);
-    }
-
-    if (isNotDone) {
-      error(unexpectedToken(pattern), position);
-    }
-
-    error(unexpectedEOFToken(pattern));
+    position = match.end;
   }
 
   Never dartError(String message, int offset, int length) {

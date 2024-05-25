@@ -16,7 +16,7 @@
 						"type": "StyleDirective",
 						"name": "color",
 						"modifiers": [],
-						"value": [
+						"values": [
 							{
 								"start": 18,
 								"end": 21,
@@ -48,7 +48,7 @@
 						"type": "StyleDirective",
 						"name": "color",
 						"modifiers": [],
-						"value": [
+						"values": [
 							{
 								"start": 48,
 								"end": 51,
@@ -80,7 +80,7 @@
 						"type": "StyleDirective",
 						"name": "color",
 						"modifiers": [],
-						"value": [
+						"values": [
 							{
 								"start": 77,
 								"end": 80,
@@ -112,7 +112,7 @@
 						"type": "StyleDirective",
 						"name": "color",
 						"modifiers": [],
-						"value": [
+						"values": [
 							{
 								"start": 106,
 								"end": 109,
@@ -125,10 +125,10 @@
 								"end": 119,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 110,
-									"end": 118,
 									"@class": "SimpleIdentifier",
 									"@toString": "variable",
+									"start": 110,
+									"end": 118,
 									"token": {
 										"start": 110,
 										"end": 118,
@@ -177,7 +177,7 @@
 						"type": "StyleDirective",
 						"name": "color",
 						"modifiers": [],
-						"value": [
+						"values": [
 							{
 								"start": 146,
 								"end": 149,
@@ -190,10 +190,10 @@
 								"end": 159,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 150,
-									"end": 158,
 									"@class": "SimpleIdentifier",
 									"@toString": "variable",
+									"start": 150,
+									"end": 158,
 									"token": {
 										"start": 150,
 										"end": 158,
@@ -242,7 +242,7 @@
 						"type": "StyleDirective",
 						"name": "color",
 						"modifiers": [],
-						"value": [
+						"values": [
 							{
 								"start": 185,
 								"end": 188,
@@ -255,10 +255,10 @@
 								"end": 198,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 189,
-									"end": 197,
 									"@class": "SimpleIdentifier",
 									"@toString": "variable",
+									"start": 189,
+									"end": 197,
 									"token": {
 										"start": 189,
 										"end": 197,
@@ -307,16 +307,16 @@
 						"type": "StyleDirective",
 						"name": "color",
 						"modifiers": [],
-						"value": [
+						"values": [
 							{
 								"start": 223,
 								"end": 243,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 224,
-									"end": 242,
 									"@class": "StringInterpolation",
 									"@toString": "'template$literal'",
+									"start": 224,
+									"end": 242,
 									"beginToken": {
 										"start": 224,
 										"end": 233,
@@ -327,10 +327,10 @@
 									"contentsOffset": 225,
 									"elements": [
 										{
-											"start": 224,
-											"end": 233,
 											"@class": "InterpolationString",
 											"@toString": "'template",
+											"start": 224,
+											"end": 233,
 											"contents": {
 												"start": 224,
 												"end": 233,
@@ -354,10 +354,10 @@
 											}
 										},
 										{
-											"start": 233,
-											"end": 241,
 											"@class": "InterpolationExpression",
 											"@toString": "$literal",
+											"start": 233,
+											"end": 241,
 											"leftBracket": {
 												"start": 233,
 												"end": 234,
@@ -378,10 +378,10 @@
 												"lexeme": "literal"
 											},
 											"expression": {
-												"start": 234,
-												"end": 241,
 												"@class": "SimpleIdentifier",
 												"@toString": "literal",
+												"start": 234,
+												"end": 241,
 												"token": {
 													"start": 234,
 													"end": 241,
@@ -407,10 +407,10 @@
 											}
 										},
 										{
-											"start": 241,
-											"end": 242,
 											"@class": "InterpolationString",
 											"@toString": "'",
+											"start": 241,
+											"end": 242,
 											"contents": {
 												"start": 241,
 												"end": 242,
@@ -441,10 +441,10 @@
 										"lexeme": "'"
 									},
 									"firstString": {
-										"start": 224,
-										"end": 233,
 										"@class": "InterpolationString",
 										"@toString": "'template",
+										"start": 224,
+										"end": 233,
 										"contents": {
 											"start": 224,
 											"end": 233,
@@ -471,10 +471,10 @@
 									"isRaw": false,
 									"isSingleQuoted": true,
 									"lastString": {
-										"start": 241,
-										"end": 242,
 										"@class": "InterpolationString",
 										"@toString": "'",
+										"start": 241,
+										"end": 242,
 										"contents": {
 											"start": 241,
 											"end": 242,

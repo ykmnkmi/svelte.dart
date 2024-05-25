@@ -64,7 +64,7 @@ extension StyleParser on Parser {
   }
 }
 
-// TODO(read:style): complete StyleValidator
+// TODO(read:style): Complete StyleValidator
 class StyleValidator extends Object with csslib.Visitor {
   StyleValidator(this.parser, this.offset);
 
@@ -74,9 +74,10 @@ class StyleValidator extends Object with csslib.Visitor {
 
   @override
   dynamic visitDeclaration(Declaration node) {
-    if (node.expression case Expressions expressions?
-        when expressions.expressions.isEmpty) {
-      parser.error(invalidDeclaration, offset + expressions.span!.start.offset);
+    Expression? expression = node.expression;
+
+    if (expression is Expressions && expression.expressions.isEmpty) {
+      parser.error(invalidDeclaration, offset + expression.span!.start.offset);
     }
 
     return super.visitDeclaration(node);
@@ -97,7 +98,7 @@ class StyleValidator extends Object with csslib.Visitor {
                   ),
                 ],
               ),
-            ]
+            ],
           ),
           declarationGroup: DeclarationGroup(
             declarations: <TreeNode>[],
@@ -113,7 +114,7 @@ class StyleValidator extends Object with csslib.Visitor {
   dynamic visitSelector(Selector node) {
     if (node.simpleSelectorSequences
         case <SimpleSelectorSequence>[
-          SimpleSelectorSequence(simpleSelector: ElementSelector a),
+          SimpleSelectorSequence(simpleSelector: var a),
           SimpleSelectorSequence(simpleSelector: PseudoClassSelector()),
         ] when a.name == 'ref') {
       parser.error(invalidRefSelector, offset + a.span!.start.offset);

@@ -23,8 +23,7 @@ class Parser {
     LineInfo lineInfo = LineInfo(scanner.lineStarts);
     StringSource source = StringSource(string, fullName, uri: uri);
     RecordingErrorListener errorListener = RecordingErrorListener();
-    ErrorReporter reporter = ErrorReporter(errorListener, source,
-        isNonNullableByDefault: featureSet.isEnabled(Feature.non_nullable));
+    ErrorReporter reporter = ErrorReporter(errorListener, source);
     AstBuilder astBuilder =
         AstBuilder(reporter, source.uri, true, featureSet, lineInfo);
     fe.Parser parser = fe.Parser(astBuilder,
@@ -55,7 +54,7 @@ class Parser {
 
   bool skipToken([int n = 1]) {
     for (int i = 0; i < n; i += 1) {
-      if (token.next case Token next? when next.type != TokenType.EOF) {
+      if (token.next case var next? when next.type != TokenType.EOF) {
         token = next;
       } else {
         return false;
@@ -88,7 +87,7 @@ class Parser {
   }
 
   Token expectToken(TokenType type, [String? value]) {
-    if (nextTokenIf(type, value) case Token token?) {
+    if (nextTokenIf(type, value) case var token?) {
       return token;
     }
 
@@ -109,7 +108,7 @@ class Parser {
     List<Node> children = <Node>[];
 
     while (token.type != TokenType.EOF) {
-      if (fragment() case Node node?) {
+      if (fragment() case var node?) {
         children.add(node);
       }
     }

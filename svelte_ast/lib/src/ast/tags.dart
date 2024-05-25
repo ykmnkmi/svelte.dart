@@ -5,12 +5,12 @@ final class Attribute extends Node {
     required super.start,
     required super.end,
     required this.name,
-    this.value,
+    required this.values,
   });
 
   final String name;
 
-  final Object? value;
+  final List<Node> values;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -24,12 +24,9 @@ final class Attribute extends Node {
       'end': end,
       'class': 'Attribute',
       'name': name,
-      if (value case bool value? when value)
-        'value': value
-      else if (value case List<Node> nodes?)
-        'value': <Object?>[for (Node node in nodes) node.toJson(mapper)]
-      else
-        'value': null,
+      'values': <Object?>[
+        for (Node value in values) value.toJson(mapper),
+      ],
     };
   }
 }
@@ -262,10 +259,10 @@ final class StyleDirective extends Directive {
     required super.end,
     required super.name,
     super.modifiers,
-    this.value,
+    required this.values,
   }) : super(type: DirectiveType.styleDirective);
 
-  final Object? value;
+  final List<Node> values;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -276,14 +273,9 @@ final class StyleDirective extends Directive {
   Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       ...super.toJson(mapper),
-      if (value case bool value?)
-        'value': value
-      else if (value case List<Node> nodes?)
-        'value': <Object?>[
-          for (Node node in nodes) node.toJson(mapper),
-        ]
-      else
-        'value': null,
+      'values': <Object?>[
+        for (Node value in values) value.toJson(mapper),
+      ]
     };
   }
 }
@@ -615,7 +607,7 @@ final class InlineElement extends Tag {
     required super.children,
   });
 
-  Object? tag;
+  Node? tag;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -628,13 +620,7 @@ final class InlineElement extends Tag {
       'start': start,
       'end': end,
       'class': 'InlineElement',
-      'name': name,
-      if (tag case String tag?)
-        'tag': tag
-      else if (tag case Expression tag?)
-        'tag': mapper(tag)
-      else
-        'tag': null,
+      'name': tag?.toJson(mapper),
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],

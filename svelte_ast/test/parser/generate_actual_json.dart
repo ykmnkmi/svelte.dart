@@ -41,7 +41,7 @@ void doIt(FileSystemEntity sample) {
       options = json.decode(content) as Map<String, Object?>?;
 
       if (options != null) {
-        if (options['css'] is String) {
+        if (options.containsKey('css')) {
           skipStyle = options['css'] == 'none';
         }
       }

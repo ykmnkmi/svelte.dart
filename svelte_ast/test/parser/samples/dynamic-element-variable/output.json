@@ -8,34 +8,38 @@
 				"start": 0,
 				"end": 44,
 				"class": "InlineElement",
-				"name": "svelte:element",
-				"tag": {
-					"start": 22,
-					"end": 25,
-					"@class": "SimpleIdentifier",
-					"@toString": "tag",
-					"token": {
+				"name": {
+					"start": 21,
+					"end": 26,
+					"class": "MustacheTag",
+					"expression": {
+						"@class": "SimpleIdentifier",
+						"@toString": "tag",
 						"start": 22,
 						"end": 25,
-						"type": "IDENTIFIER",
-						"lexeme": "tag"
-					},
-					"ancestorCascade": null,
-					"beginToken": {
-						"start": 22,
-						"end": 25,
-						"type": "IDENTIFIER",
-						"lexeme": "tag"
-					},
-					"endToken": {
-						"start": 22,
-						"end": 25,
-						"type": "IDENTIFIER",
-						"lexeme": "tag"
-					},
-					"isQualified": "@error { Null check operator used on a null value }",
-					"isSynthetic": false,
-					"name": "tag"
+						"token": {
+							"start": 22,
+							"end": 25,
+							"type": "IDENTIFIER",
+							"lexeme": "tag"
+						},
+						"ancestorCascade": null,
+						"beginToken": {
+							"start": 22,
+							"end": 25,
+							"type": "IDENTIFIER",
+							"lexeme": "tag"
+						},
+						"endToken": {
+							"start": 22,
+							"end": 25,
+							"type": "IDENTIFIER",
+							"lexeme": "tag"
+						},
+						"isQualified": "@error { Null check operator used on a null value }",
+						"isSynthetic": false,
+						"name": "tag"
+					}
 				},
 				"attributes": [],
 				"children": []
@@ -51,34 +55,38 @@
 				"start": 45,
 				"end": 101,
 				"class": "InlineElement",
-				"name": "svelte:element",
-				"tag": {
-					"start": 67,
-					"end": 70,
-					"@class": "SimpleIdentifier",
-					"@toString": "tag",
-					"token": {
+				"name": {
+					"start": 66,
+					"end": 71,
+					"class": "MustacheTag",
+					"expression": {
+						"@class": "SimpleIdentifier",
+						"@toString": "tag",
 						"start": 67,
 						"end": 70,
-						"type": "IDENTIFIER",
-						"lexeme": "tag"
-					},
-					"ancestorCascade": null,
-					"beginToken": {
-						"start": 67,
-						"end": 70,
-						"type": "IDENTIFIER",
-						"lexeme": "tag"
-					},
-					"endToken": {
-						"start": 67,
-						"end": 70,
-						"type": "IDENTIFIER",
-						"lexeme": "tag"
-					},
-					"isQualified": "@error { Null check operator used on a null value }",
-					"isSynthetic": false,
-					"name": "tag"
+						"token": {
+							"start": 67,
+							"end": 70,
+							"type": "IDENTIFIER",
+							"lexeme": "tag"
+						},
+						"ancestorCascade": null,
+						"beginToken": {
+							"start": 67,
+							"end": 70,
+							"type": "IDENTIFIER",
+							"lexeme": "tag"
+						},
+						"endToken": {
+							"start": 67,
+							"end": 70,
+							"type": "IDENTIFIER",
+							"lexeme": "tag"
+						},
+						"isQualified": "@error { Null check operator used on a null value }",
+						"isSynthetic": false,
+						"name": "tag"
+					}
 				},
 				"attributes": [
 					{
@@ -86,7 +94,7 @@
 						"end": 83,
 						"class": "Attribute",
 						"name": "class",
-						"value": [
+						"values": [
 							{
 								"start": 79,
 								"end": 82,

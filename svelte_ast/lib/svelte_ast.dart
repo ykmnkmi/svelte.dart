@@ -24,9 +24,9 @@ final class SvelteAst {
   Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       'html': html.toJson(mapper),
-      if (style case Style style?) 'style': style.toJson(mapper),
-      if (instance case Script instance?) 'instance': instance.toJson(mapper),
-      if (module case Script module?) 'module': module.toJson(mapper),
+      'style': style?.toJson(mapper),
+      'instance': instance?.toJson(mapper),
+      'module': module?.toJson(mapper),
     };
   }
 }
@@ -37,12 +37,7 @@ SvelteAst parse(
   Uri? uri,
   bool skipStyle = false,
 }) {
-  var Parser(
-    html: Node html,
-    scripts: List<Script> scripts,
-    styles: List<Style> styles,
-    error: Never Function(ErrorCode errorCode, [int? position]) error,
-  ) = Parser(
+  Parser parser = Parser(
     string: string.trimRight(),
     fileName: fileName,
     uri: uri,
@@ -52,16 +47,16 @@ SvelteAst parse(
   Script? instance;
   Script? module;
 
-  for (Script script in scripts) {
+  for (Script script in parser.scripts) {
     if (script.context == 'default') {
       if (instance != null) {
-        error(invalidScriptInstance, script.start);
+        parser.error(invalidScriptInstance, script.start);
       }
 
       instance = script;
     } else if (script.context == 'module') {
       if (module != null) {
-        error(invalidScriptModule, script.start);
+        parser.error(invalidScriptModule, script.start);
       }
 
       module = script;
@@ -70,14 +65,14 @@ SvelteAst parse(
 
   Style? style;
 
-  if (styles.length == 1) {
-    style = styles.first;
-  } else if (styles.length > 1) {
-    error(duplicateStyle, styles[1].start);
+  if (parser.styles.length == 1) {
+    style = parser.styles.first;
+  } else if (parser.styles.length > 1) {
+    parser.error(duplicateStyle, parser.styles[1].start);
   }
 
   return SvelteAst(
-    html: html,
+    html: parser.html,
     instance: instance,
     module: module,
     style: style,

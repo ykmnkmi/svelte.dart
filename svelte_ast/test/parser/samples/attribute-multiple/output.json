@@ -15,7 +15,7 @@
 						"end": 11,
 						"class": "Attribute",
 						"name": "id",
-						"value": [
+						"values": [
 							{
 								"start": 9,
 								"end": 10,
@@ -30,7 +30,7 @@
 						"end": 21,
 						"class": "Attribute",
 						"name": "class",
-						"value": [
+						"values": [
 							{
 								"start": 19,
 								"end": 20,
