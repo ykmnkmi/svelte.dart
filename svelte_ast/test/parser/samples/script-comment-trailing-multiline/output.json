@@ -30,10 +30,10 @@
 						"end": 95,
 						"class": "MustacheTag",
 						"expression": {
-							"start": 90,
-							"end": 94,
 							"@class": "SimpleIdentifier",
 							"@toString": "name",
+							"start": 90,
+							"end": 94,
 							"token": {
 								"start": 90,
 								"end": 94,
@@ -69,6 +69,7 @@
 			}
 		]
 	},
+	"style": null,
 	"instance": {
 		"start": 0,
 		"end": 77,
@@ -84,10 +85,10 @@
 			"externals": [],
 			"body": [
 				{
-					"start": 10,
-					"end": 29,
 					"@class": "VariableDeclarationStatement",
 					"@toString": "var name = 'world';",
+					"start": 10,
+					"end": 29,
 					"semicolon": {
 						"start": 28,
 						"end": 29,
@@ -107,10 +108,10 @@
 						"lexeme": ";"
 					},
 					"variables": {
-						"start": 10,
-						"end": 28,
 						"@class": "VariableDeclarationList",
 						"@toString": "var name = 'world'",
+						"start": 10,
+						"end": 28,
 						"keyword": {
 							"start": 10,
 							"end": 13,
@@ -136,10 +137,10 @@
 						"type": null,
 						"variables": [
 							{
-								"start": 14,
-								"end": 28,
 								"@class": "VariableDeclaration",
 								"@toString": "name = 'world'",
+								"start": 14,
+								"end": 28,
 								"name": {
 									"start": 14,
 									"end": 18,
@@ -167,10 +168,10 @@
 									"lexeme": "name"
 								},
 								"initializer": {
-									"start": 21,
-									"end": 28,
 									"@class": "SimpleStringLiteral",
 									"@toString": "'world'",
+									"start": 21,
+									"end": 28,
 									"literal": {
 										"start": 21,
 										"end": 28,
@@ -209,5 +210,6 @@
 				}
 			]
 		}
-	}
+	},
+	"module": null
 }

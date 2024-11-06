@@ -9,10 +9,10 @@
 				"end": 70,
 				"class": "EachBlock",
 				"expression": {
-					"start": 7,
-					"end": 13,
 					"@class": "SimpleIdentifier",
 					"@toString": "things",
+					"start": 7,
+					"end": 13,
 					"token": {
 						"start": 7,
 						"end": 13,
@@ -37,10 +37,10 @@
 					"name": "things"
 				},
 				"context": {
-					"start": 17,
-					"end": 22,
 					"@class": "AssignedVariablePattern",
 					"@toString": "thing",
+					"start": 17,
+					"end": 22,
 					"beginToken": {
 						"start": 17,
 						"end": 22,
@@ -62,10 +62,10 @@
 				},
 				"index": null,
 				"key": {
-					"start": 24,
-					"end": 29,
 					"@class": "SimpleIdentifier",
 					"@toString": "thing",
+					"start": 24,
+					"end": 29,
 					"token": {
 						"start": 24,
 						"end": 29,
@@ -119,5 +119,8 @@
 				"elseBlock": null
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

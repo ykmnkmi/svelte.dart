@@ -17,10 +17,10 @@
 						"name": "foo",
 						"modifiers": [],
 						"expression": {
-							"start": 16,
-							"end": 21,
 							"@class": "SimpleIdentifier",
 							"@toString": "isFoo",
+							"start": 16,
+							"end": 21,
 							"token": {
 								"start": 16,
 								"end": 21,
@@ -49,5 +49,8 @@
 				"children": []
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

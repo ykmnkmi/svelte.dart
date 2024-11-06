@@ -17,10 +17,10 @@
 						"name": "tooltip",
 						"modifiers": [],
 						"expression": {
-							"start": 21,
-							"end": 34,
 							"@class": "SimpleStringLiteral",
 							"@toString": "'tooltip msg'",
+							"start": 21,
+							"end": 34,
 							"literal": {
 								"start": 21,
 								"end": 34,
@@ -52,5 +52,8 @@
 				"children": []
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

@@ -12,5 +12,8 @@
 				"ignores": []
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

@@ -41,33 +41,33 @@
 		"attributes": [],
 		"topLevels": [
 			{
-				"start": 2,
-				"end": 5,
 				"@class": "RuleSet",
 				"@toString": "Instance of 'RuleSet'",
+				"start": 2,
+				"end": 5,
 				"selectorGroup": {
-					"start": 2,
-					"end": 5,
 					"@class": "SelectorGroup",
 					"@toString": "Instance of 'SelectorGroup'",
+					"start": 2,
+					"end": 5,
 					"selectors": [
 						{
-							"start": 2,
-							"end": 5,
 							"@class": "Selector",
 							"@toString": "Instance of 'Selector'",
+							"start": 2,
+							"end": 5,
 							"simpleSelectorSequences": [
 								{
-									"start": 2,
-									"end": 5,
 									"@class": "SimpleSelectorSequence",
 									"@toString": "div",
+									"start": 2,
+									"end": 5,
 									"combinator": 513,
 									"simpleSelector": {
-										"start": 2,
-										"end": 5,
 										"@class": "ElementSelector",
-										"@toString": "div"
+										"@toString": "div",
+										"start": 2,
+										"end": 5
 									},
 									"isCombinatorNone": true,
 									"isCombinatorPlus": false,
@@ -81,27 +81,27 @@
 					]
 				},
 				"declarationGroup": {
-					"start": 6,
-					"end": 24,
 					"@class": "DeclarationGroup",
 					"@toString": "Instance of 'DeclarationGroup'",
+					"start": 6,
+					"end": 24,
 					"declarations": [
 						{
-							"start": 10,
-							"end": 20,
 							"@class": "Declaration",
 							"@toString": "Instance of 'Declaration'",
+							"start": 10,
+							"end": 20,
 							"expression": {
-								"start": 17,
-								"end": 20,
 								"@class": "Expressions",
 								"@toString": "Instance of 'Expressions'",
+								"start": 17,
+								"end": 20,
 								"expressions": [
 									{
-										"start": 17,
-										"end": 20,
 										"@class": "HexColorTerm",
-										"@toString": "Instance of 'HexColorTerm'"
+										"@toString": "Instance of 'HexColorTerm'",
+										"start": 17,
+										"end": 20
 									}
 								]
 							},
@@ -125,5 +125,7 @@
 				}
 			}
 		]
-	}
+	},
+	"instance": null,
+	"module": null
 }

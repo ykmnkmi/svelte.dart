@@ -9,10 +9,10 @@
 				"end": 99,
 				"class": "AwaitBlock",
 				"expession": {
-					"start": 8,
-					"end": 18,
 					"@class": "SimpleIdentifier",
 					"@toString": "thePromise",
+					"start": 8,
+					"end": 18,
 					"token": {
 						"start": 8,
 						"end": 18,
@@ -38,10 +38,10 @@
 				},
 				"value": null,
 				"error": {
-					"start": 47,
-					"end": 55,
 					"@class": "AssignedVariablePattern",
 					"@toString": "theError",
+					"start": 47,
+					"end": 55,
 					"beginToken": {
 						"start": 47,
 						"end": 55,
@@ -130,10 +130,10 @@
 									"end": 86,
 									"class": "MustacheTag",
 									"expression": {
-										"start": 69,
-										"end": 85,
 										"@class": "PrefixedIdentifier",
 										"@toString": "theError.message",
+										"start": 69,
+										"end": 85,
 										"period": {
 											"start": 77,
 											"end": 78,
@@ -153,10 +153,10 @@
 											"lexeme": "message"
 										},
 										"identifier": {
-											"start": 78,
-											"end": 85,
 											"@class": "SimpleIdentifier",
 											"@toString": "message",
+											"start": 78,
+											"end": 85,
 											"token": {
 												"start": 78,
 												"end": 85,
@@ -183,10 +183,10 @@
 										"isDeferred": false,
 										"name": "theError.message",
 										"prefix": {
-											"start": 69,
-											"end": 77,
 											"@class": "SimpleIdentifier",
 											"@toString": "theError",
+											"start": 69,
+											"end": 77,
 											"token": {
 												"start": 69,
 												"end": 77,
@@ -225,5 +225,8 @@
 				}
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

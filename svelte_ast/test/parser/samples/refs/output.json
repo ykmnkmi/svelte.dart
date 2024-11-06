@@ -24,10 +24,10 @@
 						"name": "this",
 						"modifiers": [],
 						"expression": {
-							"start": 49,
-							"end": 52,
 							"@class": "SimpleIdentifier",
 							"@toString": "foo",
+							"start": 49,
+							"end": 52,
 							"token": {
 								"start": 49,
 								"end": 52,
@@ -57,6 +57,7 @@
 			}
 		]
 	},
+	"style": null,
 	"instance": {
 		"start": 0,
 		"end": 28,
@@ -72,10 +73,10 @@
 			"externals": [],
 			"body": [
 				{
-					"start": 10,
-					"end": 18,
 					"@class": "VariableDeclarationStatement",
 					"@toString": "var foo;",
+					"start": 10,
+					"end": 18,
 					"semicolon": {
 						"start": 17,
 						"end": 18,
@@ -95,10 +96,10 @@
 						"lexeme": ";"
 					},
 					"variables": {
-						"start": 10,
-						"end": 17,
 						"@class": "VariableDeclarationList",
 						"@toString": "var foo",
+						"start": 10,
+						"end": 17,
 						"keyword": {
 							"start": 10,
 							"end": 13,
@@ -124,10 +125,10 @@
 						"type": null,
 						"variables": [
 							{
-								"start": 14,
-								"end": 17,
 								"@class": "VariableDeclaration",
 								"@toString": "foo",
+								"start": 14,
+								"end": 17,
 								"name": {
 									"start": 14,
 									"end": 17,
@@ -162,5 +163,6 @@
 				}
 			]
 		}
-	}
+	},
+	"module": null
 }

@@ -12,5 +12,8 @@
 				"data": "Hello & World"
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

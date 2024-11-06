@@ -2,7 +2,6 @@
 
 import 'dart:convert' show JsonEncoder, json;
 import 'dart:io' show Directory, File, FileSystemEntity;
-import 'dart:isolate' show Isolate;
 
 import 'package:collection/collection.dart' show DeepCollectionEquality;
 import 'package:svelte_ast/src/reflection.dart' show mapper;
@@ -17,13 +16,11 @@ void main() {
   Directory directory = Directory.fromUri(uri);
 
   for (FileSystemEntity sample in directory.listSync()) {
-    Isolate.run<void>(() {
-      doIt(sample);
-    });
+    generate(sample);
   }
 }
 
-void doIt(FileSystemEntity sample) {
+void generate(FileSystemEntity sample) {
   File file;
   String content;
 

@@ -23,10 +23,10 @@
 						"end": 16,
 						"class": "RawMustacheTag",
 						"expression": {
-							"start": 11,
-							"end": 15,
 							"@class": "SimpleIdentifier",
 							"@toString": "raw1",
+							"start": 11,
+							"end": 15,
 							"token": {
 								"start": 11,
 								"end": 15,
@@ -63,10 +63,10 @@
 						"end": 29,
 						"class": "RawMustacheTag",
 						"expression": {
-							"start": 24,
-							"end": 28,
 							"@class": "SimpleIdentifier",
 							"@toString": "raw2",
+							"start": 24,
+							"end": 28,
 							"token": {
 								"start": 24,
 								"end": 28,
@@ -101,5 +101,8 @@
 				]
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

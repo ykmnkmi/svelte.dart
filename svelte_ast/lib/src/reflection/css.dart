@@ -108,7 +108,7 @@ Object css(TreeNode node) {
 
   classMirror.declarations.forEach(forEach);
 
-  for (var superinterface in superinterfaces) {
+  for (ClassMirror superinterface in superinterfaces) {
     superinterface.declarations.forEach(forEach);
   }
 

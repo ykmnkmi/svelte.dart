@@ -9,10 +9,10 @@
 				"end": 51,
 				"class": "IfBlock",
 				"expression": {
-					"start": 5,
-					"end": 8,
 					"@class": "SimpleIdentifier",
 					"@toString": "foo",
+					"start": 5,
+					"end": 8,
 					"token": {
 						"start": 5,
 						"end": 8,
@@ -82,5 +82,8 @@
 				}
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

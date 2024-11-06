@@ -9,10 +9,10 @@
 				"end": 33,
 				"class": "IfBlock",
 				"expression": {
-					"start": 5,
-					"end": 9,
 					"@class": "BooleanLiteral",
 					"@toString": "true",
+					"start": 5,
+					"end": 9,
 					"literal": {
 						"start": 5,
 						"end": 9,
@@ -66,10 +66,10 @@
 				"end": 65,
 				"class": "IfBlock",
 				"expression": {
-					"start": 40,
-					"end": 44,
 					"@class": "BooleanLiteral",
 					"@toString": "true",
+					"start": 40,
+					"end": 44,
 					"literal": {
 						"start": 40,
 						"end": 44,
@@ -123,10 +123,10 @@
 				"end": 108,
 				"class": "AwaitBlock",
 				"expession": {
-					"start": 75,
-					"end": 79,
 					"@class": "BooleanLiteral",
 					"@toString": "true",
+					"start": 75,
+					"end": 79,
 					"literal": {
 						"start": 75,
 						"end": 79,
@@ -149,10 +149,10 @@
 					"isSynthetic": false
 				},
 				"value": {
-					"start": 97,
-					"end": 98,
 					"@class": "AssignedVariablePattern",
 					"@toString": "f",
+					"start": 97,
+					"end": 98,
 					"beginToken": {
 						"start": 97,
 						"end": 98,
@@ -230,10 +230,10 @@
 				"end": 148,
 				"class": "AwaitBlock",
 				"expession": {
-					"start": 118,
-					"end": 122,
 					"@class": "BooleanLiteral",
 					"@toString": "true",
+					"start": 118,
+					"end": 122,
 					"literal": {
 						"start": 118,
 						"end": 122,
@@ -256,10 +256,10 @@
 					"isSynthetic": false
 				},
 				"value": {
-					"start": 137,
-					"end": 138,
 					"@class": "AssignedVariablePattern",
 					"@toString": "f",
+					"start": 137,
+					"end": 138,
 					"beginToken": {
 						"start": 137,
 						"end": 138,
@@ -326,5 +326,8 @@
 				"catchBlock": null
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

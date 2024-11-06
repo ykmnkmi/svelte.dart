@@ -17,10 +17,10 @@
 						"name": "click",
 						"modifiers": [],
 						"expression": {
-							"start": 19,
-							"end": 43,
 							"@class": "FunctionExpression",
 							"@toString": "() => visible = !visible",
+							"start": 19,
+							"end": 43,
 							"wasFunctionTypeSupplied": false,
 							"beginToken": {
 								"start": 19,
@@ -29,10 +29,10 @@
 								"lexeme": "("
 							},
 							"body": {
-								"start": 22,
-								"end": 43,
 								"@class": "ExpressionFunctionBody",
 								"@toString": "=> visible = !visible",
+								"start": 22,
+								"end": 43,
 								"keyword": null,
 								"star": null,
 								"functionDefinition": {
@@ -55,10 +55,10 @@
 									"lexeme": "visible"
 								},
 								"expression": {
-									"start": 25,
-									"end": 43,
 									"@class": "AssignmentExpression",
 									"@toString": "visible = !visible",
+									"start": 25,
+									"end": 43,
 									"operator": {
 										"start": 33,
 										"end": 34,
@@ -78,10 +78,10 @@
 										"lexeme": "visible"
 									},
 									"leftHandSide": {
-										"start": 25,
-										"end": 32,
 										"@class": "SimpleIdentifier",
 										"@toString": "visible",
+										"start": 25,
+										"end": 32,
 										"token": {
 											"start": 25,
 											"end": 32,
@@ -106,10 +106,10 @@
 										"name": "visible"
 									},
 									"rightHandSide": {
-										"start": 35,
-										"end": 43,
 										"@class": "PrefixExpression",
 										"@toString": "!visible",
+										"start": 35,
+										"end": 43,
 										"operator": {
 											"start": 35,
 											"end": 36,
@@ -129,10 +129,10 @@
 											"lexeme": "visible"
 										},
 										"operand": {
-											"start": 36,
-											"end": 43,
 											"@class": "SimpleIdentifier",
 											"@toString": "visible",
+											"start": 36,
+											"end": 43,
 											"token": {
 												"start": 36,
 												"end": 43,
@@ -174,10 +174,10 @@
 								"lexeme": "visible"
 							},
 							"parameters": {
-								"start": 19,
-								"end": 21,
 								"@class": "FormalParameterList",
 								"@toString": "()",
+								"start": 19,
+								"end": 21,
 								"leftParenthesis": {
 									"start": 19,
 									"end": 20,
@@ -238,10 +238,10 @@
 				"end": 97,
 				"class": "IfBlock",
 				"expression": {
-					"start": 68,
-					"end": 75,
 					"@class": "SimpleIdentifier",
 					"@toString": "visible",
+					"start": 68,
+					"end": 75,
 					"token": {
 						"start": 68,
 						"end": 75,
@@ -289,5 +289,8 @@
 				"elseBlock": null
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

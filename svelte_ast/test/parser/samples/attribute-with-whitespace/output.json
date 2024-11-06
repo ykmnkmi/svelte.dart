@@ -17,10 +17,10 @@
 						"name": "click",
 						"modifiers": [],
 						"expression": {
-							"start": 19,
-							"end": 22,
 							"@class": "SimpleIdentifier",
 							"@toString": "foo",
+							"start": 19,
+							"end": 22,
 							"token": {
 								"start": 19,
 								"end": 22,
@@ -57,5 +57,8 @@
 				]
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

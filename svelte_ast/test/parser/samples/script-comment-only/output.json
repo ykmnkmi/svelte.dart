@@ -21,6 +21,7 @@
 			}
 		]
 	},
+	"style": null,
 	"instance": {
 		"start": 0,
 		"end": 43,
@@ -36,5 +37,6 @@
 			"externals": [],
 			"body": []
 		}
-	}
+	},
+	"module": null
 }

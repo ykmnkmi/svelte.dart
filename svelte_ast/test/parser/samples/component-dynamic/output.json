@@ -10,10 +10,10 @@
 				"class": "InlineComponent",
 				"name": "svelte:component",
 				"expression": {
-					"start": 25,
-					"end": 40,
 					"@class": "ConditionalExpression",
 					"@toString": "foo ? Foo : Bar",
+					"start": 25,
+					"end": 40,
 					"question": {
 						"start": 29,
 						"end": 30,
@@ -33,10 +33,10 @@
 						"lexeme": "foo"
 					},
 					"condition": {
-						"start": 25,
-						"end": 28,
 						"@class": "SimpleIdentifier",
 						"@toString": "foo",
+						"start": 25,
+						"end": 28,
 						"token": {
 							"start": 25,
 							"end": 28,
@@ -61,10 +61,10 @@
 						"name": "foo"
 					},
 					"elseExpression": {
-						"start": 37,
-						"end": 40,
 						"@class": "SimpleIdentifier",
 						"@toString": "Bar",
+						"start": 37,
+						"end": 40,
 						"token": {
 							"start": 37,
 							"end": 40,
@@ -95,10 +95,10 @@
 						"lexeme": "Bar"
 					},
 					"thenExpression": {
-						"start": 31,
-						"end": 34,
 						"@class": "SimpleIdentifier",
 						"@toString": "Foo",
+						"start": 31,
+						"end": 34,
 						"token": {
 							"start": 31,
 							"end": 34,
@@ -130,5 +130,8 @@
 				"children": []
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

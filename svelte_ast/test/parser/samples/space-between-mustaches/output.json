@@ -23,10 +23,10 @@
 						"end": 7,
 						"class": "MustacheTag",
 						"expression": {
-							"start": 5,
-							"end": 6,
 							"@class": "SimpleIdentifier",
 							"@toString": "a",
+							"start": 5,
+							"end": 6,
 							"token": {
 								"start": 5,
 								"end": 6,
@@ -63,10 +63,10 @@
 						"end": 11,
 						"class": "MustacheTag",
 						"expression": {
-							"start": 9,
-							"end": 10,
 							"@class": "SimpleIdentifier",
 							"@toString": "b",
+							"start": 9,
+							"end": 10,
 							"token": {
 								"start": 9,
 								"end": 10,
@@ -103,10 +103,10 @@
 						"end": 17,
 						"class": "MustacheTag",
 						"expression": {
-							"start": 15,
-							"end": 16,
 							"@class": "SimpleIdentifier",
 							"@toString": "c",
+							"start": 15,
+							"end": 16,
 							"token": {
 								"start": 15,
 								"end": 16,
@@ -141,5 +141,8 @@
 				]
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

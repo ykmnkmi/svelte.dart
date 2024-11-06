@@ -9,10 +9,10 @@
 				"end": 50,
 				"class": "EachBlock",
 				"expression": {
-					"start": 7,
-					"end": 14,
 					"@class": "SimpleIdentifier",
 					"@toString": "animals",
+					"start": 7,
+					"end": 14,
 					"token": {
 						"start": 7,
 						"end": 14,
@@ -37,10 +37,10 @@
 					"name": "animals"
 				},
 				"context": {
-					"start": 18,
-					"end": 24,
 					"@class": "AssignedVariablePattern",
 					"@toString": "animal",
+					"start": 18,
+					"end": 24,
 					"beginToken": {
 						"start": 18,
 						"end": 24,
@@ -75,10 +75,10 @@
 								"end": 38,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 31,
-									"end": 37,
 									"@class": "SimpleIdentifier",
 									"@toString": "animal",
+									"start": 31,
+									"end": 37,
 									"token": {
 										"start": 31,
 										"end": 37,
@@ -109,5 +109,8 @@
 				"elseBlock": null
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

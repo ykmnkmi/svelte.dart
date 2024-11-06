@@ -5,6 +5,7 @@
 		"class": "Fragment",
 		"children": []
 	},
+	"style": null,
 	"instance": {
 		"start": 0,
 		"end": 178,
@@ -18,10 +19,10 @@
 		"body": {
 			"directives": [
 				{
-					"start": 10,
-					"end": 59,
 					"@class": "ImportDirective",
 					"@toString": "import 'package:svelte/svelte.dart' show onMount;",
+					"start": 10,
+					"end": 59,
 					"importKeyword": {
 						"start": 10,
 						"end": 16,
@@ -39,10 +40,10 @@
 					"prefix": null,
 					"combinators": [
 						{
-							"start": 46,
-							"end": 58,
 							"@class": "ShowCombinator",
 							"@toString": "show onMount",
+							"start": 46,
+							"end": 58,
 							"endToken": {
 								"start": 51,
 								"end": 58,
@@ -51,10 +52,10 @@
 							},
 							"shownNames": [
 								{
-									"start": 51,
-									"end": 58,
 									"@class": "SimpleIdentifier",
 									"@toString": "onMount",
+									"start": 51,
+									"end": 58,
 									"token": {
 										"start": 51,
 										"end": 58,
@@ -96,10 +97,10 @@
 					}
 				},
 				{
-					"start": 62,
-					"end": 96,
 					"@class": "ImportDirective",
 					"@toString": "import 'foo.dart' deferred as foo;",
+					"start": 62,
+					"end": 96,
 					"importKeyword": {
 						"start": 62,
 						"end": 68,
@@ -125,10 +126,10 @@
 						"lexeme": "import"
 					},
 					"prefix": {
-						"start": 92,
-						"end": 95,
 						"@class": "SimpleIdentifier",
 						"@toString": "foo",
+						"start": 92,
+						"end": 95,
 						"token": {
 							"start": 92,
 							"end": 95,
@@ -165,10 +166,10 @@
 			"externals": [],
 			"body": [
 				{
-					"start": 99,
-					"end": 168,
 					"@class": "ExpressionStatement",
 					"@toString": "onMount(() async {await foo.loadLibrary(); print(foo.main);});",
+					"start": 99,
+					"end": 168,
 					"semicolon": {
 						"start": 167,
 						"end": 168,
@@ -188,10 +189,10 @@
 						"lexeme": ";"
 					},
 					"expression": {
-						"start": 99,
-						"end": 167,
 						"@class": "MethodInvocation",
 						"@toString": "onMount(() async {await foo.loadLibrary(); print(foo.main);})",
+						"start": 99,
+						"end": 167,
 						"operator": null,
 						"beginToken": {
 							"start": 99,
@@ -206,10 +207,10 @@
 							"lexeme": ")"
 						},
 						"function": {
-							"start": 99,
-							"end": 106,
 							"@class": "SimpleIdentifier",
 							"@toString": "onMount",
+							"start": 99,
+							"end": 106,
 							"token": {
 								"start": 99,
 								"end": 106,
@@ -236,10 +237,10 @@
 						"isCascaded": false,
 						"isNullAware": false,
 						"methodName": {
-							"start": 99,
-							"end": 106,
 							"@class": "SimpleIdentifier",
 							"@toString": "onMount",
+							"start": 99,
+							"end": 106,
 							"token": {
 								"start": 99,
 								"end": 106,
@@ -267,10 +268,10 @@
 						"target": null,
 						"nullShortingTermination": "@seen",
 						"argumentList": {
-							"start": 106,
-							"end": 167,
 							"@class": "ArgumentList",
 							"@toString": "(() async {await foo.loadLibrary(); print(foo.main);})",
+							"start": 106,
+							"end": 167,
 							"leftParenthesis": {
 								"start": 106,
 								"end": 107,
@@ -285,10 +286,10 @@
 							},
 							"arguments": [
 								{
-									"start": 107,
-									"end": 166,
 									"@class": "FunctionExpression",
 									"@toString": "() async {await foo.loadLibrary(); print(foo.main);}",
+									"start": 107,
+									"end": 166,
 									"wasFunctionTypeSupplied": false,
 									"beginToken": {
 										"start": 107,
@@ -297,10 +298,10 @@
 										"lexeme": "("
 									},
 									"body": {
-										"start": 110,
-										"end": 166,
 										"@class": "BlockFunctionBody",
 										"@toString": "async {await foo.loadLibrary(); print(foo.main);}",
+										"start": 110,
+										"end": 166,
 										"keyword": {
 											"start": 110,
 											"end": 115,
@@ -315,10 +316,10 @@
 											"lexeme": "async"
 										},
 										"block": {
-											"start": 116,
-											"end": 166,
 											"@class": "Block",
 											"@toString": "{await foo.loadLibrary(); print(foo.main);}",
+											"start": 116,
+											"end": 166,
 											"leftBracket": {
 												"start": 116,
 												"end": 117,
@@ -345,10 +346,10 @@
 											},
 											"statements": [
 												{
-													"start": 120,
-													"end": 144,
 													"@class": "ExpressionStatement",
 													"@toString": "await foo.loadLibrary();",
+													"start": 120,
+													"end": 144,
 													"semicolon": {
 														"start": 143,
 														"end": 144,
@@ -368,10 +369,10 @@
 														"lexeme": ";"
 													},
 													"expression": {
-														"start": 120,
-														"end": 143,
 														"@class": "AwaitExpression",
 														"@toString": "await foo.loadLibrary()",
+														"start": 120,
+														"end": 143,
 														"awaitKeyword": {
 															"start": 120,
 															"end": 125,
@@ -391,10 +392,10 @@
 															"lexeme": ")"
 														},
 														"expression": {
-															"start": 126,
-															"end": 143,
 															"@class": "MethodInvocation",
 															"@toString": "foo.loadLibrary()",
+															"start": 126,
+															"end": 143,
 															"operator": {
 																"start": 129,
 																"end": 130,
@@ -414,10 +415,10 @@
 																"lexeme": ")"
 															},
 															"function": {
-																"start": 130,
-																"end": 141,
 																"@class": "SimpleIdentifier",
 																"@toString": "loadLibrary",
+																"start": 130,
+																"end": 141,
 																"token": {
 																	"start": 130,
 																	"end": 141,
@@ -444,10 +445,10 @@
 															"isCascaded": false,
 															"isNullAware": false,
 															"methodName": {
-																"start": 130,
-																"end": 141,
 																"@class": "SimpleIdentifier",
 																"@toString": "loadLibrary",
+																"start": 130,
+																"end": 141,
 																"token": {
 																	"start": 130,
 																	"end": 141,
@@ -472,10 +473,10 @@
 																"name": "loadLibrary"
 															},
 															"realTarget": {
-																"start": 126,
-																"end": 129,
 																"@class": "SimpleIdentifier",
 																"@toString": "foo",
+																"start": 126,
+																"end": 129,
 																"token": {
 																	"start": 126,
 																	"end": 129,
@@ -500,10 +501,10 @@
 																"name": "foo"
 															},
 															"target": {
-																"start": 126,
-																"end": 129,
 																"@class": "SimpleIdentifier",
 																"@toString": "foo",
+																"start": 126,
+																"end": 129,
 																"token": {
 																	"start": 126,
 																	"end": 129,
@@ -529,10 +530,10 @@
 															},
 															"nullShortingTermination": "@seen",
 															"argumentList": {
-																"start": 141,
-																"end": 143,
 																"@class": "ArgumentList",
 																"@toString": "()",
+																"start": 141,
+																"end": 143,
 																"leftParenthesis": {
 																	"start": 141,
 																	"end": 142,
@@ -571,10 +572,10 @@
 													"isSynthetic": false
 												},
 												{
-													"start": 147,
-													"end": 163,
 													"@class": "ExpressionStatement",
 													"@toString": "print(foo.main);",
+													"start": 147,
+													"end": 163,
 													"semicolon": {
 														"start": 162,
 														"end": 163,
@@ -594,10 +595,10 @@
 														"lexeme": ";"
 													},
 													"expression": {
-														"start": 147,
-														"end": 162,
 														"@class": "MethodInvocation",
 														"@toString": "print(foo.main)",
+														"start": 147,
+														"end": 162,
 														"operator": null,
 														"beginToken": {
 															"start": 147,
@@ -612,10 +613,10 @@
 															"lexeme": ")"
 														},
 														"function": {
-															"start": 147,
-															"end": 152,
 															"@class": "SimpleIdentifier",
 															"@toString": "print",
+															"start": 147,
+															"end": 152,
 															"token": {
 																"start": 147,
 																"end": 152,
@@ -642,10 +643,10 @@
 														"isCascaded": false,
 														"isNullAware": false,
 														"methodName": {
-															"start": 147,
-															"end": 152,
 															"@class": "SimpleIdentifier",
 															"@toString": "print",
+															"start": 147,
+															"end": 152,
 															"token": {
 																"start": 147,
 																"end": 152,
@@ -673,10 +674,10 @@
 														"target": null,
 														"nullShortingTermination": "@seen",
 														"argumentList": {
-															"start": 152,
-															"end": 162,
 															"@class": "ArgumentList",
 															"@toString": "(foo.main)",
+															"start": 152,
+															"end": 162,
 															"leftParenthesis": {
 																"start": 152,
 																"end": 153,
@@ -691,10 +692,10 @@
 															},
 															"arguments": [
 																{
-																	"start": 153,
-																	"end": 161,
 																	"@class": "PrefixedIdentifier",
 																	"@toString": "foo.main",
+																	"start": 153,
+																	"end": 161,
 																	"period": {
 																		"start": 156,
 																		"end": 157,
@@ -714,10 +715,10 @@
 																		"lexeme": "main"
 																	},
 																	"identifier": {
-																		"start": 157,
-																		"end": 161,
 																		"@class": "SimpleIdentifier",
 																		"@toString": "main",
+																		"start": 157,
+																		"end": 161,
 																		"token": {
 																			"start": 157,
 																			"end": 161,
@@ -744,10 +745,10 @@
 																	"isDeferred": false,
 																	"name": "foo.main",
 																	"prefix": {
-																		"start": 153,
-																		"end": 156,
 																		"@class": "SimpleIdentifier",
 																		"@toString": "foo",
+																		"start": 153,
+																		"end": 156,
 																		"token": {
 																			"start": 153,
 																			"end": 156,
@@ -812,10 +813,10 @@
 										"lexeme": "}"
 									},
 									"parameters": {
-										"start": 107,
-										"end": 109,
 										"@class": "FormalParameterList",
 										"@toString": "()",
+										"start": 107,
+										"end": 109,
 										"leftParenthesis": {
 											"start": 107,
 											"end": 108,
@@ -875,5 +876,6 @@
 				}
 			]
 		}
-	}
+	},
+	"module": null
 }

@@ -23,10 +23,10 @@
 						"end": 55,
 						"class": "MustacheTag",
 						"expression": {
-							"start": 51,
-							"end": 54,
 							"@class": "SimpleIdentifier",
 							"@toString": "foo",
+							"start": 51,
+							"end": 54,
 							"token": {
 								"start": 51,
 								"end": 54,
@@ -61,5 +61,8 @@
 				]
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

@@ -37,10 +37,10 @@
 								"end": 38,
 								"class": "IfBlock",
 								"expression": {
-									"start": 18,
-									"end": 22,
 									"@class": "BooleanLiteral",
 									"@toString": "true",
+									"start": 18,
+									"end": 22,
 									"literal": {
 										"start": 18,
 										"end": 22,
@@ -113,5 +113,8 @@
 				]
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

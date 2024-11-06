@@ -16,10 +16,10 @@
 				"end": 109,
 				"class": "EachBlock",
 				"expression": {
-					"start": 50,
-					"end": 57,
 					"@class": "SimpleIdentifier",
 					"@toString": "animals",
+					"start": 50,
+					"end": 57,
 					"token": {
 						"start": 50,
 						"end": 57,
@@ -44,10 +44,10 @@
 					"name": "animals"
 				},
 				"context": {
-					"start": 61,
-					"end": 78,
 					"@class": "ListPattern",
 					"@toString": "[key, value, ...]",
+					"start": 61,
+					"end": 78,
 					"typeArguments": null,
 					"leftBracket": {
 						"start": 61,
@@ -69,10 +69,10 @@
 					},
 					"elements": [
 						{
-							"start": 62,
-							"end": 65,
 							"@class": "AssignedVariablePattern",
 							"@toString": "key",
+							"start": 62,
+							"end": 65,
 							"beginToken": {
 								"start": 62,
 								"end": 65,
@@ -93,10 +93,10 @@
 							}
 						},
 						{
-							"start": 67,
-							"end": 72,
 							"@class": "AssignedVariablePattern",
 							"@toString": "value",
+							"start": 67,
+							"end": 72,
 							"beginToken": {
 								"start": 67,
 								"end": 72,
@@ -117,10 +117,10 @@
 							}
 						},
 						{
-							"start": 74,
-							"end": 77,
 							"@class": "RestPatternElement",
 							"@toString": "...",
+							"start": 74,
+							"end": 77,
 							"operator": {
 								"start": 74,
 								"end": 77,
@@ -165,10 +165,10 @@
 								"end": 88,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 84,
-									"end": 87,
 									"@class": "SimpleIdentifier",
 									"@toString": "key",
+									"start": 84,
+									"end": 87,
 									"token": {
 										"start": 84,
 										"end": 87,
@@ -205,10 +205,10 @@
 								"end": 97,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 91,
-									"end": 96,
 									"@class": "SimpleIdentifier",
 									"@toString": "value",
+									"start": 91,
+									"end": 96,
 									"token": {
 										"start": 91,
 										"end": 96,
@@ -240,6 +240,7 @@
 			}
 		]
 	},
+	"style": null,
 	"instance": {
 		"start": 0,
 		"end": 41,
@@ -254,10 +255,10 @@
 			"directives": [],
 			"externals": [
 				{
-					"start": 19,
-					"end": 31,
 					"@class": "VariableDeclarationStatement",
 					"@toString": "var animals;",
+					"start": 19,
+					"end": 31,
 					"semicolon": {
 						"start": 30,
 						"end": 31,
@@ -277,10 +278,10 @@
 						"lexeme": ";"
 					},
 					"variables": {
-						"start": 19,
-						"end": 30,
 						"@class": "VariableDeclarationList",
 						"@toString": "var animals",
+						"start": 19,
+						"end": 30,
 						"keyword": {
 							"start": 19,
 							"end": 22,
@@ -306,10 +307,10 @@
 						"type": null,
 						"variables": [
 							{
-								"start": 23,
-								"end": 30,
 								"@class": "VariableDeclaration",
 								"@toString": "animals",
+								"start": 23,
+								"end": 30,
 								"name": {
 									"start": 23,
 									"end": 30,
@@ -345,5 +346,6 @@
 			],
 			"body": []
 		}
-	}
+	},
+	"module": null
 }

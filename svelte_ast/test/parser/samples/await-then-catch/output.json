@@ -9,10 +9,10 @@
 				"end": 148,
 				"class": "AwaitBlock",
 				"expession": {
-					"start": 8,
-					"end": 18,
 					"@class": "SimpleIdentifier",
 					"@toString": "thePromise",
+					"start": 8,
+					"end": 18,
 					"token": {
 						"start": 8,
 						"end": 18,
@@ -37,10 +37,10 @@
 					"name": "thePromise"
 				},
 				"value": {
-					"start": 46,
-					"end": 54,
 					"@class": "AssignedVariablePattern",
 					"@toString": "theValue",
+					"start": 46,
+					"end": 54,
 					"beginToken": {
 						"start": 46,
 						"end": 54,
@@ -61,10 +61,10 @@
 					}
 				},
 				"error": {
-					"start": 96,
-					"end": 104,
 					"@class": "AssignedVariablePattern",
 					"@toString": "theError",
+					"start": 96,
+					"end": 104,
 					"beginToken": {
 						"start": 96,
 						"end": 104,
@@ -152,10 +152,10 @@
 									"end": 83,
 									"class": "MustacheTag",
 									"expression": {
-										"start": 74,
-										"end": 82,
 										"@class": "SimpleIdentifier",
 										"@toString": "theValue",
+										"start": 74,
+										"end": 82,
 										"token": {
 											"start": 74,
 											"end": 82,
@@ -222,10 +222,10 @@
 									"end": 135,
 									"class": "MustacheTag",
 									"expression": {
-										"start": 118,
-										"end": 134,
 										"@class": "PrefixedIdentifier",
 										"@toString": "theError.message",
+										"start": 118,
+										"end": 134,
 										"period": {
 											"start": 126,
 											"end": 127,
@@ -245,10 +245,10 @@
 											"lexeme": "message"
 										},
 										"identifier": {
-											"start": 127,
-											"end": 134,
 											"@class": "SimpleIdentifier",
 											"@toString": "message",
+											"start": 127,
+											"end": 134,
 											"token": {
 												"start": 127,
 												"end": 134,
@@ -275,10 +275,10 @@
 										"isDeferred": false,
 										"name": "theError.message",
 										"prefix": {
-											"start": 118,
-											"end": 126,
 											"@class": "SimpleIdentifier",
 											"@toString": "theError",
+											"start": 118,
+											"end": 126,
 											"token": {
 												"start": 118,
 												"end": 126,
@@ -317,5 +317,8 @@
 				}
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

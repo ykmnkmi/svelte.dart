@@ -6,7 +6,7 @@ import 'package:svelte_ast/svelte_ast.dart';
 
 const String content = '''
 <script>
-  var count = 0;
+  int count = 0;
 
   void onClick() {
     count += 1;
@@ -22,5 +22,5 @@ void main() {
   SvelteAst ast = parse(content);
 
   // Print to console.
-  print(const JsonEncoder.withIndent('\t').convert(ast.toJson()));
+  print(const JsonEncoder.withIndent('  ').convert(ast.toJson()));
 }

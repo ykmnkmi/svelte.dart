@@ -4,6 +4,7 @@ typedef Enter<T extends Object> = void Function(T? parent, T node);
 
 typedef Leave<T extends Object> = void Function(T? parent, T node);
 
+// TODO(ast): test walker
 void walk<T extends Object>(T node, {Enter<T>? enter, Leave<T>? leave}) {
   if (enter == null && leave == null) {
     return;
@@ -85,6 +86,7 @@ void walk<T extends Object>(T node, {Enter<T>? enter, Leave<T>? leave}) {
   visit(null, node);
 }
 
+// TODO(ast): test walker
 void walkAll<T extends Object>(
   List<T> nodes, {
   Enter<T>? enter,

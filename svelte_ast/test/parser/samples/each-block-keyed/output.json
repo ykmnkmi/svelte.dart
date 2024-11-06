@@ -9,10 +9,10 @@
 				"end": 54,
 				"class": "EachBlock",
 				"expression": {
-					"start": 7,
-					"end": 12,
 					"@class": "SimpleIdentifier",
 					"@toString": "todos",
+					"start": 7,
+					"end": 12,
 					"token": {
 						"start": 7,
 						"end": 12,
@@ -37,10 +37,10 @@
 					"name": "todos"
 				},
 				"context": {
-					"start": 16,
-					"end": 20,
 					"@class": "AssignedVariablePattern",
 					"@toString": "todo",
+					"start": 16,
+					"end": 20,
 					"beginToken": {
 						"start": 16,
 						"end": 20,
@@ -62,10 +62,10 @@
 				},
 				"index": null,
 				"key": {
-					"start": 22,
-					"end": 29,
 					"@class": "PrefixedIdentifier",
 					"@toString": "todo.id",
+					"start": 22,
+					"end": 29,
 					"period": {
 						"start": 26,
 						"end": 27,
@@ -85,10 +85,10 @@
 						"lexeme": "id"
 					},
 					"identifier": {
-						"start": 27,
-						"end": 29,
 						"@class": "SimpleIdentifier",
 						"@toString": "id",
+						"start": 27,
+						"end": 29,
 						"token": {
 							"start": 27,
 							"end": 29,
@@ -115,10 +115,10 @@
 					"isDeferred": false,
 					"name": "todo.id",
 					"prefix": {
-						"start": 22,
-						"end": 26,
 						"@class": "SimpleIdentifier",
 						"@toString": "todo",
+						"start": 22,
+						"end": 26,
 						"token": {
 							"start": 22,
 							"end": 26,
@@ -156,10 +156,10 @@
 								"end": 42,
 								"class": "MustacheTag",
 								"expression": {
-									"start": 37,
-									"end": 41,
 									"@class": "SimpleIdentifier",
 									"@toString": "todo",
+									"start": 37,
+									"end": 41,
 									"token": {
 										"start": 37,
 										"end": 41,
@@ -190,5 +190,8 @@
 				"elseBlock": null
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

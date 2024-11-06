@@ -9,10 +9,10 @@
 				"end": 89,
 				"class": "IfBlock",
 				"expression": {
-					"start": 5,
-					"end": 11,
 					"@class": "BinaryExpression",
 					"@toString": "x > 10",
+					"start": 5,
+					"end": 11,
 					"operator": {
 						"start": 7,
 						"end": 8,
@@ -32,10 +32,10 @@
 						"lexeme": "10"
 					},
 					"leftOperand": {
-						"start": 5,
-						"end": 6,
 						"@class": "SimpleIdentifier",
 						"@toString": "x",
+						"start": 5,
+						"end": 6,
 						"token": {
 							"start": 5,
 							"end": 6,
@@ -60,10 +60,10 @@
 						"name": "x"
 					},
 					"rightOperand": {
-						"start": 9,
-						"end": 11,
 						"@class": "IntegerLiteral",
 						"@toString": "10",
+						"start": 9,
+						"end": 11,
 						"literal": {
 							"start": 9,
 							"end": 11,
@@ -120,10 +120,10 @@
 							"end": 84,
 							"class": "IfBlock",
 							"expression": {
-								"start": 52,
-								"end": 57,
 								"@class": "BinaryExpression",
 								"@toString": "x < 5",
+								"start": 52,
+								"end": 57,
 								"operator": {
 									"start": 54,
 									"end": 55,
@@ -143,10 +143,10 @@
 									"lexeme": "5"
 								},
 								"leftOperand": {
-									"start": 52,
-									"end": 53,
 									"@class": "SimpleIdentifier",
 									"@toString": "x",
+									"start": 52,
+									"end": 53,
 									"token": {
 										"start": 52,
 										"end": 53,
@@ -171,10 +171,10 @@
 									"name": "x"
 								},
 								"rightOperand": {
-									"start": 56,
-									"end": 57,
 									"@class": "IntegerLiteral",
 									"@toString": "5",
+									"start": 56,
+									"end": 57,
 									"literal": {
 										"start": 56,
 										"end": 57,
@@ -227,5 +227,8 @@
 				}
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

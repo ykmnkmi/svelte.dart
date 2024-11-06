@@ -15,10 +15,10 @@
 						"end": 15,
 						"class": "Spread",
 						"expression": {
-							"start": 9,
-							"end": 14,
 							"@class": "SimpleIdentifier",
 							"@toString": "props",
+							"start": 9,
+							"end": 14,
 							"token": {
 								"start": 9,
 								"end": 14,
@@ -47,5 +47,8 @@
 				"children": []
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }

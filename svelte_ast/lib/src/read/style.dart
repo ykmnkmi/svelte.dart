@@ -1,5 +1,5 @@
 import 'package:csslib/parser.dart' hide Parser;
-import 'package:csslib/visitor.dart' as csslib;
+import 'package:csslib/visitor.dart' as css;
 import 'package:csslib/visitor.dart' hide Visitor;
 import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
@@ -37,14 +37,12 @@ extension StyleParser on Parser {
     );
 
     if (errors.isNotEmpty) {
-      var Message(
-        message: message,
-        span: SourceSpan(
-          start: SourceLocation(offset: offset),
-          end: SourceLocation(offset: end),
-        )!,
-      ) = errors.first;
+      Message errorMessage = errors[0];
+      SourceSpan span = errorMessage.span!;
 
+      String message = errorMessage.message;
+      int offset = span.start.offset;
+      int end = span.end.offset;
       error(cssSyntaxError(message), dataStart + offset, dataStart + end);
     }
 
@@ -65,7 +63,7 @@ extension StyleParser on Parser {
 }
 
 // TODO(read:style): Complete StyleValidator
-class StyleValidator extends Object with csslib.Visitor {
+class StyleValidator extends css.Visitor {
   StyleValidator(this.parser, this.offset);
 
   final Parser parser;
@@ -85,26 +83,20 @@ class StyleValidator extends Object with csslib.Visitor {
 
   @override
   dynamic visitRuleSet(RuleSet node) {
-    if (node
-        case RuleSet(
-          selectorGroup: SelectorGroup(
-            selectors: <Selector>[
-              Selector(
-                simpleSelectorSequences: <SimpleSelectorSequence>[
-                  SimpleSelectorSequence(
-                    simpleSelector: PseudoClassSelector(
-                      name: 'global',
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          declarationGroup: DeclarationGroup(
-            declarations: <TreeNode>[],
-          ),
-        )) {
-      parser.error(emptyGlobalSelector, offset + node.span.start.offset);
+    SelectorGroup? selectorGroup = node.selectorGroup;
+    DeclarationGroup declarationGroup = node.declarationGroup;
+
+    if (selectorGroup != null && declarationGroup.declarations.isEmpty) {
+      for (Selector selector in selectorGroup.selectors) {
+        for (SimpleSelectorSequence sequence
+            in selector.simpleSelectorSequences) {
+          SimpleSelector selector = sequence.simpleSelector;
+
+          if (selector is PseudoClassSelector && selector.name == 'global') {
+            parser.error(emptyGlobalSelector, offset + node.span.start.offset);
+          }
+        }
+      }
     }
 
     return super.visitRuleSet(node);
@@ -112,12 +104,15 @@ class StyleValidator extends Object with csslib.Visitor {
 
   @override
   dynamic visitSelector(Selector node) {
-    if (node.simpleSelectorSequences
-        case <SimpleSelectorSequence>[
-          SimpleSelectorSequence(simpleSelector: var a),
-          SimpleSelectorSequence(simpleSelector: PseudoClassSelector()),
-        ] when a.name == 'ref') {
-      parser.error(invalidRefSelector, offset + a.span!.start.offset);
+    List<SimpleSelectorSequence> sequences = node.simpleSelectorSequences;
+
+    for (int i = 0; i < sequences.length - 1; i += 1) {
+      SimpleSelector a = sequences[i].simpleSelector;
+      SimpleSelector b = sequences[i + 1].simpleSelector;
+
+      if (a.name == 'ref' && b is PseudoClassSelector) {
+        parser.error(invalidRefSelector, offset + a.span!.start.offset);
+      }
     }
 
     return super.visitSelector(node);

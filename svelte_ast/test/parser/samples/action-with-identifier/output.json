@@ -17,10 +17,10 @@
 						"name": "tooltip",
 						"modifiers": [],
 						"expression": {
-							"start": 20,
-							"end": 27,
 							"@class": "SimpleIdentifier",
 							"@toString": "message",
+							"start": 20,
+							"end": 27,
 							"token": {
 								"start": 20,
 								"end": 27,
@@ -49,5 +49,8 @@
 				"children": []
 			}
 		]
-	}
+	},
+	"style": null,
+	"instance": null,
+	"module": null
 }
