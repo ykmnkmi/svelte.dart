@@ -53,8 +53,7 @@ Status:
     - [ ] component 🔥
     - [x] scheduler
     - [ ] lifecycle 🔥
-    - [ ] dom `dart:html` 🔥
-      - [ ] `package:web`
+    - [ ] dom `package:web` 🔥
     - [ ] transition 🔥
   - [ ] ...
 - [ ] Compiler 🔥

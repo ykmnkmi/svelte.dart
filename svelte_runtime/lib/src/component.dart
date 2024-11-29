@@ -13,11 +13,14 @@ typedef InstanceFactory = List<Object?> Function(
   Invalidate invalidate,
 );
 
-typedef Invalidate = void Function(int index, Object? value, [bool mutation]);
+typedef Invalidate = void Function(int index, Object? value,
+    [Object? mutation]);
 
 typedef PropertiesSetter = void Function(Map<String, Object?> props);
 
 typedef UpdateFactory = void Function() Function(int dirty);
+
+const Object undefined = Object();
 
 abstract base class Component {
   Component({
@@ -45,8 +48,6 @@ abstract base class Component {
     bool ready = false;
 
     if (createInstance != null) {
-      const Object undefined = Object();
-
       void invalidate(int i, Object? value, [Object? mutation = undefined]) {
         if (state.instance[i] == value || identical(mutation, undefined)) {
           return;
@@ -64,6 +65,7 @@ abstract base class Component {
 
     state.update();
     ready = true;
+    runAll(state.beforeUpdate);
 
     if (createFragment != null) {
       state.fragment = createFragment(state.instance);
@@ -137,9 +139,9 @@ void mountComponent(Component component, Element target, [Node? anchor]) {
         .toList();
 
     if (component.state.destroyed) {
-      component.state.onDestroy.addAll(newOnDestroy);
-    } else {
       runAll(newOnDestroy);
+    } else {
+      component.state.onDestroy.addAll(newOnDestroy);
     }
 
     component.state.onMount = <VoidFunction>[];

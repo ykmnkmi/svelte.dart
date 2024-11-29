@@ -37,7 +37,7 @@ void setText(Node target, String text) {
 
 @noInline
 void setInnerHtml(Element target, String html) {
-  target.innerHTML = html;
+  target.innerHTML = html.toJS;
 }
 
 @noInline
