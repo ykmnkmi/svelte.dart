@@ -1,3 +1,3 @@
-## 1.0.0-dev
+## 1.0.0-dev.6.
 
 - Initial version.
