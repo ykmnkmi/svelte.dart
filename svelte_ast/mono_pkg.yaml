@@ -1,9 +1,0 @@
-sdk:
-  - pubspec
-
-stages:
-  - analyze_and_format:
-      - analyze: --fatal-infos .
-      - format:
-  - unit_test:
-      - test: --test-randomize-ordering-seed=random

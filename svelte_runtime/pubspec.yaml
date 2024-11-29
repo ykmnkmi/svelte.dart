@@ -3,6 +3,8 @@ description: SvelteDart Runtime.
 version: 1.0.0-dev.7
 repository: https://github.com/ykmnkmi/svelte.dart
 
+resolution: workspace
+
 environment:
   sdk: ">=3.5.0 <4.0.0"
 

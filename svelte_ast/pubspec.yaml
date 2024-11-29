@@ -3,6 +3,8 @@ description: Parser and utilities for SvelteDart template compiler.
 version: 1.0.0-18.beta
 repository: https://github.com/ykmnkmi/svelte.dart
 
+resolution: workspace
+
 environment:
   sdk: ^3.5.0
 
