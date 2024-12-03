@@ -86,5 +86,6 @@ void flush([void _]) {
   }
 
   updateScheduled = false;
+  seenCallbacks = <VoidFunction>{};
   setCurrentComponent(savedComponent);
 }

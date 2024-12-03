@@ -13,14 +13,15 @@ typedef InstanceFactory = List<Object?> Function(
   Invalidate invalidate,
 );
 
-typedef Invalidate = void Function(int index, Object? value,
-    [Object? mutation]);
+typedef Invalidate = void Function(
+  int index,
+  Object? value, [
+  Object? mutation,
+]);
 
 typedef PropertiesSetter = void Function(Map<String, Object?> props);
 
-typedef UpdateFactory = void Function() Function(int dirty);
-
-const Object undefined = Object();
+typedef UpdateFactory = void Function(State state) Function();
 
 abstract base class Component {
   Component({
@@ -33,12 +34,12 @@ abstract base class Component {
     FragmentFactory? createFragment,
     void Function(Element? target)? appendStyles,
     int dirty = -1,
-  }) : state = State() {
+  }) : _state = State() {
     Component? parentComponent = currentComponent;
     setCurrentComponent(this);
 
-    state
-      ..root = target ?? parentComponent?.state.root
+    _state
+      ..root = target ?? parentComponent?._state.root
       ..dirty = dirty;
 
     if (appendStyles != null) {
@@ -49,37 +50,41 @@ abstract base class Component {
 
     if (createInstance != null) {
       void invalidate(int i, Object? value, [Object? mutation = undefined]) {
-        if (state.instance[i] == value || identical(mutation, undefined)) {
+        if (!identical(mutation, undefined)) {
+          value = mutation;
+        }
+
+        if (identical(_state.instance[i], value)) {
           return;
         }
 
-        state.instance[i] = value;
+        _state.instance[i] = value;
 
         if (ready) {
           makeComponentDirty(this, i);
         }
       }
 
-      state.instance = createInstance(this, properties, invalidate);
+      _state.instance = createInstance(this, properties, invalidate);
     }
 
-    state.update();
+    _state.update(_state);
     ready = true;
-    runAll(state.beforeUpdate);
+    runAll(_state.beforeUpdate);
 
     if (createFragment != null) {
-      state.fragment = createFragment(state.instance);
+      _state.fragment = createFragment(_state.instance);
     }
 
     if (target != null) {
       if (hydrate) {
         throw UnimplementedError();
       } else {
-        state.fragment?.create();
+        _state.fragment?.create();
       }
 
       if (intro) {
-        transitionIn(state.fragment, false);
+        transitionIn(_state.fragment, false);
       }
 
       mountComponent(this, target, anchor);
@@ -89,12 +94,12 @@ abstract base class Component {
     setCurrentComponent(parentComponent);
   }
 
-  final State state;
+  final State _state;
 
   PropertiesSetter? _set;
 
   bool get isDestroyed {
-    return state.destroyed;
+    return _state.destroyed;
   }
 
   void set([Map<String, Object?>? props]) {
@@ -106,17 +111,17 @@ abstract base class Component {
   }
 
   void destroy() {
-    if (state.destroyed) {
+    if (_state.destroyed) {
       return;
     }
 
     destroyComponent(this, true);
-    state.destroyed = true;
+    _state.destroyed = true;
   }
 }
 
 void setComponentUpdate(Component component, UpdateFactory updateFactory) {
-  component.state.update = updateFactory(component.state.dirty);
+  component._state.update = updateFactory();
 }
 
 void setComponentSet(Component component, PropertiesSetter setter) {
@@ -125,57 +130,62 @@ void setComponentSet(Component component, PropertiesSetter setter) {
 
 @noInline
 void createComponent(Component component) {
-  component.state.fragment?.create();
+  component._state.fragment?.create();
 }
 
 @noInline
 void mountComponent(Component component, Element target, [Node? anchor]) {
-  component.state.fragment?.mount(target, anchor);
+  component._state.fragment?.mount(target, anchor);
 
   void callback() {
-    List<VoidFunction> newOnDestroy = component.state.onMount
+    List<VoidFunction> newOnDestroy = component._state.onMount
         .map<Object?>(run)
         .whereType<VoidFunction>()
         .toList();
 
-    if (component.state.destroyed) {
-      runAll(newOnDestroy);
+    if (component._state.onDestroy.isNotEmpty) {
+      component._state.onDestroy.addAll(newOnDestroy);
     } else {
-      component.state.onDestroy.addAll(newOnDestroy);
+      runAll(newOnDestroy);
     }
 
-    component.state.onMount = <VoidFunction>[];
+    component._state.onMount = <VoidFunction>[];
   }
 
   addRenderCallback(callback);
-  component.state.afterUpdate.forEach(addRenderCallback);
+  component._state.afterUpdate.forEach(addRenderCallback);
 }
 
 @noInline
 void makeComponentDirty(Component component, int index) {
-  if (component.state.dirty == -1) {
+  State state = component._state;
+
+  if (state.dirty == -1) {
     dirtyComponents.add(component);
     scheduleUpdate();
-    component.state.dirty = 0;
+    state.dirty = 0;
   }
 
-  component.state.dirty |= 1 << index;
+  state.dirty |= 1 << index;
 }
 
 @noInline
 void updateComponent(Component component) {
-  component.state.update();
+  State state = component._state;
 
-  if (component.state.fragment case var fragment?) {
-    int dirty = component.state.dirty;
-    component.state.dirty = -1;
-    fragment.update(component.state.instance, dirty);
+  if (state.fragment case var fragment?) {
+    state.update(state);
+    runAll(state.beforeUpdate);
+
+    int dirty = state.dirty;
+    state.dirty = -1;
+    fragment.update(state.instance, dirty);
   }
 }
 
 @tryInline
 void transitionInComponent(Component component, bool local) {
-  transitionIn(component.state.fragment, local);
+  transitionIn(component._state.fragment, local);
 }
 
 @tryInline
@@ -184,18 +194,20 @@ void transitionOutComponent(
   bool local, [
   void Function()? callback,
 ]) {
-  transitionOut(component.state.fragment, local, callback);
+  transitionOut(component._state.fragment, local, callback);
 }
 
 @noInline
 void destroyComponent(Component component, bool detaching) {
-  if (component.state.fragment case var fragment?) {
-    runAll(component.state.onDestroy);
+  State state = component._state;
+
+  if (state.fragment case var fragment?) {
+    runAll(state.onDestroy);
     fragment.detach(detaching);
 
-    component.state
+    state
+      ..onDestroy = const <VoidFunction>[]
       ..fragment = null
-      ..instance = const <Object?>[]
-      ..onDestroy = const <VoidFunction>[];
+      ..instance = const <Object?>[];
   }
 }

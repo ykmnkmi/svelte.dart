@@ -1,5 +1,7 @@
 typedef VoidFunction = void Function();
 
+const Object undefined = Object();
+
 void noop([Object? _, Object? __]) {
   // ...
 }

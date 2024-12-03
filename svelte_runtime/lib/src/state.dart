@@ -13,7 +13,7 @@ class State {
 
   int dirty = -1;
 
-  void Function() update = noop;
+  void Function(State state) update = noop;
 
   List<VoidFunction> onMount = <VoidFunction>[];
 
