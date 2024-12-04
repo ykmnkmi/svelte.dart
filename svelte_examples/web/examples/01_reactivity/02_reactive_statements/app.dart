@@ -73,9 +73,9 @@ List<Object?> createInstance(
     invalidate(0, count += 1);
   }
 
-  setComponentUpdate(self, (int dirty) {
-    return () {
-      if (dirty & 1 != 0) {
+  setComponentUpdate(self, () {
+    return (State state) {
+      if (state.dirty & 1 != 0) {
         $:
         if (count >= 10) {
           window.alert('count is dangerously high!');

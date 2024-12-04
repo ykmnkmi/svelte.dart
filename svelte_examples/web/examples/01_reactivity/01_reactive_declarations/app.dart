@@ -110,19 +110,19 @@ List<Object?> createInstance(
     invalidate(0, count += 1);
   }
 
-  setComponentUpdate(self, (int dirty) {
-    return () {
-      if (dirty & 1 != 0) {
+  setComponentUpdate(self, () {
+    return (State state) {
+      if (state.dirty & 1 != 0) {
         invalidate(1, doubled = count * 2);
       }
 
-      if (dirty & 2 != 0) {
+      if (state.dirty & 2 != 0) {
         invalidate(2, quadrupled = doubled * 2);
       }
     };
   });
 
-  return <Object?>[count, null, null, handleClick];
+  return <Object?>[count, undefined, undefined, handleClick];
 }
 
 final class App extends Component {
