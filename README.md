@@ -1,8 +1,7 @@
 svelte.dart
 ===========
 
-[Svelte](https://svelte.dev/) ([v3.59.2](https://github.com/sveltejs/svelte/tree/v3.59.2))
-web framework, (not yet) ported to [Dart](https://dart.dev).
+[Svelte][Svelte] ([v4.2.19][v4.2.19]) web framework, (not yet) ported to [Dart][Dart].
 
 | Package | Description | Version |
 |---|---|---|
@@ -69,5 +68,8 @@ Status:
   - shelf
   - ...
 
+[Svelte]: https://svelte.dev
+[Dart]: https://dart.dev
+[v4.2.19]: https://github.com/sveltejs/svelte/tree/svelte%404.2.19
 [ast_pub_icon]: https://img.shields.io/pub/v/svelte_ast.svg
 [ast_pub]: https://pub.dev/packages/svelte_ast
