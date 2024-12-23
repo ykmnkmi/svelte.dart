@@ -47,12 +47,14 @@
 									"@toString": "opacity : 0",
 									"start": 17,
 									"end": 27,
+									"keyQuestion": null,
 									"separator": {
 										"start": 24,
 										"end": 25,
 										"type": "COLON",
 										"lexeme": ":"
 									},
+									"valueQuestion": null,
 									"beginToken": {
 										"start": 17,
 										"end": 24,

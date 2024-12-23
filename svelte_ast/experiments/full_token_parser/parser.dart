@@ -2,11 +2,13 @@ import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as fe;
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart';
 import 'package:_fe_analyzer_shared/src/scanner/token.dart';
 import 'package:analyzer/dart/analysis/features.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/line_info.dart';
 import 'package:analyzer/src/dart/scanner/scanner.dart' as dart;
 import 'package:analyzer/src/fasta/ast_builder.dart';
 import 'package:analyzer/src/string_source.dart';
+import 'package:pub_semver/pub_semver.dart';
 import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
@@ -18,16 +20,14 @@ class Parser {
   factory Parser(String string, {String? fullName, Uri? uri}) {
     FeatureSet featureSet = FeatureSet.latestLanguageVersion();
     ScannerConfiguration configuration = dart.Scanner.buildConfig(featureSet);
-    SvelteStringScanner scanner =
-        SvelteStringScanner(string, configuration: configuration);
+    SvelteStringScanner scanner = SvelteStringScanner(string, configuration: configuration);
     LineInfo lineInfo = LineInfo(scanner.lineStarts);
     StringSource source = StringSource(string, fullName, uri: uri);
     RecordingErrorListener errorListener = RecordingErrorListener();
     ErrorReporter reporter = ErrorReporter(errorListener, source);
-    AstBuilder astBuilder =
-        AstBuilder(reporter, source.uri, true, featureSet, lineInfo);
-    fe.Parser parser = fe.Parser(astBuilder,
-        allowPatterns: featureSet.isEnabled(Feature.patterns));
+    AstBuilder astBuilder = AstBuilder(reporter, source.uri, true, featureSet,
+        LibraryLanguageVersion(package: Version(3, 6, 0), override: null), lineInfo);
+    fe.Parser parser = fe.Parser(astBuilder, allowPatterns: featureSet.isEnabled(Feature.patterns));
     Token token = scanner.tokenize();
     return Parser.from(string, astBuilder, parser, token);
   }

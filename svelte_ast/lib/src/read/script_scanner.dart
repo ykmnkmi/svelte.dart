@@ -8,9 +8,13 @@ class ScriptScanner extends StringScanner {
     required String string,
     int offset = 0,
     super.configuration,
-  }) : super(string, includeComments: true) {
+  })  : _string = string,
+        super(string, includeComments: true) {
     scanOffset = offset - 1;
   }
+
+  // TODO(ast): Remove if possible, [StringScanner.string] is now private.
+  final String _string;
 
   @override
   void appendToken(Token token) {
@@ -25,7 +29,7 @@ class ScriptScanner extends StringScanner {
     int next = advance();
 
     while (true) {
-      if (groupingStack.isEmpty && string.startsWith(end, scanOffset)) {
+      if (groupingStack.isEmpty && _string.startsWith(end, scanOffset)) {
         break;
       }
 
@@ -42,6 +46,6 @@ class ScriptScanner extends StringScanner {
 
   @override
   Token tokenize() {
-    throw UnsupportedError('Use scan instead.');
+    return scan('</script>');
   }
 }
