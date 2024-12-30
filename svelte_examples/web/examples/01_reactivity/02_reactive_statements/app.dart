@@ -11,55 +11,63 @@ extension on List<Object?> {
   }
 }
 
-Fragment createFragment(List<Object?> instance) {
+final class AppFragment extends Fragment {
+  AppFragment(List<Object?> instance);
+
   late Element button;
-
-  late Text t0, t1, t2, t3;
-
+  late Text t0;
+  late Text t1;
+  late Text t2;
+  late Text t3;
   late String t3value;
 
-  var mounted = false;
+  bool mounted = false;
 
   late void Function() dispose;
 
-  return Fragment(
-    create: () {
-      button = element('button');
-      t0 = text('Clicked ');
-      t1 = text('${instance._count}');
-      t2 = space();
-      t3 = text(t3value = instance._count == 1 ? 'time' : 'times');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, button, anchor);
-      append(button, t0);
-      append(button, t1);
-      append(button, t2);
-      append(button, t3);
+  @override
+  void create(List<Object?> instance) {
+    button = element('button');
+    t0 = text('Clicked ');
+    t1 = text('${instance._count}');
+    t2 = space();
+    t3 = text(t3value = instance._count == 1 ? 'time' : 'times');
+  }
 
-      if (!mounted) {
-        dispose = listen(button, 'click', listener(instance._handleClick));
-        mounted = true;
-      }
-    },
-    update: (List<Object?> context, int dirty) {
-      if (dirty & 1 != 0) {
-        setData(t1, '${context._count}');
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    insert(target, button, anchor);
+    append(button, t0);
+    append(button, t1);
+    append(button, t2);
+    append(button, t3);
 
-        if (t3value != (t3value = context._count == 1 ? 'time' : 'times')) {
-          setData(t3, t3value);
-        }
-      }
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(button);
-      }
+    if (!mounted) {
+      dispose = listen(button, 'click', listener(instance._handleClick));
+      mounted = true;
+    }
+  }
 
-      mounted = false;
-      dispose();
-    },
-  );
+  @override
+  void update(List<Object?> context, int dirty) {
+    if (dirty & 1 != 0) {
+      setData(t1, '${context._count}');
+
+      if (t3value != (t3value = context._count == 1 ? 'time' : 'times')) {
+        setData(t3, t3value);
+      }
+    }
+  }
+
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(button);
+    }
+
+    mounted = false;
+    dispose();
+  }
 }
 
 List<Object?> createInstance(
@@ -92,8 +100,8 @@ final class App extends Component {
   App({
     super.target,
     super.anchor,
-    super.properties,
+    super.inputs,
     super.hydrate,
     super.intro,
-  }) : super(createInstance: createInstance, createFragment: createFragment);
+  }) : super(createInstance: createInstance, createFragment: AppFragment.new);
 }

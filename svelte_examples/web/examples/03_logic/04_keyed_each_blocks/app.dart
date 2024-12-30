@@ -4,25 +4,29 @@ import 'package:svelte_runtime/svelte_runtime.dart';
 import 'package:web/web.dart' show Element, Node, Text;
 
 extension on List<Object?> {
-  List<({String id, String name})> get cats {
-    return this[0] as List<({String id, String name})>;
+  List<({String color, int id})> get cats {
+    return this[0] as List<({String color, int id})>;
   }
 }
 
 List<Object?> getEachContext(
   List<Object?> context,
-  List<({String id, String name})> list,
+  List<({String color, int id})> list,
   int index,
 ) {
-  return List<Object?>.of(context)
-    ..length = 5
-    ..[1] = list[index].id
-    ..[2] = list[index].name
-    ..[4] = index;
+  return List<Object?>.of(context)..[2] = list[index];
 }
 
-final class EachBlockFragment extends Fragment {
-  EachBlockFragment(List<Object?> instance) {
+List<Object?> getEachContext1(
+  List<Object?> context,
+  List<({String color, int id})> list,
+  int index,
+) {
+  return List<Object?>.of(context)..[2] = list[index];
+}
+
+final class EachBlock1Fragment extends Fragment {
+  EachBlock1Fragment(List<Object?> instance) {
     t0Value = '${(instance[4] as int) + 1}';
     t2Value = instance[2] as String;
   }
@@ -78,7 +82,7 @@ final class AppFragment extends Fragment {
   late Text t1;
   late Element ul;
 
-  late List<({String id, String name})> eachValue;
+  late List<({String color, int id})> eachValue;
   late List<Fragment> eachBlocks;
 
   Fragment generateEach(List<Object?> instance, int index) {
@@ -157,13 +161,21 @@ List<Object?> createInstance(
   Map<String, Object?> inputs,
   Invalidate invalidate,
 ) {
-  var cats = [
-    (id: 'J---aiyznGQ', name: 'Keyboard Cat'),
-    (id: 'z_AbfPXTKms', name: 'Maru'),
-    (id: 'OUtn3pvWmpg', name: 'Henri The Existential Cat'),
+  var things = [
+    (id: 1, color: 'darkblue'),
+    (id: 2, color: 'indigo'),
+    (id: 3, color: 'deeppink'),
+    (id: 4, color: 'salmon'),
+    (id: 5, color: 'gold')
   ];
 
-  return <Object?>[cats];
+  void handleClick() {
+    if (things.isNotEmpty) {
+      invalidate(0, things = things.sublist(1));
+    }
+  }
+
+  return <Object?>[things, handleClick];
 }
 
 final class App extends Component {

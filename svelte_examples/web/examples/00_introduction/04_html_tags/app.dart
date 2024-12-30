@@ -7,28 +7,33 @@ extension on List<Object?> {
   }
 }
 
-Fragment createFragment(List<Object?> instance) {
+final class AppFragment extends Fragment {
+  AppFragment(List<Object?> instance);
+
   late Element p;
 
-  return Fragment(
-    create: () {
-      p = element('p');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-      setInnerHtml(p, instance._string);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
-      }
-    },
-  );
+  @override
+  void create(List<Object?> instance) {
+    p = element('p');
+  }
+
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    insert(target, p, anchor);
+    setInnerHtml(p, instance._string);
+  }
+
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(p);
+    }
+  }
 }
 
 List<Object?> createInstance(
   Component self,
-  Map<String, Object?> props,
+  Map<String, Object?> inputs,
   Invalidate invalidate,
 ) {
   var string = "here's some <strong>HTML!!!</strong>";
@@ -39,8 +44,8 @@ final class App extends Component {
   App({
     super.target,
     super.anchor,
-    super.properties,
+    super.inputs,
     super.hydrate,
     super.intro,
-  }) : super(createInstance: createInstance, createFragment: createFragment);
+  }) : super(createInstance: createInstance, createFragment: AppFragment.new);
 }

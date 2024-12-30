@@ -1,116 +1,125 @@
 import 'package:svelte_runtime/svelte_runtime.dart';
 import 'package:web/web.dart' show Element, Node;
 
-Fragment createIfBlock1(List<Object?> instance) {
+final class ElseBlockFragment extends Fragment {
+  ElseBlockFragment(List<Object?> instance);
+
   late Element p;
 
-  return Fragment(
-    create: () {
-      p = element('p');
-      setText(p, '$x is greater than 10');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
-      }
-    },
-  );
+  @override
+  void create(List<Object?> instance) {
+    p = element('p');
+    setText(p, '$x is between 5 and 10');
+  }
+
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    insert(target, p, anchor);
+  }
+
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(p);
+    }
+  }
 }
 
-Fragment createIfBlock2(List<Object?> instance) {
+final class IfBlock1Fragment extends Fragment {
+  IfBlock1Fragment(List<Object?> instance);
+
   late Element p;
 
-  return Fragment(
-    create: () {
-      p = element('p');
-      setText(p, '$x is less than 5');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
-      }
-    },
-  );
+  @override
+  void create(List<Object?> instance) {
+    p = element('p');
+    setText(p, '$x is less than 5');
+  }
+
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    insert(target, p, anchor);
+  }
+
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(p);
+    }
+  }
 }
 
-Fragment createElseBlock(List<Object?> instance) {
+final class IfBlockFragment extends Fragment {
+  IfBlockFragment(List<Object?> instance);
+
   late Element p;
 
-  return Fragment(
-    create: () {
-      p = element('p');
-      setText(p, '$x is between 5 and 10');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
-      }
-    },
-  );
+  @override
+  void create(List<Object?> instance) {
+    p = element('p');
+    setText(p, '$x is greater than 10');
+  }
+
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    insert(target, p, anchor);
+  }
+
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(p);
+    }
+  }
 }
 
-Fragment createFragment(List<Object?> instance) {
+final class AppFragment extends Fragment {
+  AppFragment(List<Object?> instance) {
+    currentBlockFactory = selectCurrentBlock(instance, -1);
+    ifBlock = currentBlockFactory(instance);
+  }
+
   late Node ifBlockAnchor;
 
-  FragmentFactory selectCurrentBlock(
-    List<Object?> context,
-    int dirty,
-  ) {
+  FragmentFactory selectCurrentBlock(List<Object?> context, int dirty) {
     if (x > 10) {
-      return createIfBlock1;
+      return IfBlockFragment.new;
     }
 
     if (5 > x) {
-      return createIfBlock2;
+      return IfBlock1Fragment.new;
     }
 
-    return createElseBlock;
+    return ElseBlockFragment.new;
   }
 
-  var currentBlockFactory = selectCurrentBlock(instance, -1);
-  var ifBlock = currentBlockFactory(instance);
+  late FragmentFactory currentBlockFactory;
 
-  return Fragment(
-    create: () {
-      ifBlock.create();
-      ifBlockAnchor = empty();
-    },
-    mount: (Element target, Node? anchor) {
-      ifBlock.mount(target, anchor);
-      insert(target, ifBlockAnchor, anchor);
-    },
-    update: (List<Object?> instance, int dirty) {
-      var newBlockFactory = selectCurrentBlock(instance, dirty);
+  late Fragment ifBlock;
 
-      if (currentBlockFactory == newBlockFactory) {
-        ifBlock.update(instance, dirty);
-      } else {
-        ifBlock.detach(true);
+  @override
+  void create(List<Object?> instance) {
+    ifBlock.create(instance);
+    ifBlockAnchor = empty();
+  }
 
-        ifBlock = newBlockFactory(instance)
-          ..create()
-          ..mount(ifBlockAnchor.parentNode as Element, ifBlockAnchor);
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    ifBlock.mount(instance, target, anchor);
+    insert(target, ifBlockAnchor, anchor);
+  }
 
-        currentBlockFactory = newBlockFactory;
-      }
-    },
-    detach: (bool detaching) {
-      ifBlock.detach(detaching);
+  @override
+  void update(List<Object?> instance, int dirty) {}
 
-      if (detaching) {
-        detach(ifBlockAnchor);
-      }
-    },
-  );
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(ifBlockAnchor);
+    }
+
+    ifBlock.detach(detaching);
+  }
 }
 
 var x = 7;
@@ -122,5 +131,5 @@ final class App extends Component {
     super.properties,
     super.hydrate,
     super.intro,
-  }) : super(createFragment: createFragment);
+  }) : super(createFragment: AppFragment.new);
 }

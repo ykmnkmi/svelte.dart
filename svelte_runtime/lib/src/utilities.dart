@@ -1,6 +1,10 @@
 typedef VoidFunction = void Function();
 
-const Object undefined = Object();
+final class _Undefined {
+  const _Undefined();
+}
+
+const Object undefined = _Undefined();
 
 void noop([Object? _, Object? __]) {
   // ...

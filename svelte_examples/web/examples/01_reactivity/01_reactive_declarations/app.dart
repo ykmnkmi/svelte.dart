@@ -19,7 +19,9 @@ extension on List<Object?> {
   }
 }
 
-Fragment createFragment(List<Object?> instance) {
+final class AppFragment extends Fragment {
+  AppFragment(List<Object?> instance);
+
   late Element button;
   late Text t0, t1, t2;
   late Element p0;
@@ -31,75 +33,80 @@ Fragment createFragment(List<Object?> instance) {
 
   late void Function() dispose;
 
-  return Fragment(
-    create: () {
-      button = element('button');
-      t0 = text('Count: ');
-      t1 = text('${instance._count}');
-      t2 = space();
-      p0 = element('p');
-      t3 = text('${instance._count}');
-      t4 = text(' * 2 = ');
-      t5 = text('${instance._doubled}');
-      t6 = space();
-      p1 = element('p');
-      t7 = text('${instance._doubled}');
-      t8 = text(' * 2 = ');
-      t9 = text('${instance._quadrupled}');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, button, anchor);
-      append(button, t0);
-      append(button, t1);
-      insert(target, t2, anchor);
-      insert(target, p0, anchor);
-      append(p0, t3);
-      append(p0, t4);
-      append(p0, t5);
-      insert(target, t6, anchor);
-      insert(target, p1, anchor);
-      append(p1, t7);
-      append(p1, t8);
-      append(p1, t9);
+  @override
+  void create(List<Object?> instance) {
+    button = element('button');
+    t0 = text('Count: ');
+    t1 = text('${instance._count}');
+    t2 = space();
+    p0 = element('p');
+    t3 = text('${instance._count}');
+    t4 = text(' * 2 = ');
+    t5 = text('${instance._doubled}');
+    t6 = space();
+    p1 = element('p');
+    t7 = text('${instance._doubled}');
+    t8 = text(' * 2 = ');
+    t9 = text('${instance._quadrupled}');
+  }
 
-      if (!mounted) {
-        dispose = listen(button, 'click', listener(instance._handleClick));
-        mounted = true;
-      }
-    },
-    update: (List<Object?> context, int dirty) {
-      if (dirty & 1 != 0) {
-        setData(t1, '${context._count}');
-        setData(t3, '${context._count}');
-      }
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    insert(target, button, anchor);
+    append(button, t0);
+    append(button, t1);
+    insert(target, t2, anchor);
+    insert(target, p0, anchor);
+    append(p0, t3);
+    append(p0, t4);
+    append(p0, t5);
+    insert(target, t6, anchor);
+    insert(target, p1, anchor);
+    append(p1, t7);
+    append(p1, t8);
+    append(p1, t9);
 
-      if (dirty & 2 != 0) {
-        setData(t5, '${context._doubled}');
-        setData(t7, '${context._doubled}');
-      }
+    if (!mounted) {
+      dispose = listen(button, 'click', listener(instance._handleClick));
+      mounted = true;
+    }
+  }
 
-      if (dirty & 4 != 0) {
-        setData(t9, '${context._quadrupled}');
-      }
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(button);
-        detach(t2);
-        detach(p0);
-        detach(t6);
-        detach(p1);
-      }
+  @override
+  void update(List<Object?> context, int dirty) {
+    if (dirty & 1 != 0) {
+      setData(t1, '${context._count}');
+      setData(t3, '${context._count}');
+    }
 
-      mounted = false;
-      dispose();
-    },
-  );
+    if (dirty & 2 != 0) {
+      setData(t5, '${context._doubled}');
+      setData(t7, '${context._doubled}');
+    }
+
+    if (dirty & 4 != 0) {
+      setData(t9, '${context._quadrupled}');
+    }
+  }
+
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(button);
+      remove(t2);
+      remove(p0);
+      remove(t6);
+      remove(p1);
+    }
+
+    mounted = false;
+    dispose();
+  }
 }
 
 List<Object?> createInstance(
   Component self,
-  Map<String, Object?> props,
+  Map<String, Object?> inputs,
   Invalidate invalidate,
 ) {
   var count = 1;
@@ -129,8 +136,8 @@ final class App extends Component {
   App({
     super.target,
     super.anchor,
-    super.properties,
+    super.inputs,
     super.hydrate,
     super.intro,
-  }) : super(createInstance: createInstance, createFragment: createFragment);
+  }) : super(createInstance: createInstance, createFragment: AppFragment.new);
 }

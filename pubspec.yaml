@@ -11,6 +11,7 @@ dev_dependencies:
 
 workspace:
 - svelte_ast
+- svelte_component
 - svelte_runtime
 
 - svelte_examples

@@ -1,7 +1,7 @@
 <script type="application/dart">
 	import 'Info.svelte';
 
-	var pkg = <String, Object>{
+	var pkg = <String, Object?>{
 		'name': 'svelte',
 		'version': 3,
 		'speed': 'blazing',

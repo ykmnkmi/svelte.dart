@@ -1,29 +1,25 @@
-import 'package:svelte_runtime/src/utilities.dart';
 import 'package:web/web.dart' show Element, Node;
 
 typedef FragmentFactory = Fragment Function(List<Object?> instance);
 
-final class Fragment {
-  const Fragment({
-    this.create = noop,
-    this.mount = noop,
-    this.update = noop,
-    this.intro = noop,
-    this.outro = noop,
-    this.detach = noop,
-  });
+base class Fragment {
+  static const Fragment empty = Fragment();
 
-  final void Function() create;
+  const Fragment();
 
-  final void Function(Element target, Node? anchor) mount;
+  void create(List<Object?> instance) {}
 
-  final void Function(List<Object?> instance, int dirty) update;
+  void claim(List<Node> nodes) {}
 
-  final void Function(bool local) intro;
+  void mount(List<Object?> instance, Element target, Node? anchor) {}
 
-  final void Function(bool local) outro;
+  void update(List<Object?> instance, int dirty) {}
 
-  final void Function(bool detaching) detach;
+  void intro(bool local) {}
+
+  void outro(bool local) {}
+
+  void detach(bool detaching) {}
 
   static void detachAll(List<Fragment> fragments, bool detaching) {
     for (int index = 0; index < fragments.length; index++) {

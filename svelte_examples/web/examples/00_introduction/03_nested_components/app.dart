@@ -12,58 +12,67 @@ p.svelte-urs9w7 {
 }''');
 }
 
-Fragment createFragment(List<Object?> instance) {
+final class AppFragment extends Fragment {
+  AppFragment(List<Object?> instance) {
+    nested = Nested();
+  }
+
   late Element p;
   late Text t1;
-  Nested nested;
+  late Nested nested;
 
-  var current = false;
+  bool current = false;
 
-  nested = Nested();
+  @override
+  void create(List<Object?> instance) {
+    p = element('p');
+    setText(p, 'These styles...');
+    t1 = space();
+    createComponent(nested);
+    setAttribute(p, 'class', 'svelte-urs9w7');
+  }
 
-  return Fragment(
-    create: () {
-      p = element('p');
-      setText(p, 'These styles...');
-      t1 = space();
-      createComponent(nested);
-      setAttribute(p, 'class', 'svelte-urs9w7');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-      insert(target, t1, anchor);
-      mountComponent(nested, target, anchor);
-      current = true;
-    },
-    intro: (bool local) {
-      if (current) {
-        return;
-      }
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    insert(target, p, anchor);
+    insert(target, t1, anchor);
+    mountComponent(nested, target, anchor);
+    current = true;
+  }
 
-      transitionInComponent(nested, local);
-      current = true;
-    },
-    outro: (bool local) {
-      transitionOutComponent(nested, local);
-      current = false;
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
-        detach(t1);
-      }
+  @override
+  void intro(bool local) {
+    if (current) {
+      return;
+    }
 
-      destroyComponent(nested, detaching);
-    },
-  );
+    transitionInComponent(nested, local);
+    current = true;
+  }
+
+  @override
+  void outro(bool local) {
+    transitionOutComponent(nested, local);
+    current = false;
+  }
+
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(p);
+      remove(t1);
+    }
+
+    destroyComponent(nested, detaching);
+  }
 }
 
 final class App extends Component {
   App({
     super.target,
     super.anchor,
-    super.properties,
+    super.inputs,
     super.hydrate,
     super.intro,
-  }) : super(createFragment: createFragment, appendStyles: addCss);
+  }) : super(createFragment: AppFragment.new, appendStyles: addCss);
 }

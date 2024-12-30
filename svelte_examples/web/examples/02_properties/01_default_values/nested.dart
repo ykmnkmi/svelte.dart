@@ -7,44 +7,53 @@ extension on List<Object?> {
   }
 }
 
-Fragment createFragment(List<Object?> instance) {
-  late Element p;
-  late Text t0, t1;
+final class NestedFragment extends Fragment {
+  NestedFragment(List<Object?> instance);
 
-  return Fragment(
-    create: () {
-      p = element('p');
-      t0 = text('The answer is ');
-      t1 = text('${instance._answer}');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-      append(p, t0);
-      append(p, t1);
-    },
-    update: (List<Object?> instance, int dirty) {
-      if (dirty & 1 != 0) {
-        setData(t1, '${instance._answer}');
-      }
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
-      }
-    },
-  );
+  late Element p;
+  late Text t0;
+  late Text t1;
+
+  @override
+  void create(List<Object?> instance) {
+    p = element('p');
+    t0 = text('The answer is ');
+    t1 = text('${instance._answer}');
+  }
+
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    insert(target, p, anchor);
+    append(p, t0);
+    append(p, t1);
+  }
+
+  @override
+  void update(List<Object?> instance, int dirty) {
+    if (dirty & 1 != 0) {
+      setData(t1, '${instance._answer}');
+    }
+  }
+
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(p);
+    }
+  }
 }
 
 List<Object?> createInstance(
   Component self,
-  Map<String, Object?> props,
+  Map<String, Object?> inputs,
   Invalidate invalidate,
 ) {
-  var answer = props.containsKey('answer') ? props['answer'] : 'a mystery';
+  String answer =
+      inputs.containsKey('answer') ? inputs['answer'] as String : 'a mystery';
 
-  setComponentSet(self, (Map<String, Object?> props) {
-    if (props.containsKey('answer')) {
-      invalidate(0, answer = props['answer']);
+  setComponentSetter(self, (Map<String, Object?> inputs) {
+    if (inputs.containsKey('answer')) {
+      invalidate(0, answer = inputs['answer'] as String);
     }
   });
 
@@ -55,8 +64,11 @@ final class Nested extends Component {
   Nested({
     super.target,
     super.anchor,
-    super.properties,
+    super.inputs,
     super.hydrate,
     super.intro,
-  }) : super(createInstance: createInstance, createFragment: createFragment);
+  }) : super(
+            createInstance: createInstance,
+            createFragment: NestedFragment.new,
+            properties: const <String, int>{'answer': 0});
 }

@@ -3,45 +3,54 @@ import 'package:web/web.dart' show Element, Node;
 
 import 'nested.dart';
 
-Fragment createFragment(List<Object?> instance) {
-  Nested nested;
+final class AppFragment extends Fragment {
+  AppFragment(List<Object?> instance) {
+    nested = Nested(inputs: <String, Object?>{'answer': 42});
+  }
 
-  var current = false;
+  late Nested nested;
 
-  nested = Nested(properties: <String, Object?>{'answer': 42});
+  bool current = false;
 
-  return Fragment(
-    create: () {
-      createComponent(nested);
-    },
-    mount: (Element target, Node? anchor) {
-      mountComponent(nested, target, anchor);
-      current = true;
-    },
-    intro: (bool local) {
-      if (current) {
-        return;
-      }
+  @override
+  void create(List<Object?> instance) {
+    createComponent(nested);
+  }
 
-      transitionInComponent(nested, local);
-      current = true;
-    },
-    outro: (bool local) {
-      transitionOutComponent(nested, local);
-      current = false;
-    },
-    detach: (bool detaching) {
-      destroyComponent(nested, detaching);
-    },
-  );
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    mountComponent(nested, target, anchor);
+    current = true;
+  }
+
+  @override
+  void intro(bool local) {
+    if (current) {
+      return;
+    }
+
+    transitionInComponent(nested, local);
+    current = true;
+  }
+
+  @override
+  void outro(bool local) {
+    transitionOutComponent(nested, local);
+    current = false;
+  }
+
+  @override
+  void detach(bool detaching) {
+    destroyComponent(nested, detaching);
+  }
 }
 
 final class App extends Component {
   App({
     super.target,
     super.anchor,
-    super.properties,
+    super.inputs,
     super.hydrate,
     super.intro,
-  }) : super(createFragment: createFragment);
+  }) : super(createFragment: AppFragment.new);
 }

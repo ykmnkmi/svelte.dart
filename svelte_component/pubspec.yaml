@@ -1,6 +1,6 @@
-name: svelte_examples
-description: SvelteDart examples.
-version: 1.0.0-dev.7
+name: svelte_component
+description: SvelteDart component base.
+version: 1.0.0-dev.0
 repository: https://github.com/ykmnkmi/svelte.dart
 publish_to: none
 

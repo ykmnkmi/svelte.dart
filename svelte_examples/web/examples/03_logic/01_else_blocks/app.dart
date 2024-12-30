@@ -13,122 +13,139 @@ extension on List<Object?> {
   }
 }
 
-Fragment createIfBlock(List<Object?> instance) {
+final class ElseBlockFragment extends Fragment {
+  ElseBlockFragment(List<Object?> instance);
+
   late Element button;
 
-  var mounted = false;
+  bool mounted = false;
 
   late void Function() dispose;
 
-  return Fragment(
-    create: () {
-      button = element('button');
-      setText(button, 'Log out');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, button, anchor);
-
-      if (!mounted) {
-        dispose = listen(button, 'click', listener(instance._toggle));
-        mounted = true;
-      }
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(button);
-      }
-
-      mounted = false;
-      dispose();
-    },
-  );
-}
-
-Fragment createElseBlock(List<Object?> instance) {
-  late Element button;
-
-  var mounted = false;
-
-  late void Function() dispose;
-
-  return Fragment(
-    create: () {
-      button = element('button');
-      setText(button, 'Log in');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, button, anchor);
-
-      if (!mounted) {
-        dispose = listen(button, 'click', listener(instance._toggle));
-        mounted = true;
-      }
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(button);
-      }
-
-      mounted = false;
-      dispose();
-    },
-  );
-}
-
-Fragment createFragment(List<Object?> instance) {
-  late Node ifBlockAnchor;
-
-  FragmentFactory selectCurrentBlock(
-    List<Object?> context,
-    int dirty,
-  ) {
-    if (context._user.loggedIn) {
-      return createIfBlock;
-    }
-
-    return createElseBlock;
+  @override
+  void create(List<Object?> instance) {
+    button = element('button');
+    setText(button, 'Log in');
   }
 
-  var currentBlockFactory = selectCurrentBlock(instance, -1);
-  var ifBlock = currentBlockFactory(instance);
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    insert(target, button, anchor);
 
-  return Fragment(
-    create: () {
-      ifBlock.create();
-      ifBlockAnchor = empty();
-    },
-    mount: (Element target, Node? anchor) {
-      ifBlock.mount(target, anchor);
-      insert(target, ifBlockAnchor, anchor);
-    },
-    update: (List<Object?> instance, int dirty) {
-      var newBlockFactory = selectCurrentBlock(instance, dirty);
+    if (!mounted) {
+      dispose = listen(button, 'click', listener(instance._toggle));
+      mounted = true;
+    }
+  }
 
-      if (currentBlockFactory == newBlockFactory) {
-        ifBlock.update(instance, dirty);
-      } else {
-        ifBlock.detach(true);
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(button);
+    }
 
-        ifBlock = newBlockFactory(instance)
-          ..create()
-          ..mount(ifBlockAnchor.parentNode as Element, ifBlockAnchor);
+    mounted = false;
+    dispose();
+  }
+}
 
-        currentBlockFactory = newBlockFactory;
+final class IfBlockFragment extends Fragment {
+  IfBlockFragment(List<Object?> instance);
+
+  late Element button;
+
+  bool mounted = false;
+
+  late void Function() dispose;
+
+  @override
+  void create(List<Object?> instance) {
+    button = element('button');
+    setText(button, 'Log out');
+  }
+
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    insert(target, button, anchor);
+
+    if (!mounted) {
+      dispose = listen(button, 'click', listener(instance._toggle));
+      mounted = true;
+    }
+  }
+
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(button);
+    }
+
+    mounted = false;
+    dispose();
+  }
+}
+
+final class AppFragment extends Fragment {
+  AppFragment(List<Object?> instance) {
+    currentBlockType = selectBlockType(instance);
+    ifBlock = currentBlockType(instance);
+  }
+
+  late Node ifBlockAnchor;
+
+  late FragmentFactory currentBlockType;
+  Fragment? ifBlock;
+
+  FragmentFactory selectBlockType(List<Object?> instance) {
+    if (instance._user.loggedIn) {
+      return IfBlockFragment.new;
+    }
+
+    return ElseBlockFragment.new;
+  }
+
+  @override
+  void create(List<Object?> instance) {
+    ifBlock?.create(instance);
+    ifBlockAnchor = empty();
+  }
+
+  @override
+  void mount(List<Object?> instance, Element target, Node? anchor) {
+    ifBlock?.mount(instance, target, anchor);
+    insert(target, ifBlockAnchor, anchor);
+  }
+
+  @override
+  void update(List<Object?> instance, int dirty) {
+    if (currentBlockType == (currentBlockType = selectBlockType(instance)) &&
+        ifBlock != null) {
+      ifBlock!.update(instance, dirty);
+    } else {
+      ifBlock!.detach(true);
+      ifBlock = currentBlockType(instance);
+
+      if (ifBlock != null) {
+        ifBlock!
+          ..create(instance)
+          ..mount(instance, ifBlockAnchor.parentNode as Element, ifBlockAnchor);
       }
-    },
-    detach: (bool detaching) {
-      ifBlock.detach(detaching);
+    }
+  }
 
-      if (detaching) {
-        detach(ifBlockAnchor);
-      }
-    },
-  );
+  @override
+  void detach(bool detaching) {
+    if (detaching) {
+      remove(ifBlockAnchor);
+    }
+
+    ifBlock?.detach(detaching);
+  }
 }
 
 List<Object?> createInstance(
   Component self,
-  Map<String, Object?> props,
+  Map<String, Object?> inputs,
   Invalidate invalidate,
 ) {
   var user = User(loggedIn: false);
@@ -144,8 +161,8 @@ final class App extends Component {
   App({
     super.target,
     super.anchor,
-    super.properties,
+    super.inputs,
     super.hydrate,
     super.intro,
-  }) : super(createInstance: createInstance, createFragment: createFragment);
+  }) : super(createInstance: createInstance, createFragment: AppFragment.new);
 }
