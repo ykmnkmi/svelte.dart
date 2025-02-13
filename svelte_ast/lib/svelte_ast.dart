@@ -6,12 +6,7 @@ export 'package:svelte_ast/src/ast.dart';
 export 'package:svelte_ast/src/errors.dart' show ParseError;
 
 final class SvelteAst {
-  SvelteAst({
-    required this.html,
-    this.instance,
-    this.module,
-    this.style,
-  });
+  SvelteAst({required this.html, this.instance, this.module, this.style});
 
   final Node html;
 

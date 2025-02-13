@@ -106,11 +106,7 @@ extension MustacheParser on Parser {
   IfBlock _ifBlock(Token open) {
     expectToken(Keyword.IF);
 
-    var (
-      expression,
-      casePattern,
-      whenExpression,
-    ) = _ifRest();
+    var (expression, casePattern, whenExpression) = _ifRest();
 
     IfBlock ifBlock = IfBlock(
       start: open.offset,
@@ -132,12 +128,7 @@ extension MustacheParser on Parser {
 
       if (matchToken(TokenType.CLOSE_CURLY_BRACKET)) {
         List<Node> children = _body('ifElse', _isEndIf);
-
-        ElseBlock elseBlock = ElseBlock(
-          start: open.offset,
-          children: children,
-        );
-
+        ElseBlock elseBlock = ElseBlock(start: open.offset, children: children);
         blocks.add(elseBlock);
         currentIfBlock.elseBlock = elseBlock;
         open = nextToken();
@@ -146,11 +137,7 @@ extension MustacheParser on Parser {
 
       expectToken(Keyword.IF);
 
-      var (
-        expression,
-        casePattern,
-        whenExpression,
-      ) = _ifRest();
+      var (expression, casePattern, whenExpression) = _ifRest();
 
       List<Node> children = _body('if', (token) {
         return _isElse(token) || _isEndIf(token);
@@ -395,8 +382,12 @@ extension MustacheParser on Parser {
 
     Expression value = astBuilder.pop() as Expression;
     Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
+
     return RawMustacheTag(
-        start: open.offset, end: close.end, expression: value);
+      start: open.offset,
+      end: close.end,
+      expression: value,
+    );
   }
 
   DebugTag _debug(Token open) {
@@ -412,8 +403,12 @@ extension MustacheParser on Parser {
     }
 
     Token close = expectToken(TokenType.CLOSE_CURLY_BRACKET);
+
     return DebugTag(
-        start: open.offset, end: close.end, identifiers: identifiers);
+      start: open.offset,
+      end: close.end,
+      identifiers: identifiers,
+    );
   }
 
   ConstTag _const(Token open) {

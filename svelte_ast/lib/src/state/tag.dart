@@ -35,8 +35,10 @@ final RegExp _capitalLetter = RegExp('^[A-Z]');
 
 final RegExp _nonCharRe = RegExp('[^A-Za-z]');
 
-final RegExp _textareaCloseTag =
-    RegExp('<\\/textarea(\\s[^>]*)?>', caseSensitive: false);
+final RegExp _textareaCloseTag = RegExp(
+  '<\\/textarea(\\s[^>]*)?>',
+  caseSensitive: false,
+);
 
 const Map<String, String> _metaTags = <String, String>{
   'svelte:head': 'Head',
@@ -55,7 +57,7 @@ const List<String> _validMetaTags = <String>[
   'svelte:self',
   'svelte:component',
   'svelte:fragment',
-  'svelte:element'
+  'svelte:element',
 ];
 
 DirectiveType? _getDirectiveType(String name) {
@@ -127,8 +129,11 @@ extension TagParser on Parser {
     }
 
     if (name.startsWith('svelte:')) {
-      error(invalidTagNameSvelteElement(_validMetaTags), start,
-          start + name.length);
+      error(
+        invalidTagNameSvelteElement(_validMetaTags),
+        start,
+        start + name.length,
+      );
     }
 
     if (_validTagNameRe.hasMatch(name)) {
@@ -154,11 +159,7 @@ extension TagParser on Parser {
         Expression expression = readExpression(closingCurlyRe);
         allowSpace();
         expect('}');
-        return Spread(
-          start: start,
-          end: position,
-          expression: expression,
-        );
+        return Spread(start: start, end: position, expression: expression);
       } else {
         if (scan(closingCurlyRe)) {
           error(emptyAttributeShorthand, start);
@@ -219,10 +220,9 @@ extension TagParser on Parser {
     }
 
     if (type != null) {
-      var <String>[
-        String directiveName,
-        ...List<String> modifiers,
-      ] = name.substring(colonIndex + 1).split('|');
+      var <String>[String directiveName, ...List<String> modifiers] = name
+          .substring(colonIndex + 1)
+          .split('|');
 
       if (directiveName.isEmpty) {
         error(emptyDirectiveName(type.name), start + colonIndex + 1);
@@ -288,7 +288,8 @@ extension TagParser on Parser {
             end: end,
             name: directiveName,
             modifiers: modifiers,
-            expression: expression ??
+            expression:
+                expression ??
                 simpleIdentifier(start + colonIndex + 1, directiveName),
           );
 
@@ -298,7 +299,8 @@ extension TagParser on Parser {
             end: end,
             name: directiveName,
             modifiers: modifiers,
-            expression: expression ??
+            expression:
+                expression ??
                 simpleIdentifier(start + colonIndex + 1, directiveName),
           );
 
@@ -396,14 +398,7 @@ extension TagParser on Parser {
       if (start < end) {
         String raw = string.substring(start, end);
         String data = decodeCharacterReferences(raw, true);
-
-        chunks.add(Text(
-          start: start,
-          end: end,
-          raw: raw,
-          data: data,
-        ));
-
+        chunks.add(Text(start: start, end: end, raw: raw, data: data));
         start = end;
       }
     }
@@ -436,11 +431,13 @@ extension TagParser on Parser {
         allowSpace();
         expect('}');
 
-        chunks.add(MustacheTag(
+        MustacheTag mustacheTag = MustacheTag(
           start: start,
           end: position,
           expression: expression,
-        ));
+        );
+
+        chunks.add(mustacheTag);
 
         start = position;
       } else {
@@ -456,13 +453,14 @@ extension TagParser on Parser {
       String? data = readUntil('-->');
       expect('-->', unclosedComment);
 
-      current.children.add(CommentTag(
+      CommentTag commentTag = CommentTag(
         start: start,
         end: position,
         data: data,
         ignores: extractSvelteIgnore(data),
-      ));
+      );
 
+      current.children.add(commentTag);
       return;
     }
 
@@ -615,12 +613,7 @@ extension TagParser on Parser {
     if (parent is HasName && closingTagOmitted(parent.name, name)) {
       parent.end = start;
       stack.removeLast();
-
-      lastAutoCloseTag = (
-        tag: parent.name,
-        reason: name,
-        depth: stack.length,
-      );
+      lastAutoCloseTag = (tag: parent.name, reason: name, depth: stack.length);
     }
 
     Set<String> uniqueNames = <String>{};

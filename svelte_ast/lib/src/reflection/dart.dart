@@ -4,11 +4,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
 import 'package:svelte_ast/src/reflection/shared.dart';
 
-const Set<Symbol> _ignored = <Symbol>{
-  #parent,
-  #root,
-  #unlabeled,
-};
+const Set<Symbol> _ignored = <Symbol>{#parent, #root, #unlabeled};
 
 final TypeMirror _astNodeTypeMirror = reflectType(AstNode);
 

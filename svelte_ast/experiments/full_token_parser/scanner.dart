@@ -7,14 +7,7 @@ import 'package:_fe_analyzer_shared/src/scanner/token_constants.dart';
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/src/dart/scanner/scanner.dart' as dart;
 
-enum ScannerState {
-  data,
-  tagStart,
-  tag,
-  tagAttributeValue,
-  comment,
-  mustache,
-}
+enum ScannerState { data, tagStart, tag, tagAttributeValue, comment, mustache }
 
 final RegExp spaceOrSlashOrClosingTag = RegExp('(\\s|\\/|>)');
 
@@ -26,22 +19,75 @@ bool _isTagSpace(int char) {
   return char == $SPACE || char == $TAB || char == $LF || char == $CR;
 }
 
-class SvelteToken extends SimpleToken {
-  static const TokenType DATA = TokenType(200, '', 'DATA', NO_PRECEDENCE, STRING_TOKEN);
-  static const TokenType COMMENT_START =
-      TokenType(201, '<!--', 'COMMENT_START', NO_PRECEDENCE, STRING_TOKEN);
-  static const TokenType COMMENT = TokenType(202, '-->', 'COMMENT', NO_PRECEDENCE, STRING_TOKEN);
-  static const TokenType COMMENT_END =
-      TokenType(203, '-->', 'COMMENT_END', NO_PRECEDENCE, STRING_TOKEN);
-  static const TokenType LT_SLASH = TokenType(204, '</', 'LT_SLASH', NO_PRECEDENCE, STRING_TOKEN);
-  static const TokenType SLASH_GT = TokenType(205, '/>', 'SLASH_GT', NO_PRECEDENCE, STRING_TOKEN);
-  static const TokenType TAG_SPACE = TokenType(206, ' ', 'TAG_SPACE', NO_PRECEDENCE, STRING_TOKEN);
-  static const TokenType TAG_IDENTIFIER =
-      TokenType(207, '', 'TAG_IDENTIFIER', NO_PRECEDENCE, STRING_TOKEN);
+// Keyword.YIELD index is 154
+final class SvelteToken extends SimpleToken {
+  static const TokenType DATA = TokenType(
+    155,
+    '',
+    'DATA',
+    NO_PRECEDENCE,
+    STRING_TOKEN,
+  );
+
+  static const TokenType COMMENT_START = TokenType(
+    156,
+    '<!--',
+    'COMMENT_START',
+    NO_PRECEDENCE,
+    STRING_TOKEN,
+  );
+
+  static const TokenType COMMENT = TokenType(
+    157,
+    '-->',
+    'COMMENT',
+    NO_PRECEDENCE,
+    STRING_TOKEN,
+  );
+
+  static const TokenType COMMENT_END = TokenType(
+    158,
+    '-->',
+    'COMMENT_END',
+    NO_PRECEDENCE,
+    STRING_TOKEN,
+  );
+
+  static const TokenType LT_SLASH = TokenType(
+    159,
+    '</',
+    'LT_SLASH',
+    NO_PRECEDENCE,
+    STRING_TOKEN,
+  );
+
+  static const TokenType SLASH_GT = TokenType(
+    160,
+    '/>',
+    'SLASH_GT',
+    NO_PRECEDENCE,
+    STRING_TOKEN,
+  );
+
+  static const TokenType TAG_SPACE = TokenType(
+    161,
+    ' ',
+    'TAG_SPACE',
+    NO_PRECEDENCE,
+    STRING_TOKEN,
+  );
+
+  static const TokenType TAG_IDENTIFIER = TokenType(
+    162,
+    '',
+    'TAG_IDENTIFIER',
+    NO_PRECEDENCE,
+    STRING_TOKEN,
+  );
 
   SvelteToken(this.type, int offset, [String? string])
-      : lexeme = string ?? type.lexeme,
-        super(type, offset);
+    : lexeme = string ?? type.lexeme,
+      super(type, offset);
 
   @override
   final TokenType type;
@@ -64,7 +110,7 @@ class SvelteStringToken extends StringTokenImpl {
   }
 
   SvelteStringToken(this.type, String data, int start, int end)
-      : super.fromSubstring(type, data, start, end, start);
+    : super.fromSubstring(type, data, start, end, start);
 
   @override
   final TokenType type;
@@ -78,8 +124,8 @@ class SvelteStringScanner extends StringScanner {
   }
 
   SvelteStringScanner(this.string, {super.configuration})
-      : state = ScannerState.data,
-        super(string, includeComments: true);
+    : state = ScannerState.data,
+      super(string, includeComments: true);
 
   final String string;
 
@@ -151,8 +197,7 @@ class SvelteStringScanner extends StringScanner {
           identical(next, $TAB) ||
           identical(next, $LF) ||
           identical(next, $CR)) {
-        appendWhiteSpace(next);
-        next = advance();
+        next = skipSpaces();
 
         // Sequences of spaces are common, so advance through them fast.
         while (identical(next, $SPACE)) {
@@ -204,7 +249,10 @@ class SvelteStringScanner extends StringScanner {
       }
 
       if (identical(next, $CLOSE_CURLY_BRACKET)) {
-        next = appendEndGroup(TokenType.CLOSE_CURLY_BRACKET, OPEN_CURLY_BRACKET_TOKEN);
+        next = appendEndGroup(
+          TokenType.CLOSE_CURLY_BRACKET,
+          OPEN_CURLY_BRACKET_TOKEN,
+        );
 
         if (groupingStack.isEmpty) {
           state = nextState;
@@ -252,7 +300,10 @@ class SvelteStringScanner extends StringScanner {
       }
 
       if (identical(next, $CLOSE_SQUARE_BRACKET)) {
-        return appendEndGroup(TokenType.CLOSE_SQUARE_BRACKET, OPEN_SQUARE_BRACKET_TOKEN);
+        return appendEndGroup(
+          TokenType.CLOSE_SQUARE_BRACKET,
+          OPEN_SQUARE_BRACKET_TOKEN,
+        );
       }
 
       if (identical(next, $AT)) {
@@ -335,7 +386,9 @@ class SvelteStringScanner extends StringScanner {
         }
       }
 
-      if (identical(next, $BANG) && identical(peek(), $MINUS) && identical(peek(2), $MINUS)) {
+      if (identical(next, $BANG) &&
+          identical(peek(), $MINUS) &&
+          identical(peek(2), $MINUS)) {
         appendToken(SvelteToken(SvelteToken.COMMENT_START, tokenStart));
         next = advance(3);
         beginToken();

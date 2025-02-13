@@ -137,11 +137,7 @@ extension MustacheParser on Parser {
         elseIf: true,
       );
 
-      block.elseBlock = ElseBlock(
-        start: start,
-        children: <Node>[ifBlock],
-      );
-
+      block.elseBlock = ElseBlock(start: start, children: <Node>[ifBlock]);
       stack.add(ifBlock);
     } else {
       Node block = current;
@@ -159,11 +155,7 @@ extension MustacheParser on Parser {
       allowSpace();
       expect('}');
 
-      ElseBlock elseBlock = ElseBlock(
-        start: start,
-        children: <Node>[],
-      );
-
+      ElseBlock elseBlock = ElseBlock(start: start, children: <Node>[]);
       block.elseBlock = elseBlock;
       stack.add(elseBlock);
     }
@@ -216,15 +208,11 @@ extension MustacheParser on Parser {
     Node childBlock;
 
     if (isThen) {
-      childBlock = awaitBlock.thenBlock = ThenBlock(
-        start: start,
-        children: <Node>[],
-      );
+      ThenBlock thenBlock = ThenBlock(start: start, children: <Node>[]);
+      childBlock = awaitBlock.thenBlock = thenBlock;
     } else {
-      childBlock = awaitBlock.catchBlock = CatchBlock(
-        start: start,
-        children: <Node>[],
-      );
+      CatchBlock catchBlock = CatchBlock(start: start, children: <Node>[]);
+      childBlock = awaitBlock.catchBlock = catchBlock;
     }
 
     stack.add(childBlock);
@@ -341,11 +329,7 @@ extension MustacheParser on Parser {
     allowSpace(required: true);
 
     Expression expression = readExpression(_awaitThen);
-
-    AwaitBlock awaitBlock = AwaitBlock(
-      start: start,
-      expession: expression,
-    );
+    AwaitBlock awaitBlock = AwaitBlock(start: start, expession: expression);
 
     allowSpace();
 
@@ -377,17 +361,14 @@ extension MustacheParser on Parser {
     Node childBlock;
 
     if (awaitBlockThenShorthand) {
-      childBlock = awaitBlock.thenBlock = ThenBlock(
-        children: <Node>[],
-      );
+      ThenBlock thenBlock = ThenBlock(children: <Node>[]);
+      childBlock = awaitBlock.thenBlock = thenBlock;
     } else if (awaitBlockCatchShorthand) {
-      childBlock = awaitBlock.catchBlock = CatchBlock(
-        children: <Node>[],
-      );
+      CatchBlock catchBlock = CatchBlock(children: <Node>[]);
+      childBlock = awaitBlock.catchBlock = catchBlock;
     } else {
-      childBlock = awaitBlock.pendingBlock = PendingBlock(
-        children: <Node>[],
-      );
+      PendingBlock pendingBlock = PendingBlock(children: <Node>[]);
+      childBlock = awaitBlock.pendingBlock = pendingBlock;
     }
 
     childBlock.start = start;
@@ -418,11 +399,13 @@ extension MustacheParser on Parser {
     allowSpace();
     expect('}');
 
-    current.children.add(RawMustacheTag(
+    RawMustacheTag rawMustacheTag = RawMustacheTag(
       start: start,
       end: position,
       expression: expression,
-    ));
+    );
+
+    current.children.add(rawMustacheTag);
   }
 
   void _debug(int start) {
@@ -442,11 +425,13 @@ extension MustacheParser on Parser {
     allowSpace();
     expect('}');
 
-    current.children.add(DebugTag(
+    DebugTag debugTag = DebugTag(
       start: start,
       end: position,
       identifiers: identifiers,
-    ));
+    );
+
+    current.children.add(debugTag);
   }
 
   void _const(int start) {
@@ -462,11 +447,13 @@ extension MustacheParser on Parser {
     allowSpace();
     expect('}');
 
-    current.children.add(ConstTag(
+    ConstTag constTag = ConstTag(
       start: start,
       end: position,
       expression: expression,
-    ));
+    );
+
+    current.children.add(constTag);
   }
 
   void _expression(int start) {
@@ -474,10 +461,12 @@ extension MustacheParser on Parser {
     allowSpace();
     expect('}');
 
-    current.children.add(MustacheTag(
+    MustacheTag mustacheTag = MustacheTag(
       start: start,
       end: position,
       expression: expression,
-    ));
+    );
+
+    current.children.add(mustacheTag);
   }
 }

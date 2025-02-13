@@ -31,10 +31,7 @@ const ErrorCode invalidConstArgs = (
 );
 
 ErrorCode cssSyntaxError(String message) {
-  return (
-    code: 'css-syntax-error',
-    message: message,
-  );
+  return (code: 'css-syntax-error', message: message);
 }
 
 const ErrorCode duplicateAttribute = (
@@ -60,10 +57,7 @@ const ErrorCode emptyAttributeShorthand = (
 );
 
 ErrorCode emptyDirectiveName(String type) {
-  return (
-    code: 'empty-directive-name',
-    message: '$type name cannot be empty',
-  );
+  return (code: 'empty-directive-name', message: '$type name cannot be empty');
 }
 
 const ErrorCode emptyGlobalSelector = (
@@ -108,7 +102,8 @@ ErrorCode invalidClosingTagUnopened(String name) {
 ErrorCode invalidClosingTagAutoClosed(String name, String reason) {
   return (
     code: 'invalid-closing-tag',
-    message: '</$name> attempted to close <$name> that was already '
+    message:
+        '</$name> attempted to close <$name> that was already '
         'automatically closed by <$reason>',
   );
 }
@@ -125,7 +120,8 @@ const ErrorCode invalidDeclaration = (
 
 const ErrorCode invalidDirectiveValue = (
   code: 'invalid-directive-value',
-  message: 'Directive value must be a JavaScript expression enclosed in curly '
+  message:
+      'Directive value must be a JavaScript expression enclosed in curly '
       'braces',
 );
 
@@ -195,7 +191,8 @@ ErrorCode invalidTagPlacement(String? location, String? name) {
 ErrorCode invalidRefDirective(String? name) {
   return (
     code: 'invalid-ref-directive',
-    message: 'The ref directive is no longer supported — use '
+    message:
+        'The ref directive is no longer supported — use '
         "'bind:this={$name}' instead",
   );
 }
@@ -207,7 +204,8 @@ const ErrorCode invalidRefSelector = (
 
 const ErrorCode invalidSelfPlacement = (
   code: 'invalid-self-placement',
-  message: '<svelte:self> components can only exist inside {#if} blocks, '
+  message:
+      '<svelte:self> components can only exist inside {#if} blocks, '
       '{#each} blocks, or slots passed to components',
 );
 
@@ -258,8 +256,8 @@ const ErrorCode invalidThenPlacementWithoutAwait = (
 ErrorCode invalidVoidContent(String name) {
   return (
     code: 'invalid-void-content',
-    message: '<$name> is a void element and cannot have children, or a closing '
-        'tag',
+    message:
+        '<$name> is a void element and cannot have children, or a closing tag',
   );
 }
 
@@ -311,17 +309,11 @@ const ErrorCode unexpectedEOF = (
 );
 
 ErrorCode unexpectedEOFToken(Pattern token) {
-  return (
-    code: 'unexpected-eof',
-    message: 'Unexpected $token',
-  );
+  return (code: 'unexpected-eof', message: 'Unexpected $token');
 }
 
 ErrorCode unexpectedToken(Pattern token) {
-  return (
-    code: 'unexpected-token',
-    message: 'Expected $token',
-  );
+  return (code: 'unexpected-token', message: 'Expected $token');
 }
 
 const ErrorCode unexpectedTokenDestructure = (

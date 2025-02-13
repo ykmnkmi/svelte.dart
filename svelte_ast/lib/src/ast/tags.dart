@@ -24,9 +24,7 @@ final class Attribute extends Node {
       'end': end,
       'class': 'Attribute',
       'name': name,
-      'values': <Object?>[
-        for (Node value in values) value.toJson(mapper),
-      ],
+      'values': <Object?>[for (Node value in values) value.toJson(mapper)],
     };
   }
 }
@@ -57,11 +55,7 @@ final class AttributeShorthand extends Node {
 }
 
 final class Spread extends Node {
-  Spread({
-    super.start,
-    super.end,
-    required this.expression,
-  });
+  Spread({super.start, super.end, required this.expression});
 
   final Expression expression;
 
@@ -273,9 +267,7 @@ final class StyleDirective extends Directive {
   Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
     return <String, Object?>{
       ...super.toJson(mapper),
-      'values': <Object?>[
-        for (Node value in values) value.toJson(mapper),
-      ]
+      'values': <Object?>[for (Node value in values) value.toJson(mapper)],
     };
   }
 }
@@ -431,9 +423,7 @@ final class Head extends Tag {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -462,9 +452,7 @@ final class Options extends Tag {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -493,9 +481,7 @@ final class Window extends Tag {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -524,9 +510,7 @@ final class Document extends Tag {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -555,9 +539,7 @@ final class Body extends Tag {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -590,9 +572,7 @@ final class InlineComponent extends Tag {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -624,9 +604,7 @@ final class InlineElement extends Tag {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -655,9 +633,7 @@ final class SlotTemplate extends Tag {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -686,9 +662,7 @@ final class Title extends Tag {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -717,9 +691,7 @@ final class Slot extends Tag {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -748,9 +720,7 @@ final class Element extends Tag implements HasName {
       'attributes': <Object?>[
         for (Node attribute in attributes) attribute.toJson(mapper),
       ],
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }

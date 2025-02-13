@@ -126,20 +126,14 @@ extension ScriptParser on Parser {
 
     withScriptParserRun(dataStart, _scriptCloseTag, scriptParser);
 
-    scripts.add(Script(
+    Script script = Script(
       start: start,
       end: position,
       context: context,
-      content: (
-        start: dataStart,
-        end: dataEnd,
-        data: data,
-      ),
-      body: (
-        directives: directives,
-        properties: properties,
-        nodes: nodes,
-      ),
-    ));
+      content: (start: dataStart, end: dataEnd, data: data),
+      body: (directives: directives, properties: properties, nodes: nodes),
+    );
+
+    scripts.add(script);
   }
 }

@@ -2229,5 +2229,5 @@ const Map<String, int> entities = <String, int>{
   'GT': 62,
   'LT': 60,
   'gt': 62,
-  'lt': 60
+  'lt': 60,
 };

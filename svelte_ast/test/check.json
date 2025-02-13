@@ -1041,7 +1041,6 @@
               "@toString": "int",
               "start": 109,
               "end": 112,
-              "importPrefix": null,
               "name2": {
                 "start": 109,
                 "end": 112,
@@ -1062,6 +1061,7 @@
                 "type": "IDENTIFIER",
                 "lexeme": "int"
               },
+              "importPrefix": null,
               "isDeferred": false,
               "isSynthetic": false
             },
@@ -1865,7 +1865,6 @@
               "@toString": "void",
               "start": 195,
               "end": 199,
-              "importPrefix": null,
               "name2": {
                 "start": 195,
                 "end": 199,
@@ -1886,6 +1885,7 @@
                 "type": "VOID",
                 "lexeme": "void"
               },
+              "importPrefix": null,
               "isDeferred": false,
               "isSynthetic": false
             },
@@ -2865,13 +2865,13 @@
                                               "start": 336,
                                               "end": 337,
                                               "keyword": null,
-                                              "beginToken": {
+                                              "endToken": {
                                                 "start": 336,
                                                 "end": 337,
                                                 "type": "IDENTIFIER",
                                                 "lexeme": "_"
                                               },
-                                              "endToken": {
+                                              "firstTokenAfterCommentAndMetadata": {
                                                 "start": 336,
                                                 "end": 337,
                                                 "type": "IDENTIFIER",
@@ -2880,9 +2880,7 @@
                                               "isConst": false,
                                               "isExplicitlyTyped": false,
                                               "isFinal": false,
-                                              "type": null,
-                                              "documentationComment": null,
-                                              "sortedCommentAndAnnotations": []
+                                              "type": null
                                             }
                                           ],
                                           "isSynthetic": false,
@@ -3348,5 +3346,6 @@
         }
       ]
     }
-  }
+  },
+  "module": null
 }

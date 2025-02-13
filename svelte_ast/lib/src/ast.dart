@@ -13,11 +13,7 @@ Object? toStringMapper(Object? object) {
 }
 
 abstract class Node {
-  Node({
-    this.start = -1,
-    this.end = -1,
-    this.children = const <Node>[],
-  });
+  Node({this.start = -1, this.end = -1, this.children = const <Node>[]});
 
   int start;
 
@@ -31,12 +27,7 @@ abstract class Node {
 }
 
 final class Text extends Node {
-  Text({
-    super.start,
-    super.end,
-    this.raw = '',
-    this.data = '',
-  });
+  Text({super.start, super.end, this.raw = '', this.data = ''});
 
   final String raw;
 
@@ -101,11 +92,7 @@ final class CommentTag extends Node {
 }
 
 final class RawMustacheTag extends Node {
-  RawMustacheTag({
-    super.start,
-    super.end,
-    required this.expression,
-  });
+  RawMustacheTag({super.start, super.end, required this.expression});
 
   final Expression expression;
 
@@ -120,17 +107,13 @@ final class RawMustacheTag extends Node {
       'start': start,
       'end': end,
       'class': 'RawMustacheTag',
-      'expression': mapper(expression)
+      'expression': mapper(expression),
     };
   }
 }
 
 final class ConstTag extends Node {
-  ConstTag({
-    super.start,
-    super.end,
-    required this.expression,
-  });
+  ConstTag({super.start, super.end, required this.expression});
 
   final Expression expression;
 
@@ -151,11 +134,7 @@ final class ConstTag extends Node {
 }
 
 final class DebugTag extends Node {
-  DebugTag({
-    super.start,
-    super.end,
-    this.identifiers,
-  });
+  DebugTag({super.start, super.end, this.identifiers});
 
   final List<SimpleIdentifier>? identifiers;
 
@@ -176,11 +155,7 @@ final class DebugTag extends Node {
 }
 
 final class MustacheTag extends Node {
-  MustacheTag({
-    super.start,
-    super.end,
-    required this.expression,
-  });
+  MustacheTag({super.start, super.end, required this.expression});
 
   final Expression expression;
 
@@ -201,11 +176,7 @@ final class MustacheTag extends Node {
 }
 
 final class Fragment extends Node {
-  Fragment({
-    super.start,
-    super.end,
-    super.children,
-  });
+  Fragment({super.start, super.end, super.children});
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -218,18 +189,17 @@ final class Fragment extends Node {
       'start': start,
       'end': end,
       'class': 'Fragment',
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
 
-typedef ScriptBody = ({
-  List<dart.Directive> directives,
-  List<VariableDeclarationStatement> properties,
-  List<AstNode> nodes,
-});
+typedef ScriptBody =
+    ({
+      List<dart.Directive> directives,
+      List<VariableDeclarationStatement> properties,
+      List<AstNode> nodes,
+    });
 
 final class Script extends Node {
   Script({
@@ -270,9 +240,7 @@ final class Script extends Node {
         'externals': <Object?>[
           for (AstNode property in body.properties) mapper(property),
         ],
-        'body': <Object?>[
-          for (AstNode node in body.nodes) mapper(node),
-        ],
+        'body': <Object?>[for (AstNode node in body.nodes) mapper(node)],
       },
     };
   }
@@ -310,7 +278,7 @@ final class Style extends Node {
         'data': content.data,
       },
       'attributes': <Object?>[
-        for (Node attribute in attributes) attribute.toJson(mapper)
+        for (Node attribute in attributes) attribute.toJson(mapper),
       ],
       'topLevels': topLevels.map<Object?>(mapper).toList(),
     };

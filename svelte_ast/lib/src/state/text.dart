@@ -19,13 +19,8 @@ extension TextParser on Parser {
     if (start < found) {
       String raw = string.substring(start, found);
       String data = decodeCharacterReferences(raw, false);
-
-      current.children.add(Text(
-        start: start,
-        end: found,
-        raw: raw,
-        data: data,
-      ));
+      Text text = Text(start: start, end: found, raw: raw, data: data);
+      current.children.add(text);
     }
 
     position = found;

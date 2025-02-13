@@ -69,11 +69,8 @@ extension ExpressionParser on Parser {
       ) = analysisError;
       dartError(message, offset, length);
     } on ErrorToken catch (token) {
-      var ErrorToken(
-        :int offset,
-        :int length,
-        :Message assertionMessage,
-      ) = token;
+      var ErrorToken(:int offset, :int length, :Message assertionMessage) =
+          token;
       dartError(assertionMessage.problemMessage, offset, length);
     }
   }

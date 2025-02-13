@@ -20,14 +20,31 @@ class Parser {
   factory Parser(String string, {String? fullName, Uri? uri}) {
     FeatureSet featureSet = FeatureSet.latestLanguageVersion();
     ScannerConfiguration configuration = dart.Scanner.buildConfig(featureSet);
-    SvelteStringScanner scanner = SvelteStringScanner(string, configuration: configuration);
+
+    SvelteStringScanner scanner = SvelteStringScanner(
+      string,
+      configuration: configuration,
+    );
+
     LineInfo lineInfo = LineInfo(scanner.lineStarts);
     StringSource source = StringSource(string, fullName, uri: uri);
     RecordingErrorListener errorListener = RecordingErrorListener();
     ErrorReporter reporter = ErrorReporter(errorListener, source);
-    AstBuilder astBuilder = AstBuilder(reporter, source.uri, true, featureSet,
-        LibraryLanguageVersion(package: Version(3, 6, 0), override: null), lineInfo);
-    fe.Parser parser = fe.Parser(astBuilder, allowPatterns: featureSet.isEnabled(Feature.patterns));
+
+    AstBuilder astBuilder = AstBuilder(
+      reporter,
+      source.uri,
+      true,
+      featureSet,
+      LibraryLanguageVersion(package: Version(3, 6, 0), override: null),
+      lineInfo,
+    );
+
+    fe.Parser parser = fe.Parser(
+      astBuilder,
+      allowPatterns: featureSet.isEnabled(Feature.patterns),
+    );
+
     Token token = scanner.tokenize();
     return Parser.from(string, astBuilder, parser, token);
   }

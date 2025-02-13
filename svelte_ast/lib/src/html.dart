@@ -8,7 +8,7 @@ const List<int> windows1252 = <int>[
   0x0090, 0x2018, 0x2019, 0x201C, //
   0x201D, 0x2022, 0x2013, 0x2014, //
   0x02DC, 0x2122, 0x0161, 0x203A, //
-  0x0153, 0x009D, 0x017E, 0x0178
+  0x0153, 0x009D, 0x017E, 0x0178,
 ];
 
 String _regExpEntity(String entityName, bool isAttributeValue) {
@@ -22,8 +22,10 @@ String _regExpEntity(String entityName, bool isAttributeValue) {
 }
 
 RegExp _getEntityPattern(bool isAttributeValue) {
-  Iterable<String> regExpEntities = entities.keys
-      .map<String>((entityName) => _regExpEntity(entityName, isAttributeValue));
+  Iterable<String> regExpEntities = entities.keys.map<String>((entityName) {
+    return _regExpEntity(entityName, isAttributeValue);
+  });
+
   return RegExp('&(#(?:x[a-fA-F\\d]+|\\d+)(?:;)?|${regExpEntities.join('|')})');
 }
 

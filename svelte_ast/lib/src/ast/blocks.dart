@@ -4,11 +4,12 @@ abstract interface class HasElse implements Node {
   abstract ElseBlock? elseBlock;
 }
 
-typedef IfRest = (
-  Expression expression,
-  DartPattern? casePattern,
-  Expression? whenExpression,
-);
+typedef IfRest =
+    (
+      Expression expression,
+      DartPattern? casePattern,
+      Expression? whenExpression,
+    );
 
 final class IfBlock extends Node implements HasElse {
   IfBlock({
@@ -47,9 +48,7 @@ final class IfBlock extends Node implements HasElse {
       'expression': mapper(expression),
       'casePattern': mapper(casePattern),
       'whenExpression': mapper(whenExpression),
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
       'elseIf': elseIf,
       'elseBlock': elseBlock?.toJson(mapper),
     };
@@ -94,20 +93,14 @@ final class EachBlock extends Node implements HasElse {
       'context': mapper(context),
       'index': index,
       'key': mapper(key),
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
       'elseBlock': elseBlock?.toJson(mapper),
     };
   }
 }
 
 final class ElseBlock extends Node {
-  ElseBlock({
-    super.start,
-    super.end,
-    required super.children,
-  });
+  ElseBlock({super.start, super.end, required super.children});
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -120,9 +113,7 @@ final class ElseBlock extends Node {
       'start': start,
       'end': end,
       'class': 'ElseBlock',
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
@@ -193,19 +184,13 @@ final class PendingBlock extends Node {
       'start': start,
       'end': end,
       'class': 'PendingBlock',
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
 
 final class ThenBlock extends Node {
-  ThenBlock({
-    super.start,
-    super.end,
-    required super.children,
-  });
+  ThenBlock({super.start, super.end, required super.children});
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -218,19 +203,13 @@ final class ThenBlock extends Node {
       'start': start,
       'end': end,
       'class': 'ThenBlock',
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
 
 final class CatchBlock extends Node {
-  CatchBlock({
-    super.start,
-    super.end,
-    required super.children,
-  });
+  CatchBlock({super.start, super.end, required super.children});
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -243,20 +222,13 @@ final class CatchBlock extends Node {
       'start': start,
       'end': end,
       'class': 'CatchBlock',
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
 
 final class KeyBlock extends Node {
-  KeyBlock({
-    super.start,
-    super.end,
-    required this.expression,
-    super.children,
-  });
+  KeyBlock({super.start, super.end, required this.expression, super.children});
 
   final Expression expression;
 
@@ -272,9 +244,7 @@ final class KeyBlock extends Node {
       'end': end,
       'class': 'KeyBlock',
       'expression': mapper(expression),
-      'children': <Object?>[
-        for (Node child in children) child.toJson(mapper),
-      ],
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }

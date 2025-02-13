@@ -48,17 +48,15 @@ extension StyleParser on Parser {
 
     ast.visit(StyleValidator(this, dataStart));
 
-    styles.add(Style(
+    Style style = Style(
       start: start,
       end: position,
       attributes: attributes,
       topLevels: ast.topLevels,
-      content: (
-        start: dataStart,
-        end: dataEnd,
-        data: data,
-      ),
-    ));
+      content: (start: dataStart, end: dataEnd, data: data),
+    );
+
+    styles.add(style);
   }
 }
 

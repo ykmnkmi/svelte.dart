@@ -4,12 +4,9 @@ import 'package:_fe_analyzer_shared/src/scanner/characters.dart';
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart';
 
 class ScriptScanner extends StringScanner {
-  ScriptScanner({
-    required String string,
-    int offset = 0,
-    super.configuration,
-  })  : _string = string,
-        super(string, includeComments: true) {
+  ScriptScanner({required String string, int offset = 0, super.configuration})
+    : _string = string,
+      super(string, includeComments: true) {
     scanOffset = offset - 1;
   }
 

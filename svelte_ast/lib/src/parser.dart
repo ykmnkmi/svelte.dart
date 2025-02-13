@@ -15,8 +15,8 @@ final class Parser {
     this.fileName,
     this.uri,
     this.skipStyle = false,
-  })  : length = string.length,
-        sourceFile = SourceFile.fromString(string, url: uri) {
+  }) : length = string.length,
+       sourceFile = SourceFile.fromString(string, url: uri) {
     stack.add(html);
 
     while (isNotDone) {
@@ -186,11 +186,7 @@ final class Parser {
   }
 
   Never dartError(String message, int offset, int length) {
-    error(
-      (code: 'parse-error', message: message),
-      offset,
-      offset + length,
-    );
+    error((code: 'parse-error', message: message), offset, offset + length);
   }
 
   Never error(ErrorCode errorCode, [int? position, int? end]) {
