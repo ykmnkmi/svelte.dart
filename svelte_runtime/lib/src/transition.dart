@@ -1,30 +1,11 @@
-import 'package:meta/dart2js.dart';
-import 'package:meta/meta.dart';
-import 'package:svelte_runtime/src/fragment.dart';
-import 'package:svelte_runtime/src/utilities.dart';
+abstract interface class TransitionManager {
+  abstract bool isGlobal;
 
-@internal
-Set<Fragment> outroing = <Fragment>{};
+  // `in` is keyword.
+  void enter();
 
-@noInline
-void transitionIn(Fragment? fragment, bool local) {
-  if (fragment != null) {
-    outroing.remove(fragment);
-    fragment.intro(local);
-  }
-}
+  // `out` do not match with `enter`.
+  void exit(void Function() check) {}
 
-@noInline
-void transitionOut(
-  Fragment? fragment,
-  bool local, [
-  VoidFunction? callback,
-]) {
-  if (fragment != null) {
-    if (outroing.add(fragment)) {
-      fragment.outro(local);
-    }
-  } else if (callback != null) {
-    callback();
-  }
+  void stop();
 }

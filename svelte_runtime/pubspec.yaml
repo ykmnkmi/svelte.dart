@@ -1,18 +1,18 @@
 name: svelte_runtime
 description: SvelteDart Runtime.
-version: 1.0.0-dev.8
+version: 1.0.0-dev.9
 repository: https://github.com/ykmnkmi/svelte.dart
 
 resolution: workspace
 
 environment:
-  sdk: ">=3.5.0 <4.0.0"
+  sdk: ">=3.7.0 <4.0.0"
 
 dependencies:
   meta: ^1.16.0
   web: ^1.1.0
 
 dev_dependencies:
-  lints: ^5.0.0
-  stack_trace: ^1.12.0
-  test: ^1.25.8
+  lints: ^5.1.1
+  stack_trace: ^1.12.1
+  test: ^1.25.15
