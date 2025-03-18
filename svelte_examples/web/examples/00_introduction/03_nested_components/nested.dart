@@ -1,31 +1,17 @@
+// ignore: library_prefixes
+import 'package:svelte_runtime/src/internal.dart' as $;
 import 'package:svelte_runtime/svelte_runtime.dart';
-import 'package:web/web.dart' show Element, Node;
+import 'package:web/web.dart';
 
-Fragment createFragment(List<Object?> instance) {
-  late Element p;
-
-  return Fragment(
-    create: () {
-      p = element('p');
-      setText(p, "...don't affect this element");
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
-      }
-    },
+base class Nested extends Component {
+  static final root = $.template<HTMLParagraphElement>(
+    "<p>...don't affect this element</p>",
   );
-}
 
-final class Nested extends Component {
-  Nested({
-    super.target,
-    super.anchor,
-    super.properties,
-    super.hydrate,
-    super.intro,
-  }) : super(createFragment: createFragment);
+  @override
+  void call(Node anchor) {
+    var p = root();
+
+    $.append(anchor, p);
+  }
 }

@@ -1,151 +1,54 @@
+// ignore: library_prefixes
+import 'package:svelte_runtime/src/internal.dart' as $;
 import 'package:svelte_runtime/svelte_runtime.dart';
-import 'package:web/web.dart' show Element, Node;
+import 'package:web/web.dart';
 
 import 'user.dart';
 
-extension on List<Object?> {
-  User get _user {
-    return this[0] as User;
-  }
-
-  void Function() get _toggle {
-    return this[1] as void Function();
-  }
-}
-
-Fragment createIfBlock(List<Object?> instance) {
-  late Element button;
-
-  var mounted = false;
-
-  late void Function() dispose;
-
-  return Fragment(
-    create: () {
-      button = element('button');
-      setText(button, 'Log out');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, button, anchor);
-
-      if (!mounted) {
-        dispose = listen(button, 'click', listener(instance._toggle));
-        mounted = true;
-      }
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(button);
-      }
-
-      mounted = false;
-      dispose();
-    },
+base class App extends Component {
+  static final root1 = $.template<HTMLButtonElement>(
+    '<button>Log out</button>',
   );
-}
 
-Fragment createElseBlock(List<Object?> instance) {
-  late Element button;
+  static final root2 = $.template<HTMLButtonElement>('<button>Log in</button>');
 
-  var mounted = false;
+  @override
+  void call(Node anchor) {
+    var user = state<User>(User(loggedIn: false));
 
-  late void Function() dispose;
-
-  return Fragment(
-    create: () {
-      button = element('button');
-      setText(button, 'Log in');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, button, anchor);
-
-      if (!mounted) {
-        dispose = listen(button, 'click', listener(instance._toggle));
-        mounted = true;
-      }
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(button);
-      }
-
-      mounted = false;
-      dispose();
-    },
-  );
-}
-
-Fragment createFragment(List<Object?> instance) {
-  late Node ifBlockAnchor;
-
-  FragmentFactory selectCurrentBlock(
-    List<Object?> context,
-    int dirty,
-  ) {
-    if (context._user.loggedIn) {
-      return createIfBlock;
+    void toggle() {
+      user.update((user) {
+        user.loggedIn = !user.loggedIn;
+      });
     }
 
-    return createElseBlock;
-  }
+    var fragment = $.comment();
+    var node = $.firstChild<Comment>(fragment);
 
-  var currentBlockFactory = selectCurrentBlock(instance, -1);
-  var ifBlock = currentBlockFactory(instance);
+    {
+      void consequent(Node anchor) {
+        var button = root1();
 
-  return Fragment(
-    create: () {
-      ifBlock.create();
-      ifBlockAnchor = empty();
-    },
-    mount: (Element target, Node? anchor) {
-      ifBlock.mount(target, anchor);
-      insert(target, ifBlockAnchor, anchor);
-    },
-    update: (List<Object?> instance, int dirty) {
-      var newBlockFactory = selectCurrentBlock(instance, dirty);
-
-      if (currentBlockFactory == newBlockFactory) {
-        ifBlock.update(instance, dirty);
-      } else {
-        ifBlock.detach(true);
-
-        ifBlock = newBlockFactory(instance)
-          ..create()
-          ..mount(ifBlockAnchor.parentNode as Element, ifBlockAnchor);
-
-        currentBlockFactory = newBlockFactory;
+        $.event0('click', button, toggle);
+        $.append(anchor, button);
       }
-    },
-    detach: (bool detaching) {
-      ifBlock.detach(detaching);
 
-      if (detaching) {
-        detach(ifBlockAnchor);
+      void alternate(Node anchor) {
+        var button1 = root2();
+
+        $.event0('click', button1, toggle);
+        $.append(anchor, button1);
       }
-    },
-  );
-}
 
-List<Object?> createInstance(
-  Component self,
-  Map<String, Object?> props,
-  Invalidate invalidate,
-) {
-  var user = User(loggedIn: false);
+      $.ifBlock(node, (render) {
+        if (user().loggedIn) {
+          render(consequent);
+        } else {
+          render(alternate, false);
+        }
+      });
+    }
 
-  void toggle() {
-    invalidate(0, user, user.loggedIn = !user.loggedIn);
+    $.append(anchor, fragment);
   }
-
-  return <Object?>[user, toggle];
-}
-
-final class App extends Component {
-  App({
-    super.target,
-    super.anchor,
-    super.properties,
-    super.hydrate,
-    super.intro,
-  }) : super(createInstance: createInstance, createFragment: createFragment);
 }

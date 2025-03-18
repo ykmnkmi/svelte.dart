@@ -1,18 +1,22 @@
 <script type="application/dart">
-	import 'dart:html';
+  import 'package:svelte_runtime/svelte_runtime.dart';
+  import 'package:web/web.dart';
 
-	var count = 0;
+  var count = state<int>(0);
 
-	$: if (count >= 10) {
-		window.alert(`count is dangerously high!`);
-		count = 9;
-	}
+  effect(() {
+    if (count() >= 10) {
+      window.alert(`count is dangerously high!`);
+      count.set(9);
+    }
+  });
 
-	void handleClick() {
-		count += 1;
-	}
+  void handleClick() {
+    count.set(count() + 1);
+  }
 </script>
 
-<button on:click={handleClick}>
-	Clicked {count} {count === 1 ? 'time' : 'times'}
+<button onclick={handleClick}>
+  Clicked {count()}
+  {count() == 1 ? 'time' : 'times'}
 </button>

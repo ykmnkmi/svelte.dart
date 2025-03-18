@@ -1,5 +1,5 @@
 <script type="application/dart">
-	var string = `here's some <strong>HTML!!!</strong>`;
+  var string = `here's some <strong>HTML!!!</strong>`;
 </script>
 
 <p>{@html string}</p>

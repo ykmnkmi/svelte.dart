@@ -1,33 +1,18 @@
+// ignore: library_prefixes
+import 'package:svelte_runtime/src/internal.dart' as $;
 import 'package:svelte_runtime/svelte_runtime.dart';
-import 'package:web/web.dart' show Element, Node;
+import 'package:web/web.dart';
 
-Fragment createFragment(List<Object?> instance) {
-  late Element h1;
+base class App extends Component {
+  static final root = $.template<HTMLHeadingElement>('<h1></h1>');
 
-  return Fragment(
-    create: () {
-      h1 = element('h1');
-      setText(h1, 'Hello $name!');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, h1, anchor);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(h1);
-      }
-    },
-  );
-}
+  @override
+  void call(Node anchor) {
+    var name = 'world';
 
-var name = 'world';
+    var h1 = root();
 
-final class App extends Component {
-  App({
-    super.target,
-    super.anchor,
-    super.properties,
-    super.hydrate,
-    super.intro,
-  }) : super(createFragment: createFragment);
+    $.setTextContent(h1, 'Hello $name!');
+    $.append(anchor, h1);
+  }
 }

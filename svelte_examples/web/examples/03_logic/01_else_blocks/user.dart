@@ -1,5 +1,5 @@
-class User {
-  User({this.loggedIn = false});
+final class User {
+  User({required this.loggedIn});
 
   bool loggedIn;
 }

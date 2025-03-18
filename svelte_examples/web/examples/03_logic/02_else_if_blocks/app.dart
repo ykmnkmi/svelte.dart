@@ -1,126 +1,73 @@
+// ignore: library_prefixes
+import 'package:svelte_runtime/src/internal.dart' as $;
 import 'package:svelte_runtime/svelte_runtime.dart';
-import 'package:web/web.dart' show Element, Node;
+import 'package:web/web.dart';
 
-Fragment createIfBlock1(List<Object?> instance) {
-  late Element p;
+base class App extends Component {
+  static final root1 = $.template<HTMLParagraphElement>('<p></p>');
 
-  return Fragment(
-    create: () {
-      p = element('p');
-      setText(p, '$x is greater than 10');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
+  static final root3 = $.template<HTMLParagraphElement>('<p></p>');
+
+  static final root4 = $.template<HTMLParagraphElement>('<p></p>');
+
+  App();
+
+  @override
+  void call(Node anchor) {
+    var x = 7;
+
+    var fragment = $.comment();
+    var node = $.firstChild<Comment>(fragment);
+
+    {
+      void consequent(Node anchor) {
+        var p = root1();
+
+        $.setTextContent(p, '''
+$x is greater than 10''');
+        $.append(anchor, p);
       }
-    },
-  );
-}
 
-Fragment createIfBlock2(List<Object?> instance) {
-  late Element p;
+      void alternate1(Node anchor) {
+        var fragment1 = $.comment();
+        var node1 = $.firstChild<Comment>(fragment1);
 
-  return Fragment(
-    create: () {
-      p = element('p');
-      setText(p, '$x is less than 5');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
+        void consequent1(Node anchor) {
+          var p1 = root3();
+
+          $.setTextContent(p1, '''
+$x is less than 5''');
+          $.append(anchor, p1);
+        }
+
+        void alternate(Node anchor) {
+          var p2 = root4();
+
+          $.setTextContent(p2, '''
+$x is between 5 and 10''');
+          $.append(anchor, p2);
+        }
+
+        $.ifBlock(node1, (render) {
+          if (x > 10) {
+            render(consequent1);
+          } else {
+            render(alternate, false);
+          }
+        }, true);
+
+        $.append(anchor, fragment1);
       }
-    },
-  );
-}
 
-Fragment createElseBlock(List<Object?> instance) {
-  late Element p;
-
-  return Fragment(
-    create: () {
-      p = element('p');
-      setText(p, '$x is between 5 and 10');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
-      }
-    },
-  );
-}
-
-Fragment createFragment(List<Object?> instance) {
-  late Node ifBlockAnchor;
-
-  FragmentFactory selectCurrentBlock(
-    List<Object?> context,
-    int dirty,
-  ) {
-    if (x > 10) {
-      return createIfBlock1;
+      $.ifBlock(node, (render) {
+        if (x > 10) {
+          render(consequent);
+        } else {
+          render(alternate1, false);
+        }
+      });
     }
 
-    if (5 > x) {
-      return createIfBlock2;
-    }
-
-    return createElseBlock;
+    $.append(anchor, fragment);
   }
-
-  var currentBlockFactory = selectCurrentBlock(instance, -1);
-  var ifBlock = currentBlockFactory(instance);
-
-  return Fragment(
-    create: () {
-      ifBlock.create();
-      ifBlockAnchor = empty();
-    },
-    mount: (Element target, Node? anchor) {
-      ifBlock.mount(target, anchor);
-      insert(target, ifBlockAnchor, anchor);
-    },
-    update: (List<Object?> instance, int dirty) {
-      var newBlockFactory = selectCurrentBlock(instance, dirty);
-
-      if (currentBlockFactory == newBlockFactory) {
-        ifBlock.update(instance, dirty);
-      } else {
-        ifBlock.detach(true);
-
-        ifBlock = newBlockFactory(instance)
-          ..create()
-          ..mount(ifBlockAnchor.parentNode as Element, ifBlockAnchor);
-
-        currentBlockFactory = newBlockFactory;
-      }
-    },
-    detach: (bool detaching) {
-      ifBlock.detach(detaching);
-
-      if (detaching) {
-        detach(ifBlockAnchor);
-      }
-    },
-  );
-}
-
-var x = 7;
-
-final class App extends Component {
-  App({
-    super.target,
-    super.anchor,
-    super.properties,
-    super.hydrate,
-    super.intro,
-  }) : super(createFragment: createFragment);
 }

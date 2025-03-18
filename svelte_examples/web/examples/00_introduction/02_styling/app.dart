@@ -1,42 +1,24 @@
+// ignore: library_prefixes
+import 'package:svelte_runtime/src/internal.dart' as $;
 import 'package:svelte_runtime/svelte_runtime.dart';
-import 'package:web/web.dart' show Element, Node;
+import 'package:web/web.dart';
 
-void addCss(Element? target) {
-  appendStyles(target, 'svelte-urs9w7', '''
-p.svelte-urs9w7 {
-  color: purple;
-  font-family: 'Comic Sans MS', cursive;
-  font-size: 2em;
-}
-''');
-}
-
-Fragment createFragment(List<Object?> instance) {
-  late Element p;
-
-  return Fragment(
-    create: () {
-      p = element('p');
-      setText(p, 'Styled!');
-      setAttribute(p, 'class', 'svelte-urs9w7');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, p, anchor);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(p);
-      }
-    },
+base class App extends Component {
+  static final root = $.template<HTMLParagraphElement>(
+    '<p class="svelte-urs9w7">Styled!</p>',
   );
-}
 
-final class App extends Component {
-  App({
-    super.target,
-    super.anchor,
-    super.properties,
-    super.hydrate,
-    super.intro,
-  }) : super(createFragment: createFragment, appendStyles: addCss);
+  @override
+  void call(Node anchor) {
+    $.appendStyles(anchor, 'svelte-urs9w7', """
+  p.svelte-urs9w7 {
+    color: purple;
+    font-family: 'Comic Sans MS', cursive;
+    font-size: 2em;
+  }""");
+
+    var p = root();
+
+    $.append(anchor, p);
+  }
 }

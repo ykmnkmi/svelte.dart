@@ -1,12 +1,12 @@
 <script type="application/dart">
-	import 'Info.svelte';
+  import 'Info.svelte';
 
-	var pkg = <String, Object>{
-		'name': 'svelte',
-		'version': 3,
-		'speed': 'blazing',
-		'website': 'https://svelte.dev'
-	};
+  var pkg = <Symbol, Object>{
+    #name: 'svelte',
+    #version: 3,
+    #speed: 'blazing',
+    #website: Uri.parse('https://svelte.dev'),
+  };
 </script>
 
 <Info {...pkg} />

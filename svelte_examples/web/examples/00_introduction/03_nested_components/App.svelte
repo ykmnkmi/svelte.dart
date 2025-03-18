@@ -1,14 +1,14 @@
 <script type="application/dart">
-	import 'Nested.svelte';
+  import 'Nested.svelte';
 </script>
 
 <p>These styles...</p>
-<Nested/>
+<Nested />
 
 <style>
-	p {
-		color: purple;
-		font-family: 'Comic Sans MS', cursive;
-		font-size: 2em;
-	}
+  p {
+    color: purple;
+    font-family: 'Comic Sans MS', cursive;
+    font-size: 2em;
+  }
 </style>

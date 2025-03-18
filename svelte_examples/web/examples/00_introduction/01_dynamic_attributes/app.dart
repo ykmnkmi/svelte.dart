@@ -1,35 +1,20 @@
+// ignore: library_prefixes
+import 'package:svelte_runtime/src/internal.dart' as $;
 import 'package:svelte_runtime/svelte_runtime.dart';
-import 'package:web/web.dart' show Element, Node;
+import 'package:web/web.dart';
 
-Fragment createFragment(List<Object?> instance) {
-  late Element img;
+base class App extends Component {
+  static final root = $.template<HTMLImageElement>('<img>');
 
-  return Fragment(
-    create: () {
-      img = element('img');
-      setAttribute(img, 'src', src);
-      setAttribute(img, 'alt', '$name dancing');
-    },
-    mount: (Element target, Node? anchor) {
-      insert(target, img, anchor);
-    },
-    detach: (bool detaching) {
-      if (detaching) {
-        detach(img);
-      }
-    },
-  );
-}
+  @override
+  void call(Node anchor) {
+    var src = '/tutorial/image.gif';
+    var name = 'Rick Astley';
 
-var src = '/tutorial/image.gif';
-var name = 'Rick Astley';
+    var img = root();
 
-final class App extends Component {
-  App({
-    super.target,
-    super.anchor,
-    super.properties,
-    super.hydrate,
-    super.intro,
-  }) : super(createFragment: createFragment);
+    $.setAttribute(img, 'src', src);
+    $.setAttribute(img, 'alt', '$name dancing');
+    $.append(anchor, img);
+  }
 }

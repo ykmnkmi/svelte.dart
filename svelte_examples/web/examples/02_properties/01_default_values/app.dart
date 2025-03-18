@@ -1,62 +1,23 @@
+// ignore: library_prefixes
+import 'package:svelte_runtime/src/internal.dart' as $;
 import 'package:svelte_runtime/svelte_runtime.dart';
-import 'package:web/web.dart' show Element, Node, Text;
+import 'package:web/web.dart';
 
 import 'nested.dart';
 
-Fragment createFragment(List<Object?> instance) {
-  Nested nested0;
-  late Text t;
-  Nested nested1;
+base class App extends Component {
+  static final root = $.template('<!> <!>', 1);
 
-  nested0 = Nested(properties: <String, Object?>{'answer': 42});
-  nested1 = Nested();
+  @override
+  void call(Node anchor) {
+    var fragment = root() as DocumentFragment;
+    var node = $.firstChild<Comment>(fragment);
 
-  var current = false;
+    Nested(answer: 42).call(node);
 
-  return Fragment(
-    create: () {
-      createComponent(nested0);
-      t = space();
-      createComponent(nested1);
-    },
-    mount: (Element target, Node? anchor) {
-      mountComponent(nested0, target, anchor);
-      insert(target, t, anchor);
-      mountComponent(nested1, target, anchor);
-      current = true;
-    },
-    intro: (bool local) {
-      if (current) {
-        return;
-      }
+    var node1 = $.sibling<Comment>(node, 2);
 
-      transitionInComponent(nested0, local);
-      transitionInComponent(nested1, local);
-      current = true;
-    },
-    outro: (bool local) {
-      transitionOutComponent(nested0, local);
-      transitionOutComponent(nested1, local);
-      current = false;
-    },
-    detach: (bool detaching) {
-      destroyComponent(nested0, detaching);
-
-      if (detaching) {
-        detach(t);
-      }
-
-      destroyComponent(nested1, detaching);
-    },
-  );
-}
-
-final class App extends Component {
-  App({
-    super.target,
-    super.anchor,
-    super.properties,
-    super.hydrate,
-    super.intro,
-  }) : super(createFragment: createFragment);
+    Nested().call(node1);
+    $.append(anchor, fragment);
+  }
 }

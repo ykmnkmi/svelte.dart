@@ -2,4 +2,5 @@
   import 'Nested.svelte';
 </script>
 
-<Nested answer={42}/>
+<Nested answer={42} />
+<Nested />

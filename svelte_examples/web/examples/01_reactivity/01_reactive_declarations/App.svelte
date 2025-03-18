@@ -1,18 +1,19 @@
 <script type="application/dart">
-	var count = 1;
+  import 'package:svelte_runtime/svelte_runtime.dart';
 
-	// the `$:` means 're-run whenever these values change'
-	$: doubled = count * 2;
-	$: quadrupled = doubled * 2;
+  var count = state<int>(1);
 
-	void handleClick() {
-		count += 1;
-	}
+  var doubled = derived<int>(() => count() * 2);
+  var quadrupled = derived<int>(() => doubled() * 2);
+
+  void handleClick() {
+    count.set(count() + 1);
+  }
 </script>
 
-<button on:click={handleClick}>
-	Clicked {count} {count === 1 ? 'time' : 'times'}
+<button onclick={handleClick}>
+  Count: {count()}
 </button>
 
-<p>{count} * 2 = {doubled}</p>
-<p>{doubled} * 2 = {quadrupled}</p>
+<p>{count()} * 2 = {doubled()}</p>
+<p>{doubled()} * 2 = {quadrupled()}</p>
