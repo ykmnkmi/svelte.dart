@@ -1,7 +1,7 @@
 svelte.dart
 ===========
 
-[Svelte][Svelte] ([v4.2.19][v4.2.19]) web framework, (not yet) ported to [Dart][Dart].
+[Svelte][Svelte] ([v5.6.16][v5.6.16]) web framework, (not yet) ported to [Dart][Dart].
 
 | Package | Description | Version |
 |---|---|---|
@@ -14,14 +14,15 @@ svelte.dart
   import 'package:svelte/svelte.dart';
 
   // properties
-  external int count = 0;
+  external int step = 1;
 
   // body
-  $: doubled = count * 2;
-  $: quadrupled = doubled * 2;
+  int count = $state(0);
+  int doubled = $derived(count * 2);
+  int quadrupled = $derived(doubled * 2);
 
   void handleClick() {
-    count += 1;
+    count += step;
   }
 
   const duration = Duration(seconds: 1);
@@ -37,7 +38,7 @@ svelte.dart
   });
 </script>
 
-<button on:click={handleClick}>
+<button onclick={handleClick}>
   Clicked {count} {count == 1 ? 'time' : 'times'}
 </button>
 
@@ -47,21 +48,19 @@ svelte.dart
 
 Status:
 - [x] Parser
+  - version 5 support 🔥
 - [ ] Runtime
-  - [ ] internal
-    - [ ] component 🔥
-    - [x] scheduler
-    - [ ] lifecycle 🔥
-    - [ ] dom `package:web` 🔥
-    - [ ] transition 🔥
+  - [ ] internal 🔥
   - [ ] ...
-- [ ] Compiler 🔥
+- [ ] Compiler
 - [ ] Builder
 - [ ] Examples (to test runtime, not generated)
   - [x] introduction
   - [x] reactivity
   - [x] props
-  - [ ] logic 🔥
+  - [x] logic
+  - [x] events
+  - [ ] bindings 🔥
   - [ ] ...
 - [ ] ...
 - [ ] SSR
@@ -70,6 +69,6 @@ Status:
 
 [Svelte]: https://svelte.dev
 [Dart]: https://dart.dev
-[v4.2.19]: https://github.com/sveltejs/svelte/tree/svelte%404.2.19
+[v5.6.16]: https://github.com/sveltejs/svelte/tree/svelte%405.6.16
 [ast_pub_icon]: https://img.shields.io/pub/v/svelte_ast.svg
 [ast_pub]: https://pub.dev/packages/svelte_ast

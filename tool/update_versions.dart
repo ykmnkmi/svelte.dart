@@ -3,18 +3,22 @@ import 'dart:io';
 final packageEntryRe = RegExp('^  (\\w+): (.+)\$', multiLine: true);
 
 void main() {
-  var versionsUri = Uri(path: 'tool/package_versions.yaml');
+  var versionsUri = Uri.file('tool/package_versions.yaml');
   var resolvedVersionsUri = Directory.current.uri.resolveUri(versionsUri);
   var versionsFile = File.fromUri(resolvedVersionsUri);
 
   var versions = <String, String>{};
 
-  for (var version in versionsFile.readAsLinesSync()) {
-    if (version.isEmpty) {
+  var lines = versionsFile.readAsLinesSync();
+
+  for (int i = 0; i < lines.length; i += 1) {
+    var line = lines[i];
+
+    if (line.isEmpty) {
       continue;
     }
 
-    var parts = version.split(':');
+    var parts = line.split(':');
     versions[parts[0]] = parts[1].trimLeft();
   }
 
@@ -22,19 +26,23 @@ void main() {
     return '  ${match[1]}: ${versions[match[1]]}';
   }
 
-  var offset = Directory.current.path.length + 1;
+  updateVersions(Directory.current, replace);
 
-  Directory.current.listSync().whereType<Directory>().forEach((directory) {
-    var directoryName = directory.path.substring(offset);
+  var entities = Directory.current.listSync(recursive: true);
 
-    if (directoryName.startsWith('svelte_')) {
-      var pubspecFile = File.fromUri(directory.uri.resolve('pubspec.yaml'));
-
-      if (pubspecFile.existsSync()) {
-        var oldPubspec = pubspecFile.readAsStringSync();
-        var newContent = oldPubspec.replaceAllMapped(packageEntryRe, replace);
-        pubspecFile.writeAsStringSync(newContent);
-      }
+  for (var directory in entities) {
+    if (directory is Directory) {
+      updateVersions(directory, replace);
     }
-  });
+  }
+}
+
+void updateVersions(Directory directory, String Function(Match match) replace) {
+  var pubspecFile = File.fromUri(directory.uri.resolve('pubspec.yaml'));
+
+  if (pubspecFile.existsSync()) {
+    var oldPubspec = pubspecFile.readAsStringSync();
+    var newContent = oldPubspec.replaceAllMapped(packageEntryRe, replace);
+    pubspecFile.writeAsStringSync(newContent);
+  }
 }
