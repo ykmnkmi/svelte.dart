@@ -1,7 +1,7 @@
 svelte.dart
 ===========
 
-[Svelte][Svelte] ([v5.6.16][v5.6.16]) web framework, (not yet) ported to [Dart][Dart].
+[Svelte][Svelte] ([v5.16.6][v5.16.6]) web framework, (not yet) ported to [Dart][Dart].
 
 | Package | Description | Version |
 |---|---|---|
@@ -69,6 +69,6 @@ Status:
 
 [Svelte]: https://svelte.dev
 [Dart]: https://dart.dev
-[v5.6.16]: https://github.com/sveltejs/svelte/tree/svelte%405.6.16
+[v5.16.6]: https://github.com/sveltejs/svelte/tree/svelte%405.16.6
 [ast_pub_icon]: https://img.shields.io/pub/v/svelte_ast.svg
 [ast_pub]: https://pub.dev/packages/svelte_ast

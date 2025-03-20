@@ -43,6 +43,8 @@ import 'examples/05_bindings/05_file_inputs/app.dart' as b05;
 import 'examples/05_bindings/06_select_bindings/app.dart' as b06;
 import 'examples/05_bindings/07_multiple_select_bindings/app.dart' as b07;
 import 'examples/05_bindings/08_each_block_bindings/app.dart' as b08;
+import 'examples/05_bindings/09_media_elements/app.dart' as b09;
+import 'examples/05_bindings/10_dimensions/app.dart' as b10;
 import 'examples/05_bindings/11_bind_this/app.dart' as b11;
 
 Component? selectComponent(String name) {
@@ -84,6 +86,8 @@ Component? selectComponent(String name) {
     'select_bindings' => b06.App(),
     'multiple_select_bindings' => b07.App(),
     'each_block_bindings' => b08.App(),
+    'media_elements' => b09.App(),
+    'dimensions' => b10.App(),
     'bind_this' => b11.App(),
     // default
     _ => null,
