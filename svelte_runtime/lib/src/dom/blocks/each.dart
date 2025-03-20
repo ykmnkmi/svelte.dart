@@ -68,7 +68,7 @@ void pauseEffects(
   List<TransitionManager> transitions = <TransitionManager>[];
   int length = items.length;
 
-  for (int i = 0; i < length; i += 1) {
+  for (int i = 0; i < length; i++) {
     pauseChildren(items[i].effect, transitions, true);
   }
 
@@ -87,7 +87,7 @@ void pauseEffects(
   }
 
   runOutTransitions(transitions, () {
-    for (int i = 0; i < length; i += 1) {
+    for (int i = 0; i < length; i++) {
       EachItem item = items[i];
 
       if (!isControlled) {
@@ -167,7 +167,7 @@ void eachBlock<T>(
 
       EachItem<T> item;
 
-      for (int i = 0; i < length; i += 1) {
+      for (int i = 0; i < length; i++) {
         Comment comment = unsafeCast<Comment>(hydrateNode);
 
         if (comment.nodeType == 8 && comment.data == hydrationEnd) {
@@ -294,7 +294,7 @@ void reconcile<T>(
   int i;
 
   if (isAnimated) {
-    for (i = 0; i < length; i += 1) {
+    for (i = 0; i < length; i++) {
       value = list[i];
       key = getKey(value, i);
       item = items[key];
@@ -306,7 +306,7 @@ void reconcile<T>(
     }
   }
 
-  for (i = 0; i < length; i += 1) {
+  for (i = 0; i < length; i++) {
     value = list[i];
     key = getKey(value, i);
     item = items[key];
@@ -362,11 +362,11 @@ void reconcile<T>(
           EachItem<T> a = matched.first;
           EachItem<T> b = matched.last;
 
-          for (j = 0; j < matched.length; j += 1) {
+          for (j = 0; j < matched.length; j++) {
             move(matched[j], start, anchor);
           }
 
-          for (j = 0; j < stashed.length; j += 1) {
+          for (j = 0; j < stashed.length; j++) {
             move(stashed[j], start, anchor);
           }
 
@@ -376,7 +376,7 @@ void reconcile<T>(
 
           current = start;
           previous = b;
-          i -= 1;
+          i--;
 
           matched.clear();
           stashed.clear();
@@ -445,11 +445,11 @@ void reconcile<T>(
       }
 
       if (isAnimated) {
-        for (i = 0; i < toDestroy.length; i += 1) {
+        for (i = 0; i < toDestroy.length; i++) {
           toDestroy[i].animationManager?.measure();
         }
 
-        for (i = 0; i < toDestroy.length; i += 1) {
+        for (i = 0; i < toDestroy.length; i++) {
           toDestroy[i].animationManager?.fix();
         }
       }

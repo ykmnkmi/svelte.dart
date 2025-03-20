@@ -146,7 +146,7 @@ bool sourceSetEqual(Element element, String sourceSet) {
     return false;
   }
 
-  for (int i = 0; i < urls.length; i += 1) {
+  for (int i = 0; i < urls.length; i++) {
     if (urls[i][1] != elementUrls[i][1] ||
         // TODO(attributes): check link and build_runner.
         // We need to test both ways because Vite will create an a full URL with

@@ -255,7 +255,7 @@ List<Object?> getBindingGroupValue(
 ) {
   Set<Object?> values = <Object?>{};
 
-  for (int i = 0; i < group.length; i += 1) {
+  for (int i = 0; i < group.length; i++) {
     HTMLInputElement input = group[i];
 
     if (input.checked) {

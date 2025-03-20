@@ -151,7 +151,7 @@ bool checkDirtiness(Reaction reaction) {
       // connected (due to an active effect) then we need to re-connect the
       // reaction to the dependency.
       if (isDisconnected || isUnownedConnected) {
-        for (int i = 0; i < length; i += 1) {
+        for (int i = 0; i < length; i++) {
           Value dependency = dependencies[i];
 
           // We always re-add all reactions (even duplicates) if the derived was
@@ -168,7 +168,7 @@ bool checkDirtiness(Reaction reaction) {
         }
       }
 
-      for (int i = 0; i < length; i += 1) {
+      for (int i = 0; i < length; i++) {
         Value dependency = dependencies[i];
 
         // Only seriveds set dirty flag.
@@ -295,7 +295,7 @@ T updateReaction<T>(Reaction<T> reaction) {
       }
 
       if (!skipReaction) {
-        for (int i = skippedDependencies; i < dependencies!.length; i += 1) {
+        for (int i = skippedDependencies; i < dependencies!.length; i++) {
           (dependencies[i].reactions ??= <Reaction>[]).add(reaction);
         }
       }
@@ -365,7 +365,7 @@ void removeReactions(Reaction reaction, int startIndex) {
     return;
   }
 
-  for (int i = startIndex; i < dependencies.length; i += 1) {
+  for (int i = startIndex; i < dependencies.length; i++) {
     removeReaction(reaction, dependencies[i]);
   }
 }
@@ -425,7 +425,7 @@ void logEffectStack() {
   // ignore: avoid_print
   print('Last ten effects were:');
 
-  for (int i = effectStack.length - 1; i >= start; i -= 1) {
+  for (int i = effectStack.length - 1; i >= start; i--) {
     // ignore: avoid_print
     print('${effectStack[i].callback}');
   }
@@ -464,7 +464,7 @@ void infiniteLoopGuard() {
     }
   }
 
-  flushCount += 1;
+  flushCount++;
 }
 
 void flushQueuedRootEffects(List<Effect> rootEffects) {
@@ -480,7 +480,7 @@ void flushQueuedRootEffects(List<Effect> rootEffects) {
   isFlushingEffect = true;
 
   try {
-    for (int i = 0; i < length; i += 1) {
+    for (int i = 0; i < length; i++) {
       Effect effect = rootEffects[i];
 
       if (effect.flags & Flag.clean == 0) {
@@ -505,7 +505,7 @@ void flushQueuedEffects(List<Effect> effects) {
     return;
   }
 
-  for (int i = 0; i < length; i += 1) {
+  for (int i = 0; i < length; i++) {
     Effect effect = effects[i];
 
     if (effect.flags & destroyedOrInert == 0) {
@@ -656,7 +656,7 @@ void processEffects(Effect effect, List<Effect> collectedEffects) {
   // We might be dealing with many effects here, far more than can be spread
   // into an array push call (callstack overflow). So let's deal with each
   // effect in a loop.
-  for (int i = 0; i < effects.length; i += 1) {
+  for (int i = 0; i < effects.length; i++) {
     Effect child = effects[i];
     collectedEffects.add(child);
     processEffects(child, collectedEffects);
@@ -802,7 +802,7 @@ void pop() {
       context.defferedEffects = null;
 
       try {
-        for (int i = 0; i < defferedEffects.length; i += 1) {
+        for (int i = 0; i < defferedEffects.length; i++) {
           DefferedEffect componentEffect = defferedEffects[i];
           setActiveEffect(componentEffect.effect);
           setActiveReaction(componentEffect.reaction);

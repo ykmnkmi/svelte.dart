@@ -15,14 +15,14 @@ Set<String> allRegisteredEvents = <String>{};
 
 Set<EventsHandle> rootEventHandles = <EventsHandle>{};
 
-JSExportedDartFunction createEvent<T extends Event>(
+JSExportedDartFunction createEvent<E extends HTMLElement, T extends Event>(
   String eventName,
   Element element,
-  void Function(T event) handler,
+  void Function(E element, T event) handler,
   bool capture, [
   bool passive = false,
 ]) {
-  void targetHandler(Element _, Event event) {
+  void targetHandler(Element handledElement, Event event) {
     if (!capture) {
       // Only call in the bubble phase, else delegated events would be called
       // before the capturing events.
@@ -31,7 +31,7 @@ JSExportedDartFunction createEvent<T extends Event>(
 
     if (!event.cancelBubble) {
       withoutReactiveContext(() {
-        handler(unsafeCast<T>(event));
+        handler(unsafeCast<E>(handledElement), unsafeCast<T>(event));
       });
     }
   }
@@ -70,7 +70,13 @@ void event0(
   bool capture = false,
   bool passive = false,
 ]) {
-  event<Event>(eventName, element, (_) => handler(), capture, passive);
+  event2<HTMLElement, Event>(
+    eventName,
+    element,
+    (_, _) => handler(),
+    capture,
+    passive,
+  );
 }
 
 void event<T extends Event>(
@@ -80,7 +86,23 @@ void event<T extends Event>(
   bool capture = false,
   bool passive = false,
 ]) {
-  JSExportedDartFunction jsTargetHandler = createEvent<T>(
+  event2<HTMLElement, T>(
+    eventName,
+    element,
+    (_, event) => handler(event),
+    capture,
+    passive,
+  );
+}
+
+void event2<E extends HTMLElement, T extends Event>(
+  String eventName,
+  Element element,
+  void Function(E element, T event) handler, [
+  bool capture = false,
+  bool passive = false,
+]) {
+  JSExportedDartFunction jsTargetHandler = createEvent<E, T>(
     eventName,
     element,
     handler,
@@ -222,7 +244,7 @@ void handleEventPropagation(Element element, Event event) {
     }
 
     if (firstError != null) {
-      for (int i = 0; i < errors.length; i += 1) {
+      for (int i = 0; i < errors.length; i++) {
         // Throw the rest of the errors, one-by-one on a microtask.
         queueMicroTask(() {
           throw errors[i];

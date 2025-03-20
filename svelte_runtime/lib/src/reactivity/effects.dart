@@ -222,7 +222,7 @@ void destroyEffectDeriveds(Effect effect) {
   if (deriveds != null) {
     effect.deriveds = null;
 
-    for (int i = 0; i < deriveds.length; i += 1) {
+    for (int i = 0; i < deriveds.length; i++) {
       destroyDerived(deriveds[i]);
     }
   }
@@ -279,7 +279,7 @@ void destroyEffect(Effect effect, [bool removeNodes = true]) {
   List<TransitionManager>? transitions = effect.transitions;
 
   if (transitions != null) {
-    for (int i = 0; i < transitions.length; i += 1) {
+    for (int i = 0; i < transitions.length; i++) {
       transitions[i].stop();
     }
   }
@@ -364,7 +364,7 @@ void runOutTransitions(
       }
     }
 
-    for (int i = 0; i < transitions.length; i += 1) {
+    for (int i = 0; i < transitions.length; i++) {
       transitions[i].exit(check);
     }
   } else {
@@ -386,7 +386,7 @@ void pauseChildren(
   if (effect.transitions != null) {
     List<TransitionManager> effectTransitions = effect.transitions!;
 
-    for (int i = 0; i < effectTransitions.length; i += 1) {
+    for (int i = 0; i < effectTransitions.length; i++) {
       TransitionManager transition = effectTransitions[i];
 
       if (transition.isGlobal || local) {
@@ -450,7 +450,7 @@ void resumeChildren(Effect effect, bool local) {
   if (effect.transitions != null) {
     List<TransitionManager> transitions = effect.transitions!;
 
-    for (int i = 0; i < transitions.length; i += 1) {
+    for (int i = 0; i < transitions.length; i++) {
       TransitionManager transition = transitions[i];
 
       if (transition.isGlobal || local) {

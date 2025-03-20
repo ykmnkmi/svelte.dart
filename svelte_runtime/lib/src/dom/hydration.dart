@@ -96,9 +96,9 @@ Comment removeNodes() {
           return comment;
         }
 
-        depth -= 1;
+        depth--;
       } else if (data == hydrationStart || data == hydrationStartElse) {
-        depth += 1;
+        depth++;
       }
     }
 

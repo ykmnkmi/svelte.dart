@@ -50,7 +50,7 @@ void destroyDerivedChildren(Derived derived) {
   if (children != null) {
     derived.children = null;
 
-    for (int i = 0; i < children.length; i += 1) {
+    for (int i = 0; i < children.length; i++) {
       Reaction child = children[i];
 
       if (child is Derived) {

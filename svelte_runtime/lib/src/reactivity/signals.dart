@@ -62,7 +62,7 @@ base mixin Value<T> on Signal {
           dependencies != null &&
           skippedDependencies < dependencies.length &&
           dependencies[skippedDependencies] == self) {
-        skippedDependencies += 1;
+        skippedDependencies++;
       } else if (newDependencies == null) {
         newDependencies = <Value>[self];
       } else {
@@ -153,7 +153,7 @@ base mixin Value<T> on Signal {
       return;
     }
 
-    for (int i = 0; i < reactions.length; i += 1) {
+    for (int i = 0; i < reactions.length; i++) {
       Reaction reaction = reactions[i];
       int flags = reaction.flags;
 
