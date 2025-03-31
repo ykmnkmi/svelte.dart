@@ -1,6 +1,5 @@
 import 'dart:js_interop';
 
-import 'package:meta/dart2js.dart';
 import 'package:svelte_runtime/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
@@ -21,7 +20,6 @@ extension ValueReference on HTMLElement {
   }
 }
 
-@noInline
 void setElementValue(HTMLElement input, Object? value) {
   unsafeCast<HTMLInputElement>(input)
     ..value__ = value

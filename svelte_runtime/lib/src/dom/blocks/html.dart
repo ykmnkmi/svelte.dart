@@ -1,4 +1,3 @@
-import 'package:meta/dart2js.dart';
 import 'package:svelte_runtime/src/dom/hydration.dart';
 import 'package:svelte_runtime/src/dom/operations.dart';
 import 'package:svelte_runtime/src/dom/reconciler.dart';
@@ -18,7 +17,6 @@ void checkHash(String? serverHash, String value) {
   print('WRN_HYDRATION_HTML_CHANGED');
 }
 
-@noInline
 void html(
   Node node,
   String Function() getValue,

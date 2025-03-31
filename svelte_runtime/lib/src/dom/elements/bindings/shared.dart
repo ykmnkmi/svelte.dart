@@ -1,8 +1,32 @@
 import 'dart:js_interop';
 
 import 'package:svelte_runtime/src/dom/elements/misc.dart';
+import 'package:svelte_runtime/src/reactivity.dart';
 import 'package:svelte_runtime/src/runtime.dart';
 import 'package:web/web.dart';
+
+void listen(
+  EventTarget target,
+  List<String> events,
+  void Function() handler, [
+  bool callHandlerImmediately = true,
+]) {
+  if (callHandlerImmediately) {
+    handler();
+  }
+
+  JSExportedDartFunction jsHandler = handler.toJS;
+
+  for (int i = 0; i < events.length; i++) {
+    target.addEventListener(events[i], jsHandler);
+  }
+
+  teardown<void>(() {
+    for (int i = 0; i < events.length; i++) {
+      target.removeEventListener(events[i], jsHandler);
+    }
+  });
+}
 
 T withoutReactiveContext<T>(T Function() callback) {
   var previousReaction = activeReaction;

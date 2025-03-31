@@ -4,12 +4,10 @@ library;
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
-import 'package:meta/dart2js.dart';
 import 'package:svelte_runtime/src/dom/elements/bindings/shared.dart';
 import 'package:svelte_runtime/src/dom/elements/bindings/value.dart';
 import 'package:svelte_runtime/src/reactivity.dart';
 import 'package:svelte_runtime/src/runtime.dart';
-import 'package:svelte_runtime/src/signal.dart';
 import 'package:svelte_runtime/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
@@ -84,22 +82,6 @@ void initSelect(HTMLSelectElement select, [Object? Function()? get]) {
   });
 }
 
-void bindSelectState<T>(HTMLSelectElement select, State<T> state) {
-  bindSelectValue(select, state.call, (value) {
-    state.set(value as T);
-  });
-}
-
-void bindSelectMultipleState<T>(
-  HTMLSelectElement select,
-  State<List<T>> state,
-) {
-  bindSelectValue(select, state.call, (value) {
-    state.set((value as List).cast<T>());
-  });
-}
-
-@noInline
 void bindSelectValue(
   HTMLSelectElement select,
   Object? Function() get,

@@ -1,4 +1,3 @@
-import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
 import 'package:svelte_runtime/src/animations.dart';
 import 'package:svelte_runtime/src/dom/blocks/render.dart';
@@ -100,7 +99,6 @@ void pauseEffects(
   });
 }
 
-@noInline
 void eachBlock<T>(
   Node node,
   int flags,

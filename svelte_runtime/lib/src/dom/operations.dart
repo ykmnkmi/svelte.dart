@@ -1,7 +1,6 @@
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
-import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
 import 'package:svelte_runtime/src/dom/hydration.dart';
 import 'package:svelte_runtime/src/unsafe_cast.dart';
@@ -19,7 +18,6 @@ external JSObject elementPrototype;
 /// Initialize these lazily to avoid issues when using the runtime in a server
 /// context where these globals are not available while avoiding a separate
 /// server entry point.
-@noInline
 void init() {
   elementPrototype.clickReference = null.toExternalReference;
 
@@ -29,84 +27,69 @@ void init() {
   textPrototype.t__ = null;
 }
 
-@noInline
 Comment createComment([String text = '']) {
   return document.createComment(text);
 }
 
-@noInline
 Text createText([String text = '']) {
   return document.createTextNode(text);
 }
 
-@noInline
 T createElement<T extends Element>(String tag) {
   return unsafeCast<T>(document.createElement(tag));
 }
 
-@noInline
 @optionalTypeArgs
 T importNode<T extends Node>(Node node) {
   return unsafeCast<T>(document.importNode(node, true));
 }
 
-@noInline
 @optionalTypeArgs
 T cloneNode<T extends Node>(Node node) {
   return unsafeCast<T>(node.cloneNode(true));
 }
 
-@noInline
 void before(Node anchor, Node node) {
   unsafeCast<Element>(anchor).before(node);
 }
 
-@noInline
 void after(Node anchor, Node node) {
   unsafeCast<Element>(anchor).after(node);
 }
 
-@noInline
 @optionalTypeArgs
 T appendChild<T extends Node>(Node target, Node child) {
   return unsafeCast<T>(target.appendChild(child));
 }
 
-@noInline
 void appendNodes(Node target, Node node, Node other) {
   target.callMethod('append'.toJS, node, other);
 }
 
-@noInline
 void remove(Node node) {
   unsafeCast<Element>(node).remove();
 }
 
-@noInline
 @optionalTypeArgs
 T getFirstChild<T extends Node?>(Node node) {
   return unsafeCast<T>(node.firstChild);
 }
 
-@noInline
 @optionalTypeArgs
 T getLastChild<T extends Node?>(Node node) {
   return unsafeCast<T>(node.lastChild);
 }
 
-@noInline
 @optionalTypeArgs
 T getPreviousSibling<T extends Node?>(Node node) {
   return unsafeCast<T>(node.previousSibling);
 }
 
-@noInline
 @optionalTypeArgs
 T getNextSibling<T extends Node?>(Node node) {
   return unsafeCast<T>(node.nextSibling);
 }
 
-@noInline
 @optionalTypeArgs
 T child<T extends Node?>(Node node, [bool isText = false]) {
   if (!hydrating) {
@@ -130,7 +113,6 @@ T child<T extends Node?>(Node node, [bool isText = false]) {
   return unsafeCast<T>(child);
 }
 
-@noInline
 @optionalTypeArgs
 T firstChild<T extends Node?>(Node fragment, [bool isText = false]) {
   if (!hydrating) {
@@ -163,7 +145,6 @@ T firstChild<T extends Node?>(Node fragment, [bool isText = false]) {
   return unsafeCast<T>(hydrateNode);
 }
 
-@noInline
 @optionalTypeArgs
 T sibling<T extends Node>(Node? node, [int count = 1, bool isText = false]) {
   Node? next = hydrating ? hydrateNode : node, last;
@@ -201,17 +182,14 @@ T sibling<T extends Node>(Node? node, [int count = 1, bool isText = false]) {
   return unsafeCast<T>(next);
 }
 
-@noInline
 void setID(Element element, String id) {
   element.id = id;
 }
 
-@noInline
 void setTextContent(Node node, String text) {
   node.textContent = text;
 }
 
-@noInline
 void clearTextContent(Node node) {
   node.textContent = '';
 }

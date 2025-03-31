@@ -1,7 +1,6 @@
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
-import 'package:meta/dart2js.dart';
 import 'package:svelte_runtime/src/reactivity.dart';
 import 'package:svelte_runtime/src/runtime.dart';
 import 'package:web/web.dart';
@@ -73,7 +72,6 @@ final class ResizeObserverSingleton {
 final ResizeObserverSingleton resizeObjserverBorderBox =
     ResizeObserverSingleton(ResizeObserverOptions(box: 'border-box'));
 
-@noInline
 void bindElementSize(
   HTMLElement element,
   String type,

@@ -1,6 +1,5 @@
 library;
 
-import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
 import 'package:svelte_runtime/src/dom/hydration.dart';
 import 'package:svelte_runtime/src/dom/operations.dart';
@@ -13,7 +12,6 @@ import 'package:web/web.dart';
 @optionalTypeArgs
 typedef Template<T extends Node> = T Function();
 
-@noInline
 void assignNodes(Node? start, Node? end) {
   Effect? effect = activeEffect;
 
@@ -24,7 +22,6 @@ void assignNodes(Node? start, Node? end) {
   }
 }
 
-@noInline
 @optionalTypeArgs
 Template<T> template<T extends Node>(String content, [int flags = 0]) {
   bool isFragment = flags & 1 != 0;
@@ -74,7 +71,6 @@ Template<T> template<T extends Node>(String content, [int flags = 0]) {
   };
 }
 
-@noInline
 Text text(String value) {
   // We're not delegating to `template` here for performance reasons.
   if (!hydrating) {
@@ -96,7 +92,6 @@ Text text(String value) {
   return node;
 }
 
-@noInline
 DocumentFragment comment() {
   // We're not delegating to `template` here for performance reasons.
   if (hydrating) {
@@ -114,7 +109,6 @@ DocumentFragment comment() {
 
 // Assign the created (or in hydration mode, traversed) dom elements to the
 // current block and insert the elements into the dom (in client mode).
-@noInline
 void append(Node? anchor, Node node) {
   if (hydrating) {
     activeEffect!.nodeEnd = hydrateNode;

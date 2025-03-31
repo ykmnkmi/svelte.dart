@@ -1,4 +1,3 @@
-import 'package:meta/dart2js.dart';
 import 'package:svelte_runtime/src/dom/blocks/render.dart';
 import 'package:svelte_runtime/src/dom/hydration.dart';
 import 'package:svelte_runtime/src/reactivity.dart';
@@ -8,7 +7,6 @@ import 'package:web/web.dart';
 
 typedef RenderBranch = void Function(Render callback, [bool flag]);
 
-@noInline
 void ifBlock(
   Node node,
   void Function(RenderBranch render) callback, [

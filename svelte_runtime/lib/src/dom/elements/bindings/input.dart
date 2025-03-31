@@ -4,31 +4,21 @@ library;
 
 import 'dart:math' show min;
 
-import 'package:meta/dart2js.dart';
 import 'package:svelte_runtime/src/dom/elements/bindings/shared.dart';
 import 'package:svelte_runtime/src/dom/elements/bindings/value.dart';
 import 'package:svelte_runtime/src/dom/hydration.dart';
 import 'package:svelte_runtime/src/environment.dart';
 import 'package:svelte_runtime/src/reactivity.dart';
 import 'package:svelte_runtime/src/runtime.dart';
-import 'package:svelte_runtime/src/signal.dart';
 import 'package:svelte_runtime/src/tasks.dart';
 import 'package:svelte_runtime/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
-void bindValueState<T>(HTMLElement input, State<T> state) {
-  bindValue(input, state.call, (value) {
-    state.set(value as T);
-  });
-}
-
-@noInline
 void bindValue(
   HTMLElement element,
   Object? Function() get,
-  void Function(Object? value) set, [
-  bool Function(String value)? equals,
-]) {
+  void Function(Object? value) set,
+) {
   HTMLInputElement input = unsafeCast<HTMLInputElement>(element);
 
   listenToEventAndResetEvent(input, 'input', (isReset) {
@@ -124,7 +114,6 @@ void bindRadioGroup<T>(
   });
 }
 
-@noInline
 void bindGroup(
   List<HTMLInputElement> inputs,
   List<int>? groupIndex,
@@ -218,11 +207,6 @@ void bindGroup(
   });
 }
 
-void bindBoolState(HTMLInputElement input, State<bool?> state) {
-  bindChecked(input, state.call, state.set);
-}
-
-@noInline
 void bindChecked(
   HTMLInputElement input,
   bool? Function() get,
@@ -244,7 +228,7 @@ void bindChecked(
 
   renderEffect(() {
     bool? value = get();
-    input.checked = value ?? false;
+    input.checked = value == true;
   });
 }
 
@@ -279,11 +263,6 @@ int? toNumber(String value) {
   return value == '' ? null : int.parse(value);
 }
 
-void bindFilesState(HTMLInputElement input, State<FileList?> state) {
-  bindFiles(input, state.call, state.set);
-}
-
-@noInline
 void bindFiles(
   HTMLInputElement input,
   FileList? Function() get,

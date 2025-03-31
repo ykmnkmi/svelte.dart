@@ -1,7 +1,7 @@
 svelte.dart
 ===========
 
-[Svelte][Svelte] ([v5.6.16][v5.6.16]) web framework, (not yet) ported to [Dart][Dart].
+[Svelte][Svelte] ([v5.16.6][v5.16.6]) web framework, (not yet) ported to [Dart][Dart].
 
 | Package | Description | Version |
 |---|---|---|
@@ -17,19 +17,19 @@ svelte.dart
   external int step = 1;
 
   // body
-  int count = $state(0);
-  int doubled = $derived(count * 2);
-  int quadrupled = $derived(doubled * 2);
+  int count = state<int>(0);
+  int doubled = derived<int>(() => count * 2);
+  int quadrupled = derived<int>(() => doubled * 2);
 
   void handleClick() {
-    count += step;
+    count.set(count() + step);
   }
 
   const duration = Duration(seconds: 1);
 
   onMount(() {
     var timer = Timer.periodic(duration, (_) {
-      count += 1;
+      count.set(count() + 1);
     });
 
     return () {
@@ -39,11 +39,11 @@ svelte.dart
 </script>
 
 <button onclick={handleClick}>
-  Clicked {count} {count == 1 ? 'time' : 'times'}
+  Clicked {count()} {count() == 1 ? 'time' : 'times'}
 </button>
 
-<p>{count} * 2 = {doubled}</p>
-<p>{doubled} * 2 = {quadrupled}</p>
+<p>{count()} * 2 = {doubled()}</p>
+<p>{doubled()} * 2 = {quadrupled()}</p>
 ```
 
 Status:
@@ -69,6 +69,6 @@ Status:
 
 [Svelte]: https://svelte.dev
 [Dart]: https://dart.dev
-[v5.6.16]: https://github.com/sveltejs/svelte/tree/svelte%405.6.16
+[v5.16.6]: https://github.com/sveltejs/svelte/tree/svelte%405.16.6
 [ast_pub_icon]: https://img.shields.io/pub/v/svelte_ast.svg
 [ast_pub]: https://pub.dev/packages/svelte_ast

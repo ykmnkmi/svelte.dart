@@ -1,9 +1,8 @@
 .dart_tool/
 build/
 node_modules/
-*.js
-*.js.deps
-*.js.map
+*.unopt.wasm
+*.unopt.wasm.map
 _*.json
 pubspec.lock
 package.json

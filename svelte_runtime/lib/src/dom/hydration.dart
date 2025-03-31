@@ -1,4 +1,3 @@
-import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
 import 'package:svelte_runtime/src/dom/operations.dart';
 import 'package:svelte_runtime/src/shared.dart';
@@ -21,7 +20,6 @@ void setHydrating(bool value) {
 // is the closing comment, which serves as the block's anchor.
 Node? hydrateNode;
 
-@noInline
 @optionalTypeArgs
 T setHydrateNode<T extends Node?>(Node? node) {
   if (node == null) {
@@ -34,7 +32,6 @@ T setHydrateNode<T extends Node?>(Node? node) {
   return unsafeCast<T>(node);
 }
 
-@noInline
 @optionalTypeArgs
 T hydrateNext<T extends Node?>() {
   return setHydrateNode<T>(
@@ -42,7 +39,6 @@ T hydrateNext<T extends Node?>() {
   );
 }
 
-@noInline
 void reset(Node node) {
   if (!hydrating) {
     return;
@@ -58,7 +54,6 @@ void reset(Node node) {
   hydrateNode = node;
 }
 
-@noInline
 void next([int count = 1]) {
   if (hydrating) {
     int i = count;
@@ -72,7 +67,6 @@ void next([int count = 1]) {
   }
 }
 
-@noInline
 void hydrateTemplate(HTMLTemplateElement template) {
   if (hydrating) {
     hydrateNode = template.content;
@@ -81,7 +75,6 @@ void hydrateTemplate(HTMLTemplateElement template) {
 
 /// Removes all nodes starting at `hydrateNode` up until the next hydration end
 /// comment.
-@noInline
 Comment removeNodes() {
   int depth = 0;
   Node node = unsafeCast<Node>(hydrateNode);
