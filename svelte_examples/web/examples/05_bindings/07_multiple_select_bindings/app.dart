@@ -184,7 +184,10 @@ base class App extends Component {
       },
     );
 
-    $.bindSelectMultipleState<String>(select, flavours);
+    $.bindSelectValue(select, flavours.call, (value) {
+      flavours.set((value as List).cast<String>());
+    });
+
     $.append(anchor, fragment);
     $.pop();
   }

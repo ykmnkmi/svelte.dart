@@ -29,7 +29,11 @@ base class App extends Component {
     var node = $.sibling<Comment>(textarea, 2);
 
     $.html(node, () => markdownToHtml(text(), inlineOnly: true), false, false);
-    $.bindValueState<String>(textarea, text);
+
+    $.bindValue(textarea, text.call, (value) {
+      text.set(value as String);
+    });
+
     $.append(anchor, fragment);
     $.pop();
   }

@@ -27,7 +27,10 @@ base class App extends Component {
       $.setText(text, 'Hello ${name().isEmpty ? 'stranger' : name()}!');
     });
 
-    $.bindValueState<String>(input, name);
+    $.bindValue(input, name.call, (value) {
+      name.set(value as String);
+    });
+
     $.append(anchor, fragment);
   }
 }

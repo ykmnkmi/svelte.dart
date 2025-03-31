@@ -44,10 +44,22 @@ base class App extends Component {
       $.setText(text, '${a()} + ${b()} = ${a() + b()}');
     });
 
-    $.bindValueState<int>(input, a);
-    $.bindValueState<int>(input1, a);
-    $.bindValueState<int>(input2, b);
-    $.bindValueState<int>(input3, b);
+    $.bindValue(input, a.call, (value) {
+      a.set(value as int);
+    });
+
+    $.bindValue(input1, a.call, (value) {
+      a.set(value as int);
+    });
+
+    $.bindValue(input2, b.call, (value) {
+      b.set(value as int);
+    });
+
+    $.bindValue(input3, b.call, (value) {
+      b.set(value as int);
+    });
+
     $.append(anchor, fragment);
   }
 }

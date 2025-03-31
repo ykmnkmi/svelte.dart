@@ -3,7 +3,6 @@ import 'package:svelte_runtime/src/internal.dart' as $;
 import 'package:svelte_runtime/svelte_runtime.dart';
 import 'package:web/web.dart';
 
-
 base class App extends Component {
   static final root2 = $.template<HTMLParagraphElement>('<p> </p>');
   static final root1 = $.template<DocumentFragment>(
@@ -72,8 +71,8 @@ base class App extends Component {
       });
     }
 
-    $.bindFilesState(input, files);
-    $.bindFilesState(input1, files);
+    $.bindFiles(input, files.call, files.set);
+    $.bindFiles(input1, files.call, files.set);
     $.append(anchor, fragment);
     $.pop();
   }

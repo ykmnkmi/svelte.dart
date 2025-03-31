@@ -57,7 +57,7 @@ base class App extends Component {
       button.disabled = !yes();
     });
 
-    $.bindBoolState(input, yes);
+    $.bindChecked(input, yes.call, yes.set);
     $.append(anchor, fragment);
   }
 }

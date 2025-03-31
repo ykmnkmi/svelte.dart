@@ -88,9 +88,16 @@ base class App extends Component {
       );
     });
 
-    $.bindSelectState<({int id, String text})?>(select, selected);
+    $.bindSelectValue(select, selected.call, (value) {
+      selected.set(value as ({int id, String text})?);
+    });
+
     $.event0('change', select, () => answer.set(''));
-    $.bindValueState<String>(input, answer);
+
+    $.bindValue(input, answer.call, (value) {
+      answer.set(value as String);
+    });
+
     $.event<Event>('submit', form, handleSubmit);
     $.append(anchor, fragment);
   }
