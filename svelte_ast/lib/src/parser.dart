@@ -71,13 +71,13 @@ final class Parser {
 
   final SourceFile sourceFile;
 
-  final Fragment html = Fragment(children: <Node>[]);
+  final Fragment html = Fragment(children: <Fragment>[]);
 
   final List<Script> scripts = <Script>[];
 
   final List<Style> styles = <Style>[];
 
-  final List<Node> stack = <Node>[];
+  final List<Fragment> stack = <Fragment>[];
 
   final Set<String> metaTags = <String>{};
 
@@ -85,7 +85,7 @@ final class Parser {
 
   AutoCloseTag? lastAutoCloseTag;
 
-  Node get current {
+  Fragment get current {
     return stack.last;
   }
 

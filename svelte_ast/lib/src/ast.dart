@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart' hide Directive;
 import 'package:analyzer/dart/ast/ast.dart' as dart show Directive;
 import 'package:csslib/visitor.dart' hide Expression;
+import 'package:meta/meta.dart';
 
 part 'ast/blocks.dart';
 part 'ast/tags.dart';
@@ -12,25 +13,63 @@ Object? toStringMapper(Object? object) {
   return object.toString();
 }
 
-abstract class Node {
-  Node({this.start = -1, this.end = -1, this.children = const <Node>[]});
+abstract base class Node {
+  Node({this.start = -1, this.end = -1});
 
   int start;
 
   int end;
-
-  List<Node> children;
 
   R accept<C, R>(Visitor<C, R> visitor, C context);
 
   Map<String, Object?> toJson([JsonMapper mapper]);
 }
 
+final class Fragment extends Node {
+  Fragment({
+    super.start,
+    super.end,
+    this.children = const <Node>[],
+    this.transparent = false,
+    this.dynamic = false,
+  });
+
+  final List<Node> children;
+
+  /// Fragments declare their own scopes. A transparent fragment is one whose
+  /// scope is not represented by a scope in the resulting JavaScript (e.g. an
+  /// element scope), and should therefore delegate to parent scopes when
+  /// generating unique identifiers.
+  @internal
+  bool transparent;
+
+  /// Whether or not we need to traverse into the fragment during mount/hydrate.
+  @internal
+  bool dynamic;
+
+  @override
+  R accept<C, R>(Visitor<C, R> visitor, C context) {
+    return visitor.visitFragment(this, context);
+  }
+
+  @override
+  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
+    return <String, Object?>{
+      'start': start,
+      'end': end,
+      'class': 'Fragment',
+      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
+    };
+  }
+}
+
 final class Text extends Node {
   Text({super.start, super.end, this.raw = '', this.data = ''});
 
+  /// Text with decoded HTML entities.
   final String raw;
 
+  /// The original text, with undecoded HTML entities.
   String data;
 
   bool get isLeaf {
@@ -171,25 +210,6 @@ final class MustacheTag extends Node {
       'end': end,
       'class': 'MustacheTag',
       'expression': mapper(expression),
-    };
-  }
-}
-
-final class Fragment extends Node {
-  Fragment({super.start, super.end, super.children});
-
-  @override
-  R accept<C, R>(Visitor<C, R> visitor, C context) {
-    return visitor.visitFragment(this, context);
-  }
-
-  @override
-  Map<String, Object?> toJson([JsonMapper mapper = toStringMapper]) {
-    return <String, Object?>{
-      'start': start,
-      'end': end,
-      'class': 'Fragment',
-      'children': <Object?>[for (Node child in children) child.toJson(mapper)],
     };
   }
 }
