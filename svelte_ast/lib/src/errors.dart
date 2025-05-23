@@ -1,16 +1,19 @@
 import 'package:source_span/source_span.dart';
+import 'package:svelte_ast/src/ast.dart';
+import 'package:svelte_ast/src/parser.dart';
 
 class ParseError extends Error {
-  ParseError(this.errorCode, this.span);
+  ParseError(this.code, this.message, this.span);
 
-  final ErrorCode errorCode;
+  final String code;
+
+  final String message;
 
   final SourceSpan span;
 
   Map<String, Object?> toJson() {
     return <String, Object?>{
-      'code': errorCode.code,
-      'message': errorCode.message,
+      'message': message,
       'line': span.start.line + 1,
       'column': span.start.column,
       'offset': span.start.offset,
@@ -19,304 +22,52 @@ class ParseError extends Error {
 
   @override
   String toString() {
-    return 'ParseError: ${errorCode.message}';
+    return 'ParseError($code): $message';
   }
 }
 
-typedef ErrorCode = ({String code, String message});
+extension ParserError on Parser {
+  Never error(String code, String message, [int? position, int? end]) {
+    position ??= this.position;
+    end ??= position;
 
-const ErrorCode invalidConstArgs = (
-  code: 'invalid-const-args',
-  message: '{@const ...} must be an assignment',
-);
+    SourceSpan span = sourceFile.span(position, end);
+    throw ParseError(code, message, span);
+  }
 
-ErrorCode cssSyntaxError(String message) {
-  return (code: 'css-syntax-error', message: message);
+  // 839
+  Never blockUnclosed(Node node) {
+    // https://svelte.dev/e/block_unclosed
+    error('block_unclosed', 'Block was left open', node.start, node.end);
+  }
+
+  // 954
+  Never elementUnclosed(Node node, String name) {
+    // https://svelte.dev/e/element_unclosed
+    error('element_unclosed', "'<$name>' was left open", node.start, node.end);
+  }
+
+  // 1030
+  Never expectedToken(Pattern token, int position) {
+    // https://svelte.dev/e/expected_token
+    error('expected_token', 'Expected token $token', position);
+  }
+
+  // 1039
+  Never expectedSpace(int position) {
+    // https://svelte.dev/e/expected_whitespace
+    error('expected_whitespace', 'Expected whitespace');
+  }
+
+  // 1059
+  Never dartParseError(String message, int position, int end) {
+    // https://svelte.dev/e/js_parse_error
+    error('js_parse_error', message, position, end);
+  }
+
+  // 1563
+  Never unexpectedEOF(int position) {
+    // https://svelte.dev/e/unexpected_eof
+    error('unexpected_eof', 'Unexpected end of input', position);
+  }
 }
-
-const ErrorCode duplicateAttribute = (
-  code: 'duplicate-attribute',
-  message: 'Attributes need to be unique',
-);
-
-ErrorCode duplicateElement(String slug, String name) {
-  return (
-    code: 'duplicate-$slug',
-    message: 'A component can only have one <$name> tag',
-  );
-}
-
-const ErrorCode duplicateStyle = (
-  code: 'duplicate-style',
-  message: 'You can only have one top-level <style> tag per component',
-);
-
-const ErrorCode emptyAttributeShorthand = (
-  code: 'empty-attribute-shorthand',
-  message: 'Attribute shorthand cannot be empty',
-);
-
-ErrorCode emptyDirectiveName(String type) {
-  return (code: 'empty-directive-name', message: '$type name cannot be empty');
-}
-
-const ErrorCode emptyGlobalSelector = (
-  code: 'css-syntax-error',
-  message: ':global() must contain a selector',
-);
-
-const ErrorCode expectedBlockType = (
-  code: 'expected-block-type',
-  message: 'Expected if, each await or key',
-);
-
-const ErrorCode expectedName = (
-  code: 'expected-name',
-  message: 'Expected name',
-);
-
-ErrorCode invalidCatchPlacementUnclosedBlock(String block) {
-  return (
-    code: 'invalid-catch-placement',
-    message: 'Expected to close $block before seeing {:catch} block',
-  );
-}
-
-const ErrorCode invalidCatchPlacementWithoutAwait = (
-  code: 'invalid-catch-placement',
-  message: 'Cannot have an {:catch} block outside an {#await ...} block',
-);
-
-const ErrorCode invalidComponentDefinition = (
-  code: 'invalid-component-definition',
-  message: 'invalid component definition',
-);
-
-ErrorCode invalidClosingTagUnopened(String name) {
-  return (
-    code: 'invalid-closing-tag',
-    message: '</$name> attempted to close an element that was not open',
-  );
-}
-
-ErrorCode invalidClosingTagAutoClosed(String name, String reason) {
-  return (
-    code: 'invalid-closing-tag',
-    message:
-        '</$name> attempted to close <$name> that was already '
-        'automatically closed by <$reason>',
-  );
-}
-
-const ErrorCode invalidDebugArgs = (
-  code: 'invalid-debug-args',
-  message: '{@debug ...} arguments must be identifiers',
-);
-
-const ErrorCode invalidDeclaration = (
-  code: 'invalid-declaration',
-  message: 'Declaration cannot be empty',
-);
-
-const ErrorCode invalidDirectiveValue = (
-  code: 'invalid-directive-value',
-  message:
-      'Directive value must be a JavaScript expression enclosed in curly '
-      'braces',
-);
-
-const ErrorCode invalidElseIf = (
-  code: 'invalid-elseif',
-  message: "'elseif' should be 'else if'",
-);
-
-const ErrorCode invalidElseIfPlacementOutsideIf = (
-  code: 'invalid-elseif-placement',
-  message: 'Cannot have an {:else if ...} block outside an {#if ...} block',
-);
-
-ErrorCode invalidElseifPlacementUnclosedBlock(String? block) {
-  return (
-    code: 'invalid-elseif-placement',
-    message: 'Expected to close $block before seeing {:else if ...} block',
-  );
-}
-
-const ErrorCode invalidElsePlacementOutsideIf = (
-  code: 'invalid-else-placement',
-  message:
-      'Cannot have an {:else} block outside an {#if ...} or {#each ...} block',
-);
-
-ErrorCode invalidElsePlacementUnclosedBlock(String? block) {
-  return (
-    code: 'invalid-else-placement',
-    message: 'Expected to close $block before seeing {:else} block',
-  );
-}
-
-ErrorCode invalidElementContent(String slug, String name) {
-  return (
-    code: 'invalid-$slug-content',
-    message: '<$name> cannot have children',
-  );
-}
-
-const ErrorCode invalidElementDefinition = (
-  code: 'invalid-element-definition',
-  message: 'Invalid element definition',
-);
-
-ErrorCode invalidElementPlacement(String slug, String name) {
-  return (
-    code: 'invalid-$slug-placement',
-    message: '<$name> tags cannot be inside elements or blocks',
-  );
-}
-
-ErrorCode invalidLogicBlockPlacement(String? location, String? name) {
-  return (
-    code: 'invalid-logic-block-placement',
-    message: '{#$name} logic block cannot be $location',
-  );
-}
-
-ErrorCode invalidTagPlacement(String? location, String? name) {
-  return (
-    code: 'invalid-tag-placement',
-    message: '{@$name} tag cannot be $location',
-  );
-}
-
-ErrorCode invalidRefDirective(String? name) {
-  return (
-    code: 'invalid-ref-directive',
-    message:
-        'The ref directive is no longer supported — use '
-        "'bind:this={$name}' instead",
-  );
-}
-
-const ErrorCode invalidRefSelector = (
-  code: 'invalid-ref-selector',
-  message: 'ref selectors are no longer supported',
-);
-
-const ErrorCode invalidSelfPlacement = (
-  code: 'invalid-self-placement',
-  message:
-      '<svelte:self> components can only exist inside {#if} blocks, '
-      '{#each} blocks, or slots passed to components',
-);
-
-const ErrorCode invalidScriptInstance = (
-  code: 'invalid-script',
-  message: 'A component can only have one instance-level <script> element',
-);
-
-const ErrorCode invalidScriptModule = (
-  code: 'invalid-script',
-  message: 'A component can only have one <script context="module"> element',
-);
-
-const ErrorCode invalidScriptContextAttribute = (
-  code: 'invalid-script',
-  message: 'context attribute must be static',
-);
-
-const ErrorCode invalidScriptContextValue = (
-  code: 'invalid-script',
-  message: 'If the context attribute is supplied, its value must be "module"',
-);
-
-const ErrorCode invalidTagName = (
-  code: 'invalid-tag-name',
-  message: 'Expected valid tag name',
-);
-
-ErrorCode invalidTagNameSvelteElement(List<String> tags) {
-  return (
-    code: 'invalid-tag-name',
-    message: 'Valid <svelte:...> tag names are ${tags.join(', ')}',
-  );
-}
-
-ErrorCode invalidThenPlacementUnclosedBlock(String block) {
-  return (
-    code: 'invalid-then-placement',
-    message: 'Expected to close $block before seeing {:then} block',
-  );
-}
-
-const ErrorCode invalidThenPlacementWithoutAwait = (
-  code: 'invalid-then-placement',
-  message: 'Cannot have an {:then} block outside an {#await ...} block',
-);
-
-ErrorCode invalidVoidContent(String name) {
-  return (
-    code: 'invalid-void-content',
-    message:
-        '<$name> is a void element and cannot have children, or a closing tag',
-  );
-}
-
-const ErrorCode missingComponentDefinition = (
-  code: 'missing-component-definition',
-  message: "<svelte:component> must have a 'this' attribute",
-);
-
-const ErrorCode missingAttributeValue = (
-  code: 'missing-attribute-value',
-  message: 'Expected value for the attribute',
-);
-
-const ErrorCode missingElementDefinition = (
-  code: 'missing-element-definition',
-  message: "<svelte:element> must have a 'this' attribute",
-);
-
-const ErrorCode unclosedScript = (
-  code: 'unclosed-script',
-  message: '<script> must have a closing tag',
-);
-
-const ErrorCode unclosedStyle = (
-  code: 'unclosed-style',
-  message: '<style> must have a closing tag',
-);
-
-const ErrorCode unclosedComment = (
-  code: 'unclosed-comment',
-  message: 'comment was left open, expected -->',
-);
-
-ErrorCode unclosedAttributeValue(String token) {
-  return (
-    code: 'unclosed-attribute-value',
-    message: 'Expected to close the attribute value with $token',
-  );
-}
-
-const ErrorCode unexpectedBlockClose = (
-  code: 'unexpected-block-close',
-  message: 'Unexpected block closing tag',
-);
-
-const ErrorCode unexpectedEOF = (
-  code: 'unexpected-eof',
-  message: 'Unexpected end of input',
-);
-
-ErrorCode unexpectedEOFToken(Pattern token) {
-  return (code: 'unexpected-eof', message: 'Unexpected $token');
-}
-
-ErrorCode unexpectedToken(Pattern token) {
-  return (code: 'unexpected-token', message: 'Expected $token');
-}
-
-const ErrorCode unexpectedTokenDestructure = (
-  code: 'unexpected-token',
-  message: 'Expected identifier or destructure pattern',
-);

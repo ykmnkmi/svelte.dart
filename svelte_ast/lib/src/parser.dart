@@ -7,17 +7,20 @@ import 'state/fragment.dart';
 
 typedef AutoCloseTag = ({String? tag, String reason, int depth});
 
-final RegExp _spaceRe = RegExp('[ \t\r\n]*');
+final RegExp _spaceRe = RegExp('\\s*');
 
 final class Parser {
   Parser({
-    required this.string,
+    required this.template,
+    required this.loose,
     this.fileName,
     this.uri,
     this.skipStyle = false,
-  }) : length = string.length,
-       sourceFile = SourceFile.fromString(string, url: uri) {
-    stack.add(html);
+  }) : length = template.length,
+       sourceFile = SourceFile.fromString(template, url: uri),
+       root = Root(fragment: Fragment()) {
+    stack.add(root);
+    fragments.add(root.fragment);
 
     while (isNotDone) {
       fragment();
@@ -25,41 +28,39 @@ final class Parser {
 
     if (stack.length > 1) {
       Node current = this.current;
-      String type, slug;
 
-      if (current is Element) {
-        type = '<${current.name}>';
-        slug = 'element';
+      if (loose) {
+      } else if (current is Element) {
+        current.end = current.start + 1;
+        elementUnclosed(current, current.name);
       } else {
-        type = 'Block';
-        slug = 'block';
+        current.end = current.start + 1;
+        blockUnclosed(current);
       }
-
-      error((
-        code: 'unclosed-$slug',
-        message: '$type was left open',
-      ), current.start);
     }
 
-    if (html.children.isNotEmpty) {
-      int start = html.children.first.start;
+    if (root.fragment.children.isNotEmpty) {
+      int start = root.fragment.children.first.start;
 
-      while (start < length && spaceRe.hasMatch(string[start])) {
+      while (start < length && spaceRe.hasMatch(template[start])) {
         start += 1;
       }
 
-      int end = html.children.last.end;
+      int end = root.fragment.children.last.end;
 
-      while (end > 0 && spaceRe.hasMatch(string[end - 1])) {
+      while (end > 0 && spaceRe.hasMatch(template[end - 1])) {
         end -= 1;
       }
 
-      html.start = start;
-      html.end = end;
+      root.fragment
+        ..start = start
+        ..end = end;
     }
   }
 
-  final String string;
+  final String template;
+
+  final bool loose;
 
   final String? fileName;
 
@@ -71,13 +72,11 @@ final class Parser {
 
   final SourceFile sourceFile;
 
-  final Fragment html = Fragment(children: <Node>[]);
-
-  final List<Script> scripts = <Script>[];
-
-  final List<Style> styles = <Style>[];
+  final List<Fragment> fragments = <Fragment>[];
 
   final List<Node> stack = <Node>[];
+
+  final Root root;
 
   final Set<String> metaTags = <String>{};
 
@@ -98,48 +97,54 @@ final class Parser {
   }
 
   String get rest {
-    return string.substring(position);
+    return template.substring(position);
   }
 
-  void allowSpace({bool required = false}) {
-    int start = position;
+  Never dartError(String message, int offset, int length) {
+    dartParseError(message, offset, offset + length);
+  }
 
-    Match? match = _spaceRe.matchAsPrefix(string, position);
+  bool eat(
+    Pattern pattern, [
+    bool required = false,
+    bool requiredInLoose = true,
+  ]) {
+    Match? match = pattern.matchAsPrefix(template, position);
 
     if (match != null) {
       position = match.end;
+      return true;
     }
 
-    if (required && start == position) {
-      error((code: 'missing-whitespace', message: 'Expected whitespace'));
+    if (required && (!loose || requiredInLoose)) {
+      expectedToken(pattern, position);
+    }
+
+    return false;
+  }
+
+  bool match(Pattern pattern) {
+    return pattern.matchAsPrefix(template, position) != null;
+  }
+
+  void allowSpace({bool required = false}) {
+    Match? match = _spaceRe.matchAsPrefix(template, position);
+
+    if (match != null) {
+      position = match.end;
     }
   }
 
   void skip(Pattern pattern) {
-    Match? match = pattern.matchAsPrefix(string, position);
+    Match? match = pattern.matchAsPrefix(template, position);
 
     if (match != null) {
       position = match.end;
     }
   }
 
-  bool match(Pattern pattern) {
-    return pattern.matchAsPrefix(string, position) != null;
-  }
-
-  bool scan(Pattern pattern) {
-    Match? match = pattern.matchAsPrefix(string, position);
-
-    if (match == null) {
-      return false;
-    }
-
-    position = match.end;
-    return true;
-  }
-
   String? read(Pattern pattern) {
-    Match? match = pattern.matchAsPrefix(string, position);
+    Match? match = pattern.matchAsPrefix(template, position);
 
     if (match == null) {
       return null;
@@ -149,51 +154,44 @@ final class Parser {
     return match[0];
   }
 
-  String readUntil(Pattern pattern, [ErrorCode? errorCode]) {
-    int found = string.indexOf(pattern, position);
-
-    if (found == -1) {
-      if (isNotDone) {
-        return string.substring(position, position = string.length);
+  String readUntil(Pattern pattern) {
+    if (isDone) {
+      if (loose) {
+        return '';
       }
 
-      if (errorCode != null) {
-        error(errorCode);
-      }
-
-      error(unexpectedEOF);
+      unexpectedEOF(length);
     }
 
-    return string.substring(position, position = found);
+    int found = template.indexOf(pattern, position);
+
+    if (found == -1) {
+      int start = position;
+      position = length;
+      return template.substring(start);
+    }
+
+    return template.substring(position, position = found);
   }
 
-  void expect(Pattern pattern, [ErrorCode? errorCode]) {
-    Match? match = pattern.matchAsPrefix(string, position);
+  void requireSpace() {
+    Match? match = _spaceRe.matchAsPrefix(template, position);
 
-    if (match == null) {
-      if (errorCode != null) {
-        error(errorCode, position);
-      }
-
-      if (isNotDone) {
-        error(unexpectedToken(pattern), position);
-      }
-
-      error(unexpectedEOFToken(pattern));
+    if (match == null || position == match.end) {
+      expectedSpace(position);
     }
 
     position = match.end;
   }
 
-  Never dartError(String message, int offset, int length) {
-    error((code: 'parse-error', message: message), offset, offset + length);
+  void add(Node node) {
+    if (fragments.isNotEmpty) {
+      fragments.last.children.add(node);
+    }
   }
 
-  Never error(ErrorCode errorCode, [int? position, int? end]) {
-    position ??= this.position;
-    end ??= position;
-
-    SourceSpan span = sourceFile.span(position, end);
-    throw ParseError(errorCode, span);
+  Node pop() {
+    fragments.removeLast();
+    return stack.removeLast();
   }
 }

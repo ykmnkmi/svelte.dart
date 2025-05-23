@@ -7,9 +7,9 @@ extension FragmentParser on Parser {
   void fragment() {
     int start = position;
 
-    if (scan('<')) {
+    if (eat('<')) {
       tag(start);
-    } else if (scan('{')) {
+    } else if (eat('{')) {
       mustache(start);
     } else {
       text(start);
