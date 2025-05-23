@@ -46,14 +46,14 @@ extension ScriptParser on Parser {
 
     String context = _getContext(start, attributes);
 
-    int dataStart = position;
+    int dataStart = index;
     String data = readUntil(_scriptCloseTag, unclosedScript);
 
     if (isDone) {
       error(unclosedScript);
     }
 
-    int dataEnd = position;
+    int dataEnd = index;
     expect(_scriptCloseTag);
 
     List<dart.Directive> directives = <dart.Directive>[];
@@ -128,7 +128,7 @@ extension ScriptParser on Parser {
 
     Script script = Script(
       start: start,
-      end: position,
+      end: index,
       context: context,
       content: (start: dataStart, end: dataEnd, data: data),
       body: (directives: directives, properties: properties, nodes: nodes),

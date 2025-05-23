@@ -1,18 +1,16 @@
 import 'package:svelte_ast/src/parser.dart';
-import 'package:svelte_ast/src/state/mustache.dart';
+import 'package:svelte_ast/src/state/element.dart';
 import 'package:svelte_ast/src/state/tag.dart';
 import 'package:svelte_ast/src/state/text.dart';
 
 extension FragmentParser on Parser {
   void fragment() {
-    int start = position;
-
-    if (eat('<')) {
-      tag(start);
-    } else if (eat('{')) {
-      mustache(start);
+    if (match('<')) {
+      element();
+    } else if (match('{')) {
+      tag();
     } else {
-      text(start);
+      text();
     }
   }
 }

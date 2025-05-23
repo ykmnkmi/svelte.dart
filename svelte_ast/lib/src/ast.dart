@@ -4,23 +4,21 @@ import 'package:svelte_ast/src/visitor.dart';
 
 typedef JsonMapper = Object? Function(Object? object);
 
-extension NodeListToJson on List<Node>? {
+extension NodeListToJson on List<Node> {
   List<Map<String, Object?>>? toJson([JsonMapper mapper = toStringMapper]) {
-    return this
-        ?.map<Map<String, Object?>>((node) => node.toJson(mapper))
-        .toList();
+    return map<Map<String, Object?>>((node) => node.toJson(mapper)).toList();
   }
 }
 
-extension AstNodeToJson on List<dart.AstNode>? {
+extension AstNodeToJson on List<dart.AstNode> {
   List<Object?>? toJson([JsonMapper mapper = toStringMapper]) {
-    return this?.map<Object?>(mapper).toList();
+    return map<Object?>(mapper).toList();
   }
 }
 
-extension TreeNodeToJson on List<css.TreeNode>? {
+extension TreeNodeToJson on List<css.TreeNode> {
   List<Object?>? toJson([JsonMapper mapper = toStringMapper]) {
-    return this?.map<Object?>(mapper).toList();
+    return map<Object?>(mapper).toList();
   }
 }
 
@@ -307,7 +305,7 @@ final class DebugTag extends TagNode {
       'start': start,
       'end': end,
       'class': 'DebugTag',
-      'identifiers': identifiers?.map<Object?>(mapper).toList(),
+      'identifiers': identifiers?.toJson(mapper),
     };
   }
 }
@@ -626,6 +624,14 @@ final class UseDirective extends DirectiveNode {
   }
 }
 
+typedef ElementNodeFactory =
+    ElementNode Function({
+      int start,
+      int end,
+      List<Attribute> attributes,
+      Fragment? fragment,
+    });
+
 abstract class ElementNode extends Node {
   ElementNode({
     super.start,
@@ -642,7 +648,17 @@ abstract class ElementNode extends Node {
   final Fragment fragment;
 }
 
-final class Component extends ElementNode {
+abstract class RenderableElement extends ElementNode {
+  RenderableElement({
+    super.start,
+    super.end,
+    required super.name,
+    super.attributes,
+    required super.fragment,
+  });
+}
+
+final class Component extends RenderableElement {
   Component({
     super.start,
     super.end,
@@ -662,9 +678,7 @@ final class Component extends ElementNode {
       'start': start,
       'end': end,
       'class': 'Component',
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
@@ -685,15 +699,13 @@ final class TitleElement extends ElementNode {
       'start': start,
       'end': end,
       'class': 'TitleElement',
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
 }
 
-final class SlotElement extends ElementNode {
+final class SlotElement extends RenderableElement {
   SlotElement({super.start, super.end, super.attributes, Fragment? fragment})
     : super(name: 'slot', fragment: fragment ?? Fragment.empty);
 
@@ -708,15 +720,13 @@ final class SlotElement extends ElementNode {
       'start': start,
       'end': end,
       'class': 'SlotElement',
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
 }
 
-final class RegularElement extends ElementNode {
+final class RegularElement extends RenderableElement {
   RegularElement({
     super.start,
     super.end,
@@ -737,9 +747,7 @@ final class RegularElement extends ElementNode {
       'end': end,
       'class': 'RegularElement',
       'name': name,
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
@@ -761,15 +769,13 @@ final class SvelteBody extends ElementNode {
       'end': end,
       'class': 'SvelteBody',
       'name': name,
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
 }
 
-final class SvelteComponent extends ElementNode {
+final class SvelteComponent extends RenderableElement {
   SvelteComponent({
     super.start,
     super.end,
@@ -789,9 +795,7 @@ final class SvelteComponent extends ElementNode {
       'end': end,
       'class': 'SvelteComponent',
       'name': name,
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
@@ -813,24 +817,22 @@ final class SvelteDocument extends ElementNode {
       'end': end,
       'class': 'SvelteDocument',
       'name': name,
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
 }
 
-final class SvelteElement extends ElementNode {
+final class SvelteElement extends RenderableElement {
   SvelteElement({
     super.start,
     super.end,
     super.attributes,
-    required this.tag,
+    this.tag,
     Fragment? fragment,
   }) : super(name: 'svelte:element', fragment: fragment ?? Fragment.empty);
 
-  final dart.Expression tag;
+  final dart.Expression? tag;
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -845,15 +847,13 @@ final class SvelteElement extends ElementNode {
       'class': 'SvelteElement',
       'name': name,
       'tag': mapper(tag),
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
 }
 
-final class SvelteFragment extends ElementNode {
+final class SvelteFragment extends RenderableElement {
   SvelteFragment({super.start, super.end, super.attributes, Fragment? fragment})
     : super(name: 'svelte:fragment', fragment: fragment ?? Fragment.empty);
 
@@ -869,9 +869,7 @@ final class SvelteFragment extends ElementNode {
       'end': end,
       'class': 'SvelteFragment',
       'name': name,
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
@@ -893,9 +891,7 @@ final class SvelteBoundary extends ElementNode {
       'end': end,
       'class': 'SvelteBoundary',
       'name': name,
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
@@ -917,9 +913,7 @@ final class SvelteHead extends ElementNode {
       'end': end,
       'class': 'SvelteHead',
       'name': name,
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
@@ -941,15 +935,13 @@ final class SvelteOptions extends ElementNode {
       'end': end,
       'class': 'SvelteOptions',
       'name': name,
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
 }
 
-final class SvelteSelf extends ElementNode {
+final class SvelteSelf extends RenderableElement {
   SvelteSelf({super.start, super.end, super.attributes, Fragment? fragment})
     : super(name: 'svelte:self', fragment: fragment ?? Fragment.empty);
 
@@ -965,9 +957,7 @@ final class SvelteSelf extends ElementNode {
       'end': end,
       'class': 'SvelteSelf',
       'name': name,
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }
@@ -989,9 +979,7 @@ final class SvelteWindow extends ElementNode {
       'end': end,
       'class': 'SvelteWindow',
       'name': name,
-      'attributes': <Map<String, Object?>>[
-        for (Attribute attribute in attributes) attribute.toJson(mapper),
-      ],
+      'attributes': attributes.toJson(mapper),
       'fragment': fragment.toJson(mapper),
     };
   }

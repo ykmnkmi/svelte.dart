@@ -12,14 +12,14 @@ extension StyleParser on Parser {
   void readStyle(int start, List<Node> attributes) {
     expect('>');
 
-    int dataStart = position;
+    int dataStart = index;
     String data = readUntil(_styleCloseTag, unclosedStyle);
 
     if (isDone) {
       error(unclosedStyle);
     }
 
-    int dataEnd = position;
+    int dataEnd = index;
 
     if (skipStyle) {
       read(_styleCloseTag);
@@ -50,7 +50,7 @@ extension StyleParser on Parser {
 
     Style style = Style(
       start: start,
-      end: position,
+      end: index,
       attributes: attributes,
       topLevels: ast.topLevels,
       content: (start: dataStart, end: dataEnd, data: data),

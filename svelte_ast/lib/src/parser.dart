@@ -2,23 +2,15 @@ import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/patterns.dart';
+import 'package:svelte_ast/src/state/fragment.dart';
 
-import 'state/fragment.dart';
-
-typedef AutoCloseTag = ({String? tag, String reason, int depth});
-
-final RegExp _spaceRe = RegExp('\\s*');
+typedef AutoClosedTag = ({String? tag, String reason, int depth});
 
 final class Parser {
-  Parser({
-    required this.template,
-    required this.loose,
-    this.fileName,
-    this.uri,
-    this.skipStyle = false,
-  }) : length = template.length,
-       sourceFile = SourceFile.fromString(template, url: uri),
-       root = Root(fragment: Fragment()) {
+  Parser({required this.template, this.fileName, this.uri, required this.loose})
+    : length = template.length,
+      sourceFile = SourceFile.fromString(template, url: uri),
+      root = Root(fragment: Fragment(children: <Node>[])) {
     stack.add(root);
     fragments.add(root.fragment);
 
@@ -30,7 +22,7 @@ final class Parser {
       Node current = this.current;
 
       if (loose) {
-      } else if (current is Element) {
+      } else if (current is RegularElement) {
         current.end = current.start + 1;
         elementUnclosed(current, current.name);
       } else {
@@ -60,13 +52,11 @@ final class Parser {
 
   final String template;
 
-  final bool loose;
-
   final String? fileName;
 
   final Uri? uri;
 
-  final bool skipStyle;
+  final bool loose;
 
   final int length;
 
@@ -80,77 +70,90 @@ final class Parser {
 
   final Set<String> metaTags = <String>{};
 
-  int position = 0;
+  int index = 0;
 
-  AutoCloseTag? lastAutoCloseTag;
+  AutoClosedTag? lastAutoClosedTag;
 
   Node get current {
     return stack.last;
   }
 
   bool get isDone {
-    return position >= length;
+    return index >= length;
   }
 
   bool get isNotDone {
-    return position < length;
+    return index < length;
   }
 
   String get rest {
-    return template.substring(position);
+    return template.substring(index);
   }
 
-  Never dartError(String message, int offset, int length) {
-    dartParseError(message, offset, offset + length);
-  }
-
-  bool eat(
-    Pattern pattern, [
-    bool required = false,
-    bool requiredInLoose = true,
-  ]) {
-    Match? match = pattern.matchAsPrefix(template, position);
+  void allowSpace() {
+    Match? match = spaceStarRe.matchAsPrefix(template, index);
 
     if (match != null) {
-      position = match.end;
+      index = match.end;
+    }
+  }
+
+  void expectSpace() {
+    Match? match = spacePlusRe.matchAsPrefix(template, index);
+
+    if (match == null) {
+      expectedSpace(index);
+    }
+
+    index = match.end;
+  }
+
+  bool scan(Pattern pattern) {
+    Match? match = pattern.matchAsPrefix(template, index);
+
+    if (match != null) {
+      index = match.end;
       return true;
     }
 
-    if (required && (!loose || requiredInLoose)) {
-      expectedToken(pattern, position);
+    return false;
+  }
+
+  bool expect(Pattern pattern, [bool requiredInLoose = true]) {
+    Match? match = pattern.matchAsPrefix(template, index);
+
+    if (match != null) {
+      index = match.end;
+      return true;
+    }
+
+    if (!loose || requiredInLoose) {
+      expectedToken(index, pattern);
     }
 
     return false;
   }
 
   bool match(Pattern pattern) {
-    return pattern.matchAsPrefix(template, position) != null;
-  }
-
-  void allowSpace({bool required = false}) {
-    Match? match = _spaceRe.matchAsPrefix(template, position);
-
-    if (match != null) {
-      position = match.end;
-    }
+    return pattern.matchAsPrefix(template, index) != null;
   }
 
   void skip(Pattern pattern) {
-    Match? match = pattern.matchAsPrefix(template, position);
+    Match? match = pattern.matchAsPrefix(template, index);
 
     if (match != null) {
-      position = match.end;
+      index = match.end;
     }
   }
 
   String? read(Pattern pattern) {
-    Match? match = pattern.matchAsPrefix(template, position);
+    Match? match = pattern.matchAsPrefix(template, index);
 
     if (match == null) {
       return null;
     }
 
-    position = match.end;
+    index = match.end;
     return match[0];
   }
 
@@ -163,25 +166,15 @@ final class Parser {
       unexpectedEOF(length);
     }
 
-    int found = template.indexOf(pattern, position);
+    int found = template.indexOf(pattern, index);
 
     if (found == -1) {
-      int start = position;
-      position = length;
+      int start = index;
+      index = length;
       return template.substring(start);
     }
 
-    return template.substring(position, position = found);
-  }
-
-  void requireSpace() {
-    Match? match = _spaceRe.matchAsPrefix(template, position);
-
-    if (match == null || position == match.end) {
-      expectedSpace(position);
-    }
-
-    position = match.end;
+    return template.substring(index, index = found);
   }
 
   void add(Node node) {
@@ -191,7 +184,17 @@ final class Parser {
   }
 
   Node pop() {
-    fragments.removeLast();
+    Fragment fragment = fragments.removeLast();
+
+    if (fragment.children.isNotEmpty) {
+      fragment.start = fragment.children.first.start;
+      fragment.end = fragment.children.last.end;
+    }
+
     return stack.removeLast();
+  }
+
+  Never dartError(String message, int offset, int length) {
+    dartParseError(offset, offset + length, message);
   }
 }

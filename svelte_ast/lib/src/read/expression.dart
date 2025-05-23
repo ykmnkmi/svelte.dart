@@ -24,20 +24,20 @@ extension ExpressionParser on Parser {
     void callback(ScriptParser parser, Token token) {
       token = parser.syntheticPreviousToken(token);
       token = parser.parsePattern(token, context);
-      position = token.end;
+      index = token.end;
     }
 
-    return withScriptParser<DartPattern>(position, end, callback);
+    return withScriptParser<DartPattern>(index, end, callback);
   }
 
   Expression readExpression(Pattern end) {
     void callback(ScriptParser parser, Token token) {
       token = parser.syntheticPreviousToken(token);
       token = parser.parseExpression(token);
-      position = token.end;
+      index = token.end;
     }
 
-    return withScriptParser<Expression>(position, end, callback);
+    return withScriptParser<Expression>(index, end, callback);
   }
 
   SimpleIdentifier simpleIdentifier(int start, String name) {
@@ -51,7 +51,7 @@ extension ExpressionParser on Parser {
     ScriptParserCallback callback,
   ) {
     ScriptParser parser = ScriptParser.fromString(
-      string: string,
+      string: template,
       offset: offset,
       fileName: fileName,
       uri: uri,
@@ -81,7 +81,7 @@ extension ExpressionParser on Parser {
     ScriptParserCallback callback,
   ) {
     ScriptParser parser = ScriptParser.fromString(
-      string: string,
+      string: template,
       offset: offset,
       fileName: fileName,
       uri: uri,
