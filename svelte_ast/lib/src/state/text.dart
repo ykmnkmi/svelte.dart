@@ -5,8 +5,7 @@ import 'package:svelte_ast/src/parser.dart';
 final RegExp _textEndRe = RegExp('[<{]');
 
 extension TextParser on Parser {
-  void text() {
-    int start = index;
+  void text(int start) {
     int found = template.indexOf(_textEndRe, start);
 
     if (found == -1) {

@@ -4,39 +4,81 @@ import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/patterns.dart';
 import 'package:svelte_ast/src/read/expression.dart';
 
+final RegExp _eachAsRe = RegExp('\\s+as');
+
+final RegExp _eachAsOrIndexOrKeyOrEndRe = RegExp(
+  '(\\s+as|\\s*,|\\s*\\(|\\s*})',
+);
+
+final RegExp _eachIndexOrKeyOrEndRe = RegExp('(\\s*,|\\s*\\(|\\s*})');
+
 extension MustacheParser on Parser {
-  void _open() {
-    throw UnimplementedError('#open');
+  void _open(int start) {
+    if (scan('if')) {
+      expectSpace();
+
+      dart.Expression expression = readExpression(closingCurlyBracketRe);
+      expect(closingCurlyBracketRe);
+
+      IfBlock block = IfBlock(
+        start: start,
+        test: expression,
+        consequent: Fragment(),
+      );
+
+      stack.add(block);
+      fragments.add(block.consequent);
+      return;
+    }
+
+    if (scan('each')) {
+      expectSpace();
+
+      dart.Expression expression = readExpression(_eachAsOrIndexOrKeyOrEndRe);
+
+      if (expression is dart.AsExpression) {
+        expression = expression.expression;
+        index = expression.end;
+      }
+
+      expectSpace();
+      expect('as');
+      expectSpace();
+
+      dart.DartPattern context = readAssignmentPattern(_eachIndexOrKeyOrEndRe);
+      print(context);
+
+      throw UnimplementedError('each');
+    }
+
+    throw UnimplementedError('open');
   }
 
-  void _next() {
+  void _next(int start) {
     throw UnimplementedError(':next');
   }
 
-  void _special() {
+  void _special(int start) {
     throw UnimplementedError('@special');
   }
 
-  void _close() {
+  void _close(int start) {
     throw UnimplementedError('/close');
   }
 
-  void tag() {
-    int start = index;
-
-    expect('{');
+  void tag(int start) {
     allowSpace();
 
     if (scan('#')) {
-      _open();
+      _open(start);
     } else if (scan(':')) {
-      _next();
+      _next(start);
     } else if (scan('@')) {
-      _special();
+      _special(start);
     } else if (match('/')) {
       if (!match('/*') && !match('//')) {
         skip('/');
-        _close();
+        _close(start);
       }
     } else {
       dart.Expression expression = readExpression(closingCurlyBracketRe);

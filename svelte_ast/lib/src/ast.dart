@@ -39,9 +39,8 @@ abstract class Node {
 }
 
 final class Fragment extends Node {
-  static final Fragment empty = Fragment();
-
-  Fragment({super.start, super.end, this.children = const <Never>[]});
+  Fragment({super.start, super.end, List<Node>? children})
+    : children = children ?? <Node>[];
 
   final List<Node> children;
 
@@ -690,7 +689,7 @@ final class Component extends RenderableElement {
     required super.name,
     super.attributes,
     Fragment? fragment,
-  }) : super(fragment: fragment ?? Fragment.empty);
+  }) : super(fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -711,7 +710,7 @@ final class Component extends RenderableElement {
 
 final class TitleElement extends ElementNode {
   TitleElement({super.start, super.end, super.attributes, Fragment? fragment})
-    : super(name: 'title', fragment: fragment ?? Fragment.empty);
+    : super(name: 'title', fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -732,7 +731,7 @@ final class TitleElement extends ElementNode {
 
 final class SlotElement extends RenderableElement {
   SlotElement({super.start, super.end, super.attributes, Fragment? fragment})
-    : super(name: 'slot', fragment: fragment ?? Fragment.empty);
+    : super(name: 'slot', fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -780,7 +779,7 @@ final class RegularElement extends RenderableElement {
 
 final class SvelteBody extends ElementNode {
   SvelteBody({super.start, super.end, super.attributes, Fragment? fragment})
-    : super(name: 'svelte:body', fragment: fragment ?? Fragment.empty);
+    : super(name: 'svelte:body', fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -807,7 +806,7 @@ final class SvelteComponent extends RenderableElement {
     super.attributes,
     this.expression,
     Fragment? fragment,
-  }) : super(name: 'svelte:component', fragment: fragment ?? Fragment.empty);
+  }) : super(name: 'svelte:component', fragment: fragment ?? Fragment());
 
   dart.Expression? expression;
 
@@ -832,7 +831,7 @@ final class SvelteComponent extends RenderableElement {
 
 final class SvelteDocument extends ElementNode {
   SvelteDocument({super.start, super.end, super.attributes, Fragment? fragment})
-    : super(name: 'svelte:document', fragment: fragment ?? Fragment.empty);
+    : super(name: 'svelte:document', fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -859,7 +858,7 @@ final class SvelteElement extends RenderableElement {
     super.attributes,
     this.tag,
     Fragment? fragment,
-  }) : super(name: 'svelte:element', fragment: fragment ?? Fragment.empty);
+  }) : super(name: 'svelte:element', fragment: fragment ?? Fragment());
 
   dart.Expression? tag;
 
@@ -884,7 +883,7 @@ final class SvelteElement extends RenderableElement {
 
 final class SvelteFragment extends RenderableElement {
   SvelteFragment({super.start, super.end, super.attributes, Fragment? fragment})
-    : super(name: 'svelte:fragment', fragment: fragment ?? Fragment.empty);
+    : super(name: 'svelte:fragment', fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -906,7 +905,7 @@ final class SvelteFragment extends RenderableElement {
 
 final class SvelteBoundary extends ElementNode {
   SvelteBoundary({super.start, super.end, super.attributes, Fragment? fragment})
-    : super(name: 'svelte:boundary', fragment: fragment ?? Fragment.empty);
+    : super(name: 'svelte:boundary', fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -928,7 +927,7 @@ final class SvelteBoundary extends ElementNode {
 
 final class SvelteHead extends ElementNode {
   SvelteHead({super.start, super.end, super.attributes, Fragment? fragment})
-    : super(name: 'svelte:head', fragment: fragment ?? Fragment.empty);
+    : super(name: 'svelte:head', fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -950,7 +949,7 @@ final class SvelteHead extends ElementNode {
 
 final class SvelteOptions extends ElementNode {
   SvelteOptions({super.start, super.end, super.attributes, Fragment? fragment})
-    : super(name: 'svelte:options', fragment: fragment ?? Fragment.empty);
+    : super(name: 'svelte:options', fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -972,7 +971,7 @@ final class SvelteOptions extends ElementNode {
 
 final class SvelteSelf extends RenderableElement {
   SvelteSelf({super.start, super.end, super.attributes, Fragment? fragment})
-    : super(name: 'svelte:self', fragment: fragment ?? Fragment.empty);
+    : super(name: 'svelte:self', fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {
@@ -994,7 +993,7 @@ final class SvelteSelf extends RenderableElement {
 
 final class SvelteWindow extends ElementNode {
   SvelteWindow({super.start, super.end, super.attributes, Fragment? fragment})
-    : super(name: 'svelte:window', fragment: fragment ?? Fragment.empty);
+    : super(name: 'svelte:window', fragment: fragment ?? Fragment());
 
   @override
   R accept<C, R>(Visitor<C, R> visitor, C context) {

@@ -29,14 +29,16 @@ extension ExpressionParser on Parser {
   }
 
   dart.DartPattern readAssignmentPattern(Pattern end) {
-    return readPattern(end, dart.PatternContext.assignment);
+    return _readPattern(end, dart.PatternContext.assignment);
   }
 
-  dart.DartPattern readPattern(Pattern end, dart.PatternContext context) {
+  dart.DartPattern _readPattern(Pattern end, dart.PatternContext context) {
     return parseString<dart.DartPattern>(
       offset: index,
       string: template,
       closingPattern: end,
+      fileName: fileName,
+      uri: uri,
       parse: (token, parser) {
         parser.fastaParser.parsePattern(
           parser.fastaParser.syntheticPreviousToken(token),
@@ -60,6 +62,8 @@ extension ExpressionParser on Parser {
       offset: index,
       string: template,
       closingPattern: end,
+      fileName: fileName,
+      uri: uri,
       parse: (token, parser) {
         parser.fastaParser.parseExpression(
           parser.fastaParser.syntheticPreviousToken(token),

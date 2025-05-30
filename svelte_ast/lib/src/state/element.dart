@@ -413,10 +413,7 @@ extension ElementParser on Parser {
     unexpectedEOF(length);
   }
 
-  void element() {
-    int start = index;
-    expect('<');
-
+  void element(int start) {
     if (scan('!--')) {
       String data = readUntil('-->');
       expect('-->');

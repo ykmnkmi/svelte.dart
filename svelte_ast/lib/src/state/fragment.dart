@@ -5,12 +5,14 @@ import 'package:svelte_ast/src/state/text.dart';
 
 extension FragmentParser on Parser {
   void fragment() {
-    if (match('<')) {
-      element();
-    } else if (match('{')) {
-      tag();
+    int start = index;
+
+    if (scan('<')) {
+      element(start);
+    } else if (scan('{')) {
+      tag(start);
     } else {
-      text();
+      text(start);
     }
   }
 }
