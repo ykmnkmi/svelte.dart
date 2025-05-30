@@ -19,8 +19,8 @@ const String content = '''
 
 void main() {
   // Create an AST tree by parsing an SvelteDart template.
-  SvelteAst ast = parse(content);
+  Root root = parse(content);
 
   // Print to console.
-  print(const JsonEncoder.withIndent('  ').convert(ast.toJson()));
+  print(const JsonEncoder.withIndent('  ').convert(root.toJson()));
 }

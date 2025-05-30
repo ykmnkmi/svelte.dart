@@ -9,6 +9,10 @@ import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = r'''
 <!-- app.svelte -->
+<script module>
+  const duration = Duration(seconds: 1);
+</script>
+
 <script>
   // imports
   import 'package:svelte/svelte.dart';
@@ -23,8 +27,6 @@ const String string = r'''
   void handleClick() {
     count += 1;
   }
-
-  const duration = Duration(seconds: 1);
 
   onMount(() {
     var timer = Timer.periodic(duration, (_) {
@@ -61,18 +63,17 @@ const String string = r'''
   p {
     margin-top: 8px;
   }
-</style>
-''';
+</style> ''';
 
 void main() {
   try {
-    SvelteAst ast = parse(
+    Root root = parse(
       string,
       fileName: 'check.dart',
       uri: Uri.file('check.dart'),
     );
 
-    Map<String, Object?> json = ast.toJson(mapper);
+    Map<String, Object?> json = root.toJson(mapper);
     String output = const JsonEncoder.withIndent('  ').convert(json);
     File.fromUri(Uri(path: 'test/check.json')).writeAsStringSync(output);
   } on ParseError catch (error, stackTrace) {
