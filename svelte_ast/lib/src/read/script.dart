@@ -1,139 +1,170 @@
 // ignore_for_file: implementation_imports
 
-import 'package:analyzer/dart/ast/token.dart';
-import 'package:analyzer/src/dart/ast/ast.dart' hide Directive;
-import 'package:analyzer/src/dart/ast/ast.dart' as dart show Directive;
-import 'package:analyzer/src/fasta/ast_builder.dart';
+import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as dart;
+import 'package:analyzer/dart/ast/token.dart' as dart;
+import 'package:analyzer/src/dart/ast/ast.dart' as dart;
+import 'package:analyzer/src/fasta/ast_builder.dart' as dart;
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/parser.dart';
-import 'package:svelte_ast/src/read/expression.dart';
-import 'package:svelte_ast/src/read/script_parser.dart' as script_parser;
+import 'package:svelte_ast/src/patterns.dart';
+import 'package:svelte_ast/src/read/dart/parser.dart' as dart;
 
-final RegExp _scriptCloseTag = RegExp('<\\/script\\s*>');
+const Set<String> _reservedAttributes = <String>{
+  'server',
+  'client',
+  'worker',
+  'test',
+  'default',
+};
+
+const Set<String> _allowedAttributes = <String>{
+  'context',
+  'generics',
+  'module',
+};
 
 extension ScriptParser on Parser {
-  String _getContext(int start, List<Node> nodes) {
-    Attribute? attribute;
-
-    for (Node node in nodes) {
-      if (node is Attribute && node.name == 'context') {
-        attribute = node;
+  String _readContext(List<AttributeNode> attributes) {
+    for (AttributeNode attribute in attributes) {
+      if (attribute is! Attribute) {
+        scriptUnknownAttribute(attribute.start, attribute.end);
       }
-    }
 
-    if (attribute == null) {
-      return 'default';
-    }
+      if (_reservedAttributes.contains(attribute.name)) {
+        scriptReservedAttribute(attribute.name, attribute.start, attribute.end);
+      }
 
-    List<Node> values = attribute.values;
+      if (!_allowedAttributes.contains(attribute.name)) {
+        scriptUnknownAttribute(attribute.start, attribute.end);
+      }
 
-    if (values.length == 1) {
-      Node text = values.first;
+      if (attribute.name == 'module') {
+        if (attribute.value != null) {
+          scriptInvalidAttributeValue(
+            attribute.name,
+            attribute.start,
+            attribute.end,
+          );
+        }
 
-      if (text is Text && text.data == 'module') {
         return 'module';
       }
 
-      error(invalidScriptContextValue, start);
-    }
+      if (attribute.name == 'context') {
+        Object? value = attribute.value;
 
-    error(invalidScriptContextAttribute, start);
-  }
-
-  void readScript(int start, List<Node> attributes) {
-    expect('>');
-
-    String context = _getContext(start, attributes);
-
-    int dataStart = position;
-    String data = readUntil(_scriptCloseTag, unclosedScript);
-
-    if (isDone) {
-      error(unclosedScript);
-    }
-
-    int dataEnd = position;
-    expect(_scriptCloseTag);
-
-    List<dart.Directive> directives = <dart.Directive>[];
-    List<VariableDeclarationStatement> properties =
-        <VariableDeclarationStatement>[];
-    List<AstNode> nodes = <AstNode>[];
-
-    void scriptParser(script_parser.ScriptParser parser, Token token) {
-      AstBuilder builder = parser.builder;
-
-      if (context == 'default') {
-        builder.beginCompilationUnit(token);
-
-        Token previousToken = parser.syntheticPreviousToken(token);
-        Token next = previousToken.next!;
-
-        while (!next.isEof) {
-          next = parser.parseMetadataStar(next);
-
-          if (next.type == Keyword.LIBRARY) {
-            next = parser.parseLibraryName(next);
-            directives.add(builder.pop() as dart.Directive);
-            next = next.next!;
-          } else if (next.type == Keyword.IMPORT) {
-            next = parser.parseImport(next);
-            directives.add(builder.directives.removeLast());
-            next = next.next!;
-          } else if (next.type == Keyword.EXPORT || next.type == Keyword.PART) {
-            throw UnimplementedError();
-          } else if (next.type == Keyword.EXTERNAL) {
-            next = next.next!;
-            next = parser.parseStatement(next.previous!);
-
-            var declaration = builder.pop() as VariableDeclarationStatement;
-
-            if (declaration.variables.variables.length != 1) {
-              // TODO(ast): Change exception type.
-              throw StateError('Expected a single variable declaration.');
-            }
-
-            properties.add(declaration);
-
-            if (builder.pop() != null) {
-              throw StateError('Expected a null value.');
-            }
-
-            next = next.next!;
-          } else {
-            next = parser.parseStatement(next.previous!);
-
-            var pop = builder.pop() as AstNode;
-
-            if (pop is! Statement) {
-              // TODO(ast): Change exception type.
-              throw StateError('Expected a statement.');
-            }
-
-            nodes.add(pop);
-            next = next.next!;
-          }
+        if (value is Text && value.data == 'module') {
+          return 'module';
         }
-      } else {
-        parser.parseUnit(token);
 
-        CompilationUnit unit = builder.pop() as CompilationUnit;
-        directives.addAll(unit.directives);
-        nodes.addAll(unit.declarations);
+        scriptInvalidContext(attribute.start, attribute.end);
       }
     }
 
-    withScriptParserRun(dataStart, _scriptCloseTag, scriptParser);
+    return 'default';
+  }
 
-    Script script = Script(
-      start: start,
-      end: position,
-      context: context,
-      content: (start: dataStart, end: dataEnd, data: data),
-      body: (directives: directives, properties: properties, nodes: nodes),
+  Script readScript(int start, List<AttributeNode> attributes) {
+    String context = _readContext(attributes);
+
+    int contentStart = position;
+    String content = readUntil(closingScriptTagRe);
+
+    if (isDone) {
+      elementUnclosed('script', length);
+    }
+
+    int contentEnd = position;
+    expect(closingScriptTagRe);
+
+    if (context == 'module') {
+      dart.CompilationUnit unit = dart.parseString<dart.CompilationUnit>(
+        string: template,
+        offset: contentStart,
+        end: contentEnd,
+        closingPattern: closingScriptTagRe,
+        fileName: fileName,
+        uri: uri,
+        parse: (token, parser) => parser.parseCompilationUnit(token),
+      );
+
+      return ModuleScript(
+        start: start,
+        end: position,
+        content: ScriptContent(
+          start: contentStart,
+          end: contentEnd,
+          content: content,
+        ),
+        unit: unit,
+      );
+    }
+
+    List<dart.AstNode> body = dart.parseString<List<dart.AstNode>>(
+      offset: contentStart,
+      end: contentEnd,
+      string: template,
+      closingPattern: closingScriptTagRe,
+      parse: (token, parser) {
+        dart.AstBuilder astBuilder = parser.astBuilder;
+        dart.Parser fastaParser = parser.fastaParser;
+
+        dart.Token previousToken = fastaParser.syntheticPreviousToken(token);
+        dart.Token next = previousToken.next!;
+
+        List<dart.AstNode> nodes = <dart.AstNode>[];
+
+        while (!next.isEof) {
+          next = fastaParser.parseMetadataStar(next);
+
+          if (next.type == dart.Keyword.LIBRARY) {
+            dartError("'library' is not supported.", next.offset, next.end);
+          } else if (next.type == dart.Keyword.IMPORT) {
+            next = fastaParser.parseTopLevelDeclaration(next);
+            nodes.add(astBuilder.directives.removeLast());
+
+            Object? object = astBuilder.pop();
+            assert(object == null);
+          } else if (next.type == dart.Keyword.EXPORT) {
+            dartError("'export' is not supported.", next.offset, next.end);
+          } else if (next.type == dart.Keyword.PART) {
+            dartError("'part' is not supported.", next.offset, next.end);
+          } else if (next.type == dart.Keyword.EXTERNAL) {
+            next = next.next!;
+            next = fastaParser.parseTopLevelMember(next);
+            nodes.add(astBuilder.declarations.removeLast());
+
+            Object? object = astBuilder.pop();
+            assert(object == null);
+          } else {
+            dart.Token previous = next.previous!;
+            next = fastaParser.parseStatement(previous);
+
+            Object? statement = astBuilder.pop();
+
+            if (statement is! dart.Statement) {
+              dartError('Expected a statement.', previous.end, 0);
+            }
+
+            nodes.add(statement);
+            next = next.next!;
+          }
+        }
+
+        return nodes;
+      },
     );
 
-    scripts.add(script);
+    return InstanceScript(
+      start: start,
+      end: position,
+      content: ScriptContent(
+        start: contentStart,
+        end: contentEnd,
+        content: content,
+      ),
+      body: body,
+    );
   }
 }

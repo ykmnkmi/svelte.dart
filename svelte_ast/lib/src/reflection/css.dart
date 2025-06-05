@@ -69,40 +69,44 @@ Object css(TreeNode node) {
       return;
     }
 
-    if (type.isSubtypeOf(_treeNodeTypeMirror)) {
-      InstanceMirror fieldMirror = instanceMirror.getField(symbol);
-      TreeNode? field = fieldMirror.reflectee as TreeNode?;
+    try {
+      if (type.isSubtypeOf(_treeNodeTypeMirror)) {
+        InstanceMirror fieldMirror = instanceMirror.getField(symbol);
+        TreeNode? field = fieldMirror.reflectee as TreeNode?;
 
-      if (field == null) {
-        result[name] = null;
-      } else {
-        result[name] = css(field);
-      }
-    } else if (type.isSubtypeOf(_nodeListTypeMirror)) {
-      InstanceMirror nodes = instanceMirror.getField(symbol);
-      Object? values = nodes.reflectee;
+        if (field == null) {
+          result[name] = null;
+        } else {
+          result[name] = css(field);
+        }
+      } else if (type.isSubtypeOf(_nodeListTypeMirror)) {
+        InstanceMirror nodes = instanceMirror.getField(symbol);
+        Object? values = nodes.reflectee;
 
-      if (values == null) {
-        result[name] = null;
-      } else {
-        List<TreeNode> nodes = values as List<TreeNode>;
-        result[name] = nodes.map<Object?>(css).toList();
-      }
-    } else if (type.isSubtypeOf(_sourceSpanTypeMirror)) {
-      InstanceMirror fieldMirror = instanceMirror.getField(symbol);
-      SourceSpan? span = fieldMirror.reflectee as SourceSpan?;
+        if (values == null) {
+          result[name] = null;
+        } else {
+          List<TreeNode> nodes = values as List<TreeNode>;
+          result[name] = nodes.map<Object?>(css).toList();
+        }
+      } else if (type.isSubtypeOf(_sourceSpanTypeMirror)) {
+        InstanceMirror fieldMirror = instanceMirror.getField(symbol);
+        SourceSpan? span = fieldMirror.reflectee as SourceSpan?;
 
-      if (span == null) {
-        result[name] = null;
-      } else {
-        result[name] = <String, Object?>{
-          'start': span.start.offset,
-          'end': span.end.offset,
-          'lexeme': span.text,
-        };
+        if (span == null) {
+          result[name] = null;
+        } else {
+          result[name] = <String, Object?>{
+            'start': span.start.offset,
+            'end': span.end.offset,
+            'lexeme': span.text,
+          };
+        }
+      } else if (isEncodable(type)) {
+        result[name] = getValue(instanceMirror, symbol);
       }
-    } else if (isEncodable(type)) {
-      result[name] = getValue(instanceMirror, symbol);
+    } catch (error) {
+      result[name] = '@error { $error }';
     }
   }
 

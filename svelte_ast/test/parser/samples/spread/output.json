@@ -1,54 +1,63 @@
 {
-	"html": {
-		"start": 0,
-		"end": 22,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 22,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 5,
-						"end": 15,
-						"class": "Spread",
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "props",
-							"start": 9,
-							"end": 14,
-							"token": {
-								"start": 9,
-								"end": 14,
-								"type": "IDENTIFIER",
-								"lexeme": "props"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 9,
-								"end": 14,
-								"type": "IDENTIFIER",
-								"lexeme": "props"
-							},
-							"endToken": {
-								"start": 9,
-								"end": 14,
-								"type": "IDENTIFIER",
-								"lexeme": "props"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "props"
-						}
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 22,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 22,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 22,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 15,
+            "class": "SpreadAttribute",
+            "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "props",
+              "start": 9,
+              "end": 14,
+              "token": {
+                "start": 9,
+                "end": 14,
+                "type": "IDENTIFIER",
+                "lexeme": "props"
+              },
+              "ancestorCascade": null,
+              "beginToken": {
+                "start": 9,
+                "end": 14,
+                "type": "IDENTIFIER",
+                "lexeme": "props"
+              },
+              "endToken": {
+                "start": 9,
+                "end": 14,
+                "type": "IDENTIFIER",
+                "lexeme": "props"
+              },
+              "isQualified": "@error { Null check operator used on a null value }",
+              "isSynthetic": false,
+              "name": "props"
+            }
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

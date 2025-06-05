@@ -1,51 +1,62 @@
 {
-	"html": {
-		"start": 0,
-		"end": 28,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 28,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 5,
-						"end": 11,
-						"class": "Attribute",
-						"name": "id",
-						"values": [
-							{
-								"start": 9,
-								"end": 10,
-								"class": "Text",
-								"raw": "x",
-								"data": "x"
-							}
-						]
-					},
-					{
-						"start": 12,
-						"end": 21,
-						"class": "Attribute",
-						"name": "class",
-						"values": [
-							{
-								"start": 19,
-								"end": 20,
-								"class": "Text",
-								"raw": "y",
-								"data": "y"
-							}
-						]
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 28,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 28,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 28,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 11,
+            "class": "Attribute",
+            "name": "id",
+            "value": [
+              {
+                "start": 9,
+                "end": 10,
+                "class": "Text",
+                "raw": "x",
+                "data": "x"
+              }
+            ],
+            "modifiers": []
+          },
+          {
+            "start": 12,
+            "end": 21,
+            "class": "Attribute",
+            "name": "class",
+            "value": [
+              {
+                "start": 19,
+                "end": 20,
+                "class": "Text",
+                "raw": "y",
+                "data": "y"
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

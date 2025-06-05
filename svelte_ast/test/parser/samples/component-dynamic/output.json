@@ -1,137 +1,146 @@
 {
-	"html": {
-		"start": 0,
-		"end": 62,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 62,
-				"class": "InlineComponent",
-				"name": "svelte:component",
-				"expression": {
-					"@class": "ConditionalExpression",
-					"@toString": "foo ? Foo : Bar",
-					"start": 25,
-					"end": 40,
-					"question": {
-						"start": 29,
-						"end": 30,
-						"type": "QUESTION",
-						"lexeme": "?"
-					},
-					"colon": {
-						"start": 35,
-						"end": 36,
-						"type": "COLON",
-						"lexeme": ":"
-					},
-					"beginToken": {
-						"start": 25,
-						"end": 28,
-						"type": "IDENTIFIER",
-						"lexeme": "foo"
-					},
-					"condition": {
-						"@class": "SimpleIdentifier",
-						"@toString": "foo",
-						"start": 25,
-						"end": 28,
-						"token": {
-							"start": 25,
-							"end": 28,
-							"type": "IDENTIFIER",
-							"lexeme": "foo"
-						},
-						"ancestorCascade": null,
-						"beginToken": {
-							"start": 25,
-							"end": 28,
-							"type": "IDENTIFIER",
-							"lexeme": "foo"
-						},
-						"endToken": {
-							"start": 25,
-							"end": 28,
-							"type": "IDENTIFIER",
-							"lexeme": "foo"
-						},
-						"isQualified": false,
-						"isSynthetic": false,
-						"name": "foo"
-					},
-					"elseExpression": {
-						"@class": "SimpleIdentifier",
-						"@toString": "Bar",
-						"start": 37,
-						"end": 40,
-						"token": {
-							"start": 37,
-							"end": 40,
-							"type": "IDENTIFIER",
-							"lexeme": "Bar"
-						},
-						"ancestorCascade": null,
-						"beginToken": {
-							"start": 37,
-							"end": 40,
-							"type": "IDENTIFIER",
-							"lexeme": "Bar"
-						},
-						"endToken": {
-							"start": 37,
-							"end": 40,
-							"type": "IDENTIFIER",
-							"lexeme": "Bar"
-						},
-						"isQualified": false,
-						"isSynthetic": false,
-						"name": "Bar"
-					},
-					"endToken": {
-						"start": 37,
-						"end": 40,
-						"type": "IDENTIFIER",
-						"lexeme": "Bar"
-					},
-					"thenExpression": {
-						"@class": "SimpleIdentifier",
-						"@toString": "Foo",
-						"start": 31,
-						"end": 34,
-						"token": {
-							"start": 31,
-							"end": 34,
-							"type": "IDENTIFIER",
-							"lexeme": "Foo"
-						},
-						"ancestorCascade": null,
-						"beginToken": {
-							"start": 31,
-							"end": 34,
-							"type": "IDENTIFIER",
-							"lexeme": "Foo"
-						},
-						"endToken": {
-							"start": 31,
-							"end": 34,
-							"type": "IDENTIFIER",
-							"lexeme": "Foo"
-						},
-						"isQualified": false,
-						"isSynthetic": false,
-						"name": "Foo"
-					},
-					"inConstantContext": false,
-					"isAssignable": false,
-					"unParenthesized": "@seen { self }"
-				},
-				"attributes": [],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 62,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 62,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 62,
+        "class": "SvelteComponent",
+        "name": "svelte:component",
+        "attributes": [],
+        "expression": {
+          "@class": "ConditionalExpression",
+          "@toString": "foo ? Foo : Bar",
+          "start": 25,
+          "end": 40,
+          "question": {
+            "start": 29,
+            "end": 30,
+            "type": "QUESTION",
+            "lexeme": "?"
+          },
+          "colon": {
+            "start": 35,
+            "end": 36,
+            "type": "COLON",
+            "lexeme": ":"
+          },
+          "beginToken": {
+            "start": 25,
+            "end": 28,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "condition": {
+            "@class": "SimpleIdentifier",
+            "@toString": "foo",
+            "start": 25,
+            "end": 28,
+            "token": {
+              "start": 25,
+              "end": 28,
+              "type": "IDENTIFIER",
+              "lexeme": "foo"
+            },
+            "ancestorCascade": null,
+            "beginToken": {
+              "start": 25,
+              "end": 28,
+              "type": "IDENTIFIER",
+              "lexeme": "foo"
+            },
+            "endToken": {
+              "start": 25,
+              "end": 28,
+              "type": "IDENTIFIER",
+              "lexeme": "foo"
+            },
+            "isQualified": false,
+            "isSynthetic": false,
+            "name": "foo"
+          },
+          "elseExpression": {
+            "@class": "SimpleIdentifier",
+            "@toString": "Bar",
+            "start": 37,
+            "end": 40,
+            "token": {
+              "start": 37,
+              "end": 40,
+              "type": "IDENTIFIER",
+              "lexeme": "Bar"
+            },
+            "ancestorCascade": null,
+            "beginToken": {
+              "start": 37,
+              "end": 40,
+              "type": "IDENTIFIER",
+              "lexeme": "Bar"
+            },
+            "endToken": {
+              "start": 37,
+              "end": 40,
+              "type": "IDENTIFIER",
+              "lexeme": "Bar"
+            },
+            "isQualified": false,
+            "isSynthetic": false,
+            "name": "Bar"
+          },
+          "endToken": {
+            "start": 37,
+            "end": 40,
+            "type": "IDENTIFIER",
+            "lexeme": "Bar"
+          },
+          "thenExpression": {
+            "@class": "SimpleIdentifier",
+            "@toString": "Foo",
+            "start": 31,
+            "end": 34,
+            "token": {
+              "start": 31,
+              "end": 34,
+              "type": "IDENTIFIER",
+              "lexeme": "Foo"
+            },
+            "ancestorCascade": null,
+            "beginToken": {
+              "start": 31,
+              "end": 34,
+              "type": "IDENTIFIER",
+              "lexeme": "Foo"
+            },
+            "endToken": {
+              "start": 31,
+              "end": 34,
+              "type": "IDENTIFIER",
+              "lexeme": "Foo"
+            },
+            "isQualified": false,
+            "isSynthetic": false,
+            "name": "Foo"
+          },
+          "inConstantContext": false,
+          "isAssignable": false,
+          "unParenthesized": "@seen { self }"
+        },
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

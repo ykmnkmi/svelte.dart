@@ -1,58 +1,65 @@
 {
-	"html": {
-		"start": 0,
-		"end": 17,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 17,
-				"class": "IfBlock",
-				"expression": {
-					"@class": "SimpleIdentifier",
-					"@toString": "foo",
-					"start": 5,
-					"end": 8,
-					"token": {
-						"start": 5,
-						"end": 8,
-						"type": "IDENTIFIER",
-						"lexeme": "foo"
-					},
-					"ancestorCascade": null,
-					"beginToken": {
-						"start": 5,
-						"end": 8,
-						"type": "IDENTIFIER",
-						"lexeme": "foo"
-					},
-					"endToken": {
-						"start": 5,
-						"end": 8,
-						"type": "IDENTIFIER",
-						"lexeme": "foo"
-					},
-					"isQualified": "@error { Null check operator used on a null value }",
-					"isSynthetic": false,
-					"name": "foo"
-				},
-				"casePattern": null,
-				"whenExpression": null,
-				"children": [
-					{
-						"start": 9,
-						"end": 12,
-						"class": "Text",
-						"raw": "bar",
-						"data": "bar"
-					}
-				],
-				"elseIf": false,
-				"elseBlock": null
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 17,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 17,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 17,
+        "class": "IfBlock",
+        "elseIf": false,
+        "test": {
+          "@class": "SimpleIdentifier",
+          "@toString": "foo",
+          "start": 5,
+          "end": 8,
+          "token": {
+            "start": 5,
+            "end": 8,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "ancestorCascade": null,
+          "beginToken": {
+            "start": 5,
+            "end": 8,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "endToken": {
+            "start": 5,
+            "end": 8,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "isQualified": "@error { Null check operator used on a null value }",
+          "isSynthetic": false,
+          "name": "foo"
+        },
+        "consequent": {
+          "start": 9,
+          "end": 12,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 9,
+              "end": 12,
+              "class": "Text",
+              "raw": "bar",
+              "data": "bar"
+            }
+          ]
+        },
+        "alternate": null
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

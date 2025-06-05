@@ -1,67 +1,83 @@
 {
-	"html": {
-		"start": 0,
-		"end": 49,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 24,
-				"class": "Element",
-				"name": "span",
-				"attributes": [
-					{
-						"start": 6,
-						"end": 16,
-						"class": "Attribute",
-						"name": "attr",
-						"values": [
-							{
-								"start": 12,
-								"end": 15,
-								"class": "Text",
-								"raw": "foo",
-								"data": "foo"
-							}
-						]
-					}
-				],
-				"children": []
-			},
-			{
-				"start": 24,
-				"end": 25,
-				"class": "Text",
-				"raw": "\n",
-				"data": "\n"
-			},
-			{
-				"start": 25,
-				"end": 49,
-				"class": "Element",
-				"name": "span",
-				"attributes": [
-					{
-						"start": 31,
-						"end": 41,
-						"class": "Attribute",
-						"name": "attr",
-						"values": [
-							{
-								"start": 37,
-								"end": 40,
-								"class": "Text",
-								"raw": "bar",
-								"data": "bar"
-							}
-						]
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 49,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 49,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 24,
+        "class": "RegularElement",
+        "name": "span",
+        "attributes": [
+          {
+            "start": 6,
+            "end": 16,
+            "class": "Attribute",
+            "name": "attr",
+            "value": [
+              {
+                "start": 12,
+                "end": 15,
+                "class": "Text",
+                "raw": "foo",
+                "data": "foo"
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 24,
+        "end": 25,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 25,
+        "end": 49,
+        "class": "RegularElement",
+        "name": "span",
+        "attributes": [
+          {
+            "start": 31,
+            "end": 41,
+            "class": "Attribute",
+            "name": "attr",
+            "value": [
+              {
+                "start": 37,
+                "end": 40,
+                "class": "Text",
+                "raw": "bar",
+                "data": "bar"
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

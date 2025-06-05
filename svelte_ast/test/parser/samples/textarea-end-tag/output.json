@@ -1,68 +1,84 @@
 {
-	"html": {
-		"start": 0,
-		"end": 117,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 117,
-				"class": "Element",
-				"name": "textarea",
-				"attributes": [],
-				"children": [
-					{
-						"start": 10,
-						"end": 50,
-						"class": "Text",
-						"raw": "\n\t<p>not actu </textar ally an element. ",
-						"data": "\n\t<p>not actu </textar ally an element. "
-					},
-					{
-						"start": 50,
-						"end": 55,
-						"class": "MustacheTag",
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "foo",
-							"start": 51,
-							"end": 54,
-							"token": {
-								"start": 51,
-								"end": 54,
-								"type": "IDENTIFIER",
-								"lexeme": "foo"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 51,
-								"end": 54,
-								"type": "IDENTIFIER",
-								"lexeme": "foo"
-							},
-							"endToken": {
-								"start": 51,
-								"end": 54,
-								"type": "IDENTIFIER",
-								"lexeme": "foo"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "foo"
-						}
-					},
-					{
-						"start": 55,
-						"end": 91,
-						"class": "Text",
-						"raw": "</p>\n</textare\n\n\n> </textaread >asdf",
-						"data": "</p>\n</textare\n\n\n> </textaread >asdf"
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 120,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 120,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 118,
+        "class": "RegularElement",
+        "name": "textarea",
+        "attributes": [],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 10,
+              "end": 51,
+              "class": "Text",
+              "raw": "\n  <p>not actu </textar ally an element. ",
+              "data": "\n  <p>not actu </textar ally an element. "
+            },
+            {
+              "start": 51,
+              "end": 56,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleIdentifier",
+                "@toString": "foo",
+                "start": 52,
+                "end": 55,
+                "token": {
+                  "start": 52,
+                  "end": 55,
+                  "type": "IDENTIFIER",
+                  "lexeme": "foo"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 52,
+                  "end": 55,
+                  "type": "IDENTIFIER",
+                  "lexeme": "foo"
+                },
+                "endToken": {
+                  "start": 52,
+                  "end": 55,
+                  "type": "IDENTIFIER",
+                  "lexeme": "foo"
+                },
+                "isQualified": "@error { Null check operator used on a null value }",
+                "isSynthetic": false,
+                "name": "foo"
+              }
+            },
+            {
+              "start": 56,
+              "end": 105,
+              "class": "Text",
+              "raw": "</p>\n</textare\n\n\n> </textaread >asdf</textarea\n\n\n",
+              "data": "</p>\n</textare\n\n\n> </textaread >asdf</textarea\n\n\n"
+            }
+          ]
+        }
+      },
+      {
+        "start": 118,
+        "end": 120,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

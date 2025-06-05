@@ -1,881 +1,880 @@
 {
-	"html": {
-		"start": -1,
-		"end": -1,
-		"class": "Fragment",
-		"children": []
-	},
-	"style": null,
-	"instance": {
-		"start": 0,
-		"end": 178,
-		"class": "Script",
-		"context": "default",
-		"content": {
-			"start": 8,
-			"end": 169,
-			"data": "\n\timport 'package:svelte/svelte.dart' show onMount;\n\n\timport 'foo.dart' deferred as foo;\n\n\tonMount(() async {\n\t\tawait foo.loadLibrary();\n\t\tprint(foo.main);\n\t});\n"
-		},
-		"body": {
-			"directives": [
-				{
-					"@class": "ImportDirective",
-					"@toString": "import 'package:svelte/svelte.dart' show onMount;",
-					"start": 10,
-					"end": 59,
-					"importKeyword": {
-						"start": 10,
-						"end": 16,
-						"type": "IMPORT",
-						"lexeme": "import"
-					},
-					"deferredKeyword": null,
-					"asKeyword": null,
-					"firstTokenAfterCommentAndMetadata": {
-						"start": 10,
-						"end": 16,
-						"type": "IMPORT",
-						"lexeme": "import"
-					},
-					"prefix": null,
-					"combinators": [
-						{
-							"@class": "ShowCombinator",
-							"@toString": "show onMount",
-							"start": 46,
-							"end": 58,
-							"endToken": {
-								"start": 51,
-								"end": 58,
-								"type": "IDENTIFIER",
-								"lexeme": "onMount"
-							},
-							"shownNames": [
-								{
-									"@class": "SimpleIdentifier",
-									"@toString": "onMount",
-									"start": 51,
-									"end": 58,
-									"token": {
-										"start": 51,
-										"end": 58,
-										"type": "IDENTIFIER",
-										"lexeme": "onMount"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 51,
-										"end": 58,
-										"type": "IDENTIFIER",
-										"lexeme": "onMount"
-									},
-									"endToken": {
-										"start": 51,
-										"end": 58,
-										"type": "IDENTIFIER",
-										"lexeme": "onMount"
-									},
-									"isQualified": false,
-									"isSynthetic": false,
-									"name": "onMount"
-								}
-							],
-							"keyword": {
-								"start": 46,
-								"end": 50,
-								"type": "SHOW",
-								"lexeme": "show"
-							}
-						}
-					],
-					"configurations": [],
-					"semicolon": {
-						"start": 58,
-						"end": 59,
-						"type": "SEMICOLON",
-						"lexeme": ";"
-					}
-				},
-				{
-					"@class": "ImportDirective",
-					"@toString": "import 'foo.dart' deferred as foo;",
-					"start": 62,
-					"end": 96,
-					"importKeyword": {
-						"start": 62,
-						"end": 68,
-						"type": "IMPORT",
-						"lexeme": "import"
-					},
-					"deferredKeyword": {
-						"start": 80,
-						"end": 88,
-						"type": "DEFERRED",
-						"lexeme": "deferred"
-					},
-					"asKeyword": {
-						"start": 89,
-						"end": 91,
-						"type": "AS",
-						"lexeme": "as"
-					},
-					"firstTokenAfterCommentAndMetadata": {
-						"start": 62,
-						"end": 68,
-						"type": "IMPORT",
-						"lexeme": "import"
-					},
-					"prefix": {
-						"@class": "SimpleIdentifier",
-						"@toString": "foo",
-						"start": 92,
-						"end": 95,
-						"token": {
-							"start": 92,
-							"end": 95,
-							"type": "IDENTIFIER",
-							"lexeme": "foo"
-						},
-						"ancestorCascade": null,
-						"beginToken": {
-							"start": 92,
-							"end": 95,
-							"type": "IDENTIFIER",
-							"lexeme": "foo"
-						},
-						"endToken": {
-							"start": 92,
-							"end": 95,
-							"type": "IDENTIFIER",
-							"lexeme": "foo"
-						},
-						"isQualified": false,
-						"isSynthetic": false,
-						"name": "foo"
-					},
-					"combinators": [],
-					"configurations": [],
-					"semicolon": {
-						"start": 95,
-						"end": 96,
-						"type": "SEMICOLON",
-						"lexeme": ";"
-					}
-				}
-			],
-			"externals": [],
-			"body": [
-				{
-					"@class": "ExpressionStatement",
-					"@toString": "onMount(() async {await foo.loadLibrary(); print(foo.main);});",
-					"start": 99,
-					"end": 168,
-					"semicolon": {
-						"start": 167,
-						"end": 168,
-						"type": "SEMICOLON",
-						"lexeme": ";"
-					},
-					"beginToken": {
-						"start": 99,
-						"end": 106,
-						"type": "IDENTIFIER",
-						"lexeme": "onMount"
-					},
-					"endToken": {
-						"start": 167,
-						"end": 168,
-						"type": "SEMICOLON",
-						"lexeme": ";"
-					},
-					"expression": {
-						"@class": "MethodInvocation",
-						"@toString": "onMount(() async {await foo.loadLibrary(); print(foo.main);})",
-						"start": 99,
-						"end": 167,
-						"operator": null,
-						"beginToken": {
-							"start": 99,
-							"end": 106,
-							"type": "IDENTIFIER",
-							"lexeme": "onMount"
-						},
-						"endToken": {
-							"start": 166,
-							"end": 167,
-							"type": "CLOSE_PAREN",
-							"lexeme": ")"
-						},
-						"function": {
-							"@class": "SimpleIdentifier",
-							"@toString": "onMount",
-							"start": 99,
-							"end": 106,
-							"token": {
-								"start": 99,
-								"end": 106,
-								"type": "IDENTIFIER",
-								"lexeme": "onMount"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 99,
-								"end": 106,
-								"type": "IDENTIFIER",
-								"lexeme": "onMount"
-							},
-							"endToken": {
-								"start": 99,
-								"end": 106,
-								"type": "IDENTIFIER",
-								"lexeme": "onMount"
-							},
-							"isQualified": false,
-							"isSynthetic": false,
-							"name": "onMount"
-						},
-						"isCascaded": false,
-						"isNullAware": false,
-						"methodName": {
-							"@class": "SimpleIdentifier",
-							"@toString": "onMount",
-							"start": 99,
-							"end": 106,
-							"token": {
-								"start": 99,
-								"end": 106,
-								"type": "IDENTIFIER",
-								"lexeme": "onMount"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 99,
-								"end": 106,
-								"type": "IDENTIFIER",
-								"lexeme": "onMount"
-							},
-							"endToken": {
-								"start": 99,
-								"end": 106,
-								"type": "IDENTIFIER",
-								"lexeme": "onMount"
-							},
-							"isQualified": false,
-							"isSynthetic": false,
-							"name": "onMount"
-						},
-						"realTarget": null,
-						"target": null,
-						"nullShortingTermination": "@seen",
-						"argumentList": {
-							"@class": "ArgumentList",
-							"@toString": "(() async {await foo.loadLibrary(); print(foo.main);})",
-							"start": 106,
-							"end": 167,
-							"leftParenthesis": {
-								"start": 106,
-								"end": 107,
-								"type": "OPEN_PAREN",
-								"lexeme": "("
-							},
-							"rightParenthesis": {
-								"start": 166,
-								"end": 167,
-								"type": "CLOSE_PAREN",
-								"lexeme": ")"
-							},
-							"arguments": [
-								{
-									"@class": "FunctionExpression",
-									"@toString": "() async {await foo.loadLibrary(); print(foo.main);}",
-									"start": 107,
-									"end": 166,
-									"wasFunctionTypeSupplied": false,
-									"beginToken": {
-										"start": 107,
-										"end": 108,
-										"type": "OPEN_PAREN",
-										"lexeme": "("
-									},
-									"body": {
-										"@class": "BlockFunctionBody",
-										"@toString": "async {await foo.loadLibrary(); print(foo.main);}",
-										"start": 110,
-										"end": 166,
-										"keyword": {
-											"start": 110,
-											"end": 115,
-											"type": "ASYNC",
-											"lexeme": "async"
-										},
-										"star": null,
-										"beginToken": {
-											"start": 110,
-											"end": 115,
-											"type": "ASYNC",
-											"lexeme": "async"
-										},
-										"block": {
-											"@class": "Block",
-											"@toString": "{await foo.loadLibrary(); print(foo.main);}",
-											"start": 116,
-											"end": 166,
-											"leftBracket": {
-												"start": 116,
-												"end": 117,
-												"type": "OPEN_CURLY_BRACKET",
-												"lexeme": "{"
-											},
-											"rightBracket": {
-												"start": 165,
-												"end": 166,
-												"type": "CLOSE_CURLY_BRACKET",
-												"lexeme": "}"
-											},
-											"beginToken": {
-												"start": 116,
-												"end": 117,
-												"type": "OPEN_CURLY_BRACKET",
-												"lexeme": "{"
-											},
-											"endToken": {
-												"start": 165,
-												"end": 166,
-												"type": "CLOSE_CURLY_BRACKET",
-												"lexeme": "}"
-											},
-											"statements": [
-												{
-													"@class": "ExpressionStatement",
-													"@toString": "await foo.loadLibrary();",
-													"start": 120,
-													"end": 144,
-													"semicolon": {
-														"start": 143,
-														"end": 144,
-														"type": "SEMICOLON",
-														"lexeme": ";"
-													},
-													"beginToken": {
-														"start": 120,
-														"end": 125,
-														"type": "AWAIT",
-														"lexeme": "await"
-													},
-													"endToken": {
-														"start": 143,
-														"end": 144,
-														"type": "SEMICOLON",
-														"lexeme": ";"
-													},
-													"expression": {
-														"@class": "AwaitExpression",
-														"@toString": "await foo.loadLibrary()",
-														"start": 120,
-														"end": 143,
-														"awaitKeyword": {
-															"start": 120,
-															"end": 125,
-															"type": "AWAIT",
-															"lexeme": "await"
-														},
-														"beginToken": {
-															"start": 120,
-															"end": 125,
-															"type": "AWAIT",
-															"lexeme": "await"
-														},
-														"endToken": {
-															"start": 142,
-															"end": 143,
-															"type": "CLOSE_PAREN",
-															"lexeme": ")"
-														},
-														"expression": {
-															"@class": "MethodInvocation",
-															"@toString": "foo.loadLibrary()",
-															"start": 126,
-															"end": 143,
-															"operator": {
-																"start": 129,
-																"end": 130,
-																"type": "PERIOD",
-																"lexeme": "."
-															},
-															"beginToken": {
-																"start": 126,
-																"end": 129,
-																"type": "IDENTIFIER",
-																"lexeme": "foo"
-															},
-															"endToken": {
-																"start": 142,
-																"end": 143,
-																"type": "CLOSE_PAREN",
-																"lexeme": ")"
-															},
-															"function": {
-																"@class": "SimpleIdentifier",
-																"@toString": "loadLibrary",
-																"start": 130,
-																"end": 141,
-																"token": {
-																	"start": 130,
-																	"end": 141,
-																	"type": "IDENTIFIER",
-																	"lexeme": "loadLibrary"
-																},
-																"ancestorCascade": null,
-																"beginToken": {
-																	"start": 130,
-																	"end": 141,
-																	"type": "IDENTIFIER",
-																	"lexeme": "loadLibrary"
-																},
-																"endToken": {
-																	"start": 130,
-																	"end": 141,
-																	"type": "IDENTIFIER",
-																	"lexeme": "loadLibrary"
-																},
-																"isQualified": true,
-																"isSynthetic": false,
-																"name": "loadLibrary"
-															},
-															"isCascaded": false,
-															"isNullAware": false,
-															"methodName": {
-																"@class": "SimpleIdentifier",
-																"@toString": "loadLibrary",
-																"start": 130,
-																"end": 141,
-																"token": {
-																	"start": 130,
-																	"end": 141,
-																	"type": "IDENTIFIER",
-																	"lexeme": "loadLibrary"
-																},
-																"ancestorCascade": null,
-																"beginToken": {
-																	"start": 130,
-																	"end": 141,
-																	"type": "IDENTIFIER",
-																	"lexeme": "loadLibrary"
-																},
-																"endToken": {
-																	"start": 130,
-																	"end": 141,
-																	"type": "IDENTIFIER",
-																	"lexeme": "loadLibrary"
-																},
-																"isQualified": true,
-																"isSynthetic": false,
-																"name": "loadLibrary"
-															},
-															"realTarget": {
-																"@class": "SimpleIdentifier",
-																"@toString": "foo",
-																"start": 126,
-																"end": 129,
-																"token": {
-																	"start": 126,
-																	"end": 129,
-																	"type": "IDENTIFIER",
-																	"lexeme": "foo"
-																},
-																"ancestorCascade": null,
-																"beginToken": {
-																	"start": 126,
-																	"end": 129,
-																	"type": "IDENTIFIER",
-																	"lexeme": "foo"
-																},
-																"endToken": {
-																	"start": 126,
-																	"end": 129,
-																	"type": "IDENTIFIER",
-																	"lexeme": "foo"
-																},
-																"isQualified": false,
-																"isSynthetic": false,
-																"name": "foo"
-															},
-															"target": {
-																"@class": "SimpleIdentifier",
-																"@toString": "foo",
-																"start": 126,
-																"end": 129,
-																"token": {
-																	"start": 126,
-																	"end": 129,
-																	"type": "IDENTIFIER",
-																	"lexeme": "foo"
-																},
-																"ancestorCascade": null,
-																"beginToken": {
-																	"start": 126,
-																	"end": 129,
-																	"type": "IDENTIFIER",
-																	"lexeme": "foo"
-																},
-																"endToken": {
-																	"start": 126,
-																	"end": 129,
-																	"type": "IDENTIFIER",
-																	"lexeme": "foo"
-																},
-																"isQualified": false,
-																"isSynthetic": false,
-																"name": "foo"
-															},
-															"nullShortingTermination": "@seen",
-															"argumentList": {
-																"@class": "ArgumentList",
-																"@toString": "()",
-																"start": 141,
-																"end": 143,
-																"leftParenthesis": {
-																	"start": 141,
-																	"end": 142,
-																	"type": "OPEN_PAREN",
-																	"lexeme": "("
-																},
-																"rightParenthesis": {
-																	"start": 142,
-																	"end": 143,
-																	"type": "CLOSE_PAREN",
-																	"lexeme": ")"
-																},
-																"arguments": [],
-																"beginToken": {
-																	"start": 141,
-																	"end": 142,
-																	"type": "OPEN_PAREN",
-																	"lexeme": "("
-																},
-																"endToken": {
-																	"start": 142,
-																	"end": 143,
-																	"type": "CLOSE_PAREN",
-																	"lexeme": ")"
-																},
-																"isSynthetic": false,
-																"length": 2,
-																"offset": 141
-															},
-															"typeArguments": null
-														},
-														"inConstantContext": false,
-														"isAssignable": false,
-														"unParenthesized": "@seen"
-													},
-													"isSynthetic": false
-												},
-												{
-													"@class": "ExpressionStatement",
-													"@toString": "print(foo.main);",
-													"start": 147,
-													"end": 163,
-													"semicolon": {
-														"start": 162,
-														"end": 163,
-														"type": "SEMICOLON",
-														"lexeme": ";"
-													},
-													"beginToken": {
-														"start": 147,
-														"end": 152,
-														"type": "IDENTIFIER",
-														"lexeme": "print"
-													},
-													"endToken": {
-														"start": 162,
-														"end": 163,
-														"type": "SEMICOLON",
-														"lexeme": ";"
-													},
-													"expression": {
-														"@class": "MethodInvocation",
-														"@toString": "print(foo.main)",
-														"start": 147,
-														"end": 162,
-														"operator": null,
-														"beginToken": {
-															"start": 147,
-															"end": 152,
-															"type": "IDENTIFIER",
-															"lexeme": "print"
-														},
-														"endToken": {
-															"start": 161,
-															"end": 162,
-															"type": "CLOSE_PAREN",
-															"lexeme": ")"
-														},
-														"function": {
-															"@class": "SimpleIdentifier",
-															"@toString": "print",
-															"start": 147,
-															"end": 152,
-															"token": {
-																"start": 147,
-																"end": 152,
-																"type": "IDENTIFIER",
-																"lexeme": "print"
-															},
-															"ancestorCascade": null,
-															"beginToken": {
-																"start": 147,
-																"end": 152,
-																"type": "IDENTIFIER",
-																"lexeme": "print"
-															},
-															"endToken": {
-																"start": 147,
-																"end": 152,
-																"type": "IDENTIFIER",
-																"lexeme": "print"
-															},
-															"isQualified": false,
-															"isSynthetic": false,
-															"name": "print"
-														},
-														"isCascaded": false,
-														"isNullAware": false,
-														"methodName": {
-															"@class": "SimpleIdentifier",
-															"@toString": "print",
-															"start": 147,
-															"end": 152,
-															"token": {
-																"start": 147,
-																"end": 152,
-																"type": "IDENTIFIER",
-																"lexeme": "print"
-															},
-															"ancestorCascade": null,
-															"beginToken": {
-																"start": 147,
-																"end": 152,
-																"type": "IDENTIFIER",
-																"lexeme": "print"
-															},
-															"endToken": {
-																"start": 147,
-																"end": 152,
-																"type": "IDENTIFIER",
-																"lexeme": "print"
-															},
-															"isQualified": false,
-															"isSynthetic": false,
-															"name": "print"
-														},
-														"realTarget": null,
-														"target": null,
-														"nullShortingTermination": "@seen",
-														"argumentList": {
-															"@class": "ArgumentList",
-															"@toString": "(foo.main)",
-															"start": 152,
-															"end": 162,
-															"leftParenthesis": {
-																"start": 152,
-																"end": 153,
-																"type": "OPEN_PAREN",
-																"lexeme": "("
-															},
-															"rightParenthesis": {
-																"start": 161,
-																"end": 162,
-																"type": "CLOSE_PAREN",
-																"lexeme": ")"
-															},
-															"arguments": [
-																{
-																	"@class": "PrefixedIdentifier",
-																	"@toString": "foo.main",
-																	"start": 153,
-																	"end": 161,
-																	"period": {
-																		"start": 156,
-																		"end": 157,
-																		"type": "PERIOD",
-																		"lexeme": "."
-																	},
-																	"beginToken": {
-																		"start": 153,
-																		"end": 156,
-																		"type": "IDENTIFIER",
-																		"lexeme": "foo"
-																	},
-																	"endToken": {
-																		"start": 157,
-																		"end": 161,
-																		"type": "IDENTIFIER",
-																		"lexeme": "main"
-																	},
-																	"identifier": {
-																		"@class": "SimpleIdentifier",
-																		"@toString": "main",
-																		"start": 157,
-																		"end": 161,
-																		"token": {
-																			"start": 157,
-																			"end": 161,
-																			"type": "IDENTIFIER",
-																			"lexeme": "main"
-																		},
-																		"ancestorCascade": null,
-																		"beginToken": {
-																			"start": 157,
-																			"end": 161,
-																			"type": "IDENTIFIER",
-																			"lexeme": "main"
-																		},
-																		"endToken": {
-																			"start": 157,
-																			"end": 161,
-																			"type": "IDENTIFIER",
-																			"lexeme": "main"
-																		},
-																		"isQualified": true,
-																		"isSynthetic": false,
-																		"name": "main"
-																	},
-																	"isDeferred": false,
-																	"name": "foo.main",
-																	"prefix": {
-																		"@class": "SimpleIdentifier",
-																		"@toString": "foo",
-																		"start": 153,
-																		"end": 156,
-																		"token": {
-																			"start": 153,
-																			"end": 156,
-																			"type": "IDENTIFIER",
-																			"lexeme": "foo"
-																		},
-																		"ancestorCascade": null,
-																		"beginToken": {
-																			"start": 153,
-																			"end": 156,
-																			"type": "IDENTIFIER",
-																			"lexeme": "foo"
-																		},
-																		"endToken": {
-																			"start": 153,
-																			"end": 156,
-																			"type": "IDENTIFIER",
-																			"lexeme": "foo"
-																		},
-																		"isQualified": false,
-																		"isSynthetic": false,
-																		"name": "foo"
-																	}
-																}
-															],
-															"beginToken": {
-																"start": 152,
-																"end": 153,
-																"type": "OPEN_PAREN",
-																"lexeme": "("
-															},
-															"endToken": {
-																"start": 161,
-																"end": 162,
-																"type": "CLOSE_PAREN",
-																"lexeme": ")"
-															},
-															"isSynthetic": false,
-															"length": 10,
-															"offset": 152
-														},
-														"typeArguments": null
-													},
-													"isSynthetic": false
-												}
-											]
-										},
-										"endToken": {
-											"start": 165,
-											"end": 166,
-											"type": "CLOSE_CURLY_BRACKET",
-											"lexeme": "}"
-										},
-										"isAsynchronous": true,
-										"isGenerator": false,
-										"isSynchronous": false
-									},
-									"endToken": {
-										"start": 165,
-										"end": 166,
-										"type": "CLOSE_CURLY_BRACKET",
-										"lexeme": "}"
-									},
-									"parameters": {
-										"@class": "FormalParameterList",
-										"@toString": "()",
-										"start": 107,
-										"end": 109,
-										"leftParenthesis": {
-											"start": 107,
-											"end": 108,
-											"type": "OPEN_PAREN",
-											"lexeme": "("
-										},
-										"leftDelimiter": null,
-										"rightDelimiter": null,
-										"rightParenthesis": {
-											"start": 108,
-											"end": 109,
-											"type": "CLOSE_PAREN",
-											"lexeme": ")"
-										},
-										"beginToken": {
-											"start": 107,
-											"end": 108,
-											"type": "OPEN_PAREN",
-											"lexeme": "("
-										},
-										"endToken": {
-											"start": 108,
-											"end": 109,
-											"type": "CLOSE_PAREN",
-											"lexeme": ")"
-										},
-										"parameters": [],
-										"isSynthetic": false,
-										"length": 2,
-										"offset": 107
-									},
-									"typeParameters": null,
-									"inConstantContext": false,
-									"isAssignable": false,
-									"unParenthesized": "@seen"
-								}
-							],
-							"beginToken": {
-								"start": 106,
-								"end": 107,
-								"type": "OPEN_PAREN",
-								"lexeme": "("
-							},
-							"endToken": {
-								"start": 166,
-								"end": 167,
-								"type": "CLOSE_PAREN",
-								"lexeme": ")"
-							},
-							"isSynthetic": false,
-							"length": 61,
-							"offset": 106
-						},
-						"typeArguments": null
-					},
-					"isSynthetic": false
-				}
-			]
-		}
-	},
-	"module": null
+  "start": -1,
+  "end": -1,
+  "class": "Root",
+  "fragment": {
+    "start": -1,
+    "end": -1,
+    "class": "Fragment",
+    "children": []
+  },
+  "instance": {
+    "start": 0,
+    "end": 186,
+    "class": "InstanceScript",
+    "content": {
+      "start": 8,
+      "end": 177,
+      "class": "ScriptContent",
+      "content": "\n  import 'package:svelte/svelte.dart' show onMount;\n\n  import 'foo.dart' deferred as foo;\n\n  onMount(() async {\n    await foo.loadLibrary();\n    print(foo.main);\n  });\n"
+    },
+    "body": [
+      {
+        "@class": "ImportDirective",
+        "@toString": "import 'package:svelte/svelte.dart' show onMount;",
+        "start": 11,
+        "end": 60,
+        "importKeyword": {
+          "start": 11,
+          "end": 17,
+          "type": "IMPORT",
+          "lexeme": "import"
+        },
+        "deferredKeyword": null,
+        "asKeyword": null,
+        "firstTokenAfterCommentAndMetadata": {
+          "start": 11,
+          "end": 17,
+          "type": "IMPORT",
+          "lexeme": "import"
+        },
+        "prefix": null,
+        "combinators": [
+          {
+            "@class": "ShowCombinator",
+            "@toString": "show onMount",
+            "start": 47,
+            "end": 59,
+            "endToken": {
+              "start": 52,
+              "end": 59,
+              "type": "IDENTIFIER",
+              "lexeme": "onMount"
+            },
+            "shownNames": [
+              {
+                "@class": "SimpleIdentifier",
+                "@toString": "onMount",
+                "start": 52,
+                "end": 59,
+                "token": {
+                  "start": 52,
+                  "end": 59,
+                  "type": "IDENTIFIER",
+                  "lexeme": "onMount"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 52,
+                  "end": 59,
+                  "type": "IDENTIFIER",
+                  "lexeme": "onMount"
+                },
+                "endToken": {
+                  "start": 52,
+                  "end": 59,
+                  "type": "IDENTIFIER",
+                  "lexeme": "onMount"
+                },
+                "isQualified": false,
+                "isSynthetic": false,
+                "name": "onMount"
+              }
+            ],
+            "keyword": {
+              "start": 47,
+              "end": 51,
+              "type": "SHOW",
+              "lexeme": "show"
+            }
+          }
+        ],
+        "configurations": [],
+        "semicolon": {
+          "start": 59,
+          "end": 60,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        }
+      },
+      {
+        "@class": "ImportDirective",
+        "@toString": "import 'foo.dart' deferred as foo;",
+        "start": 64,
+        "end": 98,
+        "importKeyword": {
+          "start": 64,
+          "end": 70,
+          "type": "IMPORT",
+          "lexeme": "import"
+        },
+        "deferredKeyword": {
+          "start": 82,
+          "end": 90,
+          "type": "DEFERRED",
+          "lexeme": "deferred"
+        },
+        "asKeyword": {
+          "start": 91,
+          "end": 93,
+          "type": "AS",
+          "lexeme": "as"
+        },
+        "firstTokenAfterCommentAndMetadata": {
+          "start": 64,
+          "end": 70,
+          "type": "IMPORT",
+          "lexeme": "import"
+        },
+        "prefix": {
+          "@class": "SimpleIdentifier",
+          "@toString": "foo",
+          "start": 94,
+          "end": 97,
+          "token": {
+            "start": 94,
+            "end": 97,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "ancestorCascade": null,
+          "beginToken": {
+            "start": 94,
+            "end": 97,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "endToken": {
+            "start": 94,
+            "end": 97,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "isQualified": false,
+          "isSynthetic": false,
+          "name": "foo"
+        },
+        "combinators": [],
+        "configurations": [],
+        "semicolon": {
+          "start": 97,
+          "end": 98,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        }
+      },
+      {
+        "@class": "ExpressionStatement",
+        "@toString": "onMount(() async {await foo.loadLibrary(); print(foo.main);});",
+        "start": 102,
+        "end": 176,
+        "semicolon": {
+          "start": 175,
+          "end": 176,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "beginToken": {
+          "start": 102,
+          "end": 109,
+          "type": "IDENTIFIER",
+          "lexeme": "onMount"
+        },
+        "endToken": {
+          "start": 175,
+          "end": 176,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "expression": {
+          "@class": "MethodInvocation",
+          "@toString": "onMount(() async {await foo.loadLibrary(); print(foo.main);})",
+          "start": 102,
+          "end": 175,
+          "operator": null,
+          "beginToken": {
+            "start": 102,
+            "end": 109,
+            "type": "IDENTIFIER",
+            "lexeme": "onMount"
+          },
+          "endToken": {
+            "start": 174,
+            "end": 175,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "function": {
+            "@class": "SimpleIdentifier",
+            "@toString": "onMount",
+            "start": 102,
+            "end": 109,
+            "token": {
+              "start": 102,
+              "end": 109,
+              "type": "IDENTIFIER",
+              "lexeme": "onMount"
+            },
+            "ancestorCascade": null,
+            "beginToken": {
+              "start": 102,
+              "end": 109,
+              "type": "IDENTIFIER",
+              "lexeme": "onMount"
+            },
+            "endToken": {
+              "start": 102,
+              "end": 109,
+              "type": "IDENTIFIER",
+              "lexeme": "onMount"
+            },
+            "isQualified": false,
+            "isSynthetic": false,
+            "name": "onMount"
+          },
+          "isCascaded": false,
+          "isNullAware": false,
+          "methodName": {
+            "@class": "SimpleIdentifier",
+            "@toString": "onMount",
+            "start": 102,
+            "end": 109,
+            "token": {
+              "start": 102,
+              "end": 109,
+              "type": "IDENTIFIER",
+              "lexeme": "onMount"
+            },
+            "ancestorCascade": null,
+            "beginToken": {
+              "start": 102,
+              "end": 109,
+              "type": "IDENTIFIER",
+              "lexeme": "onMount"
+            },
+            "endToken": {
+              "start": 102,
+              "end": 109,
+              "type": "IDENTIFIER",
+              "lexeme": "onMount"
+            },
+            "isQualified": false,
+            "isSynthetic": false,
+            "name": "onMount"
+          },
+          "realTarget": null,
+          "target": null,
+          "nullShortingTermination": "@seen",
+          "argumentList": {
+            "@class": "ArgumentList",
+            "@toString": "(() async {await foo.loadLibrary(); print(foo.main);})",
+            "start": 109,
+            "end": 175,
+            "leftParenthesis": {
+              "start": 109,
+              "end": 110,
+              "type": "OPEN_PAREN",
+              "lexeme": "("
+            },
+            "rightParenthesis": {
+              "start": 174,
+              "end": 175,
+              "type": "CLOSE_PAREN",
+              "lexeme": ")"
+            },
+            "arguments": [
+              {
+                "@class": "FunctionExpression",
+                "@toString": "() async {await foo.loadLibrary(); print(foo.main);}",
+                "start": 110,
+                "end": 174,
+                "wasFunctionTypeSupplied": false,
+                "beginToken": {
+                  "start": 110,
+                  "end": 111,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "body": {
+                  "@class": "BlockFunctionBody",
+                  "@toString": "async {await foo.loadLibrary(); print(foo.main);}",
+                  "start": 113,
+                  "end": 174,
+                  "keyword": {
+                    "start": 113,
+                    "end": 118,
+                    "type": "ASYNC",
+                    "lexeme": "async"
+                  },
+                  "star": null,
+                  "beginToken": {
+                    "start": 113,
+                    "end": 118,
+                    "type": "ASYNC",
+                    "lexeme": "async"
+                  },
+                  "block": {
+                    "@class": "Block",
+                    "@toString": "{await foo.loadLibrary(); print(foo.main);}",
+                    "start": 119,
+                    "end": 174,
+                    "leftBracket": {
+                      "start": 119,
+                      "end": 120,
+                      "type": "OPEN_CURLY_BRACKET",
+                      "lexeme": "{"
+                    },
+                    "rightBracket": {
+                      "start": 173,
+                      "end": 174,
+                      "type": "CLOSE_CURLY_BRACKET",
+                      "lexeme": "}"
+                    },
+                    "beginToken": {
+                      "start": 119,
+                      "end": 120,
+                      "type": "OPEN_CURLY_BRACKET",
+                      "lexeme": "{"
+                    },
+                    "endToken": {
+                      "start": 173,
+                      "end": 174,
+                      "type": "CLOSE_CURLY_BRACKET",
+                      "lexeme": "}"
+                    },
+                    "statements": [
+                      {
+                        "@class": "ExpressionStatement",
+                        "@toString": "await foo.loadLibrary();",
+                        "start": 125,
+                        "end": 149,
+                        "semicolon": {
+                          "start": 148,
+                          "end": 149,
+                          "type": "SEMICOLON",
+                          "lexeme": ";"
+                        },
+                        "beginToken": {
+                          "start": 125,
+                          "end": 130,
+                          "type": "AWAIT",
+                          "lexeme": "await"
+                        },
+                        "endToken": {
+                          "start": 148,
+                          "end": 149,
+                          "type": "SEMICOLON",
+                          "lexeme": ";"
+                        },
+                        "expression": {
+                          "@class": "AwaitExpression",
+                          "@toString": "await foo.loadLibrary()",
+                          "start": 125,
+                          "end": 148,
+                          "awaitKeyword": {
+                            "start": 125,
+                            "end": 130,
+                            "type": "AWAIT",
+                            "lexeme": "await"
+                          },
+                          "beginToken": {
+                            "start": 125,
+                            "end": 130,
+                            "type": "AWAIT",
+                            "lexeme": "await"
+                          },
+                          "endToken": {
+                            "start": 147,
+                            "end": 148,
+                            "type": "CLOSE_PAREN",
+                            "lexeme": ")"
+                          },
+                          "expression": {
+                            "@class": "MethodInvocation",
+                            "@toString": "foo.loadLibrary()",
+                            "start": 131,
+                            "end": 148,
+                            "operator": {
+                              "start": 134,
+                              "end": 135,
+                              "type": "PERIOD",
+                              "lexeme": "."
+                            },
+                            "beginToken": {
+                              "start": 131,
+                              "end": 134,
+                              "type": "IDENTIFIER",
+                              "lexeme": "foo"
+                            },
+                            "endToken": {
+                              "start": 147,
+                              "end": 148,
+                              "type": "CLOSE_PAREN",
+                              "lexeme": ")"
+                            },
+                            "function": {
+                              "@class": "SimpleIdentifier",
+                              "@toString": "loadLibrary",
+                              "start": 135,
+                              "end": 146,
+                              "token": {
+                                "start": 135,
+                                "end": 146,
+                                "type": "IDENTIFIER",
+                                "lexeme": "loadLibrary"
+                              },
+                              "ancestorCascade": null,
+                              "beginToken": {
+                                "start": 135,
+                                "end": 146,
+                                "type": "IDENTIFIER",
+                                "lexeme": "loadLibrary"
+                              },
+                              "endToken": {
+                                "start": 135,
+                                "end": 146,
+                                "type": "IDENTIFIER",
+                                "lexeme": "loadLibrary"
+                              },
+                              "isQualified": true,
+                              "isSynthetic": false,
+                              "name": "loadLibrary"
+                            },
+                            "isCascaded": false,
+                            "isNullAware": false,
+                            "methodName": {
+                              "@class": "SimpleIdentifier",
+                              "@toString": "loadLibrary",
+                              "start": 135,
+                              "end": 146,
+                              "token": {
+                                "start": 135,
+                                "end": 146,
+                                "type": "IDENTIFIER",
+                                "lexeme": "loadLibrary"
+                              },
+                              "ancestorCascade": null,
+                              "beginToken": {
+                                "start": 135,
+                                "end": 146,
+                                "type": "IDENTIFIER",
+                                "lexeme": "loadLibrary"
+                              },
+                              "endToken": {
+                                "start": 135,
+                                "end": 146,
+                                "type": "IDENTIFIER",
+                                "lexeme": "loadLibrary"
+                              },
+                              "isQualified": true,
+                              "isSynthetic": false,
+                              "name": "loadLibrary"
+                            },
+                            "realTarget": {
+                              "@class": "SimpleIdentifier",
+                              "@toString": "foo",
+                              "start": 131,
+                              "end": 134,
+                              "token": {
+                                "start": 131,
+                                "end": 134,
+                                "type": "IDENTIFIER",
+                                "lexeme": "foo"
+                              },
+                              "ancestorCascade": null,
+                              "beginToken": {
+                                "start": 131,
+                                "end": 134,
+                                "type": "IDENTIFIER",
+                                "lexeme": "foo"
+                              },
+                              "endToken": {
+                                "start": 131,
+                                "end": 134,
+                                "type": "IDENTIFIER",
+                                "lexeme": "foo"
+                              },
+                              "isQualified": false,
+                              "isSynthetic": false,
+                              "name": "foo"
+                            },
+                            "target": {
+                              "@class": "SimpleIdentifier",
+                              "@toString": "foo",
+                              "start": 131,
+                              "end": 134,
+                              "token": {
+                                "start": 131,
+                                "end": 134,
+                                "type": "IDENTIFIER",
+                                "lexeme": "foo"
+                              },
+                              "ancestorCascade": null,
+                              "beginToken": {
+                                "start": 131,
+                                "end": 134,
+                                "type": "IDENTIFIER",
+                                "lexeme": "foo"
+                              },
+                              "endToken": {
+                                "start": 131,
+                                "end": 134,
+                                "type": "IDENTIFIER",
+                                "lexeme": "foo"
+                              },
+                              "isQualified": false,
+                              "isSynthetic": false,
+                              "name": "foo"
+                            },
+                            "nullShortingTermination": "@seen",
+                            "argumentList": {
+                              "@class": "ArgumentList",
+                              "@toString": "()",
+                              "start": 146,
+                              "end": 148,
+                              "leftParenthesis": {
+                                "start": 146,
+                                "end": 147,
+                                "type": "OPEN_PAREN",
+                                "lexeme": "("
+                              },
+                              "rightParenthesis": {
+                                "start": 147,
+                                "end": 148,
+                                "type": "CLOSE_PAREN",
+                                "lexeme": ")"
+                              },
+                              "arguments": [],
+                              "beginToken": {
+                                "start": 146,
+                                "end": 147,
+                                "type": "OPEN_PAREN",
+                                "lexeme": "("
+                              },
+                              "endToken": {
+                                "start": 147,
+                                "end": 148,
+                                "type": "CLOSE_PAREN",
+                                "lexeme": ")"
+                              },
+                              "isSynthetic": false,
+                              "length": 2,
+                              "offset": 146
+                            },
+                            "typeArguments": null
+                          },
+                          "inConstantContext": false,
+                          "isAssignable": false,
+                          "unParenthesized": "@seen"
+                        },
+                        "isSynthetic": false
+                      },
+                      {
+                        "@class": "ExpressionStatement",
+                        "@toString": "print(foo.main);",
+                        "start": 154,
+                        "end": 170,
+                        "semicolon": {
+                          "start": 169,
+                          "end": 170,
+                          "type": "SEMICOLON",
+                          "lexeme": ";"
+                        },
+                        "beginToken": {
+                          "start": 154,
+                          "end": 159,
+                          "type": "IDENTIFIER",
+                          "lexeme": "print"
+                        },
+                        "endToken": {
+                          "start": 169,
+                          "end": 170,
+                          "type": "SEMICOLON",
+                          "lexeme": ";"
+                        },
+                        "expression": {
+                          "@class": "MethodInvocation",
+                          "@toString": "print(foo.main)",
+                          "start": 154,
+                          "end": 169,
+                          "operator": null,
+                          "beginToken": {
+                            "start": 154,
+                            "end": 159,
+                            "type": "IDENTIFIER",
+                            "lexeme": "print"
+                          },
+                          "endToken": {
+                            "start": 168,
+                            "end": 169,
+                            "type": "CLOSE_PAREN",
+                            "lexeme": ")"
+                          },
+                          "function": {
+                            "@class": "SimpleIdentifier",
+                            "@toString": "print",
+                            "start": 154,
+                            "end": 159,
+                            "token": {
+                              "start": 154,
+                              "end": 159,
+                              "type": "IDENTIFIER",
+                              "lexeme": "print"
+                            },
+                            "ancestorCascade": null,
+                            "beginToken": {
+                              "start": 154,
+                              "end": 159,
+                              "type": "IDENTIFIER",
+                              "lexeme": "print"
+                            },
+                            "endToken": {
+                              "start": 154,
+                              "end": 159,
+                              "type": "IDENTIFIER",
+                              "lexeme": "print"
+                            },
+                            "isQualified": false,
+                            "isSynthetic": false,
+                            "name": "print"
+                          },
+                          "isCascaded": false,
+                          "isNullAware": false,
+                          "methodName": {
+                            "@class": "SimpleIdentifier",
+                            "@toString": "print",
+                            "start": 154,
+                            "end": 159,
+                            "token": {
+                              "start": 154,
+                              "end": 159,
+                              "type": "IDENTIFIER",
+                              "lexeme": "print"
+                            },
+                            "ancestorCascade": null,
+                            "beginToken": {
+                              "start": 154,
+                              "end": 159,
+                              "type": "IDENTIFIER",
+                              "lexeme": "print"
+                            },
+                            "endToken": {
+                              "start": 154,
+                              "end": 159,
+                              "type": "IDENTIFIER",
+                              "lexeme": "print"
+                            },
+                            "isQualified": false,
+                            "isSynthetic": false,
+                            "name": "print"
+                          },
+                          "realTarget": null,
+                          "target": null,
+                          "nullShortingTermination": "@seen",
+                          "argumentList": {
+                            "@class": "ArgumentList",
+                            "@toString": "(foo.main)",
+                            "start": 159,
+                            "end": 169,
+                            "leftParenthesis": {
+                              "start": 159,
+                              "end": 160,
+                              "type": "OPEN_PAREN",
+                              "lexeme": "("
+                            },
+                            "rightParenthesis": {
+                              "start": 168,
+                              "end": 169,
+                              "type": "CLOSE_PAREN",
+                              "lexeme": ")"
+                            },
+                            "arguments": [
+                              {
+                                "@class": "PrefixedIdentifier",
+                                "@toString": "foo.main",
+                                "start": 160,
+                                "end": 168,
+                                "period": {
+                                  "start": 163,
+                                  "end": 164,
+                                  "type": "PERIOD",
+                                  "lexeme": "."
+                                },
+                                "beginToken": {
+                                  "start": 160,
+                                  "end": 163,
+                                  "type": "IDENTIFIER",
+                                  "lexeme": "foo"
+                                },
+                                "endToken": {
+                                  "start": 164,
+                                  "end": 168,
+                                  "type": "IDENTIFIER",
+                                  "lexeme": "main"
+                                },
+                                "identifier": {
+                                  "@class": "SimpleIdentifier",
+                                  "@toString": "main",
+                                  "start": 164,
+                                  "end": 168,
+                                  "token": {
+                                    "start": 164,
+                                    "end": 168,
+                                    "type": "IDENTIFIER",
+                                    "lexeme": "main"
+                                  },
+                                  "ancestorCascade": null,
+                                  "beginToken": {
+                                    "start": 164,
+                                    "end": 168,
+                                    "type": "IDENTIFIER",
+                                    "lexeme": "main"
+                                  },
+                                  "endToken": {
+                                    "start": 164,
+                                    "end": 168,
+                                    "type": "IDENTIFIER",
+                                    "lexeme": "main"
+                                  },
+                                  "isQualified": true,
+                                  "isSynthetic": false,
+                                  "name": "main"
+                                },
+                                "isDeferred": false,
+                                "name": "foo.main",
+                                "prefix": {
+                                  "@class": "SimpleIdentifier",
+                                  "@toString": "foo",
+                                  "start": 160,
+                                  "end": 163,
+                                  "token": {
+                                    "start": 160,
+                                    "end": 163,
+                                    "type": "IDENTIFIER",
+                                    "lexeme": "foo"
+                                  },
+                                  "ancestorCascade": null,
+                                  "beginToken": {
+                                    "start": 160,
+                                    "end": 163,
+                                    "type": "IDENTIFIER",
+                                    "lexeme": "foo"
+                                  },
+                                  "endToken": {
+                                    "start": 160,
+                                    "end": 163,
+                                    "type": "IDENTIFIER",
+                                    "lexeme": "foo"
+                                  },
+                                  "isQualified": false,
+                                  "isSynthetic": false,
+                                  "name": "foo"
+                                }
+                              }
+                            ],
+                            "beginToken": {
+                              "start": 159,
+                              "end": 160,
+                              "type": "OPEN_PAREN",
+                              "lexeme": "("
+                            },
+                            "endToken": {
+                              "start": 168,
+                              "end": 169,
+                              "type": "CLOSE_PAREN",
+                              "lexeme": ")"
+                            },
+                            "isSynthetic": false,
+                            "length": 10,
+                            "offset": 159
+                          },
+                          "typeArguments": null
+                        },
+                        "isSynthetic": false
+                      }
+                    ]
+                  },
+                  "endToken": {
+                    "start": 173,
+                    "end": 174,
+                    "type": "CLOSE_CURLY_BRACKET",
+                    "lexeme": "}"
+                  },
+                  "isAsynchronous": true,
+                  "isGenerator": false,
+                  "isSynchronous": false
+                },
+                "endToken": {
+                  "start": 173,
+                  "end": 174,
+                  "type": "CLOSE_CURLY_BRACKET",
+                  "lexeme": "}"
+                },
+                "parameters": {
+                  "@class": "FormalParameterList",
+                  "@toString": "()",
+                  "start": 110,
+                  "end": 112,
+                  "leftParenthesis": {
+                    "start": 110,
+                    "end": 111,
+                    "type": "OPEN_PAREN",
+                    "lexeme": "("
+                  },
+                  "leftDelimiter": null,
+                  "rightDelimiter": null,
+                  "rightParenthesis": {
+                    "start": 111,
+                    "end": 112,
+                    "type": "CLOSE_PAREN",
+                    "lexeme": ")"
+                  },
+                  "beginToken": {
+                    "start": 110,
+                    "end": 111,
+                    "type": "OPEN_PAREN",
+                    "lexeme": "("
+                  },
+                  "endToken": {
+                    "start": 111,
+                    "end": 112,
+                    "type": "CLOSE_PAREN",
+                    "lexeme": ")"
+                  },
+                  "parameters": [],
+                  "isSynthetic": false,
+                  "length": 2,
+                  "offset": 110
+                },
+                "typeParameters": null,
+                "inConstantContext": false,
+                "isAssignable": false,
+                "unParenthesized": "@seen"
+              }
+            ],
+            "beginToken": {
+              "start": 109,
+              "end": 110,
+              "type": "OPEN_PAREN",
+              "lexeme": "("
+            },
+            "endToken": {
+              "start": 174,
+              "end": 175,
+              "type": "CLOSE_PAREN",
+              "lexeme": ")"
+            },
+            "isSynthetic": false,
+            "length": 66,
+            "offset": 109
+          },
+          "typeArguments": null
+        },
+        "isSynthetic": false
+      }
+    ]
+  },
+  "module": null,
+  "style": null,
+  "options": null
 }

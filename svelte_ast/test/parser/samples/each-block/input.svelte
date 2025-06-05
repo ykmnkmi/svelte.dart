@@ -1,3 +1,3 @@
 {#each animals as animal}
-	<p>{animal}</p>
+  <p>{animal}</p>
 {/each}

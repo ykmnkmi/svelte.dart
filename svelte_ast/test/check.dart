@@ -7,72 +7,21 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:svelte_ast/src/reflection.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
-const String string = r'''
-<!-- app.svelte -->
+const String string = '''
 <script>
-  // imports
-  import 'package:svelte/svelte.dart';
-
-  // properties
-  external int count = 0;
-
-  // body
-  $: doubled = count * 2;
-  $: quadrupled = doubled * 2;
-
-  void handleClick() {
-    count += 1;
-  }
-
-  const duration = Duration(seconds: 1);
-
-  onMount(() {
-    var timer = Timer.periodic(duration, (_) {
-      count += 1;
-    });
-
-    return () {
-      timer.cancel();
-    };
-  });
+  var count = 0;
 </script>
-
-<button on:click={handleClick}>
-  Clicked {count} {count == 1 ? 'time' : 'times'}
-</button>
-
-<p>{count} * 2 = {doubled}</p>
-<p>{doubled} * 2 = {quadrupled}</p>
-
-<style>
-  button {
-    background-color: #ff3e00;
-    color: white;
-    padding: 8px 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background-color: #ff6f40;
-  }
-
-  p {
-    margin-top: 8px;
-  }
-</style>
-''';
+<button on:click="{() => count++}">count: {count}</button>''';
 
 void main() {
   try {
-    SvelteAst ast = parse(
+    Root root = parse(
       string,
       fileName: 'check.dart',
       uri: Uri.file('check.dart'),
     );
 
-    Map<String, Object?> json = ast.toJson(mapper);
+    Map<String, Object?> json = root.toJson(mapper);
     String output = const JsonEncoder.withIndent('  ').convert(json);
     File.fromUri(Uri(path: 'test/check.json')).writeAsStringSync(output);
   } on ParseError catch (error, stackTrace) {

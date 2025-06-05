@@ -1,729 +1,371 @@
-// ignore_for_file: unused_import
-
-import 'package:analyzer/dart/ast/ast.dart';
-import 'package:source_span/source_span.dart';
+import 'package:analyzer/dart/ast/ast.dart' as dart;
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
-import 'package:svelte_ast/src/extract_svelte_ignore.dart';
-import 'package:svelte_ast/src/html.dart';
-import 'package:svelte_ast/src/names.dart';
 import 'package:svelte_ast/src/parser.dart';
-import 'package:svelte_ast/src/patterns.dart';
 import 'package:svelte_ast/src/read/expression.dart';
-import 'package:svelte_ast/src/read/script.dart';
-import 'package:svelte_ast/src/read/style.dart';
 
-final RegExp _self = RegExp('svelte:self(?=[\\s/>])');
+final RegExp _eachAsOrEndRe = RegExp('(\\sas|})');
 
-final RegExp _component = RegExp('svelte:component(?=[\\s/>])');
+final RegExp _eachCommaOrEndRe = RegExp('(,|})');
 
-final RegExp _element = RegExp('svelte:element(?=[\\s/>])');
+final RegExp _eachClosingParenOrEndRe = RegExp('(\\)|})');
 
-final RegExp _slot = RegExp('svelte:fragment(?=[\\s/>])');
+extension MustacheParser on Parser {
+  void _open(int start) {
+    if (scan('if')) {
+      expectSpace();
 
-final RegExp _validTagNameRe = RegExp('^\\!?[a-zA-Z]{1,}:?[a-zA-Z0-9\\-]*');
-
-final RegExp _tagNameEndRe = RegExp('(\\s|\\/|>)');
-
-final RegExp _tokenEndingCharacter = RegExp('[\\s=\\/>"\']');
-
-final RegExp _startsWithQuoteCharacters = RegExp('["\']');
-
-final RegExp _startsWithInvalidAttributeValue = RegExp('(\\/>|[\\s"\'=<>`])');
-
-final RegExp _capitalLetter = RegExp('^[A-Z]');
-
-final RegExp _nonCharRe = RegExp('[^A-Za-z]');
-
-final RegExp _textareaCloseTag = RegExp(
-  '<\\/textarea(\\s[^>]*)?>',
-  caseSensitive: false,
-);
-
-const Map<String, String> _metaTags = <String, String>{
-  'svelte:head': 'Head',
-  'svelte:options': 'Options',
-  'svelte:window': 'Window',
-  'svelte:document': 'Document',
-  'svelte:body': 'Body',
-};
-
-const List<String> _validMetaTags = <String>[
-  'svelte:head',
-  'svelte:options',
-  'svelte:window',
-  'svelte:document',
-  'svelte:body',
-  'svelte:self',
-  'svelte:component',
-  'svelte:fragment',
-  'svelte:element',
-];
-
-DirectiveType? _getDirectiveType(String name) {
-  return switch (name) {
-    'use' => DirectiveType.action,
-    'animate' => DirectiveType.animation,
-    'bind' => DirectiveType.binding,
-    'class' => DirectiveType.classDirective,
-    'style' => DirectiveType.styleDirective,
-    'on' => DirectiveType.eventHandler,
-    'let' => DirectiveType.let,
-    'ref' => DirectiveType.ref,
-    'in' || 'out' || 'transition' => DirectiveType.transition,
-    _ => null,
-  };
-}
-
-bool _parentIsHead(List<Node> stack) {
-  for (Node node in stack.reversed) {
-    if (node is Head) {
-      return true;
-    }
-
-    if (node is Element || node is InlineComponent) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-extension TagParser on Parser {
-  String _readTagName() {
-    int start = position;
-
-    if (scan(_self)) {
-      bool legal = false;
-
-      for (Node node in stack.reversed) {
-        if (node is IfBlock || node is EachBlock || node is InlineComponent) {
-          legal = true;
-          break;
-        }
-      }
-
-      if (!legal) {
-        error(invalidSelfPlacement, start);
-      }
-
-      return 'svelte:self';
-    }
-
-    if (scan(_component)) {
-      return 'svelte:component';
-    }
-
-    if (scan(_element)) {
-      return 'svelte:element';
-    }
-
-    if (scan(_slot)) {
-      return 'svelte:fragment';
-    }
-
-    String name = readUntil(_tagNameEndRe);
-
-    if (_metaTags.containsKey(name)) {
-      return name;
-    }
-
-    if (name.startsWith('svelte:')) {
-      error(
-        invalidTagNameSvelteElement(_validMetaTags),
-        start,
-        start + name.length,
-      );
-    }
-
-    if (_validTagNameRe.hasMatch(name)) {
-      return name;
-    }
-
-    error(invalidTagName, start);
-  }
-
-  Node? _readAttribute(Set<String> uniqueNames) {
-    int start = position;
-
-    void checkUnique(String name) {
-      if (uniqueNames.contains(name)) {
-        error(duplicateAttribute, start);
-      }
-
-      uniqueNames.add(name);
-    }
-
-    if (scan(openingCurlyRe)) {
-      if (scan('...')) {
-        Expression expression = readExpression(closingCurlyRe);
-        allowSpace();
-        expect('}');
-        return Spread(start: start, end: position, expression: expression);
-      } else {
-        if (scan(closingCurlyRe)) {
-          error(emptyAttributeShorthand, start);
-        }
-
-        int valueStart = position;
-        Expression expression = readExpression(closingCurlyRe);
-
-        String name = switch (expression) {
-          SimpleIdentifier(:String name) => name,
-          _ => throw UnimplementedError(),
-        };
-
-        checkUnique(name);
-
-        allowSpace();
-        expect('}');
-
-        return Attribute(
-          start: start,
-          end: position,
-          name: name,
-          values: <Node>[
-            AttributeShorthand(
-              start: valueStart,
-              end: valueStart + name.length,
-              expression: expression,
-            ),
-          ],
-        );
-      }
-    }
-
-    String name = readUntil(_tokenEndingCharacter);
-
-    if (name.isEmpty) {
-      return null;
-    }
-
-    int end = position;
-    allowSpace();
-
-    int colonIndex = name.indexOf(':');
-    DirectiveType? type;
-
-    if (colonIndex != -1) {
-      type = _getDirectiveType(name.substring(0, colonIndex));
-    }
-
-    List<Node> values = <Node>[];
-
-    if (scan('=')) {
+      dart.Expression expression = readExpression('}');
       allowSpace();
-      values = _readAttributeValue();
-      end = position;
-    } else if (match(_startsWithQuoteCharacters)) {
-      error(unexpectedToken('='), position);
-    }
+      expect('}');
 
-    if (type != null) {
-      var <String>[String directiveName, ...List<String> modifiers] = name
-          .substring(colonIndex + 1)
-          .split('|');
+      IfBlock block = IfBlock(start: start, test: expression);
+      add(block);
+      stack.add(block);
+      fragments.add(block.consequent);
+    } else if (scan('each')) {
+      expectSpace();
 
-      if (directiveName.isEmpty) {
-        error(emptyDirectiveName(type.name), start + colonIndex + 1);
+      dart.Expression expression = readExpression(_eachAsOrEndRe);
+
+      // In case if `{#each list as item}` parsed as `as` cast.
+      //                    ^^^^^^^^^^^^
+      if (expression is dart.AsExpression) {
+        expression = expression.expression;
+        position = expression.end;
       }
 
-      if (type == DirectiveType.binding && directiveName != 'this') {
-        checkUnique(directiveName);
-      } else if (type != DirectiveType.eventHandler &&
-          type != DirectiveType.action) {
-        checkUnique(name);
-      }
+      expectSpace();
+      expect('as');
+      expectSpace();
 
-      if (type == DirectiveType.ref) {
-        error(invalidRefDirective(name), start);
-      }
+      dart.DartPattern context = readAssignmentPattern(_eachCommaOrEndRe);
+      allowSpace();
 
-      if (type == DirectiveType.styleDirective) {
-        return StyleDirective(
-          start: start,
-          end: end,
-          name: directiveName,
-          modifiers: modifiers,
-          values: values,
-        );
-      }
+      dart.SimpleIdentifier? index;
 
-      Expression? expression;
-
-      if (values.isNotEmpty) {
-        Node first = values.first;
-
-        if (first is Text || values.length > 1) {
-          error(invalidDirectiveValue, first.start);
-        }
-
-        if (first is MustacheTag) {
-          expression = first.expression;
-        }
-      }
-
-      switch (type) {
-        case DirectiveType.action:
-          return Action(
-            start: start,
-            end: end,
-            name: directiveName,
-            modifiers: modifiers,
-            expression: expression,
-          );
-
-        case DirectiveType.animation:
-          return Animation(
-            start: start,
-            end: end,
-            name: directiveName,
-            modifiers: modifiers,
-            expression: expression,
-          );
-
-        case DirectiveType.binding:
-          return Binding(
-            start: start,
-            end: end,
-            name: directiveName,
-            modifiers: modifiers,
-            expression:
-                expression ??
-                simpleIdentifier(start + colonIndex + 1, directiveName),
-          );
-
-        case DirectiveType.classDirective:
-          return ClassDirective(
-            start: start,
-            end: end,
-            name: directiveName,
-            modifiers: modifiers,
-            expression:
-                expression ??
-                simpleIdentifier(start + colonIndex + 1, directiveName),
-          );
-
-        case DirectiveType.eventHandler:
-          return EventHandler(
-            start: start,
-            end: end,
-            name: directiveName,
-            modifiers: modifiers,
-            expression: expression,
-          );
-
-        case DirectiveType.let:
-          return Let(
-            start: start,
-            end: end,
-            name: directiveName,
-            modifiers: modifiers,
-            expression: expression,
-          );
-
-        case DirectiveType.ref:
-          return Ref(
-            start: start,
-            end: end,
-            name: directiveName,
-            modifiers: modifiers,
-            expression: expression,
-          );
-
-        case DirectiveType.transition:
-          String direction = name.substring(0, colonIndex);
-          return TransitionDirective(
-            start: start,
-            end: end,
-            name: directiveName,
-            modifiers: modifiers,
-            intro: direction == 'in' || direction == 'transition',
-            outro: direction == 'out' || direction == 'transition',
-            expression: expression,
-          );
-
-        default:
-          throw UnimplementedError(type.name);
-      }
-    }
-
-    checkUnique(name);
-    return Attribute(start: start, end: end, name: name, values: values);
-  }
-
-  List<Node> _readAttributeValue() {
-    String? quoteMark = read('"') ?? read("'");
-
-    if (quoteMark != null && scan(quoteMark)) {
-      return <Node>[Text(start: position - 1, end: position - 1)];
-    }
-
-    List<Node> value;
-
-    try {
-      Pattern end = quoteMark ?? _startsWithInvalidAttributeValue;
-      value = _readSequence(end, 'in attribute value');
-    } on ParseError catch (parserError) {
-      if (parserError.errorCode.code == 'parse-error') {
-        var SourceSpan(
-          start: SourceLocation(offset: start),
-          end: SourceLocation(offset: end),
-        ) = parserError.span;
-
-        if (string.substring(start, end) == '/>') {
-          error(unclosedAttributeValue(quoteMark ?? '}'));
-        }
-      }
-
-      rethrow;
-    }
-
-    if (value.isEmpty && quoteMark == null) {
-      error(missingAttributeValue);
-    }
-
-    if (quoteMark != null) {
-      expect(quoteMark);
-    }
-
-    return value;
-  }
-
-  List<Node> _readSequence(Pattern end, String location) {
-    int start = position;
-    List<Node> chunks = <Node>[];
-
-    void flush(int end) {
-      if (start < end) {
-        String raw = string.substring(start, end);
-        String data = decodeCharacterReferences(raw, true);
-        chunks.add(Text(start: start, end: end, raw: raw, data: data));
-        start = end;
-      }
-    }
-
-    while (isNotDone) {
-      if (match(end)) {
-        flush(position);
-        return chunks;
-      }
-
-      if (scan('{')) {
-        if (match('#')) {
-          int start = position - 1;
-          skip('#');
-
-          String name = readUntil(_nonCharRe);
-          error(invalidLogicBlockPlacement(location, name), start);
-        } else if (match('@')) {
-          int start = position - 1;
-          skip('#');
-
-          String name = readUntil(_nonCharRe);
-          error(invalidTagPlacement(location, name), start);
-        }
-
-        flush(position - 1);
+      if (scan(',')) {
         allowSpace();
 
-        Expression expression = readExpression(closingCurlyRe);
+        int identifierStart = position;
+        String? identifier = readIdentifier();
+
+        if (identifier == null) {
+          expectedIdentifier(position);
+        }
+
+        index = simpleIdentifier(identifierStart, identifier);
+        allowSpace();
+      }
+
+      dart.Expression? key;
+
+      if (scan('(')) {
+        allowSpace();
+        key = readExpression(_eachClosingParenOrEndRe);
+        allowSpace();
+        expect(')');
+      }
+
+      allowSpace();
+      expect('}');
+
+      EachBlock block = EachBlock(
+        start: start,
+        expression: expression,
+        context: context,
+        index: index,
+        key: key,
+      );
+
+      add(block);
+      stack.add(block);
+      fragments.add(block.body);
+    } else if (scan('await')) {
+      expectSpace();
+
+      dart.Expression expression = readExpression('}');
+      allowSpace();
+
+      AwaitBlock block = AwaitBlock(start: start, expression: expression);
+      add(block);
+
+      if (scan('then')) {
+        if (match('}')) {
+          allowSpace();
+        } else {
+          expectSpace();
+          block.value = readAssignmentPattern('}');
+          allowSpace();
+        }
+
+        Fragment fragment = Fragment();
+        block.then = fragment;
+        fragments.add(fragment);
+      } else if (scan('catch')) {
+        if (match('}')) {
+          allowSpace();
+        } else {
+          expectSpace();
+          block.error = readAssignmentPattern('}');
+          allowSpace();
+        }
+
+        Fragment fragment = Fragment();
+        block.katch = fragment;
+        fragments.add(fragment);
+      } else {
+        Fragment fragment = Fragment();
+        block.pending = fragment;
+        fragments.add(fragment);
+      }
+
+      stack.add(block);
+    } else if (scan('key')) {
+      expectSpace();
+
+      dart.Expression expression = readExpression('}');
+      allowSpace();
+      expect('}');
+
+      KeyBlock block = KeyBlock(start: start, expression: expression);
+      add(block);
+      stack.add(block);
+      fragments.add(block.fragment);
+    } else if (scan('snippet')) {
+      expectSpace();
+
+      int nameStart = position;
+      String? name = readIdentifier();
+
+      if (name == null) {
+        expectedIdentifier(nameStart);
+      }
+
+      allowSpace();
+      expect('(');
+      position -= 1;
+
+      // TODO(ast): parse without parens.
+      dart.FormalParameterList parameters = readParameters('}');
+      position -= 1;
+
+      expect(')');
+      allowSpace();
+      expect('}');
+
+      SnippetBlock block = SnippetBlock(
+        start: start,
+        expression: simpleIdentifier(nameStart, name),
+        parameters: parameters.parameters,
+      );
+
+      add(block);
+      stack.add(block);
+      fragments.add(block.body);
+    } else {
+      expectedBlockType(position);
+    }
+  }
+
+  void _next(int start) {
+    Node block = current;
+
+    if (block is IfBlock) {
+      if (!scan('else')) {
+        expectedToken('{:else} or {:else if ...}', position);
+      }
+
+      if (scan('if')) {
+        blockInvalidElseIf(start);
+      }
+
+      allowSpace();
+
+      Fragment alternate = Fragment();
+      fragments.removeLast();
+      fragments.add(alternate);
+
+      if (scan('if')) {
+        expectSpace();
+
+        dart.Expression test = readExpression('}');
         allowSpace();
         expect('}');
 
-        MustacheTag mustacheTag = MustacheTag(
-          start: start,
-          end: position,
-          expression: expression,
-        );
-
-        chunks.add(mustacheTag);
-
-        start = position;
+        IfBlock child = IfBlock(start: start, elseIf: true, test: test);
+        add(child);
+        stack.add(child);
+        fragments.removeLast();
+        fragments.add(child.consequent);
       } else {
-        position += 1;
+        allowSpace();
+        expect('}');
       }
+    } else if (block is EachBlock) {
+      if (!scan('else')) {
+        expectedToken('{:else}', start);
+      }
+
+      allowSpace();
+      expect('}');
+
+      Fragment fragment = Fragment();
+      block.fallback = fragment;
+      fragments.removeLast();
+      fragments.add(fragment);
+    } else if (block is AwaitBlock) {
+      if (scan('then')) {
+        if (block.then != null) {
+          blockDuplicateClause('{:then}', start);
+        }
+
+        if (!scan('}')) {
+          expectSpace();
+          block.value = readAssignmentPattern('}');
+          allowSpace();
+          expect('}');
+        }
+
+        Fragment fragment = Fragment();
+        block.then = fragment;
+        fragments.removeLast();
+        fragments.add(fragment);
+      } else if (scan('catch')) {
+        if (block.katch != null) {
+          blockDuplicateClause('{:catch}', start);
+        }
+
+        if (!scan('}')) {
+          expectSpace();
+          block.error = readAssignmentPattern('}');
+          allowSpace();
+          expect('}');
+        }
+
+        Fragment fragment = Fragment();
+        block.katch = fragment;
+        fragments.removeLast();
+        fragments.add(fragment);
+      } else {
+        expectedToken('{:then ...} or {:catch ...}', position);
+      }
+    } else {
+      blockInvalidContinuationPlacement(start);
+    }
+  }
+
+  void _special(int start) {
+    if (scan('html')) {
+      expectSpace();
+
+      dart.Expression expression = readExpression('}');
+      allowSpace();
+      expect('}');
+
+      add(HtmlTag(start: start, end: position, expression: expression));
+    } else if (scan('debug')) {
+      expectSpace();
+
+      List<dart.SimpleIdentifier> identifiers;
+
+      if (scan('}')) {
+        identifiers = const <Never>[];
+      } else {
+        identifiers = readIdentifierList('}');
+        allowSpace();
+        expect('}');
+      }
+
+      add(DebugTag(start: start, end: position, identifiers: identifiers));
+    } else if (scan('final')) {
+      expectSpace();
+
+      dart.Expression expression = readExpression('}');
+
+      if (expression is! dart.AssignmentExpression &&
+          expression is! dart.PatternAssignment) {
+        finalTagInvalidExpression(expression.offset, expression.end);
+      }
+
+      allowSpace();
+      expect('}');
+
+      add(FinalTag(start: start, end: position, expression: expression));
+    } else if (scan('render')) {
+      expectSpace();
+
+      dart.Expression expression = readExpression('}');
+
+      if (expression is! dart.MethodInvocation) {
+        renderTagInvalidExpression(expression.offset, expression.end);
+      }
+
+      allowSpace();
+      expect('}');
+
+      add(RenderTag(start: start, end: position, expression: expression));
+    }
+  }
+
+  void _close(int start) {
+    Node block = current;
+
+    if (block is IfBlock) {
+      expect('if');
+      allowSpace();
+      expect('}');
+
+      while (block is IfBlock && block.elseIf) {
+        block.end = position;
+        stack.removeLast();
+        block = current;
+      }
+
+      block.end = position;
+      pop();
+      return;
+    } else if (block is EachBlock) {
+      expect('each');
+    } else if (block is AwaitBlock) {
+      expect('await');
+    } else if (block is KeyBlock) {
+      expect('key');
+    } else if (block is SnippetBlock) {
+      expect('snippet');
+    } else if (block is RegularElement) {
+      // TODO(ast): handle implicitly closed elements.
+      blockUnexpectedClose(start);
+    } else {
+      blockUnexpectedClose(start);
     }
 
-    error(unexpectedEOF);
+    allowSpace();
+    expect('}');
+    block.end = position;
+    pop();
   }
 
   void tag(int start) {
-    if (scan('!--')) {
-      String? data = readUntil('-->');
-      expect('-->', unclosedComment);
-
-      CommentTag commentTag = CommentTag(
-        start: start,
-        end: position,
-        data: data,
-        ignores: extractSvelteIgnore(data),
-      );
-
-      current.children.add(commentTag);
-      return;
-    }
-
-    Node parent = current;
-    bool isClosingTag = scan('/');
-    String name = _readTagName();
-    Tag element;
-
-    String? metaTag = _metaTags[name];
-
-    if (metaTag != null) {
-      String slug = metaTag.toLowerCase();
-
-      if (isClosingTag) {
-        if ((name == 'svelte:window' || name == 'svelte:body') &&
-            current.children.isNotEmpty) {
-          error(invalidElementContent(slug, name), current.children[0].start);
-        }
-      } else {
-        if (metaTags.contains(name)) {
-          error(duplicateElement(slug, name), start);
-        }
-
-        if (stack.length > 1) {
-          error(invalidElementPlacement(slug, name), start);
-        }
-
-        metaTags.add(name);
-      }
-
-      if (metaTag == 'Head') {
-        element = Head(
-          start: start,
-          name: name,
-          attributes: <Node>[],
-          children: <Node>[],
-        );
-      } else if (metaTag == 'Options') {
-        element = Options(
-          start: start,
-          name: name,
-          attributes: <Node>[],
-          children: <Node>[],
-        );
-      } else if (metaTag == 'Window') {
-        element = Window(
-          start: start,
-          name: name,
-          attributes: <Node>[],
-          children: <Node>[],
-        );
-      } else if (metaTag == 'Document') {
-        element = Document(
-          start: start,
-          name: name,
-          attributes: <Node>[],
-          children: <Node>[],
-        );
-      } else if (metaTag == 'Body') {
-        element = Body(
-          start: start,
-          name: name,
-          attributes: <Node>[],
-          children: <Node>[],
-        );
-      } else {
-        throw UnimplementedError(metaTag);
-      }
-    } else if (_capitalLetter.hasMatch(name) ||
-        name == 'svelte:self' ||
-        name == 'svelte:component') {
-      element = InlineComponent(
-        start: start,
-        name: name,
-        attributes: <Node>[],
-        children: <Node>[],
-      );
-    } else if (name == 'svelte:element') {
-      element = InlineElement(
-        start: start,
-        name: name,
-        attributes: <Node>[],
-        children: <Node>[],
-      );
-    } else if (name == 'svelte:fragment') {
-      element = SlotTemplate(
-        start: start,
-        name: name,
-        attributes: <Node>[],
-        children: <Node>[],
-      );
-    } else if (name == 'title' && _parentIsHead(stack)) {
-      element = Title(
-        start: start,
-        name: name,
-        attributes: <Node>[],
-        children: <Node>[],
-      );
-    } else if (name == 'slot') {
-      element = Slot(
-        start: start,
-        name: name,
-        attributes: <Node>[],
-        children: <Node>[],
-      );
-    } else {
-      element = Element(
-        start: start,
-        name: name,
-        attributes: <Node>[],
-        children: <Node>[],
-      );
-    }
-
     allowSpace();
 
-    if (isClosingTag) {
-      if (isVoid(name)) {
-        error(invalidVoidContent(name), start);
+    if (scan('#')) {
+      _open(start);
+    } else if (scan(':')) {
+      _next(start);
+    } else if (scan('@')) {
+      _special(start);
+    } else if (match('/')) {
+      if (!match('/*') && !match('//')) {
+        skip('/');
+        _close(start);
       }
-
-      expect('>');
-
-      AutoCloseTag? tag = lastAutoCloseTag;
-
-      while (parent is! Tag || parent.name != name) {
-        if (parent is! Element) {
-          if (tag != null && tag.tag == name) {
-            error(invalidClosingTagAutoClosed(name, tag.reason), start);
-          } else {
-            error(invalidClosingTagUnopened(name), start);
-          }
-        }
-
-        parent.end = start;
-        stack.removeLast();
-        parent = current;
-      }
-
-      parent.end = position;
-      stack.removeLast();
-
-      if (tag != null && tag.depth > stack.length) {
-        lastAutoCloseTag = null;
-      }
-
-      return;
-    }
-
-    if (parent is HasName && closingTagOmitted(parent.name, name)) {
-      parent.end = start;
-      stack.removeLast();
-      lastAutoCloseTag = (tag: parent.name, reason: name, depth: stack.length);
-    }
-
-    Set<String> uniqueNames = <String>{};
-
-    while (true) {
-      Node? attribute = _readAttribute(uniqueNames);
-
-      if (attribute == null) {
-        break;
-      }
-
-      element.attributes.add(attribute);
-      allowSpace();
-    }
-
-    if (element is InlineComponent && name == 'svelte:component') {
-      List<Node> attributes = element.attributes;
-      Attribute? definition;
-
-      for (int i = 0; i < attributes.length; i++) {
-        Node attribute = attributes[i];
-
-        if (attribute is Attribute && attribute.name == 'this') {
-          definition = attribute;
-          attributes.removeAt(i);
-          break;
-        }
-      }
-
-      if (definition == null) {
-        error(missingComponentDefinition, start);
-      }
-
-      List<Node> values = definition.values;
-      Expression? expression;
-
-      found:
-      {
-        if (values.length == 1) {
-          Node value = values.first;
-
-          if (value is MustacheTag) {
-            expression = value.expression;
-            break found;
-          }
-        }
-
-        error(invalidComponentDefinition, definition.start);
-      }
-
-      element.expression = expression;
-    }
-
-    if (element is InlineElement) {
-      List<Node> attributes = element.attributes;
-      Attribute? definition;
-
-      for (int i = 0; i < attributes.length; i++) {
-        Node attribute = attributes[i];
-
-        if (attribute is Attribute && attribute.name == 'this') {
-          definition = attribute;
-          attributes.removeAt(i);
-          break;
-        }
-      }
-
-      if (definition == null) {
-        error(missingElementDefinition, start);
-      }
-
-      if (definition.values.length != 1) {
-        error(invalidElementDefinition, definition.start);
-      }
-
-      element.tag = definition.values.first;
-    }
-
-    if (stack.length == 1) {
-      if (name == 'script') {
-        readScript(start, element.attributes);
-        return;
-      }
-
-      if (name == 'style') {
-        readStyle(start, element.attributes);
-        return;
-      }
-    }
-
-    current.children.add(element);
-
-    bool selfClosing = scan('/') || isVoid(name);
-    expect('>');
-
-    if (selfClosing) {
-      element.end = position;
-    } else if (name == 'textarea') {
-      element.children = _readSequence(_textareaCloseTag, 'inside <textarea>');
-      expect(_textareaCloseTag);
-      element.end = position;
-    } else if (name == 'script' || name == 'style') {
-      int start = position;
-      String closeTag = '</$name>';
-      String data = readUntil(closeTag);
-      element.children.add(Text(start: start, end: position, data: data));
-      expect(closeTag);
-      element.end = position;
     } else {
-      stack.add(element);
+      dart.Expression expression = readExpression('}');
+      allowSpace();
+      expect('}');
+
+      add(ExpressionTag(start: start, end: position, expression: expression));
     }
   }
 }

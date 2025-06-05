@@ -1,0 +1,1319 @@
+{
+  "start": 598,
+  "end": 869,
+  "class": "Root",
+  "fragment": {
+    "start": 598,
+    "end": 869,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 598,
+        "end": 600,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 600,
+        "end": 777,
+        "class": "RegularElement",
+        "name": "button",
+        "attributes": [
+          {
+            "start": 610,
+            "end": 733,
+            "class": "OnDirective",
+            "name": "click",
+            "expression": {
+              "@class": "FunctionExpression",
+              "@toString": "() {fn();}",
+              "start": 633,
+              "end": 732,
+              "wasFunctionTypeSupplied": false,
+              "beginToken": {
+                "start": 633,
+                "end": 634,
+                "type": "OPEN_PAREN",
+                "lexeme": "("
+              },
+              "body": {
+                "@class": "BlockFunctionBody",
+                "@toString": "{fn();}",
+                "start": 636,
+                "end": 732,
+                "keyword": null,
+                "star": null,
+                "beginToken": {
+                  "start": 636,
+                  "end": 637,
+                  "type": "OPEN_CURLY_BRACKET",
+                  "lexeme": "{"
+                },
+                "block": {
+                  "@class": "Block",
+                  "@toString": "{fn();}",
+                  "start": 636,
+                  "end": 732,
+                  "leftBracket": {
+                    "start": 636,
+                    "end": 637,
+                    "type": "OPEN_CURLY_BRACKET",
+                    "lexeme": "{"
+                  },
+                  "rightBracket": {
+                    "start": 731,
+                    "end": 732,
+                    "type": "CLOSE_CURLY_BRACKET",
+                    "lexeme": "}"
+                  },
+                  "beginToken": {
+                    "start": 636,
+                    "end": 637,
+                    "type": "OPEN_CURLY_BRACKET",
+                    "lexeme": "{"
+                  },
+                  "endToken": {
+                    "start": 731,
+                    "end": 732,
+                    "type": "CLOSE_CURLY_BRACKET",
+                    "lexeme": "}"
+                  },
+                  "statements": [
+                    {
+                      "@class": "ExpressionStatement",
+                      "@toString": "fn();",
+                      "start": 668,
+                      "end": 673,
+                      "semicolon": {
+                        "start": 672,
+                        "end": 673,
+                        "type": "SEMICOLON",
+                        "lexeme": ";"
+                      },
+                      "beginToken": {
+                        "start": 668,
+                        "end": 670,
+                        "type": "IDENTIFIER",
+                        "lexeme": "fn"
+                      },
+                      "endToken": {
+                        "start": 672,
+                        "end": 673,
+                        "type": "SEMICOLON",
+                        "lexeme": ";"
+                      },
+                      "expression": {
+                        "@class": "MethodInvocation",
+                        "@toString": "fn()",
+                        "start": 668,
+                        "end": 672,
+                        "operator": null,
+                        "beginToken": {
+                          "start": 668,
+                          "end": 670,
+                          "type": "IDENTIFIER",
+                          "lexeme": "fn"
+                        },
+                        "endToken": {
+                          "start": 671,
+                          "end": 672,
+                          "type": "CLOSE_PAREN",
+                          "lexeme": ")"
+                        },
+                        "function": {
+                          "@class": "SimpleIdentifier",
+                          "@toString": "fn",
+                          "start": 668,
+                          "end": 670,
+                          "token": {
+                            "start": 668,
+                            "end": 670,
+                            "type": "IDENTIFIER",
+                            "lexeme": "fn"
+                          },
+                          "ancestorCascade": null,
+                          "beginToken": {
+                            "start": 668,
+                            "end": 670,
+                            "type": "IDENTIFIER",
+                            "lexeme": "fn"
+                          },
+                          "endToken": {
+                            "start": 668,
+                            "end": 670,
+                            "type": "IDENTIFIER",
+                            "lexeme": "fn"
+                          },
+                          "isQualified": false,
+                          "isSynthetic": false,
+                          "name": "fn"
+                        },
+                        "isCascaded": false,
+                        "isNullAware": false,
+                        "methodName": {
+                          "@class": "SimpleIdentifier",
+                          "@toString": "fn",
+                          "start": 668,
+                          "end": 670,
+                          "token": {
+                            "start": 668,
+                            "end": 670,
+                            "type": "IDENTIFIER",
+                            "lexeme": "fn"
+                          },
+                          "ancestorCascade": null,
+                          "beginToken": {
+                            "start": 668,
+                            "end": 670,
+                            "type": "IDENTIFIER",
+                            "lexeme": "fn"
+                          },
+                          "endToken": {
+                            "start": 668,
+                            "end": 670,
+                            "type": "IDENTIFIER",
+                            "lexeme": "fn"
+                          },
+                          "isQualified": false,
+                          "isSynthetic": false,
+                          "name": "fn"
+                        },
+                        "realTarget": null,
+                        "target": null,
+                        "nullShortingTermination": "@seen",
+                        "argumentList": {
+                          "@class": "ArgumentList",
+                          "@toString": "()",
+                          "start": 670,
+                          "end": 672,
+                          "leftParenthesis": {
+                            "start": 670,
+                            "end": 671,
+                            "type": "OPEN_PAREN",
+                            "lexeme": "("
+                          },
+                          "rightParenthesis": {
+                            "start": 671,
+                            "end": 672,
+                            "type": "CLOSE_PAREN",
+                            "lexeme": ")"
+                          },
+                          "arguments": [],
+                          "beginToken": {
+                            "start": 670,
+                            "end": 671,
+                            "type": "OPEN_PAREN",
+                            "lexeme": "("
+                          },
+                          "endToken": {
+                            "start": 671,
+                            "end": 672,
+                            "type": "CLOSE_PAREN",
+                            "lexeme": ")"
+                          },
+                          "isSynthetic": false,
+                          "length": 2,
+                          "offset": 670
+                        },
+                        "typeArguments": null
+                      },
+                      "isSynthetic": false
+                    }
+                  ]
+                },
+                "endToken": {
+                  "start": 731,
+                  "end": 732,
+                  "type": "CLOSE_CURLY_BRACKET",
+                  "lexeme": "}"
+                },
+                "isAsynchronous": false,
+                "isGenerator": false,
+                "isSynchronous": true
+              },
+              "endToken": {
+                "start": 731,
+                "end": 732,
+                "type": "CLOSE_CURLY_BRACKET",
+                "lexeme": "}"
+              },
+              "parameters": {
+                "@class": "FormalParameterList",
+                "@toString": "()",
+                "start": 633,
+                "end": 635,
+                "leftParenthesis": {
+                  "start": 633,
+                  "end": 634,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "leftDelimiter": null,
+                "rightDelimiter": null,
+                "rightParenthesis": {
+                  "start": 634,
+                  "end": 635,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "beginToken": {
+                  "start": 633,
+                  "end": 634,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "endToken": {
+                  "start": 634,
+                  "end": 635,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "parameters": [],
+                "isSynthetic": false,
+                "length": 2,
+                "offset": 633
+              },
+              "typeParameters": null,
+              "inConstantContext": false,
+              "isAssignable": false,
+              "unParenthesized": "@seen { self }"
+            },
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": 735,
+          "end": 768,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 735,
+              "end": 736,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            },
+            {
+              "start": 737,
+              "end": 768,
+              "class": "Text",
+              "raw": "/* leading block comment */ a}\n",
+              "data": "/* leading block comment */ a}\n"
+            }
+          ]
+        }
+      },
+      {
+        "start": 777,
+        "end": 778,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 780,
+        "end": 869,
+        "class": "Text",
+        "raw": "// leading line comment\n  a + b // trailing line comment\n  /* trailing block comment */\n}",
+        "data": "// leading line comment\n  a + b // trailing line comment\n  /* trailing block comment */\n}"
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 598,
+    "class": "InstanceScript",
+    "content": {
+      "start": 8,
+      "end": 589,
+      "class": "ScriptContent",
+      "content": "\n  // a leading comment\n  var a = 1; // a trailing comment\n  var b = 2;\n\n  /** a comment */\n  void asd() {\n    foo; // trailing\n    /* leading comment 1 */\n    /* leading comment 2 */\n    /* leading comment 3 */\n    bar;\n    /* trailing comment 1 */\n    /* trailing comment 2 */\n    /* trailing comment 3 */\n  }\n\n  var array = <int>[\n    // leading comment 1\n    // leading comment 2\n    1, // trailing comment 1\n    /* trailing comment 2 */\n  ];\n\n  var object = (\n    // leading comment 1\n    // leading comment 2\n    a: 1, // trailing comment 1\n    /* trailing comment 2 */\n  );\n"
+    },
+    "body": [
+      {
+        "@class": "VariableDeclarationStatement",
+        "@toString": "var a = 1;",
+        "start": 34,
+        "end": 44,
+        "semicolon": {
+          "start": 43,
+          "end": 44,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "beginToken": {
+          "start": 34,
+          "end": 37,
+          "type": "VAR",
+          "lexeme": "var"
+        },
+        "endToken": {
+          "start": 43,
+          "end": 44,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "variables": {
+          "@class": "VariableDeclarationList",
+          "@toString": "var a = 1",
+          "start": 34,
+          "end": 43,
+          "keyword": {
+            "start": 34,
+            "end": 37,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "lateKeyword": null,
+          "endToken": {
+            "start": 42,
+            "end": 43,
+            "type": "INT",
+            "lexeme": "1"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 34,
+            "end": 37,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
+          "variables": [
+            {
+              "@class": "VariableDeclaration",
+              "@toString": "a = 1",
+              "start": 38,
+              "end": 43,
+              "name": {
+                "start": 38,
+                "end": 39,
+                "type": "IDENTIFIER",
+                "lexeme": "a"
+              },
+              "equals": {
+                "start": 40,
+                "end": 41,
+                "type": "EQ",
+                "lexeme": "="
+              },
+              "hasInitializer": false,
+              "documentationComment": null,
+              "endToken": {
+                "start": 42,
+                "end": 43,
+                "type": "INT",
+                "lexeme": "1"
+              },
+              "firstTokenAfterCommentAndMetadata": {
+                "start": 38,
+                "end": 39,
+                "type": "IDENTIFIER",
+                "lexeme": "a"
+              },
+              "initializer": {
+                "@class": "IntegerLiteral",
+                "@toString": "1",
+                "start": 42,
+                "end": 43,
+                "literal": {
+                  "start": 42,
+                  "end": 43,
+                  "type": "INT",
+                  "lexeme": "1"
+                },
+                "value": 1,
+                "beginToken": {
+                  "start": 42,
+                  "end": 43,
+                  "type": "INT",
+                  "lexeme": "1"
+                },
+                "endToken": {
+                  "start": 42,
+                  "end": 43,
+                  "type": "INT",
+                  "lexeme": "1"
+                },
+                "immediatelyNegated": false
+              },
+              "isConst": false,
+              "isFinal": false,
+              "isLate": false
+            }
+          ],
+          "documentationComment": null,
+          "metadata": [],
+          "sortedCommentAndAnnotations": []
+        }
+      },
+      {
+        "@class": "VariableDeclarationStatement",
+        "@toString": "var b = 2;",
+        "start": 69,
+        "end": 79,
+        "semicolon": {
+          "start": 78,
+          "end": 79,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "beginToken": {
+          "start": 69,
+          "end": 72,
+          "type": "VAR",
+          "lexeme": "var"
+        },
+        "endToken": {
+          "start": 78,
+          "end": 79,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "variables": {
+          "@class": "VariableDeclarationList",
+          "@toString": "var b = 2",
+          "start": 69,
+          "end": 78,
+          "keyword": {
+            "start": 69,
+            "end": 72,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "lateKeyword": null,
+          "endToken": {
+            "start": 77,
+            "end": 78,
+            "type": "INT",
+            "lexeme": "2"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 69,
+            "end": 72,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
+          "variables": [
+            {
+              "@class": "VariableDeclaration",
+              "@toString": "b = 2",
+              "start": 73,
+              "end": 78,
+              "name": {
+                "start": 73,
+                "end": 74,
+                "type": "IDENTIFIER",
+                "lexeme": "b"
+              },
+              "equals": {
+                "start": 75,
+                "end": 76,
+                "type": "EQ",
+                "lexeme": "="
+              },
+              "hasInitializer": false,
+              "documentationComment": null,
+              "endToken": {
+                "start": 77,
+                "end": 78,
+                "type": "INT",
+                "lexeme": "2"
+              },
+              "firstTokenAfterCommentAndMetadata": {
+                "start": 73,
+                "end": 74,
+                "type": "IDENTIFIER",
+                "lexeme": "b"
+              },
+              "initializer": {
+                "@class": "IntegerLiteral",
+                "@toString": "2",
+                "start": 77,
+                "end": 78,
+                "literal": {
+                  "start": 77,
+                  "end": 78,
+                  "type": "INT",
+                  "lexeme": "2"
+                },
+                "value": 2,
+                "beginToken": {
+                  "start": 77,
+                  "end": 78,
+                  "type": "INT",
+                  "lexeme": "2"
+                },
+                "endToken": {
+                  "start": 77,
+                  "end": 78,
+                  "type": "INT",
+                  "lexeme": "2"
+                },
+                "immediatelyNegated": false
+              },
+              "isConst": false,
+              "isFinal": false,
+              "isLate": false
+            }
+          ],
+          "documentationComment": null,
+          "metadata": [],
+          "sortedCommentAndAnnotations": []
+        }
+      },
+      {
+        "@class": "FunctionDeclarationStatement",
+        "@toString": "void asd() {foo; bar;}",
+        "start": 102,
+        "end": 319,
+        "beginToken": {
+          "start": 102,
+          "end": 106,
+          "type": "VOID",
+          "lexeme": "void"
+        },
+        "endToken": {
+          "start": 318,
+          "end": 319,
+          "type": "CLOSE_CURLY_BRACKET",
+          "lexeme": "}"
+        },
+        "functionDeclaration": {
+          "@class": "FunctionDeclaration",
+          "@toString": "void asd() {foo; bar;}",
+          "start": 102,
+          "end": 319,
+          "augmentKeyword": null,
+          "externalKeyword": null,
+          "propertyKeyword": null,
+          "endToken": {
+            "start": 318,
+            "end": 319,
+            "type": "CLOSE_CURLY_BRACKET",
+            "lexeme": "}"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 102,
+            "end": 106,
+            "type": "VOID",
+            "lexeme": "void"
+          },
+          "functionExpression": {
+            "@class": "FunctionExpression",
+            "@toString": "() {foo; bar;}",
+            "start": 110,
+            "end": 319,
+            "wasFunctionTypeSupplied": false,
+            "beginToken": {
+              "start": 110,
+              "end": 111,
+              "type": "OPEN_PAREN",
+              "lexeme": "("
+            },
+            "body": {
+              "@class": "BlockFunctionBody",
+              "@toString": "{foo; bar;}",
+              "start": 113,
+              "end": 319,
+              "keyword": null,
+              "star": null,
+              "beginToken": {
+                "start": 113,
+                "end": 114,
+                "type": "OPEN_CURLY_BRACKET",
+                "lexeme": "{"
+              },
+              "block": {
+                "@class": "Block",
+                "@toString": "{foo; bar;}",
+                "start": 113,
+                "end": 319,
+                "leftBracket": {
+                  "start": 113,
+                  "end": 114,
+                  "type": "OPEN_CURLY_BRACKET",
+                  "lexeme": "{"
+                },
+                "rightBracket": {
+                  "start": 318,
+                  "end": 319,
+                  "type": "CLOSE_CURLY_BRACKET",
+                  "lexeme": "}"
+                },
+                "beginToken": {
+                  "start": 113,
+                  "end": 114,
+                  "type": "OPEN_CURLY_BRACKET",
+                  "lexeme": "{"
+                },
+                "endToken": {
+                  "start": 318,
+                  "end": 319,
+                  "type": "CLOSE_CURLY_BRACKET",
+                  "lexeme": "}"
+                },
+                "statements": [
+                  {
+                    "@class": "ExpressionStatement",
+                    "@toString": "foo;",
+                    "start": 119,
+                    "end": 123,
+                    "semicolon": {
+                      "start": 122,
+                      "end": 123,
+                      "type": "SEMICOLON",
+                      "lexeme": ";"
+                    },
+                    "beginToken": {
+                      "start": 119,
+                      "end": 122,
+                      "type": "IDENTIFIER",
+                      "lexeme": "foo"
+                    },
+                    "endToken": {
+                      "start": 122,
+                      "end": 123,
+                      "type": "SEMICOLON",
+                      "lexeme": ";"
+                    },
+                    "expression": {
+                      "@class": "SimpleIdentifier",
+                      "@toString": "foo",
+                      "start": 119,
+                      "end": 122,
+                      "token": {
+                        "start": 119,
+                        "end": 122,
+                        "type": "IDENTIFIER",
+                        "lexeme": "foo"
+                      },
+                      "ancestorCascade": null,
+                      "beginToken": {
+                        "start": 119,
+                        "end": 122,
+                        "type": "IDENTIFIER",
+                        "lexeme": "foo"
+                      },
+                      "endToken": {
+                        "start": 119,
+                        "end": 122,
+                        "type": "IDENTIFIER",
+                        "lexeme": "foo"
+                      },
+                      "isQualified": false,
+                      "isSynthetic": false,
+                      "name": "foo"
+                    },
+                    "isSynthetic": false
+                  },
+                  {
+                    "@class": "ExpressionStatement",
+                    "@toString": "bar;",
+                    "start": 224,
+                    "end": 228,
+                    "semicolon": {
+                      "start": 227,
+                      "end": 228,
+                      "type": "SEMICOLON",
+                      "lexeme": ";"
+                    },
+                    "beginToken": {
+                      "start": 224,
+                      "end": 227,
+                      "type": "IDENTIFIER",
+                      "lexeme": "bar"
+                    },
+                    "endToken": {
+                      "start": 227,
+                      "end": 228,
+                      "type": "SEMICOLON",
+                      "lexeme": ";"
+                    },
+                    "expression": {
+                      "@class": "SimpleIdentifier",
+                      "@toString": "bar",
+                      "start": 224,
+                      "end": 227,
+                      "token": {
+                        "start": 224,
+                        "end": 227,
+                        "type": "IDENTIFIER",
+                        "lexeme": "bar"
+                      },
+                      "ancestorCascade": null,
+                      "beginToken": {
+                        "start": 224,
+                        "end": 227,
+                        "type": "IDENTIFIER",
+                        "lexeme": "bar"
+                      },
+                      "endToken": {
+                        "start": 224,
+                        "end": 227,
+                        "type": "IDENTIFIER",
+                        "lexeme": "bar"
+                      },
+                      "isQualified": false,
+                      "isSynthetic": false,
+                      "name": "bar"
+                    },
+                    "isSynthetic": false
+                  }
+                ]
+              },
+              "endToken": {
+                "start": 318,
+                "end": 319,
+                "type": "CLOSE_CURLY_BRACKET",
+                "lexeme": "}"
+              },
+              "isAsynchronous": false,
+              "isGenerator": false,
+              "isSynchronous": true
+            },
+            "endToken": {
+              "start": 318,
+              "end": 319,
+              "type": "CLOSE_CURLY_BRACKET",
+              "lexeme": "}"
+            },
+            "parameters": {
+              "@class": "FormalParameterList",
+              "@toString": "()",
+              "start": 110,
+              "end": 112,
+              "leftParenthesis": {
+                "start": 110,
+                "end": 111,
+                "type": "OPEN_PAREN",
+                "lexeme": "("
+              },
+              "leftDelimiter": null,
+              "rightDelimiter": null,
+              "rightParenthesis": {
+                "start": 111,
+                "end": 112,
+                "type": "CLOSE_PAREN",
+                "lexeme": ")"
+              },
+              "beginToken": {
+                "start": 110,
+                "end": 111,
+                "type": "OPEN_PAREN",
+                "lexeme": "("
+              },
+              "endToken": {
+                "start": 111,
+                "end": 112,
+                "type": "CLOSE_PAREN",
+                "lexeme": ")"
+              },
+              "parameters": [],
+              "isSynthetic": false,
+              "length": 2,
+              "offset": 110
+            },
+            "typeParameters": null,
+            "inConstantContext": false,
+            "isAssignable": false,
+            "unParenthesized": "@seen"
+          },
+          "isGetter": false,
+          "isSetter": false,
+          "returnType": {
+            "@class": "NamedType",
+            "@toString": "void",
+            "start": 102,
+            "end": 106,
+            "name2": {
+              "start": 102,
+              "end": 106,
+              "type": "VOID",
+              "lexeme": "void"
+            },
+            "typeArguments": null,
+            "question": null,
+            "beginToken": {
+              "start": 102,
+              "end": 106,
+              "type": "VOID",
+              "lexeme": "void"
+            },
+            "endToken": {
+              "start": 102,
+              "end": 106,
+              "type": "VOID",
+              "lexeme": "void"
+            },
+            "importPrefix": null,
+            "isDeferred": false,
+            "isSynthetic": false
+          },
+          "name": {
+            "start": 107,
+            "end": 110,
+            "type": "IDENTIFIER",
+            "lexeme": "asd"
+          }
+        }
+      },
+      {
+        "@class": "VariableDeclarationStatement",
+        "@toString": "var array = <int>[1];",
+        "start": 323,
+        "end": 454,
+        "semicolon": {
+          "start": 453,
+          "end": 454,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "beginToken": {
+          "start": 323,
+          "end": 326,
+          "type": "VAR",
+          "lexeme": "var"
+        },
+        "endToken": {
+          "start": 453,
+          "end": 454,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "variables": {
+          "@class": "VariableDeclarationList",
+          "@toString": "var array = <int>[1]",
+          "start": 323,
+          "end": 453,
+          "keyword": {
+            "start": 323,
+            "end": 326,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "lateKeyword": null,
+          "endToken": {
+            "start": 452,
+            "end": 453,
+            "type": "CLOSE_SQUARE_BRACKET",
+            "lexeme": "]"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 323,
+            "end": 326,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
+          "variables": [
+            {
+              "@class": "VariableDeclaration",
+              "@toString": "array = <int>[1]",
+              "start": 327,
+              "end": 453,
+              "name": {
+                "start": 327,
+                "end": 332,
+                "type": "IDENTIFIER",
+                "lexeme": "array"
+              },
+              "equals": {
+                "start": 333,
+                "end": 334,
+                "type": "EQ",
+                "lexeme": "="
+              },
+              "hasInitializer": false,
+              "documentationComment": null,
+              "endToken": {
+                "start": 452,
+                "end": 453,
+                "type": "CLOSE_SQUARE_BRACKET",
+                "lexeme": "]"
+              },
+              "firstTokenAfterCommentAndMetadata": {
+                "start": 327,
+                "end": 332,
+                "type": "IDENTIFIER",
+                "lexeme": "array"
+              },
+              "initializer": {
+                "@class": "ListLiteral",
+                "@toString": "<int>[1]",
+                "start": 335,
+                "end": 453,
+                "leftBracket": {
+                  "start": 340,
+                  "end": 341,
+                  "type": "OPEN_SQUARE_BRACKET",
+                  "lexeme": "["
+                },
+                "rightBracket": {
+                  "start": 452,
+                  "end": 453,
+                  "type": "CLOSE_SQUARE_BRACKET",
+                  "lexeme": "]"
+                },
+                "beginToken": {
+                  "start": 335,
+                  "end": 336,
+                  "type": "LT",
+                  "lexeme": "<"
+                },
+                "elements": [
+                  {
+                    "@class": "IntegerLiteral",
+                    "@toString": "1",
+                    "start": 396,
+                    "end": 397,
+                    "literal": {
+                      "start": 396,
+                      "end": 397,
+                      "type": "INT",
+                      "lexeme": "1"
+                    },
+                    "value": 1,
+                    "beginToken": {
+                      "start": 396,
+                      "end": 397,
+                      "type": "INT",
+                      "lexeme": "1"
+                    },
+                    "endToken": {
+                      "start": 396,
+                      "end": 397,
+                      "type": "INT",
+                      "lexeme": "1"
+                    },
+                    "immediatelyNegated": false
+                  }
+                ],
+                "endToken": {
+                  "start": 452,
+                  "end": 453,
+                  "type": "CLOSE_SQUARE_BRACKET",
+                  "lexeme": "]"
+                },
+                "constKeyword": null,
+                "isConst": false,
+                "typeArguments": {
+                  "@class": "TypeArgumentList",
+                  "@toString": "<int>",
+                  "start": 335,
+                  "end": 340,
+                  "leftBracket": {
+                    "start": 335,
+                    "end": 336,
+                    "type": "LT",
+                    "lexeme": "<"
+                  },
+                  "rightBracket": {
+                    "start": 339,
+                    "end": 340,
+                    "type": "GT",
+                    "lexeme": ">"
+                  },
+                  "arguments": [
+                    {
+                      "@class": "NamedType",
+                      "@toString": "int",
+                      "start": 336,
+                      "end": 339,
+                      "name2": {
+                        "start": 336,
+                        "end": 339,
+                        "type": "IDENTIFIER",
+                        "lexeme": "int"
+                      },
+                      "typeArguments": null,
+                      "question": null,
+                      "beginToken": {
+                        "start": 336,
+                        "end": 339,
+                        "type": "IDENTIFIER",
+                        "lexeme": "int"
+                      },
+                      "endToken": {
+                        "start": 336,
+                        "end": 339,
+                        "type": "IDENTIFIER",
+                        "lexeme": "int"
+                      },
+                      "importPrefix": null,
+                      "isDeferred": false,
+                      "isSynthetic": false
+                    }
+                  ],
+                  "beginToken": {
+                    "start": 335,
+                    "end": 336,
+                    "type": "LT",
+                    "lexeme": "<"
+                  },
+                  "endToken": {
+                    "start": 339,
+                    "end": 340,
+                    "type": "GT",
+                    "lexeme": ">"
+                  },
+                  "isSynthetic": false,
+                  "length": 5,
+                  "offset": 335
+                }
+              },
+              "isConst": false,
+              "isFinal": false,
+              "isLate": false
+            }
+          ],
+          "documentationComment": null,
+          "metadata": [],
+          "sortedCommentAndAnnotations": []
+        }
+      },
+      {
+        "@class": "VariableDeclarationStatement",
+        "@toString": "var object = (a: 1);",
+        "start": 458,
+        "end": 588,
+        "semicolon": {
+          "start": 587,
+          "end": 588,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "beginToken": {
+          "start": 458,
+          "end": 461,
+          "type": "VAR",
+          "lexeme": "var"
+        },
+        "endToken": {
+          "start": 587,
+          "end": 588,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "variables": {
+          "@class": "VariableDeclarationList",
+          "@toString": "var object = (a: 1)",
+          "start": 458,
+          "end": 587,
+          "keyword": {
+            "start": 458,
+            "end": 461,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "lateKeyword": null,
+          "endToken": {
+            "start": 586,
+            "end": 587,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 458,
+            "end": 461,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
+          "variables": [
+            {
+              "@class": "VariableDeclaration",
+              "@toString": "object = (a: 1)",
+              "start": 462,
+              "end": 587,
+              "name": {
+                "start": 462,
+                "end": 468,
+                "type": "IDENTIFIER",
+                "lexeme": "object"
+              },
+              "equals": {
+                "start": 469,
+                "end": 470,
+                "type": "EQ",
+                "lexeme": "="
+              },
+              "hasInitializer": false,
+              "documentationComment": null,
+              "endToken": {
+                "start": 586,
+                "end": 587,
+                "type": "CLOSE_PAREN",
+                "lexeme": ")"
+              },
+              "firstTokenAfterCommentAndMetadata": {
+                "start": 462,
+                "end": 468,
+                "type": "IDENTIFIER",
+                "lexeme": "object"
+              },
+              "initializer": {
+                "@class": "RecordLiteral",
+                "@toString": "(a: 1)",
+                "start": 471,
+                "end": 587,
+                "constKeyword": null,
+                "leftParenthesis": {
+                  "start": 471,
+                  "end": 472,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "rightParenthesis": {
+                  "start": 586,
+                  "end": 587,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "beginToken": {
+                  "start": 471,
+                  "end": 472,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "endToken": {
+                  "start": 586,
+                  "end": 587,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "fields": [
+                  {
+                    "@class": "NamedExpression",
+                    "@toString": "a: 1",
+                    "start": 527,
+                    "end": 531,
+                    "beginToken": {
+                      "start": 527,
+                      "end": 528,
+                      "type": "IDENTIFIER",
+                      "lexeme": "a"
+                    },
+                    "endToken": {
+                      "start": 530,
+                      "end": 531,
+                      "type": "INT",
+                      "lexeme": "1"
+                    },
+                    "expression": {
+                      "@class": "IntegerLiteral",
+                      "@toString": "1",
+                      "start": 530,
+                      "end": 531,
+                      "literal": {
+                        "start": 530,
+                        "end": 531,
+                        "type": "INT",
+                        "lexeme": "1"
+                      },
+                      "value": 1,
+                      "beginToken": {
+                        "start": 530,
+                        "end": 531,
+                        "type": "INT",
+                        "lexeme": "1"
+                      },
+                      "endToken": {
+                        "start": 530,
+                        "end": 531,
+                        "type": "INT",
+                        "lexeme": "1"
+                      },
+                      "immediatelyNegated": false
+                    },
+                    "name": {
+                      "@class": "Label",
+                      "@toString": "a:",
+                      "start": 527,
+                      "end": 529,
+                      "colon": {
+                        "start": 528,
+                        "end": 529,
+                        "type": "COLON",
+                        "lexeme": ":"
+                      },
+                      "beginToken": {
+                        "start": 527,
+                        "end": 528,
+                        "type": "IDENTIFIER",
+                        "lexeme": "a"
+                      },
+                      "endToken": {
+                        "start": 528,
+                        "end": 529,
+                        "type": "COLON",
+                        "lexeme": ":"
+                      },
+                      "label": {
+                        "@class": "SimpleIdentifier",
+                        "@toString": "a",
+                        "start": 527,
+                        "end": 528,
+                        "token": {
+                          "start": 527,
+                          "end": 528,
+                          "type": "IDENTIFIER",
+                          "lexeme": "a"
+                        },
+                        "ancestorCascade": null,
+                        "beginToken": {
+                          "start": 527,
+                          "end": 528,
+                          "type": "IDENTIFIER",
+                          "lexeme": "a"
+                        },
+                        "endToken": {
+                          "start": 527,
+                          "end": 528,
+                          "type": "IDENTIFIER",
+                          "lexeme": "a"
+                        },
+                        "isQualified": false,
+                        "isSynthetic": false,
+                        "name": "a"
+                      },
+                      "isSynthetic": false,
+                      "length": 2,
+                      "offset": 527
+                    },
+                    "inConstantContext": false,
+                    "isAssignable": false,
+                    "unParenthesized": "@seen"
+                  }
+                ],
+                "isConst": false
+              },
+              "isConst": false,
+              "isFinal": false,
+              "isLate": false
+            }
+          ],
+          "documentationComment": null,
+          "metadata": [],
+          "sortedCommentAndAnnotations": []
+        }
+      }
+    ]
+  },
+  "module": null,
+  "style": null,
+  "options": null
+}

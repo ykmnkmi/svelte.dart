@@ -1,126 +1,210 @@
 {
-	"html": {
-		"start": 0,
-		"end": 70,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 70,
-				"class": "EachBlock",
-				"expression": {
-					"@class": "SimpleIdentifier",
-					"@toString": "things",
-					"start": 7,
-					"end": 13,
-					"token": {
-						"start": 7,
-						"end": 13,
-						"type": "IDENTIFIER",
-						"lexeme": "things"
-					},
-					"ancestorCascade": null,
-					"beginToken": {
-						"start": 7,
-						"end": 13,
-						"type": "IDENTIFIER",
-						"lexeme": "things"
-					},
-					"endToken": {
-						"start": 7,
-						"end": 13,
-						"type": "IDENTIFIER",
-						"lexeme": "things"
-					},
-					"isQualified": "@error { Null check operator used on a null value }",
-					"isSynthetic": false,
-					"name": "things"
-				},
-				"context": {
-					"@class": "AssignedVariablePattern",
-					"@toString": "thing",
-					"start": 17,
-					"end": 22,
-					"beginToken": {
-						"start": 17,
-						"end": 22,
-						"type": "IDENTIFIER",
-						"lexeme": "thing"
-					},
-					"endToken": {
-						"start": 17,
-						"end": 22,
-						"type": "IDENTIFIER",
-						"lexeme": "thing"
-					},
-					"name": {
-						"start": 17,
-						"end": 22,
-						"type": "IDENTIFIER",
-						"lexeme": "thing"
-					}
-				},
-				"index": null,
-				"key": {
-					"@class": "SimpleIdentifier",
-					"@toString": "thing",
-					"start": 24,
-					"end": 29,
-					"token": {
-						"start": 24,
-						"end": 29,
-						"type": "IDENTIFIER",
-						"lexeme": "thing"
-					},
-					"ancestorCascade": null,
-					"beginToken": {
-						"start": 24,
-						"end": 29,
-						"type": "IDENTIFIER",
-						"lexeme": "thing"
-					},
-					"endToken": {
-						"start": 24,
-						"end": 29,
-						"type": "IDENTIFIER",
-						"lexeme": "thing"
-					},
-					"isQualified": "@error { Null check operator used on a null value }",
-					"isSynthetic": false,
-					"name": "thing"
-				},
-				"children": [
-					{
-						"start": 33,
-						"end": 62,
-						"class": "Element",
-						"name": "div",
-						"attributes": [
-							{
-								"start": 38,
-								"end": 50,
-								"type": "Animation",
-								"name": "flip",
-								"modifiers": [],
-								"expression": null
-							}
-						],
-						"children": [
-							{
-								"start": 51,
-								"end": 56,
-								"class": "Text",
-								"raw": "flips",
-								"data": "flips"
-							}
-						]
-					}
-				],
-				"elseBlock": null
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 71,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 71,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 71,
+        "class": "EachBlock",
+        "body": {
+          "start": 31,
+          "end": 64,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 31,
+              "end": 34,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 34,
+              "end": 63,
+              "class": "RegularElement",
+              "name": "div",
+              "attributes": [
+                {
+                  "start": 39,
+                  "end": 51,
+                  "class": "AnimationDirective",
+                  "name": "flip",
+                  "expression": null
+                }
+              ],
+              "fragment": {
+                "start": 52,
+                "end": 57,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 52,
+                    "end": 57,
+                    "class": "Text",
+                    "raw": "flips",
+                    "data": "flips"
+                  }
+                ]
+              }
+            },
+            {
+              "start": 63,
+              "end": 64,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "fallback": null,
+        "expression": {
+          "@class": "SimpleIdentifier",
+          "@toString": "things",
+          "start": 7,
+          "end": 13,
+          "token": {
+            "start": 7,
+            "end": 13,
+            "type": "IDENTIFIER",
+            "lexeme": "things"
+          },
+          "ancestorCascade": null,
+          "beginToken": {
+            "start": 7,
+            "end": 13,
+            "type": "IDENTIFIER",
+            "lexeme": "things"
+          },
+          "endToken": {
+            "start": 7,
+            "end": 13,
+            "type": "IDENTIFIER",
+            "lexeme": "things"
+          },
+          "isQualified": "@error { Null check operator used on a null value }",
+          "isSynthetic": false,
+          "name": "things"
+        },
+        "context": {
+          "@class": "ObjectPattern",
+          "@toString": "thing(thing)",
+          "start": 17,
+          "end": 30,
+          "leftParenthesis": {
+            "start": 23,
+            "end": 24,
+            "type": "OPEN_PAREN",
+            "lexeme": "("
+          },
+          "rightParenthesis": {
+            "start": 29,
+            "end": 30,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "type": {
+            "@class": "NamedType",
+            "@toString": "thing",
+            "start": 17,
+            "end": 22,
+            "name2": {
+              "start": 17,
+              "end": 22,
+              "type": "IDENTIFIER",
+              "lexeme": "thing"
+            },
+            "typeArguments": null,
+            "question": null,
+            "beginToken": {
+              "start": 17,
+              "end": 22,
+              "type": "IDENTIFIER",
+              "lexeme": "thing"
+            },
+            "endToken": {
+              "start": 17,
+              "end": 22,
+              "type": "IDENTIFIER",
+              "lexeme": "thing"
+            },
+            "importPrefix": null,
+            "isDeferred": false,
+            "isSynthetic": false
+          },
+          "beginToken": {
+            "start": 17,
+            "end": 22,
+            "type": "IDENTIFIER",
+            "lexeme": "thing"
+          },
+          "endToken": {
+            "start": 29,
+            "end": 30,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "fields": [
+            {
+              "@class": "PatternField",
+              "@toString": "thing",
+              "start": 24,
+              "end": 29,
+              "name": null,
+              "pattern": {
+                "@class": "AssignedVariablePattern",
+                "@toString": "thing",
+                "start": 24,
+                "end": 29,
+                "beginToken": {
+                  "start": 24,
+                  "end": 29,
+                  "type": "IDENTIFIER",
+                  "lexeme": "thing"
+                },
+                "endToken": {
+                  "start": 24,
+                  "end": 29,
+                  "type": "IDENTIFIER",
+                  "lexeme": "thing"
+                },
+                "name": {
+                  "start": 24,
+                  "end": 29,
+                  "type": "IDENTIFIER",
+                  "lexeme": "thing"
+                }
+              },
+              "beginToken": {
+                "start": 24,
+                "end": 29,
+                "type": "IDENTIFIER",
+                "lexeme": "thing"
+              },
+              "endToken": {
+                "start": 24,
+                "end": 29,
+                "type": "IDENTIFIER",
+                "lexeme": "thing"
+              },
+              "isSynthetic": false,
+              "length": 5,
+              "offset": 24
+            }
+          ],
+          "unParenthesized": "@seen { self }"
+        },
+        "index": null,
+        "key": null
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

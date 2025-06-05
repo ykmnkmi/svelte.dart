@@ -1,35 +1,44 @@
 {
-	"html": {
-		"start": 6,
-		"end": 36,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 6,
-				"class": "Text",
-				"raw": "\n\n\t\t\t\t",
-				"data": "\n\n\t\t\t\t"
-			},
-			{
-				"start": 6,
-				"end": 36,
-				"class": "Element",
-				"name": "p",
-				"attributes": [],
-				"children": [
-					{
-						"start": 9,
-						"end": 32,
-						"class": "Text",
-						"raw": "just chillin' over here",
-						"data": "just chillin' over here"
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 40,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 40,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 10,
+        "class": "Text",
+        "raw": "\n\n        ",
+        "data": "\n\n        "
+      },
+      {
+        "start": 10,
+        "end": 40,
+        "class": "RegularElement",
+        "name": "p",
+        "attributes": [],
+        "fragment": {
+          "start": 13,
+          "end": 36,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 13,
+              "end": 36,
+              "class": "Text",
+              "raw": "just chillin' over here",
+              "data": "just chillin' over here"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

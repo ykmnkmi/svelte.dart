@@ -1,5 +1,5 @@
 <textarea>
-	<p>not actu </textar ally an element. {foo}</p>
+  <p>not actu </textar ally an element. {foo}</p>
 </textare
 
 

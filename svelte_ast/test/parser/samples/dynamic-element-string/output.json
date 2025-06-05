@@ -1,63 +1,281 @@
 {
-	"html": {
-		"start": 0,
-		"end": 101,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 44,
-				"class": "InlineElement",
-				"name": {
-					"start": 22,
-					"end": 25,
-					"class": "Text",
-					"raw": "div",
-					"data": "div"
-				},
-				"attributes": [],
-				"children": []
-			},
-			{
-				"start": 44,
-				"end": 45,
-				"class": "Text",
-				"raw": "\n",
-				"data": "\n"
-			},
-			{
-				"start": 45,
-				"end": 101,
-				"class": "InlineElement",
-				"name": {
-					"start": 67,
-					"end": 70,
-					"class": "Text",
-					"raw": "div",
-					"data": "div"
-				},
-				"attributes": [
-					{
-						"start": 72,
-						"end": 83,
-						"class": "Attribute",
-						"name": "class",
-						"values": [
-							{
-								"start": 79,
-								"end": 82,
-								"class": "Text",
-								"raw": "foo",
-								"data": "foo"
-							}
-						]
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 242,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 242,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 44,
+        "class": "SvelteElement",
+        "name": "svelte:element",
+        "attributes": [],
+        "tag": {
+          "@class": "SimpleStringLiteral",
+          "@toString": "div",
+          "start": 22,
+          "end": 25,
+          "literal": {
+            "start": 22,
+            "end": 25,
+            "type": "STRING",
+            "lexeme": "div"
+          },
+          "value": "div",
+          "beginToken": {
+            "start": 22,
+            "end": 25,
+            "type": "STRING",
+            "lexeme": "div"
+          },
+          "contentsEnd": 25,
+          "contentsOffset": 22,
+          "endToken": {
+            "start": 22,
+            "end": 25,
+            "type": "STRING",
+            "lexeme": "div"
+          },
+          "isMultiline": false,
+          "isRaw": false,
+          "isSingleQuoted": false,
+          "isSynthetic": false
+        },
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 44,
+        "end": 45,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 45,
+        "end": 89,
+        "class": "SvelteElement",
+        "name": "svelte:element",
+        "attributes": [],
+        "tag": {
+          "@class": "SimpleStringLiteral",
+          "@toString": "div",
+          "start": 67,
+          "end": 70,
+          "literal": {
+            "start": 67,
+            "end": 70,
+            "type": "STRING",
+            "lexeme": "div"
+          },
+          "value": "div",
+          "beginToken": {
+            "start": 67,
+            "end": 70,
+            "type": "STRING",
+            "lexeme": "div"
+          },
+          "contentsEnd": 70,
+          "contentsOffset": 67,
+          "endToken": {
+            "start": 67,
+            "end": 70,
+            "type": "STRING",
+            "lexeme": "div"
+          },
+          "isMultiline": false,
+          "isRaw": false,
+          "isSingleQuoted": false,
+          "isSynthetic": false
+        },
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 89,
+        "end": 90,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 90,
+        "end": 136,
+        "class": "SvelteElement",
+        "name": "svelte:element",
+        "attributes": [],
+        "tag": {
+          "@class": "SimpleStringLiteral",
+          "@toString": "\"div\"",
+          "start": 112,
+          "end": 117,
+          "literal": {
+            "start": 112,
+            "end": 117,
+            "type": "STRING",
+            "lexeme": "\"div\""
+          },
+          "value": "div",
+          "beginToken": {
+            "start": 112,
+            "end": 117,
+            "type": "STRING",
+            "lexeme": "\"div\""
+          },
+          "contentsEnd": 116,
+          "contentsOffset": 113,
+          "endToken": {
+            "start": 112,
+            "end": 117,
+            "type": "STRING",
+            "lexeme": "\"div\""
+          },
+          "isMultiline": false,
+          "isRaw": false,
+          "isSingleQuoted": false,
+          "isSynthetic": false
+        },
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 136,
+        "end": 137,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 137,
+        "end": 183,
+        "class": "SvelteElement",
+        "name": "svelte:element",
+        "attributes": [],
+        "tag": {
+          "@class": "SimpleStringLiteral",
+          "@toString": "'div'",
+          "start": 159,
+          "end": 164,
+          "literal": {
+            "start": 159,
+            "end": 164,
+            "type": "STRING",
+            "lexeme": "'div'"
+          },
+          "value": "div",
+          "beginToken": {
+            "start": 159,
+            "end": 164,
+            "type": "STRING",
+            "lexeme": "'div'"
+          },
+          "contentsEnd": 163,
+          "contentsOffset": 160,
+          "endToken": {
+            "start": 159,
+            "end": 164,
+            "type": "STRING",
+            "lexeme": "'div'"
+          },
+          "isMultiline": false,
+          "isRaw": false,
+          "isSingleQuoted": true,
+          "isSynthetic": false
+        },
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 183,
+        "end": 184,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 184,
+        "end": 242,
+        "class": "SvelteElement",
+        "name": "svelte:element",
+        "attributes": [
+          {
+            "start": 213,
+            "end": 224,
+            "class": "Attribute",
+            "name": "class",
+            "value": [
+              {
+                "start": 220,
+                "end": 223,
+                "class": "Text",
+                "raw": "foo",
+                "data": "foo"
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "tag": {
+          "@class": "SimpleStringLiteral",
+          "@toString": "\"div\"",
+          "start": 206,
+          "end": 211,
+          "literal": {
+            "start": 206,
+            "end": 211,
+            "type": "STRING",
+            "lexeme": "\"div\""
+          },
+          "value": "div",
+          "beginToken": {
+            "start": 206,
+            "end": 211,
+            "type": "STRING",
+            "lexeme": "\"div\""
+          },
+          "contentsEnd": 210,
+          "contentsOffset": 207,
+          "endToken": {
+            "start": 206,
+            "end": 211,
+            "type": "STRING",
+            "lexeme": "\"div\""
+          },
+          "isMultiline": false,
+          "isRaw": false,
+          "isSingleQuoted": false,
+          "isSynthetic": false
+        },
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

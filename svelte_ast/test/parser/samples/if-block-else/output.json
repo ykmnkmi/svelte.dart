@@ -1,89 +1,93 @@
 {
-	"html": {
-		"start": 0,
-		"end": 51,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 51,
-				"class": "IfBlock",
-				"expression": {
-					"@class": "SimpleIdentifier",
-					"@toString": "foo",
-					"start": 5,
-					"end": 8,
-					"token": {
-						"start": 5,
-						"end": 8,
-						"type": "IDENTIFIER",
-						"lexeme": "foo"
-					},
-					"ancestorCascade": null,
-					"beginToken": {
-						"start": 5,
-						"end": 8,
-						"type": "IDENTIFIER",
-						"lexeme": "foo"
-					},
-					"endToken": {
-						"start": 5,
-						"end": 8,
-						"type": "IDENTIFIER",
-						"lexeme": "foo"
-					},
-					"isQualified": "@error { Null check operator used on a null value }",
-					"isSynthetic": false,
-					"name": "foo"
-				},
-				"casePattern": null,
-				"whenExpression": null,
-				"children": [
-					{
-						"start": 11,
-						"end": 21,
-						"class": "Element",
-						"name": "p",
-						"attributes": [],
-						"children": [
-							{
-								"start": 14,
-								"end": 17,
-								"class": "Text",
-								"raw": "foo",
-								"data": "foo"
-							}
-						]
-					}
-				],
-				"elseIf": false,
-				"elseBlock": {
-					"start": 22,
-					"end": 46,
-					"class": "ElseBlock",
-					"children": [
-						{
-							"start": 31,
-							"end": 45,
-							"class": "Element",
-							"name": "p",
-							"attributes": [],
-							"children": [
-								{
-									"start": 34,
-									"end": 41,
-									"class": "Text",
-									"raw": "not foo",
-									"data": "not foo"
-								}
-							]
-						}
-					]
-				}
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 53,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 53,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 53,
+        "class": "IfBlock",
+        "elseIf": false,
+        "test": {
+          "@class": "SimpleIdentifier",
+          "@toString": "foo",
+          "start": 5,
+          "end": 8,
+          "token": {
+            "start": 5,
+            "end": 8,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "ancestorCascade": null,
+          "beginToken": {
+            "start": 5,
+            "end": 8,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "endToken": {
+            "start": 5,
+            "end": 8,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "isQualified": "@error { Null check operator used on a null value }",
+          "isSynthetic": false,
+          "name": "foo"
+        },
+        "consequent": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 9,
+              "end": 12,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 12,
+              "end": 22,
+              "class": "RegularElement",
+              "name": "p",
+              "attributes": [],
+              "fragment": {
+                "start": 15,
+                "end": 18,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 15,
+                    "end": 18,
+                    "class": "Text",
+                    "raw": "foo",
+                    "data": "foo"
+                  }
+                ]
+              }
+            },
+            {
+              "start": 22,
+              "end": 23,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "alternate": null
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

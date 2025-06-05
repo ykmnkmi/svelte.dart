@@ -1,22 +1,22 @@
 {
-	"html": {
-		"start": 0,
-		"end": 30,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 30,
-				"class": "CommentTag",
-				"data": " svelte-ignore foo bar ",
-				"ignores": [
-					"foo",
-					"bar"
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 31,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 31,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 31,
+        "class": "Comment",
+        "data": " svelte-ignore foo, bar "
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

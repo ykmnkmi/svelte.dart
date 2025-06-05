@@ -1,7 +1,0 @@
-{
-	"code": "unclosed-style",
-	"message": "<style> must have a closing tag",
-	"line": 3,
-	"column": 22,
-	"offset": 31
-}

@@ -1,0 +1,168 @@
+{
+  "start": 0,
+  "end": 127,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 127,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 67,
+        "class": "RegularElement",
+        "name": "template",
+        "attributes": [
+          {
+            "start": 10,
+            "end": 31,
+            "class": "Attribute",
+            "name": "shadowrootmode",
+            "value": [
+              {
+                "start": 26,
+                "end": 30,
+                "class": "Text",
+                "raw": "open",
+                "data": "open"
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": 32,
+          "end": 56,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 32,
+              "end": 35,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 35,
+              "end": 55,
+              "class": "RegularElement",
+              "name": "p",
+              "attributes": [],
+              "fragment": {
+                "start": 38,
+                "end": 51,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 38,
+                    "end": 51,
+                    "class": "RegularElement",
+                    "name": "slot",
+                    "attributes": [],
+                    "fragment": {
+                      "start": -1,
+                      "end": -1,
+                      "class": "Fragment",
+                      "children": []
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "start": 55,
+              "end": 56,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        }
+      },
+      {
+        "start": 67,
+        "end": 68,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 68,
+        "end": 113,
+        "class": "RegularElement",
+        "name": "template",
+        "attributes": [],
+        "fragment": {
+          "start": 78,
+          "end": 102,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 78,
+              "end": 81,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 81,
+              "end": 101,
+              "class": "RegularElement",
+              "name": "p",
+              "attributes": [],
+              "fragment": {
+                "start": 84,
+                "end": 97,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 84,
+                    "end": 97,
+                    "class": "SlotElement",
+                    "attributes": [],
+                    "fragment": {
+                      "start": -1,
+                      "end": -1,
+                      "class": "Fragment",
+                      "children": []
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "start": 101,
+              "end": 102,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        }
+      },
+      {
+        "start": 113,
+        "end": 114,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 114,
+        "end": 127,
+        "class": "SlotElement",
+        "attributes": [],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
+}

@@ -1,29 +1,38 @@
 {
-	"html": {
-		"start": 0,
-		"end": 23,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 23,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 5,
-						"end": 16,
-						"type": "StyleDirective",
-						"name": "color",
-						"modifiers": [],
-						"values": []
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 23,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 23,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 23,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 16,
+            "class": "StyleDirective",
+            "name": "color",
+            "value": null,
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

@@ -1,28 +1,38 @@
 {
-	"html": {
-		"start": 0,
-		"end": 15,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 15,
-				"class": "Element",
-				"name": "!doctype",
-				"attributes": [
-					{
-						"start": 10,
-						"end": 14,
-						"class": "Attribute",
-						"name": "html",
-						"values": []
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 15,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 15,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 15,
+        "class": "RegularElement",
+        "name": "!doctype",
+        "attributes": [
+          {
+            "start": 10,
+            "end": 14,
+            "class": "Attribute",
+            "name": "html",
+            "value": null,
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

@@ -1,7 +1,0 @@
-{
-	"code": "unclosed-script",
-	"message": "<script> must have a closing tag",
-	"line": 3,
-	"column": 22,
-	"offset": 32
-}

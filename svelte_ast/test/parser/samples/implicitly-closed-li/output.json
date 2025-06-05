@@ -1,76 +1,100 @@
 {
-	"html": {
-		"start": 0,
-		"end": 31,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 31,
-				"class": "Element",
-				"name": "ul",
-				"attributes": [],
-				"children": [
-					{
-						"start": 4,
-						"end": 6,
-						"class": "Text",
-						"raw": "\n\t",
-						"data": "\n\t"
-					},
-					{
-						"start": 6,
-						"end": 13,
-						"class": "Element",
-						"name": "li",
-						"attributes": [],
-						"children": [
-							{
-								"start": 10,
-								"end": 13,
-								"class": "Text",
-								"raw": "a\n\t",
-								"data": "a\n\t"
-							}
-						]
-					},
-					{
-						"start": 13,
-						"end": 20,
-						"class": "Element",
-						"name": "li",
-						"attributes": [],
-						"children": [
-							{
-								"start": 17,
-								"end": 20,
-								"class": "Text",
-								"raw": "b\n\t",
-								"data": "b\n\t"
-							}
-						]
-					},
-					{
-						"start": 20,
-						"end": 26,
-						"class": "Element",
-						"name": "li",
-						"attributes": [],
-						"children": [
-							{
-								"start": 24,
-								"end": 26,
-								"class": "Text",
-								"raw": "c\n",
-								"data": "c\n"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 34,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 34,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 34,
+        "class": "RegularElement",
+        "name": "ul",
+        "attributes": [],
+        "fragment": {
+          "start": 4,
+          "end": 29,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 4,
+              "end": 7,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 7,
+              "end": 15,
+              "class": "RegularElement",
+              "name": "li",
+              "attributes": [],
+              "fragment": {
+                "start": 11,
+                "end": 15,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 11,
+                    "end": 15,
+                    "class": "Text",
+                    "raw": "a\n  ",
+                    "data": "a\n  "
+                  }
+                ]
+              }
+            },
+            {
+              "start": 15,
+              "end": 23,
+              "class": "RegularElement",
+              "name": "li",
+              "attributes": [],
+              "fragment": {
+                "start": 19,
+                "end": 23,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 19,
+                    "end": 23,
+                    "class": "Text",
+                    "raw": "b\n  ",
+                    "data": "b\n  "
+                  }
+                ]
+              }
+            },
+            {
+              "start": 23,
+              "end": 29,
+              "class": "RegularElement",
+              "name": "li",
+              "attributes": [],
+              "fragment": {
+                "start": 27,
+                "end": 29,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 27,
+                    "end": 29,
+                    "class": "Text",
+                    "raw": "c\n",
+                    "data": "c\n"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

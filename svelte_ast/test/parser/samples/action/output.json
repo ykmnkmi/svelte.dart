@@ -1,29 +1,37 @@
 {
-	"html": {
-		"start": 0,
-		"end": 21,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 21,
-				"class": "Element",
-				"name": "input",
-				"attributes": [
-					{
-						"start": 7,
-						"end": 20,
-						"type": "Action",
-						"name": "autofocus",
-						"modifiers": [],
-						"expression": null
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 21,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 21,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 21,
+        "class": "RegularElement",
+        "name": "input",
+        "attributes": [
+          {
+            "start": 7,
+            "end": 20,
+            "class": "UseDirective",
+            "name": "autofocus",
+            "expression": null
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

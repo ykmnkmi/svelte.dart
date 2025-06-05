@@ -1,68 +1,77 @@
 {
-	"html": {
-		"start": 0,
-		"end": 22,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 22,
-				"class": "Element",
-				"name": "h1",
-				"attributes": [],
-				"children": [
-					{
-						"start": 4,
-						"end": 10,
-						"class": "Text",
-						"raw": "hello ",
-						"data": "hello "
-					},
-					{
-						"start": 10,
-						"end": 16,
-						"class": "MustacheTag",
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "name",
-							"start": 11,
-							"end": 15,
-							"token": {
-								"start": 11,
-								"end": 15,
-								"type": "IDENTIFIER",
-								"lexeme": "name"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 11,
-								"end": 15,
-								"type": "IDENTIFIER",
-								"lexeme": "name"
-							},
-							"endToken": {
-								"start": 11,
-								"end": 15,
-								"type": "IDENTIFIER",
-								"lexeme": "name"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "name"
-						}
-					},
-					{
-						"start": 16,
-						"end": 17,
-						"class": "Text",
-						"raw": "!",
-						"data": "!"
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 22,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 22,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 22,
+        "class": "RegularElement",
+        "name": "h1",
+        "attributes": [],
+        "fragment": {
+          "start": 4,
+          "end": 17,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 4,
+              "end": 10,
+              "class": "Text",
+              "raw": "hello ",
+              "data": "hello "
+            },
+            {
+              "start": 10,
+              "end": 16,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleIdentifier",
+                "@toString": "name",
+                "start": 11,
+                "end": 15,
+                "token": {
+                  "start": 11,
+                  "end": 15,
+                  "type": "IDENTIFIER",
+                  "lexeme": "name"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 11,
+                  "end": 15,
+                  "type": "IDENTIFIER",
+                  "lexeme": "name"
+                },
+                "endToken": {
+                  "start": 11,
+                  "end": 15,
+                  "type": "IDENTIFIER",
+                  "lexeme": "name"
+                },
+                "isQualified": "@error { Null check operator used on a null value }",
+                "isSynthetic": false,
+                "name": "name"
+              }
+            },
+            {
+              "start": 16,
+              "end": 17,
+              "class": "Text",
+              "raw": "!",
+              "data": "!"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

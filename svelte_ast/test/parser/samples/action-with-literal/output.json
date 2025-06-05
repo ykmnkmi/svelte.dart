@@ -1,59 +1,67 @@
 {
-	"html": {
-		"start": 0,
-		"end": 37,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 37,
-				"class": "Element",
-				"name": "input",
-				"attributes": [
-					{
-						"start": 7,
-						"end": 36,
-						"type": "Action",
-						"name": "tooltip",
-						"modifiers": [],
-						"expression": {
-							"@class": "SimpleStringLiteral",
-							"@toString": "'tooltip msg'",
-							"start": 21,
-							"end": 34,
-							"literal": {
-								"start": 21,
-								"end": 34,
-								"type": "STRING",
-								"lexeme": "'tooltip msg'"
-							},
-							"value": "tooltip msg",
-							"beginToken": {
-								"start": 21,
-								"end": 34,
-								"type": "STRING",
-								"lexeme": "'tooltip msg'"
-							},
-							"contentsEnd": 33,
-							"contentsOffset": 22,
-							"endToken": {
-								"start": 21,
-								"end": 34,
-								"type": "STRING",
-								"lexeme": "'tooltip msg'"
-							},
-							"isMultiline": false,
-							"isRaw": false,
-							"isSingleQuoted": true,
-							"isSynthetic": false
-						}
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 37,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 37,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 37,
+        "class": "RegularElement",
+        "name": "input",
+        "attributes": [
+          {
+            "start": 7,
+            "end": 36,
+            "class": "UseDirective",
+            "name": "tooltip",
+            "expression": {
+              "@class": "SimpleStringLiteral",
+              "@toString": "'tooltip msg'",
+              "start": 21,
+              "end": 34,
+              "literal": {
+                "start": 21,
+                "end": 34,
+                "type": "STRING",
+                "lexeme": "'tooltip msg'"
+              },
+              "value": "tooltip msg",
+              "beginToken": {
+                "start": 21,
+                "end": 34,
+                "type": "STRING",
+                "lexeme": "'tooltip msg'"
+              },
+              "contentsEnd": 33,
+              "contentsOffset": 22,
+              "endToken": {
+                "start": 21,
+                "end": 34,
+                "type": "STRING",
+                "lexeme": "'tooltip msg'"
+              },
+              "isMultiline": false,
+              "isRaw": false,
+              "isSingleQuoted": true,
+              "isSynthetic": false
+            }
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

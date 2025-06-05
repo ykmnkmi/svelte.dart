@@ -1,62 +1,70 @@
 {
-	"html": {
-		"start": 0,
-		"end": 11,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 11,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 5,
-						"end": 9,
-						"class": "Attribute",
-						"name": "id",
-						"values": [
-							{
-								"start": 6,
-								"end": 8,
-								"class": "AttributeShorthand",
-								"expression": {
-									"@class": "SimpleIdentifier",
-									"@toString": "id",
-									"start": 6,
-									"end": 8,
-									"token": {
-										"start": 6,
-										"end": 8,
-										"type": "IDENTIFIER",
-										"lexeme": "id"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 6,
-										"end": 8,
-										"type": "IDENTIFIER",
-										"lexeme": "id"
-									},
-									"endToken": {
-										"start": 6,
-										"end": 8,
-										"type": "IDENTIFIER",
-										"lexeme": "id"
-									},
-									"isQualified": "@error { Null check operator used on a null value }",
-									"isSynthetic": false,
-									"name": "id"
-								}
-							}
-						]
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 16,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 16,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 16,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 9,
+            "class": "Attribute",
+            "name": "id",
+            "value": {
+              "start": 6,
+              "end": 8,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleIdentifier",
+                "@toString": "id",
+                "start": 6,
+                "end": 8,
+                "token": {
+                  "start": 6,
+                  "end": 8,
+                  "type": "IDENTIFIER",
+                  "lexeme": "id"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 6,
+                  "end": 8,
+                  "type": "IDENTIFIER",
+                  "lexeme": "id"
+                },
+                "endToken": {
+                  "start": 6,
+                  "end": 8,
+                  "type": "IDENTIFIER",
+                  "lexeme": "id"
+                },
+                "isQualified": "@error { Null check operator used on a null value }",
+                "isSynthetic": false,
+                "name": "id"
+              }
+            },
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

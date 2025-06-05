@@ -1,0 +1,185 @@
+{
+  "start": 0,
+  "end": 37,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 37,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 36,
+        "class": "RegularElement",
+        "name": "h1",
+        "attributes": [],
+        "fragment": {
+          "start": 4,
+          "end": 31,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 4,
+              "end": 31,
+              "class": "Text",
+              "raw": "\n  Semicolon inside quotes\n",
+              "data": "\n  Semicolon inside quotes\n"
+            }
+          ]
+        }
+      },
+      {
+        "start": 36,
+        "end": 37,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": {
+    "start": 37,
+    "end": 213,
+    "class": "Style",
+    "attributes": [],
+    "content": {
+      "start": 44,
+      "end": 205,
+      "class": "StyleBody",
+      "content": "\n  @import url(\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap\");\n  h1 {\n    font-weight: bold;\n    background: url(\"whatever\");\n  }\n"
+    },
+    "children": [
+      {
+        "@class": "ImportDirective",
+        "@toString": "Instance of 'ImportDirective'",
+        "start": 4,
+        "end": 92,
+        "import": "\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap\"",
+        "mediaQueries": []
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 96,
+        "end": 98,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 96,
+          "end": 98,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 96,
+              "end": 98,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 96,
+                  "end": 98,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 96,
+                    "end": 98
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 1
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 99,
+          "end": 160,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 105,
+              "end": 122,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 118,
+                "end": 122,
+                "expressions": [
+                  {
+                    "@class": "LiteralTerm",
+                    "@toString": "Instance of 'LiteralTerm'",
+                    "start": 118,
+                    "end": 122,
+                    "text": "bold"
+                  }
+                ]
+              },
+              "dartStyle": {
+                "@class": "FontExpression",
+                "@toString": "Instance of 'FontExpression'",
+                "start": 118,
+                "end": 122
+              },
+              "important": false,
+              "isIE7": false,
+              "property": "font-weight",
+              "hasDartStyle": true,
+              "span": {
+                "start": 105,
+                "end": 122,
+                "lexeme": "font-weight: bold"
+              }
+            },
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 128,
+              "end": 155,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 140,
+                "end": 143,
+                "expressions": [
+                  {
+                    "@class": "UriTerm",
+                    "@toString": "Instance of 'UriTerm'",
+                    "start": 144,
+                    "end": 155
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 128,
+                "end": 155,
+                "lexeme": "background: url(\"whatever\")"
+              }
+            }
+          ],
+          "span": {
+            "start": 99,
+            "end": 160,
+            "lexeme": "{\n    font-weight: bold;\n    background: url(\"whatever\");\n  }"
+          }
+        }
+      }
+    ]
+  },
+  "options": null
+}

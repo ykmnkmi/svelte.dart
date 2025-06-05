@@ -1,7 +1,0 @@
-{
-	"code": "parse-error",
-	"message": "Expected an identifier.",
-	"line": 1,
-	"column": 25,
-	"offset": 25
-}

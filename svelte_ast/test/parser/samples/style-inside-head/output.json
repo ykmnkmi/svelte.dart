@@ -1,37 +1,51 @@
 {
-	"html": {
-		"start": 0,
-		"end": 42,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 42,
-				"class": "Head",
-				"name": "svelte:head",
-				"attributes": [],
-				"children": [
-					{
-						"start": 13,
-						"end": 28,
-						"class": "Element",
-						"name": "style",
-						"attributes": [],
-						"children": [
-							{
-								"start": 20,
-								"end": 20,
-								"class": "Text",
-								"raw": "",
-								"data": ""
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 42,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 42,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 42,
+        "class": "SvelteHead",
+        "name": "svelte:head",
+        "attributes": [],
+        "fragment": {
+          "start": 13,
+          "end": 28,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 13,
+              "end": 28,
+              "class": "RegularElement",
+              "name": "style",
+              "attributes": [],
+              "fragment": {
+                "start": -1,
+                "end": -1,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 20,
+                    "end": 20,
+                    "class": "Text",
+                    "raw": "",
+                    "data": ""
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

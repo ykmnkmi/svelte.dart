@@ -1,19 +1,22 @@
 {
-	"html": {
-		"start": 0,
-		"end": 18,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 18,
-				"class": "CommentTag",
-				"data": " a comment ",
-				"ignores": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 18,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 18,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 18,
+        "class": "Comment",
+        "data": " a comment "
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

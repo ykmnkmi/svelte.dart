@@ -1,28 +1,37 @@
 {
-	"html": {
-		"start": 0,
-		"end": 19,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 19,
-				"class": "Element",
-				"name": "span",
-				"attributes": [],
-				"children": [
-					{
-						"start": 6,
-						"end": 12,
-						"class": "Text",
-						"raw": "&nbsp;",
-						"data": " "
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 19,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 19,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 19,
+        "class": "RegularElement",
+        "name": "span",
+        "attributes": [],
+        "fragment": {
+          "start": 6,
+          "end": 12,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 6,
+              "end": 12,
+              "class": "Text",
+              "raw": "&nbsp;",
+              "data": " "
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

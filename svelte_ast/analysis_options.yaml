@@ -1,6 +1,8 @@
 include: package:lints/recommended.yaml
 
 analyzer:
+  exclude:
+    - experiments/
   language:
     strict-casts: true
     strict-inference: true

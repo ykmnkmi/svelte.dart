@@ -1,67 +1,77 @@
 {
-	"html": {
-		"start": 0,
-		"end": 18,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 18,
-				"class": "Element",
-				"name": "input",
-				"attributes": [
-					{
-						"start": 7,
-						"end": 15,
-						"class": "Attribute",
-						"name": "foo",
-						"values": [
-							{
-								"start": 11,
-								"end": 12,
-								"class": "Text",
-								"raw": "a",
-								"data": "a"
-							},
-							{
-								"start": 12,
-								"end": 15,
-								"class": "MustacheTag",
-								"expression": {
-									"@class": "IntegerLiteral",
-									"@toString": "1",
-									"start": 13,
-									"end": 14,
-									"literal": {
-										"start": 13,
-										"end": 14,
-										"type": "INT",
-										"lexeme": "1"
-									},
-									"value": 1,
-									"beginToken": {
-										"start": 13,
-										"end": 14,
-										"type": "INT",
-										"lexeme": "1"
-									},
-									"endToken": {
-										"start": 13,
-										"end": 14,
-										"type": "INT",
-										"lexeme": "1"
-									},
-									"immediatelyNegated": "@error { Null check operator used on a null value }"
-								}
-							}
-						]
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 18,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 18,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 18,
+        "class": "RegularElement",
+        "name": "input",
+        "attributes": [
+          {
+            "start": 7,
+            "end": 15,
+            "class": "Attribute",
+            "name": "foo",
+            "value": [
+              {
+                "start": 11,
+                "end": 12,
+                "class": "Text",
+                "raw": "a",
+                "data": "a"
+              },
+              {
+                "start": 12,
+                "end": 15,
+                "class": "ExpressionTag",
+                "expression": {
+                  "@class": "IntegerLiteral",
+                  "@toString": "1",
+                  "start": 13,
+                  "end": 14,
+                  "literal": {
+                    "start": 13,
+                    "end": 14,
+                    "type": "INT",
+                    "lexeme": "1"
+                  },
+                  "value": 1,
+                  "beginToken": {
+                    "start": 13,
+                    "end": 14,
+                    "type": "INT",
+                    "lexeme": "1"
+                  },
+                  "endToken": {
+                    "start": 13,
+                    "end": 14,
+                    "type": "INT",
+                    "lexeme": "1"
+                  },
+                  "immediatelyNegated": "@error { Null check operator used on a null value }"
+                }
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

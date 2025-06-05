@@ -1,131 +1,141 @@
 {
-	"html": {
-		"start": 0,
-		"end": 14,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 14,
-				"class": "Element",
-				"name": "div",
-				"attributes": [],
-				"children": [
-					{
-						"start": 5,
-						"end": 8,
-						"class": "Text",
-						"raw": "foo",
-						"data": "foo"
-					}
-				]
-			},
-			{
-				"start": 14,
-				"end": 16,
-				"class": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
-			}
-		]
-	},
-	"style": {
-		"start": 16,
-		"end": 66,
-		"class": "Style",
-		"content": {
-			"start": 23,
-			"end": 48,
-			"data": "\n\tdiv {\n\t\tcolor: red;\n\t}\n"
-		},
-		"attributes": [],
-		"topLevels": [
-			{
-				"@class": "RuleSet",
-				"@toString": "Instance of 'RuleSet'",
-				"start": 2,
-				"end": 5,
-				"selectorGroup": {
-					"@class": "SelectorGroup",
-					"@toString": "Instance of 'SelectorGroup'",
-					"start": 2,
-					"end": 5,
-					"selectors": [
-						{
-							"@class": "Selector",
-							"@toString": "Instance of 'Selector'",
-							"start": 2,
-							"end": 5,
-							"simpleSelectorSequences": [
-								{
-									"@class": "SimpleSelectorSequence",
-									"@toString": "div",
-									"start": 2,
-									"end": 5,
-									"combinator": 513,
-									"simpleSelector": {
-										"@class": "ElementSelector",
-										"@toString": "div",
-										"start": 2,
-										"end": 5
-									},
-									"isCombinatorNone": true,
-									"isCombinatorPlus": false,
-									"isCombinatorGreater": false,
-									"isCombinatorTilde": false,
-									"isCombinatorDescendant": false
-								}
-							],
-							"length": 1
-						}
-					]
-				},
-				"declarationGroup": {
-					"@class": "DeclarationGroup",
-					"@toString": "Instance of 'DeclarationGroup'",
-					"start": 6,
-					"end": 24,
-					"declarations": [
-						{
-							"@class": "Declaration",
-							"@toString": "Instance of 'Declaration'",
-							"start": 10,
-							"end": 20,
-							"expression": {
-								"@class": "Expressions",
-								"@toString": "Instance of 'Expressions'",
-								"start": 17,
-								"end": 20,
-								"expressions": [
-									{
-										"@class": "HexColorTerm",
-										"@toString": "Instance of 'HexColorTerm'",
-										"start": 17,
-										"end": 20
-									}
-								]
-							},
-							"dartStyle": null,
-							"important": false,
-							"isIE7": false,
-							"property": "color",
-							"hasDartStyle": false,
-							"span": {
-								"start": 10,
-								"end": 20,
-								"lexeme": "color: red"
-							}
-						}
-					],
-					"span": {
-						"start": 6,
-						"end": 24,
-						"lexeme": "{\n\t\tcolor: red;\n\t}"
-					}
-				}
-			}
-		]
-	},
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 16,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 16,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 14,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [],
+        "fragment": {
+          "start": 5,
+          "end": 8,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 5,
+              "end": 8,
+              "class": "Text",
+              "raw": "foo",
+              "data": "foo"
+            }
+          ]
+        }
+      },
+      {
+        "start": 14,
+        "end": 16,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": {
+    "start": 16,
+    "end": 65,
+    "class": "Style",
+    "attributes": [],
+    "content": {
+      "start": 23,
+      "end": 52,
+      "class": "StyleBody",
+      "content": "\n  div {\n    color: red;\n  }\n"
+    },
+    "children": [
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 3,
+        "end": 6,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 3,
+          "end": 6,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 3,
+              "end": 6,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "div",
+                  "start": 3,
+                  "end": 6,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "div",
+                    "start": 3,
+                    "end": 6
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 1
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 7,
+          "end": 28,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 13,
+              "end": 23,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 20,
+                "end": 23,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 20,
+                    "end": 23
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "color",
+              "hasDartStyle": false,
+              "span": {
+                "start": 13,
+                "end": 23,
+                "lexeme": "color: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 7,
+            "end": 28,
+            "lexeme": "{\n    color: red;\n  }"
+          }
+        }
+      }
+    ]
+  },
+  "options": null
 }

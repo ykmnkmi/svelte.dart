@@ -1,28 +1,38 @@
 {
-	"html": {
-		"start": 0,
-		"end": 30,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 30,
-				"class": "Element",
-				"name": "textarea",
-				"attributes": [
-					{
-						"start": 10,
-						"end": 18,
-						"class": "Attribute",
-						"name": "readonly",
-						"values": []
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 30,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 30,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 30,
+        "class": "RegularElement",
+        "name": "textarea",
+        "attributes": [
+          {
+            "start": 10,
+            "end": 18,
+            "class": "Attribute",
+            "name": "readonly",
+            "value": null,
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

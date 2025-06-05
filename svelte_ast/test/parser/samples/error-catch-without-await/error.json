@@ -1,7 +1,0 @@
-{
-	"code": "invalid-catch-placement",
-	"message": "Cannot have an {:catch} block outside an {#await ...} block",
-	"line": 1,
-	"column": 7,
-	"offset": 7
-}

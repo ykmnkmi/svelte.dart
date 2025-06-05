@@ -1,42 +1,47 @@
 {
-	"html": {
-		"start": 45,
-		"end": 56,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 43,
-				"end": 45,
-				"class": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
-			},
-			{
-				"start": 45,
-				"end": 56,
-				"class": "Element",
-				"name": "div",
-				"attributes": [],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": {
-		"start": 0,
-		"end": 43,
-		"class": "Script",
-		"context": "default",
-		"content": {
-			"start": 8,
-			"end": 34,
-			"data": "\n\t// TODO write some code\n"
-		},
-		"body": {
-			"directives": [],
-			"externals": [],
-			"body": []
-		}
-	},
-	"module": null
+  "start": 44,
+  "end": 57,
+  "class": "Root",
+  "fragment": {
+    "start": 44,
+    "end": 57,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 44,
+        "end": 46,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 46,
+        "end": 57,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 44,
+    "class": "InstanceScript",
+    "content": {
+      "start": 8,
+      "end": 35,
+      "class": "ScriptContent",
+      "content": "\n  // TODO write some code\n"
+    },
+    "body": []
+  },
+  "module": null,
+  "style": null,
+  "options": null
 }

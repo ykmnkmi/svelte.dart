@@ -1,0 +1,864 @@
+{
+  "start": 47,
+  "end": 160,
+  "class": "Root",
+  "fragment": {
+    "start": 47,
+    "end": 160,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 47,
+        "end": 49,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 49,
+        "end": 160,
+        "class": "RegularElement",
+        "name": "button",
+        "attributes": [
+          {
+            "start": 59,
+            "end": 134,
+            "class": "OnDirective",
+            "name": "click",
+            "expression": {
+              "@class": "FunctionExpression",
+              "@toString": "(MouseEvent e) {int next = count + 1; count = next;}",
+              "start": 69,
+              "end": 133,
+              "wasFunctionTypeSupplied": false,
+              "beginToken": {
+                "start": 69,
+                "end": 70,
+                "type": "OPEN_PAREN",
+                "lexeme": "("
+              },
+              "body": {
+                "@class": "BlockFunctionBody",
+                "@toString": "{int next = count + 1; count = next;}",
+                "start": 84,
+                "end": 133,
+                "keyword": null,
+                "star": null,
+                "beginToken": {
+                  "start": 84,
+                  "end": 85,
+                  "type": "OPEN_CURLY_BRACKET",
+                  "lexeme": "{"
+                },
+                "block": {
+                  "@class": "Block",
+                  "@toString": "{int next = count + 1; count = next;}",
+                  "start": 84,
+                  "end": 133,
+                  "leftBracket": {
+                    "start": 84,
+                    "end": 85,
+                    "type": "OPEN_CURLY_BRACKET",
+                    "lexeme": "{"
+                  },
+                  "rightBracket": {
+                    "start": 132,
+                    "end": 133,
+                    "type": "CLOSE_CURLY_BRACKET",
+                    "lexeme": "}"
+                  },
+                  "beginToken": {
+                    "start": 84,
+                    "end": 85,
+                    "type": "OPEN_CURLY_BRACKET",
+                    "lexeme": "{"
+                  },
+                  "endToken": {
+                    "start": 132,
+                    "end": 133,
+                    "type": "CLOSE_CURLY_BRACKET",
+                    "lexeme": "}"
+                  },
+                  "statements": [
+                    {
+                      "@class": "VariableDeclarationStatement",
+                      "@toString": "int next = count + 1;",
+                      "start": 90,
+                      "end": 111,
+                      "semicolon": {
+                        "start": 110,
+                        "end": 111,
+                        "type": "SEMICOLON",
+                        "lexeme": ";"
+                      },
+                      "beginToken": {
+                        "start": 90,
+                        "end": 93,
+                        "type": "IDENTIFIER",
+                        "lexeme": "int"
+                      },
+                      "endToken": {
+                        "start": 110,
+                        "end": 111,
+                        "type": "SEMICOLON",
+                        "lexeme": ";"
+                      },
+                      "variables": {
+                        "@class": "VariableDeclarationList",
+                        "@toString": "int next = count + 1",
+                        "start": 90,
+                        "end": 110,
+                        "keyword": null,
+                        "lateKeyword": null,
+                        "endToken": {
+                          "start": 109,
+                          "end": 110,
+                          "type": "INT",
+                          "lexeme": "1"
+                        },
+                        "firstTokenAfterCommentAndMetadata": {
+                          "start": 90,
+                          "end": 93,
+                          "type": "IDENTIFIER",
+                          "lexeme": "int"
+                        },
+                        "isConst": false,
+                        "isFinal": false,
+                        "isLate": false,
+                        "type": {
+                          "@class": "NamedType",
+                          "@toString": "int",
+                          "start": 90,
+                          "end": 93,
+                          "name2": {
+                            "start": 90,
+                            "end": 93,
+                            "type": "IDENTIFIER",
+                            "lexeme": "int"
+                          },
+                          "typeArguments": null,
+                          "question": null,
+                          "beginToken": {
+                            "start": 90,
+                            "end": 93,
+                            "type": "IDENTIFIER",
+                            "lexeme": "int"
+                          },
+                          "endToken": {
+                            "start": 90,
+                            "end": 93,
+                            "type": "IDENTIFIER",
+                            "lexeme": "int"
+                          },
+                          "importPrefix": null,
+                          "isDeferred": false,
+                          "isSynthetic": false
+                        },
+                        "variables": [
+                          {
+                            "@class": "VariableDeclaration",
+                            "@toString": "next = count + 1",
+                            "start": 94,
+                            "end": 110,
+                            "name": {
+                              "start": 94,
+                              "end": 98,
+                              "type": "IDENTIFIER",
+                              "lexeme": "next"
+                            },
+                            "equals": {
+                              "start": 99,
+                              "end": 100,
+                              "type": "EQ",
+                              "lexeme": "="
+                            },
+                            "hasInitializer": false,
+                            "documentationComment": null,
+                            "endToken": {
+                              "start": 109,
+                              "end": 110,
+                              "type": "INT",
+                              "lexeme": "1"
+                            },
+                            "firstTokenAfterCommentAndMetadata": {
+                              "start": 94,
+                              "end": 98,
+                              "type": "IDENTIFIER",
+                              "lexeme": "next"
+                            },
+                            "initializer": {
+                              "@class": "BinaryExpression",
+                              "@toString": "count + 1",
+                              "start": 101,
+                              "end": 110,
+                              "operator": {
+                                "start": 107,
+                                "end": 108,
+                                "type": "PLUS",
+                                "lexeme": "+"
+                              },
+                              "beginToken": {
+                                "start": 101,
+                                "end": 106,
+                                "type": "IDENTIFIER",
+                                "lexeme": "count"
+                              },
+                              "endToken": {
+                                "start": 109,
+                                "end": 110,
+                                "type": "INT",
+                                "lexeme": "1"
+                              },
+                              "leftOperand": {
+                                "@class": "SimpleIdentifier",
+                                "@toString": "count",
+                                "start": 101,
+                                "end": 106,
+                                "token": {
+                                  "start": 101,
+                                  "end": 106,
+                                  "type": "IDENTIFIER",
+                                  "lexeme": "count"
+                                },
+                                "ancestorCascade": null,
+                                "beginToken": {
+                                  "start": 101,
+                                  "end": 106,
+                                  "type": "IDENTIFIER",
+                                  "lexeme": "count"
+                                },
+                                "endToken": {
+                                  "start": 101,
+                                  "end": 106,
+                                  "type": "IDENTIFIER",
+                                  "lexeme": "count"
+                                },
+                                "isQualified": false,
+                                "isSynthetic": false,
+                                "name": "count"
+                              },
+                              "rightOperand": {
+                                "@class": "IntegerLiteral",
+                                "@toString": "1",
+                                "start": 109,
+                                "end": 110,
+                                "literal": {
+                                  "start": 109,
+                                  "end": 110,
+                                  "type": "INT",
+                                  "lexeme": "1"
+                                },
+                                "value": 1,
+                                "beginToken": {
+                                  "start": 109,
+                                  "end": 110,
+                                  "type": "INT",
+                                  "lexeme": "1"
+                                },
+                                "endToken": {
+                                  "start": 109,
+                                  "end": 110,
+                                  "type": "INT",
+                                  "lexeme": "1"
+                                },
+                                "immediatelyNegated": false
+                              },
+                              "inConstantContext": false,
+                              "isAssignable": false,
+                              "unParenthesized": "@seen"
+                            },
+                            "isConst": false,
+                            "isFinal": false,
+                            "isLate": false
+                          }
+                        ],
+                        "documentationComment": null,
+                        "metadata": [],
+                        "sortedCommentAndAnnotations": []
+                      }
+                    },
+                    {
+                      "@class": "ExpressionStatement",
+                      "@toString": "count = next;",
+                      "start": 116,
+                      "end": 129,
+                      "semicolon": {
+                        "start": 128,
+                        "end": 129,
+                        "type": "SEMICOLON",
+                        "lexeme": ";"
+                      },
+                      "beginToken": {
+                        "start": 116,
+                        "end": 121,
+                        "type": "IDENTIFIER",
+                        "lexeme": "count"
+                      },
+                      "endToken": {
+                        "start": 128,
+                        "end": 129,
+                        "type": "SEMICOLON",
+                        "lexeme": ";"
+                      },
+                      "expression": {
+                        "@class": "AssignmentExpression",
+                        "@toString": "count = next",
+                        "start": 116,
+                        "end": 128,
+                        "operator": {
+                          "start": 122,
+                          "end": 123,
+                          "type": "EQ",
+                          "lexeme": "="
+                        },
+                        "beginToken": {
+                          "start": 116,
+                          "end": 121,
+                          "type": "IDENTIFIER",
+                          "lexeme": "count"
+                        },
+                        "endToken": {
+                          "start": 124,
+                          "end": 128,
+                          "type": "IDENTIFIER",
+                          "lexeme": "next"
+                        },
+                        "leftHandSide": {
+                          "@class": "SimpleIdentifier",
+                          "@toString": "count",
+                          "start": 116,
+                          "end": 121,
+                          "token": {
+                            "start": 116,
+                            "end": 121,
+                            "type": "IDENTIFIER",
+                            "lexeme": "count"
+                          },
+                          "ancestorCascade": null,
+                          "beginToken": {
+                            "start": 116,
+                            "end": 121,
+                            "type": "IDENTIFIER",
+                            "lexeme": "count"
+                          },
+                          "endToken": {
+                            "start": 116,
+                            "end": 121,
+                            "type": "IDENTIFIER",
+                            "lexeme": "count"
+                          },
+                          "isQualified": false,
+                          "isSynthetic": false,
+                          "name": "count"
+                        },
+                        "rightHandSide": {
+                          "@class": "SimpleIdentifier",
+                          "@toString": "next",
+                          "start": 124,
+                          "end": 128,
+                          "token": {
+                            "start": 124,
+                            "end": 128,
+                            "type": "IDENTIFIER",
+                            "lexeme": "next"
+                          },
+                          "ancestorCascade": null,
+                          "beginToken": {
+                            "start": 124,
+                            "end": 128,
+                            "type": "IDENTIFIER",
+                            "lexeme": "next"
+                          },
+                          "endToken": {
+                            "start": 124,
+                            "end": 128,
+                            "type": "IDENTIFIER",
+                            "lexeme": "next"
+                          },
+                          "isQualified": false,
+                          "isSynthetic": false,
+                          "name": "next"
+                        },
+                        "nullShortingTermination": "@seen"
+                      },
+                      "isSynthetic": false
+                    }
+                  ]
+                },
+                "endToken": {
+                  "start": 132,
+                  "end": 133,
+                  "type": "CLOSE_CURLY_BRACKET",
+                  "lexeme": "}"
+                },
+                "isAsynchronous": false,
+                "isGenerator": false,
+                "isSynchronous": true
+              },
+              "endToken": {
+                "start": 132,
+                "end": 133,
+                "type": "CLOSE_CURLY_BRACKET",
+                "lexeme": "}"
+              },
+              "parameters": {
+                "@class": "FormalParameterList",
+                "@toString": "(MouseEvent e)",
+                "start": 69,
+                "end": 83,
+                "leftParenthesis": {
+                  "start": 69,
+                  "end": 70,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "leftDelimiter": null,
+                "rightDelimiter": null,
+                "rightParenthesis": {
+                  "start": 82,
+                  "end": 83,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "beginToken": {
+                  "start": 69,
+                  "end": 70,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "endToken": {
+                  "start": 82,
+                  "end": 83,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "parameters": [
+                  {
+                    "@class": "SimpleFormalParameter",
+                    "@toString": "MouseEvent e",
+                    "start": 70,
+                    "end": 82,
+                    "keyword": null,
+                    "endToken": {
+                      "start": 81,
+                      "end": 82,
+                      "type": "IDENTIFIER",
+                      "lexeme": "e"
+                    },
+                    "firstTokenAfterCommentAndMetadata": {
+                      "start": 70,
+                      "end": 80,
+                      "type": "IDENTIFIER",
+                      "lexeme": "MouseEvent"
+                    },
+                    "isConst": false,
+                    "isExplicitlyTyped": true,
+                    "isFinal": false,
+                    "type": {
+                      "@class": "NamedType",
+                      "@toString": "MouseEvent",
+                      "start": 70,
+                      "end": 80,
+                      "name2": {
+                        "start": 70,
+                        "end": 80,
+                        "type": "IDENTIFIER",
+                        "lexeme": "MouseEvent"
+                      },
+                      "typeArguments": null,
+                      "question": null,
+                      "beginToken": {
+                        "start": 70,
+                        "end": 80,
+                        "type": "IDENTIFIER",
+                        "lexeme": "MouseEvent"
+                      },
+                      "endToken": {
+                        "start": 70,
+                        "end": 80,
+                        "type": "IDENTIFIER",
+                        "lexeme": "MouseEvent"
+                      },
+                      "importPrefix": null,
+                      "isDeferred": false,
+                      "isSynthetic": false
+                    }
+                  }
+                ],
+                "isSynthetic": false,
+                "length": 14,
+                "offset": 69
+              },
+              "typeParameters": null,
+              "inConstantContext": false,
+              "isAssignable": false,
+              "unParenthesized": "@seen { self }"
+            },
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": 136,
+          "end": 151,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 136,
+              "end": 144,
+              "class": "Text",
+              "raw": "clicks: ",
+              "data": "clicks: "
+            },
+            {
+              "start": 144,
+              "end": 151,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleIdentifier",
+                "@toString": "count",
+                "start": 145,
+                "end": 150,
+                "token": {
+                  "start": 145,
+                  "end": 150,
+                  "type": "IDENTIFIER",
+                  "lexeme": "count"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 145,
+                  "end": 150,
+                  "type": "IDENTIFIER",
+                  "lexeme": "count"
+                },
+                "endToken": {
+                  "start": 145,
+                  "end": 150,
+                  "type": "IDENTIFIER",
+                  "lexeme": "count"
+                },
+                "isQualified": "@error { Null check operator used on a null value }",
+                "isSynthetic": false,
+                "name": "count"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 47,
+    "class": "InstanceScript",
+    "content": {
+      "start": 8,
+      "end": 38,
+      "class": "ScriptContent",
+      "content": "\n  var count = state<int>(0);\n"
+    },
+    "body": [
+      {
+        "@class": "VariableDeclarationStatement",
+        "@toString": "var count = state<int>(0);",
+        "start": 11,
+        "end": 37,
+        "semicolon": {
+          "start": 36,
+          "end": 37,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "beginToken": {
+          "start": 11,
+          "end": 14,
+          "type": "VAR",
+          "lexeme": "var"
+        },
+        "endToken": {
+          "start": 36,
+          "end": 37,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "variables": {
+          "@class": "VariableDeclarationList",
+          "@toString": "var count = state<int>(0)",
+          "start": 11,
+          "end": 36,
+          "keyword": {
+            "start": 11,
+            "end": 14,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "lateKeyword": null,
+          "endToken": {
+            "start": 35,
+            "end": 36,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 11,
+            "end": 14,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
+          "variables": [
+            {
+              "@class": "VariableDeclaration",
+              "@toString": "count = state<int>(0)",
+              "start": 15,
+              "end": 36,
+              "name": {
+                "start": 15,
+                "end": 20,
+                "type": "IDENTIFIER",
+                "lexeme": "count"
+              },
+              "equals": {
+                "start": 21,
+                "end": 22,
+                "type": "EQ",
+                "lexeme": "="
+              },
+              "hasInitializer": false,
+              "documentationComment": null,
+              "endToken": {
+                "start": 35,
+                "end": 36,
+                "type": "CLOSE_PAREN",
+                "lexeme": ")"
+              },
+              "firstTokenAfterCommentAndMetadata": {
+                "start": 15,
+                "end": 20,
+                "type": "IDENTIFIER",
+                "lexeme": "count"
+              },
+              "initializer": {
+                "@class": "MethodInvocation",
+                "@toString": "state<int>(0)",
+                "start": 23,
+                "end": 36,
+                "operator": null,
+                "beginToken": {
+                  "start": 23,
+                  "end": 28,
+                  "type": "IDENTIFIER",
+                  "lexeme": "state"
+                },
+                "endToken": {
+                  "start": 35,
+                  "end": 36,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "function": {
+                  "@class": "SimpleIdentifier",
+                  "@toString": "state",
+                  "start": 23,
+                  "end": 28,
+                  "token": {
+                    "start": 23,
+                    "end": 28,
+                    "type": "IDENTIFIER",
+                    "lexeme": "state"
+                  },
+                  "ancestorCascade": null,
+                  "beginToken": {
+                    "start": 23,
+                    "end": 28,
+                    "type": "IDENTIFIER",
+                    "lexeme": "state"
+                  },
+                  "endToken": {
+                    "start": 23,
+                    "end": 28,
+                    "type": "IDENTIFIER",
+                    "lexeme": "state"
+                  },
+                  "isQualified": false,
+                  "isSynthetic": false,
+                  "name": "state"
+                },
+                "isCascaded": false,
+                "isNullAware": false,
+                "methodName": {
+                  "@class": "SimpleIdentifier",
+                  "@toString": "state",
+                  "start": 23,
+                  "end": 28,
+                  "token": {
+                    "start": 23,
+                    "end": 28,
+                    "type": "IDENTIFIER",
+                    "lexeme": "state"
+                  },
+                  "ancestorCascade": null,
+                  "beginToken": {
+                    "start": 23,
+                    "end": 28,
+                    "type": "IDENTIFIER",
+                    "lexeme": "state"
+                  },
+                  "endToken": {
+                    "start": 23,
+                    "end": 28,
+                    "type": "IDENTIFIER",
+                    "lexeme": "state"
+                  },
+                  "isQualified": false,
+                  "isSynthetic": false,
+                  "name": "state"
+                },
+                "realTarget": null,
+                "target": null,
+                "nullShortingTermination": "@seen",
+                "argumentList": {
+                  "@class": "ArgumentList",
+                  "@toString": "(0)",
+                  "start": 33,
+                  "end": 36,
+                  "leftParenthesis": {
+                    "start": 33,
+                    "end": 34,
+                    "type": "OPEN_PAREN",
+                    "lexeme": "("
+                  },
+                  "rightParenthesis": {
+                    "start": 35,
+                    "end": 36,
+                    "type": "CLOSE_PAREN",
+                    "lexeme": ")"
+                  },
+                  "arguments": [
+                    {
+                      "@class": "IntegerLiteral",
+                      "@toString": "0",
+                      "start": 34,
+                      "end": 35,
+                      "literal": {
+                        "start": 34,
+                        "end": 35,
+                        "type": "INT",
+                        "lexeme": "0"
+                      },
+                      "value": 0,
+                      "beginToken": {
+                        "start": 34,
+                        "end": 35,
+                        "type": "INT",
+                        "lexeme": "0"
+                      },
+                      "endToken": {
+                        "start": 34,
+                        "end": 35,
+                        "type": "INT",
+                        "lexeme": "0"
+                      },
+                      "immediatelyNegated": false
+                    }
+                  ],
+                  "beginToken": {
+                    "start": 33,
+                    "end": 34,
+                    "type": "OPEN_PAREN",
+                    "lexeme": "("
+                  },
+                  "endToken": {
+                    "start": 35,
+                    "end": 36,
+                    "type": "CLOSE_PAREN",
+                    "lexeme": ")"
+                  },
+                  "isSynthetic": false,
+                  "length": 3,
+                  "offset": 33
+                },
+                "typeArguments": {
+                  "@class": "TypeArgumentList",
+                  "@toString": "<int>",
+                  "start": 28,
+                  "end": 33,
+                  "leftBracket": {
+                    "start": 28,
+                    "end": 29,
+                    "type": "LT",
+                    "lexeme": "<"
+                  },
+                  "rightBracket": {
+                    "start": 32,
+                    "end": 33,
+                    "type": "GT",
+                    "lexeme": ">"
+                  },
+                  "arguments": [
+                    {
+                      "@class": "NamedType",
+                      "@toString": "int",
+                      "start": 29,
+                      "end": 32,
+                      "name2": {
+                        "start": 29,
+                        "end": 32,
+                        "type": "IDENTIFIER",
+                        "lexeme": "int"
+                      },
+                      "typeArguments": null,
+                      "question": null,
+                      "beginToken": {
+                        "start": 29,
+                        "end": 32,
+                        "type": "IDENTIFIER",
+                        "lexeme": "int"
+                      },
+                      "endToken": {
+                        "start": 29,
+                        "end": 32,
+                        "type": "IDENTIFIER",
+                        "lexeme": "int"
+                      },
+                      "importPrefix": null,
+                      "isDeferred": false,
+                      "isSynthetic": false
+                    }
+                  ],
+                  "beginToken": {
+                    "start": 28,
+                    "end": 29,
+                    "type": "LT",
+                    "lexeme": "<"
+                  },
+                  "endToken": {
+                    "start": 32,
+                    "end": 33,
+                    "type": "GT",
+                    "lexeme": ">"
+                  },
+                  "isSynthetic": false,
+                  "length": 5,
+                  "offset": 28
+                }
+              },
+              "isConst": false,
+              "isFinal": false,
+              "isLate": false
+            }
+          ],
+          "documentationComment": null,
+          "metadata": [],
+          "sortedCommentAndAnnotations": []
+        }
+      }
+    ]
+  },
+  "module": null,
+  "style": null,
+  "options": null
+}

@@ -1,7 +1,7 @@
 <ul>
-	<li>a
-	{#if true}
-		<li>b
-	{/if}
-	<li>c
+  <li>a
+  {#if true}
+    <li>b
+  {/if}
+  <li>c
 </ul>

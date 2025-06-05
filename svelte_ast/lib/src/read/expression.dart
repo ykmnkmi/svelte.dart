@@ -1,109 +1,160 @@
 // ignore_for_file: implementation_imports
 
-import 'package:_fe_analyzer_shared/src/messages/codes.dart';
-import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' hide Parser;
-import 'package:_fe_analyzer_shared/src/scanner/scanner.dart';
-import 'package:analyzer/dart/ast/token.dart';
-import 'package:analyzer/error/error.dart';
-import 'package:analyzer/src/dart/ast/ast.dart';
+import 'package:_fe_analyzer_shared/src/parser/member_kind.dart' as dart;
+import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as dart;
+import 'package:_fe_analyzer_shared/src/scanner/scanner.dart' as dart;
+import 'package:analyzer/dart/ast/token.dart' as dart;
+import 'package:analyzer/error/error.dart' as dart;
+import 'package:analyzer/src/dart/ast/ast.dart' as dart;
 import 'package:svelte_ast/src/parser.dart';
-import 'package:svelte_ast/src/read/script_parser.dart';
-
-final RegExp _identifierRe = RegExp('[_\$A-Za-z][_\$A-Za-z0-9]*');
+import 'package:svelte_ast/src/read/dart/parser.dart';
 
 extension ExpressionParser on Parser {
-  String? readIdentifier() {
-    return read(_identifierRe);
-  }
-
-  DartPattern readAssignmentPattern(Pattern end) {
-    return readPattern(end, PatternContext.assignment);
-  }
-
-  DartPattern readPattern(Pattern end, PatternContext context) {
-    void callback(ScriptParser parser, Token token) {
-      token = parser.syntheticPreviousToken(token);
-      token = parser.parsePattern(token, context);
-      position = token.end;
-    }
-
-    return withScriptParser<DartPattern>(position, end, callback);
-  }
-
-  Expression readExpression(Pattern end) {
-    void callback(ScriptParser parser, Token token) {
-      token = parser.syntheticPreviousToken(token);
-      token = parser.parseExpression(token);
-      position = token.end;
-    }
-
-    return withScriptParser<Expression>(position, end, callback);
-  }
-
-  SimpleIdentifier simpleIdentifier(int start, String name) {
-    Token token = StringTokenImpl.fromString(TokenType.IDENTIFIER, name, start);
-    return SimpleIdentifierImpl(token);
-  }
-
-  T withScriptParser<T>(
-    int offset,
-    Pattern end,
-    ScriptParserCallback callback,
-  ) {
-    ScriptParser parser = ScriptParser.fromString(
-      string: string,
-      offset: offset,
-      fileName: fileName,
-      uri: uri,
+  dart.SimpleIdentifier simpleIdentifier(int start, String name) {
+    dart.Token token = dart.StringTokenImpl.fromString(
+      dart.TokenType.IDENTIFIER,
+      name,
+      start,
     );
 
+    return dart.SimpleIdentifierImpl(token);
+  }
+
+  dart.StringLiteral simpleString(int start, String value) {
+    dart.Token token = dart.StringTokenImpl.fromString(
+      dart.TokenType.STRING,
+      value,
+      start,
+    );
+
+    return dart.SimpleStringLiteralImpl(literal: token, value: value);
+  }
+
+  dart.DartPattern readAssignmentPattern(Pattern end) {
+    return _readPattern(end, dart.PatternContext.assignment);
+  }
+
+  dart.DartPattern _readPattern(
+    Pattern closingPattern,
+    dart.PatternContext context,
+  ) {
     try {
-      Token token = parser.scanner.scan(end);
-      callback(parser, token);
-      return parser.builder.pop() as T;
-    } on AnalysisError catch (analysisError) {
-      var AnalysisError(
-        offset: int offset,
-        length: int length,
-        message: String message,
-      ) = analysisError;
-      dartError(message, offset, length);
-    } on ErrorToken catch (token) {
-      var ErrorToken(:int offset, :int length, :Message assertionMessage) =
-          token;
-      dartError(assertionMessage.problemMessage, offset, length);
+      return parseString<dart.DartPattern>(
+        offset: position,
+        string: template,
+        closingPattern: closingPattern,
+        fileName: fileName,
+        uri: uri,
+        parse: (token, parser) {
+          parser.fastaParser.parsePattern(
+            parser.fastaParser.syntheticPreviousToken(token),
+            context,
+          );
+
+          Object? pattern = parser.astBuilder.pop();
+
+          if (pattern is! dart.DartPattern) {
+            // TODO(ast): add error function.
+            dartError('Expected a pattern.', token.offset);
+          }
+
+          position = pattern.end;
+          return pattern;
+        },
+      );
+    } on dart.AnalysisError catch (error) {
+      dartError(error.message, error.offset);
     }
   }
 
-  void withScriptParserRun(
-    int offset,
-    Pattern end,
-    ScriptParserCallback callback,
-  ) {
-    ScriptParser parser = ScriptParser.fromString(
-      string: string,
-      offset: offset,
-      fileName: fileName,
-      uri: uri,
-    );
-
+  List<dart.SimpleIdentifier> readIdentifierList(Pattern closingPattern) {
     try {
-      Token token = parser.scanner.scan(end);
-      callback(parser, token);
-    } on AnalysisError catch (analysisError) {
-      var AnalysisError(
-        offset: int offset,
-        length: int length,
-        message: String message,
-      ) = analysisError;
-      dartError(message, offset, length);
-    } on ErrorToken catch (token) {
-      var ErrorToken(
-        offset: int offset,
-        length: int length,
-        assertionMessage: Message assertionMessage,
-      ) = token;
-      dartError(assertionMessage.problemMessage, offset, length);
+      return parseString<List<dart.SimpleIdentifier>>(
+        offset: position,
+        string: template,
+        closingPattern: closingPattern,
+        fileName: fileName,
+        uri: uri,
+        parse: (token, parser) {
+          parser.fastaParser.parseIdentifierList(
+            parser.fastaParser.syntheticPreviousToken(token),
+          );
+
+          Object? identifiers = parser.astBuilder.pop();
+
+          if (identifiers is! List<dart.SimpleIdentifier>) {
+            // TODO(ast): add error function.
+            dartError('Expected parameters.', token.offset);
+          }
+
+          if (identifiers.isNotEmpty) {
+            position = identifiers.last.end;
+          }
+
+          return identifiers;
+        },
+      );
+    } on dart.AnalysisError catch (error) {
+      dartError(error.message, error.offset);
+    }
+  }
+
+  dart.FormalParameterList readParameters(Pattern closingPattern) {
+    try {
+      return parseString<dart.FormalParameterList>(
+        offset: position,
+        string: template,
+        closingPattern: closingPattern,
+        fileName: fileName,
+        uri: uri,
+        parse: (token, parser) {
+          parser.fastaParser.parseFormalParameters(
+            parser.fastaParser.syntheticPreviousToken(token),
+            dart.MemberKind.Local,
+          );
+
+          Object? parameters = parser.astBuilder.pop();
+
+          if (parameters is! dart.FormalParameterList) {
+            // TODO(ast): add error function.
+            dartError('Expected parameters.', token.offset);
+          }
+
+          position = parameters.end;
+          return parameters;
+        },
+      );
+    } on dart.AnalysisError catch (error) {
+      dartError(error.message, error.offset);
+    }
+  }
+
+  dart.Expression readExpression(Pattern closingPattern) {
+    try {
+      return parseString<dart.Expression>(
+        offset: position,
+        string: template,
+        closingPattern: closingPattern,
+        fileName: fileName,
+        uri: uri,
+        parse: (token, parser) {
+          parser.fastaParser.parseExpression(
+            parser.fastaParser.syntheticPreviousToken(token),
+          );
+
+          Object? expression = parser.astBuilder.pop();
+
+          if (expression is! dart.Expression) {
+            // TODO(ast): add error function.
+            dartError('Expected an expression.', token.offset);
+          }
+
+          position = expression.end;
+          return expression;
+        },
+      );
+    } on dart.AnalysisError catch (error) {
+      dartError(error.message, error.offset);
     }
   }
 }

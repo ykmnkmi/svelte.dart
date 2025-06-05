@@ -1,36 +1,46 @@
 {
-	"html": {
-		"start": 0,
-		"end": 83,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 83,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 5,
-						"end": 76,
-						"class": "Attribute",
-						"name": "data-foo",
-						"values": [
-							{
-								"start": 15,
-								"end": 75,
-								"class": "Text",
-								"raw": "semi:&quot;space:&quot letter:&quote number:&quot1 end:&quot",
-								"data": "semi:\"space:\" letter:&quote number:&quot1 end:\""
-							}
-						]
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 83,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 83,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 83,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 76,
+            "class": "Attribute",
+            "name": "data-foo",
+            "value": [
+              {
+                "start": 15,
+                "end": 75,
+                "class": "Text",
+                "raw": "semi:&quot;space:&quot letter:&quote number:&quot1 end:&quot",
+                "data": "semi:\"space:\" letter:&quote number:&quot1 end:\""
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

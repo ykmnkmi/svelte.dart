@@ -1,512 +1,551 @@
 {
-	"html": {
-		"start": 0,
-		"end": 250,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 29,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 5,
-						"end": 22,
-						"type": "StyleDirective",
-						"name": "color",
-						"modifiers": [],
-						"values": [
-							{
-								"start": 18,
-								"end": 21,
-								"class": "Text",
-								"raw": "red",
-								"data": "red"
-							}
-						]
-					}
-				],
-				"children": []
-			},
-			{
-				"start": 29,
-				"end": 30,
-				"class": "Text",
-				"raw": "\n",
-				"data": "\n"
-			},
-			{
-				"start": 30,
-				"end": 59,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 35,
-						"end": 52,
-						"type": "StyleDirective",
-						"name": "color",
-						"modifiers": [],
-						"values": [
-							{
-								"start": 48,
-								"end": 51,
-								"class": "Text",
-								"raw": "red",
-								"data": "red"
-							}
-						]
-					}
-				],
-				"children": []
-			},
-			{
-				"start": 59,
-				"end": 60,
-				"class": "Text",
-				"raw": "\n",
-				"data": "\n"
-			},
-			{
-				"start": 60,
-				"end": 87,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 65,
-						"end": 80,
-						"type": "StyleDirective",
-						"name": "color",
-						"modifiers": [],
-						"values": [
-							{
-								"start": 77,
-								"end": 80,
-								"class": "Text",
-								"raw": "red",
-								"data": "red"
-							}
-						]
-					}
-				],
-				"children": []
-			},
-			{
-				"start": 87,
-				"end": 88,
-				"class": "Text",
-				"raw": "\n",
-				"data": "\n"
-			},
-			{
-				"start": 88,
-				"end": 127,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 93,
-						"end": 120,
-						"type": "StyleDirective",
-						"name": "color",
-						"modifiers": [],
-						"values": [
-							{
-								"start": 106,
-								"end": 109,
-								"class": "Text",
-								"raw": "red",
-								"data": "red"
-							},
-							{
-								"start": 109,
-								"end": 119,
-								"class": "MustacheTag",
-								"expression": {
-									"@class": "SimpleIdentifier",
-									"@toString": "variable",
-									"start": 110,
-									"end": 118,
-									"token": {
-										"start": 110,
-										"end": 118,
-										"type": "IDENTIFIER",
-										"lexeme": "variable"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 110,
-										"end": 118,
-										"type": "IDENTIFIER",
-										"lexeme": "variable"
-									},
-									"endToken": {
-										"start": 110,
-										"end": 118,
-										"type": "IDENTIFIER",
-										"lexeme": "variable"
-									},
-									"isQualified": "@error { Null check operator used on a null value }",
-									"isSynthetic": false,
-									"name": "variable"
-								}
-							}
-						]
-					}
-				],
-				"children": []
-			},
-			{
-				"start": 127,
-				"end": 128,
-				"class": "Text",
-				"raw": "\n",
-				"data": "\n"
-			},
-			{
-				"start": 128,
-				"end": 167,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 133,
-						"end": 160,
-						"type": "StyleDirective",
-						"name": "color",
-						"modifiers": [],
-						"values": [
-							{
-								"start": 146,
-								"end": 149,
-								"class": "Text",
-								"raw": "red",
-								"data": "red"
-							},
-							{
-								"start": 149,
-								"end": 159,
-								"class": "MustacheTag",
-								"expression": {
-									"@class": "SimpleIdentifier",
-									"@toString": "variable",
-									"start": 150,
-									"end": 158,
-									"token": {
-										"start": 150,
-										"end": 158,
-										"type": "IDENTIFIER",
-										"lexeme": "variable"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 150,
-										"end": 158,
-										"type": "IDENTIFIER",
-										"lexeme": "variable"
-									},
-									"endToken": {
-										"start": 150,
-										"end": 158,
-										"type": "IDENTIFIER",
-										"lexeme": "variable"
-									},
-									"isQualified": "@error { Null check operator used on a null value }",
-									"isSynthetic": false,
-									"name": "variable"
-								}
-							}
-						]
-					}
-				],
-				"children": []
-			},
-			{
-				"start": 167,
-				"end": 168,
-				"class": "Text",
-				"raw": "\n",
-				"data": "\n"
-			},
-			{
-				"start": 168,
-				"end": 205,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 173,
-						"end": 198,
-						"type": "StyleDirective",
-						"name": "color",
-						"modifiers": [],
-						"values": [
-							{
-								"start": 185,
-								"end": 188,
-								"class": "Text",
-								"raw": "red",
-								"data": "red"
-							},
-							{
-								"start": 188,
-								"end": 198,
-								"class": "MustacheTag",
-								"expression": {
-									"@class": "SimpleIdentifier",
-									"@toString": "variable",
-									"start": 189,
-									"end": 197,
-									"token": {
-										"start": 189,
-										"end": 197,
-										"type": "IDENTIFIER",
-										"lexeme": "variable"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 189,
-										"end": 197,
-										"type": "IDENTIFIER",
-										"lexeme": "variable"
-									},
-									"endToken": {
-										"start": 189,
-										"end": 197,
-										"type": "IDENTIFIER",
-										"lexeme": "variable"
-									},
-									"isQualified": "@error { Null check operator used on a null value }",
-									"isSynthetic": false,
-									"name": "variable"
-								}
-							}
-						]
-					}
-				],
-				"children": []
-			},
-			{
-				"start": 205,
-				"end": 206,
-				"class": "Text",
-				"raw": "\n",
-				"data": "\n"
-			},
-			{
-				"start": 206,
-				"end": 250,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 211,
-						"end": 243,
-						"type": "StyleDirective",
-						"name": "color",
-						"modifiers": [],
-						"values": [
-							{
-								"start": 223,
-								"end": 243,
-								"class": "MustacheTag",
-								"expression": {
-									"@class": "StringInterpolation",
-									"@toString": "'template$literal'",
-									"start": 224,
-									"end": 242,
-									"beginToken": {
-										"start": 224,
-										"end": 233,
-										"type": "STRING",
-										"lexeme": "'template"
-									},
-									"contentsEnd": 241,
-									"contentsOffset": 225,
-									"elements": [
-										{
-											"@class": "InterpolationString",
-											"@toString": "'template",
-											"start": 224,
-											"end": 233,
-											"contents": {
-												"start": 224,
-												"end": 233,
-												"type": "STRING",
-												"lexeme": "'template"
-											},
-											"value": "template",
-											"beginToken": {
-												"start": 224,
-												"end": 233,
-												"type": "STRING",
-												"lexeme": "'template"
-											},
-											"contentsEnd": 233,
-											"contentsOffset": 225,
-											"endToken": {
-												"start": 224,
-												"end": 233,
-												"type": "STRING",
-												"lexeme": "'template"
-											}
-										},
-										{
-											"@class": "InterpolationExpression",
-											"@toString": "$literal",
-											"start": 233,
-											"end": 241,
-											"leftBracket": {
-												"start": 233,
-												"end": 234,
-												"type": "STRING_INTERPOLATION_IDENTIFIER",
-												"lexeme": "$"
-											},
-											"rightBracket": null,
-											"beginToken": {
-												"start": 233,
-												"end": 234,
-												"type": "STRING_INTERPOLATION_IDENTIFIER",
-												"lexeme": "$"
-											},
-											"endToken": {
-												"start": 234,
-												"end": 241,
-												"type": "IDENTIFIER",
-												"lexeme": "literal"
-											},
-											"expression": {
-												"@class": "SimpleIdentifier",
-												"@toString": "literal",
-												"start": 234,
-												"end": 241,
-												"token": {
-													"start": 234,
-													"end": 241,
-													"type": "IDENTIFIER",
-													"lexeme": "literal"
-												},
-												"ancestorCascade": null,
-												"beginToken": {
-													"start": 234,
-													"end": 241,
-													"type": "IDENTIFIER",
-													"lexeme": "literal"
-												},
-												"endToken": {
-													"start": 234,
-													"end": 241,
-													"type": "IDENTIFIER",
-													"lexeme": "literal"
-												},
-												"isQualified": false,
-												"isSynthetic": false,
-												"name": "literal"
-											}
-										},
-										{
-											"@class": "InterpolationString",
-											"@toString": "'",
-											"start": 241,
-											"end": 242,
-											"contents": {
-												"start": 241,
-												"end": 242,
-												"type": "STRING",
-												"lexeme": "'"
-											},
-											"value": "",
-											"beginToken": {
-												"start": 241,
-												"end": 242,
-												"type": "STRING",
-												"lexeme": "'"
-											},
-											"contentsEnd": 241,
-											"contentsOffset": 241,
-											"endToken": {
-												"start": 241,
-												"end": 242,
-												"type": "STRING",
-												"lexeme": "'"
-											}
-										}
-									],
-									"endToken": {
-										"start": 241,
-										"end": 242,
-										"type": "STRING",
-										"lexeme": "'"
-									},
-									"firstString": {
-										"@class": "InterpolationString",
-										"@toString": "'template",
-										"start": 224,
-										"end": 233,
-										"contents": {
-											"start": 224,
-											"end": 233,
-											"type": "STRING",
-											"lexeme": "'template"
-										},
-										"value": "template",
-										"beginToken": {
-											"start": 224,
-											"end": 233,
-											"type": "STRING",
-											"lexeme": "'template"
-										},
-										"contentsEnd": 233,
-										"contentsOffset": 225,
-										"endToken": {
-											"start": 224,
-											"end": 233,
-											"type": "STRING",
-											"lexeme": "'template"
-										}
-									},
-									"isMultiline": false,
-									"isRaw": false,
-									"isSingleQuoted": true,
-									"lastString": {
-										"@class": "InterpolationString",
-										"@toString": "'",
-										"start": 241,
-										"end": 242,
-										"contents": {
-											"start": 241,
-											"end": 242,
-											"type": "STRING",
-											"lexeme": "'"
-										},
-										"value": "",
-										"beginToken": {
-											"start": 241,
-											"end": 242,
-											"type": "STRING",
-											"lexeme": "'"
-										},
-										"contentsEnd": 241,
-										"contentsOffset": 241,
-										"endToken": {
-											"start": 241,
-											"end": 242,
-											"type": "STRING",
-											"lexeme": "'"
-										}
-									}
-								}
-							}
-						]
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 250,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 250,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 29,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 22,
+            "class": "StyleDirective",
+            "name": "color",
+            "value": [
+              {
+                "start": 18,
+                "end": 21,
+                "class": "Text",
+                "raw": "red",
+                "data": "red"
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 29,
+        "end": 30,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 30,
+        "end": 59,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 35,
+            "end": 52,
+            "class": "StyleDirective",
+            "name": "color",
+            "value": [
+              {
+                "start": 48,
+                "end": 51,
+                "class": "Text",
+                "raw": "red",
+                "data": "red"
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 59,
+        "end": 60,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 60,
+        "end": 87,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 65,
+            "end": 80,
+            "class": "StyleDirective",
+            "name": "color",
+            "value": [
+              {
+                "start": 77,
+                "end": 80,
+                "class": "Text",
+                "raw": "red",
+                "data": "red"
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 87,
+        "end": 88,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 88,
+        "end": 127,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 93,
+            "end": 120,
+            "class": "StyleDirective",
+            "name": "color",
+            "value": [
+              {
+                "start": 106,
+                "end": 109,
+                "class": "Text",
+                "raw": "red",
+                "data": "red"
+              },
+              {
+                "start": 109,
+                "end": 119,
+                "class": "ExpressionTag",
+                "expression": {
+                  "@class": "SimpleIdentifier",
+                  "@toString": "variable",
+                  "start": 110,
+                  "end": 118,
+                  "token": {
+                    "start": 110,
+                    "end": 118,
+                    "type": "IDENTIFIER",
+                    "lexeme": "variable"
+                  },
+                  "ancestorCascade": null,
+                  "beginToken": {
+                    "start": 110,
+                    "end": 118,
+                    "type": "IDENTIFIER",
+                    "lexeme": "variable"
+                  },
+                  "endToken": {
+                    "start": 110,
+                    "end": 118,
+                    "type": "IDENTIFIER",
+                    "lexeme": "variable"
+                  },
+                  "isQualified": "@error { Null check operator used on a null value }",
+                  "isSynthetic": false,
+                  "name": "variable"
+                }
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 127,
+        "end": 128,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 128,
+        "end": 167,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 133,
+            "end": 160,
+            "class": "StyleDirective",
+            "name": "color",
+            "value": [
+              {
+                "start": 146,
+                "end": 149,
+                "class": "Text",
+                "raw": "red",
+                "data": "red"
+              },
+              {
+                "start": 149,
+                "end": 159,
+                "class": "ExpressionTag",
+                "expression": {
+                  "@class": "SimpleIdentifier",
+                  "@toString": "variable",
+                  "start": 150,
+                  "end": 158,
+                  "token": {
+                    "start": 150,
+                    "end": 158,
+                    "type": "IDENTIFIER",
+                    "lexeme": "variable"
+                  },
+                  "ancestorCascade": null,
+                  "beginToken": {
+                    "start": 150,
+                    "end": 158,
+                    "type": "IDENTIFIER",
+                    "lexeme": "variable"
+                  },
+                  "endToken": {
+                    "start": 150,
+                    "end": 158,
+                    "type": "IDENTIFIER",
+                    "lexeme": "variable"
+                  },
+                  "isQualified": "@error { Null check operator used on a null value }",
+                  "isSynthetic": false,
+                  "name": "variable"
+                }
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 167,
+        "end": 168,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 168,
+        "end": 205,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 173,
+            "end": 198,
+            "class": "StyleDirective",
+            "name": "color",
+            "value": [
+              {
+                "start": 185,
+                "end": 188,
+                "class": "Text",
+                "raw": "red",
+                "data": "red"
+              },
+              {
+                "start": 188,
+                "end": 198,
+                "class": "ExpressionTag",
+                "expression": {
+                  "@class": "SimpleIdentifier",
+                  "@toString": "variable",
+                  "start": 189,
+                  "end": 197,
+                  "token": {
+                    "start": 189,
+                    "end": 197,
+                    "type": "IDENTIFIER",
+                    "lexeme": "variable"
+                  },
+                  "ancestorCascade": null,
+                  "beginToken": {
+                    "start": 189,
+                    "end": 197,
+                    "type": "IDENTIFIER",
+                    "lexeme": "variable"
+                  },
+                  "endToken": {
+                    "start": 189,
+                    "end": 197,
+                    "type": "IDENTIFIER",
+                    "lexeme": "variable"
+                  },
+                  "isQualified": "@error { Null check operator used on a null value }",
+                  "isSynthetic": false,
+                  "name": "variable"
+                }
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 205,
+        "end": 206,
+        "class": "Text",
+        "raw": "\n",
+        "data": "\n"
+      },
+      {
+        "start": 206,
+        "end": 250,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 211,
+            "end": 243,
+            "class": "StyleDirective",
+            "name": "color",
+            "value": [
+              {
+                "start": 223,
+                "end": 243,
+                "class": "ExpressionTag",
+                "expression": {
+                  "@class": "StringInterpolation",
+                  "@toString": "'template$literal'",
+                  "start": 224,
+                  "end": 242,
+                  "beginToken": {
+                    "start": 224,
+                    "end": 233,
+                    "type": "STRING",
+                    "lexeme": "'template"
+                  },
+                  "contentsEnd": 241,
+                  "contentsOffset": 225,
+                  "elements": [
+                    {
+                      "@class": "InterpolationString",
+                      "@toString": "'template",
+                      "start": 224,
+                      "end": 233,
+                      "contents": {
+                        "start": 224,
+                        "end": 233,
+                        "type": "STRING",
+                        "lexeme": "'template"
+                      },
+                      "value": "template",
+                      "beginToken": {
+                        "start": 224,
+                        "end": 233,
+                        "type": "STRING",
+                        "lexeme": "'template"
+                      },
+                      "contentsEnd": 233,
+                      "contentsOffset": 225,
+                      "endToken": {
+                        "start": 224,
+                        "end": 233,
+                        "type": "STRING",
+                        "lexeme": "'template"
+                      }
+                    },
+                    {
+                      "@class": "InterpolationExpression",
+                      "@toString": "$literal",
+                      "start": 233,
+                      "end": 241,
+                      "leftBracket": {
+                        "start": 233,
+                        "end": 234,
+                        "type": "STRING_INTERPOLATION_IDENTIFIER",
+                        "lexeme": "$"
+                      },
+                      "rightBracket": null,
+                      "beginToken": {
+                        "start": 233,
+                        "end": 234,
+                        "type": "STRING_INTERPOLATION_IDENTIFIER",
+                        "lexeme": "$"
+                      },
+                      "endToken": {
+                        "start": 234,
+                        "end": 241,
+                        "type": "IDENTIFIER",
+                        "lexeme": "literal"
+                      },
+                      "expression": {
+                        "@class": "SimpleIdentifier",
+                        "@toString": "literal",
+                        "start": 234,
+                        "end": 241,
+                        "token": {
+                          "start": 234,
+                          "end": 241,
+                          "type": "IDENTIFIER",
+                          "lexeme": "literal"
+                        },
+                        "ancestorCascade": null,
+                        "beginToken": {
+                          "start": 234,
+                          "end": 241,
+                          "type": "IDENTIFIER",
+                          "lexeme": "literal"
+                        },
+                        "endToken": {
+                          "start": 234,
+                          "end": 241,
+                          "type": "IDENTIFIER",
+                          "lexeme": "literal"
+                        },
+                        "isQualified": false,
+                        "isSynthetic": false,
+                        "name": "literal"
+                      }
+                    },
+                    {
+                      "@class": "InterpolationString",
+                      "@toString": "'",
+                      "start": 241,
+                      "end": 242,
+                      "contents": {
+                        "start": 241,
+                        "end": 242,
+                        "type": "STRING",
+                        "lexeme": "'"
+                      },
+                      "value": "",
+                      "beginToken": {
+                        "start": 241,
+                        "end": 242,
+                        "type": "STRING",
+                        "lexeme": "'"
+                      },
+                      "contentsEnd": 241,
+                      "contentsOffset": 241,
+                      "endToken": {
+                        "start": 241,
+                        "end": 242,
+                        "type": "STRING",
+                        "lexeme": "'"
+                      }
+                    }
+                  ],
+                  "endToken": {
+                    "start": 241,
+                    "end": 242,
+                    "type": "STRING",
+                    "lexeme": "'"
+                  },
+                  "firstString": {
+                    "@class": "InterpolationString",
+                    "@toString": "'template",
+                    "start": 224,
+                    "end": 233,
+                    "contents": {
+                      "start": 224,
+                      "end": 233,
+                      "type": "STRING",
+                      "lexeme": "'template"
+                    },
+                    "value": "template",
+                    "beginToken": {
+                      "start": 224,
+                      "end": 233,
+                      "type": "STRING",
+                      "lexeme": "'template"
+                    },
+                    "contentsEnd": 233,
+                    "contentsOffset": 225,
+                    "endToken": {
+                      "start": 224,
+                      "end": 233,
+                      "type": "STRING",
+                      "lexeme": "'template"
+                    }
+                  },
+                  "isMultiline": false,
+                  "isRaw": false,
+                  "isSingleQuoted": true,
+                  "lastString": {
+                    "@class": "InterpolationString",
+                    "@toString": "'",
+                    "start": 241,
+                    "end": 242,
+                    "contents": {
+                      "start": 241,
+                      "end": 242,
+                      "type": "STRING",
+                      "lexeme": "'"
+                    },
+                    "value": "",
+                    "beginToken": {
+                      "start": 241,
+                      "end": 242,
+                      "type": "STRING",
+                      "lexeme": "'"
+                    },
+                    "contentsEnd": 241,
+                    "contentsOffset": 241,
+                    "endToken": {
+                      "start": 241,
+                      "end": 242,
+                      "type": "STRING",
+                      "lexeme": "'"
+                    }
+                  }
+                }
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

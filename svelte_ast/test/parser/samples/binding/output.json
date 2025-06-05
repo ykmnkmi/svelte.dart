@@ -1,168 +1,172 @@
 {
-	"html": {
-		"start": 31,
-		"end": 56,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 29,
-				"end": 31,
-				"class": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
-			},
-			{
-				"start": 31,
-				"end": 56,
-				"class": "Element",
-				"name": "input",
-				"attributes": [
-					{
-						"start": 38,
-						"end": 55,
-						"type": "Binding",
-						"name": "value",
-						"modifiers": [],
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "name",
-							"start": 50,
-							"end": 54,
-							"token": {
-								"start": 50,
-								"end": 54,
-								"type": "IDENTIFIER",
-								"lexeme": "name"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 50,
-								"end": 54,
-								"type": "IDENTIFIER",
-								"lexeme": "name"
-							},
-							"endToken": {
-								"start": 50,
-								"end": 54,
-								"type": "IDENTIFIER",
-								"lexeme": "name"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "name"
-						}
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": {
-		"start": 0,
-		"end": 29,
-		"class": "Script",
-		"context": "default",
-		"content": {
-			"start": 8,
-			"end": 20,
-			"data": "\n\tvar name;\n"
-		},
-		"body": {
-			"directives": [],
-			"externals": [],
-			"body": [
-				{
-					"@class": "VariableDeclarationStatement",
-					"@toString": "var name;",
-					"start": 10,
-					"end": 19,
-					"semicolon": {
-						"start": 18,
-						"end": 19,
-						"type": "SEMICOLON",
-						"lexeme": ";"
-					},
-					"beginToken": {
-						"start": 10,
-						"end": 13,
-						"type": "VAR",
-						"lexeme": "var"
-					},
-					"endToken": {
-						"start": 18,
-						"end": 19,
-						"type": "SEMICOLON",
-						"lexeme": ";"
-					},
-					"variables": {
-						"@class": "VariableDeclarationList",
-						"@toString": "var name",
-						"start": 10,
-						"end": 18,
-						"keyword": {
-							"start": 10,
-							"end": 13,
-							"type": "VAR",
-							"lexeme": "var"
-						},
-						"lateKeyword": null,
-						"endToken": {
-							"start": 14,
-							"end": 18,
-							"type": "IDENTIFIER",
-							"lexeme": "name"
-						},
-						"firstTokenAfterCommentAndMetadata": {
-							"start": 10,
-							"end": 13,
-							"type": "VAR",
-							"lexeme": "var"
-						},
-						"isConst": false,
-						"isFinal": false,
-						"isLate": false,
-						"type": null,
-						"variables": [
-							{
-								"@class": "VariableDeclaration",
-								"@toString": "name",
-								"start": 14,
-								"end": 18,
-								"name": {
-									"start": 14,
-									"end": 18,
-									"type": "IDENTIFIER",
-									"lexeme": "name"
-								},
-								"equals": null,
-								"hasInitializer": false,
-								"documentationComment": null,
-								"endToken": {
-									"start": 14,
-									"end": 18,
-									"type": "IDENTIFIER",
-									"lexeme": "name"
-								},
-								"firstTokenAfterCommentAndMetadata": {
-									"start": 14,
-									"end": 18,
-									"type": "IDENTIFIER",
-									"lexeme": "name"
-								},
-								"initializer": null,
-								"isConst": false,
-								"isFinal": false,
-								"isLate": false
-							}
-						],
-						"documentationComment": null,
-						"metadata": [],
-						"sortedCommentAndAnnotations": []
-					}
-				}
-			]
-		}
-	},
-	"module": null
+  "start": 30,
+  "end": 57,
+  "class": "Root",
+  "fragment": {
+    "start": 30,
+    "end": 57,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 30,
+        "end": 32,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 32,
+        "end": 57,
+        "class": "RegularElement",
+        "name": "input",
+        "attributes": [
+          {
+            "start": 39,
+            "end": 56,
+            "class": "BindDirective",
+            "name": "value",
+            "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "name",
+              "start": 51,
+              "end": 55,
+              "token": {
+                "start": 51,
+                "end": 55,
+                "type": "IDENTIFIER",
+                "lexeme": "name"
+              },
+              "ancestorCascade": null,
+              "beginToken": {
+                "start": 51,
+                "end": 55,
+                "type": "IDENTIFIER",
+                "lexeme": "name"
+              },
+              "endToken": {
+                "start": 51,
+                "end": 55,
+                "type": "IDENTIFIER",
+                "lexeme": "name"
+              },
+              "isQualified": "@error { Null check operator used on a null value }",
+              "isSynthetic": false,
+              "name": "name"
+            }
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 30,
+    "class": "InstanceScript",
+    "content": {
+      "start": 8,
+      "end": 21,
+      "class": "ScriptContent",
+      "content": "\n  var name;\n"
+    },
+    "body": [
+      {
+        "@class": "VariableDeclarationStatement",
+        "@toString": "var name;",
+        "start": 11,
+        "end": 20,
+        "semicolon": {
+          "start": 19,
+          "end": 20,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "beginToken": {
+          "start": 11,
+          "end": 14,
+          "type": "VAR",
+          "lexeme": "var"
+        },
+        "endToken": {
+          "start": 19,
+          "end": 20,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "variables": {
+          "@class": "VariableDeclarationList",
+          "@toString": "var name",
+          "start": 11,
+          "end": 19,
+          "keyword": {
+            "start": 11,
+            "end": 14,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "lateKeyword": null,
+          "endToken": {
+            "start": 15,
+            "end": 19,
+            "type": "IDENTIFIER",
+            "lexeme": "name"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 11,
+            "end": 14,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
+          "variables": [
+            {
+              "@class": "VariableDeclaration",
+              "@toString": "name",
+              "start": 15,
+              "end": 19,
+              "name": {
+                "start": 15,
+                "end": 19,
+                "type": "IDENTIFIER",
+                "lexeme": "name"
+              },
+              "equals": null,
+              "hasInitializer": false,
+              "documentationComment": null,
+              "endToken": {
+                "start": 15,
+                "end": 19,
+                "type": "IDENTIFIER",
+                "lexeme": "name"
+              },
+              "firstTokenAfterCommentAndMetadata": {
+                "start": 15,
+                "end": 19,
+                "type": "IDENTIFIER",
+                "lexeme": "name"
+              },
+              "initializer": null,
+              "isConst": false,
+              "isFinal": false,
+              "isLate": false
+            }
+          ],
+          "documentationComment": null,
+          "metadata": [],
+          "sortedCommentAndAnnotations": []
+        }
+      }
+    ]
+  },
+  "module": null,
+  "style": null,
+  "options": null
 }

@@ -1,65 +1,74 @@
 {
-	"html": {
-		"start": 0,
-		"end": 43,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 43,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 5,
-						"end": 36,
-						"type": "StyleDirective",
-						"name": "color",
-						"modifiers": [
-							"important"
-						],
-						"values": [
-							{
-								"start": 27,
-								"end": 36,
-								"class": "MustacheTag",
-								"expression": {
-									"@class": "SimpleIdentifier",
-									"@toString": "myColor",
-									"start": 28,
-									"end": 35,
-									"token": {
-										"start": 28,
-										"end": 35,
-										"type": "IDENTIFIER",
-										"lexeme": "myColor"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 28,
-										"end": 35,
-										"type": "IDENTIFIER",
-										"lexeme": "myColor"
-									},
-									"endToken": {
-										"start": 28,
-										"end": 35,
-										"type": "IDENTIFIER",
-										"lexeme": "myColor"
-									},
-									"isQualified": "@error { Null check operator used on a null value }",
-									"isSynthetic": false,
-									"name": "myColor"
-								}
-							}
-						]
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 43,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 43,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 43,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 36,
+            "class": "StyleDirective",
+            "name": "color",
+            "value": [
+              {
+                "start": 27,
+                "end": 36,
+                "class": "ExpressionTag",
+                "expression": {
+                  "@class": "SimpleIdentifier",
+                  "@toString": "myColor",
+                  "start": 28,
+                  "end": 35,
+                  "token": {
+                    "start": 28,
+                    "end": 35,
+                    "type": "IDENTIFIER",
+                    "lexeme": "myColor"
+                  },
+                  "ancestorCascade": null,
+                  "beginToken": {
+                    "start": 28,
+                    "end": 35,
+                    "type": "IDENTIFIER",
+                    "lexeme": "myColor"
+                  },
+                  "endToken": {
+                    "start": 28,
+                    "end": 35,
+                    "type": "IDENTIFIER",
+                    "lexeme": "myColor"
+                  },
+                  "isQualified": "@error { Null check operator used on a null value }",
+                  "isSynthetic": false,
+                  "name": "myColor"
+                }
+              }
+            ],
+            "modifiers": [
+              "important"
+            ]
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

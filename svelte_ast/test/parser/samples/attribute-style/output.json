@@ -1,44 +1,54 @@
 {
-	"html": {
-		"start": 0,
-		"end": 34,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 34,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 5,
-						"end": 24,
-						"class": "Attribute",
-						"name": "style",
-						"values": [
-							{
-								"start": 12,
-								"end": 23,
-								"class": "Text",
-								"raw": "color: red;",
-								"data": "color: red;"
-							}
-						]
-					}
-				],
-				"children": [
-					{
-						"start": 25,
-						"end": 28,
-						"class": "Text",
-						"raw": "red",
-						"data": "red"
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 34,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 34,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 34,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 24,
+            "class": "Attribute",
+            "name": "style",
+            "value": [
+              {
+                "start": 12,
+                "end": 23,
+                "class": "Text",
+                "raw": "color: red;",
+                "data": "color: red;"
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": 25,
+          "end": 28,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 25,
+              "end": 28,
+              "class": "Text",
+              "raw": "red",
+              "data": "red"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

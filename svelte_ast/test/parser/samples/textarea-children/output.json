@@ -1,68 +1,77 @@
 {
-	"html": {
-		"start": 0,
-		"end": 61,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 61,
-				"class": "Element",
-				"name": "textarea",
-				"attributes": [],
-				"children": [
-					{
-						"start": 10,
-						"end": 40,
-						"class": "Text",
-						"raw": "\n\t<p>not actually an element. ",
-						"data": "\n\t<p>not actually an element. "
-					},
-					{
-						"start": 40,
-						"end": 45,
-						"class": "MustacheTag",
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "foo",
-							"start": 41,
-							"end": 44,
-							"token": {
-								"start": 41,
-								"end": 44,
-								"type": "IDENTIFIER",
-								"lexeme": "foo"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 41,
-								"end": 44,
-								"type": "IDENTIFIER",
-								"lexeme": "foo"
-							},
-							"endToken": {
-								"start": 41,
-								"end": 44,
-								"type": "IDENTIFIER",
-								"lexeme": "foo"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "foo"
-						}
-					},
-					{
-						"start": 45,
-						"end": 50,
-						"class": "Text",
-						"raw": "</p>\n",
-						"data": "</p>\n"
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 62,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 62,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 62,
+        "class": "RegularElement",
+        "name": "textarea",
+        "attributes": [],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 10,
+              "end": 41,
+              "class": "Text",
+              "raw": "\n  <p>not actually an element. ",
+              "data": "\n  <p>not actually an element. "
+            },
+            {
+              "start": 41,
+              "end": 46,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleIdentifier",
+                "@toString": "foo",
+                "start": 42,
+                "end": 45,
+                "token": {
+                  "start": 42,
+                  "end": 45,
+                  "type": "IDENTIFIER",
+                  "lexeme": "foo"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 42,
+                  "end": 45,
+                  "type": "IDENTIFIER",
+                  "lexeme": "foo"
+                },
+                "endToken": {
+                  "start": 42,
+                  "end": 45,
+                  "type": "IDENTIFIER",
+                  "lexeme": "foo"
+                },
+                "isQualified": "@error { Null check operator used on a null value }",
+                "isSynthetic": false,
+                "name": "foo"
+              }
+            },
+            {
+              "start": 46,
+              "end": 51,
+              "class": "Text",
+              "raw": "</p>\n",
+              "data": "</p>\n"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

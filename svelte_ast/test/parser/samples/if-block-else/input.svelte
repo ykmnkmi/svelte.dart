@@ -1,5 +1,5 @@
 {#if foo}
-	<p>foo</p>
+  <p>foo</p>
 {:else}
-	<p>not foo</p>
+  <p>not foo</p>
 {/if}

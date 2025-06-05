@@ -1,93 +1,112 @@
 {
-	"html": {
-		"start": 0,
-		"end": 65,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 65,
-				"class": "Element",
-				"name": "h1",
-				"attributes": [],
-				"children": [
-					{
-						"start": 4,
-						"end": 10,
-						"class": "Text",
-						"raw": "Hello ",
-						"data": "Hello "
-					},
-					{
-						"start": 10,
-						"end": 35,
-						"class": "Element",
-						"name": "strong",
-						"attributes": [],
-						"children": [
-							{
-								"start": 18,
-								"end": 24,
-								"class": "MustacheTag",
-								"expression": {
-									"@class": "SimpleIdentifier",
-									"@toString": "name",
-									"start": 19,
-									"end": 23,
-									"token": {
-										"start": 19,
-										"end": 23,
-										"type": "IDENTIFIER",
-										"lexeme": "name"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 19,
-										"end": 23,
-										"type": "IDENTIFIER",
-										"lexeme": "name"
-									},
-									"endToken": {
-										"start": 19,
-										"end": 23,
-										"type": "IDENTIFIER",
-										"lexeme": "name"
-									},
-									"isQualified": "@error { Null check operator used on a null value }",
-									"isSynthetic": false,
-									"name": "name"
-								}
-							},
-							{
-								"start": 24,
-								"end": 26,
-								"class": "Text",
-								"raw": "! ",
-								"data": "! "
-							}
-						]
-					},
-					{
-						"start": 35,
-						"end": 60,
-						"class": "Element",
-						"name": "span",
-						"attributes": [],
-						"children": [
-							{
-								"start": 41,
-								"end": 53,
-								"class": "Text",
-								"raw": "How are you?",
-								"data": "How are you?"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 65,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 65,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 65,
+        "class": "RegularElement",
+        "name": "h1",
+        "attributes": [],
+        "fragment": {
+          "start": 4,
+          "end": 60,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 4,
+              "end": 10,
+              "class": "Text",
+              "raw": "Hello ",
+              "data": "Hello "
+            },
+            {
+              "start": 10,
+              "end": 35,
+              "class": "RegularElement",
+              "name": "strong",
+              "attributes": [],
+              "fragment": {
+                "start": 18,
+                "end": 26,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 18,
+                    "end": 24,
+                    "class": "ExpressionTag",
+                    "expression": {
+                      "@class": "SimpleIdentifier",
+                      "@toString": "name",
+                      "start": 19,
+                      "end": 23,
+                      "token": {
+                        "start": 19,
+                        "end": 23,
+                        "type": "IDENTIFIER",
+                        "lexeme": "name"
+                      },
+                      "ancestorCascade": null,
+                      "beginToken": {
+                        "start": 19,
+                        "end": 23,
+                        "type": "IDENTIFIER",
+                        "lexeme": "name"
+                      },
+                      "endToken": {
+                        "start": 19,
+                        "end": 23,
+                        "type": "IDENTIFIER",
+                        "lexeme": "name"
+                      },
+                      "isQualified": "@error { Null check operator used on a null value }",
+                      "isSynthetic": false,
+                      "name": "name"
+                    }
+                  },
+                  {
+                    "start": 24,
+                    "end": 26,
+                    "class": "Text",
+                    "raw": "! ",
+                    "data": "! "
+                  }
+                ]
+              }
+            },
+            {
+              "start": 35,
+              "end": 60,
+              "class": "RegularElement",
+              "name": "span",
+              "attributes": [],
+              "fragment": {
+                "start": 41,
+                "end": 53,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 41,
+                    "end": 53,
+                    "class": "Text",
+                    "raw": "How are you?",
+                    "data": "How are you?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

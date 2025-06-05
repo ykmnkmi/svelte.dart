@@ -14,13 +14,12 @@ const String content = '''
 </script>
 <button on:click={onClick}>
   Count: {count}
-</button>
-''';
+</button>''';
 
 void main() {
   // Create an AST tree by parsing an SvelteDart template.
-  SvelteAst ast = parse(content);
+  Root root = parse(content);
 
   // Print to console.
-  print(const JsonEncoder.withIndent('  ').convert(ast.toJson()));
+  print(const JsonEncoder.withIndent('  ').convert(root.toJson()));
 }

@@ -1,56 +1,64 @@
 {
-	"html": {
-		"start": 0,
-		"end": 29,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 29,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 5,
-						"end": 22,
-						"type": "Class",
-						"name": "foo",
-						"modifiers": [],
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "isFoo",
-							"start": 16,
-							"end": 21,
-							"token": {
-								"start": 16,
-								"end": 21,
-								"type": "IDENTIFIER",
-								"lexeme": "isFoo"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 16,
-								"end": 21,
-								"type": "IDENTIFIER",
-								"lexeme": "isFoo"
-							},
-							"endToken": {
-								"start": 16,
-								"end": 21,
-								"type": "IDENTIFIER",
-								"lexeme": "isFoo"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "isFoo"
-						}
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 29,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 29,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 29,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 22,
+            "class": "ClassDirective",
+            "name": "foo",
+            "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "isFoo",
+              "start": 16,
+              "end": 21,
+              "token": {
+                "start": 16,
+                "end": 21,
+                "type": "IDENTIFIER",
+                "lexeme": "isFoo"
+              },
+              "ancestorCascade": null,
+              "beginToken": {
+                "start": 16,
+                "end": 21,
+                "type": "IDENTIFIER",
+                "lexeme": "isFoo"
+              },
+              "endToken": {
+                "start": 16,
+                "end": 21,
+                "type": "IDENTIFIER",
+                "lexeme": "isFoo"
+              },
+              "isQualified": "@error { Null check operator used on a null value }",
+              "isSynthetic": false,
+              "name": "isFoo"
+            }
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

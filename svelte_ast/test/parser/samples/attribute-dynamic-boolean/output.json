@@ -1,62 +1,72 @@
 {
-	"html": {
-		"start": 0,
-		"end": 41,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 41,
-				"class": "Element",
-				"name": "textarea",
-				"attributes": [
-					{
-						"start": 10,
-						"end": 29,
-						"class": "Attribute",
-						"name": "readonly",
-						"values": [
-							{
-								"start": 19,
-								"end": 29,
-								"class": "MustacheTag",
-								"expression": {
-									"@class": "SimpleIdentifier",
-									"@toString": "readonly",
-									"start": 20,
-									"end": 28,
-									"token": {
-										"start": 20,
-										"end": 28,
-										"type": "IDENTIFIER",
-										"lexeme": "readonly"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 20,
-										"end": 28,
-										"type": "IDENTIFIER",
-										"lexeme": "readonly"
-									},
-									"endToken": {
-										"start": 20,
-										"end": 28,
-										"type": "IDENTIFIER",
-										"lexeme": "readonly"
-									},
-									"isQualified": "@error { Null check operator used on a null value }",
-									"isSynthetic": false,
-									"name": "readonly"
-								}
-							}
-						]
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 41,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 41,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 41,
+        "class": "RegularElement",
+        "name": "textarea",
+        "attributes": [
+          {
+            "start": 10,
+            "end": 29,
+            "class": "Attribute",
+            "name": "readonly",
+            "value": [
+              {
+                "start": 19,
+                "end": 29,
+                "class": "ExpressionTag",
+                "expression": {
+                  "@class": "SimpleIdentifier",
+                  "@toString": "readonly",
+                  "start": 20,
+                  "end": 28,
+                  "token": {
+                    "start": 20,
+                    "end": 28,
+                    "type": "IDENTIFIER",
+                    "lexeme": "readonly"
+                  },
+                  "ancestorCascade": null,
+                  "beginToken": {
+                    "start": 20,
+                    "end": 28,
+                    "type": "IDENTIFIER",
+                    "lexeme": "readonly"
+                  },
+                  "endToken": {
+                    "start": 20,
+                    "end": 28,
+                    "type": "IDENTIFIER",
+                    "lexeme": "readonly"
+                  },
+                  "isQualified": "@error { Null check operator used on a null value }",
+                  "isSynthetic": false,
+                  "name": "readonly"
+                }
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

@@ -1,0 +1,220 @@
+{
+  "start": 69,
+  "end": 93,
+  "class": "Root",
+  "fragment": {
+    "start": 69,
+    "end": 93,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 69,
+        "end": 71,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 71,
+        "end": 93,
+        "class": "RegularElement",
+        "name": "h1",
+        "attributes": [],
+        "fragment": {
+          "start": 75,
+          "end": 88,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 75,
+              "end": 81,
+              "class": "Text",
+              "raw": "Hello ",
+              "data": "Hello "
+            },
+            {
+              "start": 81,
+              "end": 87,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleIdentifier",
+                "@toString": "name",
+                "start": 82,
+                "end": 86,
+                "token": {
+                  "start": 82,
+                  "end": 86,
+                  "type": "IDENTIFIER",
+                  "lexeme": "name"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 82,
+                  "end": 86,
+                  "type": "IDENTIFIER",
+                  "lexeme": "name"
+                },
+                "endToken": {
+                  "start": 82,
+                  "end": 86,
+                  "type": "IDENTIFIER",
+                  "lexeme": "name"
+                },
+                "isQualified": "@error { Null check operator used on a null value }",
+                "isSynthetic": false,
+                "name": "name"
+              }
+            },
+            {
+              "start": 87,
+              "end": 88,
+              "class": "Text",
+              "raw": "!",
+              "data": "!"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 69,
+    "class": "InstanceScript",
+    "content": {
+      "start": 37,
+      "end": 60,
+      "class": "ScriptContent",
+      "content": "\n  var name = 'world';\n"
+    },
+    "body": [
+      {
+        "@class": "VariableDeclarationStatement",
+        "@toString": "var name = 'world';",
+        "start": 40,
+        "end": 59,
+        "semicolon": {
+          "start": 58,
+          "end": 59,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "beginToken": {
+          "start": 40,
+          "end": 43,
+          "type": "VAR",
+          "lexeme": "var"
+        },
+        "endToken": {
+          "start": 58,
+          "end": 59,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
+        "variables": {
+          "@class": "VariableDeclarationList",
+          "@toString": "var name = 'world'",
+          "start": 40,
+          "end": 58,
+          "keyword": {
+            "start": 40,
+            "end": 43,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "lateKeyword": null,
+          "endToken": {
+            "start": 51,
+            "end": 58,
+            "type": "STRING",
+            "lexeme": "'world'"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 40,
+            "end": 43,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
+          "variables": [
+            {
+              "@class": "VariableDeclaration",
+              "@toString": "name = 'world'",
+              "start": 44,
+              "end": 58,
+              "name": {
+                "start": 44,
+                "end": 48,
+                "type": "IDENTIFIER",
+                "lexeme": "name"
+              },
+              "equals": {
+                "start": 49,
+                "end": 50,
+                "type": "EQ",
+                "lexeme": "="
+              },
+              "hasInitializer": false,
+              "documentationComment": null,
+              "endToken": {
+                "start": 51,
+                "end": 58,
+                "type": "STRING",
+                "lexeme": "'world'"
+              },
+              "firstTokenAfterCommentAndMetadata": {
+                "start": 44,
+                "end": 48,
+                "type": "IDENTIFIER",
+                "lexeme": "name"
+              },
+              "initializer": {
+                "@class": "SimpleStringLiteral",
+                "@toString": "'world'",
+                "start": 51,
+                "end": 58,
+                "literal": {
+                  "start": 51,
+                  "end": 58,
+                  "type": "STRING",
+                  "lexeme": "'world'"
+                },
+                "value": "world",
+                "beginToken": {
+                  "start": 51,
+                  "end": 58,
+                  "type": "STRING",
+                  "lexeme": "'world'"
+                },
+                "contentsEnd": 57,
+                "contentsOffset": 52,
+                "endToken": {
+                  "start": 51,
+                  "end": 58,
+                  "type": "STRING",
+                  "lexeme": "'world'"
+                },
+                "isMultiline": false,
+                "isRaw": false,
+                "isSingleQuoted": true,
+                "isSynthetic": false
+              },
+              "isConst": false,
+              "isFinal": false,
+              "isLate": false
+            }
+          ],
+          "documentationComment": null,
+          "metadata": [],
+          "sortedCommentAndAnnotations": []
+        }
+      }
+    ]
+  },
+  "module": null,
+  "style": null,
+  "options": null
+}

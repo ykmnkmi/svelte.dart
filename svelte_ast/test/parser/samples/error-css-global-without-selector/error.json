@@ -1,7 +1,0 @@
-{
-	"code": "css-syntax-error",
-	"message": ":global() must contain a selector",
-	"line": 2,
-	"column": 1,
-	"offset": 9
-}

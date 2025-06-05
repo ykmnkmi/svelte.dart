@@ -1,0 +1,344 @@
+{
+  "start": 17,
+  "end": 103,
+  "class": "Root",
+  "fragment": {
+    "start": 17,
+    "end": 103,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 17,
+        "end": 19,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 19,
+        "end": 79,
+        "class": "SnippetBlock",
+        "expression": {
+          "@class": "SimpleIdentifier",
+          "@toString": "foo",
+          "start": 29,
+          "end": 32,
+          "token": {
+            "start": 29,
+            "end": 32,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "ancestorCascade": null,
+          "beginToken": {
+            "start": 29,
+            "end": 32,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "endToken": {
+            "start": 29,
+            "end": 32,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "isQualified": "@error { Null check operator used on a null value }",
+          "isSynthetic": false,
+          "name": "foo"
+        },
+        "parameters": [
+          {
+            "@class": "SimpleFormalParameter",
+            "@toString": "String message",
+            "start": 33,
+            "end": 47,
+            "keyword": null,
+            "endToken": {
+              "start": 40,
+              "end": 47,
+              "type": "IDENTIFIER",
+              "lexeme": "message"
+            },
+            "firstTokenAfterCommentAndMetadata": {
+              "start": 33,
+              "end": 39,
+              "type": "IDENTIFIER",
+              "lexeme": "String"
+            },
+            "isConst": false,
+            "isExplicitlyTyped": true,
+            "isFinal": false,
+            "type": {
+              "@class": "NamedType",
+              "@toString": "String",
+              "start": 33,
+              "end": 39,
+              "name2": {
+                "start": 33,
+                "end": 39,
+                "type": "IDENTIFIER",
+                "lexeme": "String"
+              },
+              "typeArguments": null,
+              "question": null,
+              "beginToken": {
+                "start": 33,
+                "end": 39,
+                "type": "IDENTIFIER",
+                "lexeme": "String"
+              },
+              "endToken": {
+                "start": 33,
+                "end": 39,
+                "type": "IDENTIFIER",
+                "lexeme": "String"
+              },
+              "importPrefix": null,
+              "isDeferred": false,
+              "isSynthetic": false
+            }
+          }
+        ],
+        "body": {
+          "start": 49,
+          "end": 69,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 49,
+              "end": 52,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 52,
+              "end": 68,
+              "class": "RegularElement",
+              "name": "p",
+              "attributes": [],
+              "fragment": {
+                "start": 55,
+                "end": 64,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 55,
+                    "end": 64,
+                    "class": "ExpressionTag",
+                    "expression": {
+                      "@class": "SimpleIdentifier",
+                      "@toString": "message",
+                      "start": 56,
+                      "end": 63,
+                      "token": {
+                        "start": 56,
+                        "end": 63,
+                        "type": "IDENTIFIER",
+                        "lexeme": "message"
+                      },
+                      "ancestorCascade": null,
+                      "beginToken": {
+                        "start": 56,
+                        "end": 63,
+                        "type": "IDENTIFIER",
+                        "lexeme": "message"
+                      },
+                      "endToken": {
+                        "start": 56,
+                        "end": 63,
+                        "type": "IDENTIFIER",
+                        "lexeme": "message"
+                      },
+                      "isQualified": "@error { Null check operator used on a null value }",
+                      "isSynthetic": false,
+                      "name": "message"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "start": 68,
+              "end": 69,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        }
+      },
+      {
+        "start": 79,
+        "end": 81,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 81,
+        "end": 103,
+        "class": "RenderTag",
+        "expression": {
+          "@class": "MethodInvocation",
+          "@toString": "foo(message)",
+          "start": 90,
+          "end": 102,
+          "operator": null,
+          "beginToken": {
+            "start": 90,
+            "end": 93,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "endToken": {
+            "start": 101,
+            "end": 102,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "function": {
+            "@class": "SimpleIdentifier",
+            "@toString": "foo",
+            "start": 90,
+            "end": 93,
+            "token": {
+              "start": 90,
+              "end": 93,
+              "type": "IDENTIFIER",
+              "lexeme": "foo"
+            },
+            "ancestorCascade": null,
+            "beginToken": {
+              "start": 90,
+              "end": 93,
+              "type": "IDENTIFIER",
+              "lexeme": "foo"
+            },
+            "endToken": {
+              "start": 90,
+              "end": 93,
+              "type": "IDENTIFIER",
+              "lexeme": "foo"
+            },
+            "isQualified": false,
+            "isSynthetic": false,
+            "name": "foo"
+          },
+          "isCascaded": false,
+          "isNullAware": false,
+          "methodName": {
+            "@class": "SimpleIdentifier",
+            "@toString": "foo",
+            "start": 90,
+            "end": 93,
+            "token": {
+              "start": 90,
+              "end": 93,
+              "type": "IDENTIFIER",
+              "lexeme": "foo"
+            },
+            "ancestorCascade": null,
+            "beginToken": {
+              "start": 90,
+              "end": 93,
+              "type": "IDENTIFIER",
+              "lexeme": "foo"
+            },
+            "endToken": {
+              "start": 90,
+              "end": 93,
+              "type": "IDENTIFIER",
+              "lexeme": "foo"
+            },
+            "isQualified": false,
+            "isSynthetic": false,
+            "name": "foo"
+          },
+          "realTarget": null,
+          "target": null,
+          "nullShortingTermination": "@seen { self }",
+          "argumentList": {
+            "@class": "ArgumentList",
+            "@toString": "(message)",
+            "start": 93,
+            "end": 102,
+            "leftParenthesis": {
+              "start": 93,
+              "end": 94,
+              "type": "OPEN_PAREN",
+              "lexeme": "("
+            },
+            "rightParenthesis": {
+              "start": 101,
+              "end": 102,
+              "type": "CLOSE_PAREN",
+              "lexeme": ")"
+            },
+            "arguments": [
+              {
+                "@class": "SimpleIdentifier",
+                "@toString": "message",
+                "start": 94,
+                "end": 101,
+                "token": {
+                  "start": 94,
+                  "end": 101,
+                  "type": "IDENTIFIER",
+                  "lexeme": "message"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 94,
+                  "end": 101,
+                  "type": "IDENTIFIER",
+                  "lexeme": "message"
+                },
+                "endToken": {
+                  "start": 94,
+                  "end": 101,
+                  "type": "IDENTIFIER",
+                  "lexeme": "message"
+                },
+                "isQualified": false,
+                "isSynthetic": false,
+                "name": "message"
+              }
+            ],
+            "beginToken": {
+              "start": 93,
+              "end": 94,
+              "type": "OPEN_PAREN",
+              "lexeme": "("
+            },
+            "endToken": {
+              "start": 101,
+              "end": 102,
+              "type": "CLOSE_PAREN",
+              "lexeme": ")"
+            },
+            "isSynthetic": false,
+            "length": 9,
+            "offset": 93
+          },
+          "typeArguments": null
+        }
+      }
+    ]
+  },
+  "instance": {
+    "start": 0,
+    "end": 17,
+    "class": "InstanceScript",
+    "content": {
+      "start": 8,
+      "end": 8,
+      "class": "ScriptContent",
+      "content": ""
+    },
+    "body": []
+  },
+  "module": null,
+  "style": null,
+  "options": null
+}

@@ -1,234 +1,146 @@
 {
-	"html": {
-		"start": 0,
-		"end": 89,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 89,
-				"class": "IfBlock",
-				"expression": {
-					"@class": "BinaryExpression",
-					"@toString": "x > 10",
-					"start": 5,
-					"end": 11,
-					"operator": {
-						"start": 7,
-						"end": 8,
-						"type": "GT",
-						"lexeme": ">"
-					},
-					"beginToken": {
-						"start": 5,
-						"end": 6,
-						"type": "IDENTIFIER",
-						"lexeme": "x"
-					},
-					"endToken": {
-						"start": 9,
-						"end": 11,
-						"type": "INT",
-						"lexeme": "10"
-					},
-					"leftOperand": {
-						"@class": "SimpleIdentifier",
-						"@toString": "x",
-						"start": 5,
-						"end": 6,
-						"token": {
-							"start": 5,
-							"end": 6,
-							"type": "IDENTIFIER",
-							"lexeme": "x"
-						},
-						"ancestorCascade": null,
-						"beginToken": {
-							"start": 5,
-							"end": 6,
-							"type": "IDENTIFIER",
-							"lexeme": "x"
-						},
-						"endToken": {
-							"start": 5,
-							"end": 6,
-							"type": "IDENTIFIER",
-							"lexeme": "x"
-						},
-						"isQualified": false,
-						"isSynthetic": false,
-						"name": "x"
-					},
-					"rightOperand": {
-						"@class": "IntegerLiteral",
-						"@toString": "10",
-						"start": 9,
-						"end": 11,
-						"literal": {
-							"start": 9,
-							"end": 11,
-							"type": "INT",
-							"lexeme": "10"
-						},
-						"value": 10,
-						"beginToken": {
-							"start": 9,
-							"end": 11,
-							"type": "INT",
-							"lexeme": "10"
-						},
-						"endToken": {
-							"start": 9,
-							"end": 11,
-							"type": "INT",
-							"lexeme": "10"
-						},
-						"immediatelyNegated": false
-					},
-					"inConstantContext": false,
-					"isAssignable": false,
-					"unParenthesized": "@seen { self }"
-				},
-				"casePattern": null,
-				"whenExpression": null,
-				"children": [
-					{
-						"start": 14,
-						"end": 41,
-						"class": "Element",
-						"name": "p",
-						"attributes": [],
-						"children": [
-							{
-								"start": 17,
-								"end": 37,
-								"class": "Text",
-								"raw": "x is greater than 10",
-								"data": "x is greater than 10"
-							}
-						]
-					}
-				],
-				"elseIf": false,
-				"elseBlock": {
-					"start": 42,
-					"end": 84,
-					"class": "ElseBlock",
-					"children": [
-						{
-							"start": 42,
-							"end": 84,
-							"class": "IfBlock",
-							"expression": {
-								"@class": "BinaryExpression",
-								"@toString": "x < 5",
-								"start": 52,
-								"end": 57,
-								"operator": {
-									"start": 54,
-									"end": 55,
-									"type": "LT",
-									"lexeme": "<"
-								},
-								"beginToken": {
-									"start": 52,
-									"end": 53,
-									"type": "IDENTIFIER",
-									"lexeme": "x"
-								},
-								"endToken": {
-									"start": 56,
-									"end": 57,
-									"type": "INT",
-									"lexeme": "5"
-								},
-								"leftOperand": {
-									"@class": "SimpleIdentifier",
-									"@toString": "x",
-									"start": 52,
-									"end": 53,
-									"token": {
-										"start": 52,
-										"end": 53,
-										"type": "IDENTIFIER",
-										"lexeme": "x"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 52,
-										"end": 53,
-										"type": "IDENTIFIER",
-										"lexeme": "x"
-									},
-									"endToken": {
-										"start": 52,
-										"end": 53,
-										"type": "IDENTIFIER",
-										"lexeme": "x"
-									},
-									"isQualified": false,
-									"isSynthetic": false,
-									"name": "x"
-								},
-								"rightOperand": {
-									"@class": "IntegerLiteral",
-									"@toString": "5",
-									"start": 56,
-									"end": 57,
-									"literal": {
-										"start": 56,
-										"end": 57,
-										"type": "INT",
-										"lexeme": "5"
-									},
-									"value": 5,
-									"beginToken": {
-										"start": 56,
-										"end": 57,
-										"type": "INT",
-										"lexeme": "5"
-									},
-									"endToken": {
-										"start": 56,
-										"end": 57,
-										"type": "INT",
-										"lexeme": "5"
-									},
-									"immediatelyNegated": false
-								},
-								"inConstantContext": false,
-								"isAssignable": false,
-								"unParenthesized": "@seen { self }"
-							},
-							"casePattern": null,
-							"whenExpression": null,
-							"children": [
-								{
-									"start": 60,
-									"end": 83,
-									"class": "Element",
-									"name": "p",
-									"attributes": [],
-									"children": [
-										{
-											"start": 63,
-											"end": 79,
-											"class": "Text",
-											"raw": "x is less than 5",
-											"data": "x is less than 5"
-										}
-									]
-								}
-							],
-							"elseIf": true,
-							"elseBlock": null
-						}
-					]
-				}
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 91,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 91,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 91,
+        "class": "IfBlock",
+        "elseIf": false,
+        "test": {
+          "@class": "BinaryExpression",
+          "@toString": "x > 10",
+          "start": 5,
+          "end": 11,
+          "operator": {
+            "start": 7,
+            "end": 8,
+            "type": "GT",
+            "lexeme": ">"
+          },
+          "beginToken": {
+            "start": 5,
+            "end": 6,
+            "type": "IDENTIFIER",
+            "lexeme": "x"
+          },
+          "endToken": {
+            "start": 9,
+            "end": 11,
+            "type": "INT",
+            "lexeme": "10"
+          },
+          "leftOperand": {
+            "@class": "SimpleIdentifier",
+            "@toString": "x",
+            "start": 5,
+            "end": 6,
+            "token": {
+              "start": 5,
+              "end": 6,
+              "type": "IDENTIFIER",
+              "lexeme": "x"
+            },
+            "ancestorCascade": null,
+            "beginToken": {
+              "start": 5,
+              "end": 6,
+              "type": "IDENTIFIER",
+              "lexeme": "x"
+            },
+            "endToken": {
+              "start": 5,
+              "end": 6,
+              "type": "IDENTIFIER",
+              "lexeme": "x"
+            },
+            "isQualified": false,
+            "isSynthetic": false,
+            "name": "x"
+          },
+          "rightOperand": {
+            "@class": "IntegerLiteral",
+            "@toString": "10",
+            "start": 9,
+            "end": 11,
+            "literal": {
+              "start": 9,
+              "end": 11,
+              "type": "INT",
+              "lexeme": "10"
+            },
+            "value": 10,
+            "beginToken": {
+              "start": 9,
+              "end": 11,
+              "type": "INT",
+              "lexeme": "10"
+            },
+            "endToken": {
+              "start": 9,
+              "end": 11,
+              "type": "INT",
+              "lexeme": "10"
+            },
+            "immediatelyNegated": false
+          },
+          "inConstantContext": false,
+          "isAssignable": false,
+          "unParenthesized": "@seen { self }"
+        },
+        "consequent": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 12,
+              "end": 15,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 15,
+              "end": 42,
+              "class": "RegularElement",
+              "name": "p",
+              "attributes": [],
+              "fragment": {
+                "start": 18,
+                "end": 38,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 18,
+                    "end": 38,
+                    "class": "Text",
+                    "raw": "x is greater than 10",
+                    "data": "x is greater than 10"
+                  }
+                ]
+              }
+            },
+            {
+              "start": 42,
+              "end": 43,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "alternate": null
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

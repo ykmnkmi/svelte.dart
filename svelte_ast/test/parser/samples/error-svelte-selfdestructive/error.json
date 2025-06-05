@@ -1,7 +1,0 @@
-{
-	"code": "invalid-tag-name",
-	"message": "Valid <svelte:...> tag names are svelte:head, svelte:options, svelte:window, svelte:document, svelte:body, svelte:self, svelte:component, svelte:fragment, svelte:element",
-	"line": 2,
-	"column": 2,
-	"offset": 10
-}

@@ -1,56 +1,64 @@
 {
-	"html": {
-		"start": 0,
-		"end": 29,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 29,
-				"class": "Element",
-				"name": "input",
-				"attributes": [
-					{
-						"start": 7,
-						"end": 28,
-						"type": "Action",
-						"name": "tooltip",
-						"modifiers": [],
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "message",
-							"start": 20,
-							"end": 27,
-							"token": {
-								"start": 20,
-								"end": 27,
-								"type": "IDENTIFIER",
-								"lexeme": "message"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 20,
-								"end": 27,
-								"type": "IDENTIFIER",
-								"lexeme": "message"
-							},
-							"endToken": {
-								"start": 20,
-								"end": 27,
-								"type": "IDENTIFIER",
-								"lexeme": "message"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "message"
-						}
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 29,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 29,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 29,
+        "class": "RegularElement",
+        "name": "input",
+        "attributes": [
+          {
+            "start": 7,
+            "end": 28,
+            "class": "UseDirective",
+            "name": "tooltip",
+            "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "message",
+              "start": 20,
+              "end": 27,
+              "token": {
+                "start": 20,
+                "end": 27,
+                "type": "IDENTIFIER",
+                "lexeme": "message"
+              },
+              "ancestorCascade": null,
+              "beginToken": {
+                "start": 20,
+                "end": 27,
+                "type": "IDENTIFIER",
+                "lexeme": "message"
+              },
+              "endToken": {
+                "start": 20,
+                "end": 27,
+                "type": "IDENTIFIER",
+                "lexeme": "message"
+              },
+              "isQualified": "@error { Null check operator used on a null value }",
+              "isSynthetic": false,
+              "name": "message"
+            }
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

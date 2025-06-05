@@ -1,64 +1,73 @@
 {
-	"html": {
-		"start": 0,
-		"end": 38,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 38,
-				"class": "Element",
-				"name": "button",
-				"attributes": [
-					{
-						"start": 8,
-						"end": 23,
-						"type": "EventHandler",
-						"name": "click",
-						"modifiers": [],
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "foo",
-							"start": 19,
-							"end": 22,
-							"token": {
-								"start": 19,
-								"end": 22,
-								"type": "IDENTIFIER",
-								"lexeme": "foo"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 19,
-								"end": 22,
-								"type": "IDENTIFIER",
-								"lexeme": "foo"
-							},
-							"endToken": {
-								"start": 19,
-								"end": 22,
-								"type": "IDENTIFIER",
-								"lexeme": "foo"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "foo"
-						}
-					}
-				],
-				"children": [
-					{
-						"start": 24,
-						"end": 29,
-						"class": "Text",
-						"raw": "Click",
-						"data": "Click"
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 38,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 38,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 38,
+        "class": "RegularElement",
+        "name": "button",
+        "attributes": [
+          {
+            "start": 8,
+            "end": 23,
+            "class": "OnDirective",
+            "name": "click",
+            "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "foo",
+              "start": 19,
+              "end": 22,
+              "token": {
+                "start": 19,
+                "end": 22,
+                "type": "IDENTIFIER",
+                "lexeme": "foo"
+              },
+              "ancestorCascade": null,
+              "beginToken": {
+                "start": 19,
+                "end": 22,
+                "type": "IDENTIFIER",
+                "lexeme": "foo"
+              },
+              "endToken": {
+                "start": 19,
+                "end": 22,
+                "type": "IDENTIFIER",
+                "lexeme": "foo"
+              },
+              "isQualified": "@error { Null check operator used on a null value }",
+              "isSynthetic": false,
+              "name": "foo"
+            },
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": 24,
+          "end": 29,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 24,
+              "end": 29,
+              "class": "Text",
+              "raw": "Click",
+              "data": "Click"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

@@ -5,11 +5,11 @@ import 'dart:io' show Directory, File, FileSystemEntity;
 
 import 'package:collection/collection.dart' show DeepCollectionEquality;
 import 'package:svelte_ast/mirror_mapper.dart' show mapper;
-import 'package:svelte_ast/svelte_ast.dart' show ParseError, SvelteAst, parse;
+import 'package:svelte_ast/svelte_ast.dart' show ParseError, Root, parse;
 
 const DeepCollectionEquality equality = DeepCollectionEquality.unordered();
 
-const JsonEncoder encoder = JsonEncoder.withIndent('\t');
+const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
 void main() {
   Uri uri = Uri(path: 'test/parser/samples');
@@ -25,12 +25,11 @@ void generate(FileSystemEntity sample) {
   String content;
 
   Map<String, Object?>? options;
-  SvelteAst ast;
+  Root root;
 
   Object? actual, expected;
 
   try {
-    bool skipStyle = false;
     file = File.fromUri(sample.uri.resolve('options.json'));
 
     if (file.existsSync()) {
@@ -39,15 +38,15 @@ void generate(FileSystemEntity sample) {
 
       if (options != null) {
         if (options.containsKey('css')) {
-          skipStyle = options['css'] == 'none';
+          throw UnimplementedError('Skip CSS.');
         }
       }
     }
 
     file = File.fromUri(sample.uri.resolve('input.svelte'));
     content = file.readAsStringSync();
-    ast = parse(content, uri: file.uri, skipStyle: skipStyle);
-    actual = ast.toJson(mapper);
+    root = parse(content, uri: file.uri);
+    actual = root.toJson(mapper);
 
     file = File.fromUri(sample.uri.resolve('output.json'));
 
@@ -73,7 +72,6 @@ void generate(FileSystemEntity sample) {
   }
 
   if (equality.equals(actual, expected)) {
-    print('${sample.path}: not modified');
     return;
   }
 

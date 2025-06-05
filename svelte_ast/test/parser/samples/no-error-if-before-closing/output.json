@@ -1,333 +1,381 @@
 {
-	"html": {
-		"start": 0,
-		"end": 148,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 33,
-				"class": "IfBlock",
-				"expression": {
-					"@class": "BooleanLiteral",
-					"@toString": "true",
-					"start": 5,
-					"end": 9,
-					"literal": {
-						"start": 5,
-						"end": 9,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"value": true,
-					"beginToken": {
-						"start": 5,
-						"end": 9,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"endToken": {
-						"start": 5,
-						"end": 9,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"isSynthetic": false
-				},
-				"casePattern": null,
-				"whenExpression": null,
-				"children": [
-					{
-						"start": 12,
-						"end": 19,
-						"class": "Element",
-						"name": "input",
-						"attributes": [],
-						"children": []
-					}
-				],
-				"elseIf": false,
-				"elseBlock": {
-					"start": 20,
-					"end": 28,
-					"class": "ElseBlock",
-					"children": []
-				}
-			},
-			{
-				"start": 33,
-				"end": 35,
-				"class": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
-			},
-			{
-				"start": 35,
-				"end": 65,
-				"class": "IfBlock",
-				"expression": {
-					"@class": "BooleanLiteral",
-					"@toString": "true",
-					"start": 40,
-					"end": 44,
-					"literal": {
-						"start": 40,
-						"end": 44,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"value": true,
-					"beginToken": {
-						"start": 40,
-						"end": 44,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"endToken": {
-						"start": 40,
-						"end": 44,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"isSynthetic": false
-				},
-				"casePattern": null,
-				"whenExpression": null,
-				"children": [
-					{
-						"start": 47,
-						"end": 51,
-						"class": "Element",
-						"name": "br",
-						"attributes": [],
-						"children": []
-					}
-				],
-				"elseIf": false,
-				"elseBlock": {
-					"start": 52,
-					"end": 60,
-					"class": "ElseBlock",
-					"children": []
-				}
-			},
-			{
-				"start": 65,
-				"end": 67,
-				"class": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
-			},
-			{
-				"start": 67,
-				"end": 108,
-				"class": "AwaitBlock",
-				"expession": {
-					"@class": "BooleanLiteral",
-					"@toString": "true",
-					"start": 75,
-					"end": 79,
-					"literal": {
-						"start": 75,
-						"end": 79,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"value": true,
-					"beginToken": {
-						"start": 75,
-						"end": 79,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"endToken": {
-						"start": 75,
-						"end": 79,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"isSynthetic": false
-				},
-				"value": {
-					"@class": "AssignedVariablePattern",
-					"@toString": "f",
-					"start": 97,
-					"end": 98,
-					"beginToken": {
-						"start": 97,
-						"end": 98,
-						"type": "IDENTIFIER",
-						"lexeme": "f"
-					},
-					"endToken": {
-						"start": 97,
-						"end": 98,
-						"type": "IDENTIFIER",
-						"lexeme": "f"
-					},
-					"name": {
-						"start": 97,
-						"end": 98,
-						"type": "IDENTIFIER",
-						"lexeme": "f"
-					}
-				},
-				"error": null,
-				"pendingBlock": {
-					"start": 67,
-					"end": 90,
-					"class": "PendingBlock",
-					"children": [
-						{
-							"start": 80,
-							"end": 82,
-							"class": "Text",
-							"raw": "\n\t",
-							"data": "\n\t"
-						},
-						{
-							"start": 82,
-							"end": 89,
-							"class": "Element",
-							"name": "input",
-							"attributes": [],
-							"children": []
-						},
-						{
-							"start": 89,
-							"end": 90,
-							"class": "Text",
-							"raw": "\n",
-							"data": "\n"
-						}
-					]
-				},
-				"thenBlock": {
-					"start": 90,
-					"end": 100,
-					"class": "ThenBlock",
-					"children": [
-						{
-							"start": 99,
-							"end": 100,
-							"class": "Text",
-							"raw": "\n",
-							"data": "\n"
-						}
-					]
-				},
-				"catchBlock": null
-			},
-			{
-				"start": 108,
-				"end": 110,
-				"class": "Text",
-				"raw": "\n\n",
-				"data": "\n\n"
-			},
-			{
-				"start": 110,
-				"end": 148,
-				"class": "AwaitBlock",
-				"expession": {
-					"@class": "BooleanLiteral",
-					"@toString": "true",
-					"start": 118,
-					"end": 122,
-					"literal": {
-						"start": 118,
-						"end": 122,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"value": true,
-					"beginToken": {
-						"start": 118,
-						"end": 122,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"endToken": {
-						"start": 118,
-						"end": 122,
-						"type": "TRUE",
-						"lexeme": "true"
-					},
-					"isSynthetic": false
-				},
-				"value": {
-					"@class": "AssignedVariablePattern",
-					"@toString": "f",
-					"start": 137,
-					"end": 138,
-					"beginToken": {
-						"start": 137,
-						"end": 138,
-						"type": "IDENTIFIER",
-						"lexeme": "f"
-					},
-					"endToken": {
-						"start": 137,
-						"end": 138,
-						"type": "IDENTIFIER",
-						"lexeme": "f"
-					},
-					"name": {
-						"start": 137,
-						"end": 138,
-						"type": "IDENTIFIER",
-						"lexeme": "f"
-					}
-				},
-				"error": null,
-				"pendingBlock": {
-					"start": 110,
-					"end": 130,
-					"class": "PendingBlock",
-					"children": [
-						{
-							"start": 123,
-							"end": 125,
-							"class": "Text",
-							"raw": "\n\t",
-							"data": "\n\t"
-						},
-						{
-							"start": 125,
-							"end": 129,
-							"class": "Element",
-							"name": "br",
-							"attributes": [],
-							"children": []
-						},
-						{
-							"start": 129,
-							"end": 130,
-							"class": "Text",
-							"raw": "\n",
-							"data": "\n"
-						}
-					]
-				},
-				"thenBlock": {
-					"start": 130,
-					"end": 140,
-					"class": "ThenBlock",
-					"children": [
-						{
-							"start": 139,
-							"end": 140,
-							"class": "Text",
-							"raw": "\n",
-							"data": "\n"
-						}
-					]
-				},
-				"catchBlock": null
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 152,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 152,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 34,
+        "class": "IfBlock",
+        "elseIf": false,
+        "test": {
+          "@class": "BooleanLiteral",
+          "@toString": "true",
+          "start": 5,
+          "end": 9,
+          "literal": {
+            "start": 5,
+            "end": 9,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "value": true,
+          "beginToken": {
+            "start": 5,
+            "end": 9,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "endToken": {
+            "start": 5,
+            "end": 9,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "isSynthetic": false
+        },
+        "consequent": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 10,
+              "end": 13,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 13,
+              "end": 20,
+              "class": "RegularElement",
+              "name": "input",
+              "attributes": [],
+              "fragment": {
+                "start": -1,
+                "end": -1,
+                "class": "Fragment",
+                "children": []
+              }
+            },
+            {
+              "start": 20,
+              "end": 21,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "alternate": null
+      },
+      {
+        "start": 34,
+        "end": 36,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 36,
+        "end": 67,
+        "class": "IfBlock",
+        "elseIf": false,
+        "test": {
+          "@class": "BooleanLiteral",
+          "@toString": "true",
+          "start": 41,
+          "end": 45,
+          "literal": {
+            "start": 41,
+            "end": 45,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "value": true,
+          "beginToken": {
+            "start": 41,
+            "end": 45,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "endToken": {
+            "start": 41,
+            "end": 45,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "isSynthetic": false
+        },
+        "consequent": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 46,
+              "end": 49,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 49,
+              "end": 53,
+              "class": "RegularElement",
+              "name": "br",
+              "attributes": [],
+              "fragment": {
+                "start": -1,
+                "end": -1,
+                "class": "Fragment",
+                "children": []
+              }
+            },
+            {
+              "start": 53,
+              "end": 54,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "alternate": null
+      },
+      {
+        "start": 67,
+        "end": 69,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 69,
+        "end": 111,
+        "class": "AwaitBlock",
+        "expession": {
+          "@class": "BooleanLiteral",
+          "@toString": "true",
+          "start": 77,
+          "end": 81,
+          "literal": {
+            "start": 77,
+            "end": 81,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "value": true,
+          "beginToken": {
+            "start": 77,
+            "end": 81,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "endToken": {
+            "start": 77,
+            "end": 81,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "isSynthetic": false
+        },
+        "value": {
+          "@class": "AssignedVariablePattern",
+          "@toString": "f",
+          "start": 100,
+          "end": 101,
+          "beginToken": {
+            "start": 100,
+            "end": 101,
+            "type": "IDENTIFIER",
+            "lexeme": "f"
+          },
+          "endToken": {
+            "start": 100,
+            "end": 101,
+            "type": "IDENTIFIER",
+            "lexeme": "f"
+          },
+          "name": {
+            "start": 100,
+            "end": 101,
+            "type": "IDENTIFIER",
+            "lexeme": "f"
+          }
+        },
+        "error": null,
+        "pending": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 81,
+              "end": 85,
+              "class": "Text",
+              "raw": "}\n  ",
+              "data": "}\n  "
+            },
+            {
+              "start": 85,
+              "end": 92,
+              "class": "RegularElement",
+              "name": "input",
+              "attributes": [],
+              "fragment": {
+                "start": -1,
+                "end": -1,
+                "class": "Fragment",
+                "children": []
+              }
+            },
+            {
+              "start": 92,
+              "end": 93,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "then": {
+          "start": 102,
+          "end": 103,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 102,
+              "end": 103,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "catch": null
+      },
+      {
+        "start": 111,
+        "end": 113,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 113,
+        "end": 152,
+        "class": "AwaitBlock",
+        "expession": {
+          "@class": "BooleanLiteral",
+          "@toString": "true",
+          "start": 121,
+          "end": 125,
+          "literal": {
+            "start": 121,
+            "end": 125,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "value": true,
+          "beginToken": {
+            "start": 121,
+            "end": 125,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "endToken": {
+            "start": 121,
+            "end": 125,
+            "type": "TRUE",
+            "lexeme": "true"
+          },
+          "isSynthetic": false
+        },
+        "value": {
+          "@class": "AssignedVariablePattern",
+          "@toString": "f",
+          "start": 141,
+          "end": 142,
+          "beginToken": {
+            "start": 141,
+            "end": 142,
+            "type": "IDENTIFIER",
+            "lexeme": "f"
+          },
+          "endToken": {
+            "start": 141,
+            "end": 142,
+            "type": "IDENTIFIER",
+            "lexeme": "f"
+          },
+          "name": {
+            "start": 141,
+            "end": 142,
+            "type": "IDENTIFIER",
+            "lexeme": "f"
+          }
+        },
+        "error": null,
+        "pending": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 125,
+              "end": 129,
+              "class": "Text",
+              "raw": "}\n  ",
+              "data": "}\n  "
+            },
+            {
+              "start": 129,
+              "end": 133,
+              "class": "RegularElement",
+              "name": "br",
+              "attributes": [],
+              "fragment": {
+                "start": -1,
+                "end": -1,
+                "class": "Fragment",
+                "children": []
+              }
+            },
+            {
+              "start": 133,
+              "end": 134,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "then": {
+          "start": 143,
+          "end": 144,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 143,
+              "end": 144,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "catch": null
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

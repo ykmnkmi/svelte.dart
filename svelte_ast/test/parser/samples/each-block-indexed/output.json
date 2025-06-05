@@ -1,156 +1,211 @@
 {
-	"html": {
-		"start": 0,
-		"end": 58,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 58,
-				"class": "EachBlock",
-				"expression": {
-					"@class": "SimpleIdentifier",
-					"@toString": "animals",
-					"start": 7,
-					"end": 14,
-					"token": {
-						"start": 7,
-						"end": 14,
-						"type": "IDENTIFIER",
-						"lexeme": "animals"
-					},
-					"ancestorCascade": null,
-					"beginToken": {
-						"start": 7,
-						"end": 14,
-						"type": "IDENTIFIER",
-						"lexeme": "animals"
-					},
-					"endToken": {
-						"start": 7,
-						"end": 14,
-						"type": "IDENTIFIER",
-						"lexeme": "animals"
-					},
-					"isQualified": "@error { Null check operator used on a null value }",
-					"isSynthetic": false,
-					"name": "animals"
-				},
-				"context": {
-					"@class": "AssignedVariablePattern",
-					"@toString": "animal",
-					"start": 18,
-					"end": 24,
-					"beginToken": {
-						"start": 18,
-						"end": 24,
-						"type": "IDENTIFIER",
-						"lexeme": "animal"
-					},
-					"endToken": {
-						"start": 18,
-						"end": 24,
-						"type": "IDENTIFIER",
-						"lexeme": "animal"
-					},
-					"name": {
-						"start": 18,
-						"end": 24,
-						"type": "IDENTIFIER",
-						"lexeme": "animal"
-					}
-				},
-				"index": "i",
-				"key": null,
-				"children": [
-					{
-						"start": 30,
-						"end": 50,
-						"class": "Element",
-						"name": "p",
-						"attributes": [],
-						"children": [
-							{
-								"start": 33,
-								"end": 36,
-								"class": "MustacheTag",
-								"expression": {
-									"@class": "SimpleIdentifier",
-									"@toString": "i",
-									"start": 34,
-									"end": 35,
-									"token": {
-										"start": 34,
-										"end": 35,
-										"type": "IDENTIFIER",
-										"lexeme": "i"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 34,
-										"end": 35,
-										"type": "IDENTIFIER",
-										"lexeme": "i"
-									},
-									"endToken": {
-										"start": 34,
-										"end": 35,
-										"type": "IDENTIFIER",
-										"lexeme": "i"
-									},
-									"isQualified": "@error { Null check operator used on a null value }",
-									"isSynthetic": false,
-									"name": "i"
-								}
-							},
-							{
-								"start": 36,
-								"end": 38,
-								"class": "Text",
-								"raw": ": ",
-								"data": ": "
-							},
-							{
-								"start": 38,
-								"end": 46,
-								"class": "MustacheTag",
-								"expression": {
-									"@class": "SimpleIdentifier",
-									"@toString": "animal",
-									"start": 39,
-									"end": 45,
-									"token": {
-										"start": 39,
-										"end": 45,
-										"type": "IDENTIFIER",
-										"lexeme": "animal"
-									},
-									"ancestorCascade": null,
-									"beginToken": {
-										"start": 39,
-										"end": 45,
-										"type": "IDENTIFIER",
-										"lexeme": "animal"
-									},
-									"endToken": {
-										"start": 39,
-										"end": 45,
-										"type": "IDENTIFIER",
-										"lexeme": "animal"
-									},
-									"isQualified": "@error { Null check operator used on a null value }",
-									"isSynthetic": false,
-									"name": "animal"
-								}
-							}
-						]
-					}
-				],
-				"elseBlock": null
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 59,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 59,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 59,
+        "class": "EachBlock",
+        "body": {
+          "start": 28,
+          "end": 52,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 28,
+              "end": 31,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 31,
+              "end": 51,
+              "class": "RegularElement",
+              "name": "p",
+              "attributes": [],
+              "fragment": {
+                "start": 34,
+                "end": 47,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 34,
+                    "end": 37,
+                    "class": "ExpressionTag",
+                    "expression": {
+                      "@class": "SimpleIdentifier",
+                      "@toString": "i",
+                      "start": 35,
+                      "end": 36,
+                      "token": {
+                        "start": 35,
+                        "end": 36,
+                        "type": "IDENTIFIER",
+                        "lexeme": "i"
+                      },
+                      "ancestorCascade": null,
+                      "beginToken": {
+                        "start": 35,
+                        "end": 36,
+                        "type": "IDENTIFIER",
+                        "lexeme": "i"
+                      },
+                      "endToken": {
+                        "start": 35,
+                        "end": 36,
+                        "type": "IDENTIFIER",
+                        "lexeme": "i"
+                      },
+                      "isQualified": "@error { Null check operator used on a null value }",
+                      "isSynthetic": false,
+                      "name": "i"
+                    }
+                  },
+                  {
+                    "start": 37,
+                    "end": 39,
+                    "class": "Text",
+                    "raw": ": ",
+                    "data": ": "
+                  },
+                  {
+                    "start": 39,
+                    "end": 47,
+                    "class": "ExpressionTag",
+                    "expression": {
+                      "@class": "SimpleIdentifier",
+                      "@toString": "animal",
+                      "start": 40,
+                      "end": 46,
+                      "token": {
+                        "start": 40,
+                        "end": 46,
+                        "type": "IDENTIFIER",
+                        "lexeme": "animal"
+                      },
+                      "ancestorCascade": null,
+                      "beginToken": {
+                        "start": 40,
+                        "end": 46,
+                        "type": "IDENTIFIER",
+                        "lexeme": "animal"
+                      },
+                      "endToken": {
+                        "start": 40,
+                        "end": 46,
+                        "type": "IDENTIFIER",
+                        "lexeme": "animal"
+                      },
+                      "isQualified": "@error { Null check operator used on a null value }",
+                      "isSynthetic": false,
+                      "name": "animal"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "start": 51,
+              "end": 52,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "fallback": null,
+        "expression": {
+          "@class": "SimpleIdentifier",
+          "@toString": "animals",
+          "start": 7,
+          "end": 14,
+          "token": {
+            "start": 7,
+            "end": 14,
+            "type": "IDENTIFIER",
+            "lexeme": "animals"
+          },
+          "ancestorCascade": null,
+          "beginToken": {
+            "start": 7,
+            "end": 14,
+            "type": "IDENTIFIER",
+            "lexeme": "animals"
+          },
+          "endToken": {
+            "start": 7,
+            "end": 14,
+            "type": "IDENTIFIER",
+            "lexeme": "animals"
+          },
+          "isQualified": "@error { Null check operator used on a null value }",
+          "isSynthetic": false,
+          "name": "animals"
+        },
+        "context": {
+          "@class": "AssignedVariablePattern",
+          "@toString": "animal",
+          "start": 18,
+          "end": 24,
+          "beginToken": {
+            "start": 18,
+            "end": 24,
+            "type": "IDENTIFIER",
+            "lexeme": "animal"
+          },
+          "endToken": {
+            "start": 18,
+            "end": 24,
+            "type": "IDENTIFIER",
+            "lexeme": "animal"
+          },
+          "name": {
+            "start": 18,
+            "end": 24,
+            "type": "IDENTIFIER",
+            "lexeme": "animal"
+          }
+        },
+        "index": {
+          "@class": "SimpleIdentifier",
+          "@toString": "i",
+          "start": 26,
+          "end": 27,
+          "token": {
+            "start": 26,
+            "end": 27,
+            "type": "IDENTIFIER",
+            "lexeme": "i"
+          },
+          "ancestorCascade": null,
+          "beginToken": {
+            "start": 26,
+            "end": 27,
+            "type": "IDENTIFIER",
+            "lexeme": "i"
+          },
+          "endToken": {
+            "start": 26,
+            "end": 27,
+            "type": "IDENTIFIER",
+            "lexeme": "i"
+          },
+          "isQualified": "@error { Null check operator used on a null value }",
+          "isSynthetic": false,
+          "name": "i"
+        },
+        "key": null
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

@@ -1,0 +1,2142 @@
+{
+  "start": 815,
+  "end": 829,
+  "class": "Root",
+  "fragment": {
+    "start": 815,
+    "end": 829,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 815,
+        "end": 817,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 817,
+        "end": 829,
+        "class": "RegularElement",
+        "name": "h1",
+        "attributes": [],
+        "fragment": {
+          "start": 821,
+          "end": 824,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 821,
+              "end": 824,
+              "class": "Text",
+              "raw": "Foo",
+              "data": "Foo"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": {
+    "start": 0,
+    "end": 815,
+    "class": "Style",
+    "attributes": [],
+    "content": {
+      "start": 7,
+      "end": 807,
+      "class": "StyleBody",
+      "content": "\n    /* test that all these are parsed correctly */\n  h1:nth-of-type(2n+1){\n        background: red;\n    }\n    h1:nth-child(-n + 3 of li.important) {\n        background: red;\n    }\n    h1:nth-child(1) {\n        background: red;\n    }\n    h1:nth-child(p) {\n        background: red;\n    }\n    h1:nth-child(n+7) {\n        background: red;\n    }\n    h1:nth-child(even) {\n        background: red;\n    }\n    h1:nth-child(odd) {\n        background: red;\n    }\n    h1:nth-child(\n        n\n    ) {\n        background: red;\n    }\n    h1:global(nav) {\n        background: red;\n    }\n    h1:nth-of-type(10n+1){\n        background: red;\n    }\n    h1:nth-of-type(-2n+3){\n        background: red;\n    }\n    h1:nth-of-type(+12){\n        background: red;\n    }\n    h1:nth-of-type(+3n){\n        background: red;\n    }\n"
+    },
+    "children": [
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 54,
+        "end": 74,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 54,
+          "end": 74,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 54,
+              "end": 74,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 54,
+                  "end": 56,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 54,
+                    "end": 56
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-of-type",
+                  "start": 56,
+                  "end": 57,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-of-type",
+                    "start": 56,
+                    "end": 69,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 69,
+                      "end": 73,
+                      "expressions": [
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 69,
+                          "end": 70
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 69,
+                          "end": 71,
+                          "text": "n"
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 69,
+                          "end": 73
+                        }
+                      ],
+                      "span": {
+                        "start": 69,
+                        "end": 73,
+                        "lexeme": "2n+1"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 69,
+                      "end": 73,
+                      "expressions": [
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 69,
+                          "end": 70
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 69,
+                          "end": 71,
+                          "text": "n"
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 69,
+                          "end": 73
+                        }
+                      ],
+                      "span": {
+                        "start": 69,
+                        "end": 73,
+                        "lexeme": "2n+1"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 74,
+          "end": 106,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 84,
+              "end": 99,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 96,
+                "end": 99,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 96,
+                    "end": 99
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 84,
+                "end": 99,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 74,
+            "end": 106,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 111,
+        "end": 146,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 111,
+          "end": 146,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 111,
+              "end": 146,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 111,
+                  "end": 113,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 111,
+                    "end": 113
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-child",
+                  "start": 113,
+                  "end": 114,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-child",
+                    "start": 113,
+                    "end": 124,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 127,
+                      "end": 136,
+                      "expressions": [
+                        {
+                          "@class": "OperatorMinus",
+                          "@toString": "Instance of 'OperatorMinus'",
+                          "start": 124,
+                          "end": 125
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 124,
+                          "end": 126,
+                          "text": "n"
+                        },
+                        {
+                          "@class": "OperatorPlus",
+                          "@toString": "Instance of 'OperatorPlus'",
+                          "start": 127,
+                          "end": 128
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 127,
+                          "end": 130
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 127,
+                          "end": 133,
+                          "text": "of"
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 127,
+                          "end": 136,
+                          "text": "li"
+                        }
+                      ],
+                      "span": {
+                        "start": 127,
+                        "end": 136,
+                        "lexeme": "+ 3 of li"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 127,
+                      "end": 136,
+                      "expressions": [
+                        {
+                          "@class": "OperatorMinus",
+                          "@toString": "Instance of 'OperatorMinus'",
+                          "start": 124,
+                          "end": 125
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 124,
+                          "end": 126,
+                          "text": "n"
+                        },
+                        {
+                          "@class": "OperatorPlus",
+                          "@toString": "Instance of 'OperatorPlus'",
+                          "start": 127,
+                          "end": 128
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 127,
+                          "end": 130
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 127,
+                          "end": 133,
+                          "text": "of"
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 127,
+                          "end": 136,
+                          "text": "li"
+                        }
+                      ],
+                      "span": {
+                        "start": 127,
+                        "end": 136,
+                        "lexeme": "+ 3 of li"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "important",
+                  "start": 137,
+                  "end": 146,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "important",
+                    "start": 137,
+                    "end": 146
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 3
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 146,
+          "end": 149,
+          "declarations": [],
+          "span": {
+            "start": 146,
+            "end": 149,
+            "lexeme": ") {"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 158,
+        "end": 173,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 158,
+          "end": 173,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 158,
+              "end": 173,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "background",
+                  "start": 158,
+                  "end": 168,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "background",
+                    "start": 158,
+                    "end": 168
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "red",
+                  "start": 168,
+                  "end": 169,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassSelector",
+                    "@toString": ":red",
+                    "start": 168,
+                    "end": 173
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 173,
+          "end": 180,
+          "declarations": [],
+          "span": {
+            "start": 173,
+            "end": 180,
+            "lexeme": ";\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 185,
+        "end": 200,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 185,
+          "end": 200,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 185,
+              "end": 200,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 185,
+                  "end": 187,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 185,
+                    "end": 187
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-child",
+                  "start": 187,
+                  "end": 188,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-child",
+                    "start": 187,
+                    "end": 198,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 198,
+                      "end": 199,
+                      "expressions": [
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 198,
+                          "end": 199
+                        }
+                      ],
+                      "span": {
+                        "start": 198,
+                        "end": 199,
+                        "lexeme": "1"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 198,
+                      "end": 199,
+                      "expressions": [
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 198,
+                          "end": 199
+                        }
+                      ],
+                      "span": {
+                        "start": 198,
+                        "end": 199,
+                        "lexeme": "1"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 201,
+          "end": 233,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 211,
+              "end": 226,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 223,
+                "end": 226,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 223,
+                    "end": 226
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 211,
+                "end": 226,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 201,
+            "end": 233,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 238,
+        "end": 253,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 238,
+          "end": 253,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 238,
+              "end": 253,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 238,
+                  "end": 240,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 238,
+                    "end": 240
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-child",
+                  "start": 240,
+                  "end": 241,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-child",
+                    "start": 240,
+                    "end": 251,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 251,
+                      "end": 252,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 251,
+                          "end": 252,
+                          "text": "p"
+                        }
+                      ],
+                      "span": {
+                        "start": 251,
+                        "end": 252,
+                        "lexeme": "p"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 251,
+                      "end": 252,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 251,
+                          "end": 252,
+                          "text": "p"
+                        }
+                      ],
+                      "span": {
+                        "start": 251,
+                        "end": 252,
+                        "lexeme": "p"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 254,
+          "end": 286,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 264,
+              "end": 279,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 276,
+                "end": 279,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 276,
+                    "end": 279
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 264,
+                "end": 279,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 254,
+            "end": 286,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 291,
+        "end": 308,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 291,
+          "end": 308,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 291,
+              "end": 308,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 291,
+                  "end": 293,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 291,
+                    "end": 293
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-child",
+                  "start": 293,
+                  "end": 294,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-child",
+                    "start": 293,
+                    "end": 304,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 304,
+                      "end": 307,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 304,
+                          "end": 305,
+                          "text": "n"
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 304,
+                          "end": 307
+                        }
+                      ],
+                      "span": {
+                        "start": 304,
+                        "end": 307,
+                        "lexeme": "n+7"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 304,
+                      "end": 307,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 304,
+                          "end": 305,
+                          "text": "n"
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 304,
+                          "end": 307
+                        }
+                      ],
+                      "span": {
+                        "start": 304,
+                        "end": 307,
+                        "lexeme": "n+7"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 309,
+          "end": 341,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 319,
+              "end": 334,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 331,
+                "end": 334,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 331,
+                    "end": 334
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 319,
+                "end": 334,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 309,
+            "end": 341,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 346,
+        "end": 364,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 346,
+          "end": 364,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 346,
+              "end": 364,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 346,
+                  "end": 348,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 346,
+                    "end": 348
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-child",
+                  "start": 348,
+                  "end": 349,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-child",
+                    "start": 348,
+                    "end": 359,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 359,
+                      "end": 363,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 359,
+                          "end": 363,
+                          "text": "even"
+                        }
+                      ],
+                      "span": {
+                        "start": 359,
+                        "end": 363,
+                        "lexeme": "even"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 359,
+                      "end": 363,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 359,
+                          "end": 363,
+                          "text": "even"
+                        }
+                      ],
+                      "span": {
+                        "start": 359,
+                        "end": 363,
+                        "lexeme": "even"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 365,
+          "end": 397,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 375,
+              "end": 390,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 387,
+                "end": 390,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 387,
+                    "end": 390
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 375,
+                "end": 390,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 365,
+            "end": 397,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 402,
+        "end": 419,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 402,
+          "end": 419,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 402,
+              "end": 419,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 402,
+                  "end": 404,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 402,
+                    "end": 404
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-child",
+                  "start": 404,
+                  "end": 405,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-child",
+                    "start": 404,
+                    "end": 415,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 415,
+                      "end": 418,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 415,
+                          "end": 418,
+                          "text": "odd"
+                        }
+                      ],
+                      "span": {
+                        "start": 415,
+                        "end": 418,
+                        "lexeme": "odd"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 415,
+                      "end": 418,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 415,
+                          "end": 418,
+                          "text": "odd"
+                        }
+                      ],
+                      "span": {
+                        "start": 415,
+                        "end": 418,
+                        "lexeme": "odd"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 420,
+          "end": 452,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 430,
+              "end": 445,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 442,
+                "end": 445,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 442,
+                    "end": 445
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 430,
+                "end": 445,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 420,
+            "end": 452,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 457,
+        "end": 486,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 457,
+          "end": 486,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 457,
+              "end": 486,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 457,
+                  "end": 459,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 457,
+                    "end": 459
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-child",
+                  "start": 459,
+                  "end": 460,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-child",
+                    "start": 459,
+                    "end": 470,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 479,
+                      "end": 480,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 479,
+                          "end": 480,
+                          "text": "n"
+                        }
+                      ],
+                      "span": {
+                        "start": 479,
+                        "end": 480,
+                        "lexeme": "n"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 479,
+                      "end": 480,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 479,
+                          "end": 480,
+                          "text": "n"
+                        }
+                      ],
+                      "span": {
+                        "start": 479,
+                        "end": 480,
+                        "lexeme": "n"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 487,
+          "end": 519,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 497,
+              "end": 512,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 509,
+                "end": 512,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 509,
+                    "end": 512
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 497,
+                "end": 512,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 487,
+            "end": 519,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 524,
+        "end": 538,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 524,
+          "end": 538,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 524,
+              "end": 538,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 524,
+                  "end": 526,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 524,
+                    "end": 526
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "global",
+                  "start": 526,
+                  "end": 527,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":global",
+                    "start": 526,
+                    "end": 534,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 534,
+                      "end": 537,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 534,
+                          "end": 537,
+                          "text": "nav"
+                        }
+                      ],
+                      "span": {
+                        "start": 534,
+                        "end": 537,
+                        "lexeme": "nav"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 534,
+                      "end": 537,
+                      "expressions": [
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 534,
+                          "end": 537,
+                          "text": "nav"
+                        }
+                      ],
+                      "span": {
+                        "start": 534,
+                        "end": 537,
+                        "lexeme": "nav"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 539,
+          "end": 571,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 549,
+              "end": 564,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 561,
+                "end": 564,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 561,
+                    "end": 564
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 549,
+                "end": 564,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 539,
+            "end": 571,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 576,
+        "end": 597,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 576,
+          "end": 597,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 576,
+              "end": 597,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 576,
+                  "end": 578,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 576,
+                    "end": 578
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-of-type",
+                  "start": 578,
+                  "end": 579,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-of-type",
+                    "start": 578,
+                    "end": 591,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 591,
+                      "end": 596,
+                      "expressions": [
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 591,
+                          "end": 593
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 591,
+                          "end": 594,
+                          "text": "n"
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 591,
+                          "end": 596
+                        }
+                      ],
+                      "span": {
+                        "start": 591,
+                        "end": 596,
+                        "lexeme": "10n+1"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 591,
+                      "end": 596,
+                      "expressions": [
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 591,
+                          "end": 593
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 591,
+                          "end": 594,
+                          "text": "n"
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 591,
+                          "end": 596
+                        }
+                      ],
+                      "span": {
+                        "start": 591,
+                        "end": 596,
+                        "lexeme": "10n+1"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 597,
+          "end": 629,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 607,
+              "end": 622,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 619,
+                "end": 622,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 619,
+                    "end": 622
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 607,
+                "end": 622,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 597,
+            "end": 629,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 634,
+        "end": 655,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 634,
+          "end": 655,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 634,
+              "end": 655,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 634,
+                  "end": 636,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 634,
+                    "end": 636
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-of-type",
+                  "start": 636,
+                  "end": 637,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-of-type",
+                    "start": 636,
+                    "end": 649,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 649,
+                      "end": 654,
+                      "expressions": [
+                        {
+                          "@class": "OperatorMinus",
+                          "@toString": "Instance of 'OperatorMinus'",
+                          "start": 649,
+                          "end": 650
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 649,
+                          "end": 651
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 649,
+                          "end": 652,
+                          "text": "n"
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 649,
+                          "end": 654
+                        }
+                      ],
+                      "span": {
+                        "start": 649,
+                        "end": 654,
+                        "lexeme": "-2n+3"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 649,
+                      "end": 654,
+                      "expressions": [
+                        {
+                          "@class": "OperatorMinus",
+                          "@toString": "Instance of 'OperatorMinus'",
+                          "start": 649,
+                          "end": 650
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 649,
+                          "end": 651
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 649,
+                          "end": 652,
+                          "text": "n"
+                        },
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 649,
+                          "end": 654
+                        }
+                      ],
+                      "span": {
+                        "start": 649,
+                        "end": 654,
+                        "lexeme": "-2n+3"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 655,
+          "end": 687,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 665,
+              "end": 680,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 677,
+                "end": 680,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 677,
+                    "end": 680
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 665,
+                "end": 680,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 655,
+            "end": 687,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 692,
+        "end": 711,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 692,
+          "end": 711,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 692,
+              "end": 711,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 692,
+                  "end": 694,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 692,
+                    "end": 694
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-of-type",
+                  "start": 694,
+                  "end": 695,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-of-type",
+                    "start": 694,
+                    "end": 707,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 707,
+                      "end": 710,
+                      "expressions": [
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 707,
+                          "end": 710
+                        }
+                      ],
+                      "span": {
+                        "start": 707,
+                        "end": 710,
+                        "lexeme": "+12"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 707,
+                      "end": 710,
+                      "expressions": [
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 707,
+                          "end": 710
+                        }
+                      ],
+                      "span": {
+                        "start": 707,
+                        "end": 710,
+                        "lexeme": "+12"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 711,
+          "end": 743,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 721,
+              "end": 736,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 733,
+                "end": 736,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 733,
+                    "end": 736
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 721,
+                "end": 736,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 711,
+            "end": 743,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      },
+      {
+        "@class": "RuleSet",
+        "@toString": "Instance of 'RuleSet'",
+        "start": 748,
+        "end": 767,
+        "selectorGroup": {
+          "@class": "SelectorGroup",
+          "@toString": "Instance of 'SelectorGroup'",
+          "start": 748,
+          "end": 767,
+          "selectors": [
+            {
+              "@class": "Selector",
+              "@toString": "Instance of 'Selector'",
+              "start": 748,
+              "end": 767,
+              "simpleSelectorSequences": [
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "h1",
+                  "start": 748,
+                  "end": 750,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "ElementSelector",
+                    "@toString": "h1",
+                    "start": 748,
+                    "end": 750
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                },
+                {
+                  "@class": "SimpleSelectorSequence",
+                  "@toString": "nth-of-type",
+                  "start": 750,
+                  "end": 751,
+                  "combinator": 513,
+                  "simpleSelector": {
+                    "@class": "PseudoClassFunctionSelector",
+                    "@toString": ":nth-of-type",
+                    "start": 750,
+                    "end": 763,
+                    "argument": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 763,
+                      "end": 766,
+                      "expressions": [
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 763,
+                          "end": 765
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 763,
+                          "end": 766,
+                          "text": "n"
+                        }
+                      ],
+                      "span": {
+                        "start": 763,
+                        "end": 766,
+                        "lexeme": "+3n"
+                      }
+                    },
+                    "selector": "@error { type 'SelectorExpression' is not a subtype of type 'Selector' in type cast }",
+                    "expression": {
+                      "@class": "SelectorExpression",
+                      "@toString": "Instance of 'SelectorExpression'",
+                      "start": 763,
+                      "end": 766,
+                      "expressions": [
+                        {
+                          "@class": "NumberTerm",
+                          "@toString": "Instance of 'NumberTerm'",
+                          "start": 763,
+                          "end": 765
+                        },
+                        {
+                          "@class": "LiteralTerm",
+                          "@toString": "Instance of 'LiteralTerm'",
+                          "start": 763,
+                          "end": 766,
+                          "text": "n"
+                        }
+                      ],
+                      "span": {
+                        "start": 763,
+                        "end": 766,
+                        "lexeme": "+3n"
+                      }
+                    }
+                  },
+                  "isCombinatorNone": true,
+                  "isCombinatorPlus": false,
+                  "isCombinatorGreater": false,
+                  "isCombinatorTilde": false,
+                  "isCombinatorDescendant": false
+                }
+              ],
+              "length": 2
+            }
+          ]
+        },
+        "declarationGroup": {
+          "@class": "DeclarationGroup",
+          "@toString": "Instance of 'DeclarationGroup'",
+          "start": 767,
+          "end": 799,
+          "declarations": [
+            {
+              "@class": "Declaration",
+              "@toString": "Instance of 'Declaration'",
+              "start": 777,
+              "end": 792,
+              "expression": {
+                "@class": "Expressions",
+                "@toString": "Instance of 'Expressions'",
+                "start": 789,
+                "end": 792,
+                "expressions": [
+                  {
+                    "@class": "HexColorTerm",
+                    "@toString": "Instance of 'HexColorTerm'",
+                    "start": 789,
+                    "end": 792
+                  }
+                ]
+              },
+              "dartStyle": null,
+              "important": false,
+              "isIE7": false,
+              "property": "background",
+              "hasDartStyle": false,
+              "span": {
+                "start": 777,
+                "end": 792,
+                "lexeme": "background: red"
+              }
+            }
+          ],
+          "span": {
+            "start": 767,
+            "end": 799,
+            "lexeme": "{\n        background: red;\n    }"
+          }
+        }
+      }
+    ]
+  },
+  "options": null
+}

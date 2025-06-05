@@ -1,7 +1,0 @@
-{
-	"code": "missing-attribute-value",
-	"message": "Expected value for the attribute",
-	"line": 1,
-	"column": 12,
-	"offset": 12
-}

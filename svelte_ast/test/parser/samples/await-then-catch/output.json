@@ -1,324 +1,343 @@
 {
-	"html": {
-		"start": 0,
-		"end": 148,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 148,
-				"class": "AwaitBlock",
-				"expession": {
-					"@class": "SimpleIdentifier",
-					"@toString": "thePromise",
-					"start": 8,
-					"end": 18,
-					"token": {
-						"start": 8,
-						"end": 18,
-						"type": "IDENTIFIER",
-						"lexeme": "thePromise"
-					},
-					"ancestorCascade": null,
-					"beginToken": {
-						"start": 8,
-						"end": 18,
-						"type": "IDENTIFIER",
-						"lexeme": "thePromise"
-					},
-					"endToken": {
-						"start": 8,
-						"end": 18,
-						"type": "IDENTIFIER",
-						"lexeme": "thePromise"
-					},
-					"isQualified": "@error { Null check operator used on a null value }",
-					"isSynthetic": false,
-					"name": "thePromise"
-				},
-				"value": {
-					"@class": "AssignedVariablePattern",
-					"@toString": "theValue",
-					"start": 46,
-					"end": 54,
-					"beginToken": {
-						"start": 46,
-						"end": 54,
-						"type": "IDENTIFIER",
-						"lexeme": "theValue"
-					},
-					"endToken": {
-						"start": 46,
-						"end": 54,
-						"type": "IDENTIFIER",
-						"lexeme": "theValue"
-					},
-					"name": {
-						"start": 46,
-						"end": 54,
-						"type": "IDENTIFIER",
-						"lexeme": "theValue"
-					}
-				},
-				"error": {
-					"@class": "AssignedVariablePattern",
-					"@toString": "theError",
-					"start": 96,
-					"end": 104,
-					"beginToken": {
-						"start": 96,
-						"end": 104,
-						"type": "IDENTIFIER",
-						"lexeme": "theError"
-					},
-					"endToken": {
-						"start": 96,
-						"end": 104,
-						"type": "IDENTIFIER",
-						"lexeme": "theError"
-					},
-					"name": {
-						"start": 96,
-						"end": 104,
-						"type": "IDENTIFIER",
-						"lexeme": "theError"
-					}
-				},
-				"pendingBlock": {
-					"start": 0,
-					"end": 39,
-					"class": "PendingBlock",
-					"children": [
-						{
-							"start": 19,
-							"end": 21,
-							"class": "Text",
-							"raw": "\n\t",
-							"data": "\n\t"
-						},
-						{
-							"start": 21,
-							"end": 38,
-							"class": "Element",
-							"name": "p",
-							"attributes": [],
-							"children": [
-								{
-									"start": 24,
-									"end": 34,
-									"class": "Text",
-									"raw": "loading...",
-									"data": "loading..."
-								}
-							]
-						},
-						{
-							"start": 38,
-							"end": 39,
-							"class": "Text",
-							"raw": "\n",
-							"data": "\n"
-						}
-					]
-				},
-				"thenBlock": {
-					"start": 39,
-					"end": 88,
-					"class": "ThenBlock",
-					"children": [
-						{
-							"start": 55,
-							"end": 57,
-							"class": "Text",
-							"raw": "\n\t",
-							"data": "\n\t"
-						},
-						{
-							"start": 57,
-							"end": 87,
-							"class": "Element",
-							"name": "p",
-							"attributes": [],
-							"children": [
-								{
-									"start": 60,
-									"end": 73,
-									"class": "Text",
-									"raw": "the value is ",
-									"data": "the value is "
-								},
-								{
-									"start": 73,
-									"end": 83,
-									"class": "MustacheTag",
-									"expression": {
-										"@class": "SimpleIdentifier",
-										"@toString": "theValue",
-										"start": 74,
-										"end": 82,
-										"token": {
-											"start": 74,
-											"end": 82,
-											"type": "IDENTIFIER",
-											"lexeme": "theValue"
-										},
-										"ancestorCascade": null,
-										"beginToken": {
-											"start": 74,
-											"end": 82,
-											"type": "IDENTIFIER",
-											"lexeme": "theValue"
-										},
-										"endToken": {
-											"start": 74,
-											"end": 82,
-											"type": "IDENTIFIER",
-											"lexeme": "theValue"
-										},
-										"isQualified": "@error { Null check operator used on a null value }",
-										"isSynthetic": false,
-										"name": "theValue"
-									}
-								}
-							]
-						},
-						{
-							"start": 87,
-							"end": 88,
-							"class": "Text",
-							"raw": "\n",
-							"data": "\n"
-						}
-					]
-				},
-				"catchBlock": {
-					"start": 88,
-					"end": 140,
-					"class": "CatchBlock",
-					"children": [
-						{
-							"start": 105,
-							"end": 107,
-							"class": "Text",
-							"raw": "\n\t",
-							"data": "\n\t"
-						},
-						{
-							"start": 107,
-							"end": 139,
-							"class": "Element",
-							"name": "p",
-							"attributes": [],
-							"children": [
-								{
-									"start": 110,
-									"end": 117,
-									"class": "Text",
-									"raw": "oh no! ",
-									"data": "oh no! "
-								},
-								{
-									"start": 117,
-									"end": 135,
-									"class": "MustacheTag",
-									"expression": {
-										"@class": "PrefixedIdentifier",
-										"@toString": "theError.message",
-										"start": 118,
-										"end": 134,
-										"period": {
-											"start": 126,
-											"end": 127,
-											"type": "PERIOD",
-											"lexeme": "."
-										},
-										"beginToken": {
-											"start": 118,
-											"end": 126,
-											"type": "IDENTIFIER",
-											"lexeme": "theError"
-										},
-										"endToken": {
-											"start": 127,
-											"end": 134,
-											"type": "IDENTIFIER",
-											"lexeme": "message"
-										},
-										"identifier": {
-											"@class": "SimpleIdentifier",
-											"@toString": "message",
-											"start": 127,
-											"end": 134,
-											"token": {
-												"start": 127,
-												"end": 134,
-												"type": "IDENTIFIER",
-												"lexeme": "message"
-											},
-											"ancestorCascade": null,
-											"beginToken": {
-												"start": 127,
-												"end": 134,
-												"type": "IDENTIFIER",
-												"lexeme": "message"
-											},
-											"endToken": {
-												"start": 127,
-												"end": 134,
-												"type": "IDENTIFIER",
-												"lexeme": "message"
-											},
-											"isQualified": true,
-											"isSynthetic": false,
-											"name": "message"
-										},
-										"isDeferred": false,
-										"name": "theError.message",
-										"prefix": {
-											"@class": "SimpleIdentifier",
-											"@toString": "theError",
-											"start": 118,
-											"end": 126,
-											"token": {
-												"start": 118,
-												"end": 126,
-												"type": "IDENTIFIER",
-												"lexeme": "theError"
-											},
-											"ancestorCascade": null,
-											"beginToken": {
-												"start": 118,
-												"end": 126,
-												"type": "IDENTIFIER",
-												"lexeme": "theError"
-											},
-											"endToken": {
-												"start": 118,
-												"end": 126,
-												"type": "IDENTIFIER",
-												"lexeme": "theError"
-											},
-											"isQualified": false,
-											"isSynthetic": false,
-											"name": "theError"
-										}
-									}
-								}
-							]
-						},
-						{
-							"start": 139,
-							"end": 140,
-							"class": "Text",
-							"raw": "\n",
-							"data": "\n"
-						}
-					]
-				}
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 151,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 151,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 151,
+        "class": "AwaitBlock",
+        "expession": {
+          "@class": "SimpleIdentifier",
+          "@toString": "thePromise",
+          "start": 8,
+          "end": 18,
+          "token": {
+            "start": 8,
+            "end": 18,
+            "type": "IDENTIFIER",
+            "lexeme": "thePromise"
+          },
+          "ancestorCascade": null,
+          "beginToken": {
+            "start": 8,
+            "end": 18,
+            "type": "IDENTIFIER",
+            "lexeme": "thePromise"
+          },
+          "endToken": {
+            "start": 8,
+            "end": 18,
+            "type": "IDENTIFIER",
+            "lexeme": "thePromise"
+          },
+          "isQualified": "@error { Null check operator used on a null value }",
+          "isSynthetic": false,
+          "name": "thePromise"
+        },
+        "value": {
+          "@class": "AssignedVariablePattern",
+          "@toString": "theValue",
+          "start": 47,
+          "end": 55,
+          "beginToken": {
+            "start": 47,
+            "end": 55,
+            "type": "IDENTIFIER",
+            "lexeme": "theValue"
+          },
+          "endToken": {
+            "start": 47,
+            "end": 55,
+            "type": "IDENTIFIER",
+            "lexeme": "theValue"
+          },
+          "name": {
+            "start": 47,
+            "end": 55,
+            "type": "IDENTIFIER",
+            "lexeme": "theValue"
+          }
+        },
+        "error": {
+          "@class": "AssignedVariablePattern",
+          "@toString": "theError",
+          "start": 98,
+          "end": 106,
+          "beginToken": {
+            "start": 98,
+            "end": 106,
+            "type": "IDENTIFIER",
+            "lexeme": "theError"
+          },
+          "endToken": {
+            "start": 98,
+            "end": 106,
+            "type": "IDENTIFIER",
+            "lexeme": "theError"
+          },
+          "name": {
+            "start": 98,
+            "end": 106,
+            "type": "IDENTIFIER",
+            "lexeme": "theError"
+          }
+        },
+        "pending": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 18,
+              "end": 22,
+              "class": "Text",
+              "raw": "}\n  ",
+              "data": "}\n  "
+            },
+            {
+              "start": 22,
+              "end": 39,
+              "class": "RegularElement",
+              "name": "p",
+              "attributes": [],
+              "fragment": {
+                "start": 25,
+                "end": 35,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 25,
+                    "end": 35,
+                    "class": "Text",
+                    "raw": "loading...",
+                    "data": "loading..."
+                  }
+                ]
+              }
+            },
+            {
+              "start": 39,
+              "end": 40,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "then": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 56,
+              "end": 59,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 59,
+              "end": 89,
+              "class": "RegularElement",
+              "name": "p",
+              "attributes": [],
+              "fragment": {
+                "start": 62,
+                "end": 85,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 62,
+                    "end": 75,
+                    "class": "Text",
+                    "raw": "the value is ",
+                    "data": "the value is "
+                  },
+                  {
+                    "start": 75,
+                    "end": 85,
+                    "class": "ExpressionTag",
+                    "expression": {
+                      "@class": "SimpleIdentifier",
+                      "@toString": "theValue",
+                      "start": 76,
+                      "end": 84,
+                      "token": {
+                        "start": 76,
+                        "end": 84,
+                        "type": "IDENTIFIER",
+                        "lexeme": "theValue"
+                      },
+                      "ancestorCascade": null,
+                      "beginToken": {
+                        "start": 76,
+                        "end": 84,
+                        "type": "IDENTIFIER",
+                        "lexeme": "theValue"
+                      },
+                      "endToken": {
+                        "start": 76,
+                        "end": 84,
+                        "type": "IDENTIFIER",
+                        "lexeme": "theValue"
+                      },
+                      "isQualified": "@error { Null check operator used on a null value }",
+                      "isSynthetic": false,
+                      "name": "theValue"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "start": 89,
+              "end": 90,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "catch": {
+          "start": 107,
+          "end": 143,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 107,
+              "end": 110,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 110,
+              "end": 142,
+              "class": "RegularElement",
+              "name": "p",
+              "attributes": [],
+              "fragment": {
+                "start": 113,
+                "end": 138,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 113,
+                    "end": 120,
+                    "class": "Text",
+                    "raw": "oh no! ",
+                    "data": "oh no! "
+                  },
+                  {
+                    "start": 120,
+                    "end": 138,
+                    "class": "ExpressionTag",
+                    "expression": {
+                      "@class": "PrefixedIdentifier",
+                      "@toString": "theError.message",
+                      "start": 121,
+                      "end": 137,
+                      "period": {
+                        "start": 129,
+                        "end": 130,
+                        "type": "PERIOD",
+                        "lexeme": "."
+                      },
+                      "beginToken": {
+                        "start": 121,
+                        "end": 129,
+                        "type": "IDENTIFIER",
+                        "lexeme": "theError"
+                      },
+                      "endToken": {
+                        "start": 130,
+                        "end": 137,
+                        "type": "IDENTIFIER",
+                        "lexeme": "message"
+                      },
+                      "identifier": {
+                        "@class": "SimpleIdentifier",
+                        "@toString": "message",
+                        "start": 130,
+                        "end": 137,
+                        "token": {
+                          "start": 130,
+                          "end": 137,
+                          "type": "IDENTIFIER",
+                          "lexeme": "message"
+                        },
+                        "ancestorCascade": null,
+                        "beginToken": {
+                          "start": 130,
+                          "end": 137,
+                          "type": "IDENTIFIER",
+                          "lexeme": "message"
+                        },
+                        "endToken": {
+                          "start": 130,
+                          "end": 137,
+                          "type": "IDENTIFIER",
+                          "lexeme": "message"
+                        },
+                        "isQualified": true,
+                        "isSynthetic": false,
+                        "name": "message"
+                      },
+                      "isDeferred": false,
+                      "name": "theError.message",
+                      "prefix": {
+                        "@class": "SimpleIdentifier",
+                        "@toString": "theError",
+                        "start": 121,
+                        "end": 129,
+                        "token": {
+                          "start": 121,
+                          "end": 129,
+                          "type": "IDENTIFIER",
+                          "lexeme": "theError"
+                        },
+                        "ancestorCascade": null,
+                        "beginToken": {
+                          "start": 121,
+                          "end": 129,
+                          "type": "IDENTIFIER",
+                          "lexeme": "theError"
+                        },
+                        "endToken": {
+                          "start": 121,
+                          "end": 129,
+                          "type": "IDENTIFIER",
+                          "lexeme": "theError"
+                        },
+                        "isQualified": false,
+                        "isSynthetic": false,
+                        "name": "theError"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "start": 142,
+              "end": 143,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

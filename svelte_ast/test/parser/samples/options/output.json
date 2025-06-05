@@ -1,0 +1,148 @@
+{
+  "start": 0,
+  "end": 75,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 75,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 46,
+        "class": "SvelteOptions",
+        "name": "svelte:options",
+        "attributes": [
+          {
+            "start": 16,
+            "end": 30,
+            "class": "Attribute",
+            "name": "css",
+            "value": [
+              {
+                "start": 21,
+                "end": 29,
+                "class": "Text",
+                "raw": "injected",
+                "data": "injected"
+              }
+            ],
+            "modifiers": []
+          },
+          {
+            "start": 31,
+            "end": 43,
+            "class": "Attribute",
+            "name": "runes",
+            "value": [
+              {
+                "start": 37,
+                "end": 43,
+                "class": "ExpressionTag",
+                "expression": {
+                  "@class": "BooleanLiteral",
+                  "@toString": "true",
+                  "start": 38,
+                  "end": 42,
+                  "literal": {
+                    "start": 38,
+                    "end": 42,
+                    "type": "TRUE",
+                    "lexeme": "true"
+                  },
+                  "value": true,
+                  "beginToken": {
+                    "start": 38,
+                    "end": 42,
+                    "type": "TRUE",
+                    "lexeme": "true"
+                  },
+                  "endToken": {
+                    "start": 38,
+                    "end": 42,
+                    "type": "TRUE",
+                    "lexeme": "true"
+                  },
+                  "isSynthetic": false
+                }
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      },
+      {
+        "start": 46,
+        "end": 48,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      },
+      {
+        "start": 73,
+        "end": 75,
+        "class": "Text",
+        "raw": "\n\n",
+        "data": "\n\n"
+      }
+    ]
+  },
+  "instance": {
+    "start": 75,
+    "end": 121,
+    "class": "InstanceScript",
+    "content": {
+      "start": 111,
+      "end": 112,
+      "class": "ScriptContent",
+      "content": "\n"
+    },
+    "body": []
+  },
+  "module": {
+    "start": 48,
+    "end": 73,
+    "class": "ModuleScript",
+    "content": {
+      "start": 63,
+      "end": 64,
+      "class": "ScriptContent",
+      "content": "\n"
+    },
+    "unit": {
+      "@class": "CompilationUnit",
+      "@toString": "",
+      "start": 0,
+      "end": 64,
+      "beginToken": {
+        "start": 64,
+        "end": 64,
+        "type": "EOF",
+        "lexeme": ""
+      },
+      "endToken": {
+        "start": 64,
+        "end": 64,
+        "type": "EOF",
+        "lexeme": ""
+      },
+      "invalidNodes": [],
+      "declarations": [],
+      "directives": [],
+      "languageVersionToken": null,
+      "length": 64,
+      "offset": 0,
+      "scriptTag": null,
+      "sortedDirectivesAndDeclarations": [],
+      "isSynthetic": false
+    }
+  },
+  "style": null,
+  "options": null
+}

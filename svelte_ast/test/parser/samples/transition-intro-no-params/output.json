@@ -1,39 +1,48 @@
 {
-	"html": {
-		"start": 0,
-		"end": 27,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 27,
-				"class": "Element",
-				"name": "div",
-				"attributes": [
-					{
-						"start": 5,
-						"end": 12,
-						"type": "Transition",
-						"name": "fade",
-						"modifiers": [],
-						"intro": true,
-						"outro": false,
-						"expression": null
-					}
-				],
-				"children": [
-					{
-						"start": 13,
-						"end": 21,
-						"class": "Text",
-						"raw": "fades in",
-						"data": "fades in"
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 27,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 27,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 27,
+        "class": "RegularElement",
+        "name": "div",
+        "attributes": [
+          {
+            "start": 5,
+            "end": 12,
+            "class": "TransitionDirective",
+            "name": "fade",
+            "expression": null,
+            "modifiers": [],
+            "intro": true,
+            "outro": false
+          }
+        ],
+        "fragment": {
+          "start": 13,
+          "end": 21,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 13,
+              "end": 21,
+              "class": "Text",
+              "raw": "fades in",
+              "data": "fades in"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

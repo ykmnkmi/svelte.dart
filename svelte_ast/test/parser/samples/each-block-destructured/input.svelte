@@ -1,7 +1,7 @@
 <script>
-	external var animals;
+  external var animals;
 </script>
 
-{#each animals as [key, value, ...]}
-<p>{key}: {value}</p>
+{#each animals as [key, value, ...rest]}
+  <p>{key}: {value}</p>
 {/each}

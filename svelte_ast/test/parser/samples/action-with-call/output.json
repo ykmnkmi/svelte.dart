@@ -1,175 +1,183 @@
 {
-	"html": {
-		"start": 0,
-		"end": 40,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 40,
-				"class": "Element",
-				"name": "input",
-				"attributes": [
-					{
-						"start": 7,
-						"end": 39,
-						"type": "Action",
-						"name": "tooltip",
-						"modifiers": [],
-						"expression": {
-							"@class": "MethodInvocation",
-							"@toString": "t('tooltip msg')",
-							"start": 21,
-							"end": 37,
-							"operator": null,
-							"beginToken": {
-								"start": 21,
-								"end": 22,
-								"type": "IDENTIFIER",
-								"lexeme": "t"
-							},
-							"endToken": {
-								"start": 36,
-								"end": 37,
-								"type": "CLOSE_PAREN",
-								"lexeme": ")"
-							},
-							"function": {
-								"@class": "SimpleIdentifier",
-								"@toString": "t",
-								"start": 21,
-								"end": 22,
-								"token": {
-									"start": 21,
-									"end": 22,
-									"type": "IDENTIFIER",
-									"lexeme": "t"
-								},
-								"ancestorCascade": null,
-								"beginToken": {
-									"start": 21,
-									"end": 22,
-									"type": "IDENTIFIER",
-									"lexeme": "t"
-								},
-								"endToken": {
-									"start": 21,
-									"end": 22,
-									"type": "IDENTIFIER",
-									"lexeme": "t"
-								},
-								"isQualified": false,
-								"isSynthetic": false,
-								"name": "t"
-							},
-							"isCascaded": false,
-							"isNullAware": false,
-							"methodName": {
-								"@class": "SimpleIdentifier",
-								"@toString": "t",
-								"start": 21,
-								"end": 22,
-								"token": {
-									"start": 21,
-									"end": 22,
-									"type": "IDENTIFIER",
-									"lexeme": "t"
-								},
-								"ancestorCascade": null,
-								"beginToken": {
-									"start": 21,
-									"end": 22,
-									"type": "IDENTIFIER",
-									"lexeme": "t"
-								},
-								"endToken": {
-									"start": 21,
-									"end": 22,
-									"type": "IDENTIFIER",
-									"lexeme": "t"
-								},
-								"isQualified": false,
-								"isSynthetic": false,
-								"name": "t"
-							},
-							"realTarget": null,
-							"target": null,
-							"nullShortingTermination": "@seen { self }",
-							"argumentList": {
-								"@class": "ArgumentList",
-								"@toString": "('tooltip msg')",
-								"start": 22,
-								"end": 37,
-								"leftParenthesis": {
-									"start": 22,
-									"end": 23,
-									"type": "OPEN_PAREN",
-									"lexeme": "("
-								},
-								"rightParenthesis": {
-									"start": 36,
-									"end": 37,
-									"type": "CLOSE_PAREN",
-									"lexeme": ")"
-								},
-								"arguments": [
-									{
-										"@class": "SimpleStringLiteral",
-										"@toString": "'tooltip msg'",
-										"start": 23,
-										"end": 36,
-										"literal": {
-											"start": 23,
-											"end": 36,
-											"type": "STRING",
-											"lexeme": "'tooltip msg'"
-										},
-										"value": "tooltip msg",
-										"beginToken": {
-											"start": 23,
-											"end": 36,
-											"type": "STRING",
-											"lexeme": "'tooltip msg'"
-										},
-										"contentsEnd": 35,
-										"contentsOffset": 24,
-										"endToken": {
-											"start": 23,
-											"end": 36,
-											"type": "STRING",
-											"lexeme": "'tooltip msg'"
-										},
-										"isMultiline": false,
-										"isRaw": false,
-										"isSingleQuoted": true,
-										"isSynthetic": false
-									}
-								],
-								"beginToken": {
-									"start": 22,
-									"end": 23,
-									"type": "OPEN_PAREN",
-									"lexeme": "("
-								},
-								"endToken": {
-									"start": 36,
-									"end": 37,
-									"type": "CLOSE_PAREN",
-									"lexeme": ")"
-								},
-								"isSynthetic": false,
-								"length": 15,
-								"offset": 22
-							},
-							"typeArguments": null
-						}
-					}
-				],
-				"children": []
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 40,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 40,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 40,
+        "class": "RegularElement",
+        "name": "input",
+        "attributes": [
+          {
+            "start": 7,
+            "end": 39,
+            "class": "UseDirective",
+            "name": "tooltip",
+            "expression": {
+              "@class": "MethodInvocation",
+              "@toString": "t('tooltip msg')",
+              "start": 21,
+              "end": 37,
+              "operator": null,
+              "beginToken": {
+                "start": 21,
+                "end": 22,
+                "type": "IDENTIFIER",
+                "lexeme": "t"
+              },
+              "endToken": {
+                "start": 36,
+                "end": 37,
+                "type": "CLOSE_PAREN",
+                "lexeme": ")"
+              },
+              "function": {
+                "@class": "SimpleIdentifier",
+                "@toString": "t",
+                "start": 21,
+                "end": 22,
+                "token": {
+                  "start": 21,
+                  "end": 22,
+                  "type": "IDENTIFIER",
+                  "lexeme": "t"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 21,
+                  "end": 22,
+                  "type": "IDENTIFIER",
+                  "lexeme": "t"
+                },
+                "endToken": {
+                  "start": 21,
+                  "end": 22,
+                  "type": "IDENTIFIER",
+                  "lexeme": "t"
+                },
+                "isQualified": false,
+                "isSynthetic": false,
+                "name": "t"
+              },
+              "isCascaded": false,
+              "isNullAware": false,
+              "methodName": {
+                "@class": "SimpleIdentifier",
+                "@toString": "t",
+                "start": 21,
+                "end": 22,
+                "token": {
+                  "start": 21,
+                  "end": 22,
+                  "type": "IDENTIFIER",
+                  "lexeme": "t"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 21,
+                  "end": 22,
+                  "type": "IDENTIFIER",
+                  "lexeme": "t"
+                },
+                "endToken": {
+                  "start": 21,
+                  "end": 22,
+                  "type": "IDENTIFIER",
+                  "lexeme": "t"
+                },
+                "isQualified": false,
+                "isSynthetic": false,
+                "name": "t"
+              },
+              "realTarget": null,
+              "target": null,
+              "nullShortingTermination": "@seen { self }",
+              "argumentList": {
+                "@class": "ArgumentList",
+                "@toString": "('tooltip msg')",
+                "start": 22,
+                "end": 37,
+                "leftParenthesis": {
+                  "start": 22,
+                  "end": 23,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "rightParenthesis": {
+                  "start": 36,
+                  "end": 37,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "arguments": [
+                  {
+                    "@class": "SimpleStringLiteral",
+                    "@toString": "'tooltip msg'",
+                    "start": 23,
+                    "end": 36,
+                    "literal": {
+                      "start": 23,
+                      "end": 36,
+                      "type": "STRING",
+                      "lexeme": "'tooltip msg'"
+                    },
+                    "value": "tooltip msg",
+                    "beginToken": {
+                      "start": 23,
+                      "end": 36,
+                      "type": "STRING",
+                      "lexeme": "'tooltip msg'"
+                    },
+                    "contentsEnd": 35,
+                    "contentsOffset": 24,
+                    "endToken": {
+                      "start": 23,
+                      "end": 36,
+                      "type": "STRING",
+                      "lexeme": "'tooltip msg'"
+                    },
+                    "isMultiline": false,
+                    "isRaw": false,
+                    "isSingleQuoted": true,
+                    "isSynthetic": false
+                  }
+                ],
+                "beginToken": {
+                  "start": 22,
+                  "end": 23,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "endToken": {
+                  "start": 36,
+                  "end": 37,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "isSynthetic": false,
+                "length": 15,
+                "offset": 22
+              },
+              "typeArguments": null
+            }
+          }
+        ],
+        "fragment": {
+          "start": -1,
+          "end": -1,
+          "class": "Fragment",
+          "children": []
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

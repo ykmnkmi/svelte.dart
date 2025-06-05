@@ -1,7 +1,0 @@
-{
-	"code": "css-syntax-error",
-	"message": "expected {, but found end of file",
-	"line": 2,
-	"column": 16,
-	"offset": 24
-}

@@ -1,5 +1,5 @@
 {#await thePromise}
-	<p>loading...</p>
+  <p>loading...</p>
 {:catch theError}
-	<p>oh no! {theError.message}</p>
+  <p>oh no! {theError.message}</p>
 {/await}

@@ -1,0 +1,463 @@
+{
+  "start": 0,
+  "end": 94,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 94,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 94,
+        "class": "EachBlock",
+        "body": {
+          "start": 38,
+          "end": 87,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 38,
+              "end": 41,
+              "class": "Text",
+              "raw": "\n  ",
+              "data": "\n  "
+            },
+            {
+              "start": 41,
+              "end": 86,
+              "class": "RegularElement",
+              "name": "p",
+              "attributes": [],
+              "fragment": {
+                "start": 44,
+                "end": 82,
+                "class": "Fragment",
+                "children": [
+                  {
+                    "start": 44,
+                    "end": 50,
+                    "class": "ExpressionTag",
+                    "expression": {
+                      "@class": "SimpleIdentifier",
+                      "@toString": "name",
+                      "start": 45,
+                      "end": 49,
+                      "token": {
+                        "start": 45,
+                        "end": 49,
+                        "type": "IDENTIFIER",
+                        "lexeme": "name"
+                      },
+                      "ancestorCascade": null,
+                      "beginToken": {
+                        "start": 45,
+                        "end": 49,
+                        "type": "IDENTIFIER",
+                        "lexeme": "name"
+                      },
+                      "endToken": {
+                        "start": 45,
+                        "end": 49,
+                        "type": "IDENTIFIER",
+                        "lexeme": "name"
+                      },
+                      "isQualified": "@error { Null check operator used on a null value }",
+                      "isSynthetic": false,
+                      "name": "name"
+                    }
+                  },
+                  {
+                    "start": 50,
+                    "end": 54,
+                    "class": "Text",
+                    "raw": " is ",
+                    "data": " is "
+                  },
+                  {
+                    "start": 54,
+                    "end": 82,
+                    "class": "ExpressionTag",
+                    "expression": {
+                      "@class": "ConditionalExpression",
+                      "@toString": "cool ? 'cool' : 'not cool'",
+                      "start": 55,
+                      "end": 81,
+                      "question": {
+                        "start": 60,
+                        "end": 61,
+                        "type": "QUESTION",
+                        "lexeme": "?"
+                      },
+                      "colon": {
+                        "start": 69,
+                        "end": 70,
+                        "type": "COLON",
+                        "lexeme": ":"
+                      },
+                      "beginToken": {
+                        "start": 55,
+                        "end": 59,
+                        "type": "IDENTIFIER",
+                        "lexeme": "cool"
+                      },
+                      "condition": {
+                        "@class": "SimpleIdentifier",
+                        "@toString": "cool",
+                        "start": 55,
+                        "end": 59,
+                        "token": {
+                          "start": 55,
+                          "end": 59,
+                          "type": "IDENTIFIER",
+                          "lexeme": "cool"
+                        },
+                        "ancestorCascade": null,
+                        "beginToken": {
+                          "start": 55,
+                          "end": 59,
+                          "type": "IDENTIFIER",
+                          "lexeme": "cool"
+                        },
+                        "endToken": {
+                          "start": 55,
+                          "end": 59,
+                          "type": "IDENTIFIER",
+                          "lexeme": "cool"
+                        },
+                        "isQualified": false,
+                        "isSynthetic": false,
+                        "name": "cool"
+                      },
+                      "elseExpression": {
+                        "@class": "SimpleStringLiteral",
+                        "@toString": "'not cool'",
+                        "start": 71,
+                        "end": 81,
+                        "literal": {
+                          "start": 71,
+                          "end": 81,
+                          "type": "STRING",
+                          "lexeme": "'not cool'"
+                        },
+                        "value": "not cool",
+                        "beginToken": {
+                          "start": 71,
+                          "end": 81,
+                          "type": "STRING",
+                          "lexeme": "'not cool'"
+                        },
+                        "contentsEnd": 80,
+                        "contentsOffset": 72,
+                        "endToken": {
+                          "start": 71,
+                          "end": 81,
+                          "type": "STRING",
+                          "lexeme": "'not cool'"
+                        },
+                        "isMultiline": false,
+                        "isRaw": false,
+                        "isSingleQuoted": true,
+                        "isSynthetic": false
+                      },
+                      "endToken": {
+                        "start": 71,
+                        "end": 81,
+                        "type": "STRING",
+                        "lexeme": "'not cool'"
+                      },
+                      "thenExpression": {
+                        "@class": "SimpleStringLiteral",
+                        "@toString": "'cool'",
+                        "start": 62,
+                        "end": 68,
+                        "literal": {
+                          "start": 62,
+                          "end": 68,
+                          "type": "STRING",
+                          "lexeme": "'cool'"
+                        },
+                        "value": "cool",
+                        "beginToken": {
+                          "start": 62,
+                          "end": 68,
+                          "type": "STRING",
+                          "lexeme": "'cool'"
+                        },
+                        "contentsEnd": 67,
+                        "contentsOffset": 63,
+                        "endToken": {
+                          "start": 62,
+                          "end": 68,
+                          "type": "STRING",
+                          "lexeme": "'cool'"
+                        },
+                        "isMultiline": false,
+                        "isRaw": false,
+                        "isSingleQuoted": true,
+                        "isSynthetic": false
+                      },
+                      "inConstantContext": false,
+                      "isAssignable": false,
+                      "unParenthesized": "@seen { self }"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "start": 86,
+              "end": 87,
+              "class": "Text",
+              "raw": "\n",
+              "data": "\n"
+            }
+          ]
+        },
+        "fallback": null,
+        "expression": {
+          "@class": "SimpleIdentifier",
+          "@toString": "people",
+          "start": 7,
+          "end": 13,
+          "token": {
+            "start": 7,
+            "end": 13,
+            "type": "IDENTIFIER",
+            "lexeme": "people"
+          },
+          "ancestorCascade": null,
+          "beginToken": {
+            "start": 7,
+            "end": 13,
+            "type": "IDENTIFIER",
+            "lexeme": "people"
+          },
+          "endToken": {
+            "start": 7,
+            "end": 13,
+            "type": "IDENTIFIER",
+            "lexeme": "people"
+          },
+          "isQualified": "@error { Null check operator used on a null value }",
+          "isSynthetic": false,
+          "name": "people"
+        },
+        "context": {
+          "@class": "ObjectPattern",
+          "@toString": "People(: name, : cool)",
+          "start": 17,
+          "end": 37,
+          "leftParenthesis": {
+            "start": 23,
+            "end": 24,
+            "type": "OPEN_PAREN",
+            "lexeme": "("
+          },
+          "rightParenthesis": {
+            "start": 36,
+            "end": 37,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "type": {
+            "@class": "NamedType",
+            "@toString": "People",
+            "start": 17,
+            "end": 23,
+            "name2": {
+              "start": 17,
+              "end": 23,
+              "type": "IDENTIFIER",
+              "lexeme": "People"
+            },
+            "typeArguments": null,
+            "question": null,
+            "beginToken": {
+              "start": 17,
+              "end": 23,
+              "type": "IDENTIFIER",
+              "lexeme": "People"
+            },
+            "endToken": {
+              "start": 17,
+              "end": 23,
+              "type": "IDENTIFIER",
+              "lexeme": "People"
+            },
+            "importPrefix": null,
+            "isDeferred": false,
+            "isSynthetic": false
+          },
+          "beginToken": {
+            "start": 17,
+            "end": 23,
+            "type": "IDENTIFIER",
+            "lexeme": "People"
+          },
+          "endToken": {
+            "start": 36,
+            "end": 37,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "fields": [
+            {
+              "@class": "PatternField",
+              "@toString": ": name",
+              "start": 24,
+              "end": 29,
+              "name": {
+                "@class": "PatternFieldName",
+                "@toString": ":",
+                "start": 24,
+                "end": 25,
+                "colon": {
+                  "start": 24,
+                  "end": 25,
+                  "type": "COLON",
+                  "lexeme": ":"
+                },
+                "name": null,
+                "beginToken": {
+                  "start": 24,
+                  "end": 25,
+                  "type": "COLON",
+                  "lexeme": ":"
+                },
+                "endToken": {
+                  "start": 24,
+                  "end": 25,
+                  "type": "COLON",
+                  "lexeme": ":"
+                },
+                "isSynthetic": false,
+                "length": 1,
+                "offset": 24
+              },
+              "pattern": {
+                "@class": "AssignedVariablePattern",
+                "@toString": "name",
+                "start": 25,
+                "end": 29,
+                "beginToken": {
+                  "start": 25,
+                  "end": 29,
+                  "type": "IDENTIFIER",
+                  "lexeme": "name"
+                },
+                "endToken": {
+                  "start": 25,
+                  "end": 29,
+                  "type": "IDENTIFIER",
+                  "lexeme": "name"
+                },
+                "name": {
+                  "start": 25,
+                  "end": 29,
+                  "type": "IDENTIFIER",
+                  "lexeme": "name"
+                }
+              },
+              "beginToken": {
+                "start": 24,
+                "end": 25,
+                "type": "COLON",
+                "lexeme": ":"
+              },
+              "endToken": {
+                "start": 25,
+                "end": 29,
+                "type": "IDENTIFIER",
+                "lexeme": "name"
+              },
+              "isSynthetic": false,
+              "length": 5,
+              "offset": 24
+            },
+            {
+              "@class": "PatternField",
+              "@toString": ": cool",
+              "start": 31,
+              "end": 36,
+              "name": {
+                "@class": "PatternFieldName",
+                "@toString": ":",
+                "start": 31,
+                "end": 32,
+                "colon": {
+                  "start": 31,
+                  "end": 32,
+                  "type": "COLON",
+                  "lexeme": ":"
+                },
+                "name": null,
+                "beginToken": {
+                  "start": 31,
+                  "end": 32,
+                  "type": "COLON",
+                  "lexeme": ":"
+                },
+                "endToken": {
+                  "start": 31,
+                  "end": 32,
+                  "type": "COLON",
+                  "lexeme": ":"
+                },
+                "isSynthetic": false,
+                "length": 1,
+                "offset": 31
+              },
+              "pattern": {
+                "@class": "AssignedVariablePattern",
+                "@toString": "cool",
+                "start": 32,
+                "end": 36,
+                "beginToken": {
+                  "start": 32,
+                  "end": 36,
+                  "type": "IDENTIFIER",
+                  "lexeme": "cool"
+                },
+                "endToken": {
+                  "start": 32,
+                  "end": 36,
+                  "type": "IDENTIFIER",
+                  "lexeme": "cool"
+                },
+                "name": {
+                  "start": 32,
+                  "end": 36,
+                  "type": "IDENTIFIER",
+                  "lexeme": "cool"
+                }
+              },
+              "beginToken": {
+                "start": 31,
+                "end": 32,
+                "type": "COLON",
+                "lexeme": ":"
+              },
+              "endToken": {
+                "start": 32,
+                "end": 36,
+                "type": "IDENTIFIER",
+                "lexeme": "cool"
+              },
+              "isSynthetic": false,
+              "length": 5,
+              "offset": 31
+            }
+          ],
+          "unParenthesized": "@seen { self }"
+        },
+        "index": null,
+        "key": null
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
+}

@@ -1,148 +1,157 @@
 {
-	"html": {
-		"start": 0,
-		"end": 24,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 24,
-				"class": "Element",
-				"name": "p",
-				"attributes": [],
-				"children": [
-					{
-						"start": 3,
-						"end": 4,
-						"class": "Text",
-						"raw": " ",
-						"data": " "
-					},
-					{
-						"start": 4,
-						"end": 7,
-						"class": "MustacheTag",
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "a",
-							"start": 5,
-							"end": 6,
-							"token": {
-								"start": 5,
-								"end": 6,
-								"type": "IDENTIFIER",
-								"lexeme": "a"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 5,
-								"end": 6,
-								"type": "IDENTIFIER",
-								"lexeme": "a"
-							},
-							"endToken": {
-								"start": 5,
-								"end": 6,
-								"type": "IDENTIFIER",
-								"lexeme": "a"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "a"
-						}
-					},
-					{
-						"start": 7,
-						"end": 8,
-						"class": "Text",
-						"raw": " ",
-						"data": " "
-					},
-					{
-						"start": 8,
-						"end": 11,
-						"class": "MustacheTag",
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "b",
-							"start": 9,
-							"end": 10,
-							"token": {
-								"start": 9,
-								"end": 10,
-								"type": "IDENTIFIER",
-								"lexeme": "b"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 9,
-								"end": 10,
-								"type": "IDENTIFIER",
-								"lexeme": "b"
-							},
-							"endToken": {
-								"start": 9,
-								"end": 10,
-								"type": "IDENTIFIER",
-								"lexeme": "b"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "b"
-						}
-					},
-					{
-						"start": 11,
-						"end": 14,
-						"class": "Text",
-						"raw": " : ",
-						"data": " : "
-					},
-					{
-						"start": 14,
-						"end": 17,
-						"class": "MustacheTag",
-						"expression": {
-							"@class": "SimpleIdentifier",
-							"@toString": "c",
-							"start": 15,
-							"end": 16,
-							"token": {
-								"start": 15,
-								"end": 16,
-								"type": "IDENTIFIER",
-								"lexeme": "c"
-							},
-							"ancestorCascade": null,
-							"beginToken": {
-								"start": 15,
-								"end": 16,
-								"type": "IDENTIFIER",
-								"lexeme": "c"
-							},
-							"endToken": {
-								"start": 15,
-								"end": 16,
-								"type": "IDENTIFIER",
-								"lexeme": "c"
-							},
-							"isQualified": "@error { Null check operator used on a null value }",
-							"isSynthetic": false,
-							"name": "c"
-						}
-					},
-					{
-						"start": 17,
-						"end": 20,
-						"class": "Text",
-						"raw": " : ",
-						"data": " : "
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 24,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 24,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 24,
+        "class": "RegularElement",
+        "name": "p",
+        "attributes": [],
+        "fragment": {
+          "start": 3,
+          "end": 20,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 3,
+              "end": 4,
+              "class": "Text",
+              "raw": " ",
+              "data": " "
+            },
+            {
+              "start": 4,
+              "end": 7,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleIdentifier",
+                "@toString": "a",
+                "start": 5,
+                "end": 6,
+                "token": {
+                  "start": 5,
+                  "end": 6,
+                  "type": "IDENTIFIER",
+                  "lexeme": "a"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 5,
+                  "end": 6,
+                  "type": "IDENTIFIER",
+                  "lexeme": "a"
+                },
+                "endToken": {
+                  "start": 5,
+                  "end": 6,
+                  "type": "IDENTIFIER",
+                  "lexeme": "a"
+                },
+                "isQualified": "@error { Null check operator used on a null value }",
+                "isSynthetic": false,
+                "name": "a"
+              }
+            },
+            {
+              "start": 7,
+              "end": 8,
+              "class": "Text",
+              "raw": " ",
+              "data": " "
+            },
+            {
+              "start": 8,
+              "end": 11,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleIdentifier",
+                "@toString": "b",
+                "start": 9,
+                "end": 10,
+                "token": {
+                  "start": 9,
+                  "end": 10,
+                  "type": "IDENTIFIER",
+                  "lexeme": "b"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 9,
+                  "end": 10,
+                  "type": "IDENTIFIER",
+                  "lexeme": "b"
+                },
+                "endToken": {
+                  "start": 9,
+                  "end": 10,
+                  "type": "IDENTIFIER",
+                  "lexeme": "b"
+                },
+                "isQualified": "@error { Null check operator used on a null value }",
+                "isSynthetic": false,
+                "name": "b"
+              }
+            },
+            {
+              "start": 11,
+              "end": 14,
+              "class": "Text",
+              "raw": " : ",
+              "data": " : "
+            },
+            {
+              "start": 14,
+              "end": 17,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleIdentifier",
+                "@toString": "c",
+                "start": 15,
+                "end": 16,
+                "token": {
+                  "start": 15,
+                  "end": 16,
+                  "type": "IDENTIFIER",
+                  "lexeme": "c"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 15,
+                  "end": 16,
+                  "type": "IDENTIFIER",
+                  "lexeme": "c"
+                },
+                "endToken": {
+                  "start": 15,
+                  "end": 16,
+                  "type": "IDENTIFIER",
+                  "lexeme": "c"
+                },
+                "isQualified": "@error { Null check operator used on a null value }",
+                "isSynthetic": false,
+                "name": "c"
+              }
+            },
+            {
+              "start": 17,
+              "end": 20,
+              "class": "Text",
+              "raw": " : ",
+              "data": " : "
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }

@@ -1,44 +1,54 @@
 {
-	"html": {
-		"start": 0,
-		"end": 41,
-		"class": "Fragment",
-		"children": [
-			{
-				"start": 0,
-				"end": 41,
-				"class": "Element",
-				"name": "a",
-				"attributes": [
-					{
-						"start": 3,
-						"end": 30,
-						"class": "Attribute",
-						"name": "href",
-						"values": [
-							{
-								"start": 8,
-								"end": 30,
-								"class": "Text",
-								"raw": "https://www.google.com",
-								"data": "https://www.google.com"
-							}
-						]
-					}
-				],
-				"children": [
-					{
-						"start": 31,
-						"end": 37,
-						"class": "Text",
-						"raw": "Google",
-						"data": "Google"
-					}
-				]
-			}
-		]
-	},
-	"style": null,
-	"instance": null,
-	"module": null
+  "start": 0,
+  "end": 41,
+  "class": "Root",
+  "fragment": {
+    "start": 0,
+    "end": 41,
+    "class": "Fragment",
+    "children": [
+      {
+        "start": 0,
+        "end": 41,
+        "class": "RegularElement",
+        "name": "a",
+        "attributes": [
+          {
+            "start": 3,
+            "end": 30,
+            "class": "Attribute",
+            "name": "href",
+            "value": [
+              {
+                "start": 8,
+                "end": 30,
+                "class": "Text",
+                "raw": "https://www.google.com",
+                "data": "https://www.google.com"
+              }
+            ],
+            "modifiers": []
+          }
+        ],
+        "fragment": {
+          "start": 31,
+          "end": 37,
+          "class": "Fragment",
+          "children": [
+            {
+              "start": 31,
+              "end": 37,
+              "class": "Text",
+              "raw": "Google",
+              "data": "Google"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "instance": null,
+  "module": null,
+  "style": null,
+  "options": null
 }
