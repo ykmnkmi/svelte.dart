@@ -145,8 +145,7 @@ base class App extends Component {
 ```
 
 Status:
-- [x] Parser:
-  - version 5 support 🔥
+- [x] Parser
 - [ ] Runtime
   - [ ] internal 🔥
   - [ ] ...
