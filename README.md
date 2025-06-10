@@ -1,7 +1,7 @@
 svelte.dart
 ===========
 
-> Work in progress.
+> Experimenting, work in progress.
 
 [Svelte][Svelte] ([v5.16.6][v5.16.6]) web framework (not yet) ported to [Dart][Dart].
 
@@ -48,8 +48,8 @@ svelte.dart
 <p>{doubled} * 2 = {quadrupled}</p>
 ```
 
-Another way of writing components, inspired by Solid with a mix of Flutter/Jaspr.
-It should be compiled the same way as the HTML component above, not _executed_ as is.
+Another way of writing components, inspired by Flutter/Jaspr. It should be
+compiled the same way as the HTML component above, not _executed_ as is.
 
 ```dart
 // app.dart
@@ -143,6 +143,123 @@ base class App extends Component {
   }
 }
 ```
+
+Can we use Dart code without generators? Yes, this is Solid way:
+
+```dart
+// app.dart
+
+import 'package:svelte/svelte.dart';
+
+Component app({int step = 1}) {
+  State<int> count = State<int>(0);
+  Derived<int> doubled = Derived<int>(() => count * 2);
+  Derived<int> quadrupled = Derived<int>(() => doubled * 2);
+
+  void handleClick(Event event) {
+    count.set(count() + step);
+  }
+
+  const duration = Duration(seconds: 1);
+
+  onMount(() {
+    var timer = Timer.periodic(duration, (_) {
+      count.set(count() + step);
+    });
+
+    return () {
+      timer.cancel();
+    };
+  });
+
+  return Fragment([
+    Button(
+      onClick: handleClick,
+      children: [
+        Text.derived(() => 'Clicked ${count()} ${count() == 1 ? 'time' : 'times'}'),
+      ],
+    );
+    P(
+      children: [
+        Text.derived(() => '${count()} * 2 = ${doubled()}'),
+      ],
+    ),
+    P(
+      children: [
+        Text.derived(() => '${doubled()} * 2 = ${quadrupled()}'),
+      ],
+    ),
+
+    // Flow ...
+    If(
+      test: stateOrCallable,
+      children: [
+        // ...
+      ],
+    ),
+    Each(
+      values: stateOrCallable,
+      children: [
+        // ...
+      ],
+    ),
+    Key(
+      key: stateOrCallable,
+      children: [
+        // ...
+      ],
+    ),
+  ]);
+}
+```
+
+Reactive properties should be passed as is:
+
+```dart
+// app.dart
+
+import 'package:svelte/svelte.dart';
+
+Node app({State<int>? counter}) {
+  // ...
+}
+```
+
+What about attributes? There is 2 ways - each property as argument or single map.
+
+As arguments, typed, with if null checks for each. Unused arguments should be
+tree-shaken by the compiler.
+
+```dart
+Button(
+  className: 'btn btn-blue',
+  onClick: handleClick,
+  // String? title,
+  // Ignore first when reactive title is used. Would be nice to have StateOr<T>.
+  // State<String>? titleState,
+  titleState: title,
+  children: [
+    // ...
+  ],
+);
+```
+
+Map, untyped, single iteration over all attributes with 3 ~ 4 if checks.
+
+```dart
+Button(
+  attributes: {
+    'class': 'btn btn-blue',
+    'onclick': handleClick,
+    'title': title, // state
+  },
+  children: [
+    // ...
+  ],
+);
+```
+
+Component function called once per mount and builds reactive graph.
 
 Status:
 - [x] Parser
