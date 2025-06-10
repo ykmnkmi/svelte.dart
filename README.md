@@ -9,6 +9,8 @@ svelte.dart
 |---|---|---|
 | [svelte_ast](svelte_ast/) | Parser and utilities for SvelteDart template compiler.| [![Pub Package][ast_pub_icon]][ast_pub] |
 
+Dart port of the Svelte framework.
+
 ```html
 <!-- app.svelte -->
 <script>
@@ -259,7 +261,7 @@ Button(
 );
 ```
 
-Component function called once per mount and builds reactive graph.
+Component function is called once per mount and builds the reactive graph.
 
 Status:
 - [x] Parser
