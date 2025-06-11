@@ -94,8 +94,8 @@ Both ways should output same code after compilation:
 
 ```dart
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
 base class App extends Component {
