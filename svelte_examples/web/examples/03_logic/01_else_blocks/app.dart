@@ -1,11 +1,10 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
 import 'user.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root1 = $.template<HTMLButtonElement>(
     '<button>Log out</button>',
   );
@@ -14,7 +13,7 @@ base class App extends Component {
 
   @override
   void call(Node anchor) {
-    var user = state<User>(User(loggedIn: false));
+    var user = $.source<User>(User(loggedIn: false));
 
     void toggle() {
       user.update((user) {

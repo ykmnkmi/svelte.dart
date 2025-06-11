@@ -1,6 +1,4 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
-  
+<script>
   external void Function({required String text}) onMessage;
 
   void sayHello() {

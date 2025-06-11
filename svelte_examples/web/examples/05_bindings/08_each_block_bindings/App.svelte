@@ -1,29 +1,29 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
+<script>
+  import 'package:svelte/svelte.dart';
 
-  var todos = state<List<ToDo>>(<ToDo>[
+  var todos = state<List<ToDo>>([
     ToDo(done: false, text: 'finish Svelte tutorial'),
     ToDo(done: false, text: 'build an app'),
     ToDo(done: false, text: 'world domination'),
   ]);
 
-  void add() {
-    todos.set(<ToDo>[...todos(), ToDo(done: false, text: '')]);
+  void add {
+    todos = <ToDo>[...todos(), ToDo(done: false, text: '')];
   }
 
   void clear() {
-    todos.set(todos().where((todo) => !todo.done).toList());
+    todos = todos.where((todo) => !todo.done).toList();
   }
 
-  var remaining = derived<int>(() {
-    var remaining = todos().where((todo) => !todo.done);
+  var remaining = derivedBy<int>(() {
+    var remaining = todos.where((todo) => !todo.done);
     return remaining.length;
   });
 </script>
 
 <h1>Todos</h1>
 
-{#each todos() as todo}
+{#each todos as todo}
   <div>
     <input type="checkbox" bind:checked={todo.done} />
 

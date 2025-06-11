@@ -1,5 +1,5 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
+<script>
+  import 'package:svelte/svelte.dart';
 
   var a = state<int>(0);
   var b = state<int>(0);
@@ -15,4 +15,4 @@
   <input type="range" bind:value={b} min="0" max="10" />
 </label>
 
-<p>{a()} + {b()} = {a() + b()}</p>
+<p>{a} + {b} = {a + b}</p>

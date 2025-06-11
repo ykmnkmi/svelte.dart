@@ -1,9 +1,8 @@
 // ignore: directives_ordering, library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root2 = $.template<HTMLParagraphElement>('<p> </p>');
   static final root1 = $.template<DocumentFragment>(
     '<h2>Selected files:</h2> <!>',
@@ -18,7 +17,7 @@ base class App extends Component {
   void call(Node anchor) {
     $.push();
 
-    var files = state<FileList?>(null);
+    var files = $.source<FileList?>(null);
 
     $.userEffect<void>(() {
       if (files() != null) {

@@ -1,4 +1,4 @@
-<script type="application/dart">
+<script>
   import 'Nested.svelte';
 </script>
 

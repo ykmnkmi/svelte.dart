@@ -1,10 +1,9 @@
 import 'package:markdown/markdown.dart' show markdownToHtml;
 // ignore: directives_ordering, library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root = $.template<DocumentFragment>(
     '<textarea class="svelte-edipxk"></textarea> <!>',
     1,
@@ -19,7 +18,7 @@ base class App extends Component {
     height:200px;
   }''');
 
-    var text = state<String>('Some words are *italic*, some are **bold**');
+    var text = $.source<String>('Some words are *italic*, some are **bold**');
 
     var fragment = root();
     var textarea = $.firstChild<HTMLTextAreaElement>(fragment);

@@ -1,5 +1,5 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
+<script>
+  import 'package:svelte/svelte.dart';
 
   HTMLCanvasElement? canvas;
 
@@ -17,11 +17,11 @@
 
       for (var p = 0; p < imageData.data.length; p += 4) {
         var i = p / 4;
-        var x = i % canvas.width;
-        var y = (i / canvas.height).toInt();
+        var x = i % canvas!.width;
+        var y = (i / canvas!.height).toInt();
         var t = window.performance.now();
-        var r = (64 + 128 * x / canvas.width + 64 * sin(t / 1000)).toInt();
-        var g = (64 + 128 * y / canvas.height + 64 * cos(t / 1400)).toInt();
+        var r = (64 + 128 * x / canvas!.width + 64 * sin(t / 1000)).toInt();
+        var g = (64 + 128 * y / canvas!.height + 64 * cos(t / 1400)).toInt();
         var b = 128;
 
         imageData.data[p + 0] = r;

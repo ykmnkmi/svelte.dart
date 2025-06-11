@@ -1,9 +1,8 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root1 = $.template('<label><input type="checkbox"> </label>');
   static final root2 = $.template('<p>Please select at least one flavour</p>');
   static final root4 = $.template(
@@ -19,8 +18,8 @@ base class App extends Component {
   void call(Node anchor) {
     $.push();
 
-    var scoops = state<int>(1);
-    var flavours = state<List<String>>(<String>['Mint choc chip']);
+    var scoops = $.source<int>(1);
+    var flavours = $.source<List<String>>(['Mint choc chip']);
 
     var menu = <String>[
       'Cookies and cream',

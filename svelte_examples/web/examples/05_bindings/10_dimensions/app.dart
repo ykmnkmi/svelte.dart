@@ -1,9 +1,8 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root = $.template<DocumentFragment>(
     '<input type="range" class="svelte-1oqthja"> <input class="svelte-1oqthja"> <p> </p> <div class="svelte-1oqthja"><span> </span></div>',
     1,
@@ -19,10 +18,10 @@ base class App extends Component {
     display: inline-block;
   }''');
 
-    var w = state<int>(0);
-    var h = state<int>(0);
-    var size = state<int>(42);
-    var text = state<String>('edit me');
+    var w = $.source<int>(0);
+    var h = $.source<int>(0);
+    var size = $.source<int>(42);
+    var text = $.source<String>('edit me');
 
     var fragment = root();
     var input = $.firstChild<HTMLInputElement>(fragment);

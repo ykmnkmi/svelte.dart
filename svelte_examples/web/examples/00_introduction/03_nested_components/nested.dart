@@ -1,9 +1,8 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class Nested extends Component {
+base class Nested extends $.Component {
   static final root = $.template<HTMLParagraphElement>(
     "<p>...don't affect this element</p>",
   );

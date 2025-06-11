@@ -1,11 +1,10 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
 import 'todo.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root1 = $.template<HTMLDivElement>(
     '<div><input type="checkbox"> <input placeholder="What needs to be done?"></div>',
   );
@@ -18,7 +17,7 @@ base class App extends Component {
   void call(Node anchor) {
     $.push();
 
-    var todos = state<List<ToDo>>(<ToDo>[
+    var todos = $.source<List<ToDo>>([
       ToDo(done: false, text: 'finish Svelte tutorial'),
       ToDo(done: false, text: 'build an app'),
       ToDo(done: false, text: 'world domination'),
@@ -32,7 +31,7 @@ base class App extends Component {
       todos.set(todos().where((todo) => !todo.done).toList());
     }
 
-    var remaining = derived<int>(() {
+    var remaining = $.derived<int>(() {
       var remaining = todos().where((todo) => !todo.done);
       return remaining.length;
     });

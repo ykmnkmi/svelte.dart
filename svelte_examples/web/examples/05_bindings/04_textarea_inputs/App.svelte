@@ -1,13 +1,13 @@
-<script type="application/dart">
+<script>
   import 'package:markdown/markdown.dart' show markdownToHtml;
-  import 'package:svelte_runtime/svelte_runtime.dart';  
+  import 'package:svelte/svelte.dart';  
   
   var text = state<String>('Some words are *italic*, some are **bold**');
 </script>
 
 <textarea bind:value={text}></textarea>
 
-{@html markdownToHtml(text(), inlineOnly: true)}
+{@html markdownToHtml(text, inlineOnly: true)}
 
 <style>
   textarea {

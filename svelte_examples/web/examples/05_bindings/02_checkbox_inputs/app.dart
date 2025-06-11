@@ -1,9 +1,8 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root1 = $.template<HTMLParagraphElement>(
     '<p>Thank you. We will bombard your inbox and sell your personal details.</p>',
   );
@@ -17,7 +16,7 @@ base class App extends Component {
 
   @override
   void call(Node anchor) {
-    var yes = state<bool>(false);
+    var yes = $.source<bool>(false);
 
     var fragment = root();
     var label = $.firstChild<HTMLLabelElement>(fragment);

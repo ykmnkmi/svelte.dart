@@ -1,8 +1,8 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
+<script>
+  import 'package:svelte/svelte.dart';
 
   var scoops = state<int>(1);
-  var flavours = state<List<String>>(<String>['Mint choc chip']);
+  var flavours = state<List<String>>(['Mint choc chip']);
 
   var menu = <String>[
     'Cookies and cream',
@@ -45,14 +45,14 @@
   </label>
 {/each}
 
-{#if flavours().isEmpty}
+{#if flavours.isEmpty}
   <p>Please select at least one flavour</p>
-{:else if flavours().length > scoops()}
+{:else if flavours.length > scoops}
   <p>Can't order more flavours than scoops!</p>
 {:else}
   <p>
-    You ordered {scoops()}
-    {scoops() == 1 ? 'scoop' : 'scoops'}
-    of {join(flavours())}
+    You ordered {scoops}
+    {scoops == 1 ? 'scoop' : 'scoops'}
+    of {join(flavours)}
   </p>
 {/if}

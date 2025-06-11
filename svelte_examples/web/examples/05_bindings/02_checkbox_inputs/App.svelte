@@ -1,5 +1,5 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
+<script>
+  import 'package:svelte/svelte.dart';
 
   var yes = state<bool>(false);
 </script>

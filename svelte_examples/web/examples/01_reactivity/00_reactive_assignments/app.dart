@@ -1,14 +1,13 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root = $.template<HTMLButtonElement>('<button> </button>');
 
   @override
   void call(Node anchor) {
-    var count = state<int>(0);
+    var count = $.source<int>(0);
 
     void handleClick() {
       count.set(count() + 1);

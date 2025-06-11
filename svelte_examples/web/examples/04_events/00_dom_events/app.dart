@@ -1,9 +1,8 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root = $.template<HTMLDivElement>(
     '<div class="svelte-1kuj9kb"> </div>',
   );
@@ -16,7 +15,7 @@ base class App extends Component {
     height: 100%;
   }''');
 
-    var m = state<List<int>>(<int>[0, 0]);
+    var m = $.source<List<int>>(<int>[0, 0]);
 
     void handleMouseMove(MouseEvent event) {
       m.update((m) {

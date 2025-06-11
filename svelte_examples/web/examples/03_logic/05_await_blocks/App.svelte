@@ -1,5 +1,7 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
+<script>
+  import 'dart:math';
+
+  import 'package:svelte/svelte.dart';
 
   Future<int> getRandomNumber() {
     var random = Random();
@@ -14,13 +16,13 @@
   var future = state<Future<int>>(getRandomNumber());
 
   void handleClick() {
-    future.set(getRandomNumber());
+    future = getRandomNumber();
   }
 </script>
 
 <button onclick={handleClick}>generate random number</button>
 
-{#await future()}
+{#await future}
   <p>...waiting</p>
 {:then number}
   <p>The number is {number}</p>

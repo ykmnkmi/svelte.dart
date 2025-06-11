@@ -1,8 +1,8 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
+<script>
+  import 'package:svelte/svelte.dart';
   import 'package:web/web.dart';
 
-  var questions = [
+  var questions = <({int id, String text})>[
     (id: 1, text: 'Where did you go to school?'),
     (id: 2, text: "What is your mother's name?"),
     (id: 3, text: 'What is another personal fact that an attacker could easily find with Google?'),
@@ -13,14 +13,14 @@
 
   void handleSubmit(Event event) {
     event.preventDefault();
-    window.alert('Answered question ${selected()!.id} ${selected()!.text} with "${answer()}".');
+    window.alert('Answered question ${selected!.id} ${selected!.text} with "${answer}".');
   }
 </script>
 
 <h2>Insecurity questions</h2>
 
 <form onsubmit={handleSubmit}>
-  <select bind:value={selected} onchange={() => answer.set('')}>
+  <select bind:value={selected} onchange={() => answer = ''}>
     {#each questions as question}
       <option value={question}>
         {question.text}
@@ -30,10 +30,10 @@
 
   <input bind:value={answer} />
 
-  <button disabled={!answer} type="submit"> Submit </button>
+  <button disabled={!answer} type="submit">Submit</button>
 </form>
 
-<p>selected question {selected() != null ? selected().id : '[waiting...]'}</p>
+<p>selected question {selected != null ? selected.id : '[waiting...]'}</p>
 
 <style>
   input {

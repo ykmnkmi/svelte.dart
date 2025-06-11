@@ -2,11 +2,11 @@ import 'dart:js_interop';
 import 'dart:math' show cos, sin;
 
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root = $.template<HTMLCanvasElement>(
     '<canvas class="svelte-1mvjxco"></canvas>',
   );
@@ -26,9 +26,8 @@ base class App extends Component {
     HTMLCanvasElement? canvas;
 
     onMount<void Function()>(() {
-      var $canvas = canvas!;
       var context =
-          $canvas.getContext(
+          canvas!.getContext(
                 '2d',
                 CanvasRenderingContext2DSettings(willReadFrequently: true),
               )
@@ -45,17 +44,17 @@ base class App extends Component {
         var imageData = context.getImageData(
           0,
           0,
-          $canvas.width,
-          $canvas.height,
+          canvas!.width,
+          canvas!.height,
         );
 
         for (var p = 0; p < imageData.data.length; p += 4) {
           var i = p / 4;
-          var x = i % $canvas.width;
-          var y = (i / $canvas.height).toInt();
+          var x = i % canvas!.width;
+          var y = (i / canvas!.height).toInt();
           var t = window.performance.now();
-          var r = (64 + 128 * x / $canvas.width + 64 * sin(t / 1000)).toInt();
-          var g = (64 + 128 * y / $canvas.height + 64 * cos(t / 1400)).toInt();
+          var r = (64 + 128 * x / canvas!.width + 64 * sin(t / 1000)).toInt();
+          var g = (64 + 128 * y / canvas!.height + 64 * cos(t / 1400)).toInt();
           var b = 128;
 
           imageData.data[p + 0] = r;
@@ -81,7 +80,6 @@ base class App extends Component {
 
     $.bindThis<HTMLCanvasElement>(canvas1, () => canvas, (value) {
       canvas = value;
-      print(value);
     });
 
     $.append(anchor, canvas1);

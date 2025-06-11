@@ -1,5 +1,5 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
+<script>
+  import 'package:svelte/svelte.dart';
 
   import 'Thing.svelte';
 
@@ -12,9 +12,7 @@
   ]);
 
   void handleClick() {
-    things.update((things) {
-      things.removeAt(0);
-    });
+    things.removeAt(0);
   }
 </script>
 
@@ -23,14 +21,14 @@
 <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1em">
   <div>
     <h2>Keyed</h2>
-    {#each things() as thing (thing.id)}
+    {#each things as thing (thing.id)}
       <Thing current={thing.color} />
     {/each}
   </div>
 
   <div>
     <h2>Unkeyed</h2>
-    {#each things() as thing}
+    {#each things as thing}
       <Thing current={thing.color} />
     {/each}
   </div>

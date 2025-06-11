@@ -1,9 +1,8 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root1 = $.template<HTMLOptionElement>('<option> </option>');
   static final root2 = $.template<HTMLParagraphElement>(
     '<p>Please select at least one flavour</p>',
@@ -21,8 +20,8 @@ base class App extends Component {
   void call(Node anchor) {
     $.push();
 
-    var scoops = state<int>(1);
-    var flavours = state<List<String>>(<String>['Mint choc chip']);
+    var scoops = $.source<int>(1);
+    var flavours = $.source<List<String>>(['Mint choc chip']);
 
     var menu = <String>[
       'Cookies and cream',
@@ -71,13 +70,13 @@ base class App extends Component {
 
     $.eachBlock(select, 21, () => menu, $.index, (anchor, flavour, index) {
       var option = root1();
-      var option_value = null as String?;
+      var optionValue = null as String?;
       var text = $.child<Text>(option, true);
 
       $.reset(option);
 
       $.templateEffect(() {
-        if (option_value != (option_value = flavour())) {
+        if (optionValue != (optionValue = flavour())) {
           $.setElementValue(option, flavour());
         }
 

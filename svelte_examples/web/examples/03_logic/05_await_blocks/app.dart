@@ -1,11 +1,10 @@
 import 'dart:math';
 
-import 'package:svelte_runtime/svelte_runtime.dart';
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root1 = $.template<HTMLParagraphElement>('<p> </p>');
 
   static final root2 = $.template<HTMLParagraphElement>(
@@ -33,7 +32,7 @@ base class App extends Component {
       return Future<int>.error(StateError('No luck!'));
     }
 
-    var future = state<Future<int>>(getRandomNumber());
+    var future = $.source<Future<int>>(getRandomNumber());
 
     void handleClick() {
       future.set(getRandomNumber());

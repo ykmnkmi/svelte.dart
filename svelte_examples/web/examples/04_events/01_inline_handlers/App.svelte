@@ -1,15 +1,15 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
+<script>
+  import 'package:svelte/svelte.dart';
   import 'package:web/web.dart';
 
-  var m = state<List<int>>(<int>[0, 0]);
+  var m = state<List<int>>([0, 0]);
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div onmousemove={(MouseEvent event) {
-  m.set(<int>[event.clientX, event.clientY]);
+  m = [event.clientX, event.clientY];
 }}>
-  The mouse position is {m().x} x {m().y}
+  The mouse position is {m[0]} x {m[1]}
 </div>
 
 <style>

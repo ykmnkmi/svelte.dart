@@ -1,14 +1,14 @@
-<script type="application/dart">
-  import 'package:svelte_runtime/svelte_runtime.dart';
+<script>
+  import 'package:svelte/svelte.dart';
 
   var count = state<int>(0);
 
   void handleClick() {
-    count.set(count() + 1);
+    count += 1;
   }
 </script>
 
 <button onclick={handleClick}>
-  Clicked {count()}
-  {count() == 1 ? 'time' : 'times'}
+  Clicked {count}
+  {count == 1 ? 'time' : 'times'}
 </button>

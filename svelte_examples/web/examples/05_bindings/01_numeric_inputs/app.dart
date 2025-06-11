@@ -1,9 +1,8 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root = $.template<DocumentFragment>(
     '<label><input type="number" min="0" max="10"> <input type="range" min="0" max="10"></label> <label><input type="number" min="0" max="10"> <input type="range" min="0" max="10"></label> <p> </p>',
     1,
@@ -11,8 +10,8 @@ base class App extends Component {
 
   @override
   void call(Node anchor) {
-    var a = state<int>(0);
-    var b = state<int>(0);
+    var a = $.source<int>(0);
+    var b = $.source<int>(0);
 
     var fragment = root();
     var label = $.firstChild<HTMLLabelElement>(fragment);

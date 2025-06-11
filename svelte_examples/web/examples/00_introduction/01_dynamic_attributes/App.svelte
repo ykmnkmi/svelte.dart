@@ -1,4 +1,4 @@
-<script type="application/dart">
+<script>
   var src = '/tutorial/image.gif';
   var name = 'Rick Astley';
 </script>

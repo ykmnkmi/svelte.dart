@@ -1,6 +1,5 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
 import 'thing.dart';
@@ -23,7 +22,7 @@ base class _Thing extends Thing {
   }
 }
 
-base class App extends Component {
+base class App extends $.Component {
   static final root = $.template<DocumentFragment>(
     '<button>Remove first thing</button> <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1em"><div><h2>Keyed</h2> <!> </div> <div><h2>Unkeyed</h2> <!></div></div>',
     1,
@@ -31,7 +30,7 @@ base class App extends Component {
 
   @override
   void call(Node anchor) {
-    var things = state<List<({String color, int id})>>([
+    var things = $.source<List<({String color, int id})>>([
       (id: 1, color: 'darkblue'),
       (id: 2, color: 'indigo'),
       (id: 3, color: 'deeppink'),

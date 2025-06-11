@@ -1,12 +1,11 @@
-// ignore: library_prefixes
 import 'dart:async';
 import 'dart:js_interop';
 
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+// ignore: library_prefixes
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root = $.template<DocumentFragment>(
     '<h1>Caminandes: Llamigos</h1> <p>From <a href="https://studio.blender.org/films">Blender Studio</a>. CC-BY</p> <div class="svelte-11bzk4c"><video poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg" src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4" class="svelte-11bzk4c"><track kind="captions"></video> <div class="controls svelte-11bzk4c"><progress class="svelte-11bzk4c"></progress> <div class="info svelte-11bzk4c"><span class="time svelte-11bzk4c"> </span> <span class="svelte-11bzk4c"> </span> <span class="time svelte-11bzk4c"> </span></div></div></div>',
     1,
@@ -70,10 +69,10 @@ base class App extends Component {
   }''');
 
     // These values are bound to properties of the video
-    var time = state<double>(0);
-    var duration = state<double?>(null);
-    var paused = state<bool>(true);
-    var showControls = state<bool>(true);
+    var time = $.source<double>(0);
+    var duration = $.source<double?>(null);
+    var paused = $.source<bool>(true);
+    var showControls = $.source<bool>(true);
     Timer? showControlsTimer;
     // Used to track time of last mouse down event
     DateTime? lastMouseDown;
@@ -100,10 +99,9 @@ base class App extends Component {
         return;
       }
 
-      var clientX =
-          event.type == 'touchmove'
-              ? (event as TouchEvent).touches.item(0)!.clientX
-              : event.clientX.toDouble();
+      var clientX = event.type == 'touchmove'
+          ? (event as TouchEvent).touches.item(0)!.clientX
+          : event.clientX.toDouble();
 
       var rect = element.getBoundingClientRect();
       var left = rect.left;

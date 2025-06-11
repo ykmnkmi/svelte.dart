@@ -1,9 +1,8 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root1 = $.template<HTMLParagraphElement>('<p></p>');
 
   static final root3 = $.template<HTMLParagraphElement>('<p></p>');
@@ -23,8 +22,7 @@ base class App extends Component {
       void consequent(Node anchor) {
         var p = root1();
 
-        $.setTextContent(p, '''
-$x is greater than 10''');
+        $.setTextContent(p, '$x is greater than 10');
         $.append(anchor, p);
       }
 
@@ -35,16 +33,14 @@ $x is greater than 10''');
         void consequent1(Node anchor) {
           var p1 = root3();
 
-          $.setTextContent(p1, '''
-$x is less than 5''');
+          $.setTextContent(p1, '$x is less than 5');
           $.append(anchor, p1);
         }
 
         void alternate(Node anchor) {
           var p2 = root4();
 
-          $.setTextContent(p2, '''
-$x is between 5 and 10''');
+          $.setTextContent(p2, '$x is between 5 and 10');
           $.append(anchor, p2);
         }
 

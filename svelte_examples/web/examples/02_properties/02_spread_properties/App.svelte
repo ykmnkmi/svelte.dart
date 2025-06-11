@@ -1,4 +1,4 @@
-<script type="application/dart">
+<script>
   import 'Info.svelte';
 
   var pkg = <Symbol, Object>{

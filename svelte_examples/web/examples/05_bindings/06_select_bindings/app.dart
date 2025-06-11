@@ -1,9 +1,8 @@
 // ignore: library_prefixes
-import 'package:svelte_runtime/src/internal.dart' as $;
-import 'package:svelte_runtime/svelte_runtime.dart';
+import 'package:svelte/src/internal.dart' as $;
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends $.Component {
   static final root1 = $.template<HTMLOptionElement>('<option> </option>');
   static final root = $.template<DocumentFragment>(
     '<h2>Insecurity questions</h2> <form><select></select> <input class="svelte-14lf6jh"> <button type="submit">Submit</button></form> <p> </p>',
@@ -19,7 +18,7 @@ base class App extends Component {
     max-width:100%;
   }''');
 
-    var questions = [
+    var questions = <({int id, String text})>[
       (id: 1, text: 'Where did you go to school?'),
       (id: 2, text: "What is your mother's name?"),
       (
@@ -29,8 +28,8 @@ base class App extends Component {
       ),
     ];
 
-    var selected = state<({int id, String text})?>(null);
-    var answer = state<String>('');
+    var selected = $.source<({int id, String text})?>(null);
+    var answer = $.source<String>('');
 
     void handleSubmit(Event event) {
       event.preventDefault();
@@ -49,14 +48,14 @@ base class App extends Component {
       index,
     ) {
       var option = root1();
-      var option_value = () as Object?;
+      var optionValue = () as Object?;
       var text = $.child<Text>(option, true);
 
       $.reset(option);
 
       $.templateEffect(() {
-        if (option_value != (option_value = question())) {
-          $.setElementValue(option, option_value);
+        if (optionValue != (optionValue = question())) {
+          $.setElementValue(option, optionValue);
         }
 
         $.setText(text, question().text);
