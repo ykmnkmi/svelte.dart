@@ -1,6 +1,6 @@
 name: svelte_workspace
 description: SvelteDart workspace.
-version: 1.0.4
+version: 1.0.5
 repository: https://github.com/ykmnkmi/svelte.dart
 
 environment:
@@ -10,6 +10,7 @@ dev_dependencies:
   lints: ^6.0.0
 
 workspace:
+  - svelte
   - svelte_ast
   - svelte_builder
   - svelte_runtime

@@ -155,8 +155,8 @@ import 'package:svelte/svelte.dart';
 
 Component app({int step = 1}) {
   State<int> count = State<int>(0);
-  Derived<int> doubled = Derived<int>(() => count * 2);
-  Derived<int> quadrupled = Derived<int>(() => doubled * 2);
+  Derived<int> doubled = Derived<int>(() => count() * 2);
+  Derived<int> quadrupled = Derived<int>(() => doubled() * 2);
 
   void handleClick(Event event) {
     count.set(count() + step);
@@ -270,7 +270,7 @@ Status:
   - [ ] ...
 - [ ] Compiler
 - [ ] Builder
-- [ ] Examples (to test runtime, not generated):
+- [ ] Examples (to test runtime and JS interop., not generated):
   - [x] introduction
   - [x] reactivity
   - [x] props
