@@ -23,10 +23,10 @@ void selectOption(
     return;
   }
 
-  for (HTMLOptionElement option
-      in JSImmutableListWrapper<HTMLOptionsCollection, HTMLOptionElement>(
-        select.options,
-      )) {
+  HTMLOptionsCollection options = select.options;
+
+  for (int i = 0; i < options.length; i += 1) {
+    HTMLOptionElement option = unsafeCast<HTMLOptionElement>(options.item(i));
     Object? optionValue = getOptionValue(option);
 
     if (identical(optionValue, value)) {
@@ -94,21 +94,21 @@ void bindSelectValue(
     Object? value;
 
     if (select.multiple) {
-      value =
-          JSImmutableListWrapper<NodeList, HTMLOptionElement>(
-            select.querySelectorAll(query),
-          ).map<Object?>(getOptionValue).toList();
+      NodeList nodeList = select.querySelectorAll(query);
+
+      value = List<Object?>.generate(
+        nodeList.length,
+        (i) => getOptionValue(unsafeCast<HTMLOptionElement>(nodeList.item(i))),
+      );
     } else {
-      HTMLOptionElement? selectedOption =
-          unsafeCast<HTMLOptionElement?>(select.querySelector(query)) ??
+      Element? selectedOption =
+          select.querySelector(query) ??
           // Will fall back to first non-disabled option if no option is
           // selected.
-          unsafeCast<HTMLOptionElement?>(
-            select.querySelector('option:not([disabled])'),
-          );
+          select.querySelector('option:not([disabled])');
 
       if (selectedOption != null) {
-        value = getOptionValue(selectedOption);
+        value = getOptionValue(unsafeCast<HTMLOptionElement>(selectedOption));
       }
     }
 
@@ -143,10 +143,10 @@ void bindSelectValue(
 }
 
 void selectOptions(HTMLSelectElement select, List<Object?> values) {
-  for (HTMLOptionElement option
-      in JSImmutableListWrapper<HTMLOptionsCollection, HTMLOptionElement>(
-        select.options,
-      )) {
+  HTMLOptionsCollection options = select.options;
+
+  for (int i = 0; i < options.length; i += 1) {
+    HTMLOptionElement option = unsafeCast<HTMLOptionElement>(options.item(i));
     option.selected = values.contains(getOptionValue(option));
   }
 }

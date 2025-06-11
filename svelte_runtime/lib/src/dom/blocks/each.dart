@@ -6,7 +6,6 @@ import 'package:svelte_runtime/src/dom/operations.dart';
 import 'package:svelte_runtime/src/reactivity.dart';
 import 'package:svelte_runtime/src/runtime.dart';
 import 'package:svelte_runtime/src/shared.dart';
-import 'package:svelte_runtime/src/signal.dart' show State;
 import 'package:svelte_runtime/src/tasks.dart';
 import 'package:svelte_runtime/src/transition.dart';
 import 'package:svelte_runtime/src/unsafe_cast.dart';
@@ -16,7 +15,7 @@ import 'package:web/web.dart';
 typedef Key<T> = Object Function(T item, int index);
 
 @optionalTypeArgs
-typedef RenderItem<T> = void Function(Node anchor, State<T> item, int index);
+typedef RenderItem<T> = void Function(Node anchor, Value<T> item, int index);
 
 @optionalTypeArgs
 final class EachItem<T> {
@@ -116,10 +115,9 @@ void eachBlock<T>(
   if (isControlled) {
     Node parentNode = node;
 
-    anchor =
-        hydrating
-            ? setHydrateNode(getFirstChild(parentNode))
-            : appendChild(parentNode, createText());
+    anchor = hydrating
+        ? setHydrateNode(getFirstChild(parentNode))
+        : appendChild(parentNode, createText());
   }
 
   if (hydrating) {
@@ -510,7 +508,7 @@ EachItem<T> createItem<T>(
     if (mutable) {
       throw UnsupportedError('Mutable values are not supported.');
     } else {
-      valueSource = createSource<T>(value);
+      valueSource = source<T>(value);
     }
   } else {
     throw UnsupportedError('Non-reactive values are not supported.');
@@ -558,13 +556,13 @@ EachItem<T> createItem<T>(
 }
 
 void move(EachItem item, EachItem? next, Node anchor) {
-  Node end =
-      item.next != null
-          ? unsafeCast<Node>(item.next!.effect.nodeStart)
-          : anchor;
+  Node end = item.next != null
+      ? unsafeCast<Node>(item.next!.effect.nodeStart)
+      : anchor;
 
-  Node destination =
-      next != null ? unsafeCast<Node>(next.effect.nodeStart) : anchor;
+  Node destination = next != null
+      ? unsafeCast<Node>(next.effect.nodeStart)
+      : anchor;
   Node node = unsafeCast<Node>(item.effect.nodeStart);
 
   while (node != end) {

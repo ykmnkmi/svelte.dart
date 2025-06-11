@@ -29,13 +29,10 @@ void addFormResetListener() {
         Future<void>(() {
           if (!event.defaultPrevented) {
             HTMLFormElement form = unsafeCast<HTMLFormElement>(event.target);
-            JSImmutableListWrapper<HTMLFormControlsCollection, HTMLElement>
-            elements =
-                JSImmutableListWrapper<HTMLFormControlsCollection, HTMLElement>(
-                  form.elements,
-                );
+            HTMLFormControlsCollection elements = form.elements;
 
-            for (HTMLElement element in elements) {
+            for (int i = 0; i < elements.length; i += 1) {
+              HTMLElement element = unsafeCast<HTMLElement>(elements.item(i));
               void Function(bool isReset)? onReset = element.onReset__;
 
               if (onReset != null) {

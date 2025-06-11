@@ -50,8 +50,8 @@ final class ResizeObserverSingleton {
     Element element,
     ResizeObserverEntryListener listener,
   ) {
-    Set<ResizeObserverEntryListener> listeners =
-        this.listeners[element] ??= <ResizeObserverEntryListener>{};
+    Set<ResizeObserverEntryListener> listeners = this.listeners[element] ??=
+        <ResizeObserverEntryListener>{};
     listeners.add(listener);
     observer.observe(element, options);
 

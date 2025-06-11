@@ -62,6 +62,10 @@ T appendChild<T extends Node>(Node target, Node child) {
   return unsafeCast<T>(target.appendChild(child));
 }
 
+void appendNode(Node target, Node node) {
+  unsafeCast<Element>(target).append(node);
+}
+
 void appendNodes(Node target, Node node, Node other) {
   target.callMethod('append'.toJS, node, other);
 }
@@ -200,12 +204,12 @@ extension Assignment on JSObject {
 
   // ignore: non_constant_identifier_names
   Map<String, String?>? get attributes__ {
-    return this.attributesReference.toDartObject;
+    return attributesReference.toDartObject;
   }
 
   // ignore: non_constant_identifier_names
   set attributes__(Map<String, String?>? attributes) {
-    this.attributesReference = attributes.toExternalReference;
+    attributesReference = attributes.toExternalReference;
   }
 
   @JS('__styles')
@@ -213,12 +217,12 @@ extension Assignment on JSObject {
 
   // ignore: non_constant_identifier_names
   Map<String, String?>? get styles__ {
-    return this.stylesReference.toDartObject;
+    return stylesReference.toDartObject;
   }
 
   // ignore: non_constant_identifier_names
   set styles__(Map<String, String?>? styles) {
-    this.stylesReference = styles.toExternalReference;
+    stylesReference = styles.toExternalReference;
   }
 
   @JS('__t')
@@ -226,12 +230,12 @@ extension Assignment on JSObject {
 
   // ignore: non_constant_identifier_names
   String? get t__ {
-    return this.tReference.toDartObject;
+    return tReference.toDartObject;
   }
 
   // ignore: non_constant_identifier_names
   set t__(String? t) {
-    this.tReference = t.toExternalReference;
+    tReference = t.toExternalReference;
   }
 
   @JS('__lazy')
@@ -239,12 +243,12 @@ extension Assignment on JSObject {
 
   // ignore: non_constant_identifier_names
   Object? get lazy__ {
-    return this.lazyReference.toDartObject;
+    return lazyReference.toDartObject;
   }
 
   // ignore: non_constant_identifier_names
   set lazy__(Object? lazy) {
-    this.lazyReference = lazy.toExternalReference;
+    lazyReference = lazy.toExternalReference;
   }
 
   @JS('__click')

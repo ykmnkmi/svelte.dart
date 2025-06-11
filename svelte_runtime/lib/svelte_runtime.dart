@@ -1,12 +1,11 @@
 import 'package:svelte_runtime/src/reactivity.dart';
 import 'package:svelte_runtime/src/runtime.dart';
 
-export 'package:svelte_runtime/src/component.dart' show Component;
-export 'package:svelte_runtime/src/effect.dart'
-    show effectTracking, effect, effectPre, effectRoot;
-export 'package:svelte_runtime/src/render.dart' show mount, unmount;
-export 'package:svelte_runtime/src/signal.dart'
-    show Derived, State, derived, lateState, state;
+export 'package:svelte_runtime/src/component.dart';
+export 'package:svelte_runtime/src/dom.dart';
+export 'package:svelte_runtime/src/reactivity.dart';
+export 'package:svelte_runtime/src/render.dart';
+export 'package:svelte_runtime/src/runtime.dart';
 
 void onMount<T>(T Function() callback) {
   if (componentContext == null) {

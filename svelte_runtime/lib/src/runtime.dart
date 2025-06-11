@@ -275,8 +275,11 @@ T updateReaction<T>(Reaction<T> reaction) {
   newDependencies = null;
   skippedDependencies = 0;
   untrackedWrites = null;
-  activeReaction =
-      flags & (Flag.branchEffect | Flag.rootEffect) == 0 ? reaction : null;
+
+  activeReaction = flags & (Flag.branchEffect | Flag.rootEffect) == 0
+      ? reaction
+      : null;
+
   skipReaction = !isFlushingEffect && flags & Flag.unowned != 0;
   derivedSources = null;
   componentContext = reaction.context;

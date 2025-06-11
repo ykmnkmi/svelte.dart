@@ -6,7 +6,7 @@ import 'package:svelte_runtime/src/runtime.dart';
 
 bool updatingDerived = false;
 
-Derived<T> createDerived<T>(T Function() callback) {
+Derived<T> derived<T>(T Function() callback) {
   int flags = Flag.derived | Flag.dirty;
 
   if (activeEffect == null) {
@@ -117,9 +117,9 @@ void updateDerived<T>(Derived<T> derived) {
 
   int status =
       (skipReaction || derived.flags & Flag.unowned != 0) &&
-              derived.dependencies != null
-          ? Flag.maybeDirty
-          : Flag.clean;
+          derived.dependencies != null
+      ? Flag.maybeDirty
+      : Flag.clean;
 
   setSignalStatus(derived, status);
 
