@@ -3,7 +3,6 @@ import 'dart:js_interop';
 
 import 'package:svelte_runtime/src/component.dart';
 import 'package:svelte_runtime/src/dom.dart';
-import 'package:svelte_runtime/src/environment.dart';
 import 'package:svelte_runtime/src/reactivity.dart';
 import 'package:svelte_runtime/src/runtime.dart';
 import 'package:svelte_runtime/src/shared.dart';
@@ -30,7 +29,7 @@ void setText(Text text, String value) {
 }
 
 /// Hydrates a component on the given target.
-void hydrate(
+Future<void> Function([bool outro]) hydrate(
   Component component, {
   required Element target,
   Map<Object, Object>? context,
@@ -58,7 +57,7 @@ void hydrate(
     setHydrateNode<Node?>(anchor);
     hydrateNext<Node?>();
 
-    mount(
+    Future<void> Function([bool outro]) unmount = mount(
       component,
       target: target,
       anchor: anchor,
@@ -75,6 +74,7 @@ void hydrate(
     }
 
     setHydrating(false);
+    return unmount;
   } catch (error) {
     if (error == hydrationError) {
       if (!recover) {
@@ -84,8 +84,7 @@ void hydrate(
       init(); // re-init
       clearTextContent(target);
       setHydrating(false);
-      mount(component, target: target, context: context, intro: intro);
-      return;
+      return mount(component, target: target, context: context, intro: intro);
     }
 
     rethrow;
@@ -98,14 +97,11 @@ void hydrate(
 
 Map<String, int> documentListeners = <String, int>{};
 
-/// References of the components that were mounted or hydrated.
-Expando<UnmountCallback> mountedComponents = Expando<UnmountCallback>();
-
 /// Mounts a component to the given target.
 ///
 /// Transitions will play during the initial render unless the [intro] option is
 /// set to `false`.
-void mount(
+Future<void> Function([bool outro]) mount(
   Component component, {
   required Element target,
   Node? anchor,
@@ -148,7 +144,7 @@ void mount(
   eventHandle(allRegisteredEvents);
   rootEventHandles.add(eventHandle);
 
-  UnmountCallback unmount = componentRoot(() {
+  return componentRoot(() {
     Node anchorNode = anchor ?? appendChild(target, createText());
 
     branch<void>(() {
@@ -196,23 +192,4 @@ void mount(
       }
     };
   });
-
-  mountedComponents[component] = unmount;
-}
-
-/// Unmounts a component that was previously mounted using [mount] or `hydrate`.
-Future<void> unmount(Component component, [bool outro = false]) {
-  UnmountCallback? unmount = mountedComponents[component];
-
-  if (unmount != null) {
-    mountedComponents[component] = null;
-    return unmount(outro);
-  }
-
-  if (assertionsEnabled) {
-    // ignore: avoid_print
-    print('WRN_LIFECYCLE_DOUBLE_UNMOUNT');
-  }
-
-  return Future<void>.value();
 }

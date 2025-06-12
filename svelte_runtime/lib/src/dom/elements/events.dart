@@ -118,7 +118,7 @@ void event2<E extends HTMLElement, T extends Event>(
   }
 }
 
-void delegate(List<String> events) {
+void delegate(Iterable<String> events) {
   allRegisteredEvents.addAll(events);
 
   for (EventsHandle handle in rootEventHandles) {
