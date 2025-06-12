@@ -1,3 +1,7 @@
+## 1.0.0-22.beta
+
+- Add `ThrowingVisitor`.
+
 ## 1.0.0-21.beta
 
 - Update to Svelte 5.16.6 parser.

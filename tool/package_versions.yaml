@@ -19,7 +19,7 @@ pub_semver: ^2.2.0
 source_span: ^1.10.1
 stack_trace: ^1.12.1
 svelte: ^1.0.0-dev.1
-svelte_ast: ^1.0.0-21.beta
+svelte_ast: ^1.0.0-22.beta
 svelte_runtime: ^1.0.0-dev.13
 test: ^1.26.2
 web: ^1.1.1
