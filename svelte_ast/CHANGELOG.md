@@ -1,3 +1,9 @@
+## 1.0.0-23.beta
+
+- Make `ThrowingVisitor`'s default constructor `const`.
+- Change `Root.instance` type to `InstanceScript` and `Root.module` type to
+  `ModuleScript`.
+
 ## 1.0.0-22.beta
 
 - Add `ThrowingVisitor`.

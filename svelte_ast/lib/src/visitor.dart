@@ -91,6 +91,8 @@ abstract interface class Visitor<C, R> {
 }
 
 abstract base class ThrowingVisitor<C, R> implements Visitor<C, R> {
+  const ThrowingVisitor();
+
   @override
   R visitAnimationDirective(AnimationDirective node, C context) {
     throw UnimplementedError('visitAnimationDirective');

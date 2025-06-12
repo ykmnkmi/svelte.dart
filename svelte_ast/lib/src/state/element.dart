@@ -630,18 +630,22 @@ extension ElementParser on Parser {
       if (name == 'script') {
         Script script = readScript(start, element.attributes);
 
-        if (script is ModuleScript) {
-          if (currentNode.module != null) {
-            scriptDuplicate(start);
-          }
+        switch (script) {
+          case ModuleScript():
+            if (currentNode.module != null) {
+              scriptDuplicate(start);
+            }
 
-          currentNode.module = script;
-        } else {
-          if (currentNode.instance != null) {
-            scriptDuplicate(start);
-          }
+            currentNode.module = script;
+            break;
 
-          currentNode.instance = script;
+          case InstanceScript():
+            if (currentNode.instance != null) {
+              scriptDuplicate(start);
+            }
+
+            currentNode.instance = script;
+            break;
         }
       } else {
         Style style = readStyle(start, element.attributes);

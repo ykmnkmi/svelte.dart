@@ -72,10 +72,10 @@ final class Root extends Node {
   final Fragment fragment;
 
   /// The parsed `<script>` element, if exists.
-  Script? instance;
+  InstanceScript? instance;
 
   /// The parsed `<script module>` element, if exists.
-  Script? module;
+  ModuleScript? module;
 
   /// The parsed `<style>` element, if exists.
   Style? style;
