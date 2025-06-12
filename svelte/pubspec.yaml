@@ -1,6 +1,6 @@
 name: svelte
 description: SvelteDart.
-version: 1.0.0-dev.0
+version: 1.0.0-dev.1
 repository: https://github.com/ykmnkmi/svelte.dart
 
 resolution: workspace
@@ -10,7 +10,7 @@ environment:
 
 dependencies:
   meta: ^1.17.0
-  svelte_runtime: ^1.0.0-dev.12
+  svelte_runtime: ^1.0.0-dev.13
   web: ^1.1.1
 
 dev_dependencies:
