@@ -1,5 +1,6 @@
 // ignore: library_prefixes
 import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
 import 'thing.dart';
@@ -22,7 +23,7 @@ base class _Thing extends Thing {
   }
 }
 
-base class App extends $.Component {
+base class App extends Component {
   static final root = $.template<DocumentFragment>(
     '<button>Remove first thing</button> <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1em"><div><h2>Keyed</h2> <!> </div> <div><h2>Unkeyed</h2> <!></div></div>',
     1,

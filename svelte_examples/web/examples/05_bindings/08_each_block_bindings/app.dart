@@ -1,10 +1,11 @@
 // ignore: library_prefixes
 import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
 import 'todo.dart';
 
-base class App extends $.Component {
+base class App extends Component {
   static final root1 = $.template<HTMLDivElement>(
     '<div><input type="checkbox"> <input placeholder="What needs to be done?"></div>',
   );

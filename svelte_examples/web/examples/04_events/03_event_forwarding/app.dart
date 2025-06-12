@@ -1,10 +1,9 @@
-// ignore: library_prefixes
-import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
 import 'outer.dart';
 
-base class App extends $.Component {
+base class App extends Component {
   App();
 
   @override

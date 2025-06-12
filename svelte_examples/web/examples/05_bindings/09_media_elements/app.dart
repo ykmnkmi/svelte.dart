@@ -3,9 +3,10 @@ import 'dart:js_interop';
 
 // ignore: library_prefixes
 import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends $.Component {
+base class App extends Component {
   static final root = $.template<DocumentFragment>(
     '<h1>Caminandes: Llamigos</h1> <p>From <a href="https://studio.blender.org/films">Blender Studio</a>. CC-BY</p> <div class="svelte-11bzk4c"><video poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg" src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4" class="svelte-11bzk4c"><track kind="captions"></video> <div class="controls svelte-11bzk4c"><progress class="svelte-11bzk4c"></progress> <div class="info svelte-11bzk4c"><span class="time svelte-11bzk4c"> </span> <span class="svelte-11bzk4c"> </span> <span class="time svelte-11bzk4c"> </span></div></div></div>',
     1,

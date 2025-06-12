@@ -1,10 +1,9 @@
-// ignore: library_prefixes
-import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
 import 'inner.dart';
 
-base class Outer extends $.Component {
+base class Outer extends Component {
   Outer({required void Function({required String text}) onMessage})
     : _inner = Inner(onMessage: onMessage);
 

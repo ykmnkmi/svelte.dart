@@ -1,8 +1,9 @@
 // ignore: library_prefixes
 import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends $.Component {
+base class App extends Component {
   static final root1 = $.template<HTMLOptionElement>('<option> </option>');
   static final root = $.template<DocumentFragment>(
     '<h2>Insecurity questions</h2> <form><select></select> <input class="svelte-14lf6jh"> <button type="submit">Submit</button></form> <p> </p>',

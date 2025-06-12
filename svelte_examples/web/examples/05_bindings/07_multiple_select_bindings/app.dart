@@ -1,8 +1,9 @@
 // ignore: library_prefixes
 import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends $.Component {
+base class App extends Component {
   static final root1 = $.template<HTMLOptionElement>('<option> </option>');
   static final root2 = $.template<HTMLParagraphElement>(
     '<p>Please select at least one flavour</p>',

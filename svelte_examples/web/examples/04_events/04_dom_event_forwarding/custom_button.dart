@@ -1,8 +1,9 @@
 // ignore: library_prefixes
 import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class CustomButton extends $.Component {
+base class CustomButton extends Component {
   static final root = $.template<HTMLButtonElement>(
     '<button class="svelte-hg07jm">Click me</button>',
   );

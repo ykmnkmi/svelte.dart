@@ -1,8 +1,9 @@
 // ignore: library_prefixes
 import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class Thing extends $.Component {
+base class Thing extends Component {
   static final root = $.template<HTMLParagraphElement>(
     '<p><span class="svelte-671r1c">initial</span> <span class="svelte-671r1c">current</span></p>',
   );

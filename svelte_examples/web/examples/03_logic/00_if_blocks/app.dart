@@ -1,10 +1,11 @@
 // ignore: library_prefixes
 import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
 import 'user.dart';
 
-base class App extends $.Component {
+base class App extends Component {
   static final root1 = $.template<HTMLButtonElement>(
     '<button>Log out</button>',
   );

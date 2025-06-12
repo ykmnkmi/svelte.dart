@@ -99,19 +99,21 @@ void main() {
   var link = document.querySelector('nav a') as HTMLAnchorElement;
   var target = document.querySelector('main') as HTMLElement;
 
-  Component? current;
+  Future<void> Function()? unmount;
 
   void onChange(Event event) {
     try {
-      if (current case var component?) {
-        unmount(component);
+      if (unmount != null) {
+        unmount!();
+        unmount = null;
       }
 
       window.location.hash = link.hash = select.value;
-      current = selectComponent(select.value);
 
-      if (current case var component?) {
-        mount(component, target: target);
+      var component = selectComponent(select.value);
+
+      if (component != null) {
+        unmount = mount(component, target: target);
       }
     } catch (error, stackTrace) {
       print(error);

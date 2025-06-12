@@ -1,8 +1,9 @@
 // ignore: library_prefixes
 import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends $.Component {
+base class App extends Component {
   static final root = $.template<DocumentFragment>(
     '<input type="range" class="svelte-1oqthja"> <input class="svelte-1oqthja"> <p> </p> <div class="svelte-1oqthja"><span> </span></div>',
     1,

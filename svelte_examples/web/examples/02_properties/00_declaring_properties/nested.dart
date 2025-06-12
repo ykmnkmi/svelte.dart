@@ -1,8 +1,9 @@
 // ignore: library_prefixes
 import 'package:svelte/src/internal.dart' as $;
+import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class Nested extends $.Component {
+base class Nested extends Component {
   static final root = $.template<HTMLParagraphElement>('<p> </p>');
 
   Nested({this.answer});
