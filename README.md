@@ -193,23 +193,18 @@ Component app({int step = 1}) {
     ),
 
     // Flow ...
-    If(
-      test: stateOrCallable,
-      children: [
-        // ...
-      ],
-    ),
+If(
+  test: stateOrCallable,
+  then: () => /* ... */,
+  orElse: () => /* ... */,
+),
     Each(
       values: stateOrCallable,
-      children: [
-        // ...
-      ],
+      build: (value) => /* ... */,
     ),
     Key(
       key: stateOrCallable,
-      children: [
-        // ...
-      ],
+      build: () => /* ... */,
     ),
   ]);
 }
