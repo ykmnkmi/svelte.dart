@@ -1,6 +1,6 @@
 name: svelte_builder
 description: SvelteDart Builder.
-version: 1.0.0-dev.4
+version: 1.0.0-dev.5
 repository: https://github.com/ykmnkmi/svelte.dart
 
 resolution: workspace
@@ -15,7 +15,7 @@ dependencies:
   dart_style: ^3.1.0
   path: ^1.9.1
   pub_semver: ^2.2.0
-  svelte_ast: ^1.0.0-20.beta
+  svelte_ast: ^1.0.0-24.beta
 
 dev_dependencies:
   build_resolvers: ^2.4.4

@@ -20,32 +20,33 @@ import 'package:svelte_ast/svelte_ast.dart' show ParseError;
 import 'package:svelte_builder/svelte_builder.dart';
 
 final Map<AssetId, String> sourceAssets = <AssetId, String>{
-  AssetId('app', 'web/app.svelte'): r'''
+  AssetId('app', 'web/app.svelte'): '''
 <!-- app.svelte -->
 <script context="module">
-  const message = 'Hello world!';
+  const duration = Duration(seconds: 1);
 </script>
 <script>
   // imports
   import 'package:svelte/svelte.dart';
 
   // properties
-  external int count = 0;
+  external int step = 1;
 
   // body
-  $: doubled = count * 2;
-  $: quadrupled = doubled * 2;
+  var count = state<int>(0);
+  var doubled = derived<int>(count * 2);
+  var quadrupled = derived<int>(doubled * 2);
 
-	$: if (count >= 10) {
-		print('count is dangerously high!');
-		count = 9;
-	}
+	effect(() {
+    if (count >= 10) {
+      print('count is dangerously high!');
+      count = 9;
+    }
+  });
 
   void handleClick() {
     count += 1;
   }
-
-  const duration = Duration(seconds: 1);
 
   onMount(() {
     var timer = Timer.periodic(duration, (timer) {
@@ -57,8 +58,6 @@ final Map<AssetId, String> sourceAssets = <AssetId, String>{
     };
   });
 </script>
-
-<p>{message}</p>
 
 <button on:click={handleClick}>
   Clicked {count} {count == 1 ? 'time' : 'times'}
@@ -76,7 +75,7 @@ final logger = Logger.root
 Future<void> main() async {
   await runZonedGuarded<Future<void>>(run, (error, stackTrace) {
     if (error is ParseError) {
-      print(error.errorCode.message);
+      print(error.message);
       print(error.span.highlight());
     } else {
       print(error);
@@ -95,12 +94,17 @@ Future<void> build(
 }) async {
   assets.add(AssetId(rootPackage, r'web/$web$'));
 
-  var resolvers = AnalyzerResolvers.sharedInstance;
+  AnalyzerResolvers resolvers = AnalyzerResolvers.sharedInstance;
 
-  for (var asset in assets) {
-    var inputAssets = <AssetId>{asset};
-    await runBuilder(builder, inputAssets, reader, writer, resolvers,
-        logger: logger);
+  for (AssetId asset in assets) {
+    await runBuilder(
+      builder,
+      <AssetId>{asset},
+      reader,
+      writer,
+      resolvers,
+      logger: logger,
+    );
   }
 }
 
@@ -121,20 +125,25 @@ void printAssets(Map<AssetId, List<int>> assets, [Set<AssetId>? written]) {
 }
 
 Future<void> run() async {
-  var isolateReader = await PackageAssetReader.currentIsolate();
-  var inMemoryReader = InMemoryAssetReader(rootPackage: 'app');
+  PackageAssetReader isolateReader = await PackageAssetReader.currentIsolate();
+  InMemoryAssetReader inMemoryReader = InMemoryAssetReader(rootPackage: 'app');
   sourceAssets.forEach(inMemoryReader.cacheStringAsset);
 
-  var inMemoryWriter = InMemoryAssetWriter();
-  var writtenReader = WrittenAssetReader(inMemoryWriter);
+  InMemoryAssetWriter inMemoryWriter = InMemoryAssetWriter();
+  WrittenAssetReader writtenReader = WrittenAssetReader(inMemoryWriter);
 
-  var readers = [isolateReader, inMemoryReader, writtenReader];
-  var multiReader = MultiAssetReader(readers);
+  List<MultiPackageAssetReader> readers = [
+    isolateReader,
+    inMemoryReader,
+    writtenReader,
+  ];
 
-  print('> SVELTE '.padRight(80, '='));
+  MultiAssetReader multiReader = MultiAssetReader(readers);
+
+  print('> Transform '.padRight(80, '='));
 
   await build(
-    svelteBuilder(BuilderOptions.empty),
+    transformer(BuilderOptions.empty),
     <AssetId>{AssetId('app', 'web/app.svelte')},
     rootPackage: 'app',
     reader: multiReader,
