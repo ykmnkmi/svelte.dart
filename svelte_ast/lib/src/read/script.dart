@@ -9,6 +9,7 @@ import 'package:svelte_ast/src/errors.dart';
 import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/patterns.dart';
 import 'package:svelte_ast/src/read/dart/parser.dart' as dart;
+import 'package:svelte_ast/src/warnings.dart';
 
 const Set<String> _reservedAttributes = <String>{
   'server',
@@ -27,38 +28,48 @@ const Set<String> _allowedAttributes = <String>{
 extension ScriptParser on Parser {
   String _readContext(List<AttributeNode> attributes) {
     for (AttributeNode attribute in attributes) {
-      if (attribute is! Attribute) {
-        scriptUnknownAttribute(attribute.start, attribute.end);
-      }
-
-      if (_reservedAttributes.contains(attribute.name)) {
-        scriptReservedAttribute(attribute.name, attribute.start, attribute.end);
-      }
-
-      if (!_allowedAttributes.contains(attribute.name)) {
-        scriptUnknownAttribute(attribute.start, attribute.end);
-      }
-
-      if (attribute.name == 'module') {
-        if (attribute.value != null) {
-          scriptInvalidAttributeValue(
+      if (attribute is Attribute) {
+        if (_reservedAttributes.contains(attribute.name)) {
+          scriptReservedAttribute(
             attribute.name,
             attribute.start,
             attribute.end,
           );
         }
 
-        return 'module';
-      }
+        if (!_allowedAttributes.contains(attribute.name)) {
+          scriptUnknownAttribute(attribute.start, attribute.end);
+        }
 
-      if (attribute.name == 'context') {
-        Object? value = attribute.value;
+        if (attribute.name == 'module') {
+          if (attribute.value != true) {
+            scriptInvalidAttributeValue(
+              attribute.name,
+              attribute.start,
+              attribute.end,
+            );
+          }
 
-        if (value is Text && value.data == 'module') {
           return 'module';
         }
 
-        scriptInvalidContext(attribute.start, attribute.end);
+        if (attribute.name == 'context') {
+          Object? value = attribute.value;
+
+          if (value is List<Node>) {
+            assert(value.isNotEmpty);
+
+            Node first = value.first;
+
+            if (first is Text && first.data == 'module') {
+              return 'module';
+            }
+          }
+
+          scriptInvalidContext(attribute.start, attribute.end);
+        }
+      } else {
+        scriptUnknownAttribute(attribute.start, attribute.end);
       }
     }
 
@@ -119,7 +130,7 @@ extension ScriptParser on Parser {
           next = fastaParser.parseMetadataStar(next);
 
           if (next.type == dart.Keyword.LIBRARY) {
-            dartError("'library' is not supported.", next.offset, next.end);
+            dartError("'library' is not supported.", next.offset, next.length);
           } else if (next.type == dart.Keyword.IMPORT) {
             next = fastaParser.parseTopLevelDeclaration(next);
             nodes.add(astBuilder.directives.removeLast());
@@ -127,9 +138,9 @@ extension ScriptParser on Parser {
             Object? object = astBuilder.pop();
             assert(object == null);
           } else if (next.type == dart.Keyword.EXPORT) {
-            dartError("'export' is not supported.", next.offset, next.end);
+            dartError("'export' is not supported.", next.offset, next.length);
           } else if (next.type == dart.Keyword.PART) {
-            dartError("'part' is not supported.", next.offset, next.end);
+            dartError("'part' is not supported.", next.offset, next.length);
           } else if (next.type == dart.Keyword.EXTERNAL) {
             next = next.next!;
             next = fastaParser.parseTopLevelMember(next);
@@ -144,7 +155,7 @@ extension ScriptParser on Parser {
             Object? statement = astBuilder.pop();
 
             if (statement is! dart.Statement) {
-              dartError('Expected a statement.', previous.end, 0);
+              dartError('Expected a statement.', previous.end);
             }
 
             nodes.add(statement);

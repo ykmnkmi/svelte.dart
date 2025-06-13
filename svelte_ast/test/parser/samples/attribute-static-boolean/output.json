@@ -18,7 +18,7 @@
             "end": 18,
             "class": "Attribute",
             "name": "readonly",
-            "value": null,
+            "value": true,
             "modifiers": []
           }
         ],

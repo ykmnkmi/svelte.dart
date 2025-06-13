@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:source_span/source_span.dart';
 import 'package:svelte_ast/src/ast.dart';
 import 'package:svelte_ast/src/errors.dart';
@@ -10,7 +11,7 @@ typedef AutoClosedTag = ({String? tag, String reason, int depth});
 final RegExp _identifierRe = RegExp('[_\$A-Za-z][_\$A-Za-z0-9]*');
 
 final class Parser {
-  Parser({required this.template, this.fileName, this.uri})
+  Parser({required this.template, this.fileName, this.uri, this.logger})
     : length = template.length,
       sourceFile = SourceFile.fromString(template, url: uri),
       root = Root(fragment: Fragment()) {
@@ -61,6 +62,8 @@ final class Parser {
   int position = 0;
 
   AutoClosedTag? lastAutoClosedTag;
+
+  final Logger? logger;
 
   Node get current {
     return stack.last;

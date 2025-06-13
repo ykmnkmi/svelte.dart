@@ -18,7 +18,34 @@
             "end": 12,
             "class": "TransitionDirective",
             "name": "fade",
-            "expression": null,
+            "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "fade",
+              "start": 5,
+              "end": 9,
+              "token": {
+                "start": 5,
+                "end": 9,
+                "type": "IDENTIFIER",
+                "lexeme": "fade"
+              },
+              "ancestorCascade": null,
+              "beginToken": {
+                "start": 5,
+                "end": 9,
+                "type": "IDENTIFIER",
+                "lexeme": "fade"
+              },
+              "endToken": {
+                "start": 5,
+                "end": 9,
+                "type": "IDENTIFIER",
+                "lexeme": "fade"
+              },
+              "isQualified": "@error { Null check operator used on a null value }",
+              "isSynthetic": false,
+              "name": "fade"
+            },
             "modifiers": [],
             "intro": true,
             "outro": false

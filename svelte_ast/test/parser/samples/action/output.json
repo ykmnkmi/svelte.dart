@@ -18,7 +18,34 @@
             "end": 20,
             "class": "UseDirective",
             "name": "autofocus",
-            "expression": null
+            "expression": {
+              "@class": "SimpleIdentifier",
+              "@toString": "autofocus",
+              "start": 7,
+              "end": 16,
+              "token": {
+                "start": 7,
+                "end": 16,
+                "type": "IDENTIFIER",
+                "lexeme": "autofocus"
+              },
+              "ancestorCascade": null,
+              "beginToken": {
+                "start": 7,
+                "end": 16,
+                "type": "IDENTIFIER",
+                "lexeme": "autofocus"
+              },
+              "endToken": {
+                "start": 7,
+                "end": 16,
+                "type": "IDENTIFIER",
+                "lexeme": "autofocus"
+              },
+              "isQualified": "@error { Null check operator used on a null value }",
+              "isSynthetic": false,
+              "name": "autofocus"
+            }
           }
         ],
         "fragment": {

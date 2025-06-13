@@ -8,10 +8,13 @@ import 'package:svelte_ast/src/reflection.dart';
 import 'package:svelte_ast/svelte_ast.dart';
 
 const String string = '''
-<script>
-  var count = 0;
+<script context="module" >
+  const foo = 'bar';
 </script>
-<button on:click="{() => count++}">count: {count}</button>''';
+
+<script>
+  foo;
+</script>''';
 
 void main() {
   try {
@@ -26,7 +29,6 @@ void main() {
     File.fromUri(Uri(path: 'test/check.json')).writeAsStringSync(output);
   } on ParseError catch (error, stackTrace) {
     print(error);
-    print(error.span.highlight());
     print(Trace.format(stackTrace));
     print(const JsonEncoder.withIndent('  ').convert(error.toJson()));
   } catch (error, stackTrace) {

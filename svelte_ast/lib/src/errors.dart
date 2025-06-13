@@ -21,7 +21,7 @@ class ParseError extends Error {
 
   @override
   String toString() {
-    return 'ParseError($code): $message';
+    return '$code: $message\n${span.highlight()}';
   }
 }
 
@@ -242,16 +242,6 @@ extension ParserError on Parser {
     );
   }
 
-  Never scriptUnknownAttribute(int start, [int? end]) {
-    // https://svelte.dev/e/script_unknown_attribute
-    error(
-      'script_unknown_attribute',
-      "Unrecognized attribute — should be one of 'generics' or 'module'.",
-      start,
-      end,
-    );
-  }
-
   // 1273
   Never styleDuplicate(int position) {
     // https://svelte.dev/e/style_duplicate
@@ -278,15 +268,6 @@ extension ParserError on Parser {
     error(
       'svelte_component_missing_this',
       "'<svelte:component>' must have a 'this' attribute.",
-      position,
-    );
-  }
-
-  Never svelteElementInvalidThis(int position) {
-    // https://svelte.dev/e/svelte_element_invalid_this
-    error(
-      'svelte_element_invalid_this',
-      "'this' should be an '{expression}'.",
       position,
     );
   }

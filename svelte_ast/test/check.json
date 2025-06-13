@@ -1,361 +1,379 @@
 {
-  "start": 35,
-  "end": 94,
+  "start": 57,
+  "end": 59,
   "class": "Root",
   "fragment": {
-    "start": 35,
-    "end": 94,
+    "start": 57,
+    "end": 59,
     "class": "Fragment",
     "children": [
       {
-        "start": 35,
-        "end": 36,
+        "start": 57,
+        "end": 59,
         "class": "Text",
-        "raw": "\n",
-        "data": "\n"
-      },
-      {
-        "start": 36,
-        "end": 94,
-        "class": "RegularElement",
-        "name": "button",
-        "attributes": [
-          {
-            "start": 44,
-            "end": 70,
-            "class": "OnDirective",
-            "name": "click",
-            "expression": {
-              "@class": "FunctionExpression",
-              "@toString": "() => count++",
-              "start": 55,
-              "end": 68,
-              "wasFunctionTypeSupplied": false,
-              "beginToken": {
-                "start": 55,
-                "end": 56,
-                "type": "OPEN_PAREN",
-                "lexeme": "("
-              },
-              "body": {
-                "@class": "ExpressionFunctionBody",
-                "@toString": "=> count++",
-                "start": 58,
-                "end": 68,
-                "keyword": null,
-                "star": null,
-                "functionDefinition": {
-                  "start": 58,
-                  "end": 60,
-                  "type": "FUNCTION",
-                  "lexeme": "=>"
-                },
-                "semicolon": null,
-                "beginToken": {
-                  "start": 58,
-                  "end": 60,
-                  "type": "FUNCTION",
-                  "lexeme": "=>"
-                },
-                "endToken": {
-                  "start": 66,
-                  "end": 68,
-                  "type": "PLUS_PLUS",
-                  "lexeme": "++"
-                },
-                "expression": {
-                  "@class": "PostfixExpression",
-                  "@toString": "count++",
-                  "start": 61,
-                  "end": 68,
-                  "operator": {
-                    "start": 66,
-                    "end": 68,
-                    "type": "PLUS_PLUS",
-                    "lexeme": "++"
-                  },
-                  "beginToken": {
-                    "start": 61,
-                    "end": 66,
-                    "type": "IDENTIFIER",
-                    "lexeme": "count"
-                  },
-                  "endToken": {
-                    "start": 66,
-                    "end": 68,
-                    "type": "PLUS_PLUS",
-                    "lexeme": "++"
-                  },
-                  "operand": {
-                    "@class": "SimpleIdentifier",
-                    "@toString": "count",
-                    "start": 61,
-                    "end": 66,
-                    "token": {
-                      "start": 61,
-                      "end": 66,
-                      "type": "IDENTIFIER",
-                      "lexeme": "count"
-                    },
-                    "ancestorCascade": null,
-                    "beginToken": {
-                      "start": 61,
-                      "end": 66,
-                      "type": "IDENTIFIER",
-                      "lexeme": "count"
-                    },
-                    "endToken": {
-                      "start": 61,
-                      "end": 66,
-                      "type": "IDENTIFIER",
-                      "lexeme": "count"
-                    },
-                    "isQualified": false,
-                    "isSynthetic": false,
-                    "name": "count"
-                  },
-                  "inConstantContext": false,
-                  "isAssignable": false,
-                  "unParenthesized": "@seen",
-                  "nullShortingTermination": "@seen"
-                },
-                "isAsynchronous": false,
-                "isGenerator": false,
-                "isSynchronous": true
-              },
-              "endToken": {
-                "start": 66,
-                "end": 68,
-                "type": "PLUS_PLUS",
-                "lexeme": "++"
-              },
-              "parameters": {
-                "@class": "FormalParameterList",
-                "@toString": "()",
-                "start": 55,
-                "end": 57,
-                "leftParenthesis": {
-                  "start": 55,
-                  "end": 56,
-                  "type": "OPEN_PAREN",
-                  "lexeme": "("
-                },
-                "leftDelimiter": null,
-                "rightDelimiter": null,
-                "rightParenthesis": {
-                  "start": 56,
-                  "end": 57,
-                  "type": "CLOSE_PAREN",
-                  "lexeme": ")"
-                },
-                "beginToken": {
-                  "start": 55,
-                  "end": 56,
-                  "type": "OPEN_PAREN",
-                  "lexeme": "("
-                },
-                "endToken": {
-                  "start": 56,
-                  "end": 57,
-                  "type": "CLOSE_PAREN",
-                  "lexeme": ")"
-                },
-                "parameters": [],
-                "isSynthetic": false,
-                "length": 2,
-                "offset": 55
-              },
-              "typeParameters": null,
-              "inConstantContext": false,
-              "isAssignable": false,
-              "unParenthesized": "@seen { self }"
-            },
-            "modifiers": []
-          }
-        ],
-        "fragment": {
-          "start": 71,
-          "end": 85,
-          "class": "Fragment",
-          "children": [
-            {
-              "start": 71,
-              "end": 78,
-              "class": "Text",
-              "raw": "count: ",
-              "data": "count: "
-            },
-            {
-              "start": 78,
-              "end": 85,
-              "class": "ExpressionTag",
-              "expression": {
-                "@class": "SimpleIdentifier",
-                "@toString": "count",
-                "start": 79,
-                "end": 84,
-                "token": {
-                  "start": 79,
-                  "end": 84,
-                  "type": "IDENTIFIER",
-                  "lexeme": "count"
-                },
-                "ancestorCascade": null,
-                "beginToken": {
-                  "start": 79,
-                  "end": 84,
-                  "type": "IDENTIFIER",
-                  "lexeme": "count"
-                },
-                "endToken": {
-                  "start": 79,
-                  "end": 84,
-                  "type": "IDENTIFIER",
-                  "lexeme": "count"
-                },
-                "isQualified": "@error { Null check operator used on a null value }",
-                "isSynthetic": false,
-                "name": "count"
-              }
-            }
-          ]
-        }
+        "raw": "\n\n",
+        "data": "\n\n"
       }
     ]
   },
   "instance": {
-    "start": 0,
-    "end": 35,
+    "start": 59,
+    "end": 84,
     "class": "InstanceScript",
     "content": {
-      "start": 8,
-      "end": 26,
+      "start": 67,
+      "end": 75,
       "class": "ScriptContent",
-      "content": "\n  var count = 0;\n"
+      "content": "\n  foo;\n"
     },
     "body": [
       {
-        "@class": "VariableDeclarationStatement",
-        "@toString": "var count = 0;",
-        "start": 11,
-        "end": 25,
+        "@class": "ExpressionStatement",
+        "@toString": "foo;",
+        "start": 70,
+        "end": 74,
         "semicolon": {
-          "start": 24,
-          "end": 25,
+          "start": 73,
+          "end": 74,
           "type": "SEMICOLON",
           "lexeme": ";"
         },
         "beginToken": {
-          "start": 11,
-          "end": 14,
-          "type": "VAR",
-          "lexeme": "var"
+          "start": 70,
+          "end": 73,
+          "type": "IDENTIFIER",
+          "lexeme": "foo"
         },
         "endToken": {
-          "start": 24,
-          "end": 25,
+          "start": 73,
+          "end": 74,
           "type": "SEMICOLON",
           "lexeme": ";"
         },
-        "variables": {
-          "@class": "VariableDeclarationList",
-          "@toString": "var count = 0",
-          "start": 11,
-          "end": 24,
-          "keyword": {
-            "start": 11,
-            "end": 14,
-            "type": "VAR",
-            "lexeme": "var"
+        "expression": {
+          "@class": "SimpleIdentifier",
+          "@toString": "foo",
+          "start": 70,
+          "end": 73,
+          "token": {
+            "start": 70,
+            "end": 73,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
           },
-          "lateKeyword": null,
+          "ancestorCascade": null,
+          "beginToken": {
+            "start": 70,
+            "end": 73,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
           "endToken": {
-            "start": 23,
-            "end": 24,
-            "type": "INT",
-            "lexeme": "0"
+            "start": 70,
+            "end": 73,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
           },
-          "firstTokenAfterCommentAndMetadata": {
-            "start": 11,
-            "end": 14,
-            "type": "VAR",
-            "lexeme": "var"
-          },
-          "isConst": false,
-          "isFinal": false,
-          "isLate": false,
-          "type": null,
-          "variables": [
-            {
-              "@class": "VariableDeclaration",
-              "@toString": "count = 0",
-              "start": 15,
-              "end": 24,
-              "name": {
-                "start": 15,
-                "end": 20,
-                "type": "IDENTIFIER",
-                "lexeme": "count"
-              },
-              "equals": {
-                "start": 21,
-                "end": 22,
-                "type": "EQ",
-                "lexeme": "="
-              },
-              "hasInitializer": false,
-              "documentationComment": null,
-              "endToken": {
-                "start": 23,
-                "end": 24,
-                "type": "INT",
-                "lexeme": "0"
-              },
-              "firstTokenAfterCommentAndMetadata": {
-                "start": 15,
-                "end": 20,
-                "type": "IDENTIFIER",
-                "lexeme": "count"
-              },
-              "initializer": {
-                "@class": "IntegerLiteral",
-                "@toString": "0",
-                "start": 23,
-                "end": 24,
-                "literal": {
-                  "start": 23,
-                  "end": 24,
-                  "type": "INT",
-                  "lexeme": "0"
-                },
-                "value": 0,
-                "beginToken": {
-                  "start": 23,
-                  "end": 24,
-                  "type": "INT",
-                  "lexeme": "0"
-                },
-                "endToken": {
-                  "start": 23,
-                  "end": 24,
-                  "type": "INT",
-                  "lexeme": "0"
-                },
-                "immediatelyNegated": false
-              },
-              "isConst": false,
-              "isFinal": false,
-              "isLate": false
-            }
-          ],
-          "documentationComment": null,
-          "metadata": [],
-          "sortedCommentAndAnnotations": []
-        }
+          "isQualified": false,
+          "isSynthetic": false,
+          "name": "foo"
+        },
+        "isSynthetic": false
       }
     ]
   },
-  "module": null,
+  "module": {
+    "start": 0,
+    "end": 57,
+    "class": "ModuleScript",
+    "content": {
+      "start": 26,
+      "end": 48,
+      "class": "ScriptContent",
+      "content": "\n  const foo = 'bar';\n"
+    },
+    "unit": {
+      "@class": "CompilationUnit",
+      "@toString": "const foo = 'bar';",
+      "start": 0,
+      "end": 48,
+      "beginToken": {
+        "start": 29,
+        "end": 34,
+        "type": "CONST",
+        "lexeme": "const"
+      },
+      "endToken": {
+        "start": 48,
+        "end": 48,
+        "type": "EOF",
+        "lexeme": ""
+      },
+      "invalidNodes": [],
+      "declarations": [
+        {
+          "@class": "TopLevelVariableDeclaration",
+          "@toString": "const foo = 'bar';",
+          "start": 29,
+          "end": 47,
+          "augmentKeyword": null,
+          "externalKeyword": null,
+          "semicolon": {
+            "start": 46,
+            "end": 47,
+            "type": "SEMICOLON",
+            "lexeme": ";"
+          },
+          "endToken": {
+            "start": 46,
+            "end": 47,
+            "type": "SEMICOLON",
+            "lexeme": ";"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 29,
+            "end": 34,
+            "type": "CONST",
+            "lexeme": "const"
+          },
+          "variables": {
+            "@class": "VariableDeclarationList",
+            "@toString": "const foo = 'bar'",
+            "start": 29,
+            "end": 46,
+            "keyword": {
+              "start": 29,
+              "end": 34,
+              "type": "CONST",
+              "lexeme": "const"
+            },
+            "lateKeyword": null,
+            "endToken": {
+              "start": 41,
+              "end": 46,
+              "type": "STRING",
+              "lexeme": "'bar'"
+            },
+            "firstTokenAfterCommentAndMetadata": {
+              "start": 29,
+              "end": 34,
+              "type": "CONST",
+              "lexeme": "const"
+            },
+            "isConst": true,
+            "isFinal": false,
+            "isLate": false,
+            "type": null,
+            "variables": [
+              {
+                "@class": "VariableDeclaration",
+                "@toString": "foo = 'bar'",
+                "start": 35,
+                "end": 46,
+                "name": {
+                  "start": 35,
+                  "end": 38,
+                  "type": "IDENTIFIER",
+                  "lexeme": "foo"
+                },
+                "equals": {
+                  "start": 39,
+                  "end": 40,
+                  "type": "EQ",
+                  "lexeme": "="
+                },
+                "hasInitializer": false,
+                "documentationComment": null,
+                "endToken": {
+                  "start": 41,
+                  "end": 46,
+                  "type": "STRING",
+                  "lexeme": "'bar'"
+                },
+                "firstTokenAfterCommentAndMetadata": {
+                  "start": 35,
+                  "end": 38,
+                  "type": "IDENTIFIER",
+                  "lexeme": "foo"
+                },
+                "initializer": {
+                  "@class": "SimpleStringLiteral",
+                  "@toString": "'bar'",
+                  "start": 41,
+                  "end": 46,
+                  "literal": {
+                    "start": 41,
+                    "end": 46,
+                    "type": "STRING",
+                    "lexeme": "'bar'"
+                  },
+                  "value": "bar",
+                  "beginToken": {
+                    "start": 41,
+                    "end": 46,
+                    "type": "STRING",
+                    "lexeme": "'bar'"
+                  },
+                  "contentsEnd": 45,
+                  "contentsOffset": 42,
+                  "endToken": {
+                    "start": 41,
+                    "end": 46,
+                    "type": "STRING",
+                    "lexeme": "'bar'"
+                  },
+                  "isMultiline": false,
+                  "isRaw": false,
+                  "isSingleQuoted": true,
+                  "isSynthetic": false
+                },
+                "isConst": true,
+                "isFinal": false,
+                "isLate": false
+              }
+            ],
+            "documentationComment": null,
+            "metadata": [],
+            "sortedCommentAndAnnotations": []
+          }
+        }
+      ],
+      "directives": [],
+      "languageVersionToken": null,
+      "length": 48,
+      "offset": 0,
+      "scriptTag": null,
+      "sortedDirectivesAndDeclarations": [
+        {
+          "@class": "TopLevelVariableDeclaration",
+          "@toString": "const foo = 'bar';",
+          "start": 29,
+          "end": 47,
+          "augmentKeyword": null,
+          "externalKeyword": null,
+          "semicolon": {
+            "start": 46,
+            "end": 47,
+            "type": "SEMICOLON",
+            "lexeme": ";"
+          },
+          "endToken": {
+            "start": 46,
+            "end": 47,
+            "type": "SEMICOLON",
+            "lexeme": ";"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 29,
+            "end": 34,
+            "type": "CONST",
+            "lexeme": "const"
+          },
+          "variables": {
+            "@class": "VariableDeclarationList",
+            "@toString": "const foo = 'bar'",
+            "start": 29,
+            "end": 46,
+            "keyword": {
+              "start": 29,
+              "end": 34,
+              "type": "CONST",
+              "lexeme": "const"
+            },
+            "lateKeyword": null,
+            "endToken": {
+              "start": 41,
+              "end": 46,
+              "type": "STRING",
+              "lexeme": "'bar'"
+            },
+            "firstTokenAfterCommentAndMetadata": {
+              "start": 29,
+              "end": 34,
+              "type": "CONST",
+              "lexeme": "const"
+            },
+            "isConst": true,
+            "isFinal": false,
+            "isLate": false,
+            "type": null,
+            "variables": [
+              {
+                "@class": "VariableDeclaration",
+                "@toString": "foo = 'bar'",
+                "start": 35,
+                "end": 46,
+                "name": {
+                  "start": 35,
+                  "end": 38,
+                  "type": "IDENTIFIER",
+                  "lexeme": "foo"
+                },
+                "equals": {
+                  "start": 39,
+                  "end": 40,
+                  "type": "EQ",
+                  "lexeme": "="
+                },
+                "hasInitializer": false,
+                "documentationComment": null,
+                "endToken": {
+                  "start": 41,
+                  "end": 46,
+                  "type": "STRING",
+                  "lexeme": "'bar'"
+                },
+                "firstTokenAfterCommentAndMetadata": {
+                  "start": 35,
+                  "end": 38,
+                  "type": "IDENTIFIER",
+                  "lexeme": "foo"
+                },
+                "initializer": {
+                  "@class": "SimpleStringLiteral",
+                  "@toString": "'bar'",
+                  "start": 41,
+                  "end": 46,
+                  "literal": {
+                    "start": 41,
+                    "end": 46,
+                    "type": "STRING",
+                    "lexeme": "'bar'"
+                  },
+                  "value": "bar",
+                  "beginToken": {
+                    "start": 41,
+                    "end": 46,
+                    "type": "STRING",
+                    "lexeme": "'bar'"
+                  },
+                  "contentsEnd": 45,
+                  "contentsOffset": 42,
+                  "endToken": {
+                    "start": 41,
+                    "end": 46,
+                    "type": "STRING",
+                    "lexeme": "'bar'"
+                  },
+                  "isMultiline": false,
+                  "isRaw": false,
+                  "isSingleQuoted": true,
+                  "isSynthetic": false
+                },
+                "isConst": true,
+                "isFinal": false,
+                "isLate": false
+              }
+            ],
+            "documentationComment": null,
+            "metadata": [],
+            "sortedCommentAndAnnotations": []
+          }
+        }
+      ],
+      "isSynthetic": false
+    }
+  },
   "style": null,
   "options": null
 }

@@ -19,10 +19,11 @@ const String content = '''
 <script>
   int count = 0;
 </script>
+
 <button on:click="{() => count++}">count: {count}</button>''';
 
 void main() {
-  // Create an AST tree by parsing an SvelteDart template.
+  // Create an AST tree by parsing a template.
   Root root = parse(content);
 
   // Print to console.

@@ -18,7 +18,7 @@
             "end": 16,
             "class": "StyleDirective",
             "name": "color",
-            "value": null,
+            "value": true,
             "modifiers": []
           }
         ],

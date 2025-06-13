@@ -532,7 +532,7 @@ final class StyleDirective extends DirectiveNode
     super.start,
     super.end,
     required super.name,
-    this.value,
+    required this.value,
     this.modifiers = const <Never>[],
   });
 
@@ -541,7 +541,7 @@ final class StyleDirective extends DirectiveNode
   String get name => super.name;
 
   /// The y in `style:x={y}`.
-  final Object? value;
+  final Object value;
 
   // 'important'
   final List<String> modifiers;
@@ -562,7 +562,7 @@ final class StyleDirective extends DirectiveNode
       'class': 'StyleDirective',
       'name': name,
       'value': switch (value) {
-        null => null,
+        true => true,
         ExpressionTag value => value.toJson(mapper),
         List<Node> values => values.toJson(mapper),
         _ => throw TypeError(),
@@ -578,7 +578,7 @@ final class TransitionDirective extends DirectiveNode {
     super.start,
     super.end,
     required super.name,
-    this.expression,
+    required this.expression,
     this.modifiers = const <Never>[],
     required this.intro,
     required this.outro,
@@ -589,7 +589,7 @@ final class TransitionDirective extends DirectiveNode {
   String get name => super.name;
 
   /// The y in `transition:x={y}`.
-  final dart.Expression? expression;
+  final dart.Expression expression;
 
   // 'local', 'global'
   final List<String> modifiers;
@@ -1225,11 +1225,11 @@ final class Attribute extends NamedAttributeNode
     super.start,
     super.end,
     required super.name,
-    this.value,
+    required this.value,
     this.modifiers = const <Never>[],
   });
 
-  final Object? value;
+  final Object value;
 
   final List<String> modifiers;
 
@@ -1249,7 +1249,7 @@ final class Attribute extends NamedAttributeNode
       'class': 'Attribute',
       'name': name,
       'value': switch (value) {
-        null => null,
+        true => true,
         ExpressionTag value => value.toJson(mapper),
         List<Node> values => values.toJson(mapper),
         _ => throw TypeError(),

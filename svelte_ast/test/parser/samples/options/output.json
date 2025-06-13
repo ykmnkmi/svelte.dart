@@ -34,39 +34,37 @@
             "end": 43,
             "class": "Attribute",
             "name": "runes",
-            "value": [
-              {
-                "start": 37,
-                "end": 43,
-                "class": "ExpressionTag",
-                "expression": {
-                  "@class": "BooleanLiteral",
-                  "@toString": "true",
+            "value": {
+              "start": 37,
+              "end": 43,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "BooleanLiteral",
+                "@toString": "true",
+                "start": 38,
+                "end": 42,
+                "literal": {
                   "start": 38,
                   "end": 42,
-                  "literal": {
-                    "start": 38,
-                    "end": 42,
-                    "type": "TRUE",
-                    "lexeme": "true"
-                  },
-                  "value": true,
-                  "beginToken": {
-                    "start": 38,
-                    "end": 42,
-                    "type": "TRUE",
-                    "lexeme": "true"
-                  },
-                  "endToken": {
-                    "start": 38,
-                    "end": 42,
-                    "type": "TRUE",
-                    "lexeme": "true"
-                  },
-                  "isSynthetic": false
-                }
+                  "type": "TRUE",
+                  "lexeme": "true"
+                },
+                "value": true,
+                "beginToken": {
+                  "start": 38,
+                  "end": 42,
+                  "type": "TRUE",
+                  "lexeme": "true"
+                },
+                "endToken": {
+                  "start": 38,
+                  "end": 42,
+                  "type": "TRUE",
+                  "lexeme": "true"
+                },
+                "isSynthetic": false
               }
-            ],
+            },
             "modifiers": []
           }
         ],

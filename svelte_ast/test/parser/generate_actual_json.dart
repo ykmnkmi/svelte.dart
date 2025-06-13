@@ -1,11 +1,11 @@
 // ignore_for_file: avoid_print
 
-import 'dart:convert' show JsonEncoder, json;
-import 'dart:io' show Directory, File, FileSystemEntity;
+import 'dart:convert';
+import 'dart:io';
 
-import 'package:collection/collection.dart' show DeepCollectionEquality;
-import 'package:svelte_ast/mirror_mapper.dart' show mapper;
-import 'package:svelte_ast/svelte_ast.dart' show ParseError, Root, parse;
+import 'package:collection/collection.dart';
+import 'package:svelte_ast/mirror_mapper.dart';
+import 'package:svelte_ast/svelte_ast.dart';
 
 const DeepCollectionEquality equality = DeepCollectionEquality.unordered();
 

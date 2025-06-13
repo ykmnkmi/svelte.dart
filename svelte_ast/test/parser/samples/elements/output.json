@@ -18,7 +18,7 @@
             "end": 14,
             "class": "Attribute",
             "name": "html",
-            "value": null,
+            "value": true,
             "modifiers": []
           }
         ],

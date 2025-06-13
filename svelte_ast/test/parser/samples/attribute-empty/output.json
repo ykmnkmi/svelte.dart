@@ -34,44 +34,42 @@
             "end": 16,
             "class": "Attribute",
             "name": "b",
-            "value": [
-              {
-                "start": 12,
-                "end": 16,
-                "class": "ExpressionTag",
-                "expression": {
-                  "@class": "SimpleStringLiteral",
-                  "@toString": "''",
+            "value": {
+              "start": 12,
+              "end": 16,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleStringLiteral",
+                "@toString": "''",
+                "start": 13,
+                "end": 15,
+                "literal": {
                   "start": 13,
                   "end": 15,
-                  "literal": {
-                    "start": 13,
-                    "end": 15,
-                    "type": "STRING",
-                    "lexeme": "''"
-                  },
-                  "value": "",
-                  "beginToken": {
-                    "start": 13,
-                    "end": 15,
-                    "type": "STRING",
-                    "lexeme": "''"
-                  },
-                  "contentsEnd": 14,
-                  "contentsOffset": 14,
-                  "endToken": {
-                    "start": 13,
-                    "end": 15,
-                    "type": "STRING",
-                    "lexeme": "''"
-                  },
-                  "isMultiline": false,
-                  "isRaw": false,
-                  "isSingleQuoted": true,
-                  "isSynthetic": false
-                }
+                  "type": "STRING",
+                  "lexeme": "''"
+                },
+                "value": "",
+                "beginToken": {
+                  "start": 13,
+                  "end": 15,
+                  "type": "STRING",
+                  "lexeme": "''"
+                },
+                "contentsEnd": 14,
+                "contentsOffset": 14,
+                "endToken": {
+                  "start": 13,
+                  "end": 15,
+                  "type": "STRING",
+                  "lexeme": "''"
+                },
+                "isMultiline": false,
+                "isRaw": false,
+                "isSingleQuoted": true,
+                "isSynthetic": false
               }
-            ],
+            },
             "modifiers": []
           },
           {

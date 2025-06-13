@@ -1,3 +1,8 @@
+## 1.0.0-24.beta
+
+- Log warnings.
+- Fixing attribute value parsing.
+
 ## 1.0.0-23.beta
 
 - Make `ThrowingVisitor`'s default constructor `const`.

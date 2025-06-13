@@ -8,6 +8,7 @@ import 'package:svelte_ast/src/patterns.dart';
 import 'package:svelte_ast/src/read/expression.dart';
 import 'package:svelte_ast/src/read/script.dart';
 import 'package:svelte_ast/src/read/style.dart';
+import 'package:svelte_ast/src/warnings.dart';
 
 final RegExp _invalidUnquotedAttributeValueRe = RegExp('(\\/>|[\\s"\'=<>])');
 
@@ -94,7 +95,7 @@ extension ElementParser on Parser {
       return null;
     }
 
-    Object? value;
+    Object value;
 
     if (scan('=')) {
       allowSpace();
@@ -111,16 +112,18 @@ extension ElementParser on Parser {
         raw = raw.substring(1, raw.length - 1);
       }
 
-      value = Text(
-        start: start,
-        end: quoted ? position - 1 : position,
-        raw: raw,
-        data: decodeCharacterReferences(raw, true),
-      );
-    }
-
-    if (match(_startsWithQuoteCharacters)) {
+      value = <Node>[
+        Text(
+          start: start,
+          end: quoted ? position - 1 : position,
+          raw: raw,
+          data: decodeCharacterReferences(raw, true),
+        ),
+      ];
+    } else if (match(_startsWithQuoteCharacters)) {
       expectedToken('=', position);
+    } else {
+      value = true;
     }
 
     return Attribute(start: start, end: position, name: name, value: value);
@@ -175,23 +178,25 @@ extension ElementParser on Parser {
     int end = position;
     allowSpace();
 
-    List<Node>? values;
+    Object value;
 
     if (scan('=')) {
       allowSpace();
 
       if (scan('/') && match('>')) {
-        values = <Node>[
+        value = <Node>[
           Text(start: position - 1, end: position, raw: '/', data: '/'),
         ];
 
         end = position;
       } else {
-        values = _readAttributeValue();
+        value = _readAttributeValue();
         end = position;
       }
     } else if (match(_startsWithQuoteCharacters)) {
       expectedToken('=', position);
+    } else {
+      value = true;
     }
 
     int colonIndex = name.indexOf(':');
@@ -207,20 +212,31 @@ extension ElementParser on Parser {
           end: end,
           name: directiveName,
           modifiers: modifiers,
-          value: values,
+          value: value,
         );
       }
 
-      dart.Expression? expression;
+      dart.Expression expression;
 
-      if (values != null && values.isNotEmpty) {
-        Node firstValue = values.first;
+      if (value == true) {
+        // If directive name is expression, e.g. `<p class:isRed />`.
+        expression = simpleIdentifier(start, directiveName);
+      } else if (value is ExpressionTag) {
+        expression = value.expression;
+      } else if (value is List<Node>) {
+        assert(value.isNotEmpty);
 
-        if (firstValue is! ExpressionTag) {
-          directiveInvalidValue(firstValue.start);
+        Node first = value.first;
+
+        if (first is Text || value.length > 1) {
+          directiveInvalidValue(value.first.start);
+        } else if (first is ExpressionTag) {
+          expression = first.expression;
+        } else {
+          throw TypeError();
         }
-
-        expression = firstValue.expression;
+      } else {
+        throw TypeError();
       }
 
       DirectiveNode directiveNode;
@@ -244,16 +260,14 @@ extension ElementParser on Parser {
           start: start,
           end: end,
           name: directiveName,
-          // If directive name is expression, e.g. `<p class:isRed />`.
-          expression: expression ?? simpleIdentifier(start, directiveName),
+          expression: expression,
         );
       } else if (type == 'class') {
         directiveNode = ClassDirective(
           start: start,
           end: end,
           name: directiveName,
-          // If directive name is expression, e.g. `<p class:isRed />`.
-          expression: expression ?? simpleIdentifier(start, directiveName),
+          expression: expression,
         );
       } else if (type == 'on') {
         directiveNode = OnDirective(
@@ -288,10 +302,10 @@ extension ElementParser on Parser {
       return directiveNode;
     }
 
-    return Attribute(start: start, end: end, name: name, value: values);
+    return Attribute(start: start, end: end, name: name, value: value);
   }
 
-  List<Node> _readAttributeValue() {
+  Object _readAttributeValue() {
     String? quoteMark = read('"') ?? read("'");
 
     if (quoteMark != null && scan(quoteMark)) {
@@ -326,6 +340,12 @@ extension ElementParser on Parser {
     if (quoteMark == null) {
       if (values.isEmpty) {
         expectedAttributeValue(position);
+      }
+
+      Node first = values.first;
+
+      if (first is ExpressionTag) {
+        return first;
       }
     } else {
       expect(quoteMark);
@@ -599,25 +619,28 @@ extension ElementParser on Parser {
 
           Object? value = attribute.value;
 
-          if (value == null) {
+          if (value == true) {
             svelteElementMissingThis(attribute.start, attribute.end);
-          }
+          } else if (value is ExpressionTag) {
+            element.tag = value.expression;
+          } else if (value is List<Node>) {
+            assert(value.isNotEmpty);
+            svelteElementInvalidThis(start);
 
-          if (value is List<Node> && value.length == 1) {
             Node first = value.first;
 
             if (first is ExpressionTag) {
               element.tag = first.expression;
-              break svelte_element;
-            }
-
-            if (first is Text) {
+            } else if (first is Text) {
               element.tag = simpleString(first.start, first.data);
-              break svelte_element;
+            } else {
+              throw TypeError();
             }
-
-            svelteElementInvalidThis(start);
+          } else {
+            throw TypeError();
           }
+
+          break svelte_element;
         }
       }
 

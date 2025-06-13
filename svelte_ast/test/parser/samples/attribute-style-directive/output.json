@@ -18,41 +18,39 @@
             "end": 26,
             "class": "StyleDirective",
             "name": "color",
-            "value": [
-              {
-                "start": 17,
-                "end": 26,
-                "class": "ExpressionTag",
-                "expression": {
-                  "@class": "SimpleIdentifier",
-                  "@toString": "myColor",
+            "value": {
+              "start": 17,
+              "end": 26,
+              "class": "ExpressionTag",
+              "expression": {
+                "@class": "SimpleIdentifier",
+                "@toString": "myColor",
+                "start": 18,
+                "end": 25,
+                "token": {
                   "start": 18,
                   "end": 25,
-                  "token": {
-                    "start": 18,
-                    "end": 25,
-                    "type": "IDENTIFIER",
-                    "lexeme": "myColor"
-                  },
-                  "ancestorCascade": null,
-                  "beginToken": {
-                    "start": 18,
-                    "end": 25,
-                    "type": "IDENTIFIER",
-                    "lexeme": "myColor"
-                  },
-                  "endToken": {
-                    "start": 18,
-                    "end": 25,
-                    "type": "IDENTIFIER",
-                    "lexeme": "myColor"
-                  },
-                  "isQualified": "@error { Null check operator used on a null value }",
-                  "isSynthetic": false,
-                  "name": "myColor"
-                }
+                  "type": "IDENTIFIER",
+                  "lexeme": "myColor"
+                },
+                "ancestorCascade": null,
+                "beginToken": {
+                  "start": 18,
+                  "end": 25,
+                  "type": "IDENTIFIER",
+                  "lexeme": "myColor"
+                },
+                "endToken": {
+                  "start": 18,
+                  "end": 25,
+                  "type": "IDENTIFIER",
+                  "lexeme": "myColor"
+                },
+                "isQualified": "@error { Null check operator used on a null value }",
+                "isSynthetic": false,
+                "name": "myColor"
               }
-            ],
+            },
             "modifiers": []
           }
         ],

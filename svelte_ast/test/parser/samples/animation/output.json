@@ -34,7 +34,34 @@
                   "end": 51,
                   "class": "AnimationDirective",
                   "name": "flip",
-                  "expression": null
+                  "expression": {
+                    "@class": "SimpleIdentifier",
+                    "@toString": "flip",
+                    "start": 39,
+                    "end": 43,
+                    "token": {
+                      "start": 39,
+                      "end": 43,
+                      "type": "IDENTIFIER",
+                      "lexeme": "flip"
+                    },
+                    "ancestorCascade": null,
+                    "beginToken": {
+                      "start": 39,
+                      "end": 43,
+                      "type": "IDENTIFIER",
+                      "lexeme": "flip"
+                    },
+                    "endToken": {
+                      "start": 39,
+                      "end": 43,
+                      "type": "IDENTIFIER",
+                      "lexeme": "flip"
+                    },
+                    "isQualified": "@error { Null check operator used on a null value }",
+                    "isSynthetic": false,
+                    "name": "flip"
+                  }
                 }
               ],
               "fragment": {
