@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class Info extends Component {
+base class Info extends ComponentFactory {
   static final root = $.template<HTMLParagraphElement>(
     '<p>The <code> </code> <a>npm</a> and <a>learn more here</a>.</p>',
   );
@@ -24,7 +24,7 @@ base class Info extends Component {
   Uri website;
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     var p = root();
     var code = $.sibling<HTMLElement>($.child(p));
     var text = $.child<Text>(code, true);

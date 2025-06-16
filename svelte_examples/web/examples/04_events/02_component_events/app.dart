@@ -3,15 +3,15 @@ import 'package:web/web.dart';
 
 import 'inner.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   App();
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     void handleMessage({required String text}) {
       window.alert(text);
     }
 
-    Inner(onMessage: handleMessage).call(anchor);
+    Inner(onMessage: handleMessage).create(anchor);
   }
 }

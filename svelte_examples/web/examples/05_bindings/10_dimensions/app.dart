@@ -3,14 +3,14 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root = $.template<DocumentFragment>(
     '<input type="range" class="svelte-1oqthja"> <input class="svelte-1oqthja"> <p> </p> <div class="svelte-1oqthja"><span> </span></div>',
     1,
   );
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     $.appendStyles(anchor, 'svelte-1oqthja', '''
   input.svelte-1oqthja {
     display: block;

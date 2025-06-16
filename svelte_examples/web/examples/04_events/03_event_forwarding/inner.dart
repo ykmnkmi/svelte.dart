@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class Inner extends Component {
+base class Inner extends ComponentFactory {
   static final root = $.template<HTMLButtonElement>(
     '<button>Click to say hello</button>',
   );
@@ -13,7 +13,7 @@ base class Inner extends Component {
   void Function({required String text}) onMessage;
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     $.push();
 
     void sayHello() {

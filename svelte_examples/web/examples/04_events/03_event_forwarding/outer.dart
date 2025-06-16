@@ -3,7 +3,7 @@ import 'package:web/web.dart';
 
 import 'inner.dart';
 
-base class Outer extends Component {
+base class Outer extends ComponentFactory {
   Outer({required void Function({required String text}) onMessage})
     : _inner = Inner(onMessage: onMessage);
 
@@ -18,7 +18,7 @@ base class Outer extends Component {
   }
 
   @override
-  void call(Node anchor) {
-    _inner.call(anchor);
+  void create(Node anchor) {
+    _inner.create(anchor);
   }
 }

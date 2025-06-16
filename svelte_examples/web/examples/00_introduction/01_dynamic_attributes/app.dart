@@ -3,11 +3,11 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root = $.template<HTMLImageElement>('<img>');
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     var src = '/tutorial/image.gif';
     var name = 'Rick Astley';
 

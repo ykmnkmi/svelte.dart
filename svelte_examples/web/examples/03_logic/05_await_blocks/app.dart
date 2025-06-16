@@ -5,7 +5,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root1 = $.template<HTMLParagraphElement>('<p> </p>');
 
   static final root2 = $.template<HTMLParagraphElement>(
@@ -20,7 +20,7 @@ base class App extends Component {
   );
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     $.push();
 
     Future<int> getRandomNumber() {

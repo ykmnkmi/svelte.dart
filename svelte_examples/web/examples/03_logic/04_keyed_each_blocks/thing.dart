@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class Thing extends Component {
+base class Thing extends ComponentFactory {
   static final root = $.template<HTMLParagraphElement>(
     '<p><span class="svelte-671r1c">initial</span> <span class="svelte-671r1c">current</span></p>',
   );
@@ -13,7 +13,7 @@ base class Thing extends Component {
   String? current;
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     $.appendStyles(anchor, 'svelte-671r1c', '''
   span {
     display: inline-block;

@@ -3,15 +3,15 @@ import 'package:web/web.dart';
 
 import 'custom_button.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   App();
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     void handleClick(Event event) {
       window.alert('clicked');
     }
 
-    CustomButton(onClick: handleClick).call(anchor);
+    CustomButton(onClick: handleClick).create(anchor);
   }
 }

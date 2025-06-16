@@ -5,7 +5,7 @@ import 'package:web/web.dart';
 
 import 'todo.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root1 = $.template<HTMLDivElement>(
     '<div><input type="checkbox"> <input placeholder="What needs to be done?"></div>',
   );
@@ -15,7 +15,7 @@ base class App extends Component {
   );
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     $.push();
 
     var todos = $.source<List<ToDo>>([

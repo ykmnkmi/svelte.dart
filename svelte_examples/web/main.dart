@@ -47,7 +47,7 @@ import 'examples/05_bindings/09_media_elements/app.dart' as b09;
 import 'examples/05_bindings/10_dimensions/app.dart' as b10;
 import 'examples/05_bindings/11_bind_this/app.dart' as b11;
 
-Component? selectComponent(String name) {
+ComponentFactory? selectComponent(String name) {
   return switch (name) {
     // introduction
     'hello_world' => i00.App(),

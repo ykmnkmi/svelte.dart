@@ -3,13 +3,13 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root = $.template<HTMLParagraphElement>(
     '<p class="svelte-urs9w7">Styled!</p>',
   );
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     $.appendStyles(anchor, 'svelte-urs9w7', """
   p.svelte-urs9w7 {
     color: purple;

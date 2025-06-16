@@ -3,9 +3,9 @@ import 'package:web/web.dart';
 
 import 'info.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     var pkg = <Symbol, Object?>{
       #name: 'svelte',
       #version: 5,
@@ -13,6 +13,6 @@ base class App extends Component {
       #website: Uri.parse('https://svelte.dev'),
     };
 
-    (Function.apply(Info.new, const <Never>[], pkg) as Info).call(anchor);
+    (Function.apply(Info.new, const <Never>[], pkg) as Info).create(anchor);
   }
 }

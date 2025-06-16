@@ -4,14 +4,14 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root = $.template<DocumentFragment>(
     '<textarea class="svelte-edipxk"></textarea> <!>',
     1,
   );
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     $.push();
     $.appendStyles(anchor, 'svelte-edipxk', '''
   textarea.svelte-edipxk {

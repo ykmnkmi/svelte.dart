@@ -3,11 +3,11 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root = $.template<HTMLButtonElement>('<button> </button>');
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     $.push();
 
     var count = $.source<int>(0);

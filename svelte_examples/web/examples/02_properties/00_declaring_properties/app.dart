@@ -3,9 +3,9 @@ import 'package:web/web.dart';
 
 import 'nested.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   @override
-  void call(Node anchor) {
-    Nested(answer: 42).call(anchor);
+  void create(Node anchor) {
+    Nested(answer: 42).create(anchor);
   }
 }

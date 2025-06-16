@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root1 = $.template<HTMLParagraphElement>('<p></p>');
 
   static final root3 = $.template<HTMLParagraphElement>('<p></p>');
@@ -13,7 +13,7 @@ base class App extends Component {
   App();
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     var x = 7;
 
     var fragment = $.comment();

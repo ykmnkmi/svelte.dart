@@ -5,19 +5,19 @@ import 'package:web/web.dart';
 
 import 'nested.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root = $.template<DocumentFragment>('<!> <!>', 1);
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     var fragment = root();
     var node = $.firstChild<Comment>(fragment);
 
-    Nested(answer: 42).call(node);
+    Nested(answer: 42).create(node);
 
     var node1 = $.sibling<Comment>(node, 2);
 
-    Nested().call(node1);
+    Nested().create(node1);
     $.append(anchor, fragment);
   }
 }

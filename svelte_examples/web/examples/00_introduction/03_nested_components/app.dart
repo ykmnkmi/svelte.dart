@@ -5,14 +5,14 @@ import 'package:web/web.dart';
 
 import 'nested.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root = $.template<DocumentFragment>(
     '<p class="svelte-urs9w7">These styles...</p> <!>',
     1,
   );
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     $.appendStyles(anchor, 'svelte-urs9w7', """
   p.svelte-urs9w7 {
     color: purple;
@@ -23,7 +23,7 @@ base class App extends Component {
     var fragment = root();
     var node = $.sibling<Comment>($.firstChild(fragment), 2);
 
-    Nested().call(node);
+    Nested().create(node);
     $.append(anchor, fragment);
   }
 }

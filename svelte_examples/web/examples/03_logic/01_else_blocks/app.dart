@@ -5,7 +5,7 @@ import 'package:web/web.dart';
 
 import 'user.dart';
 
-base class App extends Component {
+base class App extends ComponentFactory {
   static final root1 = $.template<HTMLButtonElement>(
     '<button>Log out</button>',
   );
@@ -13,7 +13,7 @@ base class App extends Component {
   static final root2 = $.template<HTMLButtonElement>('<button>Log in</button>');
 
   @override
-  void call(Node anchor) {
+  void create(Node anchor) {
     var user = $.source<User>(User(loggedIn: false));
 
     void toggle() {

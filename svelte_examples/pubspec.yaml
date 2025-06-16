@@ -1,6 +1,6 @@
 name: svelte_examples
 description: SvelteDart examples.
-version: 1.0.0-dev.11
+version: 1.0.0-dev.12
 repository: https://github.com/ykmnkmi/svelte.dart
 publish_to: none
 
