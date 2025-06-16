@@ -10,7 +10,7 @@ environment:
 
 dependencies:
   meta: ^1.17.0
-  svelte_runtime: ^1.0.0-dev.13
+  svelte_runtime: ^1.0.0-dev.14
   web: ^1.1.1
 
 dev_dependencies:
