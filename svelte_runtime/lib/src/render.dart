@@ -30,7 +30,7 @@ void setText(Text text, String value) {
 
 /// Hydrates a component on the given target.
 Future<void> Function([bool outro]) hydrate(
-  Component component, {
+  ComponentFactory componentFactory, {
   required Element target,
   Map<Object, Object>? context,
   bool intro = false,
@@ -58,7 +58,7 @@ Future<void> Function([bool outro]) hydrate(
     hydrateNext<Node?>();
 
     Future<void> Function([bool outro]) unmount = mount(
-      component,
+      componentFactory,
       target: target,
       anchor: anchor,
       context: context,
@@ -84,7 +84,12 @@ Future<void> Function([bool outro]) hydrate(
       init(); // re-init
       clearTextContent(target);
       setHydrating(false);
-      return mount(component, target: target, context: context, intro: intro);
+      return mount(
+        componentFactory,
+        target: target,
+        context: context,
+        intro: intro,
+      );
     }
 
     rethrow;
@@ -102,7 +107,7 @@ Map<String, int> documentListeners = <String, int>{};
 /// Transitions will play during the initial render unless the [intro] option is
 /// set to `false`.
 Future<void> Function([bool outro]) mount(
-  Component component, {
+  ComponentFactory componentFactory, {
   required Element target,
   Node? anchor,
   Map<Object, Object>? context,
@@ -157,7 +162,7 @@ Future<void> Function([bool outro]) mount(
       }
 
       setShouldIntro(intro);
-      component(anchorNode);
+      componentFactory.create(anchorNode);
       setShouldIntro(true);
 
       if (hydrating) {

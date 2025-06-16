@@ -21,6 +21,6 @@ stack_trace: ^1.12.1
 svelte: ^1.0.0-dev.1
 svelte_ast: ^1.0.0-24.beta
 svelte_builder: ^1.0.0-dev.5
-svelte_runtime: ^1.0.0-dev.13
+svelte_runtime: ^1.0.0-dev.14
 test: ^1.26.2
 web: ^1.1.1

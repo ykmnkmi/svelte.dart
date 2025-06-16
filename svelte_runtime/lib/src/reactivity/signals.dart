@@ -3,6 +3,7 @@ import 'package:svelte_runtime/src/reactivity/deriveds.dart';
 import 'package:svelte_runtime/src/reactivity/flags.dart';
 import 'package:svelte_runtime/src/reactivity/nodes.dart';
 import 'package:svelte_runtime/src/runtime.dart';
+import 'package:svelte_runtime/src/signal.dart' as signal;
 import 'package:svelte_runtime/src/transition.dart';
 
 abstract base class Signal {
@@ -214,7 +215,9 @@ sealed class Reaction<T> extends Signal {
 }
 
 @optionalTypeArgs
-final class Derived<T> extends Reaction<T> with Value<T> {
+final class Derived<T> extends Reaction<T>
+    with Value<T>
+    implements signal.Derived<T> {
   Derived({
     required super.flags,
     super.context,
@@ -278,14 +281,16 @@ final class Effect<T> extends Reaction<T> {
   Effect? parent;
 }
 
-final class Source<T> extends Signal with Value<T> {
+final class Source<T> extends Signal with Value<T> implements signal.State<T> {
   Source({required super.flags, required this.value});
 
   @override
   T value;
 }
 
-final class LazySource<T> extends Signal with Value<T> {
+final class LazySource<T> extends Signal
+    with Value<T>
+    implements signal.State<T> {
   LazySource({required super.flags}) : untypedValue = T;
 
   Object? untypedValue;
