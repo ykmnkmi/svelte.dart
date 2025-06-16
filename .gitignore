@@ -1,6 +1,7 @@
 .dart_tool/
 build/
 node_modules/
+*.dill
 *.unopt.wasm
 *.unopt.wasm.map
 _*.json
