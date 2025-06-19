@@ -121,29 +121,7 @@ final class Root extends Node {
 }
 
 final class Options extends Node {
-  Options({
-    super.start,
-    super.end,
-    this.runes,
-    this.immutable,
-    this.accessors,
-    this.preserveWhitespace,
-    this.namespace,
-    this.css,
-    this.attributes = const <Never>[],
-  });
-
-  bool? runes;
-
-  bool? immutable;
-
-  bool? accessors;
-
-  bool? preserveWhitespace;
-
-  String? namespace;
-
-  String? css;
+  Options({super.start, super.end, this.attributes = const <Never>[]});
 
   List<AttributeNode> attributes;
 
@@ -158,12 +136,6 @@ final class Options extends Node {
       'start': start,
       'end': end,
       'class': 'Options',
-      'runes': runes,
-      'immutable': immutable,
-      'accessors': accessors,
-      'preserveWhitespace': preserveWhitespace,
-      'namespace': namespace,
-      'css': css,
       'attributes': attributes.toJson(mapper),
     };
   }
@@ -1280,7 +1252,7 @@ final class SpreadAttribute extends AttributeNode {
   }
 }
 
-abstract class Script extends Node {
+abstract base class Script extends Node {
   Script({super.start, super.end, required this.content});
 
   final ScriptContent content;
@@ -1311,9 +1283,12 @@ final class ModuleScript extends Script {
   ModuleScript({
     super.start,
     super.end,
+    this.attributes = const <Never>[],
     required super.content,
     required this.unit,
   });
+
+  final List<AttributeNode> attributes;
 
   final dart.AstNode unit;
 
@@ -1328,6 +1303,7 @@ final class ModuleScript extends Script {
       'start': start,
       'end': end,
       'class': 'ModuleScript',
+      'attributes': attributes.toJson(mapper),
       'content': content.toJson(mapper),
       'unit': mapper(unit),
     };
@@ -1338,9 +1314,12 @@ final class InstanceScript extends Script {
   InstanceScript({
     super.start,
     super.end,
+    this.attributes = const <Never>[],
     required super.content,
     this.body = const <Never>[],
   });
+
+  final List<AttributeNode> attributes;
 
   final List<dart.AstNode> body;
 
@@ -1355,6 +1334,7 @@ final class InstanceScript extends Script {
       'start': start,
       'end': end,
       'class': 'InstanceScript',
+      'attributes': attributes.toJson(mapper),
       'content': content.toJson(mapper),
       'body': body.toJson(mapper),
     };

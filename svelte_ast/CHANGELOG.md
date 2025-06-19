@@ -1,3 +1,8 @@
+## 1.0.0-25.beta
+
+- Add `logger` argument to `parse` function.
+- Add attributes to top level scripts.
+
 ## 1.0.0-24.beta
 
 - Log warnings.

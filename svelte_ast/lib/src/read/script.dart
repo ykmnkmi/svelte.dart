@@ -103,6 +103,7 @@ extension ScriptParser on Parser {
       return ModuleScript(
         start: start,
         end: position,
+        attributes: attributes,
         content: ScriptContent(
           start: contentStart,
           end: contentEnd,
@@ -170,6 +171,7 @@ extension ScriptParser on Parser {
     return InstanceScript(
       start: start,
       end: position,
+      attributes: attributes,
       content: ScriptContent(
         start: contentStart,
         end: contentEnd,
