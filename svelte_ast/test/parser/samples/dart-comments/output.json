@@ -324,6 +324,7 @@
     "start": 0,
     "end": 598,
     "class": "InstanceScript",
+    "attributes": [],
     "content": {
       "start": 8,
       "end": 589,

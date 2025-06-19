@@ -81,6 +81,24 @@
     "start": 0,
     "end": 69,
     "class": "InstanceScript",
+    "attributes": [
+      {
+        "start": 8,
+        "end": 35,
+        "class": "Attribute",
+        "name": "generics",
+        "value": [
+          {
+            "start": 8,
+            "end": 34,
+            "class": "Text",
+            "raw": "T extends Object",
+            "data": "T extends Object"
+          }
+        ],
+        "modifiers": []
+      }
+    ],
     "content": {
       "start": 37,
       "end": 60,

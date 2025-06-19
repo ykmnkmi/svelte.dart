@@ -33,6 +33,7 @@
     "start": 0,
     "end": 44,
     "class": "InstanceScript",
+    "attributes": [],
     "content": {
       "start": 8,
       "end": 35,

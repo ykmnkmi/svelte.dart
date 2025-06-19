@@ -95,6 +95,24 @@
     "start": 75,
     "end": 121,
     "class": "InstanceScript",
+    "attributes": [
+      {
+        "start": 83,
+        "end": 110,
+        "class": "Attribute",
+        "name": "generics",
+        "value": [
+          {
+            "start": 83,
+            "end": 109,
+            "class": "Text",
+            "raw": "T extends Object",
+            "data": "T extends Object"
+          }
+        ],
+        "modifiers": []
+      }
+    ],
     "content": {
       "start": 111,
       "end": 112,
@@ -107,6 +125,16 @@
     "start": 48,
     "end": 73,
     "class": "ModuleScript",
+    "attributes": [
+      {
+        "start": 56,
+        "end": 62,
+        "class": "Attribute",
+        "name": "module",
+        "value": true,
+        "modifiers": []
+      }
+    ],
     "content": {
       "start": 63,
       "end": 64,
