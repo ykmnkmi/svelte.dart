@@ -5,7 +5,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root1 = $.template<HTMLParagraphElement>('<p> </p>');
 
   static final root2 = $.template<HTMLParagraphElement>(
@@ -79,7 +79,7 @@ base class App extends ComponentFactory {
       },
     );
 
-    $.event0('click', button, handleClick);
+    $.eventVoid('click', button, handleClick);
     $.append(anchor, fragment);
     $.pop();
   }

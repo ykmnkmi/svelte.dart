@@ -3,7 +3,7 @@ import 'package:web/web.dart';
 
 import 'custom_button.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   App();
 
   @override

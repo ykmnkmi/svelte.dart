@@ -3,7 +3,7 @@ import 'package:web/web.dart';
 
 import 'inner.dart';
 
-base class Outer extends ComponentFactory {
+base class Outer implements Component {
   Outer({required void Function({required String text}) onMessage})
     : _inner = Inner(onMessage: onMessage);
 

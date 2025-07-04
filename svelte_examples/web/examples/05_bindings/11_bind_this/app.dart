@@ -6,7 +6,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root = $.template<HTMLCanvasElement>(
     '<canvas class="svelte-1mvjxco"></canvas>',
   );

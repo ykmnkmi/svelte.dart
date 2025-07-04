@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class Nested extends ComponentFactory {
+base class Nested implements Component {
   static final root = $.template<HTMLParagraphElement>('<p> </p>');
 
   Nested({this.answer = 'a mystery'});

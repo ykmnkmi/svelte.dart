@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root1 = $.template('<label><input type="checkbox"> </label>');
   static final root2 = $.template('<p>Please select at least one flavour</p>');
   static final root4 = $.template(

@@ -3,7 +3,7 @@ import 'package:web/web.dart';
 
 import 'info.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   @override
   void create(Node anchor) {
     var pkg = <Symbol, Object?>{

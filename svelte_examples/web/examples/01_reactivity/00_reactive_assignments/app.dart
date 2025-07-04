@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root = $.template<HTMLButtonElement>('<button> </button>');
 
   @override
@@ -23,7 +23,7 @@ base class App extends ComponentFactory {
       $.setText(text, 'Clicked ${count()} ${count() == 1 ? 'time' : 'times'}');
     });
 
-    $.event0('click', button, handleClick);
+    $.eventVoid('click', button, handleClick);
     $.append(anchor, button);
   }
 }

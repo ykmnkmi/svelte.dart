@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root1 = $.template<HTMLOptionElement>('<option> </option>');
   static final root = $.template<DocumentFragment>(
     '<h2>Insecurity questions</h2> <form><select></select> <input class="svelte-14lf6jh"> <button type="submit">Submit</button></form> <p> </p>',
@@ -92,7 +92,7 @@ base class App extends ComponentFactory {
       selected.set(value as ({int id, String text})?);
     });
 
-    $.event0('change', select, () => answer.set(''));
+    $.eventVoid('change', select, () => answer.set(''));
 
     $.bindValue(input, answer.call, (value) {
       answer.set(value as String);

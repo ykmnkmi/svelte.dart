@@ -6,24 +6,17 @@ import 'package:web/web.dart';
 import 'thing.dart';
 
 base class _Thing extends Thing {
-  _Thing({required this.current_});
+  _Thing(this._current);
 
-  String? Function() current_;
+  final String Function() _current;
 
   @override
   String? get current {
-    return current_();
-  }
-
-  @override
-  set current(String? current) {
-    current_ = () {
-      return current;
-    };
+    return _current();
   }
 }
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root = $.template<DocumentFragment>(
     '<button>Remove first thing</button> <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1em"><div><h2>Keyed</h2> <!> </div> <div><h2>Unkeyed</h2> <!></div></div>',
     1,
@@ -57,7 +50,7 @@ base class App extends ComponentFactory {
       item,
       i,
     ) {
-      _Thing(current_: () => item().color).create(anchor);
+      _Thing(() => item().color).create(anchor);
     });
 
     $.reset(div1);
@@ -66,12 +59,12 @@ base class App extends ComponentFactory {
     var node1 = $.sibling<Comment>($.child(div2), 2);
 
     $.eachBlock(node1, 17, () => things(), $.index, (anchor, item, i) {
-      _Thing(current_: () => item().color).create(anchor);
+      _Thing(() => item().color).create(anchor);
     });
 
     $.reset(div2);
     $.reset(div);
-    $.event0('click', button, handleClick);
+    $.eventVoid('click', button, handleClick);
     $.append(anchor, fragment);
   }
 }

@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root = $.template<HTMLDivElement>(
     '<div class="svelte-1c44y5p"> </div>',
   );
@@ -11,7 +11,7 @@ base class App extends ComponentFactory {
   @override
   void create(Node anchor) {
     $.appendStyles(anchor, 'svelte-1c44y5p', '''
-  div {
+  div.svelte-1c44y5p {
     width: 100%;
     height: 100%;
   }''');

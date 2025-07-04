@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class Inner extends ComponentFactory {
+base class Inner implements Component {
   static final root = $.template<HTMLButtonElement>(
     '<button>Click to say hello</button>',
   );
@@ -22,7 +22,7 @@ base class Inner extends ComponentFactory {
 
     var button = root();
 
-    $.event0('click', button, sayHello);
+    $.eventVoid('click', button, sayHello);
     $.append(anchor, button);
     $.pop();
   }

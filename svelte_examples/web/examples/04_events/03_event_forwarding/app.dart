@@ -3,7 +3,7 @@ import 'package:web/web.dart';
 
 import 'outer.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   App();
 
   @override

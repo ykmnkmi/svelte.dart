@@ -5,7 +5,7 @@ import 'package:web/web.dart';
 
 import 'todo.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root1 = $.template<HTMLDivElement>(
     '<div><input type="checkbox"> <input placeholder="What needs to be done?"></div>',
   );
@@ -83,8 +83,8 @@ base class App extends ComponentFactory {
       $.setText(text, '${remaining()} remaining');
     });
 
-    $.event0('click', button, add);
-    $.event0('click', button1, clear);
+    $.eventVoid('click', button, add);
+    $.eventVoid('click', button1, clear);
     $.append(anchor, fragment);
     $.pop();
   }

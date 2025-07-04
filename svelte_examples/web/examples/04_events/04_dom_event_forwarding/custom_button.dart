@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class CustomButton extends ComponentFactory {
+base class CustomButton implements Component {
   static final root = $.template<HTMLButtonElement>(
     '<button class="svelte-hg07jm">Click me</button>',
   );
@@ -15,7 +15,7 @@ base class CustomButton extends ComponentFactory {
   @override
   void create(Node anchor) {
     $.appendStyles(anchor, 'svelte-hg07jm', '''
-  button {
+  button.svelte-urs9w7 {
     height: 4rem;
     width: 8rem;
     background-color: #aaa;
@@ -28,7 +28,7 @@ base class CustomButton extends ComponentFactory {
     transition: background 300ms ease-in-out;
   }
 
-  button:hover {
+  button.svelte-urs9w7:hover {
     background-position: 0;
     color: #aaa;
   }''');

@@ -6,7 +6,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root = $.template<DocumentFragment>(
     '<h1>Caminandes: Llamigos</h1> <p>From <a href="https://studio.blender.org/films">Blender Studio</a>. CC-BY</p> <div class="svelte-11bzk4c"><video poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg" src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4" class="svelte-11bzk4c"><track kind="captions"></video> <div class="controls svelte-11bzk4c"><progress class="svelte-11bzk4c"></progress> <div class="info svelte-11bzk4c"><span class="time svelte-11bzk4c"> </span> <span class="svelte-11bzk4c"> </span> <span class="time svelte-11bzk4c"> </span></div></div></div>',
     1,
@@ -187,9 +187,9 @@ base class App extends ComponentFactory {
       );
     });
 
-    $.event2<HTMLElement, MouseEvent>('mousemove', video, handleMove);
+    $.eventThis<HTMLElement, MouseEvent>('mousemove', video, handleMove);
 
-    $.event2<HTMLElement, MouseEvent>('touchmove', video, (element, event) {
+    $.eventThis<HTMLElement, MouseEvent>('touchmove', video, (element, event) {
       event.preventDefault();
       handleMove(element, event);
     });

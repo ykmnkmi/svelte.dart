@@ -46,8 +46,9 @@ import 'examples/05_bindings/08_each_block_bindings/app.dart' as b08;
 import 'examples/05_bindings/09_media_elements/app.dart' as b09;
 import 'examples/05_bindings/10_dimensions/app.dart' as b10;
 import 'examples/05_bindings/11_bind_this/app.dart' as b11;
+import 'examples/05_bindings/12_component_bindings/app.dart' as b12;
 
-ComponentFactory? selectComponent(String name) {
+Component? selectComponent(String name) {
   return switch (name) {
     // introduction
     'hello_world' => i00.App(),
@@ -89,6 +90,7 @@ ComponentFactory? selectComponent(String name) {
     'media_elements' => b09.App(),
     'dimensions' => b10.App(),
     'bind_this' => b11.App(),
+    'component_bindings' => b12.App(),
     // default
     _ => null,
   };

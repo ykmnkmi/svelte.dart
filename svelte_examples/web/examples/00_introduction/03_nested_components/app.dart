@@ -5,7 +5,7 @@ import 'package:web/web.dart';
 
 import 'nested.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root = $.template<DocumentFragment>(
     '<p class="svelte-urs9w7">These styles...</p> <!>',
     1,

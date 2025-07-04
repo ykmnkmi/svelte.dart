@@ -5,7 +5,7 @@ import 'package:web/web.dart';
 
 import 'user.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root1 = $.template<HTMLButtonElement>(
     '<button>Log out</button>',
   );
@@ -29,14 +29,14 @@ base class App extends ComponentFactory {
       void consequent(Node anchor) {
         var button = root1();
 
-        $.event0('click', button, toggle);
+        $.eventVoid('click', button, toggle);
         $.append(anchor, button);
       }
 
       void alternate(Node anchor) {
         var button1 = root2();
 
-        $.event0('click', button1, toggle);
+        $.eventVoid('click', button1, toggle);
         $.append(anchor, button1);
       }
 

@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class App extends ComponentFactory {
+base class App implements Component {
   static final root = $.template<DocumentFragment>(
     '<button> </button> <p> </p> <p> </p>',
     1,
@@ -41,7 +41,7 @@ base class App extends ComponentFactory {
       $.setText(text2, '${doubled()} * 2 = ${quadrupled()}');
     });
 
-    $.event0('click', button, handleClick);
+    $.eventVoid('click', button, handleClick);
     $.append(anchor, fragment);
   }
 }

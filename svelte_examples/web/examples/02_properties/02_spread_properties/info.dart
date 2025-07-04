@@ -3,7 +3,7 @@ import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-base class Info extends ComponentFactory {
+base class Info implements Component {
   static final root = $.template<HTMLParagraphElement>(
     '<p>The <code> </code> <a>npm</a> and <a>learn more here</a>.</p>',
   );
