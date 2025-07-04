@@ -1,5 +1,5 @@
 import 'package:web/web.dart';
 
-abstract base class ComponentFactory {
+abstract interface class Component {
   void create(Node anchor);
 }

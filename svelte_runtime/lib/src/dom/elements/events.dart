@@ -15,7 +15,7 @@ Set<String> allRegisteredEvents = <String>{};
 
 Set<EventsHandle> rootEventHandles = <EventsHandle>{};
 
-JSExportedDartFunction createEvent<E extends HTMLElement, T extends Event>(
+JSExportedDartFunction createEvent<E extends Element, T extends Event>(
   String eventName,
   Element element,
   void Function(E element, T event) handler,
@@ -63,14 +63,14 @@ JSExportedDartFunction createEvent<E extends HTMLElement, T extends Event>(
   return jsTargetHandler;
 }
 
-void event0(
+void eventVoid(
   String eventName,
   Element element,
   void Function() handler, [
   bool capture = false,
   bool passive = false,
 ]) {
-  event2<HTMLElement, Event>(
+  eventThis<Element, Event>(
     eventName,
     element,
     (_, _) => handler(),
@@ -86,7 +86,7 @@ void event<T extends Event>(
   bool capture = false,
   bool passive = false,
 ]) {
-  event2<HTMLElement, T>(
+  eventThis<Element, T>(
     eventName,
     element,
     (_, event) => handler(event),
@@ -95,7 +95,7 @@ void event<T extends Event>(
   );
 }
 
-void event2<E extends HTMLElement, T extends Event>(
+void eventThis<E extends Element, T extends Event>(
   String eventName,
   Element element,
   void Function(E element, T event) handler, [
