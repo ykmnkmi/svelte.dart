@@ -193,17 +193,17 @@ Component app({int step = 1}) {
     ),
 
     // Flow ...
-If(
-  test: stateOrCallable,
-  then: () => /* ... */,
-  orElse: () => /* ... */,
-),
+    If(
+      test: state,
+      then: () => /* ... */,
+      orElse: () => /* ... */,
+    ),
     Each(
-      values: stateOrCallable,
+      values: state,
       build: (value) => /* ... */,
     ),
     Key(
-      key: stateOrCallable,
+      key: state,
       build: () => /* ... */,
     ),
   ]);
@@ -234,7 +234,7 @@ Button(
   // String? title,
   // Ignore first when reactive title is used. Would be nice to have StateOr<T>.
   // State<String>? titleState,
-  titleState: title,
+  bindTitle: title,
   children: [
     // ...
   ],
