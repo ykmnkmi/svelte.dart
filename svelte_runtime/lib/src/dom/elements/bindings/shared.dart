@@ -84,11 +84,11 @@ extension HTMLElementOnReset on HTMLElement {
 
   // ignore: non_constant_identifier_names
   void Function(bool isReset)? get onReset__ {
-    return this.onResetReference.toDartObject;
+    return onResetReference.toDartObject;
   }
 
   // ignore: non_constant_identifier_names
   set onReset__(void Function(bool isReset)? onReset) {
-    this.onResetReference = onReset.toExternalReference;
+    onResetReference = onReset.toExternalReference;
   }
 }

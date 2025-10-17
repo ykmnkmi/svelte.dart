@@ -246,7 +246,7 @@ final class Derived<T> extends Reaction<T>
 
   @override
   bool equals(T value) {
-    return this.untypedValue == value;
+    return untypedValue == value;
   }
 }
 

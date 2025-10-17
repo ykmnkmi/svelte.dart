@@ -263,6 +263,7 @@ void handleEventPropagation(Element element, Event event) {
 
 extension on Event {
   @JS('__root')
+  // ignore: non_constant_identifier_names
   external Element? root__;
 }
 
