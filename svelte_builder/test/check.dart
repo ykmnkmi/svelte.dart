@@ -1,28 +1,22 @@
 // ignore_for_file: avoid_print
 library;
 
-import 'dart:async' show Future, runZonedGuarded;
+import 'dart:async';
 
-import 'package:build/build.dart'
-    show AssetId, Builder, BuilderOptions, MultiPackageAssetReader, runBuilder;
-import 'package:build_resolvers/build_resolvers.dart' show AnalyzerResolvers;
-import 'package:build_test/build_test.dart'
-    show
-        InMemoryAssetReader,
-        InMemoryAssetWriter,
-        MultiAssetReader,
-        PackageAssetReader,
-        RecordingAssetWriter,
-        WrittenAssetReader;
-import 'package:logging/logging.dart' show Level, Logger;
-import 'package:stack_trace/stack_trace.dart' show Trace;
-import 'package:svelte_ast/svelte_ast.dart' show ParseError;
+import 'package:build/build.dart';
+import 'package:build_resolvers/build_resolvers.dart';
+import 'package:build_test/build_test.dart';
+import 'package:glob/glob.dart';
+import 'package:logging/logging.dart';
+import 'package:package_config/package_config.dart';
+import 'package:stack_trace/stack_trace.dart';
+import 'package:svelte_ast/svelte_ast.dart';
 import 'package:svelte_builder/svelte_builder.dart';
 
 final Map<AssetId, String> sourceAssets = <AssetId, String>{
   AssetId('app', 'web/app.svelte'): '''
 <!-- app.svelte -->
-<script context="module">
+<script module>
   const duration = Duration(seconds: 1);
 </script>
 <script>
@@ -64,8 +58,7 @@ final Map<AssetId, String> sourceAssets = <AssetId, String>{
 </button>
 
 <p>{count} * 2 = {doubled}</p>
-<p>{doubled} * 2 = {quadrupled}</p>
-''',
+<p>{doubled} * 2 = {quadrupled}</p>''',
 };
 
 final logger = Logger.root
@@ -89,8 +82,8 @@ Future<void> build(
   Builder builder,
   Set<AssetId> assets, {
   required String rootPackage,
-  required MultiPackageAssetReader reader,
-  required RecordingAssetWriter writer,
+  required AssetReader reader,
+  required AssetWriter writer,
 }) async {
   assets.add(AssetId(rootPackage, r'web/$web$'));
 
@@ -108,37 +101,40 @@ Future<void> build(
   }
 }
 
-void printAssets(Map<AssetId, List<int>> assets, [Set<AssetId>? written]) {
+void printAssets(ReaderWriterTesting testing, [Set<AssetId>? written]) {
   if (written != null) {
-    assets.forEach((asset, value) {
+    for (AssetId asset in testing.assetsWritten) {
       if (written.contains(asset)) {
         print('-- ${asset.package}:${asset.path}');
-        print(String.fromCharCodes(value));
+        print(testing.readString(asset));
       }
-    });
+    }
   } else {
-    assets.forEach((asset, value) {
+    for (AssetId asset in testing.assetsWritten) {
       print('-- ${asset.package}:${asset.path}');
-      print(String.fromCharCodes(value));
-    });
+      print(testing.readString(asset));
+    }
   }
 }
 
 Future<void> run() async {
-  PackageAssetReader isolateReader = await PackageAssetReader.currentIsolate();
-  InMemoryAssetReader inMemoryReader = InMemoryAssetReader(rootPackage: 'app');
-  sourceAssets.forEach(inMemoryReader.cacheStringAsset);
+  TestReaderWriter testReaderWriter = TestReaderWriter(rootPackage: 'app');
 
-  InMemoryAssetWriter inMemoryWriter = InMemoryAssetWriter();
-  WrittenAssetReader writtenReader = WrittenAssetReader(inMemoryWriter);
+  PackageAssetReader packagesReader = await PackageAssetReader.currentIsolate();
 
-  List<MultiPackageAssetReader> readers = [
-    isolateReader,
-    inMemoryReader,
-    writtenReader,
-  ];
+  for (Package package in packagesReader.packageConfig.packages) {
+    await for (AssetId id in packagesReader.findAssets(
+      Glob('**'),
+      package: package.name,
+    )) {
+      testReaderWriter.testing.writeBytes(
+        id,
+        await packagesReader.readAsBytes(id),
+      );
+    }
+  }
 
-  MultiAssetReader multiReader = MultiAssetReader(readers);
+  sourceAssets.forEach(testReaderWriter.testing.writeString);
 
   print('> Transform '.padRight(80, '='));
 
@@ -146,9 +142,9 @@ Future<void> run() async {
     transformer(BuilderOptions.empty),
     <AssetId>{AssetId('app', 'web/app.svelte')},
     rootPackage: 'app',
-    reader: multiReader,
-    writer: inMemoryWriter,
+    reader: testReaderWriter,
+    writer: testReaderWriter,
   );
 
-  printAssets(inMemoryWriter.assets);
+  printAssets(testReaderWriter.testing);
 }
