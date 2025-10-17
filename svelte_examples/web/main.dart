@@ -98,7 +98,6 @@ Component? selectComponent(String name) {
 
 void main() {
   var select = document.querySelector('nav select') as HTMLSelectElement;
-  var link = document.querySelector('nav a') as HTMLAnchorElement;
   var target = document.querySelector('main') as HTMLElement;
 
   Future<void> Function()? unmount;
@@ -110,9 +109,9 @@ void main() {
         unmount = null;
       }
 
-      window.location.hash = link.hash = select.value;
-
-      var component = selectComponent(select.value);
+      var componentName = select.value;
+      var component = selectComponent(componentName);
+      window.location.hash = componentName;
 
       if (component != null) {
         unmount = mount(component, target: target);
@@ -127,7 +126,7 @@ void main() {
   select.addEventListener('change', onChange.toJS);
 
   if (window.location.hash.isNotEmpty) {
-    link.hash = select.value = window.location.hash.substring(1);
+    select.value = window.location.hash.substring(1);
     onChange(Event('change'));
   }
 }
