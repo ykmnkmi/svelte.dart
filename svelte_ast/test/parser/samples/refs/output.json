@@ -68,6 +68,7 @@
     "start": 0,
     "end": 29,
     "class": "InstanceScript",
+    "attributes": [],
     "content": {
       "start": 8,
       "end": 20,
@@ -103,29 +104,13 @@
           "@toString": "var foo",
           "start": 11,
           "end": 18,
+          "lateKeyword": null,
           "keyword": {
             "start": 11,
             "end": 14,
             "type": "VAR",
             "lexeme": "var"
           },
-          "lateKeyword": null,
-          "endToken": {
-            "start": 15,
-            "end": 18,
-            "type": "IDENTIFIER",
-            "lexeme": "foo"
-          },
-          "firstTokenAfterCommentAndMetadata": {
-            "start": 11,
-            "end": 14,
-            "type": "VAR",
-            "lexeme": "var"
-          },
-          "isConst": false,
-          "isFinal": false,
-          "isLate": false,
-          "type": null,
           "variables": [
             {
               "@class": "VariableDeclaration",
@@ -159,6 +144,22 @@
               "isLate": false
             }
           ],
+          "endToken": {
+            "start": 15,
+            "end": 18,
+            "type": "IDENTIFIER",
+            "lexeme": "foo"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 11,
+            "end": 14,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
           "documentationComment": null,
           "metadata": [],
           "sortedCommentAndAnnotations": []

@@ -126,6 +126,7 @@
             "isSynthetic": false,
             "name": "Foo"
           },
+          "canBeConst": false,
           "inConstantContext": false,
           "isAssignable": false,
           "unParenthesized": "@seen { self }"

@@ -128,59 +128,24 @@
             "type": "OPEN_PAREN",
             "lexeme": "("
           },
-          "rightParenthesis": {
-            "start": 29,
-            "end": 30,
-            "type": "CLOSE_PAREN",
-            "lexeme": ")"
-          },
-          "type": {
-            "@class": "NamedType",
-            "@toString": "thing",
-            "start": 17,
-            "end": 22,
-            "name2": {
-              "start": 17,
-              "end": 22,
-              "type": "IDENTIFIER",
-              "lexeme": "thing"
-            },
-            "typeArguments": null,
-            "question": null,
-            "beginToken": {
-              "start": 17,
-              "end": 22,
-              "type": "IDENTIFIER",
-              "lexeme": "thing"
-            },
-            "endToken": {
-              "start": 17,
-              "end": 22,
-              "type": "IDENTIFIER",
-              "lexeme": "thing"
-            },
-            "importPrefix": null,
-            "isDeferred": false,
-            "isSynthetic": false
-          },
-          "beginToken": {
-            "start": 17,
-            "end": 22,
-            "type": "IDENTIFIER",
-            "lexeme": "thing"
-          },
-          "endToken": {
-            "start": 29,
-            "end": 30,
-            "type": "CLOSE_PAREN",
-            "lexeme": ")"
-          },
           "fields": [
             {
               "@class": "PatternField",
               "@toString": "thing",
               "start": 24,
               "end": 29,
+              "beginToken": {
+                "start": 24,
+                "end": 29,
+                "type": "IDENTIFIER",
+                "lexeme": "thing"
+              },
+              "endToken": {
+                "start": 24,
+                "end": 29,
+                "type": "IDENTIFIER",
+                "lexeme": "thing"
+              },
               "name": null,
               "pattern": {
                 "@class": "AssignedVariablePattern",
@@ -206,23 +171,58 @@
                   "lexeme": "thing"
                 }
               },
-              "beginToken": {
-                "start": 24,
-                "end": 29,
-                "type": "IDENTIFIER",
-                "lexeme": "thing"
-              },
-              "endToken": {
-                "start": 24,
-                "end": 29,
-                "type": "IDENTIFIER",
-                "lexeme": "thing"
-              },
               "isSynthetic": false,
               "length": 5,
               "offset": 24
             }
           ],
+          "rightParenthesis": {
+            "start": 29,
+            "end": 30,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "beginToken": {
+            "start": 17,
+            "end": 22,
+            "type": "IDENTIFIER",
+            "lexeme": "thing"
+          },
+          "endToken": {
+            "start": 29,
+            "end": 30,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "type": {
+            "@class": "NamedType",
+            "@toString": "thing",
+            "start": 17,
+            "end": 22,
+            "name": {
+              "start": 17,
+              "end": 22,
+              "type": "IDENTIFIER",
+              "lexeme": "thing"
+            },
+            "question": null,
+            "beginToken": {
+              "start": 17,
+              "end": 22,
+              "type": "IDENTIFIER",
+              "lexeme": "thing"
+            },
+            "endToken": {
+              "start": 17,
+              "end": 22,
+              "type": "IDENTIFIER",
+              "lexeme": "thing"
+            },
+            "importPrefix": null,
+            "isDeferred": false,
+            "isSynthetic": false,
+            "typeArguments": null
+          },
           "unParenthesized": "@seen { self }"
         },
         "index": null,

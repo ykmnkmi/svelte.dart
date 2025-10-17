@@ -81,6 +81,24 @@
     "start": 0,
     "end": 69,
     "class": "InstanceScript",
+    "attributes": [
+      {
+        "start": 8,
+        "end": 35,
+        "class": "Attribute",
+        "name": "generics",
+        "value": [
+          {
+            "start": 8,
+            "end": 34,
+            "class": "Text",
+            "raw": "T extends Object",
+            "data": "T extends Object"
+          }
+        ],
+        "modifiers": []
+      }
+    ],
     "content": {
       "start": 37,
       "end": 60,
@@ -116,29 +134,13 @@
           "@toString": "var name = 'world'",
           "start": 40,
           "end": 58,
+          "lateKeyword": null,
           "keyword": {
             "start": 40,
             "end": 43,
             "type": "VAR",
             "lexeme": "var"
           },
-          "lateKeyword": null,
-          "endToken": {
-            "start": 51,
-            "end": 58,
-            "type": "STRING",
-            "lexeme": "'world'"
-          },
-          "firstTokenAfterCommentAndMetadata": {
-            "start": 40,
-            "end": 43,
-            "type": "VAR",
-            "lexeme": "var"
-          },
-          "isConst": false,
-          "isFinal": false,
-          "isLate": false,
-          "type": null,
           "variables": [
             {
               "@class": "VariableDeclaration",
@@ -207,6 +209,22 @@
               "isLate": false
             }
           ],
+          "endToken": {
+            "start": 51,
+            "end": 58,
+            "type": "STRING",
+            "lexeme": "'world'"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 40,
+            "end": 43,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
           "documentationComment": null,
           "metadata": [],
           "sortedCommentAndAnnotations": []

@@ -268,7 +268,7 @@ class DartScanner extends AbstractScanner {
       if (atEndOfFile()) {
         appendEofToken();
       } else {
-        unexpectedEof();
+        unexpected(next);
       }
     }
 

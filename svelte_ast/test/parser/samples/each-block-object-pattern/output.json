@@ -197,6 +197,7 @@
                         "isSingleQuoted": true,
                         "isSynthetic": false
                       },
+                      "canBeConst": false,
                       "inConstantContext": false,
                       "isAssignable": false,
                       "unParenthesized": "@seen { self }"
@@ -254,71 +255,36 @@
             "type": "OPEN_PAREN",
             "lexeme": "("
           },
-          "rightParenthesis": {
-            "start": 36,
-            "end": 37,
-            "type": "CLOSE_PAREN",
-            "lexeme": ")"
-          },
-          "type": {
-            "@class": "NamedType",
-            "@toString": "People",
-            "start": 17,
-            "end": 23,
-            "name2": {
-              "start": 17,
-              "end": 23,
-              "type": "IDENTIFIER",
-              "lexeme": "People"
-            },
-            "typeArguments": null,
-            "question": null,
-            "beginToken": {
-              "start": 17,
-              "end": 23,
-              "type": "IDENTIFIER",
-              "lexeme": "People"
-            },
-            "endToken": {
-              "start": 17,
-              "end": 23,
-              "type": "IDENTIFIER",
-              "lexeme": "People"
-            },
-            "importPrefix": null,
-            "isDeferred": false,
-            "isSynthetic": false
-          },
-          "beginToken": {
-            "start": 17,
-            "end": 23,
-            "type": "IDENTIFIER",
-            "lexeme": "People"
-          },
-          "endToken": {
-            "start": 36,
-            "end": 37,
-            "type": "CLOSE_PAREN",
-            "lexeme": ")"
-          },
           "fields": [
             {
               "@class": "PatternField",
               "@toString": ": name",
               "start": 24,
               "end": 29,
+              "beginToken": {
+                "start": 24,
+                "end": 25,
+                "type": "COLON",
+                "lexeme": ":"
+              },
+              "endToken": {
+                "start": 25,
+                "end": 29,
+                "type": "IDENTIFIER",
+                "lexeme": "name"
+              },
               "name": {
                 "@class": "PatternFieldName",
                 "@toString": ":",
                 "start": 24,
                 "end": 25,
+                "name": null,
                 "colon": {
                   "start": 24,
                   "end": 25,
                   "type": "COLON",
                   "lexeme": ":"
                 },
-                "name": null,
                 "beginToken": {
                   "start": 24,
                   "end": 25,
@@ -359,18 +325,6 @@
                   "lexeme": "name"
                 }
               },
-              "beginToken": {
-                "start": 24,
-                "end": 25,
-                "type": "COLON",
-                "lexeme": ":"
-              },
-              "endToken": {
-                "start": 25,
-                "end": 29,
-                "type": "IDENTIFIER",
-                "lexeme": "name"
-              },
               "isSynthetic": false,
               "length": 5,
               "offset": 24
@@ -380,18 +334,30 @@
               "@toString": ": cool",
               "start": 31,
               "end": 36,
+              "beginToken": {
+                "start": 31,
+                "end": 32,
+                "type": "COLON",
+                "lexeme": ":"
+              },
+              "endToken": {
+                "start": 32,
+                "end": 36,
+                "type": "IDENTIFIER",
+                "lexeme": "cool"
+              },
               "name": {
                 "@class": "PatternFieldName",
                 "@toString": ":",
                 "start": 31,
                 "end": 32,
+                "name": null,
                 "colon": {
                   "start": 31,
                   "end": 32,
                   "type": "COLON",
                   "lexeme": ":"
                 },
-                "name": null,
                 "beginToken": {
                   "start": 31,
                   "end": 32,
@@ -432,23 +398,58 @@
                   "lexeme": "cool"
                 }
               },
-              "beginToken": {
-                "start": 31,
-                "end": 32,
-                "type": "COLON",
-                "lexeme": ":"
-              },
-              "endToken": {
-                "start": 32,
-                "end": 36,
-                "type": "IDENTIFIER",
-                "lexeme": "cool"
-              },
               "isSynthetic": false,
               "length": 5,
               "offset": 31
             }
           ],
+          "rightParenthesis": {
+            "start": 36,
+            "end": 37,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "beginToken": {
+            "start": 17,
+            "end": 23,
+            "type": "IDENTIFIER",
+            "lexeme": "People"
+          },
+          "endToken": {
+            "start": 36,
+            "end": 37,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "type": {
+            "@class": "NamedType",
+            "@toString": "People",
+            "start": 17,
+            "end": 23,
+            "name": {
+              "start": 17,
+              "end": 23,
+              "type": "IDENTIFIER",
+              "lexeme": "People"
+            },
+            "question": null,
+            "beginToken": {
+              "start": 17,
+              "end": 23,
+              "type": "IDENTIFIER",
+              "lexeme": "People"
+            },
+            "endToken": {
+              "start": 17,
+              "end": 23,
+              "type": "IDENTIFIER",
+              "lexeme": "People"
+            },
+            "importPrefix": null,
+            "isDeferred": false,
+            "isSynthetic": false,
+            "typeArguments": null
+          },
           "unParenthesized": "@seen { self }"
         },
         "index": null,

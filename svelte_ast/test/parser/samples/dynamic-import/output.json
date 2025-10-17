@@ -12,6 +12,7 @@
     "start": 0,
     "end": 186,
     "class": "InstanceScript",
+    "attributes": [],
     "content": {
       "start": 8,
       "end": 177,
@@ -32,6 +33,12 @@
         },
         "deferredKeyword": null,
         "asKeyword": null,
+        "endToken": {
+          "start": 59,
+          "end": 60,
+          "type": "SEMICOLON",
+          "lexeme": ";"
+        },
         "firstTokenAfterCommentAndMetadata": {
           "start": 11,
           "end": 17,
@@ -45,12 +52,6 @@
             "@toString": "show onMount",
             "start": 47,
             "end": 59,
-            "endToken": {
-              "start": 52,
-              "end": 59,
-              "type": "IDENTIFIER",
-              "lexeme": "onMount"
-            },
             "shownNames": [
               {
                 "@class": "SimpleIdentifier",
@@ -81,6 +82,18 @@
                 "name": "onMount"
               }
             ],
+            "beginToken": {
+              "start": 47,
+              "end": 51,
+              "type": "SHOW",
+              "lexeme": "show"
+            },
+            "endToken": {
+              "start": 52,
+              "end": 59,
+              "type": "IDENTIFIER",
+              "lexeme": "onMount"
+            },
             "keyword": {
               "start": 47,
               "end": 51,
@@ -119,6 +132,12 @@
           "end": 93,
           "type": "AS",
           "lexeme": "as"
+        },
+        "endToken": {
+          "start": 97,
+          "end": 98,
+          "type": "SEMICOLON",
+          "lexeme": ";"
         },
         "firstTokenAfterCommentAndMetadata": {
           "start": 64,
@@ -264,7 +283,6 @@
           },
           "realTarget": null,
           "target": null,
-          "nullShortingTermination": "@seen",
           "argumentList": {
             "@class": "ArgumentList",
             "@toString": "(() async {await foo.loadLibrary(); print(foo.main);})",
@@ -275,12 +293,6 @@
               "end": 110,
               "type": "OPEN_PAREN",
               "lexeme": "("
-            },
-            "rightParenthesis": {
-              "start": 174,
-              "end": 175,
-              "type": "CLOSE_PAREN",
-              "lexeme": ")"
             },
             "arguments": [
               {
@@ -323,24 +335,6 @@
                       "end": 120,
                       "type": "OPEN_CURLY_BRACKET",
                       "lexeme": "{"
-                    },
-                    "rightBracket": {
-                      "start": 173,
-                      "end": 174,
-                      "type": "CLOSE_CURLY_BRACKET",
-                      "lexeme": "}"
-                    },
-                    "beginToken": {
-                      "start": 119,
-                      "end": 120,
-                      "type": "OPEN_CURLY_BRACKET",
-                      "lexeme": "{"
-                    },
-                    "endToken": {
-                      "start": 173,
-                      "end": 174,
-                      "type": "CLOSE_CURLY_BRACKET",
-                      "lexeme": "}"
                     },
                     "statements": [
                       {
@@ -526,7 +520,6 @@
                               "isSynthetic": false,
                               "name": "foo"
                             },
-                            "nullShortingTermination": "@seen",
                             "argumentList": {
                               "@class": "ArgumentList",
                               "@toString": "()",
@@ -538,13 +531,13 @@
                                 "type": "OPEN_PAREN",
                                 "lexeme": "("
                               },
+                              "arguments": [],
                               "rightParenthesis": {
                                 "start": 147,
                                 "end": 148,
                                 "type": "CLOSE_PAREN",
                                 "lexeme": ")"
                               },
-                              "arguments": [],
                               "beginToken": {
                                 "start": 146,
                                 "end": 147,
@@ -563,6 +556,7 @@
                             },
                             "typeArguments": null
                           },
+                          "canBeConst": false,
                           "inConstantContext": false,
                           "isAssignable": false,
                           "unParenthesized": "@seen"
@@ -670,7 +664,6 @@
                           },
                           "realTarget": null,
                           "target": null,
-                          "nullShortingTermination": "@seen",
                           "argumentList": {
                             "@class": "ArgumentList",
                             "@toString": "(foo.main)",
@@ -681,12 +674,6 @@
                               "end": 160,
                               "type": "OPEN_PAREN",
                               "lexeme": "("
-                            },
-                            "rightParenthesis": {
-                              "start": 168,
-                              "end": 169,
-                              "type": "CLOSE_PAREN",
-                              "lexeme": ")"
                             },
                             "arguments": [
                               {
@@ -772,6 +759,12 @@
                                 }
                               }
                             ],
+                            "rightParenthesis": {
+                              "start": 168,
+                              "end": 169,
+                              "type": "CLOSE_PAREN",
+                              "lexeme": ")"
+                            },
                             "beginToken": {
                               "start": 159,
                               "end": 160,
@@ -792,7 +785,25 @@
                         },
                         "isSynthetic": false
                       }
-                    ]
+                    ],
+                    "rightBracket": {
+                      "start": 173,
+                      "end": 174,
+                      "type": "CLOSE_CURLY_BRACKET",
+                      "lexeme": "}"
+                    },
+                    "beginToken": {
+                      "start": 119,
+                      "end": 120,
+                      "type": "OPEN_CURLY_BRACKET",
+                      "lexeme": "{"
+                    },
+                    "endToken": {
+                      "start": 173,
+                      "end": 174,
+                      "type": "CLOSE_CURLY_BRACKET",
+                      "lexeme": "}"
+                    }
                   },
                   "endToken": {
                     "start": 173,
@@ -821,6 +832,7 @@
                     "type": "OPEN_PAREN",
                     "lexeme": "("
                   },
+                  "parameters": [],
                   "leftDelimiter": null,
                   "rightDelimiter": null,
                   "rightParenthesis": {
@@ -841,17 +853,23 @@
                     "type": "CLOSE_PAREN",
                     "lexeme": ")"
                   },
-                  "parameters": [],
                   "isSynthetic": false,
                   "length": 2,
                   "offset": 110
                 },
                 "typeParameters": null,
+                "canBeConst": false,
                 "inConstantContext": false,
                 "isAssignable": false,
                 "unParenthesized": "@seen"
               }
             ],
+            "rightParenthesis": {
+              "start": 174,
+              "end": 175,
+              "type": "CLOSE_PAREN",
+              "lexeme": ")"
+            },
             "beginToken": {
               "start": 109,
               "end": 110,

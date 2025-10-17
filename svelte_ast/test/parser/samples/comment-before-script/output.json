@@ -33,6 +33,7 @@
     "start": 28,
     "end": 59,
     "class": "InstanceScript",
+    "attributes": [],
     "content": {
       "start": 36,
       "end": 50,
@@ -68,52 +69,8 @@
           "@toString": "int count",
           "start": 39,
           "end": 48,
-          "keyword": null,
           "lateKeyword": null,
-          "endToken": {
-            "start": 43,
-            "end": 48,
-            "type": "IDENTIFIER",
-            "lexeme": "count"
-          },
-          "firstTokenAfterCommentAndMetadata": {
-            "start": 39,
-            "end": 42,
-            "type": "IDENTIFIER",
-            "lexeme": "int"
-          },
-          "isConst": false,
-          "isFinal": false,
-          "isLate": false,
-          "type": {
-            "@class": "NamedType",
-            "@toString": "int",
-            "start": 39,
-            "end": 42,
-            "name2": {
-              "start": 39,
-              "end": 42,
-              "type": "IDENTIFIER",
-              "lexeme": "int"
-            },
-            "typeArguments": null,
-            "question": null,
-            "beginToken": {
-              "start": 39,
-              "end": 42,
-              "type": "IDENTIFIER",
-              "lexeme": "int"
-            },
-            "endToken": {
-              "start": 39,
-              "end": 42,
-              "type": "IDENTIFIER",
-              "lexeme": "int"
-            },
-            "importPrefix": null,
-            "isDeferred": false,
-            "isSynthetic": false
-          },
+          "keyword": null,
           "variables": [
             {
               "@class": "VariableDeclaration",
@@ -147,6 +104,50 @@
               "isLate": false
             }
           ],
+          "endToken": {
+            "start": 43,
+            "end": 48,
+            "type": "IDENTIFIER",
+            "lexeme": "count"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 39,
+            "end": 42,
+            "type": "IDENTIFIER",
+            "lexeme": "int"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": {
+            "@class": "NamedType",
+            "@toString": "int",
+            "start": 39,
+            "end": 42,
+            "name": {
+              "start": 39,
+              "end": 42,
+              "type": "IDENTIFIER",
+              "lexeme": "int"
+            },
+            "question": null,
+            "beginToken": {
+              "start": 39,
+              "end": 42,
+              "type": "IDENTIFIER",
+              "lexeme": "int"
+            },
+            "endToken": {
+              "start": 39,
+              "end": 42,
+              "type": "IDENTIFIER",
+              "lexeme": "int"
+            },
+            "importPrefix": null,
+            "isDeferred": false,
+            "isSynthetic": false,
+            "typeArguments": null
+          },
           "documentationComment": null,
           "metadata": [],
           "sortedCommentAndAnnotations": []

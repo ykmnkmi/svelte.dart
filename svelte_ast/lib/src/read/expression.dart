@@ -4,7 +4,7 @@ import 'package:_fe_analyzer_shared/src/parser/member_kind.dart' as dart;
 import 'package:_fe_analyzer_shared/src/parser/parser_impl.dart' as dart;
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart' as dart;
 import 'package:analyzer/dart/ast/token.dart' as dart;
-import 'package:analyzer/error/error.dart' as dart;
+import 'package:analyzer/diagnostic/diagnostic.dart' as dart;
 import 'package:analyzer/src/dart/ast/ast.dart' as dart;
 import 'package:svelte_ast/src/parser.dart';
 import 'package:svelte_ast/src/read/dart/parser.dart';
@@ -17,7 +17,7 @@ extension ExpressionParser on Parser {
       start,
     );
 
-    return dart.SimpleIdentifierImpl(token);
+    return dart.SimpleIdentifierImpl(token: token);
   }
 
   dart.StringLiteral simpleString(int start, String value) {
@@ -62,7 +62,7 @@ extension ExpressionParser on Parser {
           return pattern;
         },
       );
-    } on dart.AnalysisError catch (error) {
+    } on dart.Diagnostic catch (error) {
       dartError(error.message, error.offset);
     }
   }
@@ -94,7 +94,7 @@ extension ExpressionParser on Parser {
           return identifiers;
         },
       );
-    } on dart.AnalysisError catch (error) {
+    } on dart.Diagnostic catch (error) {
       dartError(error.message, error.offset);
     }
   }
@@ -124,7 +124,7 @@ extension ExpressionParser on Parser {
           return parameters;
         },
       );
-    } on dart.AnalysisError catch (error) {
+    } on dart.Diagnostic catch (error) {
       dartError(error.message, error.offset);
     }
   }
@@ -153,7 +153,7 @@ extension ExpressionParser on Parser {
           return expression;
         },
       );
-    } on dart.AnalysisError catch (error) {
+    } on dart.Diagnostic catch (error) {
       dartError(error.message, error.offset);
     }
   }

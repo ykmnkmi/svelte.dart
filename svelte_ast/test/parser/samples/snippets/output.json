@@ -73,13 +73,12 @@
               "@toString": "String",
               "start": 33,
               "end": 39,
-              "name2": {
+              "name": {
                 "start": 33,
                 "end": 39,
                 "type": "IDENTIFIER",
                 "lexeme": "String"
               },
-              "typeArguments": null,
               "question": null,
               "beginToken": {
                 "start": 33,
@@ -95,7 +94,8 @@
               },
               "importPrefix": null,
               "isDeferred": false,
-              "isSynthetic": false
+              "isSynthetic": false,
+              "typeArguments": null
             }
           }
         ],
@@ -257,7 +257,6 @@
           },
           "realTarget": null,
           "target": null,
-          "nullShortingTermination": "@seen { self }",
           "argumentList": {
             "@class": "ArgumentList",
             "@toString": "(message)",
@@ -268,12 +267,6 @@
               "end": 94,
               "type": "OPEN_PAREN",
               "lexeme": "("
-            },
-            "rightParenthesis": {
-              "start": 101,
-              "end": 102,
-              "type": "CLOSE_PAREN",
-              "lexeme": ")"
             },
             "arguments": [
               {
@@ -305,6 +298,12 @@
                 "name": "message"
               }
             ],
+            "rightParenthesis": {
+              "start": 101,
+              "end": 102,
+              "type": "CLOSE_PAREN",
+              "lexeme": ")"
+            },
             "beginToken": {
               "start": 93,
               "end": 94,
@@ -330,6 +329,7 @@
     "start": 0,
     "end": 17,
     "class": "InstanceScript",
+    "attributes": [],
     "content": {
       "start": 8,
       "end": 8,

@@ -1,3 +1,8 @@
+## 1.0.0-26.beta
+
+- Bump SDK to 3.9.4.
+- Move to new `analyzer: 8.4.0` API.
+
 ## 1.0.0-25.beta
 
 - Add `logger` argument to `parse` function.

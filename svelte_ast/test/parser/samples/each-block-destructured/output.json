@@ -160,20 +160,7 @@
           "@toString": "[key, value, ...rest]",
           "start": 62,
           "end": 83,
-          "typeArguments": null,
           "leftBracket": {
-            "start": 62,
-            "end": 63,
-            "type": "OPEN_SQUARE_BRACKET",
-            "lexeme": "["
-          },
-          "rightBracket": {
-            "start": 82,
-            "end": 83,
-            "type": "CLOSE_SQUARE_BRACKET",
-            "lexeme": "]"
-          },
-          "beginToken": {
             "start": 62,
             "end": 63,
             "type": "OPEN_SQUARE_BRACKET",
@@ -229,7 +216,7 @@
               }
             },
             {
-              "@class": "RestPatternElement",
+              "@class": "ListPatternElementImpl",
               "@toString": "...rest",
               "start": 75,
               "end": 82,
@@ -238,6 +225,18 @@
                 "end": 78,
                 "type": "PERIOD_PERIOD_PERIOD",
                 "lexeme": "..."
+              },
+              "beginToken": {
+                "start": 75,
+                "end": 78,
+                "type": "PERIOD_PERIOD_PERIOD",
+                "lexeme": "..."
+              },
+              "endToken": {
+                "start": 78,
+                "end": 82,
+                "type": "IDENTIFIER",
+                "lexeme": "rest"
               },
               "pattern": {
                 "@class": "AssignedVariablePattern",
@@ -263,26 +262,30 @@
                   "lexeme": "rest"
                 }
               },
-              "beginToken": {
-                "start": 75,
-                "end": 78,
-                "type": "PERIOD_PERIOD_PERIOD",
-                "lexeme": "..."
-              },
-              "endToken": {
-                "start": 78,
-                "end": 82,
-                "type": "IDENTIFIER",
-                "lexeme": "rest"
-              }
+              "isSynthetic": false,
+              "length": 7,
+              "offset": 75
             }
           ],
+          "rightBracket": {
+            "start": 82,
+            "end": 83,
+            "type": "CLOSE_SQUARE_BRACKET",
+            "lexeme": "]"
+          },
+          "beginToken": {
+            "start": 62,
+            "end": 63,
+            "type": "OPEN_SQUARE_BRACKET",
+            "lexeme": "["
+          },
           "endToken": {
             "start": 82,
             "end": 83,
             "type": "CLOSE_SQUARE_BRACKET",
             "lexeme": "]"
           },
+          "typeArguments": null,
           "unParenthesized": "@seen { self }"
         },
         "index": null,
@@ -294,6 +297,7 @@
     "start": 0,
     "end": 42,
     "class": "InstanceScript",
+    "attributes": [],
     "content": {
       "start": 8,
       "end": 33,
@@ -331,29 +335,13 @@
           "@toString": "var animals",
           "start": 20,
           "end": 31,
+          "lateKeyword": null,
           "keyword": {
             "start": 20,
             "end": 23,
             "type": "VAR",
             "lexeme": "var"
           },
-          "lateKeyword": null,
-          "endToken": {
-            "start": 24,
-            "end": 31,
-            "type": "IDENTIFIER",
-            "lexeme": "animals"
-          },
-          "firstTokenAfterCommentAndMetadata": {
-            "start": 20,
-            "end": 23,
-            "type": "VAR",
-            "lexeme": "var"
-          },
-          "isConst": false,
-          "isFinal": false,
-          "isLate": false,
-          "type": null,
           "variables": [
             {
               "@class": "VariableDeclaration",
@@ -387,6 +375,22 @@
               "isLate": false
             }
           ],
+          "endToken": {
+            "start": 24,
+            "end": 31,
+            "type": "IDENTIFIER",
+            "lexeme": "animals"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 20,
+            "end": 23,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
           "documentationComment": null,
           "metadata": [],
           "sortedCommentAndAnnotations": []

@@ -96,7 +96,6 @@
               },
               "realTarget": null,
               "target": null,
-              "nullShortingTermination": "@seen { self }",
               "argumentList": {
                 "@class": "ArgumentList",
                 "@toString": "('tooltip msg')",
@@ -107,12 +106,6 @@
                   "end": 23,
                   "type": "OPEN_PAREN",
                   "lexeme": "("
-                },
-                "rightParenthesis": {
-                  "start": 36,
-                  "end": 37,
-                  "type": "CLOSE_PAREN",
-                  "lexeme": ")"
                 },
                 "arguments": [
                   {
@@ -147,6 +140,12 @@
                     "isSynthetic": false
                   }
                 ],
+                "rightParenthesis": {
+                  "start": 36,
+                  "end": 37,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
                 "beginToken": {
                   "start": 22,
                   "end": 23,

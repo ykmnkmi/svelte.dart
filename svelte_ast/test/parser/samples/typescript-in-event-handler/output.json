@@ -61,24 +61,6 @@
                     "type": "OPEN_CURLY_BRACKET",
                     "lexeme": "{"
                   },
-                  "rightBracket": {
-                    "start": 132,
-                    "end": 133,
-                    "type": "CLOSE_CURLY_BRACKET",
-                    "lexeme": "}"
-                  },
-                  "beginToken": {
-                    "start": 84,
-                    "end": 85,
-                    "type": "OPEN_CURLY_BRACKET",
-                    "lexeme": "{"
-                  },
-                  "endToken": {
-                    "start": 132,
-                    "end": 133,
-                    "type": "CLOSE_CURLY_BRACKET",
-                    "lexeme": "}"
-                  },
                   "statements": [
                     {
                       "@class": "VariableDeclarationStatement",
@@ -108,52 +90,8 @@
                         "@toString": "int next = count + 1",
                         "start": 90,
                         "end": 110,
-                        "keyword": null,
                         "lateKeyword": null,
-                        "endToken": {
-                          "start": 109,
-                          "end": 110,
-                          "type": "INT",
-                          "lexeme": "1"
-                        },
-                        "firstTokenAfterCommentAndMetadata": {
-                          "start": 90,
-                          "end": 93,
-                          "type": "IDENTIFIER",
-                          "lexeme": "int"
-                        },
-                        "isConst": false,
-                        "isFinal": false,
-                        "isLate": false,
-                        "type": {
-                          "@class": "NamedType",
-                          "@toString": "int",
-                          "start": 90,
-                          "end": 93,
-                          "name2": {
-                            "start": 90,
-                            "end": 93,
-                            "type": "IDENTIFIER",
-                            "lexeme": "int"
-                          },
-                          "typeArguments": null,
-                          "question": null,
-                          "beginToken": {
-                            "start": 90,
-                            "end": 93,
-                            "type": "IDENTIFIER",
-                            "lexeme": "int"
-                          },
-                          "endToken": {
-                            "start": 90,
-                            "end": 93,
-                            "type": "IDENTIFIER",
-                            "lexeme": "int"
-                          },
-                          "importPrefix": null,
-                          "isDeferred": false,
-                          "isSynthetic": false
-                        },
+                        "keyword": null,
                         "variables": [
                           {
                             "@class": "VariableDeclaration",
@@ -263,6 +201,7 @@
                                 },
                                 "immediatelyNegated": false
                               },
+                              "canBeConst": false,
                               "inConstantContext": false,
                               "isAssignable": false,
                               "unParenthesized": "@seen"
@@ -272,6 +211,50 @@
                             "isLate": false
                           }
                         ],
+                        "endToken": {
+                          "start": 109,
+                          "end": 110,
+                          "type": "INT",
+                          "lexeme": "1"
+                        },
+                        "firstTokenAfterCommentAndMetadata": {
+                          "start": 90,
+                          "end": 93,
+                          "type": "IDENTIFIER",
+                          "lexeme": "int"
+                        },
+                        "isConst": false,
+                        "isFinal": false,
+                        "isLate": false,
+                        "type": {
+                          "@class": "NamedType",
+                          "@toString": "int",
+                          "start": 90,
+                          "end": 93,
+                          "name": {
+                            "start": 90,
+                            "end": 93,
+                            "type": "IDENTIFIER",
+                            "lexeme": "int"
+                          },
+                          "question": null,
+                          "beginToken": {
+                            "start": 90,
+                            "end": 93,
+                            "type": "IDENTIFIER",
+                            "lexeme": "int"
+                          },
+                          "endToken": {
+                            "start": 90,
+                            "end": 93,
+                            "type": "IDENTIFIER",
+                            "lexeme": "int"
+                          },
+                          "importPrefix": null,
+                          "isDeferred": false,
+                          "isSynthetic": false,
+                          "typeArguments": null
+                        },
                         "documentationComment": null,
                         "metadata": [],
                         "sortedCommentAndAnnotations": []
@@ -378,12 +361,29 @@
                           "isQualified": false,
                           "isSynthetic": false,
                           "name": "next"
-                        },
-                        "nullShortingTermination": "@seen"
+                        }
                       },
                       "isSynthetic": false
                     }
-                  ]
+                  ],
+                  "rightBracket": {
+                    "start": 132,
+                    "end": 133,
+                    "type": "CLOSE_CURLY_BRACKET",
+                    "lexeme": "}"
+                  },
+                  "beginToken": {
+                    "start": 84,
+                    "end": 85,
+                    "type": "OPEN_CURLY_BRACKET",
+                    "lexeme": "{"
+                  },
+                  "endToken": {
+                    "start": 132,
+                    "end": 133,
+                    "type": "CLOSE_CURLY_BRACKET",
+                    "lexeme": "}"
+                  }
                 },
                 "endToken": {
                   "start": 132,
@@ -412,26 +412,6 @@
                   "type": "OPEN_PAREN",
                   "lexeme": "("
                 },
-                "leftDelimiter": null,
-                "rightDelimiter": null,
-                "rightParenthesis": {
-                  "start": 82,
-                  "end": 83,
-                  "type": "CLOSE_PAREN",
-                  "lexeme": ")"
-                },
-                "beginToken": {
-                  "start": 69,
-                  "end": 70,
-                  "type": "OPEN_PAREN",
-                  "lexeme": "("
-                },
-                "endToken": {
-                  "start": 82,
-                  "end": 83,
-                  "type": "CLOSE_PAREN",
-                  "lexeme": ")"
-                },
                 "parameters": [
                   {
                     "@class": "SimpleFormalParameter",
@@ -459,13 +439,12 @@
                       "@toString": "MouseEvent",
                       "start": 70,
                       "end": 80,
-                      "name2": {
+                      "name": {
                         "start": 70,
                         "end": 80,
                         "type": "IDENTIFIER",
                         "lexeme": "MouseEvent"
                       },
-                      "typeArguments": null,
                       "question": null,
                       "beginToken": {
                         "start": 70,
@@ -481,15 +460,37 @@
                       },
                       "importPrefix": null,
                       "isDeferred": false,
-                      "isSynthetic": false
+                      "isSynthetic": false,
+                      "typeArguments": null
                     }
                   }
                 ],
+                "leftDelimiter": null,
+                "rightDelimiter": null,
+                "rightParenthesis": {
+                  "start": 82,
+                  "end": 83,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
+                "beginToken": {
+                  "start": 69,
+                  "end": 70,
+                  "type": "OPEN_PAREN",
+                  "lexeme": "("
+                },
+                "endToken": {
+                  "start": 82,
+                  "end": 83,
+                  "type": "CLOSE_PAREN",
+                  "lexeme": ")"
+                },
                 "isSynthetic": false,
                 "length": 14,
                 "offset": 69
               },
               "typeParameters": null,
+              "canBeConst": false,
               "inConstantContext": false,
               "isAssignable": false,
               "unParenthesized": "@seen { self }"
@@ -551,6 +552,7 @@
     "start": 0,
     "end": 47,
     "class": "InstanceScript",
+    "attributes": [],
     "content": {
       "start": 8,
       "end": 38,
@@ -586,29 +588,13 @@
           "@toString": "var count = state<int>(0)",
           "start": 11,
           "end": 36,
+          "lateKeyword": null,
           "keyword": {
             "start": 11,
             "end": 14,
             "type": "VAR",
             "lexeme": "var"
           },
-          "lateKeyword": null,
-          "endToken": {
-            "start": 35,
-            "end": 36,
-            "type": "CLOSE_PAREN",
-            "lexeme": ")"
-          },
-          "firstTokenAfterCommentAndMetadata": {
-            "start": 11,
-            "end": 14,
-            "type": "VAR",
-            "lexeme": "var"
-          },
-          "isConst": false,
-          "isFinal": false,
-          "isLate": false,
-          "type": null,
           "variables": [
             {
               "@class": "VariableDeclaration",
@@ -719,7 +705,6 @@
                 },
                 "realTarget": null,
                 "target": null,
-                "nullShortingTermination": "@seen",
                 "argumentList": {
                   "@class": "ArgumentList",
                   "@toString": "(0)",
@@ -730,12 +715,6 @@
                     "end": 34,
                     "type": "OPEN_PAREN",
                     "lexeme": "("
-                  },
-                  "rightParenthesis": {
-                    "start": 35,
-                    "end": 36,
-                    "type": "CLOSE_PAREN",
-                    "lexeme": ")"
                   },
                   "arguments": [
                     {
@@ -765,6 +744,12 @@
                       "immediatelyNegated": false
                     }
                   ],
+                  "rightParenthesis": {
+                    "start": 35,
+                    "end": 36,
+                    "type": "CLOSE_PAREN",
+                    "lexeme": ")"
+                  },
                   "beginToken": {
                     "start": 33,
                     "end": 34,
@@ -792,25 +777,18 @@
                     "type": "LT",
                     "lexeme": "<"
                   },
-                  "rightBracket": {
-                    "start": 32,
-                    "end": 33,
-                    "type": "GT",
-                    "lexeme": ">"
-                  },
                   "arguments": [
                     {
                       "@class": "NamedType",
                       "@toString": "int",
                       "start": 29,
                       "end": 32,
-                      "name2": {
+                      "name": {
                         "start": 29,
                         "end": 32,
                         "type": "IDENTIFIER",
                         "lexeme": "int"
                       },
-                      "typeArguments": null,
                       "question": null,
                       "beginToken": {
                         "start": 29,
@@ -826,9 +804,16 @@
                       },
                       "importPrefix": null,
                       "isDeferred": false,
-                      "isSynthetic": false
+                      "isSynthetic": false,
+                      "typeArguments": null
                     }
                   ],
+                  "rightBracket": {
+                    "start": 32,
+                    "end": 33,
+                    "type": "GT",
+                    "lexeme": ">"
+                  },
                   "beginToken": {
                     "start": 28,
                     "end": 29,
@@ -851,6 +836,22 @@
               "isLate": false
             }
           ],
+          "endToken": {
+            "start": 35,
+            "end": 36,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "firstTokenAfterCommentAndMetadata": {
+            "start": 11,
+            "end": 14,
+            "type": "VAR",
+            "lexeme": "var"
+          },
+          "isConst": false,
+          "isFinal": false,
+          "isLate": false,
+          "type": null,
           "documentationComment": null,
           "metadata": [],
           "sortedCommentAndAnnotations": []

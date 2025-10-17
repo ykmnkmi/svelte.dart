@@ -20,6 +20,7 @@
     "start": 59,
     "end": 84,
     "class": "InstanceScript",
+    "attributes": [],
     "content": {
       "start": 67,
       "end": 75,
@@ -86,6 +87,24 @@
     "start": 0,
     "end": 57,
     "class": "ModuleScript",
+    "attributes": [
+      {
+        "start": 8,
+        "end": 24,
+        "class": "Attribute",
+        "name": "context",
+        "value": [
+          {
+            "start": 8,
+            "end": 23,
+            "class": "Text",
+            "raw": "module",
+            "data": "module"
+          }
+        ],
+        "modifiers": []
+      }
+    ],
     "content": {
       "start": 26,
       "end": 48,
@@ -141,29 +160,13 @@
             "@toString": "const foo = 'bar'",
             "start": 29,
             "end": 46,
+            "lateKeyword": null,
             "keyword": {
               "start": 29,
               "end": 34,
               "type": "CONST",
               "lexeme": "const"
             },
-            "lateKeyword": null,
-            "endToken": {
-              "start": 41,
-              "end": 46,
-              "type": "STRING",
-              "lexeme": "'bar'"
-            },
-            "firstTokenAfterCommentAndMetadata": {
-              "start": 29,
-              "end": 34,
-              "type": "CONST",
-              "lexeme": "const"
-            },
-            "isConst": true,
-            "isFinal": false,
-            "isLate": false,
-            "type": null,
             "variables": [
               {
                 "@class": "VariableDeclaration",
@@ -232,6 +235,22 @@
                 "isLate": false
               }
             ],
+            "endToken": {
+              "start": 41,
+              "end": 46,
+              "type": "STRING",
+              "lexeme": "'bar'"
+            },
+            "firstTokenAfterCommentAndMetadata": {
+              "start": 29,
+              "end": 34,
+              "type": "CONST",
+              "lexeme": "const"
+            },
+            "isConst": true,
+            "isFinal": false,
+            "isLate": false,
+            "type": null,
             "documentationComment": null,
             "metadata": [],
             "sortedCommentAndAnnotations": []
@@ -274,29 +293,13 @@
             "@toString": "const foo = 'bar'",
             "start": 29,
             "end": 46,
+            "lateKeyword": null,
             "keyword": {
               "start": 29,
               "end": 34,
               "type": "CONST",
               "lexeme": "const"
             },
-            "lateKeyword": null,
-            "endToken": {
-              "start": 41,
-              "end": 46,
-              "type": "STRING",
-              "lexeme": "'bar'"
-            },
-            "firstTokenAfterCommentAndMetadata": {
-              "start": 29,
-              "end": 34,
-              "type": "CONST",
-              "lexeme": "const"
-            },
-            "isConst": true,
-            "isFinal": false,
-            "isLate": false,
-            "type": null,
             "variables": [
               {
                 "@class": "VariableDeclaration",
@@ -365,6 +368,22 @@
                 "isLate": false
               }
             ],
+            "endToken": {
+              "start": 41,
+              "end": 46,
+              "type": "STRING",
+              "lexeme": "'bar'"
+            },
+            "firstTokenAfterCommentAndMetadata": {
+              "start": 29,
+              "end": 34,
+              "type": "CONST",
+              "lexeme": "const"
+            },
+            "isConst": true,
+            "isFinal": false,
+            "isLate": false,
+            "type": null,
             "documentationComment": null,
             "metadata": [],
             "sortedCommentAndAnnotations": []

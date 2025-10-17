@@ -158,12 +158,11 @@
                       "isSynthetic": false,
                       "name": "visible"
                     },
+                    "canBeConst": false,
                     "inConstantContext": false,
                     "isAssignable": false,
-                    "unParenthesized": "@seen",
-                    "nullShortingTermination": "@seen"
-                  },
-                  "nullShortingTermination": "@seen"
+                    "unParenthesized": "@seen"
+                  }
                 },
                 "isAsynchronous": false,
                 "isGenerator": false,
@@ -186,6 +185,7 @@
                   "type": "OPEN_PAREN",
                   "lexeme": "("
                 },
+                "parameters": [],
                 "leftDelimiter": null,
                 "rightDelimiter": null,
                 "rightParenthesis": {
@@ -206,12 +206,12 @@
                   "type": "CLOSE_PAREN",
                   "lexeme": ")"
                 },
-                "parameters": [],
                 "isSynthetic": false,
                 "length": 2,
                 "offset": 19
               },
               "typeParameters": null,
+              "canBeConst": false,
               "inConstantContext": false,
               "isAssignable": false,
               "unParenthesized": "@seen { self }"

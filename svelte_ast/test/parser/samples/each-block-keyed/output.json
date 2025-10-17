@@ -119,59 +119,24 @@
             "type": "OPEN_PAREN",
             "lexeme": "("
           },
-          "rightParenthesis": {
-            "start": 29,
-            "end": 30,
-            "type": "CLOSE_PAREN",
-            "lexeme": ")"
-          },
-          "type": {
-            "@class": "NamedType",
-            "@toString": "todo",
-            "start": 16,
-            "end": 20,
-            "name2": {
-              "start": 16,
-              "end": 20,
-              "type": "IDENTIFIER",
-              "lexeme": "todo"
-            },
-            "typeArguments": null,
-            "question": null,
-            "beginToken": {
-              "start": 16,
-              "end": 20,
-              "type": "IDENTIFIER",
-              "lexeme": "todo"
-            },
-            "endToken": {
-              "start": 16,
-              "end": 20,
-              "type": "IDENTIFIER",
-              "lexeme": "todo"
-            },
-            "importPrefix": null,
-            "isDeferred": false,
-            "isSynthetic": false
-          },
-          "beginToken": {
-            "start": 16,
-            "end": 20,
-            "type": "IDENTIFIER",
-            "lexeme": "todo"
-          },
-          "endToken": {
-            "start": 29,
-            "end": 30,
-            "type": "CLOSE_PAREN",
-            "lexeme": ")"
-          },
           "fields": [
             {
               "@class": "PatternField",
               "@toString": "todo.id",
               "start": 22,
               "end": 29,
+              "beginToken": {
+                "start": 22,
+                "end": 26,
+                "type": "IDENTIFIER",
+                "lexeme": "todo"
+              },
+              "endToken": {
+                "start": 27,
+                "end": 29,
+                "type": "IDENTIFIER",
+                "lexeme": "id"
+              },
               "name": null,
               "pattern": {
                 "@class": "ConstantPattern",
@@ -275,23 +240,58 @@
                 },
                 "unParenthesized": "@seen"
               },
-              "beginToken": {
-                "start": 22,
-                "end": 26,
-                "type": "IDENTIFIER",
-                "lexeme": "todo"
-              },
-              "endToken": {
-                "start": 27,
-                "end": 29,
-                "type": "IDENTIFIER",
-                "lexeme": "id"
-              },
               "isSynthetic": false,
               "length": 7,
               "offset": 22
             }
           ],
+          "rightParenthesis": {
+            "start": 29,
+            "end": 30,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "beginToken": {
+            "start": 16,
+            "end": 20,
+            "type": "IDENTIFIER",
+            "lexeme": "todo"
+          },
+          "endToken": {
+            "start": 29,
+            "end": 30,
+            "type": "CLOSE_PAREN",
+            "lexeme": ")"
+          },
+          "type": {
+            "@class": "NamedType",
+            "@toString": "todo",
+            "start": 16,
+            "end": 20,
+            "name": {
+              "start": 16,
+              "end": 20,
+              "type": "IDENTIFIER",
+              "lexeme": "todo"
+            },
+            "question": null,
+            "beginToken": {
+              "start": 16,
+              "end": 20,
+              "type": "IDENTIFIER",
+              "lexeme": "todo"
+            },
+            "endToken": {
+              "start": 16,
+              "end": 20,
+              "type": "IDENTIFIER",
+              "lexeme": "todo"
+            },
+            "importPrefix": null,
+            "isDeferred": false,
+            "isSynthetic": false,
+            "typeArguments": null
+          },
           "unParenthesized": "@seen { self }"
         },
         "index": null,

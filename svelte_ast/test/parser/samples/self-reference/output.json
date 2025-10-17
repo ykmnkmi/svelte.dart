@@ -89,6 +89,7 @@
             },
             "immediatelyNegated": false
           },
+          "canBeConst": false,
           "inConstantContext": false,
           "isAssignable": false,
           "unParenthesized": "@seen { self }"
@@ -198,6 +199,7 @@
                           },
                           "immediatelyNegated": false
                         },
+                        "canBeConst": false,
                         "inConstantContext": false,
                         "isAssignable": false,
                         "unParenthesized": "@seen { self }"

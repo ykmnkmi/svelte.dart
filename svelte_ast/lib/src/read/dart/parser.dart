@@ -6,11 +6,11 @@ import 'package:_fe_analyzer_shared/src/scanner/errors.dart';
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart';
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/diagnostic/diagnostic.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/line_info.dart';
 import 'package:analyzer/src/dart/analysis/experiments.dart';
-import 'package:analyzer/src/error/codes.g.dart';
+import 'package:analyzer/src/error/codes.dart';
 import 'package:analyzer/src/generated/parser.dart';
 import 'package:analyzer/src/string_source.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -23,10 +23,10 @@ final FeatureSet currentFeatureSet = FeatureSet.fromEnableFlags2(
   flags: const <Never>[],
 );
 
-final class ThrowingErrorListener extends AnalysisErrorListener {
+final class ThrowingErrorListener extends DiagnosticListener {
   @override
-  void onError(AnalysisError error) {
-    throw error;
+  void onDiagnostic(Diagnostic diahnostic) {
+    throw diahnostic;
   }
 }
 
@@ -41,7 +41,7 @@ T parseString<T>({
   bool reportScannerErrors = true,
   required T Function(Token token, Parser parser) parse,
 }) {
-  AnalysisErrorListener errorListener = ThrowingErrorListener();
+  DiagnosticListener errorListener = ThrowingErrorListener();
   StringSource source = StringSource(string, fileName, uri: uri);
 
   Version version = currentLanguageVersion;
@@ -63,12 +63,12 @@ T parseString<T>({
     Version latestVersion = ExperimentStatus.currentVersion;
 
     if (version > latestVersion) {
-      errorListener.onError(
-        AnalysisError.tmp(
+      errorListener.onDiagnostic(
+        Diagnostic.tmp(
           source: source,
           offset: versionToken.offset,
           length: versionToken.length,
-          errorCode: WarningCode.INVALID_LANGUAGE_VERSION_OVERRIDE_GREATER,
+          diagnosticCode: WarningCode.invalidLanguageVersionOverrideGreater,
           arguments: [latestVersion.major, latestVersion.minor],
         ),
       );
@@ -137,12 +137,12 @@ T parseString<T>({
         int offset,
         List<Object>? arguments,
       ) {
-        errorListener.onError(
-          AnalysisError.tmp(
+        errorListener.onDiagnostic(
+          Diagnostic.tmp(
             source: source,
             offset: offset,
             length: 1,
-            errorCode: errorCode,
+            diagnosticCode: errorCode,
             arguments: arguments ?? const <Never>[],
           ),
         );
