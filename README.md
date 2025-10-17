@@ -50,47 +50,7 @@ Dart port of the Svelte framework.
 <p>{doubled} * 2 = {quadrupled}</p>
 ```
 
-Another way of writing components, inspired by Flutter/Jaspr. It should be
-compiled the same way as the HTML component above, not _executed_ as is.
-
-```dart
-// app.dart
-
-import 'package:svelte/svelte.dart';
-import 'package:web/web.dart';
-
-Node app({int step = 1}) {
-  int count = state<int>(0);
-  int doubled = derived<int>(count * 2);
-  int quadrupled = derived<int>(doubled * 2);
-
-  void handleClick() {
-    count += step;
-  }
-
-  const duration = Duration(seconds: 1);
-
-  onMount(() {
-    var timer = Timer.periodic(duration, (_) {
-      count += 1;
-    });
-
-    return () {
-      timer.cancel();
-    };
-  });
-
-  return fragment([
-    button(onClick: handleClick, [
-      text('Clicked $count ${count == 1 ? 'time' : 'times'}'),
-    ]);
-    p([text('$count * 2 = $doubled')]),
-    p([text('$doubled * 2 = $quadrupled')]),
-  ]);
-}
-```
-
-Both ways should output same code after compilation:
+Which should be compiled to this:
 
 ```dart
 // ignore: library_prefixes
@@ -146,7 +106,60 @@ base class App extends Component {
 }
 ```
 
-Can we use Dart code without generators? Yes, this is Solid way:
+I also have another idea of writing components, inspired by Flutter/Jaspr.
+
+It should be compiled the same way as the HTML component above, not _executed_
+as is. The problem is how to prevent users from importing the _raw_ component
+without changing the `*.dart` extension.
+
+```dart
+// `app.svelte.dart`?
+
+import 'package:svelte/svelte.dart';
+import 'package:web/web.dart';
+
+Node app({int step = 1}) {
+  int count = state<int>(0);
+  int doubled = derived<int>(count * 2);
+  int quadrupled = derived<int>(doubled * 2);
+
+  void handleClick(Event event) {
+    count += step;
+  }
+
+  const duration = Duration(seconds: 1);
+
+  onMount(() {
+    var timer = Timer.periodic(duration, (_) {
+      count += 1;
+    });
+
+    return () {
+      timer.cancel();
+    };
+  });
+
+  return fragment([
+    button(onClick: handleClick, [
+      // if (user.loggedIn)
+      //   text('Hello ${user.name}'),
+      // for (var item in items)
+      //   // ...
+      // // switch, future/stream builder
+      //
+      text('Clicked $count ${count == 1 ? 'time' : 'times'}'),
+    ]);
+    p([text('$count * 2 = $doubled')]),
+    p([text('$doubled * 2 = $quadrupled')]),
+  ]);
+}
+```
+
+I like this idea more. We can translate the template into this, which I am
+trying to do now.
+
+But can we go further without writing a builder or generator? Theoretically,
+this should look like this. Looks achievable.
 
 ```dart
 // app.dart
@@ -192,71 +205,26 @@ Component app({int step = 1}) {
       ],
     ),
 
-    // Flow ...
-If(
-  test: stateOrCallable,
-  then: () => /* ... */,
-  orElse: () => /* ... */,
-),
+    // Control flow ...
+    If(
+      test: state,
+      then: () => /* ... */,
+      orElse: () => /* ... */,
+    ),
     Each(
-      values: stateOrCallable,
+      values: state,
       build: (value) => /* ... */,
     ),
     Key(
-      key: stateOrCallable,
+      key: state,
       build: () => /* ... */,
     ),
   ]);
 }
 ```
 
-Reactive properties should be passed as is:
-
-```dart
-// app.dart
-
-import 'package:svelte/svelte.dart';
-
-Node app({State<int>? counter}) {
-  // ...
-}
-```
-
-What about attributes? There is 2 ways - each property as argument or single map.
-
-As arguments, typed, with if null checks for each. Unused arguments should be
-tree-shaken by the compiler.
-
-```dart
-Button(
-  className: 'btn btn-blue',
-  onClick: handleClick,
-  // String? title,
-  // Ignore first when reactive title is used. Would be nice to have StateOr<T>.
-  // State<String>? titleState,
-  titleState: title,
-  children: [
-    // ...
-  ],
-);
-```
-
-Map, untyped, single iteration over all attributes with 3 ~ 4 if checks.
-
-```dart
-Button(
-  attributes: {
-    'class': 'btn btn-blue',
-    'onclick': handleClick,
-    'title': title, // state
-  },
-  children: [
-    // ...
-  ],
-);
-```
-
-Component function is called once per mount and builds the reactive graph.
+All component and fragment functions should be called once per mount and should
+build the reactive graph.
 
 Status:
 - [x] Parser
