@@ -58,6 +58,7 @@ void bindProperty<T extends JSAny?>(
     handler();
   }
 
+  // ignore: unrelated_type_equality_checks
   if (element == document.body || element == window || element == document) {
     teardown<void>(() {
       element.removeEventListener(eventName, jsHandler);

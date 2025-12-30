@@ -8,9 +8,10 @@ base class Keypad implements Component {
     '<div class="keypad svelte-1iljj4z"><button class="svelte-1iljj4z">1</button> <button class="svelte-1iljj4z">2</button> <button class="svelte-1iljj4z">3</button> <button class="svelte-1iljj4z">4</button> <button class="svelte-1iljj4z">5</button> <button class="svelte-1iljj4z">6</button> <button class="svelte-1iljj4z">7</button> <button class="svelte-1iljj4z">8</button> <button class="svelte-1iljj4z">9</button> <button class="svelte-1iljj4z">clear</button> <button class="svelte-1iljj4z">0</button> <button class="svelte-1iljj4z">submit</button></div>',
   );
 
-  Keypad({this.value = '', this.onSubmit});
+  Keypad({$.Source<String>? value, this.onSubmit})
+    : value = value ?? $.source<String>('');
 
-  String value;
+  $.Source<String> value;
 
   void Function()? onSubmit;
 
@@ -30,12 +31,12 @@ base class Keypad implements Component {
 
     void Function() select(String num) {
       return () {
-        value += num;
+        value.set(value() + num);
       };
     }
 
     void clear() {
-      value = '';
+      value.set('');
     }
 
     var div = root();
@@ -65,8 +66,8 @@ base class Keypad implements Component {
     $.reset(div);
 
     $.templateEffect(() {
-      button9.disabled = value.isEmpty;
-      button11.disabled = value.isEmpty;
+      button9.disabled = value().isEmpty;
+      button11.disabled = value().isEmpty;
     });
 
     $.eventVoid('click', button, () {

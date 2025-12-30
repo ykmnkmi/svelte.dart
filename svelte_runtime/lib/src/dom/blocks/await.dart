@@ -142,7 +142,12 @@ void awaitBlock<T>(
               // We technically could check here since it's on the next
               // microtick but let's use internalSet for consistency and just to
               // be safe.
-              errorSource.set(error, check: false);
+              if (!errorSource.equals(error)) {
+                errorSource
+                  ..value = error
+                  ..markForCheck();
+              }
+
               update(AwaitState.catch_, true);
 
               if (catchRender == null) {

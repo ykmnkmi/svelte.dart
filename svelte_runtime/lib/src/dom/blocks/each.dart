@@ -19,13 +19,13 @@ typedef RenderItem<T> = void Function(Node anchor, Value<T> item, int index);
 
 @optionalTypeArgs
 final class EachItem<T> {
-  EachItem(this.index, this.key, this.value, {this.previous, this.next});
+  EachItem(this.index, this.key, this.valueSource, {this.previous, this.next});
 
   int index;
 
   Object key;
 
-  Source<T> value;
+  Source<T> valueSource;
 
   AnimationManager? animationManager;
 
@@ -34,6 +34,39 @@ final class EachItem<T> {
   EachItem<T>? previous;
 
   EachItem<T>? next;
+
+  void move(EachItem<T>? next, Node anchor) {
+    Node end = this.next != null
+        ? unsafeCast<Node>(this.next!.effect.nodeStart)
+        : anchor;
+
+    Node destination = next != null
+        ? unsafeCast<Node>(next.effect.nodeStart)
+        : anchor;
+    Node node = unsafeCast<Node>(effect.nodeStart);
+
+    while (node != end) {
+      Node nextNode = getNextSibling<Node>(node);
+      before(destination, node);
+      node = nextNode;
+    }
+  }
+
+  void update(T value, int index, int type) {
+    if (type & Each.itemReactive != 0) {
+      if (!valueSource.equals(value)) {
+        valueSource
+          ..value = value
+          ..markForCheck();
+      }
+    }
+
+    if (type & Each.indexReactive != 0) {
+      throw UnsupportedError('Reactive index.');
+    } else {
+      this.index = index;
+    }
+  }
 }
 
 @optionalTypeArgs
@@ -45,6 +78,20 @@ final class EachState<T> {
   EachItem<T>? first;
 
   Map<Object, EachItem<T>> items;
+
+  void link(EachItem<T>? previous, EachItem<T>? next) {
+    if (previous == null) {
+      first = next;
+    } else {
+      previous.next = next;
+      previous.effect.next = next?.effect;
+    }
+
+    if (next != null) {
+      next.previous = previous;
+      next.effect.previous = previous?.effect;
+    }
+  }
 }
 
 // The row of a keyed each block that is currently updating. We track this so
@@ -81,7 +128,7 @@ void pauseEffects(
     clearTextContent(parentNode);
     appendChild(parentNode, controlledAnchor);
     itemsMap.clear();
-    link(state, items[0].previous, items.last.next);
+    state.link(items[0].previous, items[length - 1].next);
   }
 
   runOutTransitions(transitions, () {
@@ -90,7 +137,7 @@ void pauseEffects(
 
       if (!isControlled) {
         itemsMap.remove(item.key);
-        link(state, item.previous, item.next);
+        state.link(item.previous, item.next);
       }
 
       destroyEffect(item.effect, !isControlled);
@@ -333,7 +380,7 @@ void reconcile<T>(
     }
 
     if (shouldUpdate) {
-      update<T>(item, value, i, flags);
+      item.update(value, i, flags);
     }
 
     Effect<void> effect = item.effect;
@@ -359,16 +406,16 @@ void reconcile<T>(
           EachItem<T> b = matched.last;
 
           for (j = 0; j < matched.length; j++) {
-            move(matched[j], start, anchor);
+            matched[j].move(start, anchor);
           }
 
           for (j = 0; j < stashed.length; j++) {
-            move(stashed[j], start, anchor);
+            stashed[j].move(start, anchor);
           }
 
-          link(state, a.previous, b.next);
-          link(state, previous, a);
-          link(state, b, start);
+          state.link(a.previous, b.next);
+          state.link(previous, a);
+          state.link(b, start);
 
           current = start;
           previous = b;
@@ -379,11 +426,11 @@ void reconcile<T>(
         } else {
           // More efficient to move earlier items to the back.
           seen.remove(item);
-          move(item, current, anchor);
+          item.move(current, anchor);
 
-          link(state, item.previous, item.next);
-          link(state, item, previous == null ? state.first : previous.next);
-          link(state, previous, item);
+          state.link(item.previous, item.next);
+          state.link(item, previous == null ? state.first : previous.next);
+          state.link(previous, item);
 
           previous = item;
         }
@@ -471,18 +518,6 @@ void reconcile<T>(
     ..last = previous?.effect;
 }
 
-void update<T>(EachItem<T> item, T value, int index, int type) {
-  if (type & Each.itemReactive != 0) {
-    item.value.set(value, check: false);
-  }
-
-  if (type & Each.indexReactive != 0) {
-    throw UnsupportedError('Reactive index.');
-  } else {
-    item.index = index;
-  }
-}
-
 EachItem<T> createItem<T>(
   Node anchor,
   EachState<T> state,
@@ -552,36 +587,5 @@ EachItem<T> createItem<T>(
     return item;
   } finally {
     currentEachItem = previousEachItem;
-  }
-}
-
-void move(EachItem item, EachItem? next, Node anchor) {
-  Node end = item.next != null
-      ? unsafeCast<Node>(item.next!.effect.nodeStart)
-      : anchor;
-
-  Node destination = next != null
-      ? unsafeCast<Node>(next.effect.nodeStart)
-      : anchor;
-  Node node = unsafeCast<Node>(item.effect.nodeStart);
-
-  while (node != end) {
-    Node nextNode = getNextSibling<Node>(node);
-    before(destination, node);
-    node = nextNode;
-  }
-}
-
-void link(EachState state, EachItem? previous, EachItem? next) {
-  if (previous == null) {
-    state.first = next;
-  } else {
-    previous.next = next;
-    previous.effect.next = next?.effect;
-  }
-
-  if (next != null) {
-    next.previous = previous;
-    next.effect.previous = previous?.effect;
   }
 }
