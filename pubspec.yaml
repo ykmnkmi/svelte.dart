@@ -4,7 +4,7 @@ version: 1.0.6
 repository: https://github.com/ykmnkmi/svelte.dart
 
 environment:
-  sdk: ">=3.9.4 <4.0.0"
+  sdk: ">=3.10.0 <4.0.0"
 
 dev_dependencies:
   lints: ^6.0.0
@@ -12,7 +12,7 @@ dev_dependencies:
 workspace:
   - svelte
   - svelte_ast
-  - svelte_builder
+  # - svelte_builder
   - svelte_runtime
 
-  - svelte_examples
+  # - svelte_examples

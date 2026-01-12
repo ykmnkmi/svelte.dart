@@ -110,6 +110,7 @@ void eventThis<E extends Element, T extends Event>(
     passive,
   );
 
+  // ignore: unrelated_type_equality_checks
   if (element == document.body || element == window || element == document) {
     teardown<void>(() {
       EventListenerOptions jsCptions = EventListenerOptions(capture: capture);
@@ -143,6 +144,7 @@ void handleEventPropagation(Element element, Event event) {
   if (handledAt != null) {
     int atIndex = jsPath.indexOf(handledAt);
 
+    // ignore: unrelated_type_equality_checks
     if (atIndex != -1 && (element == document || element == window)) {
       // This is the fallback document listener or a window listener, but the
       // event was already handled -> ignore, but set handleAt to document or

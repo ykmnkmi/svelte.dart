@@ -7,7 +7,4 @@ builders:
     build_to: source
     build_extensions:
       .svelte:
-        - .svelte.html
-        - .svelte.instance.dart
-        - .svelte.module.dart
         - .svelte.dart
