@@ -84,12 +84,7 @@ Future<void> Function([bool outro]) hydrate(
       init(); // re-init
       clearTextContent(target);
       setHydrating(false);
-      return mount(
-        component,
-        target: target,
-        context: context,
-        intro: intro,
-      );
+      return mount(component, target: target, context: context, intro: intro);
     }
 
     rethrow;

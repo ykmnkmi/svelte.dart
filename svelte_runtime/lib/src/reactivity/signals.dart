@@ -175,10 +175,8 @@ base mixin Value<T> on Signal {
     }
   }
 
-  void set(T newValue, {bool check = true}) {
-    if (check) {
-      checkMutation(this);
-    }
+  void set(T newValue) {
+    checkMutation(this);
 
     if (equals(newValue)) {
       return;
@@ -188,10 +186,8 @@ base mixin Value<T> on Signal {
     markForCheck();
   }
 
-  void update(void Function(T value) callback, {bool check = true}) {
-    if (check) {
-      checkMutation(this);
-    }
+  void update(void Function(T value) callback) {
+    checkMutation(this);
 
     untrack<void>(() {
       callback(call());

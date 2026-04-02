@@ -35,6 +35,7 @@ Text createText([String text = '']) {
   return document.createTextNode(text);
 }
 
+@optionalTypeArgs
 T createElement<T extends Element>(String tag) {
   return unsafeCast<T>(document.createElement(tag));
 }
@@ -253,4 +254,14 @@ extension Assignment on JSObject {
 
   @JS('__click')
   external ExternalDartReference<void Function(Event)?> clickReference;
+
+  // ignore: non_constant_identifier_names
+  void Function(Event)? get click__ {
+    return clickReference.toDartObject;
+  }
+
+  // ignore: non_constant_identifier_names
+  set click__(void Function(Event)? lazy) {
+    lazyReference = lazy.toExternalReference;
+  }
 }
