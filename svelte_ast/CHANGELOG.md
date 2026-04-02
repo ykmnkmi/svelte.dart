@@ -1,3 +1,8 @@
+## 1.0.0-28.beta
+
+- Bump SDK to 3.11.0.
+- Bump `analyzer` to `^12.0.0`.
+
 ## 1.0.0-26.beta
 
 - Bump SDK to 3.9.4.

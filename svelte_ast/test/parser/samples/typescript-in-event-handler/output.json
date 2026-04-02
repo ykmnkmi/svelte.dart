@@ -425,6 +425,7 @@
                       "type": "IDENTIFIER",
                       "lexeme": "e"
                     },
+                    "finalKeyword": null,
                     "firstTokenAfterCommentAndMetadata": {
                       "start": 70,
                       "end": 80,
@@ -462,7 +463,8 @@
                       "isDeferred": false,
                       "isSynthetic": false,
                       "typeArguments": null
-                    }
+                    },
+                    "varKeyword": null
                   }
                 ],
                 "leftDelimiter": null,

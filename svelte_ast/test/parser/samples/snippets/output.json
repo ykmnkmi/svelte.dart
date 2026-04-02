@@ -59,6 +59,7 @@
               "type": "IDENTIFIER",
               "lexeme": "message"
             },
+            "finalKeyword": null,
             "firstTokenAfterCommentAndMetadata": {
               "start": 33,
               "end": 39,
@@ -96,7 +97,8 @@
               "isDeferred": false,
               "isSynthetic": false,
               "typeArguments": null
-            }
+            },
+            "varKeyword": null
           }
         ],
         "body": {

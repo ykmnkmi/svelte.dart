@@ -2,22 +2,21 @@
 
 import 'dart:typed_data';
 
+import 'package:_fe_analyzer_shared/src/base/errors.dart';
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart';
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/diagnostic/diagnostic.dart';
-import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/line_info.dart';
 import 'package:analyzer/src/dart/analysis/experiments.dart';
 import 'package:analyzer/src/dart/scanner/translate_error_token.dart';
-import 'package:analyzer/src/error/codes.dart';
+import 'package:analyzer/src/diagnostic/diagnostic.dart' as diag;
 import 'package:analyzer/src/generated/parser.dart';
 import 'package:analyzer/src/string_source.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:svelte_ast/src/read/dart/scanner.dart';
 
-final Version currentLanguageVersion = Version(3, 10, 0);
+final Version currentLanguageVersion = Version(3, 11, 0);
 
 final FeatureSet currentFeatureSet = FeatureSet.fromEnableFlags2(
   sdkLanguageVersion: currentLanguageVersion,
@@ -44,6 +43,7 @@ T parseString<T>({
 }) {
   DiagnosticListener errorListener = ThrowingErrorListener();
   StringSource source = StringSource(string, fileName, uri: uri);
+  DiagnosticReporter reporter = DiagnosticReporter(errorListener, source);
 
   Version version = currentLanguageVersion;
   FeatureSet featureSet = currentFeatureSet;
@@ -69,7 +69,7 @@ T parseString<T>({
           source: source,
           offset: versionToken.offset,
           length: versionToken.length,
-          diagnosticCode: WarningCode.invalidLanguageVersionOverrideGreater,
+          diagnosticCode: diag.invalidLanguageVersionOverrideGreater,
           arguments: [latestVersion.major, latestVersion.minor],
         ),
       );
@@ -133,18 +133,14 @@ T parseString<T>({
     // The default recovery strategy used by scanString
     // places all error tokens at the head of the stream.
     while (token is ErrorToken) {
-      translateErrorToken(token, (
-        DiagnosticCode diagnosticCode,
-        int offset,
-        List<Object>? arguments,
-      ) {
+      translateErrorToken(token, (LocatedDiagnostic locatedDiagnostic) {
         errorListener.onDiagnostic(
           Diagnostic.tmp(
             source: source,
-            offset: offset,
-            length: 1,
-            diagnosticCode: diagnosticCode,
-            arguments: arguments ?? const <Never>[],
+            offset: locatedDiagnostic.offset,
+            length: locatedDiagnostic.length,
+            diagnosticCode: locatedDiagnostic.locatableDiagnostic.code,
+            arguments: locatedDiagnostic.locatableDiagnostic.arguments,
           ),
         );
       });
@@ -163,8 +159,7 @@ T parseString<T>({
   LineInfo lineInfo = LineInfo(lineStarts);
 
   Parser parser = Parser(
-    source,
-    errorListener,
+    reporter,
     featureSet: featureSet,
     languageVersion: libraryLanguageVersion,
     lineInfo: lineInfo,
