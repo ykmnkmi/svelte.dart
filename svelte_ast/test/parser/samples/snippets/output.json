@@ -48,27 +48,46 @@
         },
         "parameters": [
           {
-            "@class": "SimpleFormalParameter",
+            "@class": "RegularFormalParameter",
             "@toString": "String message",
             "start": 33,
             "end": 47,
-            "keyword": null,
             "endToken": {
               "start": 40,
               "end": 47,
               "type": "IDENTIFIER",
               "lexeme": "message"
             },
-            "finalKeyword": null,
             "firstTokenAfterCommentAndMetadata": {
               "start": 33,
               "end": 39,
               "type": "IDENTIFIER",
               "lexeme": "String"
             },
+            "constFinalOrVarKeyword": null,
+            "constKeyword": null,
+            "covariantKeyword": null,
+            "defaultClause": null,
+            "finalKeyword": null,
+            "functionTypedSuffix": null,
             "isConst": false,
             "isExplicitlyTyped": true,
             "isFinal": false,
+            "isNamed": false,
+            "isOptional": false,
+            "isOptionalNamed": false,
+            "isOptionalPositional": false,
+            "isPositional": true,
+            "isRequired": true,
+            "isRequiredNamed": false,
+            "isRequiredPositional": true,
+            "name": {
+              "start": 40,
+              "end": 47,
+              "type": "IDENTIFIER",
+              "lexeme": "message"
+            },
+            "requiredKeyword": null,
             "type": {
               "@class": "NamedType",
               "@toString": "String",

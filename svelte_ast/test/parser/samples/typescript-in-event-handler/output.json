@@ -414,27 +414,46 @@
                 },
                 "parameters": [
                   {
-                    "@class": "SimpleFormalParameter",
+                    "@class": "RegularFormalParameter",
                     "@toString": "MouseEvent e",
                     "start": 70,
                     "end": 82,
-                    "keyword": null,
                     "endToken": {
                       "start": 81,
                       "end": 82,
                       "type": "IDENTIFIER",
                       "lexeme": "e"
                     },
-                    "finalKeyword": null,
                     "firstTokenAfterCommentAndMetadata": {
                       "start": 70,
                       "end": 80,
                       "type": "IDENTIFIER",
                       "lexeme": "MouseEvent"
                     },
+                    "constFinalOrVarKeyword": null,
+                    "constKeyword": null,
+                    "covariantKeyword": null,
+                    "defaultClause": null,
+                    "finalKeyword": null,
+                    "functionTypedSuffix": null,
                     "isConst": false,
                     "isExplicitlyTyped": true,
                     "isFinal": false,
+                    "isNamed": false,
+                    "isOptional": false,
+                    "isOptionalNamed": false,
+                    "isOptionalPositional": false,
+                    "isPositional": true,
+                    "isRequired": true,
+                    "isRequiredNamed": false,
+                    "isRequiredPositional": true,
+                    "name": {
+                      "start": 81,
+                      "end": 82,
+                      "type": "IDENTIFIER",
+                      "lexeme": "e"
+                    },
+                    "requiredKeyword": null,
                     "type": {
                       "@class": "NamedType",
                       "@toString": "MouseEvent",

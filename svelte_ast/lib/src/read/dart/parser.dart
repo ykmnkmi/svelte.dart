@@ -2,10 +2,10 @@
 
 import 'dart:typed_data';
 
-import 'package:_fe_analyzer_shared/src/base/errors.dart';
 import 'package:_fe_analyzer_shared/src/scanner/scanner.dart';
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/diagnostic/diagnostic.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:analyzer/source/line_info.dart';
 import 'package:analyzer/src/dart/analysis/experiments.dart';
@@ -79,7 +79,7 @@ T parseString<T>({
       featureSet = featureSet.restrictToVersion(version);
 
       scanner.configuration = ScannerConfiguration(
-        forAugmentationLibrary: featureSet.isEnabled(Feature.macros),
+        enableAugmentations: featureSet.isEnabled(Feature.macros),
         enableTripleShift: featureSet.isEnabled(Feature.triple_shift),
       );
     }
@@ -88,7 +88,7 @@ T parseString<T>({
   // Scan...
 
   ScannerConfiguration configuration = ScannerConfiguration(
-    forAugmentationLibrary: featureSet.isEnabled(Feature.macros),
+    enableAugmentations: featureSet.isEnabled(Feature.macros),
     enableTripleShift: featureSet.isEnabled(Feature.triple_shift),
   );
 
@@ -133,7 +133,7 @@ T parseString<T>({
     // The default recovery strategy used by scanString
     // places all error tokens at the head of the stream.
     while (token is ErrorToken) {
-      translateErrorToken(token, (LocatedDiagnostic locatedDiagnostic) {
+      translateErrorToken(token, (diag.LocatedDiagnostic locatedDiagnostic) {
         errorListener.onDiagnostic(
           Diagnostic.tmp(
             source: source,

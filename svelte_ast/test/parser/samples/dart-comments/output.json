@@ -595,6 +595,12 @@
           "augmentKeyword": null,
           "externalKeyword": null,
           "propertyKeyword": null,
+          "name": {
+            "start": 107,
+            "end": 110,
+            "type": "IDENTIFIER",
+            "lexeme": "asd"
+          },
           "endToken": {
             "start": 318,
             "end": 319,
@@ -828,6 +834,7 @@
             "isAssignable": false,
             "unParenthesized": "@seen"
           },
+          "isComplete": true,
           "isGetter": false,
           "isSetter": false,
           "returnType": {
@@ -858,12 +865,6 @@
             "isDeferred": false,
             "isSynthetic": false,
             "typeArguments": null
-          },
-          "name": {
-            "start": 107,
-            "end": 110,
-            "type": "IDENTIFIER",
-            "lexeme": "asd"
           }
         }
       },
@@ -1165,10 +1166,22 @@
                 },
                 "fields": [
                   {
-                    "@class": "NamedExpression",
+                    "@class": "RecordLiteralNamedField",
                     "@toString": "a: 1",
                     "start": 527,
                     "end": 531,
+                    "name": {
+                      "start": 527,
+                      "end": 528,
+                      "type": "IDENTIFIER",
+                      "lexeme": "a"
+                    },
+                    "colon": {
+                      "start": 528,
+                      "end": 529,
+                      "type": "COLON",
+                      "lexeme": ":"
+                    },
                     "beginToken": {
                       "start": 527,
                       "end": 528,
@@ -1181,7 +1194,7 @@
                       "type": "INT",
                       "lexeme": "1"
                     },
-                    "expression": {
+                    "fieldExpression": {
                       "@class": "IntegerLiteral",
                       "@toString": "1",
                       "start": 530,
@@ -1206,66 +1219,7 @@
                         "lexeme": "1"
                       },
                       "immediatelyNegated": false
-                    },
-                    "name": {
-                      "@class": "Label",
-                      "@toString": "a:",
-                      "start": 527,
-                      "end": 529,
-                      "colon": {
-                        "start": 528,
-                        "end": 529,
-                        "type": "COLON",
-                        "lexeme": ":"
-                      },
-                      "beginToken": {
-                        "start": 527,
-                        "end": 528,
-                        "type": "IDENTIFIER",
-                        "lexeme": "a"
-                      },
-                      "endToken": {
-                        "start": 528,
-                        "end": 529,
-                        "type": "COLON",
-                        "lexeme": ":"
-                      },
-                      "label": {
-                        "@class": "SimpleIdentifier",
-                        "@toString": "a",
-                        "start": 527,
-                        "end": 528,
-                        "token": {
-                          "start": 527,
-                          "end": 528,
-                          "type": "IDENTIFIER",
-                          "lexeme": "a"
-                        },
-                        "ancestorCascade": null,
-                        "beginToken": {
-                          "start": 527,
-                          "end": 528,
-                          "type": "IDENTIFIER",
-                          "lexeme": "a"
-                        },
-                        "endToken": {
-                          "start": 527,
-                          "end": 528,
-                          "type": "IDENTIFIER",
-                          "lexeme": "a"
-                        },
-                        "isQualified": false,
-                        "isSynthetic": false,
-                        "name": "a"
-                      },
-                      "isSynthetic": false,
-                      "length": 2,
-                      "offset": 527
-                    },
-                    "canBeConst": false,
-                    "inConstantContext": false,
-                    "isAssignable": false,
-                    "unParenthesized": "@seen"
+                    }
                   }
                 ],
                 "rightParenthesis": {

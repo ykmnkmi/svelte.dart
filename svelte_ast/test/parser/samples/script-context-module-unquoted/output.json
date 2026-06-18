@@ -137,6 +137,7 @@
           "end": 47,
           "augmentKeyword": null,
           "externalKeyword": null,
+          "abstractKeyword": null,
           "semicolon": {
             "start": 46,
             "end": 47,
@@ -270,6 +271,7 @@
           "end": 47,
           "augmentKeyword": null,
           "externalKeyword": null,
+          "abstractKeyword": null,
           "semicolon": {
             "start": 46,
             "end": 47,

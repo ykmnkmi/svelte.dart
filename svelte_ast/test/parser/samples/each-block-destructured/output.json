@@ -312,6 +312,7 @@
         "end": 32,
         "augmentKeyword": null,
         "externalKeyword": null,
+        "abstractKeyword": null,
         "semicolon": {
           "start": 31,
           "end": 32,
