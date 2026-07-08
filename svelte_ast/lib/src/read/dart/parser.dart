@@ -16,12 +16,10 @@ import 'package:analyzer/src/string_source.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:svelte_ast/src/read/dart/scanner.dart';
 
-final Version currentLanguageVersion = Version(3, 11, 0);
+final Version currentLanguageVersion = Version(3, 12, 0);
 
-final FeatureSet currentFeatureSet = FeatureSet.fromEnableFlags2(
-  sdkLanguageVersion: currentLanguageVersion,
-  flags: const <Never>[],
-);
+final FeatureSet currentFeatureSet = FeatureSet.latestLanguageVersion()
+    .restrictToVersion(currentLanguageVersion);
 
 final class ThrowingErrorListener extends DiagnosticListener {
   @override

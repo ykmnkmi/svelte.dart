@@ -1,3 +1,8 @@
+## 1.0.0-30.beta
+
+- Bump parser language version.
+- Bump `test` version.
+
 ## 1.0.0-29.beta
 
 - Bump SDK to 3.12.0.
