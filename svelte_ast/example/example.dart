@@ -6,15 +6,37 @@ import 'package:svelte_ast/svelte_ast.dart';
 
 const String content = '''
 <script>
-  int count = 0;
+  import 'dart:async';
 
-  void onClick() {
-    count += 1;
+  import 'package:svelte/svelte.dart';
+
+  var step = input<int>(1);
+
+  var count = state<int>(0);
+  var doubled = derived<int>(() => count() * 2);
+  var quadrupled = derived<int>(() => doubled() * 2);
+
+  void handleClick() {
+    count.set(count() + step());
   }
+
+  onMount(() {
+    var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      count.increment();
+    });
+
+    return () {
+      timer.cancel();
+    };
+  });
 </script>
-<button on:click={onClick}>
-  Count: {count}
-</button>''';
+
+<button onclick={handleClick}>
+  Clicked {count()} {count() == 1 ? 'time' : 'times'}
+</button>
+
+<p>{count()} * 2 = {doubled()}</p>
+<p>{doubled()} * 2 = {quadrupled()}</p>''';
 
 void main() {
   // Create an AST tree by parsing an SvelteDart template.

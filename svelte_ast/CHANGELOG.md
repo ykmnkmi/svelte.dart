@@ -1,3 +1,8 @@
+## 1.0.0-31.beta
+
+- Remove experimental parser.
+- Update example.
+
 ## 1.0.0-30.beta
 
 - Bump parser language version.
