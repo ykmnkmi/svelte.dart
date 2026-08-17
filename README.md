@@ -9,7 +9,9 @@ svelte.dart
 |---|---|---|
 | [svelte_ast](svelte_ast/) | Parser and utilities for SvelteDart template compiler.| [![Pub Package][ast_pub_icon]][ast_pub] |
 
-Dart port of the Svelte framework with no magic functions.
+Dart port of the Svelte framework with no magic transofrmations.
+
+**WIP**. **EXPERIMENTAL**. Third iteration.
 
 ```html
 <!-- app.svelte -->
@@ -18,7 +20,7 @@ Dart port of the Svelte framework with no magic functions.
 
   import 'package:svelte/svelte.dart';
 
-  var step = input<int>(1);
+  var step = prop<int>(1);
 
   var count = state<int>(0);
   var doubled = derived<int>(() => count() * 2);
@@ -63,9 +65,9 @@ base class App extends Component {
     1,
   );
 
-  App({int step = 1}) : step = input<int>(step);
+  App({int step = 1}) : step = prop<int>(step);
 
-  Input<int> step;
+  Prop<int> step;
 
   @override
   void call(Node anchor) {
@@ -120,8 +122,10 @@ Status:
 - [ ] Runtime
   - [ ] internal 🔥
   - [ ] ...
-- [ ] Compiler
-- [ ] Builder
+- [ ] Compiler/Transofrmer
+- [ ] Builder/Generator 🔥
+  - `.svelte` > `.svelte.dart`
+  - `.svelte.dart` > `.dart`
 - [ ] Examples (to test runtime and JS interop., not generated):
   - [x] introduction
   - [x] reactivity
