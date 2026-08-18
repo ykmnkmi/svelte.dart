@@ -1,3 +1,8 @@
+## 1.0.0-32.beta
+
+- Bump SDK to `>=3.13.0 <4.0.0`.
+- Bump `analyzer` to `^14.1.0`.
+
 ## 1.0.0-31.beta
 
 - Remove experimental parser.

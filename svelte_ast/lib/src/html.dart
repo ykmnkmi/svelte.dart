@@ -88,83 +88,83 @@ String decodeCharacterReferences(String string, bool isAttributeValue) {
 // just result in confusing behavior and break when SSR'd.
 // There are more elements that are invalid inside other elements, but they're
 // not auto-closed and so don't break SSR and are therefore not listed here.
-const Map<String, Map<String, List<String>>>
-_autoClosingChildren = <String, Map<String, List<String>>>{
-  // based on http://developers.whatwg.org/syntax.html#syntax-tag-omission
-  'li': <String, List<String>>{
-    'direct': ['li'],
-  },
-  // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dt#technical_summary
-  'dt': <String, List<String>>{
-    'descendant': <String>['dt', 'dd'],
-    'resetBy': <String>['dl'],
-  },
-  'dd': <String, List<String>>{
-    'descendant': <String>['dt', 'dd'],
-    'resetBy': <String>['dl'],
-  },
-  'p': <String, List<String>>{
-    'descendant': <String>[
-      'address',
-      'article',
-      'aside',
-      'blockquote',
-      'div',
-      'dl',
-      'fieldset',
-      'footer',
-      'form',
-      'h1',
-      'h2',
-      'h3',
-      'h4',
-      'h5',
-      'h6',
-      'header',
-      'hgroup',
-      'hr',
-      'main',
-      'menu',
-      'nav',
-      'ol',
-      'p',
-      'pre',
-      'section',
-      'table',
-      'ul',
-    ],
-  },
-  'rt': <String, List<String>>{
-    'descendant': <String>['rt', 'rp'],
-  },
-  'rp': <String, List<String>>{
-    'descendant': <String>['rt', 'rp'],
-  },
-  'optgroup': <String, List<String>>{
-    'descendant': <String>['optgroup'],
-  },
-  'option': <String, List<String>>{
-    'descendant': <String>['option', 'optgroup'],
-  },
-  'thead': <String, List<String>>{
-    'direct': <String>['tbody', 'tfoot'],
-  },
-  'tbody': <String, List<String>>{
-    'direct': <String>['tbody', 'tfoot'],
-  },
-  'tfoot': <String, List<String>>{
-    'direct': <String>['tbody'],
-  },
-  'tr': <String, List<String>>{
-    'direct': <String>['tr', 'tbody'],
-  },
-  'td': <String, List<String>>{
-    'direct': <String>['td', 'th', 'tr'],
-  },
-  'th': <String, List<String>>{
-    'direct': <String>['td', 'th', 'tr'],
-  },
-};
+const Map<String, Map<String, List<String>>> _autoClosingChildren =
+    <String, Map<String, List<String>>>{
+      // based on http://developers.whatwg.org/syntax.html#syntax-tag-omission
+      'li': <String, List<String>>{
+        'direct': ['li'],
+      },
+      // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dt#technical_summary
+      'dt': <String, List<String>>{
+        'descendant': <String>['dt', 'dd'],
+        'resetBy': <String>['dl'],
+      },
+      'dd': <String, List<String>>{
+        'descendant': <String>['dt', 'dd'],
+        'resetBy': <String>['dl'],
+      },
+      'p': <String, List<String>>{
+        'descendant': <String>[
+          'address',
+          'article',
+          'aside',
+          'blockquote',
+          'div',
+          'dl',
+          'fieldset',
+          'footer',
+          'form',
+          'h1',
+          'h2',
+          'h3',
+          'h4',
+          'h5',
+          'h6',
+          'header',
+          'hgroup',
+          'hr',
+          'main',
+          'menu',
+          'nav',
+          'ol',
+          'p',
+          'pre',
+          'section',
+          'table',
+          'ul',
+        ],
+      },
+      'rt': <String, List<String>>{
+        'descendant': <String>['rt', 'rp'],
+      },
+      'rp': <String, List<String>>{
+        'descendant': <String>['rt', 'rp'],
+      },
+      'optgroup': <String, List<String>>{
+        'descendant': <String>['optgroup'],
+      },
+      'option': <String, List<String>>{
+        'descendant': <String>['option', 'optgroup'],
+      },
+      'thead': <String, List<String>>{
+        'direct': <String>['tbody', 'tfoot'],
+      },
+      'tbody': <String, List<String>>{
+        'direct': <String>['tbody', 'tfoot'],
+      },
+      'tfoot': <String, List<String>>{
+        'direct': <String>['tbody'],
+      },
+      'tr': <String, List<String>>{
+        'direct': <String>['tr', 'tbody'],
+      },
+      'td': <String, List<String>>{
+        'direct': <String>['td', 'th', 'tr'],
+      },
+      'th': <String, List<String>>{
+        'direct': <String>['td', 'th', 'tr'],
+      },
+    };
 
 /// Returns true if the tag is either the last in the list of siblings and will
 /// be autoclosed, or not allowed inside the parent tag such that it will
