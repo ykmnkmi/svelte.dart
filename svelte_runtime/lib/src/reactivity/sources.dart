@@ -1,12 +1,12 @@
 import 'package:svelte_runtime/src/reactivity/signals.dart';
 import 'package:svelte_runtime/src/runtime.dart';
 
-Source<T> source<T>(T value) {
-  return pushDerivedSource<T, Source<T>>(Source<T>(flags: 0, value: value));
+State<T> createState<T>(T value) {
+  return pushDerivedSource<T, State<T>>(State<T>(flags: 0, value: value));
 }
 
-LazySource<T> lazySource<T>() {
-  return pushDerivedSource<T, LazySource<T>>(LazySource<T>(flags: 0));
+LateState<T> createLateState<T>() {
+  return pushDerivedSource<T, LateState<T>>(LateState<T>(flags: 0));
 }
 
 S pushDerivedSource<T, S extends Value<T>>(S source) {

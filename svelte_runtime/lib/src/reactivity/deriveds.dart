@@ -6,7 +6,7 @@ import 'package:svelte_runtime/src/runtime.dart';
 
 bool updatingDerived = false;
 
-Derived<T> derived<T>(T Function() callback) {
+Derived<T> createDerived<T>(T Function() callback) {
   int flags = Flag.derived | Flag.dirty;
 
   if (activeEffect == null) {

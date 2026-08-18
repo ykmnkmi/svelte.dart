@@ -40,8 +40,8 @@ void awaitBlock<T>(
 
   Effect<void>? catchEffect;
 
-  LazySource<T> inputSource = lazySource<T>();
-  Source<Object?> errorSource = source<Object?>(null);
+  LateState<T> inputSource = createLateState<T>();
+  State<Object?> errorSource = createState<Object?>(null);
   bool resolved = false;
 
   Effect<void Function()?>? effect;

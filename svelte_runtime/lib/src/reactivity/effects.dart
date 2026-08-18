@@ -111,7 +111,7 @@ Effect<T> teardown<T>(void Function() callback) {
 }
 
 // Internal representation of `effect(...)`
-Effect<T>? userEffect<T>(T Function() callback) {
+Effect<T>? createUserEffect<T>(T Function() callback) {
   validateEffect('effect');
 
   // Non-nested `effect(...)` in a component should be deferred until the
@@ -136,7 +136,7 @@ Effect<T>? userEffect<T>(T Function() callback) {
 }
 
 // Internal representation of [effect.pre].
-Effect<T> userPreEffect<T>(T Function() callback) {
+Effect<T> createUserEffectPre<T>(T Function() callback) {
   validateEffect('effect.pre');
   return renderEffect<T>(callback);
 }

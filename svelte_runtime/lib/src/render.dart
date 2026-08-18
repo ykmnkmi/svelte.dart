@@ -18,16 +18,6 @@ void setShouldIntro(bool value) {
   shouldIntro = value;
 }
 
-void setText(Text text, String value) {
-  String currentValue = text.t__ ??= text.nodeValue ?? '';
-
-  if (value != currentValue) {
-    text
-      ..nodeValue = value
-      ..t__ = value;
-  }
-}
-
 /// Hydrates a component on the given target.
 Future<void> Function([bool outro]) hydrate(
   Component component, {
@@ -157,7 +147,7 @@ Future<void> Function([bool outro]) mount(
       }
 
       setShouldIntro(intro);
-      component.create(anchorNode);
+      component(anchorNode);
       setShouldIntro(true);
 
       if (hydrating) {

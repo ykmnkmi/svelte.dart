@@ -137,7 +137,7 @@ void bindGroup(
     input,
     'change',
     (_) {
-      Object? value = input.value__;
+      Object? value = input.internalValue;
 
       if (isCheckBox) {
         value = getBindingGroupValue(bindingGroup, value, input.checked);
@@ -164,9 +164,9 @@ void bindGroup(
 
     if (isCheckBox) {
       List<Object?> values = value as List<Object?>? ?? <Object?>[];
-      input.checked = values.contains(input.value__);
+      input.checked = values.contains(input.internalValue);
     } else {
-      input.checked = identical(input.value__, value);
+      input.checked = identical(input.internalValue, value);
     }
   });
 
@@ -197,7 +197,7 @@ void bindGroup(
           HTMLInputElement hydrationInput = bindingGroup[i];
 
           if (hydrationInput.checked) {
-            value = hydrationInput.value__;
+            value = hydrationInput.internalValue;
           }
         }
       }
@@ -243,7 +243,7 @@ List<Object?> getBindingGroupValue(
     HTMLInputElement input = group[i];
 
     if (input.checked) {
-      values.add(input.value__);
+      values.add(input.internalValue);
     }
   }
 

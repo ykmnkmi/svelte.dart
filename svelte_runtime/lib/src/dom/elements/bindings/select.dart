@@ -56,7 +56,7 @@ void initSelect(HTMLSelectElement select, [Object? Function()? get]) {
 
     MutationObserver observer = MutationObserver(
       () {
-        selectOption(select, select.value__);
+        selectOption(select, select.internalValue);
         // Deliberately don't update the potential binding value, the model
         // should be preserved unless explicitly changed.
       }.toJS,
@@ -134,7 +134,7 @@ void bindSelectValue(
       }
     }
 
-    select.value__ = value;
+    select.internalValue = value;
     mounting = false;
   });
 
@@ -153,7 +153,7 @@ void selectOptions(HTMLSelectElement select, List<Object?> values) {
 
 Object? getOptionValue(HTMLOptionElement option) {
   if (option.has('__value')) {
-    return option.value__;
+    return option.internalValue;
   }
 
   return option.value;

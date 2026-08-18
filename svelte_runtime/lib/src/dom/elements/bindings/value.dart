@@ -1,5 +1,6 @@
 import 'dart:js_interop';
 
+import 'package:meta/meta.dart';
 import 'package:svelte_runtime/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
@@ -7,14 +8,14 @@ extension ValueReference on HTMLElement {
   @JS('__value')
   external ExternalDartReference<Object?> valueReference;
 
-  // ignore: non_constant_identifier_names
-  Object? get value__ {
+  @internal
+  Object? get internalValue {
     // ignore: unnecessary_this
     return this.valueReference.toDartObject;
   }
 
-  // ignore: non_constant_identifier_names
-  set value__(Object? value) {
+  @internal
+  set internalValue(Object? value) {
     // ignore: unnecessary_this
     this.valueReference = value.toExternalReference;
   }
@@ -22,6 +23,6 @@ extension ValueReference on HTMLElement {
 
 void setElementValue(HTMLElement input, Object? value) {
   unsafeCast<HTMLInputElement>(input)
-    ..value__ = value
+    ..internalValue = value
     ..value = '${value ?? ''}';
 }

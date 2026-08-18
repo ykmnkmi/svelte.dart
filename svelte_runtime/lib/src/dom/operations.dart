@@ -19,12 +19,12 @@ external JSObject elementPrototype;
 /// context where these globals are not available while avoiding a separate
 /// server entry point.
 void init() {
-  elementPrototype.clickReference = null.toExternalReference;
+  elementPrototype.internalClickReference = null.toExternalReference;
 
   // the following assignments improve perf of lookups on DOM nodes.
-  elementPrototype.attributes__ = null;
-  elementPrototype.styles__ = null;
-  textPrototype.t__ = null;
+  elementPrototype.internalAttributes = null;
+  elementPrototype.internalSyles = null;
+  textPrototype.internalText = null;
 }
 
 Comment createComment([String text = '']) {
@@ -183,7 +183,7 @@ T sibling<T extends Node>(Node? node, [int count = 1, bool isText = false]) {
     return unsafeCast<T>(text);
   }
 
-  setHydrateNode<Node>(next);
+  setHydrateNode<Node?>(next);
   return unsafeCast<T>(next);
 }
 
@@ -196,72 +196,83 @@ void setTextContent(Node node, String text) {
 }
 
 void clearTextContent(Node node) {
-  node.textContent = '';
+  setTextContent(node, '');
+}
+
+void setText(Text text, String value) {
+  String currentValue = text.internalText ??= text.nodeValue ?? '';
+
+  if (value != currentValue) {
+    text
+      ..nodeValue = value
+      ..internalText = value;
+  }
 }
 
 extension Assignment on JSObject {
   @JS('__attributes')
-  external ExternalDartReference<Map<String, String?>?> attributesReference;
+  external ExternalDartReference<Map<String, String?>?> _attributesReference;
 
-  // ignore: non_constant_identifier_names
-  Map<String, String?>? get attributes__ {
-    return attributesReference.toDartObject;
+  @internal
+  Map<String, String?>? get internalAttributes {
+    return _attributesReference.toDartObject;
   }
 
-  // ignore: non_constant_identifier_names
-  set attributes__(Map<String, String?>? attributes) {
-    attributesReference = attributes.toExternalReference;
+  @internal
+  set internalAttributes(Map<String, String?>? attributes) {
+    _attributesReference = attributes.toExternalReference;
   }
 
   @JS('__styles')
-  external ExternalDartReference<Map<String, String?>?> stylesReference;
+  external ExternalDartReference<Map<String, String?>?> _stylesReference;
 
-  // ignore: non_constant_identifier_names
-  Map<String, String?>? get styles__ {
-    return stylesReference.toDartObject;
+  @internal
+  Map<String, String?>? get internalSyles {
+    return _stylesReference.toDartObject;
   }
 
-  // ignore: non_constant_identifier_names
-  set styles__(Map<String, String?>? styles) {
-    stylesReference = styles.toExternalReference;
+  @internal
+  set internalSyles(Map<String, String?>? styles) {
+    _stylesReference = styles.toExternalReference;
   }
 
   @JS('__t')
-  external ExternalDartReference<String?> tReference;
+  external ExternalDartReference<String?> _textReference;
 
-  // ignore: non_constant_identifier_names
-  String? get t__ {
-    return tReference.toDartObject;
+  @internal
+  String? get internalText {
+    return _textReference.toDartObject;
   }
 
-  // ignore: non_constant_identifier_names
-  set t__(String? t) {
-    tReference = t.toExternalReference;
+  @internal
+  set internalText(String? t) {
+    _textReference = t.toExternalReference;
   }
 
   @JS('__lazy')
-  external ExternalDartReference<Object?> lazyReference;
+  external ExternalDartReference<Object?> _lazyReference;
 
-  // ignore: non_constant_identifier_names
-  Object? get lazy__ {
-    return lazyReference.toDartObject;
+  @internal
+  Object? get internalLazy {
+    return _lazyReference.toDartObject;
   }
 
-  // ignore: non_constant_identifier_names
-  set lazy__(Object? lazy) {
-    lazyReference = lazy.toExternalReference;
+  @internal
+  set internalLazy(Object? lazy) {
+    _lazyReference = lazy.toExternalReference;
   }
 
   @JS('__click')
-  external ExternalDartReference<void Function(Event)?> clickReference;
+  @internal
+  external ExternalDartReference<void Function(Event)?> internalClickReference;
 
-  // ignore: non_constant_identifier_names
-  void Function(Event)? get click__ {
-    return clickReference.toDartObject;
+  @internal
+  void Function(Event)? get internalClick {
+    return internalClickReference.toDartObject;
   }
 
-  // ignore: non_constant_identifier_names
-  set click__(void Function(Event)? lazy) {
-    lazyReference = lazy.toExternalReference;
+  @internal
+  set internalClick(void Function(Event)? lazy) {
+    _lazyReference = lazy.toExternalReference;
   }
 }

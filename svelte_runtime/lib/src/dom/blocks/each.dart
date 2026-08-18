@@ -25,7 +25,7 @@ final class EachItem<T> {
 
   Object key;
 
-  Source<T> valueSource;
+  State<T> valueSource;
 
   AnimationManager? animationManager;
 
@@ -536,7 +536,7 @@ EachItem<T> createItem<T>(
   bool reactive = flags & Each.itemReactive != 0;
   bool mutable = flags & Each.itemImmutable == 0;
 
-  Source<T> valueSource;
+  State<T> valueSource;
 
   if (reactive) {
     // TODO(each): remove or ignore.
@@ -544,7 +544,7 @@ EachItem<T> createItem<T>(
     if (mutable) {
       throw UnsupportedError('Mutable values are not supported.');
     } else {
-      valueSource = source<T>(value);
+      valueSource = createState<T>(value);
     }
   } else {
     throw UnsupportedError('Non-reactive values are not supported.');

@@ -60,13 +60,13 @@ void setAttribute(
 ]) {
   Map<String, String?> attributes;
 
-  Map<String, String?>? currentAttributes = element.attributes__;
+  Map<String, String?>? currentAttributes = element.internalAttributes;
 
   if (currentAttributes != null) {
     attributes = currentAttributes;
   } else {
     attributes = <String, String?>{};
-    element.attributes__ = attributes;
+    element.internalAttributes = attributes;
   }
 
   if (hydrating) {
@@ -95,11 +95,11 @@ void setAttribute(
 
   if (attribute == 'style') {
     // reset styles to force style: directive to update.
-    element.styles__ = <String, String?>{};
+    element.internalSyles = <String, String?>{};
   }
 
   if (attribute == 'loading') {
-    element.lazy__ = value;
+    element.internalLazy = value;
   }
 
   if (value == null) {
@@ -130,8 +130,8 @@ bool sourceEqual(String source, String url) {
   return source == url || Uri.parse(source) == Uri.parse(url);
 }
 
-List<List<String>> splitSourceSet(String set) {
-  return set.split(',').map<List<String>>((source) {
+List<List<String>> splitSourceSet(String sourceSet) {
+  return sourceSet.split(',').map<List<String>>((source) {
     return source.trim().split(' ').where((part) {
       return part.isNotEmpty;
     }).toList();
