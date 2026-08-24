@@ -10,10 +10,10 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
-    var count = $.source<int>(0);
-    var doubled = $.derived<int>(() => count() * 2);
-    var quadrupled = $.derived<int>(() => doubled() * 2);
+  void call(Node anchor) {
+    var count = state<int>(0);
+    var doubled = derived<int>(() => count() * 2);
+    var quadrupled = derived<int>(() => doubled() * 2);
 
     void handleClick() {
       count.set(count() + 1);

@@ -7,8 +7,8 @@ base class App implements Component {
   static final root = $.template<HTMLButtonElement>('<button> </button>');
 
   @override
-  void create(Node anchor) {
-    var count = $.source<int>(0);
+  void call(Node anchor) {
+    var count = state<int>(0);
 
     void handleClick() {
       count.set(count() + 1);

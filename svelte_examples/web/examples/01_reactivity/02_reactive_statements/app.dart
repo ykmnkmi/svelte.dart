@@ -7,16 +7,16 @@ base class App implements Component {
   static final root = $.template<HTMLButtonElement>('<button> </button>');
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.push();
 
-    var count = $.source<int>(0);
+    var count = state<int>(0);
 
     void handleClick() {
       count.set(count() + 1);
     }
 
-    $.userEffect<void>(() {
+    effect<void>(() {
       if (count() >= 10) {
         window.alert('count is dangerously high!');
         count.set(9);
