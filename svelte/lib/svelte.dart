@@ -13,4 +13,5 @@ export 'package:svelte_runtime/runes.dart'
         effectPre,
         effectRoot,
         lateState,
+        prop,
         state;
