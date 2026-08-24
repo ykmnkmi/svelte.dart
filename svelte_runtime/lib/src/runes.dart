@@ -1,6 +1,11 @@
 import 'package:svelte_runtime/src/reactivity.dart' as reactivity;
 
-typedef Prop<T> = T Function();
+abstract interface class Prop<T> {
+  T call();
+}
+
+// Use to mark properties.
+external Prop<T> prop<T>([T defaultValue]);
 
 abstract interface class State<T> {
   T call();
