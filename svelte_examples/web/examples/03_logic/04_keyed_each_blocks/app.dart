@@ -5,17 +5,6 @@ import 'package:web/web.dart';
 
 import 'thing.dart';
 
-base class _Thing extends Thing {
-  _Thing(this._current);
-
-  final String Function() _current;
-
-  @override
-  String? get current {
-    return _current();
-  }
-}
-
 base class App implements Component {
   static final root = $.template<DocumentFragment>(
     '<button>Remove first thing</button> <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1em"><div><h2>Keyed</h2> <!> </div> <div><h2>Unkeyed</h2> <!></div></div>',
@@ -23,8 +12,8 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
-    var things = $.source<List<({String color, int id})>>([
+  void call(Node anchor) {
+    var things = state<List<({String color, int id})>>([
       (id: 1, color: 'darkblue'),
       (id: 2, color: 'indigo'),
       (id: 3, color: 'deeppink'),
@@ -50,7 +39,7 @@ base class App implements Component {
       item,
       i,
     ) {
-      _Thing(() => item().color).create(anchor);
+      Thing(current: $.Prop<String?>(() => item().color)).call(anchor);
     });
 
     $.reset(div1);
@@ -59,7 +48,7 @@ base class App implements Component {
     var node1 = $.sibling<Comment>($.child(div2), 2);
 
     $.eachBlock(node1, 17, () => things(), $.index, (anchor, item, i) {
-      _Thing(() => item().color).create(anchor);
+      Thing(current: $.Prop<String?>(() => item().color)).call(anchor);
     });
 
     $.reset(div2);

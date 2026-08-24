@@ -1,14 +1,14 @@
 <script type="text/x-dart">
   // `current` is updated whenever the prop value changes...
-  external String current;
+  var current = prop<String?>();
 
   // ...but `initial` is fixed upon initialisation
-  String initial = current;
+  var initial = current();
 </script>
 
 <p>
   <span style="background-color: {initial}">initial</span>
-  <span style="background-color: {current}">current</span>
+  <span style="background-color: {current()}">current</span>
 </p>
 
 <style>

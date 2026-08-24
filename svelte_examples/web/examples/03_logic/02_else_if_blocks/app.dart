@@ -13,7 +13,7 @@ base class App implements Component {
   App();
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     var x = 7;
 
     var fragment = $.comment();

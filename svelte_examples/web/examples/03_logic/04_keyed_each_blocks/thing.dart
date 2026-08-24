@@ -8,12 +8,12 @@ base class Thing implements Component {
     '<p><span class="svelte-671r1c">initial</span> <span class="svelte-671r1c">current</span></p>',
   );
 
-  Thing({this.current});
+  Thing({this.current = const $.ValueProp<String?>(null)});
 
-  String? current;
+  Prop<String?> current;
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.appendStyles(anchor, 'svelte-671r1c', '''
   span.svelte-671r1c {
     display: inline-block;
@@ -25,7 +25,7 @@ base class Thing implements Component {
     color: white;
   }''');
 
-    var initial = current;
+    var initial = current();
 
     var p = root();
     var span = $.child<HTMLSpanElement>(p);
@@ -37,7 +37,7 @@ base class Thing implements Component {
     $.reset(p);
 
     $.templateEffect(() {
-      $.setAttribute(span1, 'style', 'background-color: $current');
+      $.setAttribute(span1, 'style', 'background-color: ${current() ?? ""}');
     });
 
     $.append(anchor, p);

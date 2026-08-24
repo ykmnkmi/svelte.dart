@@ -1,9 +1,7 @@
 <script type="text/x-dart">
-  import 'package:svelte/svelte.dart';
-
   import 'user.dart';
 
-  var user = state<User>(User(loggedIn: false));
+  var user = User(loggedIn: false);
 
   void toggle() {
     user.loggedIn = !user.loggedIn;

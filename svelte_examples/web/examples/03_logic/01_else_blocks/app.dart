@@ -13,13 +13,11 @@ base class App implements Component {
   static final root2 = $.template<HTMLButtonElement>('<button>Log in</button>');
 
   @override
-  void create(Node anchor) {
-    var user = $.source<User>(User(loggedIn: false));
+  void call(Node anchor) {
+    var user = User(loggedIn: false);
 
     void toggle() {
-      user.update((user) {
-        user.loggedIn = !user.loggedIn;
-      });
+      user.loggedIn = !user.loggedIn;
     }
 
     var fragment = $.comment();
@@ -41,7 +39,7 @@ base class App implements Component {
       }
 
       $.ifBlock(node, (render) {
-        if (user().loggedIn) {
+        if (user.loggedIn) {
           render(consequent);
         } else {
           render(alternate, false);

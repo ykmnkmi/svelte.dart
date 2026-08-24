@@ -13,7 +13,7 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     var cats = [
       (id: 'J---aiyznGQ', name: 'Keyboard Cat'),
       (id: 'z_AbfPXTKms', name: 'Maru'),

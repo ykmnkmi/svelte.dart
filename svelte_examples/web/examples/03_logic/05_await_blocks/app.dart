@@ -20,12 +20,12 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.push();
 
-    Future<int> getRandomNumber() {
-      var random = Random();
+    var random = Random();
 
+    Future<int> getRandomNumber() {
       if (random.nextBool()) {
         return Future<int>.value(random.nextInt(0xFF));
       }
@@ -33,7 +33,7 @@ base class App implements Component {
       return Future<int>.error(StateError('No luck!'));
     }
 
-    var future = $.source<Future<int>>(getRandomNumber());
+    var future = state<Future<int>>(getRandomNumber());
 
     void handleClick() {
       future.set(getRandomNumber());

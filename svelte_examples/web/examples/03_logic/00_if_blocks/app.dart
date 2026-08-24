@@ -15,13 +15,11 @@ base class App implements Component {
   static final root = $.template<DocumentFragment>('<!> <!>', 1);
 
   @override
-  void create(Node anchor) {
-    var user = $.source<User>(User(loggedIn: false));
+  void call(Node anchor) {
+    var user = User(loggedIn: false);
 
     void toggle() {
-      user.update((user) {
-        user.loggedIn = !user.loggedIn;
-      });
+      user.loggedIn = !user.loggedIn;
     }
 
     var fragment = root();
@@ -36,7 +34,7 @@ base class App implements Component {
       }
 
       $.ifBlock(node, (render) {
-        if (user().loggedIn) {
+        if (user.loggedIn) {
           render(consequent);
         }
       });
@@ -53,7 +51,7 @@ base class App implements Component {
       }
 
       $.ifBlock(node1, (render) {
-        if (!user().loggedIn) {
+        if (!user.loggedIn) {
           render(consequent1);
         }
       });

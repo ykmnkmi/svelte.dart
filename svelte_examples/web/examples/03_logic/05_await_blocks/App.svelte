@@ -3,9 +3,9 @@
 
   import 'package:svelte/svelte.dart';
 
+  var random = Random();
+  
   Future<int> getRandomNumber() {
-    var random = Random();
-
     if (random.nextBool()) {
       return Future<int>.value(random.nextInt(0xFF));
     }
@@ -16,7 +16,7 @@
   var future = state<Future<int>>(getRandomNumber());
 
   void handleClick() {
-    future = getRandomNumber();
+    future.set(getRandomNumber());
   }
 </script>
 
@@ -25,7 +25,7 @@
 {#await future}
   <p>...waiting</p>
 {:then number}
-  <p>The number is {number}</p>
+  <p>The number is {number()}</p>
 {:catch error}
-  <p style="color: red">{error}</p>
+  <p style="color: red">{error()}</p>
 {/await}
