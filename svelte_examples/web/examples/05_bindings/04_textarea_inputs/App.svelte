@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   import 'package:markdown/markdown.dart' show markdownToHtml;
   import 'package:svelte/svelte.dart';  
   

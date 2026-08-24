@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   external String name;
 
   external int version;

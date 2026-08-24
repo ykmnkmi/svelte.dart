@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   external Object answer = 'a mystery';
 </script>
 

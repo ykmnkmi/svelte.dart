@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   // `current` is updated whenever the prop value changes...
   external String current;
 

@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   import 'package:svelte/svelte.dart';
 
   var count = state<int>(1);

@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   var cats = [
     (id: 'J---aiyznGQ', name: 'Keyboard Cat'),
     (id: 'z_AbfPXTKms', name: 'Maru'),

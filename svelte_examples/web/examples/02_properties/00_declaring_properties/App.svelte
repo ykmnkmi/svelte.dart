@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   import 'Nested.svelte';
 </script>
 

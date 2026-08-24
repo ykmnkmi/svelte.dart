@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   import 'package:web/web.dart';
 
   import 'CustomButton.svelte';

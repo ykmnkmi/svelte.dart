@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   external void Function({required String text}) onMessage;
 
   void sayHello() {

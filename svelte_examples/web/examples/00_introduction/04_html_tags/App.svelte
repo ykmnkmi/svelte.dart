@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   var string = `here's some <strong>HTML!!!</strong>`;
 </script>
 

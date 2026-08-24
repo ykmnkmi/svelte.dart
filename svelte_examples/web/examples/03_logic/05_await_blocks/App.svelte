@@ -1,4 +1,4 @@
-<script>
+<script type="text/x-dart">
   import 'dart:math';
 
   import 'package:svelte/svelte.dart';
