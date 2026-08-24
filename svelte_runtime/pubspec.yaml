@@ -1,6 +1,6 @@
 name: svelte_runtime
 description: SvelteDart Runtime.
-version: 1.0.0-dev.19
+version: 1.0.0-dev.20
 repository: https://github.com/ykmnkmi/svelte.dart
 
 resolution: workspace

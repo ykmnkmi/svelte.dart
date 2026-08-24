@@ -5,7 +5,9 @@ abstract interface class Prop<T> {
 }
 
 // Use to mark properties.
-external Prop<T> prop<T>([T defaultValue]);
+Prop<T> prop<T>([T? defaultValue]) {
+  throw UnsupportedError('Should be removed from generated components');
+}
 
 abstract interface class State<T> {
   T call();
