@@ -1,5 +1,7 @@
 <script type="text/x-dart">
-  external Object? answer;
+  import 'package:svelte/svelte.dart';
+
+  var answer = prop<int?>();
 </script>
 
-<p>The answer is {answer}</p>
+<p>The answer is {answer()}</p>

@@ -6,19 +6,19 @@ import 'package:web/web.dart';
 base class Nested implements Component {
   static final root = $.template<HTMLParagraphElement>('<p> </p>');
 
-  Nested({this.answer});
+  Nested({this.answer = const $.ValueProp<int?>(null)});
 
-  int? answer;
+  final Prop<int?> answer;
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     var p = root();
     var text = $.child<Text>(p);
 
     $.reset(p);
 
     $.templateEffect(() {
-      $.setText(text, 'The answer is ${answer ?? ""}');
+      $.setText(text, 'The answer is ${answer()}');
     });
 
     $.append(anchor, p);

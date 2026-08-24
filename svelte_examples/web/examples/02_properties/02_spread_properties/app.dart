@@ -1,18 +1,17 @@
+// ignore: library_prefixes
+import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
-import 'info.dart';
-
 base class App implements Component {
-  @override
-  void create(Node anchor) {
-    var pkg = <Symbol, Object?>{
-      #name: 'svelte',
-      #version: 5,
-      #speed: 'blazing',
-      #website: Uri.parse('https://svelte.dev'),
-    };
+  static final root = $.template<HTMLParagraphElement>(
+    '<p>No spread support!</p>',
+  );
 
-    (Function.apply(Info.new, const <Never>[], pkg) as Info).create(anchor);
+  @override
+  void call(Node anchor) {
+    var p = root();
+
+    $.append(anchor, p);
   }
 }

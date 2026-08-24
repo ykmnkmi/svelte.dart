@@ -9,15 +9,15 @@ base class App implements Component {
   static final root = $.template<DocumentFragment>('<!> <!>', 1);
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     var fragment = root();
     var node = $.firstChild<Comment>(fragment);
 
-    Nested(answer: 42).create(node);
+    Nested(answer: $.ValueProp<Object>(42)).call(node);
 
     var node1 = $.sibling<Comment>(node, 2);
 
-    Nested().create(node1);
+    Nested().call(node1);
     $.append(anchor, fragment);
   }
 }

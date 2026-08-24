@@ -1,3 +1,5 @@
+// ignore: library_prefixes
+import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
@@ -5,7 +7,7 @@ import 'nested.dart';
 
 base class App implements Component {
   @override
-  void create(Node anchor) {
-    Nested(answer: 42).create(anchor);
+  void call(Node anchor) {
+    Nested(answer: $.ValueProp<int?>(42)).call(anchor);
   }
 }
