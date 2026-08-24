@@ -12,7 +12,7 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.appendStyles(anchor, 'svelte-urs9w7', """
   p.svelte-urs9w7 {
     color: purple;
@@ -23,7 +23,7 @@ base class App implements Component {
     var fragment = root();
     var node = $.sibling<Comment>($.firstChild(fragment), 2);
 
-    Nested().create(node);
+    Nested().call(node);
     $.append(anchor, fragment);
   }
 }

@@ -9,7 +9,7 @@ base class Nested implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     var p = root();
 
     $.append(anchor, p);

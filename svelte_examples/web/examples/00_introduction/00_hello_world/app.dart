@@ -7,7 +7,7 @@ base class App implements Component {
   static final root = $.template<HTMLHeadingElement>('<h1></h1>');
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     var name = 'world';
 
     var h1 = root();

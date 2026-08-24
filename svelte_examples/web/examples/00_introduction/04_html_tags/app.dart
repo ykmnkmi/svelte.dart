@@ -7,7 +7,7 @@ base class App implements Component {
   static final root = $.template<HTMLParagraphElement>('<p><!></p>');
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     var string = "here's some <strong>HTML!!!</strong>";
 
     var p = root();

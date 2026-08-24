@@ -7,7 +7,7 @@ base class App implements Component {
   static final root = $.template<HTMLImageElement>('<img>');
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     var src = '/tutorial/image.gif';
     var name = 'Rick Astley';
 
