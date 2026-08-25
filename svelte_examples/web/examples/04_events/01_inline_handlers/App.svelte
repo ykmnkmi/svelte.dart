@@ -7,9 +7,9 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div onmousemove={(MouseEvent event) {
-  m = [event.clientX, event.clientY];
+  m.set([event.clientX, event.clientY]);
 }}>
-  The mouse position is {m[0]} x {m[1]}
+  The mouse position is {m()[0]} x {m()[1]}
 </div>
 
 <style>

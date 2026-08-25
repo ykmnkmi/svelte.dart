@@ -13,7 +13,7 @@ base class CustomButton implements Component {
   void Function(Event event) onClick;
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.appendStyles(anchor, 'svelte-hg07jm', '''
   button.svelte-urs9w7 {
     height: 4rem;

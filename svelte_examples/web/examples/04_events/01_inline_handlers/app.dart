@@ -9,14 +9,14 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.appendStyles(anchor, 'svelte-1c44y5p', '''
   div.svelte-1c44y5p {
     width: 100%;
     height: 100%;
   }''');
 
-    var m = $.source<List<int>>(<int>[0, 0]);
+    var m = state<List<int>>(<int>[0, 0]);
 
     var div = root();
     var text = $.child<Text>(div);
@@ -28,7 +28,7 @@ base class App implements Component {
     });
 
     $.event<MouseEvent>('mousemove', div, (MouseEvent event) {
-      m.set(<int>[event.clientX, event.clientY]);
+      m.set([event.clientX, event.clientY]);
     });
 
     $.append(anchor, div);

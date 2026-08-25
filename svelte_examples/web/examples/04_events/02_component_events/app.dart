@@ -1,3 +1,5 @@
+// ignore: library_prefixes
+import 'package:svelte/src/internal.dart' as $;
 import 'package:svelte/svelte.dart';
 import 'package:web/web.dart';
 
@@ -7,11 +9,15 @@ base class App implements Component {
   App();
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     void handleMessage({required String text}) {
       window.alert(text);
     }
 
-    Inner(onMessage: handleMessage).create(anchor);
+    Inner(
+      onMessage: $.ValueProp<void Function({required String text})>(
+        handleMessage,
+      ),
+    ).call(anchor);
   }
 }

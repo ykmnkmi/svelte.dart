@@ -1,10 +1,11 @@
 <script type="text/x-dart">
+  import 'package:svelte/svelte.dart';
   import 'package:web/web.dart';
 
-  external void Function(Event event) onClick;
+  var onClick = prop<void Function(Event event)>();
 </script>
 
-<button {onclick}>Click me</button>
+<button onclick={onClick()}>Click me</button>
 
 <style>
   button {

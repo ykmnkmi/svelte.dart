@@ -9,14 +9,14 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.appendStyles(anchor, 'svelte-1kuj9kb', '''
   div.svelte-1kuj9kb {
     width: 100%;
     height: 100%;
   }''');
 
-    var m = $.source<List<int>>(<int>[0, 0]);
+    var m = state<List<int>>(<int>[0, 0]);
 
     void handleMouseMove(MouseEvent event) {
       m.update((m) {

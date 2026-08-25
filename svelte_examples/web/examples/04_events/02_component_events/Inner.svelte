@@ -1,8 +1,10 @@
 <script type="text/x-dart">
-  external void Function({required String text}) onMessage;
+  import 'package:svelte/svelte.dart';
+
+  var onMessage = prop<void Function({required String text})>();
 
   void sayHello() {
-    onMessage(text: 'Hello!');
+    onMessage()(text: 'Hello!');
   }
 </script>
 

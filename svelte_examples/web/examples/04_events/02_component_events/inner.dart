@@ -10,14 +10,14 @@ base class Inner implements Component {
 
   Inner({required this.onMessage});
 
-  void Function({required String text}) onMessage;
+  Prop<void Function({required String text})> onMessage;
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.push();
 
     void sayHello() {
-      onMessage(text: 'Hello!');
+      onMessage()(text: 'Hello!');
     }
 
     var button = root();

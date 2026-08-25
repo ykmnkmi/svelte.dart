@@ -4,21 +4,12 @@ import 'package:web/web.dart';
 import 'inner.dart';
 
 base class Outer implements Component {
-  Outer({required void Function({required String text}) onMessage})
-    : _inner = Inner(onMessage: onMessage);
+  Outer({required this.onMessage});
 
-  final Inner _inner;
-
-  void Function({required String text}) get onMessage {
-    return _inner.onMessage;
-  }
-
-  set onMessage(void Function({required String text}) onMessage) {
-    _inner.onMessage = onMessage;
-  }
+  Prop<void Function({required String text})> onMessage;
 
   @override
-  void create(Node anchor) {
-    _inner.create(anchor);
+  void call(Node anchor) {
+    Inner(onMessage: onMessage).call(anchor);
   }
 }
