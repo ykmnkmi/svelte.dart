@@ -7,7 +7,13 @@ builders:
     build_to: source
     build_extensions:
       .svelte:
-        - .svelte.html
-        - .svelte.instance.dart
-        - .svelte.module.dart
         - .svelte.dart
+  svelte_dart_builder:
+    import: package:svelte_builder/svelte_builder.dart
+    builder_factories:
+      - svelteDartBuilder
+    auto_apply: dependents
+    build_to: source
+    build_extensions:
+      .svelte.dart:
+        - .dart

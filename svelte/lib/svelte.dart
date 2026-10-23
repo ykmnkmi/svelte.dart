@@ -1,3 +1,5 @@
+import 'package:meta/meta_meta.dart';
+
 export 'package:svelte/src/lifecycle.dart';
 
 export 'package:svelte_runtime/component.dart' show Component;
@@ -17,3 +19,8 @@ export 'package:svelte_runtime/runes.dart'
         lateState,
         prop,
         state;
+
+@Target({TargetKind.classType, TargetKind.function})
+final class Svelte {
+  const Svelte();
+}

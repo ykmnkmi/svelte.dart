@@ -28,3 +28,7 @@ void onDestroy(void Function() callback) {
     };
   });
 }
+
+abstract interface class OnMount {}
+
+abstract interface class OnDestroy {}

@@ -1,56 +1,35 @@
 // ignore_for_file: avoid_print
 library;
 
-import 'dart:async' show Future, runZonedGuarded;
+import 'dart:async';
 
-import 'package:build/build.dart'
-    show AssetId, Builder, BuilderOptions, MultiPackageAssetReader, runBuilder;
-import 'package:build_resolvers/build_resolvers.dart' show AnalyzerResolvers;
-import 'package:build_test/build_test.dart'
-    show
-        InMemoryAssetReader,
-        InMemoryAssetWriter,
-        MultiAssetReader,
-        PackageAssetReader,
-        RecordingAssetWriter,
-        WrittenAssetReader;
-import 'package:logging/logging.dart' show Level, Logger;
-import 'package:stack_trace/stack_trace.dart' show Trace;
-import 'package:svelte_ast/svelte_ast.dart' show ParseError;
+import 'package:build/build.dart';
+import 'package:build_test/build_test.dart';
+import 'package:stack_trace/stack_trace.dart';
+import 'package:svelte_ast/svelte_ast.dart';
 import 'package:svelte_builder/svelte_builder.dart';
 
-final Map<AssetId, String> sourceAssets = <AssetId, String>{
-  AssetId('app', 'web/app.svelte'): '''
+final Map<String, String> sourceAssets = <String, String>{
+  'app|lib/app.svelte': '''
 <!-- app.svelte -->
-<script context="module">
-  const duration = Duration(seconds: 1);
-</script>
 <script>
-  // imports
+  import 'dart:async';
+
   import 'package:svelte/svelte.dart';
 
-  // properties
-  external int step = 1;
+  var step = prop<int>(1);
 
-  // body
   var count = state<int>(0);
-  var doubled = derived<int>(count * 2);
-  var quadrupled = derived<int>(doubled * 2);
-
-	effect(() {
-    if (count >= 10) {
-      print('count is dangerously high!');
-      count = 9;
-    }
-  });
+  var doubled = derived<int>(() => count() * 2);
+  var quadrupled = derived<int>(() => doubled() * 2);
 
   void handleClick() {
-    count += 1;
+    count.set(count() + step());
   }
 
   onMount(() {
-    var timer = Timer.periodic(duration, (timer) {
-      count += 1;
+    var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      count.increment();
     });
 
     return () {
@@ -59,18 +38,13 @@ final Map<AssetId, String> sourceAssets = <AssetId, String>{
   });
 </script>
 
-<button on:click={handleClick}>
-  Clicked {count} {count == 1 ? 'time' : 'times'}
+<button onclick={handleClick}>
+  Clicked {count()} {count() == 1 ? 'time' : 'times'}
 </button>
 
-<p>{count} * 2 = {doubled}</p>
-<p>{doubled} * 2 = {quadrupled}</p>
-''',
+<p>{count()} * 2 = {doubled()}</p>
+<p>{doubled()} * 2 = {quadrupled()}</p>''',
 };
-
-final logger = Logger.root
-  ..level = Level.ALL
-  ..onRecord.listen(print);
 
 Future<void> main() async {
   await runZonedGuarded<Future<void>>(run, (error, stackTrace) {
@@ -85,70 +59,49 @@ Future<void> main() async {
   });
 }
 
-Future<void> build(
-  Builder builder,
-  Set<AssetId> assets, {
-  required String rootPackage,
-  required MultiPackageAssetReader reader,
-  required RecordingAssetWriter writer,
-}) async {
-  assets.add(AssetId(rootPackage, r'web/$web$'));
-
-  AnalyzerResolvers resolvers = AnalyzerResolvers.sharedInstance;
-
-  for (AssetId asset in assets) {
-    await runBuilder(
-      builder,
-      <AssetId>{asset},
-      reader,
-      writer,
-      resolvers,
-      logger: logger,
-    );
-  }
-}
-
-void printAssets(Map<AssetId, List<int>> assets, [Set<AssetId>? written]) {
-  if (written != null) {
-    assets.forEach((asset, value) {
-      if (written.contains(asset)) {
+void printAssets(ReaderWriterTesting testing, [Set<AssetId>? written]) {
+  if (written == null) {
+    for (AssetId asset in testing.assetsWritten) {
+      if (testing.exists(asset)) {
         print('-- ${asset.package}:${asset.path}');
-        print(String.fromCharCodes(value));
+        print(testing.readString(asset));
       }
-    });
+    }
   } else {
-    assets.forEach((asset, value) {
-      print('-- ${asset.package}:${asset.path}');
-      print(String.fromCharCodes(value));
-    });
+    for (AssetId asset in testing.assetsWritten) {
+      if (written.contains(asset)) {
+        if (testing.exists(asset)) {
+          print('-- ${asset.package}:${asset.path}');
+          print(testing.readString(asset));
+        }
+      }
+    }
   }
 }
 
 Future<void> run() async {
-  PackageAssetReader isolateReader = await PackageAssetReader.currentIsolate();
-  InMemoryAssetReader inMemoryReader = InMemoryAssetReader(rootPackage: 'app');
-  sourceAssets.forEach(inMemoryReader.cacheStringAsset);
+  TestReaderWriter testReaderWriter = TestReaderWriter(rootPackage: 'app');
+  await testReaderWriter.testing.loadIsolateSources();
 
-  InMemoryAssetWriter inMemoryWriter = InMemoryAssetWriter();
-  WrittenAssetReader writtenReader = WrittenAssetReader(inMemoryWriter);
-
-  List<MultiPackageAssetReader> readers = [
-    isolateReader,
-    inMemoryReader,
-    writtenReader,
-  ];
-
-  MultiAssetReader multiReader = MultiAssetReader(readers);
+  sourceAssets.forEach((String id, String contents) {
+    testReaderWriter.testing.writeString(makeAssetId(id), contents);
+  });
 
   print('> Transform '.padRight(80, '='));
 
-  await build(
+  await testBuilder(
     transformer(BuilderOptions.empty),
-    <AssetId>{AssetId('app', 'web/app.svelte')},
+    sourceAssets,
+    generateFor: <String>{'app|lib/app.svelte'},
     rootPackage: 'app',
-    reader: multiReader,
-    writer: inMemoryWriter,
+    onLog: print,
+    readerWriter: testReaderWriter,
+    flattenOutput: true,
   );
 
-  printAssets(inMemoryWriter.assets);
+  printAssets(testReaderWriter.testing, <AssetId>{
+    makeAssetId('app|lib/app.svelte.dart'),
+  });
 }
+
+typedef Props = ({int Function() count});
