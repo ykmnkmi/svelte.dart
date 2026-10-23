@@ -14,6 +14,7 @@ import 'package:svelte_runtime/src/tasks.dart';
 import 'package:svelte_runtime/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
+// TODO(bindings.value): make it sound.
 void bindValue(
   HTMLElement element,
   Object? Function() get,
@@ -53,7 +54,7 @@ void bindValue(
       // If defaultValue is set, then value == defaultValue.
       // TODO(S6): remove input.value check and set to empty string?
       untrack<Object?>(get) == null && input.value.isNotEmpty) {
-    set(isNumberLike(input) ? toNumber(input.value) : input.value);
+    set(isNumberLike(input) ? input.valueAsNumber : input.value);
   }
 
   renderEffect<void>(() {
@@ -259,8 +260,8 @@ bool isNumberLike(HTMLInputElement input) {
   return type == 'number' || type == 'range';
 }
 
-int? toNumber(String value) {
-  return value == '' ? null : int.parse(value);
+num? toNumber(String value) {
+  return value == '' ? null : num.parse(value);
 }
 
 void bindFiles(

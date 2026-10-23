@@ -1,10 +1,20 @@
 import 'package:svelte_runtime/src/reactivity.dart' as reactivity;
 
+// TODO(runes): Revisit examples with props. Try switch to `typedef`s.
+abstract interface class Bindable<T> implements Prop<T> {
+  void set(T value);
+}
+
+Bindable<T> bindable<T>([T? defaultValue]) {
+  throw UnsupportedError('Should be removed from generated components');
+}
+
+// TODO(runes): Revisit examples with props. Try switch to `typedef`s.
 abstract interface class Prop<T> {
   T call();
 }
 
-// Use to mark properties.
+// TODO(runes): Add `callback` function for callable props.
 Prop<T> prop<T>([T? defaultValue]) {
   throw UnsupportedError('Should be removed from generated components');
 }

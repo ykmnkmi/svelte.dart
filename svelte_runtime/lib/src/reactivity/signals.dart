@@ -226,7 +226,7 @@ final class Derived<T> extends Reaction<T>
 
   @override
   T get value {
-    assert(untypedValue != #uninitialized);
+    assert(untypedValue != #uninitialized, 'Uninitialized');
     return untypedValue as T;
   }
 
@@ -287,25 +287,14 @@ final class State<T> extends Signal with Value<T> implements runes.State<T> {
 final class LateState<T> extends Signal
     with Value<T>
     implements runes.State<T> {
-  LateState({required super.flags}) : untypedValue = T;
-
-  Object? untypedValue;
+  LateState({required super.flags});
 
   @override
-  T get value {
-    assert(untypedValue != T, 'Uninitialized');
-    return untypedValue as T;
-  }
+  late T value;
 
   @override
-  set value(T value) {
-    untypedValue = value;
-  }
-
-  @override
-  bool equals(Object? value) {
-    assert(untypedValue != T, 'Uninitialized');
-    return untypedValue == value;
+  bool equals(T value) {
+    return this.value == value;
   }
 
   @override
@@ -314,8 +303,8 @@ final class LateState<T> extends Signal
       checkMutation(this);
     }
 
-    if (untypedValue != newValue) {
-      untypedValue = newValue;
+    if (flags == 0 || value != newValue) {
+      value = newValue;
       markForCheck();
     }
   }
