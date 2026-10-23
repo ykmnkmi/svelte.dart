@@ -1,33 +1,32 @@
 <script type="text/x-dart">
   import 'package:svelte/svelte.dart';
 
-  var todos = state<List<ToDo>>([
-    ToDo(done: false, text: 'finish Svelte tutorial'),
-    ToDo(done: false, text: 'build an app'),
-    ToDo(done: false, text: 'world domination'),
+  var tasks = state<List<Task>>([
+    Task('finish Svelte tutorial', false),
+    Task('build an app', false),
+    Task('world domination', false),
   ]);
 
-  void add {
-    todos = <ToDo>[...todos(), ToDo(done: false, text: '')];
+  void add() {
+    tasks = <Task>[...tasks(), Task('', false)];
   }
 
   void clear() {
-    todos = todos.where((todo) => !todo.done).toList();
+    tasks = tasks.where((task) => !task.done()).toList();
   }
 
   var remaining = derivedBy<int>(() {
-    var remaining = todos.where((todo) => !todo.done);
+    var remaining = tasks().where((task) => !task.done());
     return remaining.length;
   });
 </script>
 
 <h1>Todos</h1>
 
-{#each todos as todo}
+{#each tasks as task}
   <div>
-    <input type="checkbox" bind:checked={todo.done} />
-
-    <input placeholder="What needs to be done?" bind:value={todo.text} disabled={todo.done} />
+    <input type="checkbox" bind:checked={task().done} />
+    <input placeholder="What needs to be done?" bind:value={task().text} disabled={task().done()} />
   </div>
 {/each}
 

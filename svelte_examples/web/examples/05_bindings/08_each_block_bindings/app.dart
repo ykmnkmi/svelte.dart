@@ -15,32 +15,32 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.push();
 
-    var todos = $.source<List<ToDo>>([
-      ToDo(done: false, text: 'finish Svelte tutorial'),
-      ToDo(done: false, text: 'build an app'),
-      ToDo(done: false, text: 'world domination'),
+    var tasks = state<List<Task>>([
+      Task('finish Svelte tutorial', false),
+      Task('build an app', false),
+      Task('world domination', false),
     ]);
 
     void add() {
-      todos.set(<ToDo>[...todos(), ToDo(done: false, text: '')]);
+      tasks.set(<Task>[...tasks(), Task('', false)]);
     }
 
     void clear() {
-      todos.set(todos().where((todo) => !todo.done).toList());
+      tasks.set(tasks().where((task) => !task.done()).toList());
     }
 
-    var remaining = $.derived<int>(() {
-      var remaining = todos().where((todo) => !todo.done);
+    var remaining = derived<int>(() {
+      var remaining = tasks().where((task) => !task.done());
       return remaining.length;
     });
 
     var fragment = root();
     var node = $.sibling<Comment>($.firstChild(fragment), 2);
 
-    $.eachBlock<ToDo>(node, 17, todos.call, $.index, (anchor, todo, i) {
+    $.eachBlock<Task>(node, 17, tasks.call, $.index, (anchor, task, i) {
       var div = root1();
       var input = $.child<HTMLInputElement>(div);
 
@@ -53,19 +53,15 @@ base class App implements Component {
       $.reset(div);
 
       $.templateEffect(() {
-        input1.disabled = todo().done;
+        input1.disabled = task().done();
       });
 
-      $.bindChecked(input, () => todo().done, (value) {
-        todo.update((todo) {
-          todo.done = value;
-        });
+      $.bindChecked(input, () => task().done(), (value) {
+        task().done.set(value);
       });
 
-      $.bindValue(input1, () => todo().text, (value) {
-        todo.update((todo) {
-          todo.text = value as String;
-        });
+      $.bindValue(input1, () => task().text(), (value) {
+        task().text.set(value as String);
       });
 
       $.append(anchor, div);

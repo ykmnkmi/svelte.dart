@@ -8,6 +8,6 @@ import 'nested.dart';
 base class App implements Component {
   @override
   void call(Node anchor) {
-    Nested(answer: $.ValueProp<int?>(42)).call(anchor);
+    Nested(answer: $.DefaultProp<int?>(42)).call(anchor);
   }
 }

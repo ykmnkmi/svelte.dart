@@ -40,19 +40,19 @@
 
 {#each menu as flavour}
   <label>
-    <input type="checkbox" bind:group={flavours} value={flavour} />
-    {flavour}
+    <input type="checkbox" bind:group={flavours} value={flavour()} />
+    {flavour()}
   </label>
 {/each}
 
-{#if flavours.isEmpty}
+{#if flavours().isEmpty}
   <p>Please select at least one flavour</p>
-{:else if flavours.length > scoops}
+{:else if flavours().length > scoops()}
   <p>Can't order more flavours than scoops!</p>
 {:else}
   <p>
-    You ordered {scoops}
-    {scoops == 1 ? 'scoop' : 'scoops'}
-    of {join(flavours)}
+    You ordered {scoops()} 
+    {scoops() == 1 ? 'scoop' : 'scoops'}
+    of {join(flavours())}
   </p>
 {/if}

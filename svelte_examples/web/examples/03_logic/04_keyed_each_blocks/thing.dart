@@ -8,7 +8,7 @@ base class Thing implements Component {
     '<p><span class="svelte-671r1c">initial</span> <span class="svelte-671r1c">current</span></p>',
   );
 
-  Thing({this.current = const $.ValueProp<String?>(null)});
+  Thing({this.current = const $.DefaultProp<String?>(null)});
 
   Prop<String?> current;
 

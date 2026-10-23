@@ -13,7 +13,7 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.push();
     $.appendStyles(anchor, 'svelte-11bzk4c', '''
   div.svelte-11bzk4c {
@@ -70,10 +70,10 @@ base class App implements Component {
   }''');
 
     // These values are bound to properties of the video
-    var time = $.source<double>(0);
-    var duration = $.source<double?>(null);
-    var paused = $.source<bool>(true);
-    var showControls = $.source<bool>(true);
+    var time = state<double>(0);
+    var duration = state<double?>(null);
+    var paused = state<bool>(true);
+    var showControls = state<bool>(true);
     Timer? showControlsTimer;
     // Used to track time of last mouse down event
     DateTime? lastMouseDown;
@@ -95,7 +95,7 @@ base class App implements Component {
         return;
       }
 
-      if (event.type != 'touchmove' && !(event.buttons & 1 == 1)) {
+      if (event.type != 'touchmove' && event.buttons & 1 != 1) {
         // Mouse not down.
         return;
       }
@@ -179,7 +179,7 @@ base class App implements Component {
       );
       $.setElementValue(
         progress,
-        duration() == null ? 0 : time() / duration()!,
+        duration() == null || duration()!.isNaN ? 0 : time() / duration()!,
       );
       $.setText(
         text1,

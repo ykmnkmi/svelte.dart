@@ -10,8 +10,8 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
-    var name = $.source<String>('');
+  void call(Node anchor) {
+    var name = state<String>('');
 
     var fragment = root();
     var input = $.firstChild<HTMLInputElement>(fragment);

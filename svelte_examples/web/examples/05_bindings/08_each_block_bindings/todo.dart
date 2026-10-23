@@ -1,7 +1,11 @@
-final class ToDo {
-  ToDo({required this.done, required this.text});
+import 'package:svelte/svelte.dart';
 
-  bool done;
+final class Task {
+  Task(String text, bool done)
+    : text = state<String>(text),
+      done = state<bool>(done);
 
-  String text;
+  State<String> text;
+
+  State<bool> done;
 }

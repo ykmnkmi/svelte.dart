@@ -13,7 +13,7 @@ base class App implements Component {
     var fragment = root();
     var node = $.firstChild<Comment>(fragment);
 
-    Nested(answer: $.ValueProp<Object>(42)).call(node);
+    Nested(answer: $.DefaultProp<Object>(42)).call(node);
 
     var node1 = $.sibling<Comment>(node, 2);
 

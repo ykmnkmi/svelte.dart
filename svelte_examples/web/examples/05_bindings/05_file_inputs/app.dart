@@ -15,12 +15,12 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.push();
 
-    var files = $.source<FileList?>(null);
+    var files = state<FileList?>(null);
 
-    $.userEffect<void>(() {
+    effect<void>(() {
       if (files() != null) {
         // Note that `files` is of type `FileList`, not an Array:
         // https://developer.mozilla.org/en-US/docs/Web/API/FileList

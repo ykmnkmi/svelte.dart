@@ -13,7 +13,7 @@
 
   void handleSubmit(Event event) {
     event.preventDefault();
-    window.alert('Answered question ${selected!.id} ${selected!.text} with "${answer}".');
+    window.alert('Answered question ${selected()!.id} ${selected()!.text} with "${answer()}".');
   }
 </script>
 
@@ -21,8 +21,8 @@
 
 <form onsubmit={handleSubmit}>
   <select bind:value={selected} onchange={() => answer = ''}>
-    {#each questions as question}
-      <option value={question}>
+    {#each questions() as question}
+      <option value={question()}>
         {question.text}
       </option>
     {/each}
@@ -30,10 +30,10 @@
 
   <input bind:value={answer} />
 
-  <button disabled={!answer} type="submit">Submit</button>
+  <button disabled={!answer()} type="submit">Submit</button>
 </form>
 
-<p>selected question {selected != null ? selected.id : '[waiting...]'}</p>
+<p>selected question {selected() != null ? selected()!.id : '[waiting...]'}</p>
 
 <style>
   input {

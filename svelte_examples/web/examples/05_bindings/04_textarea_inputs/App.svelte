@@ -7,7 +7,7 @@
 
 <textarea bind:value={text}></textarea>
 
-{@html markdownToHtml(text, inlineOnly: true)}
+{@html markdownToHtml(text(), inlineOnly: true)}
 
 <style>
   textarea {

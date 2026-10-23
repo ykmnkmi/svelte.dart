@@ -4,14 +4,14 @@
 
   var pin = state<String>('');
 
-  var view = derived<String>(pin.isNotEmpty ? pin.replace(RegExp('\\d+(?!\$)'), '•') : 'enter your pin');
+  var view = derived<String>(pin().isNotEmpty ? pin().replace(RegExp('\\d+(?!\$)'), '•') : 'enter your pin');
 
   void handleSubmit() {
-    window.alert('submitted $pin');
+    window.alert('submitted ${pin()}');
   }
 </script>
 
-<h1 class:pin={pin.isNotEmpty}>{view}</h1>
+<h1 class:pin={pin().isNotEmpty}>{view()}</h1>
 
 <Keypad bind:value={pin} onSubmit={handleSubmit} />
 

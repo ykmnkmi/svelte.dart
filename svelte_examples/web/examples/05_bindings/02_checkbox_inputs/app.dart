@@ -16,8 +16,8 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
-    var yes = $.source<bool>(false);
+  void call(Node anchor) {
+    var yes = state<bool>(false);
 
     var fragment = root();
     var label = $.firstChild<HTMLLabelElement>(fragment);

@@ -15,7 +15,7 @@ base class App implements Component {
     }
 
     Outer(
-      onMessage: $.ValueProp<void Function({required String text})>(
+      onMessage: $.DefaultProp<void Function({required String text})>(
         handleMessage,
       ),
     ).call(anchor);

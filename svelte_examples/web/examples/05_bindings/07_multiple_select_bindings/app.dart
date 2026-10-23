@@ -18,11 +18,11 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.push();
 
-    var scoops = $.source<int>(1);
-    var flavours = $.source<List<String>>(['Mint choc chip']);
+    var scoops = state<int>(1);
+    var flavours = state<List<String>>(['Mint choc chip']);
 
     var menu = <String>[
       'Cookies and cream',

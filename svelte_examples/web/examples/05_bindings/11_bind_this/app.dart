@@ -12,7 +12,7 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.push();
     $.appendStyles(anchor, 'svelte-1mvjxco', '''
   canvas.svelte-1mvjxco {

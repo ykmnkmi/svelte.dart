@@ -11,7 +11,7 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.appendStyles(anchor, 'svelte-14lf6jh', '''
   input.svelte-14lf6jh {
     display:block;
@@ -29,8 +29,8 @@ base class App implements Component {
       ),
     ];
 
-    var selected = $.source<({int id, String text})?>(null);
-    var answer = $.source<String>('');
+    var selected = state<({int id, String text})?>(null);
+    var answer = state<String>('');
 
     void handleSubmit(Event event) {
       event.preventDefault();

@@ -8,14 +8,17 @@ base class Keypad implements Component {
     '<div class="keypad svelte-1iljj4z"><button class="svelte-1iljj4z">1</button> <button class="svelte-1iljj4z">2</button> <button class="svelte-1iljj4z">3</button> <button class="svelte-1iljj4z">4</button> <button class="svelte-1iljj4z">5</button> <button class="svelte-1iljj4z">6</button> <button class="svelte-1iljj4z">7</button> <button class="svelte-1iljj4z">8</button> <button class="svelte-1iljj4z">9</button> <button class="svelte-1iljj4z">clear</button> <button class="svelte-1iljj4z">0</button> <button class="svelte-1iljj4z">submit</button></div>',
   );
 
-  Keypad({this.value = '', this.onSubmit});
+  Keypad({
+    this.value = const $.DefaultProp<String>(''),
+    this.onSubmit = const $.DefaultProp<void Function()?>(null),
+  });
 
-  String value;
+  Bindable<String> value;
 
-  void Function()? onSubmit;
+  Prop<void Function()?> onSubmit;
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.appendStyles(anchor, 'svelte-1iljj4z', '''
   .keypad.svelte-1iljj4z {
     display: grid;
@@ -30,43 +33,43 @@ base class Keypad implements Component {
 
     void Function() select(String num) {
       return () {
-        value += num;
+        value.set(value() + num);
       };
     }
 
     void clear() {
-      value = '';
+      value.set('');
     }
 
     var div = root();
     var button = $.child<HTMLButtonElement>(div);
-    var eventHandler = $.derived(() => select('1'));
+    var eventHandler = $.createDerived(() => select('1'));
     var button1 = $.sibling<HTMLButtonElement>(button, 2);
-    var eventHandler1 = $.derived(() => select('2'));
+    var eventHandler1 = $.createDerived(() => select('2'));
     var button2 = $.sibling<HTMLButtonElement>(button1, 2);
-    var eventHandler2 = $.derived(() => select('3'));
+    var eventHandler2 = $.createDerived(() => select('3'));
     var button3 = $.sibling<HTMLButtonElement>(button2, 2);
-    var eventHandler3 = $.derived(() => select('4'));
+    var eventHandler3 = $.createDerived(() => select('4'));
     var button4 = $.sibling<HTMLButtonElement>(button3, 2);
-    var eventHandler4 = $.derived(() => select('5'));
+    var eventHandler4 = $.createDerived(() => select('5'));
     var button5 = $.sibling<HTMLButtonElement>(button4, 2);
-    var eventHandler5 = $.derived(() => select('6'));
+    var eventHandler5 = $.createDerived(() => select('6'));
     var button6 = $.sibling<HTMLButtonElement>(button5, 2);
-    var eventHandler6 = $.derived(() => select('7'));
+    var eventHandler6 = $.createDerived(() => select('7'));
     var button7 = $.sibling<HTMLButtonElement>(button6, 2);
-    var eventHandler7 = $.derived(() => select('8'));
+    var eventHandler7 = $.createDerived(() => select('8'));
     var button8 = $.sibling<HTMLButtonElement>(button7, 2);
-    var eventHandler8 = $.derived(() => select('9'));
+    var eventHandler8 = $.createDerived(() => select('9'));
     var button9 = $.sibling<HTMLButtonElement>(button8, 2);
     var button10 = $.sibling<HTMLButtonElement>(button9, 2);
-    var eventHandler9 = $.derived(() => select('0'));
+    var eventHandler9 = $.createDerived(() => select('0'));
     var button11 = $.sibling<HTMLButtonElement>(button10, 2);
 
     $.reset(div);
 
     $.templateEffect(() {
-      button9.disabled = value.isEmpty;
-      button11.disabled = value.isEmpty;
+      button9.disabled = value().isEmpty;
+      button11.disabled = value().isEmpty;
     });
 
     $.eventVoid('click', button, () {
@@ -112,7 +115,7 @@ base class Keypad implements Component {
     });
 
     $.eventVoid('click', button11, () {
-      onSubmit?.call();
+      onSubmit()?.call();
     });
 
     $.append(anchor, div);

@@ -2,12 +2,14 @@
   import 'package:svelte/svelte.dart';
 
   @bindable
-  external String value = '';
+  var value = bindableProp<String>('');
   
-  external void Function() onSubmit;
+  var onSubmit = prop<void Function()?>();
 
-  void select(String num) {
-    value += num;
+  void Function() select(String num) {
+    return () {
+      value + = num;
+    };
   }
 
   void clear() {
@@ -26,9 +28,9 @@
   <button onclick={select('8')}>8</button>
   <button onclick={select('9')}>9</button>
 
-  <button disabled={value.isEmpty} on:click={clear}>clear</button>
+  <button disabled={value().isEmpty} onclick={clear}>clear</button>
   <button on:click={select('0')}>0</button>
-  <button disabled={value.isEmpty} on:click={onSubmit}>submit</button>
+  <button disabled={value().isEmpty} onclick={onSubmit}>submit</button>
 </div>
 
 <style>

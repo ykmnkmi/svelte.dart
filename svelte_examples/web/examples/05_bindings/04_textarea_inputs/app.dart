@@ -11,7 +11,7 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.push();
     $.appendStyles(anchor, 'svelte-edipxk', '''
   textarea.svelte-edipxk {
@@ -19,7 +19,7 @@ base class App implements Component {
     height:200px;
   }''');
 
-    var text = $.source<String>('Some words are *italic*, some are **bold**');
+    var text = state<String>('Some words are *italic*, some are **bold**');
 
     var fragment = root();
     var textarea = $.firstChild<HTMLTextAreaElement>(fragment);

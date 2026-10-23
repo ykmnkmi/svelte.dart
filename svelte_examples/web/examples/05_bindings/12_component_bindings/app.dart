@@ -5,22 +5,6 @@ import 'package:web/web.dart';
 
 import 'keypad.dart';
 
-base class _Keypad extends Keypad {
-  _Keypad(this._pin, {super.onSubmit});
-
-  final $.Source<String> _pin;
-
-  @override
-  String get value {
-    return _pin();
-  }
-
-  @override
-  set value(String value) {
-    _pin.set(value);
-  }
-}
-
 base class App implements Component {
   static final root = $.template<DocumentFragment>(
     '<h1 class="svelte-3f6qiv"> </h1> <!>',
@@ -28,7 +12,7 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.appendStyles(anchor, 'svelte-3f6qiv', '''
   h1.svelte-3f6qiv {
     color:#ccc;
@@ -46,8 +30,8 @@ base class App implements Component {
     color:#fff;
   }''');
 
-    var pin = $.source('');
-    var view = $.derived(
+    var pin = state('');
+    var view = derived(
       () => pin().isNotEmpty
           ? pin().replaceAll(RegExp('\\d(?!\$)'), '•')
           : 'enter your pin',
@@ -65,7 +49,10 @@ base class App implements Component {
 
     var node = $.sibling<Comment>(h1, 2);
 
-    _Keypad(pin, onSubmit: handleSubmit).create(node);
+    Keypad(
+      value: $.BindableProp(pin.call, pin.set),
+      onSubmit: $.DefaultProp<void Function()>(handleSubmit),
+    ).call(node);
 
     $.templateEffect(() {
       $.toggleClass(h1, 'pin', pin().isNotEmpty);

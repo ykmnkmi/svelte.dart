@@ -15,4 +15,4 @@
   <input type="range" bind:value={b} min="0" max="10" />
 </label>
 
-<p>{a} + {b} = {a + b}</p>
+<p>{a()} + {b()} = {a() + b()}</p>

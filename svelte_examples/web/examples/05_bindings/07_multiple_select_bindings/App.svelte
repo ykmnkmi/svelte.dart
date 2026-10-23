@@ -40,20 +40,20 @@
 
 <select multiple bind:value={flavours}>
   {#each menu as flavour}
-    <option value={flavour}>
-      {flavour}
+    <option value={flavour()}>
+      {flavour()}
     </option>
   {/each}
 </select>
 
-{#if flavours.isEmpty}
+{#if flavours().isEmpty}
   <p>Please select at least one flavour</p>
-{:else if flavours.length > scoops}
+{:else if flavours().length > scoops()}
   <p>Can't order more flavours than scoops!</p>
 {:else}
   <p>
-    You ordered {scoops}
-    {scoops === 1 ? 'scoop' : 'scoops'}
-    of {join(flavours)}
+    You ordered {scoops()}
+    {scoops() === 1 ? 'scoop' : 'scoops'}
+    of {join(flavours())}
   </p>
 {/if}

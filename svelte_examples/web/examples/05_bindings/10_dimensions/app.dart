@@ -10,7 +10,7 @@ base class App implements Component {
   );
 
   @override
-  void create(Node anchor) {
+  void call(Node anchor) {
     $.appendStyles(anchor, 'svelte-1oqthja', '''
   input.svelte-1oqthja {
     display: block;
@@ -19,10 +19,10 @@ base class App implements Component {
     display: inline-block;
   }''');
 
-    var w = $.source<int>(0);
-    var h = $.source<int>(0);
-    var size = $.source<int>(42);
-    var text = $.source<String>('edit me');
+    var w = state<int>(0);
+    var h = state<int>(0);
+    var size = state<int>(42);
+    var text = state<String>('edit me');
 
     var fragment = root();
     var input = $.firstChild<HTMLInputElement>(fragment);

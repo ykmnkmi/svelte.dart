@@ -5,4 +5,4 @@
 </script>
 
 <input bind:value={name} placeholder="enter your name" />
-<p>Hello {name.isEmpty ? 'stranger' : name}!</p>
+<p>Hello {name().isEmpty ? 'stranger' : name()}!</p>

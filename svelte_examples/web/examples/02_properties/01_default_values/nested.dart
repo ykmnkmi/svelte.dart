@@ -6,7 +6,7 @@ import 'package:web/web.dart';
 base class Nested implements Component {
   static final root = $.template<HTMLParagraphElement>('<p> </p>');
 
-  Nested({this.answer = const $.ValueProp<Object>('a mystery')});
+  Nested({this.answer = const $.DefaultProp<Object>('a mystery')});
 
   Prop<Object> answer;
 
